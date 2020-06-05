@@ -2946,7 +2946,9 @@ public class DDMFormInstancePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceImpl.class,
-			ddmFormInstance.getPrimaryKey(), ddmFormInstance);
+			ddmFormInstance.getPrimaryKey(), ddmFormInstance,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceModelImpl)ddmFormInstance).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3011,7 +3013,9 @@ public class DDMFormInstancePersistenceImpl
 	public void clearCache(DDMFormInstance ddmFormInstance) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMFormInstanceImpl.class,
-			ddmFormInstance.getPrimaryKey());
+			ddmFormInstance.getPrimaryKey(), ddmFormInstance,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceModelImpl)ddmFormInstance).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3028,7 +3032,9 @@ public class DDMFormInstancePersistenceImpl
 		for (DDMFormInstance ddmFormInstance : ddmFormInstances) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMFormInstanceImpl.class,
-				ddmFormInstance.getPrimaryKey());
+				ddmFormInstance.getPrimaryKey(), ddmFormInstance,
+				_columnBitmaskEnabled,
+				((DDMFormInstanceModelImpl)ddmFormInstance).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMFormInstanceModelImpl)ddmFormInstance, true);
@@ -3390,7 +3396,9 @@ public class DDMFormInstancePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceImpl.class,
-			ddmFormInstance.getPrimaryKey(), ddmFormInstance, false);
+			ddmFormInstance.getPrimaryKey(), ddmFormInstance, false,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceModelImpl)ddmFormInstance).getColumnBitmask());
 
 		clearUniqueFindersCache(ddmFormInstanceModelImpl, false);
 		cacheUniqueFindersCache(ddmFormInstanceModelImpl);

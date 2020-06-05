@@ -1361,7 +1361,9 @@ public class AnnouncementsFlagPersistenceImpl
 		EntityCacheUtil.putResult(
 			AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
-			announcementsFlag);
+			announcementsFlag,
+			AnnouncementsFlagModelImpl.COLUMN_BITMASK_ENABLED,
+			((AnnouncementsFlagModelImpl)announcementsFlag).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_E_V,
@@ -1422,7 +1424,10 @@ public class AnnouncementsFlagPersistenceImpl
 	public void clearCache(AnnouncementsFlag announcementsFlag) {
 		EntityCacheUtil.removeResult(
 			AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey());
+			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
+			announcementsFlag,
+			AnnouncementsFlagModelImpl.COLUMN_BITMASK_ENABLED,
+			((AnnouncementsFlagModelImpl)announcementsFlag).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1439,7 +1444,11 @@ public class AnnouncementsFlagPersistenceImpl
 		for (AnnouncementsFlag announcementsFlag : announcementsFlags) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-				AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey());
+				AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
+				announcementsFlag,
+				AnnouncementsFlagModelImpl.COLUMN_BITMASK_ENABLED,
+				((AnnouncementsFlagModelImpl)announcementsFlag).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AnnouncementsFlagModelImpl)announcementsFlag, true);
@@ -1723,7 +1732,9 @@ public class AnnouncementsFlagPersistenceImpl
 		EntityCacheUtil.putResult(
 			AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
-			announcementsFlag, false);
+			announcementsFlag, false,
+			AnnouncementsFlagModelImpl.COLUMN_BITMASK_ENABLED,
+			((AnnouncementsFlagModelImpl)announcementsFlag).getColumnBitmask());
 
 		clearUniqueFindersCache(announcementsFlagModelImpl, false);
 		cacheUniqueFindersCache(announcementsFlagModelImpl);

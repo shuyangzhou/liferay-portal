@@ -1636,7 +1636,9 @@ public class ContactPersistenceImpl
 	public void cacheResult(Contact contact) {
 		EntityCacheUtil.putResult(
 			ContactModelImpl.ENTITY_CACHE_ENABLED, ContactImpl.class,
-			contact.getPrimaryKey(), contact);
+			contact.getPrimaryKey(), contact,
+			ContactModelImpl.COLUMN_BITMASK_ENABLED,
+			((ContactModelImpl)contact).getColumnBitmask());
 
 		contact.resetOriginalValues();
 	}
@@ -1688,7 +1690,9 @@ public class ContactPersistenceImpl
 	public void clearCache(Contact contact) {
 		EntityCacheUtil.removeResult(
 			ContactModelImpl.ENTITY_CACHE_ENABLED, ContactImpl.class,
-			contact.getPrimaryKey());
+			contact.getPrimaryKey(), contact,
+			ContactModelImpl.COLUMN_BITMASK_ENABLED,
+			((ContactModelImpl)contact).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1702,7 +1706,9 @@ public class ContactPersistenceImpl
 		for (Contact contact : contacts) {
 			EntityCacheUtil.removeResult(
 				ContactModelImpl.ENTITY_CACHE_ENABLED, ContactImpl.class,
-				contact.getPrimaryKey());
+				contact.getPrimaryKey(), contact,
+				ContactModelImpl.COLUMN_BITMASK_ENABLED,
+				((ContactModelImpl)contact).getColumnBitmask());
 		}
 	}
 
@@ -1983,7 +1989,9 @@ public class ContactPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ContactModelImpl.ENTITY_CACHE_ENABLED, ContactImpl.class,
-			contact.getPrimaryKey(), contact, false);
+			contact.getPrimaryKey(), contact, false,
+			ContactModelImpl.COLUMN_BITMASK_ENABLED,
+			((ContactModelImpl)contact).getColumnBitmask());
 
 		contact.resetOriginalValues();
 

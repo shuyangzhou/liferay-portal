@@ -1281,7 +1281,9 @@ public class CountryPersistenceImpl
 	public void cacheResult(Country country) {
 		EntityCacheUtil.putResult(
 			CountryModelImpl.ENTITY_CACHE_ENABLED, CountryImpl.class,
-			country.getPrimaryKey(), country);
+			country.getPrimaryKey(), country,
+			CountryModelImpl.COLUMN_BITMASK_ENABLED,
+			((CountryModelImpl)country).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByName, new Object[] {country.getName()}, country);
@@ -1342,7 +1344,9 @@ public class CountryPersistenceImpl
 	public void clearCache(Country country) {
 		EntityCacheUtil.removeResult(
 			CountryModelImpl.ENTITY_CACHE_ENABLED, CountryImpl.class,
-			country.getPrimaryKey());
+			country.getPrimaryKey(), country,
+			CountryModelImpl.COLUMN_BITMASK_ENABLED,
+			((CountryModelImpl)country).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1358,7 +1362,9 @@ public class CountryPersistenceImpl
 		for (Country country : countries) {
 			EntityCacheUtil.removeResult(
 				CountryModelImpl.ENTITY_CACHE_ENABLED, CountryImpl.class,
-				country.getPrimaryKey());
+				country.getPrimaryKey(), country,
+				CountryModelImpl.COLUMN_BITMASK_ENABLED,
+				((CountryModelImpl)country).getColumnBitmask());
 
 			clearUniqueFindersCache((CountryModelImpl)country, true);
 		}
@@ -1635,7 +1641,9 @@ public class CountryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			CountryModelImpl.ENTITY_CACHE_ENABLED, CountryImpl.class,
-			country.getPrimaryKey(), country, false);
+			country.getPrimaryKey(), country, false,
+			CountryModelImpl.COLUMN_BITMASK_ENABLED,
+			((CountryModelImpl)country).getColumnBitmask());
 
 		clearUniqueFindersCache(countryModelImpl, false);
 		cacheUniqueFindersCache(countryModelImpl);

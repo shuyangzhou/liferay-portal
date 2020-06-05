@@ -11457,7 +11457,8 @@ public class MBCategoryPersistenceImpl
 	public void cacheResult(MBCategory mbCategory) {
 		entityCache.putResult(
 			entityCacheEnabled, MBCategoryImpl.class,
-			mbCategory.getPrimaryKey(), mbCategory);
+			mbCategory.getPrimaryKey(), mbCategory, _columnBitmaskEnabled,
+			((MBCategoryModelImpl)mbCategory).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -11514,7 +11515,8 @@ public class MBCategoryPersistenceImpl
 	public void clearCache(MBCategory mbCategory) {
 		entityCache.removeResult(
 			entityCacheEnabled, MBCategoryImpl.class,
-			mbCategory.getPrimaryKey());
+			mbCategory.getPrimaryKey(), mbCategory, _columnBitmaskEnabled,
+			((MBCategoryModelImpl)mbCategory).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -11530,7 +11532,8 @@ public class MBCategoryPersistenceImpl
 		for (MBCategory mbCategory : mbCategories) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBCategoryImpl.class,
-				mbCategory.getPrimaryKey());
+				mbCategory.getPrimaryKey(), mbCategory, _columnBitmaskEnabled,
+				((MBCategoryModelImpl)mbCategory).getColumnBitmask());
 
 			clearUniqueFindersCache((MBCategoryModelImpl)mbCategory, true);
 		}
@@ -12016,7 +12019,9 @@ public class MBCategoryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBCategoryImpl.class,
-			mbCategory.getPrimaryKey(), mbCategory, false);
+			mbCategory.getPrimaryKey(), mbCategory, false,
+			_columnBitmaskEnabled,
+			((MBCategoryModelImpl)mbCategory).getColumnBitmask());
 
 		clearUniqueFindersCache(mbCategoryModelImpl, false);
 		cacheUniqueFindersCache(mbCategoryModelImpl);

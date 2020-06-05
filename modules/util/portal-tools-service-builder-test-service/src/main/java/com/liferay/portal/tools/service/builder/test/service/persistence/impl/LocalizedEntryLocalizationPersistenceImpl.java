@@ -901,7 +901,10 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			LocalizedEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 			LocalizedEntryLocalizationImpl.class,
 			localizedEntryLocalization.getPrimaryKey(),
-			localizedEntryLocalization);
+			localizedEntryLocalization,
+			LocalizedEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((LocalizedEntryLocalizationModelImpl)localizedEntryLocalization).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByLocalizedEntryId_LanguageId,
@@ -969,7 +972,11 @@ public class LocalizedEntryLocalizationPersistenceImpl
 		entityCache.removeResult(
 			LocalizedEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 			LocalizedEntryLocalizationImpl.class,
-			localizedEntryLocalization.getPrimaryKey());
+			localizedEntryLocalization.getPrimaryKey(),
+			localizedEntryLocalization,
+			LocalizedEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((LocalizedEntryLocalizationModelImpl)localizedEntryLocalization).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -992,7 +999,11 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			entityCache.removeResult(
 				LocalizedEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 				LocalizedEntryLocalizationImpl.class,
-				localizedEntryLocalization.getPrimaryKey());
+				localizedEntryLocalization.getPrimaryKey(),
+				localizedEntryLocalization,
+				LocalizedEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+				((LocalizedEntryLocalizationModelImpl)
+					localizedEntryLocalization).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LocalizedEntryLocalizationModelImpl)localizedEntryLocalization,
@@ -1274,7 +1285,10 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			LocalizedEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 			LocalizedEntryLocalizationImpl.class,
 			localizedEntryLocalization.getPrimaryKey(),
-			localizedEntryLocalization, false);
+			localizedEntryLocalization, false,
+			LocalizedEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((LocalizedEntryLocalizationModelImpl)localizedEntryLocalization).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(localizedEntryLocalizationModelImpl, false);
 		cacheUniqueFindersCache(localizedEntryLocalizationModelImpl);

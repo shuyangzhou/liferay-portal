@@ -961,7 +961,8 @@ public class SamlSpMessagePersistenceImpl
 	public void cacheResult(SamlSpMessage samlSpMessage) {
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpMessageImpl.class,
-			samlSpMessage.getPrimaryKey(), samlSpMessage);
+			samlSpMessage.getPrimaryKey(), samlSpMessage, _columnBitmaskEnabled,
+			((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchBySIEI_SIRK,
@@ -1021,7 +1022,8 @@ public class SamlSpMessagePersistenceImpl
 	public void clearCache(SamlSpMessage samlSpMessage) {
 		entityCache.removeResult(
 			entityCacheEnabled, SamlSpMessageImpl.class,
-			samlSpMessage.getPrimaryKey());
+			samlSpMessage.getPrimaryKey(), samlSpMessage, _columnBitmaskEnabled,
+			((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1037,7 +1039,9 @@ public class SamlSpMessagePersistenceImpl
 		for (SamlSpMessage samlSpMessage : samlSpMessages) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlSpMessageImpl.class,
-				samlSpMessage.getPrimaryKey());
+				samlSpMessage.getPrimaryKey(), samlSpMessage,
+				_columnBitmaskEnabled,
+				((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SamlSpMessageModelImpl)samlSpMessage, true);
@@ -1257,7 +1261,9 @@ public class SamlSpMessagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpMessageImpl.class,
-			samlSpMessage.getPrimaryKey(), samlSpMessage, false);
+			samlSpMessage.getPrimaryKey(), samlSpMessage, false,
+			_columnBitmaskEnabled,
+			((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
 
 		clearUniqueFindersCache(samlSpMessageModelImpl, false);
 		cacheUniqueFindersCache(samlSpMessageModelImpl);

@@ -2885,7 +2885,9 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateStructureRelImpl.class,
 			layoutPageTemplateStructureRel.getPrimaryKey(),
-			layoutPageTemplateStructureRel);
+			layoutPageTemplateStructureRel, _columnBitmaskEnabled,
+			((LayoutPageTemplateStructureRelModelImpl)
+				layoutPageTemplateStructureRel).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2961,7 +2963,10 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, LayoutPageTemplateStructureRelImpl.class,
-			layoutPageTemplateStructureRel.getPrimaryKey());
+			layoutPageTemplateStructureRel.getPrimaryKey(),
+			layoutPageTemplateStructureRel, _columnBitmaskEnabled,
+			((LayoutPageTemplateStructureRelModelImpl)
+				layoutPageTemplateStructureRel).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2984,7 +2989,10 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutPageTemplateStructureRelImpl.class,
-				layoutPageTemplateStructureRel.getPrimaryKey());
+				layoutPageTemplateStructureRel.getPrimaryKey(),
+				layoutPageTemplateStructureRel, _columnBitmaskEnabled,
+				((LayoutPageTemplateStructureRelModelImpl)
+					layoutPageTemplateStructureRel).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutPageTemplateStructureRelModelImpl)
@@ -3444,7 +3452,9 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateStructureRelImpl.class,
 			layoutPageTemplateStructureRel.getPrimaryKey(),
-			layoutPageTemplateStructureRel, false);
+			layoutPageTemplateStructureRel, false, _columnBitmaskEnabled,
+			((LayoutPageTemplateStructureRelModelImpl)
+				layoutPageTemplateStructureRel).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutPageTemplateStructureRelModelImpl, false);
 		cacheUniqueFindersCache(layoutPageTemplateStructureRelModelImpl);

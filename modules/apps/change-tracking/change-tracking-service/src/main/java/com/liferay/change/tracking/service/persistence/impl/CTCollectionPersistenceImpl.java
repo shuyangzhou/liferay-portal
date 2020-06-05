@@ -1930,7 +1930,8 @@ public class CTCollectionPersistenceImpl
 	public void cacheResult(CTCollection ctCollection) {
 		entityCache.putResult(
 			entityCacheEnabled, CTCollectionImpl.class,
-			ctCollection.getPrimaryKey(), ctCollection);
+			ctCollection.getPrimaryKey(), ctCollection, _columnBitmaskEnabled,
+			((CTCollectionModelImpl)ctCollection).getColumnBitmask());
 
 		ctCollection.resetOriginalValues();
 	}
@@ -1982,7 +1983,8 @@ public class CTCollectionPersistenceImpl
 	public void clearCache(CTCollection ctCollection) {
 		entityCache.removeResult(
 			entityCacheEnabled, CTCollectionImpl.class,
-			ctCollection.getPrimaryKey());
+			ctCollection.getPrimaryKey(), ctCollection, _columnBitmaskEnabled,
+			((CTCollectionModelImpl)ctCollection).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1996,7 +1998,9 @@ public class CTCollectionPersistenceImpl
 		for (CTCollection ctCollection : ctCollections) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTCollectionImpl.class,
-				ctCollection.getPrimaryKey());
+				ctCollection.getPrimaryKey(), ctCollection,
+				_columnBitmaskEnabled,
+				((CTCollectionModelImpl)ctCollection).getColumnBitmask());
 		}
 	}
 
@@ -2255,7 +2259,9 @@ public class CTCollectionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTCollectionImpl.class,
-			ctCollection.getPrimaryKey(), ctCollection, false);
+			ctCollection.getPrimaryKey(), ctCollection, false,
+			_columnBitmaskEnabled,
+			((CTCollectionModelImpl)ctCollection).getColumnBitmask());
 
 		ctCollection.resetOriginalValues();
 

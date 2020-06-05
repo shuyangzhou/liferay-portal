@@ -156,7 +156,7 @@ public class EntryPersistenceImpl
 	@Override
 	public void clearCache(Entry entry) {
 		entityCache.removeResult(
-			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey());
+			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(), entry);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -169,7 +169,8 @@ public class EntryPersistenceImpl
 
 		for (Entry entry : entries) {
 			entityCache.removeResult(
-				entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey());
+				entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(),
+				entry);
 		}
 	}
 

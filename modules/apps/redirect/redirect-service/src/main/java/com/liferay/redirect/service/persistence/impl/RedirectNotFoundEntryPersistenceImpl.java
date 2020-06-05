@@ -879,7 +879,10 @@ public class RedirectNotFoundEntryPersistenceImpl
 	public void cacheResult(RedirectNotFoundEntry redirectNotFoundEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, RedirectNotFoundEntryImpl.class,
-			redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry);
+			redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry,
+			_columnBitmaskEnabled,
+			((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByG_U,
@@ -943,7 +946,10 @@ public class RedirectNotFoundEntryPersistenceImpl
 	public void clearCache(RedirectNotFoundEntry redirectNotFoundEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, RedirectNotFoundEntryImpl.class,
-			redirectNotFoundEntry.getPrimaryKey());
+			redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry,
+			_columnBitmaskEnabled,
+			((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -964,7 +970,10 @@ public class RedirectNotFoundEntryPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, RedirectNotFoundEntryImpl.class,
-				redirectNotFoundEntry.getPrimaryKey());
+				redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry,
+				_columnBitmaskEnabled,
+				((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(RedirectNotFoundEntryModelImpl)redirectNotFoundEntry, true);
@@ -1278,8 +1287,10 @@ public class RedirectNotFoundEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, RedirectNotFoundEntryImpl.class,
-			redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry,
-			false);
+			redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry, false,
+			_columnBitmaskEnabled,
+			((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(redirectNotFoundEntryModelImpl, false);
 		cacheUniqueFindersCache(redirectNotFoundEntryModelImpl);

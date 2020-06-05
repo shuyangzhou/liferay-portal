@@ -5835,7 +5835,10 @@ public class PortletPreferencesPersistenceImpl
 		EntityCacheUtil.putResult(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesImpl.class, portletPreferences.getPrimaryKey(),
-			portletPreferences);
+			portletPreferences,
+			PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletPreferencesModelImpl)portletPreferences).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByO_O_P_P,
@@ -5903,7 +5906,11 @@ public class PortletPreferencesPersistenceImpl
 	public void clearCache(PortletPreferences portletPreferences) {
 		EntityCacheUtil.removeResult(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-			PortletPreferencesImpl.class, portletPreferences.getPrimaryKey());
+			PortletPreferencesImpl.class, portletPreferences.getPrimaryKey(),
+			portletPreferences,
+			PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletPreferencesModelImpl)portletPreferences).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5921,7 +5928,10 @@ public class PortletPreferencesPersistenceImpl
 			EntityCacheUtil.removeResult(
 				PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 				PortletPreferencesImpl.class,
-				portletPreferences.getPrimaryKey());
+				portletPreferences.getPrimaryKey(), portletPreferences,
+				PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+				((PortletPreferencesModelImpl)portletPreferences).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PortletPreferencesModelImpl)portletPreferences, true);
@@ -6430,7 +6440,10 @@ public class PortletPreferencesPersistenceImpl
 		EntityCacheUtil.putResult(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesImpl.class, portletPreferences.getPrimaryKey(),
-			portletPreferences, false);
+			portletPreferences, false,
+			PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletPreferencesModelImpl)portletPreferences).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(portletPreferencesModelImpl, false);
 		cacheUniqueFindersCache(portletPreferencesModelImpl);

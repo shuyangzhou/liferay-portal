@@ -2224,7 +2224,8 @@ public class MBMailingListPersistenceImpl
 	public void cacheResult(MBMailingList mbMailingList) {
 		entityCache.putResult(
 			entityCacheEnabled, MBMailingListImpl.class,
-			mbMailingList.getPrimaryKey(), mbMailingList);
+			mbMailingList.getPrimaryKey(), mbMailingList, _columnBitmaskEnabled,
+			((MBMailingListModelImpl)mbMailingList).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2288,7 +2289,8 @@ public class MBMailingListPersistenceImpl
 	public void clearCache(MBMailingList mbMailingList) {
 		entityCache.removeResult(
 			entityCacheEnabled, MBMailingListImpl.class,
-			mbMailingList.getPrimaryKey());
+			mbMailingList.getPrimaryKey(), mbMailingList, _columnBitmaskEnabled,
+			((MBMailingListModelImpl)mbMailingList).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2304,7 +2306,9 @@ public class MBMailingListPersistenceImpl
 		for (MBMailingList mbMailingList : mbMailingLists) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBMailingListImpl.class,
-				mbMailingList.getPrimaryKey());
+				mbMailingList.getPrimaryKey(), mbMailingList,
+				_columnBitmaskEnabled,
+				((MBMailingListModelImpl)mbMailingList).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(MBMailingListModelImpl)mbMailingList, true);
@@ -2673,7 +2677,9 @@ public class MBMailingListPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBMailingListImpl.class,
-			mbMailingList.getPrimaryKey(), mbMailingList, false);
+			mbMailingList.getPrimaryKey(), mbMailingList, false,
+			_columnBitmaskEnabled,
+			((MBMailingListModelImpl)mbMailingList).getColumnBitmask());
 
 		clearUniqueFindersCache(mbMailingListModelImpl, false);
 		cacheUniqueFindersCache(mbMailingListModelImpl);

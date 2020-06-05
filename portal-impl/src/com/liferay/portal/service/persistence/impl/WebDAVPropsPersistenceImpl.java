@@ -323,7 +323,9 @@ public class WebDAVPropsPersistenceImpl
 	public void cacheResult(WebDAVProps webDAVProps) {
 		EntityCacheUtil.putResult(
 			WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED, WebDAVPropsImpl.class,
-			webDAVProps.getPrimaryKey(), webDAVProps);
+			webDAVProps.getPrimaryKey(), webDAVProps,
+			WebDAVPropsModelImpl.COLUMN_BITMASK_ENABLED,
+			((WebDAVPropsModelImpl)webDAVProps).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_C,
@@ -383,7 +385,9 @@ public class WebDAVPropsPersistenceImpl
 	public void clearCache(WebDAVProps webDAVProps) {
 		EntityCacheUtil.removeResult(
 			WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED, WebDAVPropsImpl.class,
-			webDAVProps.getPrimaryKey());
+			webDAVProps.getPrimaryKey(), webDAVProps,
+			WebDAVPropsModelImpl.COLUMN_BITMASK_ENABLED,
+			((WebDAVPropsModelImpl)webDAVProps).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -399,7 +403,9 @@ public class WebDAVPropsPersistenceImpl
 		for (WebDAVProps webDAVProps : webDAVPropses) {
 			EntityCacheUtil.removeResult(
 				WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-				WebDAVPropsImpl.class, webDAVProps.getPrimaryKey());
+				WebDAVPropsImpl.class, webDAVProps.getPrimaryKey(), webDAVProps,
+				WebDAVPropsModelImpl.COLUMN_BITMASK_ENABLED,
+				((WebDAVPropsModelImpl)webDAVProps).getColumnBitmask());
 
 			clearUniqueFindersCache((WebDAVPropsModelImpl)webDAVProps, true);
 		}
@@ -644,7 +650,9 @@ public class WebDAVPropsPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED, WebDAVPropsImpl.class,
-			webDAVProps.getPrimaryKey(), webDAVProps, false);
+			webDAVProps.getPrimaryKey(), webDAVProps, false,
+			WebDAVPropsModelImpl.COLUMN_BITMASK_ENABLED,
+			((WebDAVPropsModelImpl)webDAVProps).getColumnBitmask());
 
 		clearUniqueFindersCache(webDAVPropsModelImpl, false);
 		cacheUniqueFindersCache(webDAVPropsModelImpl);

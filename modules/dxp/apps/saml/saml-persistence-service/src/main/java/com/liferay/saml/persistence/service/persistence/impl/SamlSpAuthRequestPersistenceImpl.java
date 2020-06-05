@@ -964,7 +964,9 @@ public class SamlSpAuthRequestPersistenceImpl
 	public void cacheResult(SamlSpAuthRequest samlSpAuthRequest) {
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpAuthRequestImpl.class,
-			samlSpAuthRequest.getPrimaryKey(), samlSpAuthRequest);
+			samlSpAuthRequest.getPrimaryKey(), samlSpAuthRequest,
+			_columnBitmaskEnabled,
+			((SamlSpAuthRequestModelImpl)samlSpAuthRequest).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchBySIEI_SSARK,
@@ -1024,7 +1026,9 @@ public class SamlSpAuthRequestPersistenceImpl
 	public void clearCache(SamlSpAuthRequest samlSpAuthRequest) {
 		entityCache.removeResult(
 			entityCacheEnabled, SamlSpAuthRequestImpl.class,
-			samlSpAuthRequest.getPrimaryKey());
+			samlSpAuthRequest.getPrimaryKey(), samlSpAuthRequest,
+			_columnBitmaskEnabled,
+			((SamlSpAuthRequestModelImpl)samlSpAuthRequest).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1041,7 +1045,10 @@ public class SamlSpAuthRequestPersistenceImpl
 		for (SamlSpAuthRequest samlSpAuthRequest : samlSpAuthRequests) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlSpAuthRequestImpl.class,
-				samlSpAuthRequest.getPrimaryKey());
+				samlSpAuthRequest.getPrimaryKey(), samlSpAuthRequest,
+				_columnBitmaskEnabled,
+				((SamlSpAuthRequestModelImpl)samlSpAuthRequest).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SamlSpAuthRequestModelImpl)samlSpAuthRequest, true);
@@ -1268,7 +1275,9 @@ public class SamlSpAuthRequestPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpAuthRequestImpl.class,
-			samlSpAuthRequest.getPrimaryKey(), samlSpAuthRequest, false);
+			samlSpAuthRequest.getPrimaryKey(), samlSpAuthRequest, false,
+			_columnBitmaskEnabled,
+			((SamlSpAuthRequestModelImpl)samlSpAuthRequest).getColumnBitmask());
 
 		clearUniqueFindersCache(samlSpAuthRequestModelImpl, false);
 		cacheUniqueFindersCache(samlSpAuthRequestModelImpl);

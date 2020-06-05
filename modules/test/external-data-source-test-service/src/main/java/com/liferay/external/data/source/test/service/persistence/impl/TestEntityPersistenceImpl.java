@@ -150,7 +150,7 @@ public class TestEntityPersistenceImpl
 	public void clearCache(TestEntity testEntity) {
 		entityCache.removeResult(
 			TestEntityModelImpl.ENTITY_CACHE_ENABLED, TestEntityImpl.class,
-			testEntity.getPrimaryKey());
+			testEntity.getPrimaryKey(), testEntity);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -164,7 +164,7 @@ public class TestEntityPersistenceImpl
 		for (TestEntity testEntity : testEntities) {
 			entityCache.removeResult(
 				TestEntityModelImpl.ENTITY_CACHE_ENABLED, TestEntityImpl.class,
-				testEntity.getPrimaryKey());
+				testEntity.getPrimaryKey(), testEntity);
 		}
 	}
 

@@ -6236,7 +6236,8 @@ public class DLFileShortcutPersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileShortcutImpl.class, dlFileShortcut.getPrimaryKey(),
-			dlFileShortcut);
+			dlFileShortcut, DLFileShortcutModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileShortcutModelImpl)dlFileShortcut).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -6302,7 +6303,9 @@ public class DLFileShortcutPersistenceImpl
 	public void clearCache(DLFileShortcut dlFileShortcut) {
 		EntityCacheUtil.removeResult(
 			DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileShortcutImpl.class, dlFileShortcut.getPrimaryKey());
+			DLFileShortcutImpl.class, dlFileShortcut.getPrimaryKey(),
+			dlFileShortcut, DLFileShortcutModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileShortcutModelImpl)dlFileShortcut).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6318,7 +6321,9 @@ public class DLFileShortcutPersistenceImpl
 		for (DLFileShortcut dlFileShortcut : dlFileShortcuts) {
 			EntityCacheUtil.removeResult(
 				DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileShortcutImpl.class, dlFileShortcut.getPrimaryKey());
+				DLFileShortcutImpl.class, dlFileShortcut.getPrimaryKey(),
+				dlFileShortcut, DLFileShortcutModelImpl.COLUMN_BITMASK_ENABLED,
+				((DLFileShortcutModelImpl)dlFileShortcut).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DLFileShortcutModelImpl)dlFileShortcut, true);
@@ -6815,7 +6820,9 @@ public class DLFileShortcutPersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileShortcutImpl.class, dlFileShortcut.getPrimaryKey(),
-			dlFileShortcut, false);
+			dlFileShortcut, false,
+			DLFileShortcutModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileShortcutModelImpl)dlFileShortcut).getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileShortcutModelImpl, false);
 		cacheUniqueFindersCache(dlFileShortcutModelImpl);

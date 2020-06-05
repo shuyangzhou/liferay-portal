@@ -1754,7 +1754,9 @@ public class ReadingTimeEntryPersistenceImpl
 	public void cacheResult(ReadingTimeEntry readingTimeEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, ReadingTimeEntryImpl.class,
-			readingTimeEntry.getPrimaryKey(), readingTimeEntry);
+			readingTimeEntry.getPrimaryKey(), readingTimeEntry,
+			_columnBitmaskEnabled,
+			((ReadingTimeEntryModelImpl)readingTimeEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -1821,7 +1823,9 @@ public class ReadingTimeEntryPersistenceImpl
 	public void clearCache(ReadingTimeEntry readingTimeEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, ReadingTimeEntryImpl.class,
-			readingTimeEntry.getPrimaryKey());
+			readingTimeEntry.getPrimaryKey(), readingTimeEntry,
+			_columnBitmaskEnabled,
+			((ReadingTimeEntryModelImpl)readingTimeEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1838,7 +1842,10 @@ public class ReadingTimeEntryPersistenceImpl
 		for (ReadingTimeEntry readingTimeEntry : readingTimeEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, ReadingTimeEntryImpl.class,
-				readingTimeEntry.getPrimaryKey());
+				readingTimeEntry.getPrimaryKey(), readingTimeEntry,
+				_columnBitmaskEnabled,
+				((ReadingTimeEntryModelImpl)readingTimeEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(ReadingTimeEntryModelImpl)readingTimeEntry, true);
@@ -2189,7 +2196,9 @@ public class ReadingTimeEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, ReadingTimeEntryImpl.class,
-			readingTimeEntry.getPrimaryKey(), readingTimeEntry, false);
+			readingTimeEntry.getPrimaryKey(), readingTimeEntry, false,
+			_columnBitmaskEnabled,
+			((ReadingTimeEntryModelImpl)readingTimeEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(readingTimeEntryModelImpl, false);
 		cacheUniqueFindersCache(readingTimeEntryModelImpl);

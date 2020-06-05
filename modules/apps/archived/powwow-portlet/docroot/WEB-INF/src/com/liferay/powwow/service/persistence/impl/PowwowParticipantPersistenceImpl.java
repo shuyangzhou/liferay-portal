@@ -1688,7 +1688,9 @@ public class PowwowParticipantPersistenceImpl
 		EntityCacheUtil.putResult(
 			PowwowParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			PowwowParticipantImpl.class, powwowParticipant.getPrimaryKey(),
-			powwowParticipant);
+			powwowParticipant,
+			PowwowParticipantModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowParticipantModelImpl)powwowParticipant).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByPMI_PUI,
@@ -1757,7 +1759,10 @@ public class PowwowParticipantPersistenceImpl
 	public void clearCache(PowwowParticipant powwowParticipant) {
 		EntityCacheUtil.removeResult(
 			PowwowParticipantModelImpl.ENTITY_CACHE_ENABLED,
-			PowwowParticipantImpl.class, powwowParticipant.getPrimaryKey());
+			PowwowParticipantImpl.class, powwowParticipant.getPrimaryKey(),
+			powwowParticipant,
+			PowwowParticipantModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowParticipantModelImpl)powwowParticipant).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1774,7 +1779,11 @@ public class PowwowParticipantPersistenceImpl
 		for (PowwowParticipant powwowParticipant : powwowParticipants) {
 			EntityCacheUtil.removeResult(
 				PowwowParticipantModelImpl.ENTITY_CACHE_ENABLED,
-				PowwowParticipantImpl.class, powwowParticipant.getPrimaryKey());
+				PowwowParticipantImpl.class, powwowParticipant.getPrimaryKey(),
+				powwowParticipant,
+				PowwowParticipantModelImpl.COLUMN_BITMASK_ENABLED,
+				((PowwowParticipantModelImpl)powwowParticipant).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PowwowParticipantModelImpl)powwowParticipant, true);
@@ -2126,7 +2135,9 @@ public class PowwowParticipantPersistenceImpl
 		EntityCacheUtil.putResult(
 			PowwowParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			PowwowParticipantImpl.class, powwowParticipant.getPrimaryKey(),
-			powwowParticipant, false);
+			powwowParticipant, false,
+			PowwowParticipantModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowParticipantModelImpl)powwowParticipant).getColumnBitmask());
 
 		clearUniqueFindersCache(powwowParticipantModelImpl, false);
 		cacheUniqueFindersCache(powwowParticipantModelImpl);

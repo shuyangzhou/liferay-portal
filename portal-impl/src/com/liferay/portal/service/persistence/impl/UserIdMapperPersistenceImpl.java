@@ -1140,7 +1140,9 @@ public class UserIdMapperPersistenceImpl
 	public void cacheResult(UserIdMapper userIdMapper) {
 		EntityCacheUtil.putResult(
 			UserIdMapperModelImpl.ENTITY_CACHE_ENABLED, UserIdMapperImpl.class,
-			userIdMapper.getPrimaryKey(), userIdMapper);
+			userIdMapper.getPrimaryKey(), userIdMapper,
+			UserIdMapperModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserIdMapperModelImpl)userIdMapper).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_T,
@@ -1205,7 +1207,9 @@ public class UserIdMapperPersistenceImpl
 	public void clearCache(UserIdMapper userIdMapper) {
 		EntityCacheUtil.removeResult(
 			UserIdMapperModelImpl.ENTITY_CACHE_ENABLED, UserIdMapperImpl.class,
-			userIdMapper.getPrimaryKey());
+			userIdMapper.getPrimaryKey(), userIdMapper,
+			UserIdMapperModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserIdMapperModelImpl)userIdMapper).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1221,7 +1225,9 @@ public class UserIdMapperPersistenceImpl
 		for (UserIdMapper userIdMapper : userIdMappers) {
 			EntityCacheUtil.removeResult(
 				UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-				UserIdMapperImpl.class, userIdMapper.getPrimaryKey());
+				UserIdMapperImpl.class, userIdMapper.getPrimaryKey(),
+				userIdMapper, UserIdMapperModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserIdMapperModelImpl)userIdMapper).getColumnBitmask());
 
 			clearUniqueFindersCache((UserIdMapperModelImpl)userIdMapper, true);
 		}
@@ -1500,7 +1506,9 @@ public class UserIdMapperPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			UserIdMapperModelImpl.ENTITY_CACHE_ENABLED, UserIdMapperImpl.class,
-			userIdMapper.getPrimaryKey(), userIdMapper, false);
+			userIdMapper.getPrimaryKey(), userIdMapper, false,
+			UserIdMapperModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserIdMapperModelImpl)userIdMapper).getColumnBitmask());
 
 		clearUniqueFindersCache(userIdMapperModelImpl, false);
 		cacheUniqueFindersCache(userIdMapperModelImpl);

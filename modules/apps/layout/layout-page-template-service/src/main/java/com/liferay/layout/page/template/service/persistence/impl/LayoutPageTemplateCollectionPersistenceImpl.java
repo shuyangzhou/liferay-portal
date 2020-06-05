@@ -4018,7 +4018,9 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateCollectionImpl.class,
 			layoutPageTemplateCollection.getPrimaryKey(),
-			layoutPageTemplateCollection);
+			layoutPageTemplateCollection, _columnBitmaskEnabled,
+			((LayoutPageTemplateCollectionModelImpl)
+				layoutPageTemplateCollection).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4101,7 +4103,10 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, LayoutPageTemplateCollectionImpl.class,
-			layoutPageTemplateCollection.getPrimaryKey());
+			layoutPageTemplateCollection.getPrimaryKey(),
+			layoutPageTemplateCollection, _columnBitmaskEnabled,
+			((LayoutPageTemplateCollectionModelImpl)
+				layoutPageTemplateCollection).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4123,7 +4128,10 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutPageTemplateCollectionImpl.class,
-				layoutPageTemplateCollection.getPrimaryKey());
+				layoutPageTemplateCollection.getPrimaryKey(),
+				layoutPageTemplateCollection, _columnBitmaskEnabled,
+				((LayoutPageTemplateCollectionModelImpl)
+					layoutPageTemplateCollection).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutPageTemplateCollectionModelImpl)
@@ -4567,7 +4575,9 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateCollectionImpl.class,
 			layoutPageTemplateCollection.getPrimaryKey(),
-			layoutPageTemplateCollection, false);
+			layoutPageTemplateCollection, false, _columnBitmaskEnabled,
+			((LayoutPageTemplateCollectionModelImpl)
+				layoutPageTemplateCollection).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutPageTemplateCollectionModelImpl, false);
 		cacheUniqueFindersCache(layoutPageTemplateCollectionModelImpl);

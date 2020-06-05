@@ -1384,7 +1384,10 @@ public class AnnouncementsDeliveryPersistenceImpl
 		EntityCacheUtil.putResult(
 			AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsDeliveryImpl.class,
-			announcementsDelivery.getPrimaryKey(), announcementsDelivery);
+			announcementsDelivery.getPrimaryKey(), announcementsDelivery,
+			AnnouncementsDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AnnouncementsDeliveryModelImpl)announcementsDelivery).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_T,
@@ -1450,7 +1453,10 @@ public class AnnouncementsDeliveryPersistenceImpl
 		EntityCacheUtil.removeResult(
 			AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsDeliveryImpl.class,
-			announcementsDelivery.getPrimaryKey());
+			announcementsDelivery.getPrimaryKey(), announcementsDelivery,
+			AnnouncementsDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AnnouncementsDeliveryModelImpl)announcementsDelivery).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1472,7 +1478,10 @@ public class AnnouncementsDeliveryPersistenceImpl
 			EntityCacheUtil.removeResult(
 				AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 				AnnouncementsDeliveryImpl.class,
-				announcementsDelivery.getPrimaryKey());
+				announcementsDelivery.getPrimaryKey(), announcementsDelivery,
+				AnnouncementsDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+				((AnnouncementsDeliveryModelImpl)announcementsDelivery).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AnnouncementsDeliveryModelImpl)announcementsDelivery, true);
@@ -1764,8 +1773,10 @@ public class AnnouncementsDeliveryPersistenceImpl
 		EntityCacheUtil.putResult(
 			AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsDeliveryImpl.class,
-			announcementsDelivery.getPrimaryKey(), announcementsDelivery,
-			false);
+			announcementsDelivery.getPrimaryKey(), announcementsDelivery, false,
+			AnnouncementsDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AnnouncementsDeliveryModelImpl)announcementsDelivery).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(announcementsDeliveryModelImpl, false);
 		cacheUniqueFindersCache(announcementsDeliveryModelImpl);

@@ -3887,7 +3887,8 @@ public class SubscriptionPersistenceImpl
 	public void cacheResult(Subscription subscription) {
 		entityCache.putResult(
 			entityCacheEnabled, SubscriptionImpl.class,
-			subscription.getPrimaryKey(), subscription);
+			subscription.getPrimaryKey(), subscription, _columnBitmaskEnabled,
+			((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_U_C_C,
@@ -3947,7 +3948,8 @@ public class SubscriptionPersistenceImpl
 	public void clearCache(Subscription subscription) {
 		entityCache.removeResult(
 			entityCacheEnabled, SubscriptionImpl.class,
-			subscription.getPrimaryKey());
+			subscription.getPrimaryKey(), subscription, _columnBitmaskEnabled,
+			((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3963,7 +3965,9 @@ public class SubscriptionPersistenceImpl
 		for (Subscription subscription : subscriptions) {
 			entityCache.removeResult(
 				entityCacheEnabled, SubscriptionImpl.class,
-				subscription.getPrimaryKey());
+				subscription.getPrimaryKey(), subscription,
+				_columnBitmaskEnabled,
+				((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 			clearUniqueFindersCache((SubscriptionModelImpl)subscription, true);
 		}
@@ -4425,7 +4429,9 @@ public class SubscriptionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SubscriptionImpl.class,
-			subscription.getPrimaryKey(), subscription, false);
+			subscription.getPrimaryKey(), subscription, false,
+			_columnBitmaskEnabled,
+			((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 		clearUniqueFindersCache(subscriptionModelImpl, false);
 		cacheUniqueFindersCache(subscriptionModelImpl);

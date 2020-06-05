@@ -4166,7 +4166,8 @@ public class SAPEntryPersistenceImpl
 	public void cacheResult(SAPEntry sapEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, SAPEntryImpl.class, sapEntry.getPrimaryKey(),
-			sapEntry);
+			sapEntry, _columnBitmaskEnabled,
+			((SAPEntryModelImpl)sapEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_N,
@@ -4222,7 +4223,9 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public void clearCache(SAPEntry sapEntry) {
 		entityCache.removeResult(
-			entityCacheEnabled, SAPEntryImpl.class, sapEntry.getPrimaryKey());
+			entityCacheEnabled, SAPEntryImpl.class, sapEntry.getPrimaryKey(),
+			sapEntry, _columnBitmaskEnabled,
+			((SAPEntryModelImpl)sapEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4238,7 +4241,8 @@ public class SAPEntryPersistenceImpl
 		for (SAPEntry sapEntry : sapEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, SAPEntryImpl.class,
-				sapEntry.getPrimaryKey());
+				sapEntry.getPrimaryKey(), sapEntry, _columnBitmaskEnabled,
+				((SAPEntryModelImpl)sapEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((SAPEntryModelImpl)sapEntry, true);
 		}
@@ -4598,7 +4602,8 @@ public class SAPEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SAPEntryImpl.class, sapEntry.getPrimaryKey(),
-			sapEntry, false);
+			sapEntry, false, _columnBitmaskEnabled,
+			((SAPEntryModelImpl)sapEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(sapEntryModelImpl, false);
 		cacheUniqueFindersCache(sapEntryModelImpl);

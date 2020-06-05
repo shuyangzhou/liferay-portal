@@ -2607,7 +2607,10 @@ public class DLFileEntryMetadataPersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileEntryMetadataImpl.class, dlFileEntryMetadata.getPrimaryKey(),
-			dlFileEntryMetadata);
+			dlFileEntryMetadata,
+			DLFileEntryMetadataModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryMetadataModelImpl)dlFileEntryMetadata).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByD_F,
@@ -2674,7 +2677,11 @@ public class DLFileEntryMetadataPersistenceImpl
 	public void clearCache(DLFileEntryMetadata dlFileEntryMetadata) {
 		EntityCacheUtil.removeResult(
 			DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryMetadataImpl.class, dlFileEntryMetadata.getPrimaryKey());
+			DLFileEntryMetadataImpl.class, dlFileEntryMetadata.getPrimaryKey(),
+			dlFileEntryMetadata,
+			DLFileEntryMetadataModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryMetadataModelImpl)dlFileEntryMetadata).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2692,7 +2699,10 @@ public class DLFileEntryMetadataPersistenceImpl
 			EntityCacheUtil.removeResult(
 				DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
 				DLFileEntryMetadataImpl.class,
-				dlFileEntryMetadata.getPrimaryKey());
+				dlFileEntryMetadata.getPrimaryKey(), dlFileEntryMetadata,
+				DLFileEntryMetadataModelImpl.COLUMN_BITMASK_ENABLED,
+				((DLFileEntryMetadataModelImpl)dlFileEntryMetadata).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DLFileEntryMetadataModelImpl)dlFileEntryMetadata, true);
@@ -3075,7 +3085,10 @@ public class DLFileEntryMetadataPersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileEntryMetadataImpl.class, dlFileEntryMetadata.getPrimaryKey(),
-			dlFileEntryMetadata, false);
+			dlFileEntryMetadata, false,
+			DLFileEntryMetadataModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryMetadataModelImpl)dlFileEntryMetadata).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileEntryMetadataModelImpl, false);
 		cacheUniqueFindersCache(dlFileEntryMetadataModelImpl);

@@ -364,7 +364,10 @@ public class FriendlyURLEntryMappingPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryMappingImpl.class,
-			friendlyURLEntryMapping.getPrimaryKey(), friendlyURLEntryMapping);
+			friendlyURLEntryMapping.getPrimaryKey(), friendlyURLEntryMapping,
+			_columnBitmaskEnabled,
+			((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_C,
@@ -434,7 +437,10 @@ public class FriendlyURLEntryMappingPersistenceImpl
 	public void clearCache(FriendlyURLEntryMapping friendlyURLEntryMapping) {
 		entityCache.removeResult(
 			entityCacheEnabled, FriendlyURLEntryMappingImpl.class,
-			friendlyURLEntryMapping.getPrimaryKey());
+			friendlyURLEntryMapping.getPrimaryKey(), friendlyURLEntryMapping,
+			_columnBitmaskEnabled,
+			((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -455,7 +461,10 @@ public class FriendlyURLEntryMappingPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, FriendlyURLEntryMappingImpl.class,
-				friendlyURLEntryMapping.getPrimaryKey());
+				friendlyURLEntryMapping.getPrimaryKey(),
+				friendlyURLEntryMapping, _columnBitmaskEnabled,
+				((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping,
@@ -712,7 +721,9 @@ public class FriendlyURLEntryMappingPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryMappingImpl.class,
 			friendlyURLEntryMapping.getPrimaryKey(), friendlyURLEntryMapping,
-			false);
+			false, _columnBitmaskEnabled,
+			((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(friendlyURLEntryMappingModelImpl, false);
 		cacheUniqueFindersCache(friendlyURLEntryMappingModelImpl);

@@ -5145,7 +5145,10 @@ public class JournalContentSearchPersistenceImpl
 	public void cacheResult(JournalContentSearch journalContentSearch) {
 		entityCache.putResult(
 			entityCacheEnabled, JournalContentSearchImpl.class,
-			journalContentSearch.getPrimaryKey(), journalContentSearch);
+			journalContentSearch.getPrimaryKey(), journalContentSearch,
+			_columnBitmaskEnabled,
+			((JournalContentSearchModelImpl)journalContentSearch).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByG_P_L_P_A,
@@ -5210,7 +5213,10 @@ public class JournalContentSearchPersistenceImpl
 	public void clearCache(JournalContentSearch journalContentSearch) {
 		entityCache.removeResult(
 			entityCacheEnabled, JournalContentSearchImpl.class,
-			journalContentSearch.getPrimaryKey());
+			journalContentSearch.getPrimaryKey(), journalContentSearch,
+			_columnBitmaskEnabled,
+			((JournalContentSearchModelImpl)journalContentSearch).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5229,7 +5235,10 @@ public class JournalContentSearchPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, JournalContentSearchImpl.class,
-				journalContentSearch.getPrimaryKey());
+				journalContentSearch.getPrimaryKey(), journalContentSearch,
+				_columnBitmaskEnabled,
+				((JournalContentSearchModelImpl)journalContentSearch).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(JournalContentSearchModelImpl)journalContentSearch, true);
@@ -5724,7 +5733,10 @@ public class JournalContentSearchPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, JournalContentSearchImpl.class,
-			journalContentSearch.getPrimaryKey(), journalContentSearch, false);
+			journalContentSearch.getPrimaryKey(), journalContentSearch, false,
+			_columnBitmaskEnabled,
+			((JournalContentSearchModelImpl)journalContentSearch).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(journalContentSearchModelImpl, false);
 		cacheUniqueFindersCache(journalContentSearchModelImpl);

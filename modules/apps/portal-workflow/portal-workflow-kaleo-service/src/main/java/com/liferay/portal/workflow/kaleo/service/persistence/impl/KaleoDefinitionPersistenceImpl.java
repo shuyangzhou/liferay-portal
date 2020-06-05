@@ -2031,7 +2031,9 @@ public class KaleoDefinitionPersistenceImpl
 	public void cacheResult(KaleoDefinition kaleoDefinition) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoDefinitionImpl.class,
-			kaleoDefinition.getPrimaryKey(), kaleoDefinition);
+			kaleoDefinition.getPrimaryKey(), kaleoDefinition,
+			_columnBitmaskEnabled,
+			((KaleoDefinitionModelImpl)kaleoDefinition).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_N,
@@ -2106,7 +2108,9 @@ public class KaleoDefinitionPersistenceImpl
 	public void clearCache(KaleoDefinition kaleoDefinition) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoDefinitionImpl.class,
-			kaleoDefinition.getPrimaryKey());
+			kaleoDefinition.getPrimaryKey(), kaleoDefinition,
+			_columnBitmaskEnabled,
+			((KaleoDefinitionModelImpl)kaleoDefinition).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2123,7 +2127,9 @@ public class KaleoDefinitionPersistenceImpl
 		for (KaleoDefinition kaleoDefinition : kaleoDefinitions) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoDefinitionImpl.class,
-				kaleoDefinition.getPrimaryKey());
+				kaleoDefinition.getPrimaryKey(), kaleoDefinition,
+				_columnBitmaskEnabled,
+				((KaleoDefinitionModelImpl)kaleoDefinition).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoDefinitionModelImpl)kaleoDefinition, true);
@@ -2501,7 +2507,9 @@ public class KaleoDefinitionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoDefinitionImpl.class,
-			kaleoDefinition.getPrimaryKey(), kaleoDefinition, false);
+			kaleoDefinition.getPrimaryKey(), kaleoDefinition, false,
+			_columnBitmaskEnabled,
+			((KaleoDefinitionModelImpl)kaleoDefinition).getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoDefinitionModelImpl, false);
 		cacheUniqueFindersCache(kaleoDefinitionModelImpl);

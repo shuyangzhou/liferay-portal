@@ -5413,7 +5413,8 @@ public class SharingEntryPersistenceImpl
 	public void cacheResult(SharingEntry sharingEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, SharingEntryImpl.class,
-			sharingEntry.getPrimaryKey(), sharingEntry);
+			sharingEntry.getPrimaryKey(), sharingEntry, _columnBitmaskEnabled,
+			((SharingEntryModelImpl)sharingEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -5478,7 +5479,8 @@ public class SharingEntryPersistenceImpl
 	public void clearCache(SharingEntry sharingEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, SharingEntryImpl.class,
-			sharingEntry.getPrimaryKey());
+			sharingEntry.getPrimaryKey(), sharingEntry, _columnBitmaskEnabled,
+			((SharingEntryModelImpl)sharingEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5494,7 +5496,9 @@ public class SharingEntryPersistenceImpl
 		for (SharingEntry sharingEntry : sharingEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, SharingEntryImpl.class,
-				sharingEntry.getPrimaryKey());
+				sharingEntry.getPrimaryKey(), sharingEntry,
+				_columnBitmaskEnabled,
+				((SharingEntryModelImpl)sharingEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((SharingEntryModelImpl)sharingEntry, true);
 		}
@@ -6010,7 +6014,9 @@ public class SharingEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SharingEntryImpl.class,
-			sharingEntry.getPrimaryKey(), sharingEntry, false);
+			sharingEntry.getPrimaryKey(), sharingEntry, false,
+			_columnBitmaskEnabled,
+			((SharingEntryModelImpl)sharingEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(sharingEntryModelImpl, false);
 		cacheUniqueFindersCache(sharingEntryModelImpl);

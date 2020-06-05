@@ -8405,7 +8405,8 @@ public class UserPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
-			user.getPrimaryKey(), user);
+			user.getPrimaryKey(), user, UserModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserModelImpl)user).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByContactId, new Object[] {user.getContactId()},
@@ -8504,7 +8505,8 @@ public class UserPersistenceImpl
 	public void clearCache(User user) {
 		EntityCacheUtil.removeResult(
 			UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
-			user.getPrimaryKey());
+			user.getPrimaryKey(), user, UserModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserModelImpl)user).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -8520,7 +8522,9 @@ public class UserPersistenceImpl
 		for (User user : users) {
 			EntityCacheUtil.removeResult(
 				UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
-				user.getPrimaryKey());
+				user.getPrimaryKey(), user,
+				UserModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserModelImpl)user).getColumnBitmask());
 
 			clearUniqueFindersCache((UserModelImpl)user, true);
 		}
@@ -9320,7 +9324,9 @@ public class UserPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
-			user.getPrimaryKey(), user, false);
+			user.getPrimaryKey(), user, false,
+			UserModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserModelImpl)user).getColumnBitmask());
 
 		clearUniqueFindersCache(userModelImpl, false);
 		cacheUniqueFindersCache(userModelImpl);

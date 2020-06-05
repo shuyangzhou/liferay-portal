@@ -1340,7 +1340,8 @@ public class KaleoTimerPersistenceImpl
 	public void cacheResult(KaleoTimer kaleoTimer) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTimerImpl.class,
-			kaleoTimer.getPrimaryKey(), kaleoTimer);
+			kaleoTimer.getPrimaryKey(), kaleoTimer, _columnBitmaskEnabled,
+			((KaleoTimerModelImpl)kaleoTimer).getColumnBitmask());
 
 		kaleoTimer.resetOriginalValues();
 	}
@@ -1392,7 +1393,8 @@ public class KaleoTimerPersistenceImpl
 	public void clearCache(KaleoTimer kaleoTimer) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTimerImpl.class,
-			kaleoTimer.getPrimaryKey());
+			kaleoTimer.getPrimaryKey(), kaleoTimer, _columnBitmaskEnabled,
+			((KaleoTimerModelImpl)kaleoTimer).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1406,7 +1408,8 @@ public class KaleoTimerPersistenceImpl
 		for (KaleoTimer kaleoTimer : kaleoTimers) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTimerImpl.class,
-				kaleoTimer.getPrimaryKey());
+				kaleoTimer.getPrimaryKey(), kaleoTimer, _columnBitmaskEnabled,
+				((KaleoTimerModelImpl)kaleoTimer).getColumnBitmask());
 		}
 	}
 
@@ -1673,7 +1676,9 @@ public class KaleoTimerPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTimerImpl.class,
-			kaleoTimer.getPrimaryKey(), kaleoTimer, false);
+			kaleoTimer.getPrimaryKey(), kaleoTimer, false,
+			_columnBitmaskEnabled,
+			((KaleoTimerModelImpl)kaleoTimer).getColumnBitmask());
 
 		kaleoTimer.resetOriginalValues();
 

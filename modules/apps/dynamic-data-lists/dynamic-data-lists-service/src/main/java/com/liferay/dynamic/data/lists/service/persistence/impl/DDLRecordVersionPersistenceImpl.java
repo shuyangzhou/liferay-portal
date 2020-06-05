@@ -2678,7 +2678,9 @@ public class DDLRecordVersionPersistenceImpl
 	public void cacheResult(DDLRecordVersion ddlRecordVersion) {
 		entityCache.putResult(
 			entityCacheEnabled, DDLRecordVersionImpl.class,
-			ddlRecordVersion.getPrimaryKey(), ddlRecordVersion);
+			ddlRecordVersion.getPrimaryKey(), ddlRecordVersion,
+			_columnBitmaskEnabled,
+			((DDLRecordVersionModelImpl)ddlRecordVersion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByR_V,
@@ -2737,7 +2739,9 @@ public class DDLRecordVersionPersistenceImpl
 	public void clearCache(DDLRecordVersion ddlRecordVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDLRecordVersionImpl.class,
-			ddlRecordVersion.getPrimaryKey());
+			ddlRecordVersion.getPrimaryKey(), ddlRecordVersion,
+			_columnBitmaskEnabled,
+			((DDLRecordVersionModelImpl)ddlRecordVersion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2754,7 +2758,10 @@ public class DDLRecordVersionPersistenceImpl
 		for (DDLRecordVersion ddlRecordVersion : ddlRecordVersions) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDLRecordVersionImpl.class,
-				ddlRecordVersion.getPrimaryKey());
+				ddlRecordVersion.getPrimaryKey(), ddlRecordVersion,
+				_columnBitmaskEnabled,
+				((DDLRecordVersionModelImpl)ddlRecordVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDLRecordVersionModelImpl)ddlRecordVersion, true);
@@ -3107,7 +3114,9 @@ public class DDLRecordVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDLRecordVersionImpl.class,
-			ddlRecordVersion.getPrimaryKey(), ddlRecordVersion, false);
+			ddlRecordVersion.getPrimaryKey(), ddlRecordVersion, false,
+			_columnBitmaskEnabled,
+			((DDLRecordVersionModelImpl)ddlRecordVersion).getColumnBitmask());
 
 		clearUniqueFindersCache(ddlRecordVersionModelImpl, false);
 		cacheUniqueFindersCache(ddlRecordVersionModelImpl);

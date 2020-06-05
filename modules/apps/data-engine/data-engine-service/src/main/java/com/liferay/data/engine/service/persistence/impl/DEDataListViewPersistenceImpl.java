@@ -2602,7 +2602,9 @@ public class DEDataListViewPersistenceImpl
 	public void cacheResult(DEDataListView deDataListView) {
 		entityCache.putResult(
 			entityCacheEnabled, DEDataListViewImpl.class,
-			deDataListView.getPrimaryKey(), deDataListView);
+			deDataListView.getPrimaryKey(), deDataListView,
+			_columnBitmaskEnabled,
+			((DEDataListViewModelImpl)deDataListView).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2661,7 +2663,9 @@ public class DEDataListViewPersistenceImpl
 	public void clearCache(DEDataListView deDataListView) {
 		entityCache.removeResult(
 			entityCacheEnabled, DEDataListViewImpl.class,
-			deDataListView.getPrimaryKey());
+			deDataListView.getPrimaryKey(), deDataListView,
+			_columnBitmaskEnabled,
+			((DEDataListViewModelImpl)deDataListView).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2677,7 +2681,9 @@ public class DEDataListViewPersistenceImpl
 		for (DEDataListView deDataListView : deDataListViews) {
 			entityCache.removeResult(
 				entityCacheEnabled, DEDataListViewImpl.class,
-				deDataListView.getPrimaryKey());
+				deDataListView.getPrimaryKey(), deDataListView,
+				_columnBitmaskEnabled,
+				((DEDataListViewModelImpl)deDataListView).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DEDataListViewModelImpl)deDataListView, true);
@@ -3054,7 +3060,9 @@ public class DEDataListViewPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DEDataListViewImpl.class,
-			deDataListView.getPrimaryKey(), deDataListView, false);
+			deDataListView.getPrimaryKey(), deDataListView, false,
+			_columnBitmaskEnabled,
+			((DEDataListViewModelImpl)deDataListView).getColumnBitmask());
 
 		clearUniqueFindersCache(deDataListViewModelImpl, false);
 		cacheUniqueFindersCache(deDataListViewModelImpl);

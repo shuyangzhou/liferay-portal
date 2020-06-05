@@ -1906,7 +1906,10 @@ public class DepotEntryGroupRelPersistenceImpl
 	public void cacheResult(DepotEntryGroupRel depotEntryGroupRel) {
 		entityCache.putResult(
 			entityCacheEnabled, DepotEntryGroupRelImpl.class,
-			depotEntryGroupRel.getPrimaryKey(), depotEntryGroupRel);
+			depotEntryGroupRel.getPrimaryKey(), depotEntryGroupRel,
+			_columnBitmaskEnabled,
+			((DepotEntryGroupRelModelImpl)depotEntryGroupRel).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByD_TGI,
@@ -1966,7 +1969,10 @@ public class DepotEntryGroupRelPersistenceImpl
 	public void clearCache(DepotEntryGroupRel depotEntryGroupRel) {
 		entityCache.removeResult(
 			entityCacheEnabled, DepotEntryGroupRelImpl.class,
-			depotEntryGroupRel.getPrimaryKey());
+			depotEntryGroupRel.getPrimaryKey(), depotEntryGroupRel,
+			_columnBitmaskEnabled,
+			((DepotEntryGroupRelModelImpl)depotEntryGroupRel).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1983,7 +1989,10 @@ public class DepotEntryGroupRelPersistenceImpl
 		for (DepotEntryGroupRel depotEntryGroupRel : depotEntryGroupRels) {
 			entityCache.removeResult(
 				entityCacheEnabled, DepotEntryGroupRelImpl.class,
-				depotEntryGroupRel.getPrimaryKey());
+				depotEntryGroupRel.getPrimaryKey(), depotEntryGroupRel,
+				_columnBitmaskEnabled,
+				((DepotEntryGroupRelModelImpl)depotEntryGroupRel).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DepotEntryGroupRelModelImpl)depotEntryGroupRel, true);
@@ -2300,7 +2309,10 @@ public class DepotEntryGroupRelPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DepotEntryGroupRelImpl.class,
-			depotEntryGroupRel.getPrimaryKey(), depotEntryGroupRel, false);
+			depotEntryGroupRel.getPrimaryKey(), depotEntryGroupRel, false,
+			_columnBitmaskEnabled,
+			((DepotEntryGroupRelModelImpl)depotEntryGroupRel).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(depotEntryGroupRelModelImpl, false);
 		cacheUniqueFindersCache(depotEntryGroupRelModelImpl);

@@ -857,7 +857,9 @@ public class PortletPersistenceImpl
 	public void cacheResult(Portlet portlet) {
 		EntityCacheUtil.putResult(
 			PortletModelImpl.ENTITY_CACHE_ENABLED, PortletImpl.class,
-			portlet.getPrimaryKey(), portlet);
+			portlet.getPrimaryKey(), portlet,
+			PortletModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletModelImpl)portlet).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_P,
@@ -914,7 +916,9 @@ public class PortletPersistenceImpl
 	public void clearCache(Portlet portlet) {
 		EntityCacheUtil.removeResult(
 			PortletModelImpl.ENTITY_CACHE_ENABLED, PortletImpl.class,
-			portlet.getPrimaryKey());
+			portlet.getPrimaryKey(), portlet,
+			PortletModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletModelImpl)portlet).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -930,7 +934,9 @@ public class PortletPersistenceImpl
 		for (Portlet portlet : portlets) {
 			EntityCacheUtil.removeResult(
 				PortletModelImpl.ENTITY_CACHE_ENABLED, PortletImpl.class,
-				portlet.getPrimaryKey());
+				portlet.getPrimaryKey(), portlet,
+				PortletModelImpl.COLUMN_BITMASK_ENABLED,
+				((PortletModelImpl)portlet).getColumnBitmask());
 
 			clearUniqueFindersCache((PortletModelImpl)portlet, true);
 		}
@@ -1170,7 +1176,9 @@ public class PortletPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			PortletModelImpl.ENTITY_CACHE_ENABLED, PortletImpl.class,
-			portlet.getPrimaryKey(), portlet, false);
+			portlet.getPrimaryKey(), portlet, false,
+			PortletModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletModelImpl)portlet).getColumnBitmask());
 
 		clearUniqueFindersCache(portletModelImpl, false);
 		cacheUniqueFindersCache(portletModelImpl);

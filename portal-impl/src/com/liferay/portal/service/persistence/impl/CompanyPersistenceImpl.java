@@ -1285,7 +1285,9 @@ public class CompanyPersistenceImpl
 	public void cacheResult(Company company) {
 		EntityCacheUtil.putResult(
 			CompanyModelImpl.ENTITY_CACHE_ENABLED, CompanyImpl.class,
-			company.getPrimaryKey(), company);
+			company.getPrimaryKey(), company,
+			CompanyModelImpl.COLUMN_BITMASK_ENABLED,
+			((CompanyModelImpl)company).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByWebId, new Object[] {company.getWebId()},
@@ -1348,7 +1350,9 @@ public class CompanyPersistenceImpl
 	public void clearCache(Company company) {
 		EntityCacheUtil.removeResult(
 			CompanyModelImpl.ENTITY_CACHE_ENABLED, CompanyImpl.class,
-			company.getPrimaryKey());
+			company.getPrimaryKey(), company,
+			CompanyModelImpl.COLUMN_BITMASK_ENABLED,
+			((CompanyModelImpl)company).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1364,7 +1368,9 @@ public class CompanyPersistenceImpl
 		for (Company company : companies) {
 			EntityCacheUtil.removeResult(
 				CompanyModelImpl.ENTITY_CACHE_ENABLED, CompanyImpl.class,
-				company.getPrimaryKey());
+				company.getPrimaryKey(), company,
+				CompanyModelImpl.COLUMN_BITMASK_ENABLED,
+				((CompanyModelImpl)company).getColumnBitmask());
 
 			clearUniqueFindersCache((CompanyModelImpl)company, true);
 		}
@@ -1641,7 +1647,9 @@ public class CompanyPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			CompanyModelImpl.ENTITY_CACHE_ENABLED, CompanyImpl.class,
-			company.getPrimaryKey(), company, false);
+			company.getPrimaryKey(), company, false,
+			CompanyModelImpl.COLUMN_BITMASK_ENABLED,
+			((CompanyModelImpl)company).getColumnBitmask());
 
 		clearUniqueFindersCache(companyModelImpl, false);
 		cacheUniqueFindersCache(companyModelImpl);

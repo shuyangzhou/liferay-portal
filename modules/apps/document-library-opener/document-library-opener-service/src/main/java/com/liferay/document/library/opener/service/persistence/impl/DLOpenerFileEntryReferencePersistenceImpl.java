@@ -592,7 +592,9 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DLOpenerFileEntryReferenceImpl.class,
 			dlOpenerFileEntryReference.getPrimaryKey(),
-			dlOpenerFileEntryReference);
+			dlOpenerFileEntryReference, _columnBitmaskEnabled,
+			((DLOpenerFileEntryReferenceModelImpl)dlOpenerFileEntryReference).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByFileEntryId,
@@ -663,7 +665,10 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, DLOpenerFileEntryReferenceImpl.class,
-			dlOpenerFileEntryReference.getPrimaryKey());
+			dlOpenerFileEntryReference.getPrimaryKey(),
+			dlOpenerFileEntryReference, _columnBitmaskEnabled,
+			((DLOpenerFileEntryReferenceModelImpl)dlOpenerFileEntryReference).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -685,7 +690,10 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DLOpenerFileEntryReferenceImpl.class,
-				dlOpenerFileEntryReference.getPrimaryKey());
+				dlOpenerFileEntryReference.getPrimaryKey(),
+				dlOpenerFileEntryReference, _columnBitmaskEnabled,
+				((DLOpenerFileEntryReferenceModelImpl)
+					dlOpenerFileEntryReference).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DLOpenerFileEntryReferenceModelImpl)dlOpenerFileEntryReference,
@@ -982,7 +990,9 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DLOpenerFileEntryReferenceImpl.class,
 			dlOpenerFileEntryReference.getPrimaryKey(),
-			dlOpenerFileEntryReference, false);
+			dlOpenerFileEntryReference, false, _columnBitmaskEnabled,
+			((DLOpenerFileEntryReferenceModelImpl)dlOpenerFileEntryReference).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(dlOpenerFileEntryReferenceModelImpl, false);
 		cacheUniqueFindersCache(dlOpenerFileEntryReferenceModelImpl);

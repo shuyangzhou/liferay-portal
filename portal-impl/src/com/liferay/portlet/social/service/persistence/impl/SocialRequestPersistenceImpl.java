@@ -6505,7 +6505,8 @@ public class SocialRequestPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialRequestModelImpl.ENTITY_CACHE_ENABLED,
 			SocialRequestImpl.class, socialRequest.getPrimaryKey(),
-			socialRequest);
+			socialRequest, SocialRequestModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialRequestModelImpl)socialRequest).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -6578,7 +6579,9 @@ public class SocialRequestPersistenceImpl
 	public void clearCache(SocialRequest socialRequest) {
 		EntityCacheUtil.removeResult(
 			SocialRequestModelImpl.ENTITY_CACHE_ENABLED,
-			SocialRequestImpl.class, socialRequest.getPrimaryKey());
+			SocialRequestImpl.class, socialRequest.getPrimaryKey(),
+			socialRequest, SocialRequestModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialRequestModelImpl)socialRequest).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6594,7 +6597,9 @@ public class SocialRequestPersistenceImpl
 		for (SocialRequest socialRequest : socialRequests) {
 			EntityCacheUtil.removeResult(
 				SocialRequestModelImpl.ENTITY_CACHE_ENABLED,
-				SocialRequestImpl.class, socialRequest.getPrimaryKey());
+				SocialRequestImpl.class, socialRequest.getPrimaryKey(),
+				socialRequest, SocialRequestModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialRequestModelImpl)socialRequest).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialRequestModelImpl)socialRequest, true);
@@ -7203,7 +7208,8 @@ public class SocialRequestPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialRequestModelImpl.ENTITY_CACHE_ENABLED,
 			SocialRequestImpl.class, socialRequest.getPrimaryKey(),
-			socialRequest, false);
+			socialRequest, false, SocialRequestModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialRequestModelImpl)socialRequest).getColumnBitmask());
 
 		clearUniqueFindersCache(socialRequestModelImpl, false);
 		cacheUniqueFindersCache(socialRequestModelImpl);

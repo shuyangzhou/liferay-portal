@@ -12587,7 +12587,9 @@ public class BookmarksEntryPersistenceImpl
 	public void cacheResult(BookmarksEntry bookmarksEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, BookmarksEntryImpl.class,
-			bookmarksEntry.getPrimaryKey(), bookmarksEntry);
+			bookmarksEntry.getPrimaryKey(), bookmarksEntry,
+			_columnBitmaskEnabled,
+			((BookmarksEntryModelImpl)bookmarksEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -12646,7 +12648,9 @@ public class BookmarksEntryPersistenceImpl
 	public void clearCache(BookmarksEntry bookmarksEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, BookmarksEntryImpl.class,
-			bookmarksEntry.getPrimaryKey());
+			bookmarksEntry.getPrimaryKey(), bookmarksEntry,
+			_columnBitmaskEnabled,
+			((BookmarksEntryModelImpl)bookmarksEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -12662,7 +12666,9 @@ public class BookmarksEntryPersistenceImpl
 		for (BookmarksEntry bookmarksEntry : bookmarksEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, BookmarksEntryImpl.class,
-				bookmarksEntry.getPrimaryKey());
+				bookmarksEntry.getPrimaryKey(), bookmarksEntry,
+				_columnBitmaskEnabled,
+				((BookmarksEntryModelImpl)bookmarksEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(BookmarksEntryModelImpl)bookmarksEntry, true);
@@ -13170,7 +13176,9 @@ public class BookmarksEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, BookmarksEntryImpl.class,
-			bookmarksEntry.getPrimaryKey(), bookmarksEntry, false);
+			bookmarksEntry.getPrimaryKey(), bookmarksEntry, false,
+			_columnBitmaskEnabled,
+			((BookmarksEntryModelImpl)bookmarksEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(bookmarksEntryModelImpl, false);
 		cacheUniqueFindersCache(bookmarksEntryModelImpl);

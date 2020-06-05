@@ -1467,7 +1467,9 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AssetEntryAssetCategoryRelImpl.class,
 			assetEntryAssetCategoryRel.getPrimaryKey(),
-			assetEntryAssetCategoryRel);
+			assetEntryAssetCategoryRel, _columnBitmaskEnabled,
+			((AssetEntryAssetCategoryRelModelImpl)assetEntryAssetCategoryRel).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_A,
@@ -1539,7 +1541,10 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, AssetEntryAssetCategoryRelImpl.class,
-			assetEntryAssetCategoryRel.getPrimaryKey());
+			assetEntryAssetCategoryRel.getPrimaryKey(),
+			assetEntryAssetCategoryRel, _columnBitmaskEnabled,
+			((AssetEntryAssetCategoryRelModelImpl)assetEntryAssetCategoryRel).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1561,7 +1566,10 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AssetEntryAssetCategoryRelImpl.class,
-				assetEntryAssetCategoryRel.getPrimaryKey());
+				assetEntryAssetCategoryRel.getPrimaryKey(),
+				assetEntryAssetCategoryRel, _columnBitmaskEnabled,
+				((AssetEntryAssetCategoryRelModelImpl)
+					assetEntryAssetCategoryRel).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetEntryAssetCategoryRelModelImpl)assetEntryAssetCategoryRel,
@@ -1887,7 +1895,9 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AssetEntryAssetCategoryRelImpl.class,
 			assetEntryAssetCategoryRel.getPrimaryKey(),
-			assetEntryAssetCategoryRel, false);
+			assetEntryAssetCategoryRel, false, _columnBitmaskEnabled,
+			((AssetEntryAssetCategoryRelModelImpl)assetEntryAssetCategoryRel).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetEntryAssetCategoryRelModelImpl, false);
 		cacheUniqueFindersCache(assetEntryAssetCategoryRelModelImpl);

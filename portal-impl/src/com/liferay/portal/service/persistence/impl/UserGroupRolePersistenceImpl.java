@@ -3046,7 +3046,8 @@ public class UserGroupRolePersistenceImpl
 		EntityCacheUtil.putResult(
 			UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
 			UserGroupRoleImpl.class, userGroupRole.getPrimaryKey(),
-			userGroupRole);
+			userGroupRole, UserGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserGroupRoleModelImpl)userGroupRole).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_G_R,
@@ -3113,7 +3114,9 @@ public class UserGroupRolePersistenceImpl
 	public void clearCache(UserGroupRole userGroupRole) {
 		EntityCacheUtil.removeResult(
 			UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-			UserGroupRoleImpl.class, userGroupRole.getPrimaryKey());
+			UserGroupRoleImpl.class, userGroupRole.getPrimaryKey(),
+			userGroupRole, UserGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserGroupRoleModelImpl)userGroupRole).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3129,7 +3132,9 @@ public class UserGroupRolePersistenceImpl
 		for (UserGroupRole userGroupRole : userGroupRoles) {
 			EntityCacheUtil.removeResult(
 				UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-				UserGroupRoleImpl.class, userGroupRole.getPrimaryKey());
+				UserGroupRoleImpl.class, userGroupRole.getPrimaryKey(),
+				userGroupRole, UserGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserGroupRoleModelImpl)userGroupRole).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(UserGroupRoleModelImpl)userGroupRole, true);
@@ -3516,7 +3521,8 @@ public class UserGroupRolePersistenceImpl
 		EntityCacheUtil.putResult(
 			UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
 			UserGroupRoleImpl.class, userGroupRole.getPrimaryKey(),
-			userGroupRole, false);
+			userGroupRole, false, UserGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserGroupRoleModelImpl)userGroupRole).getColumnBitmask());
 
 		clearUniqueFindersCache(userGroupRoleModelImpl, false);
 		cacheUniqueFindersCache(userGroupRoleModelImpl);

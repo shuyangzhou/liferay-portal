@@ -5073,7 +5073,8 @@ public class AssetVocabularyPersistenceImpl
 		EntityCacheUtil.putResult(
 			AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
 			AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
-			assetVocabulary);
+			assetVocabulary, AssetVocabularyModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetVocabularyModelImpl)assetVocabulary).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -5154,7 +5155,9 @@ public class AssetVocabularyPersistenceImpl
 	public void clearCache(AssetVocabulary assetVocabulary) {
 		EntityCacheUtil.removeResult(
 			AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
-			AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey());
+			AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
+			assetVocabulary, AssetVocabularyModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetVocabularyModelImpl)assetVocabulary).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5171,7 +5174,10 @@ public class AssetVocabularyPersistenceImpl
 		for (AssetVocabulary assetVocabulary : assetVocabularies) {
 			EntityCacheUtil.removeResult(
 				AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
-				AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey());
+				AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
+				assetVocabulary,
+				AssetVocabularyModelImpl.COLUMN_BITMASK_ENABLED,
+				((AssetVocabularyModelImpl)assetVocabulary).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetVocabularyModelImpl)assetVocabulary, true);
@@ -5626,7 +5632,9 @@ public class AssetVocabularyPersistenceImpl
 		EntityCacheUtil.putResult(
 			AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
 			AssetVocabularyImpl.class, assetVocabulary.getPrimaryKey(),
-			assetVocabulary, false);
+			assetVocabulary, false,
+			AssetVocabularyModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetVocabularyModelImpl)assetVocabulary).getColumnBitmask());
 
 		clearUniqueFindersCache(assetVocabularyModelImpl, false);
 		cacheUniqueFindersCache(assetVocabularyModelImpl);

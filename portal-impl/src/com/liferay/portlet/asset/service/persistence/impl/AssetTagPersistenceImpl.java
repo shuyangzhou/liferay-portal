@@ -4377,7 +4377,9 @@ public class AssetTagPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AssetTagModelImpl.ENTITY_CACHE_ENABLED, AssetTagImpl.class,
-			assetTag.getPrimaryKey(), assetTag);
+			assetTag.getPrimaryKey(), assetTag,
+			AssetTagModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetTagModelImpl)assetTag).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -4443,7 +4445,9 @@ public class AssetTagPersistenceImpl
 	public void clearCache(AssetTag assetTag) {
 		EntityCacheUtil.removeResult(
 			AssetTagModelImpl.ENTITY_CACHE_ENABLED, AssetTagImpl.class,
-			assetTag.getPrimaryKey());
+			assetTag.getPrimaryKey(), assetTag,
+			AssetTagModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetTagModelImpl)assetTag).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4459,7 +4463,9 @@ public class AssetTagPersistenceImpl
 		for (AssetTag assetTag : assetTags) {
 			EntityCacheUtil.removeResult(
 				AssetTagModelImpl.ENTITY_CACHE_ENABLED, AssetTagImpl.class,
-				assetTag.getPrimaryKey());
+				assetTag.getPrimaryKey(), assetTag,
+				AssetTagModelImpl.COLUMN_BITMASK_ENABLED,
+				((AssetTagModelImpl)assetTag).getColumnBitmask());
 
 			clearUniqueFindersCache((AssetTagModelImpl)assetTag, true);
 		}
@@ -4865,7 +4871,9 @@ public class AssetTagPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AssetTagModelImpl.ENTITY_CACHE_ENABLED, AssetTagImpl.class,
-			assetTag.getPrimaryKey(), assetTag, false);
+			assetTag.getPrimaryKey(), assetTag, false,
+			AssetTagModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetTagModelImpl)assetTag).getColumnBitmask());
 
 		clearUniqueFindersCache(assetTagModelImpl, false);
 		cacheUniqueFindersCache(assetTagModelImpl);

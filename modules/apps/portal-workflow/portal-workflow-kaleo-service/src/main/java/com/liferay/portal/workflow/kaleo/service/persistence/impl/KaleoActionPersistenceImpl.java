@@ -3765,7 +3765,8 @@ public class KaleoActionPersistenceImpl
 	public void cacheResult(KaleoAction kaleoAction) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoActionImpl.class,
-			kaleoAction.getPrimaryKey(), kaleoAction);
+			kaleoAction.getPrimaryKey(), kaleoAction, _columnBitmaskEnabled,
+			((KaleoActionModelImpl)kaleoAction).getColumnBitmask());
 
 		kaleoAction.resetOriginalValues();
 	}
@@ -3817,7 +3818,8 @@ public class KaleoActionPersistenceImpl
 	public void clearCache(KaleoAction kaleoAction) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoActionImpl.class,
-			kaleoAction.getPrimaryKey());
+			kaleoAction.getPrimaryKey(), kaleoAction, _columnBitmaskEnabled,
+			((KaleoActionModelImpl)kaleoAction).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3831,7 +3833,8 @@ public class KaleoActionPersistenceImpl
 		for (KaleoAction kaleoAction : kaleoActions) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoActionImpl.class,
-				kaleoAction.getPrimaryKey());
+				kaleoAction.getPrimaryKey(), kaleoAction, _columnBitmaskEnabled,
+				((KaleoActionModelImpl)kaleoAction).getColumnBitmask());
 		}
 	}
 
@@ -4230,7 +4233,9 @@ public class KaleoActionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoActionImpl.class,
-			kaleoAction.getPrimaryKey(), kaleoAction, false);
+			kaleoAction.getPrimaryKey(), kaleoAction, false,
+			_columnBitmaskEnabled,
+			((KaleoActionModelImpl)kaleoAction).getColumnBitmask());
 
 		kaleoAction.resetOriginalValues();
 

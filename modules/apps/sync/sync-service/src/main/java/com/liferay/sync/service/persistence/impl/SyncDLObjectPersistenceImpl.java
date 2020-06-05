@@ -6318,7 +6318,8 @@ public class SyncDLObjectPersistenceImpl
 	public void cacheResult(SyncDLObject syncDLObject) {
 		entityCache.putResult(
 			entityCacheEnabled, SyncDLObjectImpl.class,
-			syncDLObject.getPrimaryKey(), syncDLObject);
+			syncDLObject.getPrimaryKey(), syncDLObject, _columnBitmaskEnabled,
+			((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByT_T,
@@ -6375,7 +6376,8 @@ public class SyncDLObjectPersistenceImpl
 	public void clearCache(SyncDLObject syncDLObject) {
 		entityCache.removeResult(
 			entityCacheEnabled, SyncDLObjectImpl.class,
-			syncDLObject.getPrimaryKey());
+			syncDLObject.getPrimaryKey(), syncDLObject, _columnBitmaskEnabled,
+			((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6391,7 +6393,9 @@ public class SyncDLObjectPersistenceImpl
 		for (SyncDLObject syncDLObject : syncDLObjects) {
 			entityCache.removeResult(
 				entityCacheEnabled, SyncDLObjectImpl.class,
-				syncDLObject.getPrimaryKey());
+				syncDLObject.getPrimaryKey(), syncDLObject,
+				_columnBitmaskEnabled,
+				((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
 
 			clearUniqueFindersCache((SyncDLObjectModelImpl)syncDLObject, true);
 		}
@@ -6741,7 +6745,9 @@ public class SyncDLObjectPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SyncDLObjectImpl.class,
-			syncDLObject.getPrimaryKey(), syncDLObject, false);
+			syncDLObject.getPrimaryKey(), syncDLObject, false,
+			_columnBitmaskEnabled,
+			((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
 
 		clearUniqueFindersCache(syncDLObjectModelImpl, false);
 		cacheUniqueFindersCache(syncDLObjectModelImpl);

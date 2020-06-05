@@ -2173,7 +2173,9 @@ public class KaleoTransitionPersistenceImpl
 	public void cacheResult(KaleoTransition kaleoTransition) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTransitionImpl.class,
-			kaleoTransition.getPrimaryKey(), kaleoTransition);
+			kaleoTransition.getPrimaryKey(), kaleoTransition,
+			_columnBitmaskEnabled,
+			((KaleoTransitionModelImpl)kaleoTransition).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByKNI_N,
@@ -2240,7 +2242,9 @@ public class KaleoTransitionPersistenceImpl
 	public void clearCache(KaleoTransition kaleoTransition) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTransitionImpl.class,
-			kaleoTransition.getPrimaryKey());
+			kaleoTransition.getPrimaryKey(), kaleoTransition,
+			_columnBitmaskEnabled,
+			((KaleoTransitionModelImpl)kaleoTransition).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2257,7 +2261,9 @@ public class KaleoTransitionPersistenceImpl
 		for (KaleoTransition kaleoTransition : kaleoTransitions) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTransitionImpl.class,
-				kaleoTransition.getPrimaryKey());
+				kaleoTransition.getPrimaryKey(), kaleoTransition,
+				_columnBitmaskEnabled,
+				((KaleoTransitionModelImpl)kaleoTransition).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoTransitionModelImpl)kaleoTransition, true);
@@ -2626,7 +2632,9 @@ public class KaleoTransitionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTransitionImpl.class,
-			kaleoTransition.getPrimaryKey(), kaleoTransition, false);
+			kaleoTransition.getPrimaryKey(), kaleoTransition, false,
+			_columnBitmaskEnabled,
+			((KaleoTransitionModelImpl)kaleoTransition).getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoTransitionModelImpl, false);
 		cacheUniqueFindersCache(kaleoTransitionModelImpl);

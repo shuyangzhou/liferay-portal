@@ -4407,7 +4407,8 @@ public class AMImageEntryPersistenceImpl
 	public void cacheResult(AMImageEntry amImageEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, AMImageEntryImpl.class,
-			amImageEntry.getPrimaryKey(), amImageEntry);
+			amImageEntry.getPrimaryKey(), amImageEntry, _columnBitmaskEnabled,
+			((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4472,7 +4473,8 @@ public class AMImageEntryPersistenceImpl
 	public void clearCache(AMImageEntry amImageEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, AMImageEntryImpl.class,
-			amImageEntry.getPrimaryKey());
+			amImageEntry.getPrimaryKey(), amImageEntry, _columnBitmaskEnabled,
+			((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4488,7 +4490,9 @@ public class AMImageEntryPersistenceImpl
 		for (AMImageEntry amImageEntry : amImageEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, AMImageEntryImpl.class,
-				amImageEntry.getPrimaryKey());
+				amImageEntry.getPrimaryKey(), amImageEntry,
+				_columnBitmaskEnabled,
+				((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((AMImageEntryModelImpl)amImageEntry, true);
 		}
@@ -4942,7 +4946,9 @@ public class AMImageEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AMImageEntryImpl.class,
-			amImageEntry.getPrimaryKey(), amImageEntry, false);
+			amImageEntry.getPrimaryKey(), amImageEntry, false,
+			_columnBitmaskEnabled,
+			((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(amImageEntryModelImpl, false);
 		cacheUniqueFindersCache(amImageEntryModelImpl);

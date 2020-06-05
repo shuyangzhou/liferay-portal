@@ -1107,7 +1107,8 @@ public class CTProcessPersistenceImpl
 	public void cacheResult(CTProcess ctProcess) {
 		entityCache.putResult(
 			entityCacheEnabled, CTProcessImpl.class, ctProcess.getPrimaryKey(),
-			ctProcess);
+			ctProcess, _columnBitmaskEnabled,
+			((CTProcessModelImpl)ctProcess).getColumnBitmask());
 
 		ctProcess.resetOriginalValues();
 	}
@@ -1158,7 +1159,9 @@ public class CTProcessPersistenceImpl
 	@Override
 	public void clearCache(CTProcess ctProcess) {
 		entityCache.removeResult(
-			entityCacheEnabled, CTProcessImpl.class, ctProcess.getPrimaryKey());
+			entityCacheEnabled, CTProcessImpl.class, ctProcess.getPrimaryKey(),
+			ctProcess, _columnBitmaskEnabled,
+			((CTProcessModelImpl)ctProcess).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1172,7 +1175,8 @@ public class CTProcessPersistenceImpl
 		for (CTProcess ctProcess : ctProcesses) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTProcessImpl.class,
-				ctProcess.getPrimaryKey());
+				ctProcess.getPrimaryKey(), ctProcess, _columnBitmaskEnabled,
+				((CTProcessModelImpl)ctProcess).getColumnBitmask());
 		}
 	}
 
@@ -1396,7 +1400,8 @@ public class CTProcessPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTProcessImpl.class, ctProcess.getPrimaryKey(),
-			ctProcess, false);
+			ctProcess, false, _columnBitmaskEnabled,
+			((CTProcessModelImpl)ctProcess).getColumnBitmask());
 
 		ctProcess.resetOriginalValues();
 

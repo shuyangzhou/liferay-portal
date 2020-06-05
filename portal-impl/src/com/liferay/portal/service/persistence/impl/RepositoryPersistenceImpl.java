@@ -2286,7 +2286,9 @@ public class RepositoryPersistenceImpl
 	public void cacheResult(Repository repository) {
 		EntityCacheUtil.putResult(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
-			repository.getPrimaryKey(), repository);
+			repository.getPrimaryKey(), repository,
+			RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
+			((RepositoryModelImpl)repository).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -2351,7 +2353,9 @@ public class RepositoryPersistenceImpl
 	public void clearCache(Repository repository) {
 		EntityCacheUtil.removeResult(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
-			repository.getPrimaryKey());
+			repository.getPrimaryKey(), repository,
+			RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
+			((RepositoryModelImpl)repository).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2367,7 +2371,9 @@ public class RepositoryPersistenceImpl
 		for (Repository repository : repositories) {
 			EntityCacheUtil.removeResult(
 				RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
-				repository.getPrimaryKey());
+				repository.getPrimaryKey(), repository,
+				RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
+				((RepositoryModelImpl)repository).getColumnBitmask());
 
 			clearUniqueFindersCache((RepositoryModelImpl)repository, true);
 		}
@@ -2735,7 +2741,9 @@ public class RepositoryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
-			repository.getPrimaryKey(), repository, false);
+			repository.getPrimaryKey(), repository, false,
+			RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
+			((RepositoryModelImpl)repository).getColumnBitmask());
 
 		clearUniqueFindersCache(repositoryModelImpl, false);
 		cacheUniqueFindersCache(repositoryModelImpl);

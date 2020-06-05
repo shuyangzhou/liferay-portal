@@ -2378,7 +2378,8 @@ public class PollsQuestionPersistenceImpl
 	public void cacheResult(PollsQuestion pollsQuestion) {
 		entityCache.putResult(
 			entityCacheEnabled, PollsQuestionImpl.class,
-			pollsQuestion.getPrimaryKey(), pollsQuestion);
+			pollsQuestion.getPrimaryKey(), pollsQuestion, _columnBitmaskEnabled,
+			((PollsQuestionModelImpl)pollsQuestion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2435,7 +2436,8 @@ public class PollsQuestionPersistenceImpl
 	public void clearCache(PollsQuestion pollsQuestion) {
 		entityCache.removeResult(
 			entityCacheEnabled, PollsQuestionImpl.class,
-			pollsQuestion.getPrimaryKey());
+			pollsQuestion.getPrimaryKey(), pollsQuestion, _columnBitmaskEnabled,
+			((PollsQuestionModelImpl)pollsQuestion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2451,7 +2453,9 @@ public class PollsQuestionPersistenceImpl
 		for (PollsQuestion pollsQuestion : pollsQuestions) {
 			entityCache.removeResult(
 				entityCacheEnabled, PollsQuestionImpl.class,
-				pollsQuestion.getPrimaryKey());
+				pollsQuestion.getPrimaryKey(), pollsQuestion,
+				_columnBitmaskEnabled,
+				((PollsQuestionModelImpl)pollsQuestion).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PollsQuestionModelImpl)pollsQuestion, true);
@@ -2788,7 +2792,9 @@ public class PollsQuestionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, PollsQuestionImpl.class,
-			pollsQuestion.getPrimaryKey(), pollsQuestion, false);
+			pollsQuestion.getPrimaryKey(), pollsQuestion, false,
+			_columnBitmaskEnabled,
+			((PollsQuestionModelImpl)pollsQuestion).getColumnBitmask());
 
 		clearUniqueFindersCache(pollsQuestionModelImpl, false);
 		cacheUniqueFindersCache(pollsQuestionModelImpl);

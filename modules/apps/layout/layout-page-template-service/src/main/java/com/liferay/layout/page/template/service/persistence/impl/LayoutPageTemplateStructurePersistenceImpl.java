@@ -2299,7 +2299,9 @@ public class LayoutPageTemplateStructurePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateStructureImpl.class,
 			layoutPageTemplateStructure.getPrimaryKey(),
-			layoutPageTemplateStructure);
+			layoutPageTemplateStructure, _columnBitmaskEnabled,
+			((LayoutPageTemplateStructureModelImpl)layoutPageTemplateStructure).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2374,7 +2376,10 @@ public class LayoutPageTemplateStructurePersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, LayoutPageTemplateStructureImpl.class,
-			layoutPageTemplateStructure.getPrimaryKey());
+			layoutPageTemplateStructure.getPrimaryKey(),
+			layoutPageTemplateStructure, _columnBitmaskEnabled,
+			((LayoutPageTemplateStructureModelImpl)layoutPageTemplateStructure).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2396,7 +2401,10 @@ public class LayoutPageTemplateStructurePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutPageTemplateStructureImpl.class,
-				layoutPageTemplateStructure.getPrimaryKey());
+				layoutPageTemplateStructure.getPrimaryKey(),
+				layoutPageTemplateStructure, _columnBitmaskEnabled,
+				((LayoutPageTemplateStructureModelImpl)
+					layoutPageTemplateStructure).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutPageTemplateStructureModelImpl)
@@ -2807,7 +2815,9 @@ public class LayoutPageTemplateStructurePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateStructureImpl.class,
 			layoutPageTemplateStructure.getPrimaryKey(),
-			layoutPageTemplateStructure, false);
+			layoutPageTemplateStructure, false, _columnBitmaskEnabled,
+			((LayoutPageTemplateStructureModelImpl)layoutPageTemplateStructure).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(layoutPageTemplateStructureModelImpl, false);
 		cacheUniqueFindersCache(layoutPageTemplateStructureModelImpl);

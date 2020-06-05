@@ -2985,7 +2985,9 @@ public class BlogsStatsUserPersistenceImpl
 	public void cacheResult(BlogsStatsUser blogsStatsUser) {
 		entityCache.putResult(
 			entityCacheEnabled, BlogsStatsUserImpl.class,
-			blogsStatsUser.getPrimaryKey(), blogsStatsUser);
+			blogsStatsUser.getPrimaryKey(), blogsStatsUser,
+			_columnBitmaskEnabled,
+			((BlogsStatsUserModelImpl)blogsStatsUser).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByG_U,
@@ -3044,7 +3046,9 @@ public class BlogsStatsUserPersistenceImpl
 	public void clearCache(BlogsStatsUser blogsStatsUser) {
 		entityCache.removeResult(
 			entityCacheEnabled, BlogsStatsUserImpl.class,
-			blogsStatsUser.getPrimaryKey());
+			blogsStatsUser.getPrimaryKey(), blogsStatsUser,
+			_columnBitmaskEnabled,
+			((BlogsStatsUserModelImpl)blogsStatsUser).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3060,7 +3064,9 @@ public class BlogsStatsUserPersistenceImpl
 		for (BlogsStatsUser blogsStatsUser : blogsStatsUsers) {
 			entityCache.removeResult(
 				entityCacheEnabled, BlogsStatsUserImpl.class,
-				blogsStatsUser.getPrimaryKey());
+				blogsStatsUser.getPrimaryKey(), blogsStatsUser,
+				_columnBitmaskEnabled,
+				((BlogsStatsUserModelImpl)blogsStatsUser).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(BlogsStatsUserModelImpl)blogsStatsUser, true);
@@ -3364,7 +3370,9 @@ public class BlogsStatsUserPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, BlogsStatsUserImpl.class,
-			blogsStatsUser.getPrimaryKey(), blogsStatsUser, false);
+			blogsStatsUser.getPrimaryKey(), blogsStatsUser, false,
+			_columnBitmaskEnabled,
+			((BlogsStatsUserModelImpl)blogsStatsUser).getColumnBitmask());
 
 		clearUniqueFindersCache(blogsStatsUserModelImpl, false);
 		cacheUniqueFindersCache(blogsStatsUserModelImpl);

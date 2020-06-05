@@ -873,7 +873,10 @@ public class SegmentsExperimentRelPersistenceImpl
 	public void cacheResult(SegmentsExperimentRel segmentsExperimentRel) {
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperimentRelImpl.class,
-			segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel);
+			segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel,
+			_columnBitmaskEnabled,
+			((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByS_S,
@@ -937,7 +940,10 @@ public class SegmentsExperimentRelPersistenceImpl
 	public void clearCache(SegmentsExperimentRel segmentsExperimentRel) {
 		entityCache.removeResult(
 			entityCacheEnabled, SegmentsExperimentRelImpl.class,
-			segmentsExperimentRel.getPrimaryKey());
+			segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel,
+			_columnBitmaskEnabled,
+			((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -956,7 +962,10 @@ public class SegmentsExperimentRelPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, SegmentsExperimentRelImpl.class,
-				segmentsExperimentRel.getPrimaryKey());
+				segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel,
+				_columnBitmaskEnabled,
+				((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SegmentsExperimentRelModelImpl)segmentsExperimentRel, true);
@@ -1250,8 +1259,10 @@ public class SegmentsExperimentRelPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperimentRelImpl.class,
-			segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel,
-			false);
+			segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel, false,
+			_columnBitmaskEnabled,
+			((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(segmentsExperimentRelModelImpl, false);
 		cacheUniqueFindersCache(segmentsExperimentRelModelImpl);

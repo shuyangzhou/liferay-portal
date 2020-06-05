@@ -3424,7 +3424,10 @@ public class FragmentCollectionPersistenceImpl
 	public void cacheResult(FragmentCollection fragmentCollection) {
 		entityCache.putResult(
 			entityCacheEnabled, FragmentCollectionImpl.class,
-			fragmentCollection.getPrimaryKey(), fragmentCollection);
+			fragmentCollection.getPrimaryKey(), fragmentCollection,
+			_columnBitmaskEnabled,
+			((FragmentCollectionModelImpl)fragmentCollection).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3491,7 +3494,10 @@ public class FragmentCollectionPersistenceImpl
 	public void clearCache(FragmentCollection fragmentCollection) {
 		entityCache.removeResult(
 			entityCacheEnabled, FragmentCollectionImpl.class,
-			fragmentCollection.getPrimaryKey());
+			fragmentCollection.getPrimaryKey(), fragmentCollection,
+			_columnBitmaskEnabled,
+			((FragmentCollectionModelImpl)fragmentCollection).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3508,7 +3514,10 @@ public class FragmentCollectionPersistenceImpl
 		for (FragmentCollection fragmentCollection : fragmentCollections) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentCollectionImpl.class,
-				fragmentCollection.getPrimaryKey());
+				fragmentCollection.getPrimaryKey(), fragmentCollection,
+				_columnBitmaskEnabled,
+				((FragmentCollectionModelImpl)fragmentCollection).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FragmentCollectionModelImpl)fragmentCollection, true);
@@ -3888,7 +3897,10 @@ public class FragmentCollectionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FragmentCollectionImpl.class,
-			fragmentCollection.getPrimaryKey(), fragmentCollection, false);
+			fragmentCollection.getPrimaryKey(), fragmentCollection, false,
+			_columnBitmaskEnabled,
+			((FragmentCollectionModelImpl)fragmentCollection).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(fragmentCollectionModelImpl, false);
 		cacheUniqueFindersCache(fragmentCollectionModelImpl);

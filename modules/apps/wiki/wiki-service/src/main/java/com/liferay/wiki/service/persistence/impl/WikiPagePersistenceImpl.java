@@ -21894,7 +21894,8 @@ public class WikiPagePersistenceImpl
 	public void cacheResult(WikiPage wikiPage) {
 		entityCache.putResult(
 			entityCacheEnabled, WikiPageImpl.class, wikiPage.getPrimaryKey(),
-			wikiPage);
+			wikiPage, _columnBitmaskEnabled,
+			((WikiPageModelImpl)wikiPage).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -21964,7 +21965,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void clearCache(WikiPage wikiPage) {
 		entityCache.removeResult(
-			entityCacheEnabled, WikiPageImpl.class, wikiPage.getPrimaryKey());
+			entityCacheEnabled, WikiPageImpl.class, wikiPage.getPrimaryKey(),
+			wikiPage, _columnBitmaskEnabled,
+			((WikiPageModelImpl)wikiPage).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -21980,7 +21983,8 @@ public class WikiPagePersistenceImpl
 		for (WikiPage wikiPage : wikiPages) {
 			entityCache.removeResult(
 				entityCacheEnabled, WikiPageImpl.class,
-				wikiPage.getPrimaryKey());
+				wikiPage.getPrimaryKey(), wikiPage, _columnBitmaskEnabled,
+				((WikiPageModelImpl)wikiPage).getColumnBitmask());
 
 			clearUniqueFindersCache((WikiPageModelImpl)wikiPage, true);
 		}
@@ -23214,7 +23218,8 @@ public class WikiPagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, WikiPageImpl.class, wikiPage.getPrimaryKey(),
-			wikiPage, false);
+			wikiPage, false, _columnBitmaskEnabled,
+			((WikiPageModelImpl)wikiPage).getColumnBitmask());
 
 		clearUniqueFindersCache(wikiPageModelImpl, false);
 		cacheUniqueFindersCache(wikiPageModelImpl);

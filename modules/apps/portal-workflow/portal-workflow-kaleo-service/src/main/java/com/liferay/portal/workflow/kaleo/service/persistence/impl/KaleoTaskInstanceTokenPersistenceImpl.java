@@ -2517,7 +2517,10 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 	public void cacheResult(KaleoTaskInstanceToken kaleoTaskInstanceToken) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskInstanceTokenImpl.class,
-			kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken);
+			kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken,
+			_columnBitmaskEnabled,
+			((KaleoTaskInstanceTokenModelImpl)kaleoTaskInstanceToken).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByKII_KTI,
@@ -2581,7 +2584,10 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 	public void clearCache(KaleoTaskInstanceToken kaleoTaskInstanceToken) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTaskInstanceTokenImpl.class,
-			kaleoTaskInstanceToken.getPrimaryKey());
+			kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken,
+			_columnBitmaskEnabled,
+			((KaleoTaskInstanceTokenModelImpl)kaleoTaskInstanceToken).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2602,7 +2608,10 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTaskInstanceTokenImpl.class,
-				kaleoTaskInstanceToken.getPrimaryKey());
+				kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken,
+				_columnBitmaskEnabled,
+				((KaleoTaskInstanceTokenModelImpl)kaleoTaskInstanceToken).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoTaskInstanceTokenModelImpl)kaleoTaskInstanceToken, true);
@@ -2991,7 +3000,9 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskInstanceTokenImpl.class,
 			kaleoTaskInstanceToken.getPrimaryKey(), kaleoTaskInstanceToken,
-			false);
+			false, _columnBitmaskEnabled,
+			((KaleoTaskInstanceTokenModelImpl)kaleoTaskInstanceToken).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoTaskInstanceTokenModelImpl, false);
 		cacheUniqueFindersCache(kaleoTaskInstanceTokenModelImpl);

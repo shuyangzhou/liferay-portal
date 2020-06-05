@@ -4292,7 +4292,10 @@ public class LayoutClassedModelUsagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, LayoutClassedModelUsageImpl.class,
-			layoutClassedModelUsage.getPrimaryKey(), layoutClassedModelUsage);
+			layoutClassedModelUsage.getPrimaryKey(), layoutClassedModelUsage,
+			_columnBitmaskEnabled,
+			((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4373,7 +4376,10 @@ public class LayoutClassedModelUsagePersistenceImpl
 	public void clearCache(LayoutClassedModelUsage layoutClassedModelUsage) {
 		entityCache.removeResult(
 			entityCacheEnabled, LayoutClassedModelUsageImpl.class,
-			layoutClassedModelUsage.getPrimaryKey());
+			layoutClassedModelUsage.getPrimaryKey(), layoutClassedModelUsage,
+			_columnBitmaskEnabled,
+			((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4394,7 +4400,10 @@ public class LayoutClassedModelUsagePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutClassedModelUsageImpl.class,
-				layoutClassedModelUsage.getPrimaryKey());
+				layoutClassedModelUsage.getPrimaryKey(),
+				layoutClassedModelUsage, _columnBitmaskEnabled,
+				((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutClassedModelUsageModelImpl)layoutClassedModelUsage,
@@ -4919,7 +4928,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutClassedModelUsageImpl.class,
 			layoutClassedModelUsage.getPrimaryKey(), layoutClassedModelUsage,
-			false);
+			false, _columnBitmaskEnabled,
+			((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(layoutClassedModelUsageModelImpl, false);
 		cacheUniqueFindersCache(layoutClassedModelUsageModelImpl);

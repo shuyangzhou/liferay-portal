@@ -1082,7 +1082,10 @@ public class LVEntryLocalizationPersistenceImpl
 		entityCache.putResult(
 			LVEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryLocalizationImpl.class, lvEntryLocalization.getPrimaryKey(),
-			lvEntryLocalization);
+			lvEntryLocalization,
+			LVEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryLocalizationModelImpl)lvEntryLocalization).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByLvEntryId_LanguageId,
@@ -1148,7 +1151,11 @@ public class LVEntryLocalizationPersistenceImpl
 	public void clearCache(LVEntryLocalization lvEntryLocalization) {
 		entityCache.removeResult(
 			LVEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
-			LVEntryLocalizationImpl.class, lvEntryLocalization.getPrimaryKey());
+			LVEntryLocalizationImpl.class, lvEntryLocalization.getPrimaryKey(),
+			lvEntryLocalization,
+			LVEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryLocalizationModelImpl)lvEntryLocalization).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1166,7 +1173,10 @@ public class LVEntryLocalizationPersistenceImpl
 			entityCache.removeResult(
 				LVEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 				LVEntryLocalizationImpl.class,
-				lvEntryLocalization.getPrimaryKey());
+				lvEntryLocalization.getPrimaryKey(), lvEntryLocalization,
+				LVEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+				((LVEntryLocalizationModelImpl)lvEntryLocalization).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LVEntryLocalizationModelImpl)lvEntryLocalization, true);
@@ -1460,7 +1470,10 @@ public class LVEntryLocalizationPersistenceImpl
 		entityCache.putResult(
 			LVEntryLocalizationModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryLocalizationImpl.class, lvEntryLocalization.getPrimaryKey(),
-			lvEntryLocalization, false);
+			lvEntryLocalization, false,
+			LVEntryLocalizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryLocalizationModelImpl)lvEntryLocalization).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(lvEntryLocalizationModelImpl, false);
 		cacheUniqueFindersCache(lvEntryLocalizationModelImpl);

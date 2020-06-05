@@ -4152,7 +4152,9 @@ public class AssetEntryUsagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetEntryUsageImpl.class,
-			assetEntryUsage.getPrimaryKey(), assetEntryUsage);
+			assetEntryUsage.getPrimaryKey(), assetEntryUsage,
+			_columnBitmaskEnabled,
+			((AssetEntryUsageModelImpl)assetEntryUsage).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4226,7 +4228,9 @@ public class AssetEntryUsagePersistenceImpl
 	public void clearCache(AssetEntryUsage assetEntryUsage) {
 		entityCache.removeResult(
 			entityCacheEnabled, AssetEntryUsageImpl.class,
-			assetEntryUsage.getPrimaryKey());
+			assetEntryUsage.getPrimaryKey(), assetEntryUsage,
+			_columnBitmaskEnabled,
+			((AssetEntryUsageModelImpl)assetEntryUsage).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4243,7 +4247,9 @@ public class AssetEntryUsagePersistenceImpl
 		for (AssetEntryUsage assetEntryUsage : assetEntryUsages) {
 			entityCache.removeResult(
 				entityCacheEnabled, AssetEntryUsageImpl.class,
-				assetEntryUsage.getPrimaryKey());
+				assetEntryUsage.getPrimaryKey(), assetEntryUsage,
+				_columnBitmaskEnabled,
+				((AssetEntryUsageModelImpl)assetEntryUsage).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetEntryUsageModelImpl)assetEntryUsage, true);
@@ -4737,7 +4743,9 @@ public class AssetEntryUsagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetEntryUsageImpl.class,
-			assetEntryUsage.getPrimaryKey(), assetEntryUsage, false);
+			assetEntryUsage.getPrimaryKey(), assetEntryUsage, false,
+			_columnBitmaskEnabled,
+			((AssetEntryUsageModelImpl)assetEntryUsage).getColumnBitmask());
 
 		clearUniqueFindersCache(assetEntryUsageModelImpl, false);
 		cacheUniqueFindersCache(assetEntryUsageModelImpl);

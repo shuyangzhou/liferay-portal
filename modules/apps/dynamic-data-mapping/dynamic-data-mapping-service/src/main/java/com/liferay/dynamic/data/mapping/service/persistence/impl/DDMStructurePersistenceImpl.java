@@ -10981,7 +10981,8 @@ public class DDMStructurePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStructureImpl.class,
-			ddmStructure.getPrimaryKey(), ddmStructure);
+			ddmStructure.getPrimaryKey(), ddmStructure, _columnBitmaskEnabled,
+			((DDMStructureModelImpl)ddmStructure).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -11052,7 +11053,8 @@ public class DDMStructurePersistenceImpl
 	public void clearCache(DDMStructure ddmStructure) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMStructureImpl.class,
-			ddmStructure.getPrimaryKey());
+			ddmStructure.getPrimaryKey(), ddmStructure, _columnBitmaskEnabled,
+			((DDMStructureModelImpl)ddmStructure).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -11068,7 +11070,9 @@ public class DDMStructurePersistenceImpl
 		for (DDMStructure ddmStructure : ddmStructures) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMStructureImpl.class,
-				ddmStructure.getPrimaryKey());
+				ddmStructure.getPrimaryKey(), ddmStructure,
+				_columnBitmaskEnabled,
+				((DDMStructureModelImpl)ddmStructure).getColumnBitmask());
 
 			clearUniqueFindersCache((DDMStructureModelImpl)ddmStructure, true);
 		}
@@ -11706,7 +11710,9 @@ public class DDMStructurePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStructureImpl.class,
-			ddmStructure.getPrimaryKey(), ddmStructure, false);
+			ddmStructure.getPrimaryKey(), ddmStructure, false,
+			_columnBitmaskEnabled,
+			((DDMStructureModelImpl)ddmStructure).getColumnBitmask());
 
 		clearUniqueFindersCache(ddmStructureModelImpl, false);
 		cacheUniqueFindersCache(ddmStructureModelImpl);

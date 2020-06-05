@@ -5430,7 +5430,9 @@ public class LayoutFriendlyURLPersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
-			layoutFriendlyURL);
+			layoutFriendlyURL,
+			LayoutFriendlyURLModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutFriendlyURLModelImpl)layoutFriendlyURL).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -5513,7 +5515,10 @@ public class LayoutFriendlyURLPersistenceImpl
 	public void clearCache(LayoutFriendlyURL layoutFriendlyURL) {
 		EntityCacheUtil.removeResult(
 			LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey());
+			LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
+			layoutFriendlyURL,
+			LayoutFriendlyURLModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutFriendlyURLModelImpl)layoutFriendlyURL).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5530,7 +5535,11 @@ public class LayoutFriendlyURLPersistenceImpl
 		for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
 			EntityCacheUtil.removeResult(
 				LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey());
+				LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
+				layoutFriendlyURL,
+				LayoutFriendlyURLModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutFriendlyURLModelImpl)layoutFriendlyURL).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutFriendlyURLModelImpl)layoutFriendlyURL, true);
@@ -6118,7 +6127,9 @@ public class LayoutFriendlyURLPersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutFriendlyURLImpl.class, layoutFriendlyURL.getPrimaryKey(),
-			layoutFriendlyURL, false);
+			layoutFriendlyURL, false,
+			LayoutFriendlyURLModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutFriendlyURLModelImpl)layoutFriendlyURL).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutFriendlyURLModelImpl, false);
 		cacheUniqueFindersCache(layoutFriendlyURLModelImpl);

@@ -2262,7 +2262,8 @@ public class RepositoryEntryPersistenceImpl
 		EntityCacheUtil.putResult(
 			RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryEntryImpl.class, repositoryEntry.getPrimaryKey(),
-			repositoryEntry);
+			repositoryEntry, RepositoryEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((RepositoryEntryModelImpl)repositoryEntry).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -2329,7 +2330,9 @@ public class RepositoryEntryPersistenceImpl
 	public void clearCache(RepositoryEntry repositoryEntry) {
 		EntityCacheUtil.removeResult(
 			RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-			RepositoryEntryImpl.class, repositoryEntry.getPrimaryKey());
+			RepositoryEntryImpl.class, repositoryEntry.getPrimaryKey(),
+			repositoryEntry, RepositoryEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((RepositoryEntryModelImpl)repositoryEntry).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2346,7 +2349,10 @@ public class RepositoryEntryPersistenceImpl
 		for (RepositoryEntry repositoryEntry : repositoryEntries) {
 			EntityCacheUtil.removeResult(
 				RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-				RepositoryEntryImpl.class, repositoryEntry.getPrimaryKey());
+				RepositoryEntryImpl.class, repositoryEntry.getPrimaryKey(),
+				repositoryEntry,
+				RepositoryEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((RepositoryEntryModelImpl)repositoryEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(RepositoryEntryModelImpl)repositoryEntry, true);
@@ -2727,7 +2733,9 @@ public class RepositoryEntryPersistenceImpl
 		EntityCacheUtil.putResult(
 			RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryEntryImpl.class, repositoryEntry.getPrimaryKey(),
-			repositoryEntry, false);
+			repositoryEntry, false,
+			RepositoryEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((RepositoryEntryModelImpl)repositoryEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(repositoryEntryModelImpl, false);
 		cacheUniqueFindersCache(repositoryEntryModelImpl);

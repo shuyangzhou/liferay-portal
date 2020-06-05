@@ -2609,7 +2609,10 @@ public class SocialActivityCounterPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityCounterImpl.class,
-			socialActivityCounter.getPrimaryKey(), socialActivityCounter);
+			socialActivityCounter.getPrimaryKey(), socialActivityCounter,
+			SocialActivityCounterModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityCounterModelImpl)socialActivityCounter).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_C_C_N_O_S,
@@ -2697,7 +2700,10 @@ public class SocialActivityCounterPersistenceImpl
 		EntityCacheUtil.removeResult(
 			SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityCounterImpl.class,
-			socialActivityCounter.getPrimaryKey());
+			socialActivityCounter.getPrimaryKey(), socialActivityCounter,
+			SocialActivityCounterModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityCounterModelImpl)socialActivityCounter).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2717,7 +2723,10 @@ public class SocialActivityCounterPersistenceImpl
 			EntityCacheUtil.removeResult(
 				SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
 				SocialActivityCounterImpl.class,
-				socialActivityCounter.getPrimaryKey());
+				socialActivityCounter.getPrimaryKey(), socialActivityCounter,
+				SocialActivityCounterModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialActivityCounterModelImpl)socialActivityCounter).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialActivityCounterModelImpl)socialActivityCounter, true);
@@ -3131,8 +3140,10 @@ public class SocialActivityCounterPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityCounterImpl.class,
-			socialActivityCounter.getPrimaryKey(), socialActivityCounter,
-			false);
+			socialActivityCounter.getPrimaryKey(), socialActivityCounter, false,
+			SocialActivityCounterModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityCounterModelImpl)socialActivityCounter).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(socialActivityCounterModelImpl, false);
 		cacheUniqueFindersCache(socialActivityCounterModelImpl);

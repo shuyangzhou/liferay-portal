@@ -157,7 +157,8 @@ public class NestedSetsTreeEntryPersistenceImpl
 	public void clearCache(NestedSetsTreeEntry nestedSetsTreeEntry) {
 		entityCache.removeResult(
 			NestedSetsTreeEntryModelImpl.ENTITY_CACHE_ENABLED,
-			NestedSetsTreeEntryImpl.class, nestedSetsTreeEntry.getPrimaryKey());
+			NestedSetsTreeEntryImpl.class, nestedSetsTreeEntry.getPrimaryKey(),
+			nestedSetsTreeEntry);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -172,7 +173,7 @@ public class NestedSetsTreeEntryPersistenceImpl
 			entityCache.removeResult(
 				NestedSetsTreeEntryModelImpl.ENTITY_CACHE_ENABLED,
 				NestedSetsTreeEntryImpl.class,
-				nestedSetsTreeEntry.getPrimaryKey());
+				nestedSetsTreeEntry.getPrimaryKey(), nestedSetsTreeEntry);
 		}
 	}
 

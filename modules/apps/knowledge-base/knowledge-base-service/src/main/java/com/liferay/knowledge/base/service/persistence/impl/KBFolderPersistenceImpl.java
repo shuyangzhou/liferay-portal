@@ -3028,7 +3028,8 @@ public class KBFolderPersistenceImpl
 	public void cacheResult(KBFolder kbFolder) {
 		entityCache.putResult(
 			entityCacheEnabled, KBFolderImpl.class, kbFolder.getPrimaryKey(),
-			kbFolder);
+			kbFolder, _columnBitmaskEnabled,
+			((KBFolderModelImpl)kbFolder).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3099,7 +3100,9 @@ public class KBFolderPersistenceImpl
 	@Override
 	public void clearCache(KBFolder kbFolder) {
 		entityCache.removeResult(
-			entityCacheEnabled, KBFolderImpl.class, kbFolder.getPrimaryKey());
+			entityCacheEnabled, KBFolderImpl.class, kbFolder.getPrimaryKey(),
+			kbFolder, _columnBitmaskEnabled,
+			((KBFolderModelImpl)kbFolder).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3115,7 +3118,8 @@ public class KBFolderPersistenceImpl
 		for (KBFolder kbFolder : kbFolders) {
 			entityCache.removeResult(
 				entityCacheEnabled, KBFolderImpl.class,
-				kbFolder.getPrimaryKey());
+				kbFolder.getPrimaryKey(), kbFolder, _columnBitmaskEnabled,
+				((KBFolderModelImpl)kbFolder).getColumnBitmask());
 
 			clearUniqueFindersCache((KBFolderModelImpl)kbFolder, true);
 		}
@@ -3519,7 +3523,8 @@ public class KBFolderPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KBFolderImpl.class, kbFolder.getPrimaryKey(),
-			kbFolder, false);
+			kbFolder, false, _columnBitmaskEnabled,
+			((KBFolderModelImpl)kbFolder).getColumnBitmask());
 
 		clearUniqueFindersCache(kbFolderModelImpl, false);
 		cacheUniqueFindersCache(kbFolderModelImpl);

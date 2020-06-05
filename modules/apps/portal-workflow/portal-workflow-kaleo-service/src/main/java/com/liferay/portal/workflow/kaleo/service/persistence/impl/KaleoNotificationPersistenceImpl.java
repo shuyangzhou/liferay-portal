@@ -2428,7 +2428,9 @@ public class KaleoNotificationPersistenceImpl
 	public void cacheResult(KaleoNotification kaleoNotification) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoNotificationImpl.class,
-			kaleoNotification.getPrimaryKey(), kaleoNotification);
+			kaleoNotification.getPrimaryKey(), kaleoNotification,
+			_columnBitmaskEnabled,
+			((KaleoNotificationModelImpl)kaleoNotification).getColumnBitmask());
 
 		kaleoNotification.resetOriginalValues();
 	}
@@ -2480,7 +2482,9 @@ public class KaleoNotificationPersistenceImpl
 	public void clearCache(KaleoNotification kaleoNotification) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoNotificationImpl.class,
-			kaleoNotification.getPrimaryKey());
+			kaleoNotification.getPrimaryKey(), kaleoNotification,
+			_columnBitmaskEnabled,
+			((KaleoNotificationModelImpl)kaleoNotification).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2494,7 +2498,10 @@ public class KaleoNotificationPersistenceImpl
 		for (KaleoNotification kaleoNotification : kaleoNotifications) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoNotificationImpl.class,
-				kaleoNotification.getPrimaryKey());
+				kaleoNotification.getPrimaryKey(), kaleoNotification,
+				_columnBitmaskEnabled,
+				((KaleoNotificationModelImpl)kaleoNotification).
+					getColumnBitmask());
 		}
 	}
 
@@ -2832,7 +2839,9 @@ public class KaleoNotificationPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoNotificationImpl.class,
-			kaleoNotification.getPrimaryKey(), kaleoNotification, false);
+			kaleoNotification.getPrimaryKey(), kaleoNotification, false,
+			_columnBitmaskEnabled,
+			((KaleoNotificationModelImpl)kaleoNotification).getColumnBitmask());
 
 		kaleoNotification.resetOriginalValues();
 

@@ -1696,7 +1696,8 @@ public class KaleoNodePersistenceImpl
 	public void cacheResult(KaleoNode kaleoNode) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoNodeImpl.class, kaleoNode.getPrimaryKey(),
-			kaleoNode);
+			kaleoNode, _columnBitmaskEnabled,
+			((KaleoNodeModelImpl)kaleoNode).getColumnBitmask());
 
 		kaleoNode.resetOriginalValues();
 	}
@@ -1747,7 +1748,9 @@ public class KaleoNodePersistenceImpl
 	@Override
 	public void clearCache(KaleoNode kaleoNode) {
 		entityCache.removeResult(
-			entityCacheEnabled, KaleoNodeImpl.class, kaleoNode.getPrimaryKey());
+			entityCacheEnabled, KaleoNodeImpl.class, kaleoNode.getPrimaryKey(),
+			kaleoNode, _columnBitmaskEnabled,
+			((KaleoNodeModelImpl)kaleoNode).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1761,7 +1764,8 @@ public class KaleoNodePersistenceImpl
 		for (KaleoNode kaleoNode : kaleoNodes) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoNodeImpl.class,
-				kaleoNode.getPrimaryKey());
+				kaleoNode.getPrimaryKey(), kaleoNode, _columnBitmaskEnabled,
+				((KaleoNodeModelImpl)kaleoNode).getColumnBitmask());
 		}
 	}
 
@@ -2050,7 +2054,8 @@ public class KaleoNodePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoNodeImpl.class, kaleoNode.getPrimaryKey(),
-			kaleoNode, false);
+			kaleoNode, false, _columnBitmaskEnabled,
+			((KaleoNodeModelImpl)kaleoNode).getColumnBitmask());
 
 		kaleoNode.resetOriginalValues();
 

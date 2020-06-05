@@ -611,7 +611,9 @@ public class AnalyticsMessagePersistenceImpl
 	public void cacheResult(AnalyticsMessage analyticsMessage) {
 		entityCache.putResult(
 			entityCacheEnabled, AnalyticsMessageImpl.class,
-			analyticsMessage.getPrimaryKey(), analyticsMessage);
+			analyticsMessage.getPrimaryKey(), analyticsMessage,
+			_columnBitmaskEnabled,
+			((AnalyticsMessageModelImpl)analyticsMessage).getColumnBitmask());
 
 		analyticsMessage.resetOriginalValues();
 	}
@@ -663,7 +665,9 @@ public class AnalyticsMessagePersistenceImpl
 	public void clearCache(AnalyticsMessage analyticsMessage) {
 		entityCache.removeResult(
 			entityCacheEnabled, AnalyticsMessageImpl.class,
-			analyticsMessage.getPrimaryKey());
+			analyticsMessage.getPrimaryKey(), analyticsMessage,
+			_columnBitmaskEnabled,
+			((AnalyticsMessageModelImpl)analyticsMessage).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -677,7 +681,10 @@ public class AnalyticsMessagePersistenceImpl
 		for (AnalyticsMessage analyticsMessage : analyticsMessages) {
 			entityCache.removeResult(
 				entityCacheEnabled, AnalyticsMessageImpl.class,
-				analyticsMessage.getPrimaryKey());
+				analyticsMessage.getPrimaryKey(), analyticsMessage,
+				_columnBitmaskEnabled,
+				((AnalyticsMessageModelImpl)analyticsMessage).
+					getColumnBitmask());
 		}
 	}
 
@@ -887,7 +894,9 @@ public class AnalyticsMessagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AnalyticsMessageImpl.class,
-			analyticsMessage.getPrimaryKey(), analyticsMessage, false);
+			analyticsMessage.getPrimaryKey(), analyticsMessage, false,
+			_columnBitmaskEnabled,
+			((AnalyticsMessageModelImpl)analyticsMessage).getColumnBitmask());
 
 		analyticsMessage.resetOriginalValues();
 

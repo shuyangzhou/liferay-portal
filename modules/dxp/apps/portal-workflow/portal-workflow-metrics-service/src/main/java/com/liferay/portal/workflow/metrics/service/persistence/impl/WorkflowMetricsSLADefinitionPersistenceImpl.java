@@ -4980,7 +4980,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, WorkflowMetricsSLADefinitionImpl.class,
 			workflowMetricsSLADefinition.getPrimaryKey(),
-			workflowMetricsSLADefinition);
+			workflowMetricsSLADefinition, _columnBitmaskEnabled,
+			((WorkflowMetricsSLADefinitionModelImpl)
+				workflowMetricsSLADefinition).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -5055,7 +5057,10 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, WorkflowMetricsSLADefinitionImpl.class,
-			workflowMetricsSLADefinition.getPrimaryKey());
+			workflowMetricsSLADefinition.getPrimaryKey(),
+			workflowMetricsSLADefinition, _columnBitmaskEnabled,
+			((WorkflowMetricsSLADefinitionModelImpl)
+				workflowMetricsSLADefinition).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5077,7 +5082,10 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, WorkflowMetricsSLADefinitionImpl.class,
-				workflowMetricsSLADefinition.getPrimaryKey());
+				workflowMetricsSLADefinition.getPrimaryKey(),
+				workflowMetricsSLADefinition, _columnBitmaskEnabled,
+				((WorkflowMetricsSLADefinitionModelImpl)
+					workflowMetricsSLADefinition).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(WorkflowMetricsSLADefinitionModelImpl)
@@ -5607,7 +5615,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, WorkflowMetricsSLADefinitionImpl.class,
 			workflowMetricsSLADefinition.getPrimaryKey(),
-			workflowMetricsSLADefinition, false);
+			workflowMetricsSLADefinition, false, _columnBitmaskEnabled,
+			((WorkflowMetricsSLADefinitionModelImpl)
+				workflowMetricsSLADefinition).getColumnBitmask());
 
 		clearUniqueFindersCache(workflowMetricsSLADefinitionModelImpl, false);
 		cacheUniqueFindersCache(workflowMetricsSLADefinitionModelImpl);

@@ -884,7 +884,9 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, SharepointOAuth2TokenEntryImpl.class,
 			sharepointOAuth2TokenEntry.getPrimaryKey(),
-			sharepointOAuth2TokenEntry);
+			sharepointOAuth2TokenEntry, _columnBitmaskEnabled,
+			((SharepointOAuth2TokenEntryModelImpl)sharepointOAuth2TokenEntry).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByU_C,
@@ -950,7 +952,10 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, SharepointOAuth2TokenEntryImpl.class,
-			sharepointOAuth2TokenEntry.getPrimaryKey());
+			sharepointOAuth2TokenEntry.getPrimaryKey(),
+			sharepointOAuth2TokenEntry, _columnBitmaskEnabled,
+			((SharepointOAuth2TokenEntryModelImpl)sharepointOAuth2TokenEntry).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -972,7 +977,10 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, SharepointOAuth2TokenEntryImpl.class,
-				sharepointOAuth2TokenEntry.getPrimaryKey());
+				sharepointOAuth2TokenEntry.getPrimaryKey(),
+				sharepointOAuth2TokenEntry, _columnBitmaskEnabled,
+				((SharepointOAuth2TokenEntryModelImpl)
+					sharepointOAuth2TokenEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SharepointOAuth2TokenEntryModelImpl)sharepointOAuth2TokenEntry,
@@ -1245,7 +1253,9 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, SharepointOAuth2TokenEntryImpl.class,
 			sharepointOAuth2TokenEntry.getPrimaryKey(),
-			sharepointOAuth2TokenEntry, false);
+			sharepointOAuth2TokenEntry, false, _columnBitmaskEnabled,
+			((SharepointOAuth2TokenEntryModelImpl)sharepointOAuth2TokenEntry).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(sharepointOAuth2TokenEntryModelImpl, false);
 		cacheUniqueFindersCache(sharepointOAuth2TokenEntryModelImpl);

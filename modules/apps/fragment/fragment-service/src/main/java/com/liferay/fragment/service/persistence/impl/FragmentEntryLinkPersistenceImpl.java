@@ -6098,7 +6098,9 @@ public class FragmentEntryLinkPersistenceImpl
 	public void cacheResult(FragmentEntryLink fragmentEntryLink) {
 		entityCache.putResult(
 			entityCacheEnabled, FragmentEntryLinkImpl.class,
-			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink);
+			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink,
+			_columnBitmaskEnabled,
+			((FragmentEntryLinkModelImpl)fragmentEntryLink).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -6157,7 +6159,9 @@ public class FragmentEntryLinkPersistenceImpl
 	public void clearCache(FragmentEntryLink fragmentEntryLink) {
 		entityCache.removeResult(
 			entityCacheEnabled, FragmentEntryLinkImpl.class,
-			fragmentEntryLink.getPrimaryKey());
+			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink,
+			_columnBitmaskEnabled,
+			((FragmentEntryLinkModelImpl)fragmentEntryLink).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6174,7 +6178,10 @@ public class FragmentEntryLinkPersistenceImpl
 		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentEntryLinkImpl.class,
-				fragmentEntryLink.getPrimaryKey());
+				fragmentEntryLink.getPrimaryKey(), fragmentEntryLink,
+				_columnBitmaskEnabled,
+				((FragmentEntryLinkModelImpl)fragmentEntryLink).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FragmentEntryLinkModelImpl)fragmentEntryLink, true);
@@ -6755,7 +6762,9 @@ public class FragmentEntryLinkPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FragmentEntryLinkImpl.class,
-			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink, false);
+			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink, false,
+			_columnBitmaskEnabled,
+			((FragmentEntryLinkModelImpl)fragmentEntryLink).getColumnBitmask());
 
 		clearUniqueFindersCache(fragmentEntryLinkModelImpl, false);
 		cacheUniqueFindersCache(fragmentEntryLinkModelImpl);

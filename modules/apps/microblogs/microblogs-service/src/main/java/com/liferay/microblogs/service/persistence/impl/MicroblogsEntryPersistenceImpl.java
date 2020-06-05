@@ -13285,7 +13285,9 @@ public class MicroblogsEntryPersistenceImpl
 	public void cacheResult(MicroblogsEntry microblogsEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, MicroblogsEntryImpl.class,
-			microblogsEntry.getPrimaryKey(), microblogsEntry);
+			microblogsEntry.getPrimaryKey(), microblogsEntry,
+			_columnBitmaskEnabled,
+			((MicroblogsEntryModelImpl)microblogsEntry).getColumnBitmask());
 
 		microblogsEntry.resetOriginalValues();
 	}
@@ -13337,7 +13339,9 @@ public class MicroblogsEntryPersistenceImpl
 	public void clearCache(MicroblogsEntry microblogsEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, MicroblogsEntryImpl.class,
-			microblogsEntry.getPrimaryKey());
+			microblogsEntry.getPrimaryKey(), microblogsEntry,
+			_columnBitmaskEnabled,
+			((MicroblogsEntryModelImpl)microblogsEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -13351,7 +13355,9 @@ public class MicroblogsEntryPersistenceImpl
 		for (MicroblogsEntry microblogsEntry : microblogsEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, MicroblogsEntryImpl.class,
-				microblogsEntry.getPrimaryKey());
+				microblogsEntry.getPrimaryKey(), microblogsEntry,
+				_columnBitmaskEnabled,
+				((MicroblogsEntryModelImpl)microblogsEntry).getColumnBitmask());
 		}
 	}
 
@@ -13918,7 +13924,9 @@ public class MicroblogsEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MicroblogsEntryImpl.class,
-			microblogsEntry.getPrimaryKey(), microblogsEntry, false);
+			microblogsEntry.getPrimaryKey(), microblogsEntry, false,
+			_columnBitmaskEnabled,
+			((MicroblogsEntryModelImpl)microblogsEntry).getColumnBitmask());
 
 		microblogsEntry.resetOriginalValues();
 

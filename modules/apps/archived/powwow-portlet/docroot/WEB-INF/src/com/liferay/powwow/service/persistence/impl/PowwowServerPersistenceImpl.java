@@ -691,7 +691,9 @@ public class PowwowServerPersistenceImpl
 	public void cacheResult(PowwowServer powwowServer) {
 		EntityCacheUtil.putResult(
 			PowwowServerModelImpl.ENTITY_CACHE_ENABLED, PowwowServerImpl.class,
-			powwowServer.getPrimaryKey(), powwowServer);
+			powwowServer.getPrimaryKey(), powwowServer,
+			PowwowServerModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowServerModelImpl)powwowServer).getColumnBitmask());
 
 		powwowServer.resetOriginalValues();
 	}
@@ -744,7 +746,9 @@ public class PowwowServerPersistenceImpl
 	public void clearCache(PowwowServer powwowServer) {
 		EntityCacheUtil.removeResult(
 			PowwowServerModelImpl.ENTITY_CACHE_ENABLED, PowwowServerImpl.class,
-			powwowServer.getPrimaryKey());
+			powwowServer.getPrimaryKey(), powwowServer,
+			PowwowServerModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowServerModelImpl)powwowServer).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -758,7 +762,9 @@ public class PowwowServerPersistenceImpl
 		for (PowwowServer powwowServer : powwowServers) {
 			EntityCacheUtil.removeResult(
 				PowwowServerModelImpl.ENTITY_CACHE_ENABLED,
-				PowwowServerImpl.class, powwowServer.getPrimaryKey());
+				PowwowServerImpl.class, powwowServer.getPrimaryKey(),
+				powwowServer, PowwowServerModelImpl.COLUMN_BITMASK_ENABLED,
+				((PowwowServerModelImpl)powwowServer).getColumnBitmask());
 		}
 	}
 
@@ -995,7 +1001,9 @@ public class PowwowServerPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			PowwowServerModelImpl.ENTITY_CACHE_ENABLED, PowwowServerImpl.class,
-			powwowServer.getPrimaryKey(), powwowServer, false);
+			powwowServer.getPrimaryKey(), powwowServer, false,
+			PowwowServerModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowServerModelImpl)powwowServer).getColumnBitmask());
 
 		powwowServer.resetOriginalValues();
 

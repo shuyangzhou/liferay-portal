@@ -1752,7 +1752,8 @@ public class BigDecimalEntryPersistenceImpl
 		entityCache.putResult(
 			BigDecimalEntryModelImpl.ENTITY_CACHE_ENABLED,
 			BigDecimalEntryImpl.class, bigDecimalEntry.getPrimaryKey(),
-			bigDecimalEntry);
+			bigDecimalEntry, BigDecimalEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((BigDecimalEntryModelImpl)bigDecimalEntry).getColumnBitmask());
 
 		bigDecimalEntry.resetOriginalValues();
 	}
@@ -1805,7 +1806,9 @@ public class BigDecimalEntryPersistenceImpl
 	public void clearCache(BigDecimalEntry bigDecimalEntry) {
 		entityCache.removeResult(
 			BigDecimalEntryModelImpl.ENTITY_CACHE_ENABLED,
-			BigDecimalEntryImpl.class, bigDecimalEntry.getPrimaryKey());
+			BigDecimalEntryImpl.class, bigDecimalEntry.getPrimaryKey(),
+			bigDecimalEntry, BigDecimalEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((BigDecimalEntryModelImpl)bigDecimalEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1819,7 +1822,10 @@ public class BigDecimalEntryPersistenceImpl
 		for (BigDecimalEntry bigDecimalEntry : bigDecimalEntries) {
 			entityCache.removeResult(
 				BigDecimalEntryModelImpl.ENTITY_CACHE_ENABLED,
-				BigDecimalEntryImpl.class, bigDecimalEntry.getPrimaryKey());
+				BigDecimalEntryImpl.class, bigDecimalEntry.getPrimaryKey(),
+				bigDecimalEntry,
+				BigDecimalEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((BigDecimalEntryModelImpl)bigDecimalEntry).getColumnBitmask());
 		}
 	}
 
@@ -2035,7 +2041,9 @@ public class BigDecimalEntryPersistenceImpl
 		entityCache.putResult(
 			BigDecimalEntryModelImpl.ENTITY_CACHE_ENABLED,
 			BigDecimalEntryImpl.class, bigDecimalEntry.getPrimaryKey(),
-			bigDecimalEntry, false);
+			bigDecimalEntry, false,
+			BigDecimalEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((BigDecimalEntryModelImpl)bigDecimalEntry).getColumnBitmask());
 
 		bigDecimalEntry.resetOriginalValues();
 

@@ -1369,7 +1369,10 @@ public class WorkflowInstanceLinkPersistenceImpl
 		EntityCacheUtil.putResult(
 			WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
 			WorkflowInstanceLinkImpl.class,
-			workflowInstanceLink.getPrimaryKey(), workflowInstanceLink);
+			workflowInstanceLink.getPrimaryKey(), workflowInstanceLink,
+			WorkflowInstanceLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((WorkflowInstanceLinkModelImpl)workflowInstanceLink).
+				getColumnBitmask());
 
 		workflowInstanceLink.resetOriginalValues();
 	}
@@ -1431,7 +1434,10 @@ public class WorkflowInstanceLinkPersistenceImpl
 		EntityCacheUtil.removeResult(
 			WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
 			WorkflowInstanceLinkImpl.class,
-			workflowInstanceLink.getPrimaryKey());
+			workflowInstanceLink.getPrimaryKey(), workflowInstanceLink,
+			WorkflowInstanceLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((WorkflowInstanceLinkModelImpl)workflowInstanceLink).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1448,7 +1454,10 @@ public class WorkflowInstanceLinkPersistenceImpl
 			EntityCacheUtil.removeResult(
 				WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
 				WorkflowInstanceLinkImpl.class,
-				workflowInstanceLink.getPrimaryKey());
+				workflowInstanceLink.getPrimaryKey(), workflowInstanceLink,
+				WorkflowInstanceLinkModelImpl.COLUMN_BITMASK_ENABLED,
+				((WorkflowInstanceLinkModelImpl)workflowInstanceLink).
+					getColumnBitmask());
 		}
 	}
 
@@ -1757,7 +1766,10 @@ public class WorkflowInstanceLinkPersistenceImpl
 		EntityCacheUtil.putResult(
 			WorkflowInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
 			WorkflowInstanceLinkImpl.class,
-			workflowInstanceLink.getPrimaryKey(), workflowInstanceLink, false);
+			workflowInstanceLink.getPrimaryKey(), workflowInstanceLink, false,
+			WorkflowInstanceLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((WorkflowInstanceLinkModelImpl)workflowInstanceLink).
+				getColumnBitmask());
 
 		workflowInstanceLink.resetOriginalValues();
 

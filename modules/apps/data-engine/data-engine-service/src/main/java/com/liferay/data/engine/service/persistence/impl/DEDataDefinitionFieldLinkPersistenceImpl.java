@@ -4586,7 +4586,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DEDataDefinitionFieldLinkImpl.class,
 			deDataDefinitionFieldLink.getPrimaryKey(),
-			deDataDefinitionFieldLink);
+			deDataDefinitionFieldLink, _columnBitmaskEnabled,
+			((DEDataDefinitionFieldLinkModelImpl)deDataDefinitionFieldLink).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4662,7 +4664,10 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, DEDataDefinitionFieldLinkImpl.class,
-			deDataDefinitionFieldLink.getPrimaryKey());
+			deDataDefinitionFieldLink.getPrimaryKey(),
+			deDataDefinitionFieldLink, _columnBitmaskEnabled,
+			((DEDataDefinitionFieldLinkModelImpl)deDataDefinitionFieldLink).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4684,7 +4689,10 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DEDataDefinitionFieldLinkImpl.class,
-				deDataDefinitionFieldLink.getPrimaryKey());
+				deDataDefinitionFieldLink.getPrimaryKey(),
+				deDataDefinitionFieldLink, _columnBitmaskEnabled,
+				((DEDataDefinitionFieldLinkModelImpl)deDataDefinitionFieldLink).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DEDataDefinitionFieldLinkModelImpl)deDataDefinitionFieldLink,
@@ -5191,7 +5199,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DEDataDefinitionFieldLinkImpl.class,
 			deDataDefinitionFieldLink.getPrimaryKey(),
-			deDataDefinitionFieldLink, false);
+			deDataDefinitionFieldLink, false, _columnBitmaskEnabled,
+			((DEDataDefinitionFieldLinkModelImpl)deDataDefinitionFieldLink).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(deDataDefinitionFieldLinkModelImpl, false);
 		cacheUniqueFindersCache(deDataDefinitionFieldLinkModelImpl);

@@ -1437,7 +1437,10 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	public void cacheResult(SyncDLFileVersionDiff syncDLFileVersionDiff) {
 		entityCache.putResult(
 			entityCacheEnabled, SyncDLFileVersionDiffImpl.class,
-			syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff);
+			syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff,
+			_columnBitmaskEnabled,
+			((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByF_S_T,
@@ -1502,7 +1505,10 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	public void clearCache(SyncDLFileVersionDiff syncDLFileVersionDiff) {
 		entityCache.removeResult(
 			entityCacheEnabled, SyncDLFileVersionDiffImpl.class,
-			syncDLFileVersionDiff.getPrimaryKey());
+			syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff,
+			_columnBitmaskEnabled,
+			((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1521,7 +1527,10 @@ public class SyncDLFileVersionDiffPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, SyncDLFileVersionDiffImpl.class,
-				syncDLFileVersionDiff.getPrimaryKey());
+				syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff,
+				_columnBitmaskEnabled,
+				((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff, true);
@@ -1787,8 +1796,10 @@ public class SyncDLFileVersionDiffPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SyncDLFileVersionDiffImpl.class,
-			syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff,
-			false);
+			syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff, false,
+			_columnBitmaskEnabled,
+			((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(syncDLFileVersionDiffModelImpl, false);
 		cacheUniqueFindersCache(syncDLFileVersionDiffModelImpl);

@@ -2991,7 +2991,9 @@ public class ChangesetEntryPersistenceImpl
 	public void cacheResult(ChangesetEntry changesetEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, ChangesetEntryImpl.class,
-			changesetEntry.getPrimaryKey(), changesetEntry);
+			changesetEntry.getPrimaryKey(), changesetEntry,
+			_columnBitmaskEnabled,
+			((ChangesetEntryModelImpl)changesetEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_C_C,
@@ -3051,7 +3053,9 @@ public class ChangesetEntryPersistenceImpl
 	public void clearCache(ChangesetEntry changesetEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, ChangesetEntryImpl.class,
-			changesetEntry.getPrimaryKey());
+			changesetEntry.getPrimaryKey(), changesetEntry,
+			_columnBitmaskEnabled,
+			((ChangesetEntryModelImpl)changesetEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3067,7 +3071,9 @@ public class ChangesetEntryPersistenceImpl
 		for (ChangesetEntry changesetEntry : changesetEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, ChangesetEntryImpl.class,
-				changesetEntry.getPrimaryKey());
+				changesetEntry.getPrimaryKey(), changesetEntry,
+				_columnBitmaskEnabled,
+				((ChangesetEntryModelImpl)changesetEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(ChangesetEntryModelImpl)changesetEntry, true);
@@ -3464,7 +3470,9 @@ public class ChangesetEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, ChangesetEntryImpl.class,
-			changesetEntry.getPrimaryKey(), changesetEntry, false);
+			changesetEntry.getPrimaryKey(), changesetEntry, false,
+			_columnBitmaskEnabled,
+			((ChangesetEntryModelImpl)changesetEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(changesetEntryModelImpl, false);
 		cacheUniqueFindersCache(changesetEntryModelImpl);

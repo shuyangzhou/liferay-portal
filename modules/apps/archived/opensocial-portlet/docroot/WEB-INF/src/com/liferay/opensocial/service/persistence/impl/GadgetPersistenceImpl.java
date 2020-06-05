@@ -3194,7 +3194,9 @@ public class GadgetPersistenceImpl
 	public void cacheResult(Gadget gadget) {
 		EntityCacheUtil.putResult(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
-			gadget.getPrimaryKey(), gadget);
+			gadget.getPrimaryKey(), gadget,
+			GadgetModelImpl.COLUMN_BITMASK_ENABLED,
+			((GadgetModelImpl)gadget).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_U,
@@ -3250,7 +3252,9 @@ public class GadgetPersistenceImpl
 	public void clearCache(Gadget gadget) {
 		EntityCacheUtil.removeResult(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
-			gadget.getPrimaryKey());
+			gadget.getPrimaryKey(), gadget,
+			GadgetModelImpl.COLUMN_BITMASK_ENABLED,
+			((GadgetModelImpl)gadget).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3266,7 +3270,9 @@ public class GadgetPersistenceImpl
 		for (Gadget gadget : gadgets) {
 			EntityCacheUtil.removeResult(
 				GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
-				gadget.getPrimaryKey());
+				gadget.getPrimaryKey(), gadget,
+				GadgetModelImpl.COLUMN_BITMASK_ENABLED,
+				((GadgetModelImpl)gadget).getColumnBitmask());
 
 			clearUniqueFindersCache((GadgetModelImpl)gadget, true);
 		}
@@ -3591,7 +3597,9 @@ public class GadgetPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
-			gadget.getPrimaryKey(), gadget, false);
+			gadget.getPrimaryKey(), gadget, false,
+			GadgetModelImpl.COLUMN_BITMASK_ENABLED,
+			((GadgetModelImpl)gadget).getColumnBitmask());
 
 		clearUniqueFindersCache(gadgetModelImpl, false);
 		cacheUniqueFindersCache(gadgetModelImpl);

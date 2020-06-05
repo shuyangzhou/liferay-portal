@@ -7590,7 +7590,8 @@ public class JournalFolderPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, JournalFolderImpl.class,
-			journalFolder.getPrimaryKey(), journalFolder);
+			journalFolder.getPrimaryKey(), journalFolder, _columnBitmaskEnabled,
+			((JournalFolderModelImpl)journalFolder).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -7666,7 +7667,8 @@ public class JournalFolderPersistenceImpl
 	public void clearCache(JournalFolder journalFolder) {
 		entityCache.removeResult(
 			entityCacheEnabled, JournalFolderImpl.class,
-			journalFolder.getPrimaryKey());
+			journalFolder.getPrimaryKey(), journalFolder, _columnBitmaskEnabled,
+			((JournalFolderModelImpl)journalFolder).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -7682,7 +7684,9 @@ public class JournalFolderPersistenceImpl
 		for (JournalFolder journalFolder : journalFolders) {
 			entityCache.removeResult(
 				entityCacheEnabled, JournalFolderImpl.class,
-				journalFolder.getPrimaryKey());
+				journalFolder.getPrimaryKey(), journalFolder,
+				_columnBitmaskEnabled,
+				((JournalFolderModelImpl)journalFolder).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(JournalFolderModelImpl)journalFolder, true);
@@ -8196,7 +8200,9 @@ public class JournalFolderPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, JournalFolderImpl.class,
-			journalFolder.getPrimaryKey(), journalFolder, false);
+			journalFolder.getPrimaryKey(), journalFolder, false,
+			_columnBitmaskEnabled,
+			((JournalFolderModelImpl)journalFolder).getColumnBitmask());
 
 		clearUniqueFindersCache(journalFolderModelImpl, false);
 		cacheUniqueFindersCache(journalFolderModelImpl);

@@ -3082,7 +3082,9 @@ public class AssetLinkPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AssetLinkModelImpl.ENTITY_CACHE_ENABLED, AssetLinkImpl.class,
-			assetLink.getPrimaryKey(), assetLink);
+			assetLink.getPrimaryKey(), assetLink,
+			AssetLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetLinkModelImpl)assetLink).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByE_E_T,
@@ -3148,7 +3150,9 @@ public class AssetLinkPersistenceImpl
 	public void clearCache(AssetLink assetLink) {
 		EntityCacheUtil.removeResult(
 			AssetLinkModelImpl.ENTITY_CACHE_ENABLED, AssetLinkImpl.class,
-			assetLink.getPrimaryKey());
+			assetLink.getPrimaryKey(), assetLink,
+			AssetLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetLinkModelImpl)assetLink).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3164,7 +3168,9 @@ public class AssetLinkPersistenceImpl
 		for (AssetLink assetLink : assetLinks) {
 			EntityCacheUtil.removeResult(
 				AssetLinkModelImpl.ENTITY_CACHE_ENABLED, AssetLinkImpl.class,
-				assetLink.getPrimaryKey());
+				assetLink.getPrimaryKey(), assetLink,
+				AssetLinkModelImpl.COLUMN_BITMASK_ENABLED,
+				((AssetLinkModelImpl)assetLink).getColumnBitmask());
 
 			clearUniqueFindersCache((AssetLinkModelImpl)assetLink, true);
 		}
@@ -3547,7 +3553,9 @@ public class AssetLinkPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AssetLinkModelImpl.ENTITY_CACHE_ENABLED, AssetLinkImpl.class,
-			assetLink.getPrimaryKey(), assetLink, false);
+			assetLink.getPrimaryKey(), assetLink, false,
+			AssetLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetLinkModelImpl)assetLink).getColumnBitmask());
 
 		clearUniqueFindersCache(assetLinkModelImpl, false);
 		cacheUniqueFindersCache(assetLinkModelImpl);

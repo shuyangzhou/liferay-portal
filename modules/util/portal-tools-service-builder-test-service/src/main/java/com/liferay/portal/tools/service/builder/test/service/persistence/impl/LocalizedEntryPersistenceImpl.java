@@ -144,7 +144,8 @@ public class LocalizedEntryPersistenceImpl
 	public void clearCache(LocalizedEntry localizedEntry) {
 		entityCache.removeResult(
 			LocalizedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LocalizedEntryImpl.class, localizedEntry.getPrimaryKey());
+			LocalizedEntryImpl.class, localizedEntry.getPrimaryKey(),
+			localizedEntry);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -158,7 +159,8 @@ public class LocalizedEntryPersistenceImpl
 		for (LocalizedEntry localizedEntry : localizedEntries) {
 			entityCache.removeResult(
 				LocalizedEntryModelImpl.ENTITY_CACHE_ENABLED,
-				LocalizedEntryImpl.class, localizedEntry.getPrimaryKey());
+				LocalizedEntryImpl.class, localizedEntry.getPrimaryKey(),
+				localizedEntry);
 		}
 	}
 

@@ -2407,7 +2407,9 @@ public class CalendarNotificationTemplatePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, CalendarNotificationTemplateImpl.class,
 			calendarNotificationTemplate.getPrimaryKey(),
-			calendarNotificationTemplate);
+			calendarNotificationTemplate, _columnBitmaskEnabled,
+			((CalendarNotificationTemplateModelImpl)
+				calendarNotificationTemplate).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2482,7 +2484,10 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, CalendarNotificationTemplateImpl.class,
-			calendarNotificationTemplate.getPrimaryKey());
+			calendarNotificationTemplate.getPrimaryKey(),
+			calendarNotificationTemplate, _columnBitmaskEnabled,
+			((CalendarNotificationTemplateModelImpl)
+				calendarNotificationTemplate).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2504,7 +2509,10 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, CalendarNotificationTemplateImpl.class,
-				calendarNotificationTemplate.getPrimaryKey());
+				calendarNotificationTemplate.getPrimaryKey(),
+				calendarNotificationTemplate, _columnBitmaskEnabled,
+				((CalendarNotificationTemplateModelImpl)
+					calendarNotificationTemplate).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(CalendarNotificationTemplateModelImpl)
@@ -2919,7 +2927,9 @@ public class CalendarNotificationTemplatePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, CalendarNotificationTemplateImpl.class,
 			calendarNotificationTemplate.getPrimaryKey(),
-			calendarNotificationTemplate, false);
+			calendarNotificationTemplate, false, _columnBitmaskEnabled,
+			((CalendarNotificationTemplateModelImpl)
+				calendarNotificationTemplate).getColumnBitmask());
 
 		clearUniqueFindersCache(calendarNotificationTemplateModelImpl, false);
 		cacheUniqueFindersCache(calendarNotificationTemplateModelImpl);

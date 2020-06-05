@@ -9989,7 +9989,9 @@ public class TasksEntryPersistenceImpl
 	public void cacheResult(TasksEntry tasksEntry) {
 		EntityCacheUtil.putResult(
 			TasksEntryModelImpl.ENTITY_CACHE_ENABLED, TasksEntryImpl.class,
-			tasksEntry.getPrimaryKey(), tasksEntry);
+			tasksEntry.getPrimaryKey(), tasksEntry,
+			TasksEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((TasksEntryModelImpl)tasksEntry).getColumnBitmask());
 
 		tasksEntry.resetOriginalValues();
 	}
@@ -10041,7 +10043,9 @@ public class TasksEntryPersistenceImpl
 	public void clearCache(TasksEntry tasksEntry) {
 		EntityCacheUtil.removeResult(
 			TasksEntryModelImpl.ENTITY_CACHE_ENABLED, TasksEntryImpl.class,
-			tasksEntry.getPrimaryKey());
+			tasksEntry.getPrimaryKey(), tasksEntry,
+			TasksEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((TasksEntryModelImpl)tasksEntry).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -10055,7 +10059,9 @@ public class TasksEntryPersistenceImpl
 		for (TasksEntry tasksEntry : tasksEntries) {
 			EntityCacheUtil.removeResult(
 				TasksEntryModelImpl.ENTITY_CACHE_ENABLED, TasksEntryImpl.class,
-				tasksEntry.getPrimaryKey());
+				tasksEntry.getPrimaryKey(), tasksEntry,
+				TasksEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((TasksEntryModelImpl)tasksEntry).getColumnBitmask());
 		}
 	}
 
@@ -10592,7 +10598,9 @@ public class TasksEntryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			TasksEntryModelImpl.ENTITY_CACHE_ENABLED, TasksEntryImpl.class,
-			tasksEntry.getPrimaryKey(), tasksEntry, false);
+			tasksEntry.getPrimaryKey(), tasksEntry, false,
+			TasksEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((TasksEntryModelImpl)tasksEntry).getColumnBitmask());
 
 		tasksEntry.resetOriginalValues();
 

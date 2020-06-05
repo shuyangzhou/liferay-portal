@@ -13100,7 +13100,8 @@ public class MBThreadPersistenceImpl
 	public void cacheResult(MBThread mbThread) {
 		entityCache.putResult(
 			entityCacheEnabled, MBThreadImpl.class, mbThread.getPrimaryKey(),
-			mbThread);
+			mbThread, _columnBitmaskEnabled,
+			((MBThreadModelImpl)mbThread).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -13159,7 +13160,9 @@ public class MBThreadPersistenceImpl
 	@Override
 	public void clearCache(MBThread mbThread) {
 		entityCache.removeResult(
-			entityCacheEnabled, MBThreadImpl.class, mbThread.getPrimaryKey());
+			entityCacheEnabled, MBThreadImpl.class, mbThread.getPrimaryKey(),
+			mbThread, _columnBitmaskEnabled,
+			((MBThreadModelImpl)mbThread).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -13175,7 +13178,8 @@ public class MBThreadPersistenceImpl
 		for (MBThread mbThread : mbThreads) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBThreadImpl.class,
-				mbThread.getPrimaryKey());
+				mbThread.getPrimaryKey(), mbThread, _columnBitmaskEnabled,
+				((MBThreadModelImpl)mbThread).getColumnBitmask());
 
 			clearUniqueFindersCache((MBThreadModelImpl)mbThread, true);
 		}
@@ -13749,7 +13753,8 @@ public class MBThreadPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBThreadImpl.class, mbThread.getPrimaryKey(),
-			mbThread, false);
+			mbThread, false, _columnBitmaskEnabled,
+			((MBThreadModelImpl)mbThread).getColumnBitmask());
 
 		clearUniqueFindersCache(mbThreadModelImpl, false);
 		cacheUniqueFindersCache(mbThreadModelImpl);

@@ -13713,7 +13713,9 @@ public class AssetListEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntryImpl.class,
-			assetListEntry.getPrimaryKey(), assetListEntry);
+			assetListEntry.getPrimaryKey(), assetListEntry,
+			_columnBitmaskEnabled,
+			((AssetListEntryModelImpl)assetListEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -13793,7 +13795,9 @@ public class AssetListEntryPersistenceImpl
 	public void clearCache(AssetListEntry assetListEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, AssetListEntryImpl.class,
-			assetListEntry.getPrimaryKey());
+			assetListEntry.getPrimaryKey(), assetListEntry,
+			_columnBitmaskEnabled,
+			((AssetListEntryModelImpl)assetListEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -13809,7 +13813,9 @@ public class AssetListEntryPersistenceImpl
 		for (AssetListEntry assetListEntry : assetListEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, AssetListEntryImpl.class,
-				assetListEntry.getPrimaryKey());
+				assetListEntry.getPrimaryKey(), assetListEntry,
+				_columnBitmaskEnabled,
+				((AssetListEntryModelImpl)assetListEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetListEntryModelImpl)assetListEntry, true);
@@ -14331,7 +14337,9 @@ public class AssetListEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntryImpl.class,
-			assetListEntry.getPrimaryKey(), assetListEntry, false);
+			assetListEntry.getPrimaryKey(), assetListEntry, false,
+			_columnBitmaskEnabled,
+			((AssetListEntryModelImpl)assetListEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(assetListEntryModelImpl, false);
 		cacheUniqueFindersCache(assetListEntryModelImpl);

@@ -2106,7 +2106,10 @@ public class SocialActivityLimitPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityLimitImpl.class, socialActivityLimit.getPrimaryKey(),
-			socialActivityLimit);
+			socialActivityLimit,
+			SocialActivityLimitModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityLimitModelImpl)socialActivityLimit).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_U_C_C_A_A,
@@ -2177,7 +2180,11 @@ public class SocialActivityLimitPersistenceImpl
 	public void clearCache(SocialActivityLimit socialActivityLimit) {
 		EntityCacheUtil.removeResult(
 			SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-			SocialActivityLimitImpl.class, socialActivityLimit.getPrimaryKey());
+			SocialActivityLimitImpl.class, socialActivityLimit.getPrimaryKey(),
+			socialActivityLimit,
+			SocialActivityLimitModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityLimitModelImpl)socialActivityLimit).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2195,7 +2202,10 @@ public class SocialActivityLimitPersistenceImpl
 			EntityCacheUtil.removeResult(
 				SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
 				SocialActivityLimitImpl.class,
-				socialActivityLimit.getPrimaryKey());
+				socialActivityLimit.getPrimaryKey(), socialActivityLimit,
+				SocialActivityLimitModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialActivityLimitModelImpl)socialActivityLimit).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialActivityLimitModelImpl)socialActivityLimit, true);
@@ -2546,7 +2556,10 @@ public class SocialActivityLimitPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityLimitImpl.class, socialActivityLimit.getPrimaryKey(),
-			socialActivityLimit, false);
+			socialActivityLimit, false,
+			SocialActivityLimitModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityLimitModelImpl)socialActivityLimit).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(socialActivityLimitModelImpl, false);
 		cacheUniqueFindersCache(socialActivityLimitModelImpl);

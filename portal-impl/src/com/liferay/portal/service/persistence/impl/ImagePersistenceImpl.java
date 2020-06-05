@@ -610,7 +610,8 @@ public class ImagePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ImageModelImpl.ENTITY_CACHE_ENABLED, ImageImpl.class,
-			image.getPrimaryKey(), image);
+			image.getPrimaryKey(), image, ImageModelImpl.COLUMN_BITMASK_ENABLED,
+			((ImageModelImpl)image).getColumnBitmask());
 
 		image.resetOriginalValues();
 	}
@@ -668,7 +669,8 @@ public class ImagePersistenceImpl
 	public void clearCache(Image image) {
 		EntityCacheUtil.removeResult(
 			ImageModelImpl.ENTITY_CACHE_ENABLED, ImageImpl.class,
-			image.getPrimaryKey());
+			image.getPrimaryKey(), image, ImageModelImpl.COLUMN_BITMASK_ENABLED,
+			((ImageModelImpl)image).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -682,7 +684,9 @@ public class ImagePersistenceImpl
 		for (Image image : images) {
 			EntityCacheUtil.removeResult(
 				ImageModelImpl.ENTITY_CACHE_ENABLED, ImageImpl.class,
-				image.getPrimaryKey());
+				image.getPrimaryKey(), image,
+				ImageModelImpl.COLUMN_BITMASK_ENABLED,
+				((ImageModelImpl)image).getColumnBitmask());
 		}
 	}
 
@@ -856,7 +860,9 @@ public class ImagePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ImageModelImpl.ENTITY_CACHE_ENABLED, ImageImpl.class,
-			image.getPrimaryKey(), image, false);
+			image.getPrimaryKey(), image, false,
+			ImageModelImpl.COLUMN_BITMASK_ENABLED,
+			((ImageModelImpl)image).getColumnBitmask());
 
 		image.resetOriginalValues();
 

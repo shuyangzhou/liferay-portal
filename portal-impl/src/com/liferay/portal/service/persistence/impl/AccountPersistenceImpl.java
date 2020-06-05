@@ -157,7 +157,7 @@ public class AccountPersistenceImpl
 	public void clearCache(Account account) {
 		EntityCacheUtil.removeResult(
 			AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
-			account.getPrimaryKey());
+			account.getPrimaryKey(), account);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -171,7 +171,7 @@ public class AccountPersistenceImpl
 		for (Account account : accounts) {
 			EntityCacheUtil.removeResult(
 				AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
-				account.getPrimaryKey());
+				account.getPrimaryKey(), account);
 		}
 	}
 

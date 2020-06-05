@@ -2831,7 +2831,10 @@ public class ExportImportConfigurationPersistenceImpl
 			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 			ExportImportConfigurationImpl.class,
 			exportImportConfiguration.getPrimaryKey(),
-			exportImportConfiguration);
+			exportImportConfiguration,
+			ExportImportConfigurationModelImpl.COLUMN_BITMASK_ENABLED,
+			((ExportImportConfigurationModelImpl)exportImportConfiguration).
+				getColumnBitmask());
 
 		exportImportConfiguration.resetOriginalValues();
 	}
@@ -2891,7 +2894,11 @@ public class ExportImportConfigurationPersistenceImpl
 		EntityCacheUtil.removeResult(
 			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 			ExportImportConfigurationImpl.class,
-			exportImportConfiguration.getPrimaryKey());
+			exportImportConfiguration.getPrimaryKey(),
+			exportImportConfiguration,
+			ExportImportConfigurationModelImpl.COLUMN_BITMASK_ENABLED,
+			((ExportImportConfigurationModelImpl)exportImportConfiguration).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2910,7 +2917,11 @@ public class ExportImportConfigurationPersistenceImpl
 			EntityCacheUtil.removeResult(
 				ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 				ExportImportConfigurationImpl.class,
-				exportImportConfiguration.getPrimaryKey());
+				exportImportConfiguration.getPrimaryKey(),
+				exportImportConfiguration,
+				ExportImportConfigurationModelImpl.COLUMN_BITMASK_ENABLED,
+				((ExportImportConfigurationModelImpl)exportImportConfiguration).
+					getColumnBitmask());
 		}
 	}
 
@@ -3288,7 +3299,10 @@ public class ExportImportConfigurationPersistenceImpl
 			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 			ExportImportConfigurationImpl.class,
 			exportImportConfiguration.getPrimaryKey(),
-			exportImportConfiguration, false);
+			exportImportConfiguration, false,
+			ExportImportConfigurationModelImpl.COLUMN_BITMASK_ENABLED,
+			((ExportImportConfigurationModelImpl)exportImportConfiguration).
+				getColumnBitmask());
 
 		exportImportConfiguration.resetOriginalValues();
 

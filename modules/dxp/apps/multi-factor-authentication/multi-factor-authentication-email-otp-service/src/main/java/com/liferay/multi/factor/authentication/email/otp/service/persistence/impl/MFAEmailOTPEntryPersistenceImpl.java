@@ -310,7 +310,9 @@ public class MFAEmailOTPEntryPersistenceImpl
 	public void cacheResult(MFAEmailOTPEntry mfaEmailOTPEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, MFAEmailOTPEntryImpl.class,
-			mfaEmailOTPEntry.getPrimaryKey(), mfaEmailOTPEntry);
+			mfaEmailOTPEntry.getPrimaryKey(), mfaEmailOTPEntry,
+			_columnBitmaskEnabled,
+			((MFAEmailOTPEntryModelImpl)mfaEmailOTPEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUserId,
@@ -366,7 +368,9 @@ public class MFAEmailOTPEntryPersistenceImpl
 	public void clearCache(MFAEmailOTPEntry mfaEmailOTPEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, MFAEmailOTPEntryImpl.class,
-			mfaEmailOTPEntry.getPrimaryKey());
+			mfaEmailOTPEntry.getPrimaryKey(), mfaEmailOTPEntry,
+			_columnBitmaskEnabled,
+			((MFAEmailOTPEntryModelImpl)mfaEmailOTPEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -383,7 +387,10 @@ public class MFAEmailOTPEntryPersistenceImpl
 		for (MFAEmailOTPEntry mfaEmailOTPEntry : mfaEmailOTPEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, MFAEmailOTPEntryImpl.class,
-				mfaEmailOTPEntry.getPrimaryKey());
+				mfaEmailOTPEntry.getPrimaryKey(), mfaEmailOTPEntry,
+				_columnBitmaskEnabled,
+				((MFAEmailOTPEntryModelImpl)mfaEmailOTPEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(MFAEmailOTPEntryModelImpl)mfaEmailOTPEntry, true);
@@ -626,7 +633,9 @@ public class MFAEmailOTPEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MFAEmailOTPEntryImpl.class,
-			mfaEmailOTPEntry.getPrimaryKey(), mfaEmailOTPEntry, false);
+			mfaEmailOTPEntry.getPrimaryKey(), mfaEmailOTPEntry, false,
+			_columnBitmaskEnabled,
+			((MFAEmailOTPEntryModelImpl)mfaEmailOTPEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(mfaEmailOTPEntryModelImpl, false);
 		cacheUniqueFindersCache(mfaEmailOTPEntryModelImpl);

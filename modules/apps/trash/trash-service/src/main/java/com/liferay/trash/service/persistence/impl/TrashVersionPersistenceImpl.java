@@ -1437,7 +1437,8 @@ public class TrashVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, TrashVersionImpl.class,
-			trashVersion.getPrimaryKey(), trashVersion);
+			trashVersion.getPrimaryKey(), trashVersion, _columnBitmaskEnabled,
+			((TrashVersionModelImpl)trashVersion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_C,
@@ -1502,7 +1503,8 @@ public class TrashVersionPersistenceImpl
 	public void clearCache(TrashVersion trashVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, TrashVersionImpl.class,
-			trashVersion.getPrimaryKey());
+			trashVersion.getPrimaryKey(), trashVersion, _columnBitmaskEnabled,
+			((TrashVersionModelImpl)trashVersion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1518,7 +1520,9 @@ public class TrashVersionPersistenceImpl
 		for (TrashVersion trashVersion : trashVersions) {
 			entityCache.removeResult(
 				entityCacheEnabled, TrashVersionImpl.class,
-				trashVersion.getPrimaryKey());
+				trashVersion.getPrimaryKey(), trashVersion,
+				_columnBitmaskEnabled,
+				((TrashVersionModelImpl)trashVersion).getColumnBitmask());
 
 			clearUniqueFindersCache((TrashVersionModelImpl)trashVersion, true);
 		}
@@ -1813,7 +1817,9 @@ public class TrashVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, TrashVersionImpl.class,
-			trashVersion.getPrimaryKey(), trashVersion, false);
+			trashVersion.getPrimaryKey(), trashVersion, false,
+			_columnBitmaskEnabled,
+			((TrashVersionModelImpl)trashVersion).getColumnBitmask());
 
 		clearUniqueFindersCache(trashVersionModelImpl, false);
 		cacheUniqueFindersCache(trashVersionModelImpl);

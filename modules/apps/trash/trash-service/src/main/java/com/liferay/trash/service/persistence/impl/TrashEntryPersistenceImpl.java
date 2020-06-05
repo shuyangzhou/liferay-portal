@@ -2542,7 +2542,8 @@ public class TrashEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, TrashEntryImpl.class,
-			trashEntry.getPrimaryKey(), trashEntry);
+			trashEntry.getPrimaryKey(), trashEntry, _columnBitmaskEnabled,
+			((TrashEntryModelImpl)trashEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_C,
@@ -2605,7 +2606,8 @@ public class TrashEntryPersistenceImpl
 	public void clearCache(TrashEntry trashEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, TrashEntryImpl.class,
-			trashEntry.getPrimaryKey());
+			trashEntry.getPrimaryKey(), trashEntry, _columnBitmaskEnabled,
+			((TrashEntryModelImpl)trashEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2621,7 +2623,8 @@ public class TrashEntryPersistenceImpl
 		for (TrashEntry trashEntry : trashEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, TrashEntryImpl.class,
-				trashEntry.getPrimaryKey());
+				trashEntry.getPrimaryKey(), trashEntry, _columnBitmaskEnabled,
+				((TrashEntryModelImpl)trashEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((TrashEntryModelImpl)trashEntry, true);
 		}
@@ -2939,7 +2942,9 @@ public class TrashEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, TrashEntryImpl.class,
-			trashEntry.getPrimaryKey(), trashEntry, false);
+			trashEntry.getPrimaryKey(), trashEntry, false,
+			_columnBitmaskEnabled,
+			((TrashEntryModelImpl)trashEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(trashEntryModelImpl, false);
 		cacheUniqueFindersCache(trashEntryModelImpl);

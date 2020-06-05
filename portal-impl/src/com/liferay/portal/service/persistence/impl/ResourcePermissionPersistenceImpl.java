@@ -6750,7 +6750,10 @@ public class ResourcePermissionPersistenceImpl
 		EntityCacheUtil.putResult(
 			ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourcePermissionImpl.class, resourcePermission.getPrimaryKey(),
-			resourcePermission);
+			resourcePermission,
+			ResourcePermissionModelImpl.COLUMN_BITMASK_ENABLED,
+			((ResourcePermissionModelImpl)resourcePermission).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_N_S_P_R,
@@ -6818,7 +6821,11 @@ public class ResourcePermissionPersistenceImpl
 	public void clearCache(ResourcePermission resourcePermission) {
 		EntityCacheUtil.removeResult(
 			ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
-			ResourcePermissionImpl.class, resourcePermission.getPrimaryKey());
+			ResourcePermissionImpl.class, resourcePermission.getPrimaryKey(),
+			resourcePermission,
+			ResourcePermissionModelImpl.COLUMN_BITMASK_ENABLED,
+			((ResourcePermissionModelImpl)resourcePermission).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6836,7 +6843,10 @@ public class ResourcePermissionPersistenceImpl
 			EntityCacheUtil.removeResult(
 				ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
 				ResourcePermissionImpl.class,
-				resourcePermission.getPrimaryKey());
+				resourcePermission.getPrimaryKey(), resourcePermission,
+				ResourcePermissionModelImpl.COLUMN_BITMASK_ENABLED,
+				((ResourcePermissionModelImpl)resourcePermission).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(ResourcePermissionModelImpl)resourcePermission, true);
@@ -7375,7 +7385,10 @@ public class ResourcePermissionPersistenceImpl
 		EntityCacheUtil.putResult(
 			ResourcePermissionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourcePermissionImpl.class, resourcePermission.getPrimaryKey(),
-			resourcePermission, false);
+			resourcePermission, false,
+			ResourcePermissionModelImpl.COLUMN_BITMASK_ENABLED,
+			((ResourcePermissionModelImpl)resourcePermission).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(resourcePermissionModelImpl, false);
 		cacheUniqueFindersCache(resourcePermissionModelImpl);

@@ -20857,7 +20857,8 @@ public class MBMessagePersistenceImpl
 	public void cacheResult(MBMessage mbMessage) {
 		entityCache.putResult(
 			entityCacheEnabled, MBMessageImpl.class, mbMessage.getPrimaryKey(),
-			mbMessage);
+			mbMessage, _columnBitmaskEnabled,
+			((MBMessageModelImpl)mbMessage).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -20918,7 +20919,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void clearCache(MBMessage mbMessage) {
 		entityCache.removeResult(
-			entityCacheEnabled, MBMessageImpl.class, mbMessage.getPrimaryKey());
+			entityCacheEnabled, MBMessageImpl.class, mbMessage.getPrimaryKey(),
+			mbMessage, _columnBitmaskEnabled,
+			((MBMessageModelImpl)mbMessage).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -20934,7 +20937,8 @@ public class MBMessagePersistenceImpl
 		for (MBMessage mbMessage : mbMessages) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBMessageImpl.class,
-				mbMessage.getPrimaryKey());
+				mbMessage.getPrimaryKey(), mbMessage, _columnBitmaskEnabled,
+				((MBMessageModelImpl)mbMessage).getColumnBitmask());
 
 			clearUniqueFindersCache((MBMessageModelImpl)mbMessage, true);
 		}
@@ -22111,7 +22115,8 @@ public class MBMessagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBMessageImpl.class, mbMessage.getPrimaryKey(),
-			mbMessage, false);
+			mbMessage, false, _columnBitmaskEnabled,
+			((MBMessageModelImpl)mbMessage).getColumnBitmask());
 
 		clearUniqueFindersCache(mbMessageModelImpl, false);
 		cacheUniqueFindersCache(mbMessageModelImpl);

@@ -3644,7 +3644,9 @@ public class SocialActivitySetPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
-			socialActivitySet);
+			socialActivitySet,
+			SocialActivitySetModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivitySetModelImpl)socialActivitySet).getColumnBitmask());
 
 		socialActivitySet.resetOriginalValues();
 	}
@@ -3703,7 +3705,10 @@ public class SocialActivitySetPersistenceImpl
 	public void clearCache(SocialActivitySet socialActivitySet) {
 		EntityCacheUtil.removeResult(
 			SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-			SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey());
+			SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
+			socialActivitySet,
+			SocialActivitySetModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivitySetModelImpl)socialActivitySet).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3717,7 +3722,11 @@ public class SocialActivitySetPersistenceImpl
 		for (SocialActivitySet socialActivitySet : socialActivitySets) {
 			EntityCacheUtil.removeResult(
 				SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey());
+				SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
+				socialActivitySet,
+				SocialActivitySetModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialActivitySetModelImpl)socialActivitySet).
+					getColumnBitmask());
 		}
 	}
 
@@ -4123,7 +4132,9 @@ public class SocialActivitySetPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivitySetImpl.class, socialActivitySet.getPrimaryKey(),
-			socialActivitySet, false);
+			socialActivitySet, false,
+			SocialActivitySetModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivitySetModelImpl)socialActivitySet).getColumnBitmask());
 
 		socialActivitySet.resetOriginalValues();
 

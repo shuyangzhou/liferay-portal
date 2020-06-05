@@ -349,7 +349,9 @@ public class ReleasePersistenceImpl
 	public void cacheResult(Release release) {
 		EntityCacheUtil.putResult(
 			ReleaseModelImpl.ENTITY_CACHE_ENABLED, ReleaseImpl.class,
-			release.getPrimaryKey(), release);
+			release.getPrimaryKey(), release,
+			ReleaseModelImpl.COLUMN_BITMASK_ENABLED,
+			((ReleaseModelImpl)release).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByServletContextName,
@@ -405,7 +407,9 @@ public class ReleasePersistenceImpl
 	public void clearCache(Release release) {
 		EntityCacheUtil.removeResult(
 			ReleaseModelImpl.ENTITY_CACHE_ENABLED, ReleaseImpl.class,
-			release.getPrimaryKey());
+			release.getPrimaryKey(), release,
+			ReleaseModelImpl.COLUMN_BITMASK_ENABLED,
+			((ReleaseModelImpl)release).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -421,7 +425,9 @@ public class ReleasePersistenceImpl
 		for (Release release : releases) {
 			EntityCacheUtil.removeResult(
 				ReleaseModelImpl.ENTITY_CACHE_ENABLED, ReleaseImpl.class,
-				release.getPrimaryKey());
+				release.getPrimaryKey(), release,
+				ReleaseModelImpl.COLUMN_BITMASK_ENABLED,
+				((ReleaseModelImpl)release).getColumnBitmask());
 
 			clearUniqueFindersCache((ReleaseModelImpl)release, true);
 		}
@@ -658,7 +664,9 @@ public class ReleasePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ReleaseModelImpl.ENTITY_CACHE_ENABLED, ReleaseImpl.class,
-			release.getPrimaryKey(), release, false);
+			release.getPrimaryKey(), release, false,
+			ReleaseModelImpl.COLUMN_BITMASK_ENABLED,
+			((ReleaseModelImpl)release).getColumnBitmask());
 
 		clearUniqueFindersCache(releaseModelImpl, false);
 		cacheUniqueFindersCache(releaseModelImpl);

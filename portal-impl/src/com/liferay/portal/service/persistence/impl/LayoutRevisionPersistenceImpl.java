@@ -7871,7 +7871,8 @@ public class LayoutRevisionPersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
-			layoutRevision);
+			layoutRevision, LayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutRevisionModelImpl)layoutRevision).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByL_H_P,
@@ -7941,7 +7942,9 @@ public class LayoutRevisionPersistenceImpl
 	public void clearCache(LayoutRevision layoutRevision) {
 		EntityCacheUtil.removeResult(
 			LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutRevisionImpl.class, layoutRevision.getPrimaryKey());
+			LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
+			layoutRevision, LayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutRevisionModelImpl)layoutRevision).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -7957,7 +7960,9 @@ public class LayoutRevisionPersistenceImpl
 		for (LayoutRevision layoutRevision : layoutRevisions) {
 			EntityCacheUtil.removeResult(
 				LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutRevisionImpl.class, layoutRevision.getPrimaryKey());
+				LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
+				layoutRevision, LayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutRevisionModelImpl)layoutRevision).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutRevisionModelImpl)layoutRevision, true);
@@ -8634,7 +8639,9 @@ public class LayoutRevisionPersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutRevisionImpl.class, layoutRevision.getPrimaryKey(),
-			layoutRevision, false);
+			layoutRevision, false,
+			LayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutRevisionModelImpl)layoutRevision).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutRevisionModelImpl, false);
 		cacheUniqueFindersCache(layoutRevisionModelImpl);

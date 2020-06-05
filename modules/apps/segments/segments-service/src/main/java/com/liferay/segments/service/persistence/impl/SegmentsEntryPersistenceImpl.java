@@ -9801,7 +9801,8 @@ public class SegmentsEntryPersistenceImpl
 	public void cacheResult(SegmentsEntry segmentsEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsEntryImpl.class,
-			segmentsEntry.getPrimaryKey(), segmentsEntry);
+			segmentsEntry.getPrimaryKey(), segmentsEntry, _columnBitmaskEnabled,
+			((SegmentsEntryModelImpl)segmentsEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -9865,7 +9866,8 @@ public class SegmentsEntryPersistenceImpl
 	public void clearCache(SegmentsEntry segmentsEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, SegmentsEntryImpl.class,
-			segmentsEntry.getPrimaryKey());
+			segmentsEntry.getPrimaryKey(), segmentsEntry, _columnBitmaskEnabled,
+			((SegmentsEntryModelImpl)segmentsEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -9881,7 +9883,9 @@ public class SegmentsEntryPersistenceImpl
 		for (SegmentsEntry segmentsEntry : segmentsEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, SegmentsEntryImpl.class,
-				segmentsEntry.getPrimaryKey());
+				segmentsEntry.getPrimaryKey(), segmentsEntry,
+				_columnBitmaskEnabled,
+				((SegmentsEntryModelImpl)segmentsEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SegmentsEntryModelImpl)segmentsEntry, true);
@@ -10437,7 +10441,9 @@ public class SegmentsEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsEntryImpl.class,
-			segmentsEntry.getPrimaryKey(), segmentsEntry, false);
+			segmentsEntry.getPrimaryKey(), segmentsEntry, false,
+			_columnBitmaskEnabled,
+			((SegmentsEntryModelImpl)segmentsEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(segmentsEntryModelImpl, false);
 		cacheUniqueFindersCache(segmentsEntryModelImpl);

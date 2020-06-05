@@ -2498,7 +2498,8 @@ public class DLFileRankPersistenceImpl
 	public void cacheResult(DLFileRank dlFileRank) {
 		entityCache.putResult(
 			entityCacheEnabled, DLFileRankImpl.class,
-			dlFileRank.getPrimaryKey(), dlFileRank);
+			dlFileRank.getPrimaryKey(), dlFileRank, _columnBitmaskEnabled,
+			((DLFileRankModelImpl)dlFileRank).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_U_F,
@@ -2558,7 +2559,8 @@ public class DLFileRankPersistenceImpl
 	public void clearCache(DLFileRank dlFileRank) {
 		entityCache.removeResult(
 			entityCacheEnabled, DLFileRankImpl.class,
-			dlFileRank.getPrimaryKey());
+			dlFileRank.getPrimaryKey(), dlFileRank, _columnBitmaskEnabled,
+			((DLFileRankModelImpl)dlFileRank).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2574,7 +2576,8 @@ public class DLFileRankPersistenceImpl
 		for (DLFileRank dlFileRank : dlFileRanks) {
 			entityCache.removeResult(
 				entityCacheEnabled, DLFileRankImpl.class,
-				dlFileRank.getPrimaryKey());
+				dlFileRank.getPrimaryKey(), dlFileRank, _columnBitmaskEnabled,
+				((DLFileRankModelImpl)dlFileRank).getColumnBitmask());
 
 			clearUniqueFindersCache((DLFileRankModelImpl)dlFileRank, true);
 		}
@@ -2909,7 +2912,9 @@ public class DLFileRankPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DLFileRankImpl.class,
-			dlFileRank.getPrimaryKey(), dlFileRank, false);
+			dlFileRank.getPrimaryKey(), dlFileRank, false,
+			_columnBitmaskEnabled,
+			((DLFileRankModelImpl)dlFileRank).getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileRankModelImpl, false);
 		cacheUniqueFindersCache(dlFileRankModelImpl);

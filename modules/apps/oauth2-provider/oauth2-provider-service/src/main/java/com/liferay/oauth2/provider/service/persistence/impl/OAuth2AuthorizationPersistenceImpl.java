@@ -2285,7 +2285,10 @@ public class OAuth2AuthorizationPersistenceImpl
 	public void cacheResult(OAuth2Authorization oAuth2Authorization) {
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2AuthorizationImpl.class,
-			oAuth2Authorization.getPrimaryKey(), oAuth2Authorization);
+			oAuth2Authorization.getPrimaryKey(), oAuth2Authorization,
+			_columnBitmaskEnabled,
+			((OAuth2AuthorizationModelImpl)oAuth2Authorization).
+				getColumnBitmask());
 
 		oAuth2Authorization.resetOriginalValues();
 	}
@@ -2337,7 +2340,10 @@ public class OAuth2AuthorizationPersistenceImpl
 	public void clearCache(OAuth2Authorization oAuth2Authorization) {
 		entityCache.removeResult(
 			entityCacheEnabled, OAuth2AuthorizationImpl.class,
-			oAuth2Authorization.getPrimaryKey());
+			oAuth2Authorization.getPrimaryKey(), oAuth2Authorization,
+			_columnBitmaskEnabled,
+			((OAuth2AuthorizationModelImpl)oAuth2Authorization).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2351,7 +2357,10 @@ public class OAuth2AuthorizationPersistenceImpl
 		for (OAuth2Authorization oAuth2Authorization : oAuth2Authorizations) {
 			entityCache.removeResult(
 				entityCacheEnabled, OAuth2AuthorizationImpl.class,
-				oAuth2Authorization.getPrimaryKey());
+				oAuth2Authorization.getPrimaryKey(), oAuth2Authorization,
+				_columnBitmaskEnabled,
+				((OAuth2AuthorizationModelImpl)oAuth2Authorization).
+					getColumnBitmask());
 		}
 	}
 
@@ -2679,7 +2688,10 @@ public class OAuth2AuthorizationPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2AuthorizationImpl.class,
-			oAuth2Authorization.getPrimaryKey(), oAuth2Authorization, false);
+			oAuth2Authorization.getPrimaryKey(), oAuth2Authorization, false,
+			_columnBitmaskEnabled,
+			((OAuth2AuthorizationModelImpl)oAuth2Authorization).
+				getColumnBitmask());
 
 		oAuth2Authorization.resetOriginalValues();
 

@@ -4159,7 +4159,9 @@ public class OAuthApplicationPersistenceImpl
 	public void cacheResult(OAuthApplication oAuthApplication) {
 		entityCache.putResult(
 			entityCacheEnabled, OAuthApplicationImpl.class,
-			oAuthApplication.getPrimaryKey(), oAuthApplication);
+			oAuthApplication.getPrimaryKey(), oAuthApplication,
+			_columnBitmaskEnabled,
+			((OAuthApplicationModelImpl)oAuthApplication).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByConsumerKey,
@@ -4215,7 +4217,9 @@ public class OAuthApplicationPersistenceImpl
 	public void clearCache(OAuthApplication oAuthApplication) {
 		entityCache.removeResult(
 			entityCacheEnabled, OAuthApplicationImpl.class,
-			oAuthApplication.getPrimaryKey());
+			oAuthApplication.getPrimaryKey(), oAuthApplication,
+			_columnBitmaskEnabled,
+			((OAuthApplicationModelImpl)oAuthApplication).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4232,7 +4236,10 @@ public class OAuthApplicationPersistenceImpl
 		for (OAuthApplication oAuthApplication : oAuthApplications) {
 			entityCache.removeResult(
 				entityCacheEnabled, OAuthApplicationImpl.class,
-				oAuthApplication.getPrimaryKey());
+				oAuthApplication.getPrimaryKey(), oAuthApplication,
+				_columnBitmaskEnabled,
+				((OAuthApplicationModelImpl)oAuthApplication).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(OAuthApplicationModelImpl)oAuthApplication, true);
@@ -4531,7 +4538,9 @@ public class OAuthApplicationPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, OAuthApplicationImpl.class,
-			oAuthApplication.getPrimaryKey(), oAuthApplication, false);
+			oAuthApplication.getPrimaryKey(), oAuthApplication, false,
+			_columnBitmaskEnabled,
+			((OAuthApplicationModelImpl)oAuthApplication).getColumnBitmask());
 
 		clearUniqueFindersCache(oAuthApplicationModelImpl, false);
 		cacheUniqueFindersCache(oAuthApplicationModelImpl);

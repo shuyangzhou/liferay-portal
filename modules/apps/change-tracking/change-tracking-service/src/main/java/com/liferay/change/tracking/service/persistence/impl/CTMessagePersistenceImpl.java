@@ -607,7 +607,8 @@ public class CTMessagePersistenceImpl
 	public void cacheResult(CTMessage ctMessage) {
 		entityCache.putResult(
 			entityCacheEnabled, CTMessageImpl.class, ctMessage.getPrimaryKey(),
-			ctMessage);
+			ctMessage, _columnBitmaskEnabled,
+			((CTMessageModelImpl)ctMessage).getColumnBitmask());
 
 		ctMessage.resetOriginalValues();
 	}
@@ -658,7 +659,9 @@ public class CTMessagePersistenceImpl
 	@Override
 	public void clearCache(CTMessage ctMessage) {
 		entityCache.removeResult(
-			entityCacheEnabled, CTMessageImpl.class, ctMessage.getPrimaryKey());
+			entityCacheEnabled, CTMessageImpl.class, ctMessage.getPrimaryKey(),
+			ctMessage, _columnBitmaskEnabled,
+			((CTMessageModelImpl)ctMessage).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -672,7 +675,8 @@ public class CTMessagePersistenceImpl
 		for (CTMessage ctMessage : ctMessages) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTMessageImpl.class,
-				ctMessage.getPrimaryKey());
+				ctMessage.getPrimaryKey(), ctMessage, _columnBitmaskEnabled,
+				((CTMessageModelImpl)ctMessage).getColumnBitmask());
 		}
 	}
 
@@ -875,7 +879,8 @@ public class CTMessagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTMessageImpl.class, ctMessage.getPrimaryKey(),
-			ctMessage, false);
+			ctMessage, false, _columnBitmaskEnabled,
+			((CTMessageModelImpl)ctMessage).getColumnBitmask());
 
 		ctMessage.resetOriginalValues();
 

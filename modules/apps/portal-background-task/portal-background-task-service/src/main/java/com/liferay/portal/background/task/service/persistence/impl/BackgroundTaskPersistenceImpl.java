@@ -8797,7 +8797,9 @@ public class BackgroundTaskPersistenceImpl
 	public void cacheResult(BackgroundTask backgroundTask) {
 		entityCache.putResult(
 			entityCacheEnabled, BackgroundTaskImpl.class,
-			backgroundTask.getPrimaryKey(), backgroundTask);
+			backgroundTask.getPrimaryKey(), backgroundTask,
+			_columnBitmaskEnabled,
+			((BackgroundTaskModelImpl)backgroundTask).getColumnBitmask());
 
 		backgroundTask.resetOriginalValues();
 	}
@@ -8849,7 +8851,9 @@ public class BackgroundTaskPersistenceImpl
 	public void clearCache(BackgroundTask backgroundTask) {
 		entityCache.removeResult(
 			entityCacheEnabled, BackgroundTaskImpl.class,
-			backgroundTask.getPrimaryKey());
+			backgroundTask.getPrimaryKey(), backgroundTask,
+			_columnBitmaskEnabled,
+			((BackgroundTaskModelImpl)backgroundTask).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -8863,7 +8867,9 @@ public class BackgroundTaskPersistenceImpl
 		for (BackgroundTask backgroundTask : backgroundTasks) {
 			entityCache.removeResult(
 				entityCacheEnabled, BackgroundTaskImpl.class,
-				backgroundTask.getPrimaryKey());
+				backgroundTask.getPrimaryKey(), backgroundTask,
+				_columnBitmaskEnabled,
+				((BackgroundTaskModelImpl)backgroundTask).getColumnBitmask());
 		}
 	}
 
@@ -9405,7 +9411,9 @@ public class BackgroundTaskPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, BackgroundTaskImpl.class,
-			backgroundTask.getPrimaryKey(), backgroundTask, false);
+			backgroundTask.getPrimaryKey(), backgroundTask, false,
+			_columnBitmaskEnabled,
+			((BackgroundTaskModelImpl)backgroundTask).getColumnBitmask());
 
 		backgroundTask.resetOriginalValues();
 

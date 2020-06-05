@@ -1483,7 +1483,10 @@ public class DDMTemplateVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMTemplateVersionImpl.class,
-			ddmTemplateVersion.getPrimaryKey(), ddmTemplateVersion);
+			ddmTemplateVersion.getPrimaryKey(), ddmTemplateVersion,
+			_columnBitmaskEnabled,
+			((DDMTemplateVersionModelImpl)ddmTemplateVersion).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByT_V,
@@ -1549,7 +1552,10 @@ public class DDMTemplateVersionPersistenceImpl
 	public void clearCache(DDMTemplateVersion ddmTemplateVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMTemplateVersionImpl.class,
-			ddmTemplateVersion.getPrimaryKey());
+			ddmTemplateVersion.getPrimaryKey(), ddmTemplateVersion,
+			_columnBitmaskEnabled,
+			((DDMTemplateVersionModelImpl)ddmTemplateVersion).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1566,7 +1572,10 @@ public class DDMTemplateVersionPersistenceImpl
 		for (DDMTemplateVersion ddmTemplateVersion : ddmTemplateVersions) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMTemplateVersionImpl.class,
-				ddmTemplateVersion.getPrimaryKey());
+				ddmTemplateVersion.getPrimaryKey(), ddmTemplateVersion,
+				_columnBitmaskEnabled,
+				((DDMTemplateVersionModelImpl)ddmTemplateVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMTemplateVersionModelImpl)ddmTemplateVersion, true);
@@ -1877,7 +1886,10 @@ public class DDMTemplateVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMTemplateVersionImpl.class,
-			ddmTemplateVersion.getPrimaryKey(), ddmTemplateVersion, false);
+			ddmTemplateVersion.getPrimaryKey(), ddmTemplateVersion, false,
+			_columnBitmaskEnabled,
+			((DDMTemplateVersionModelImpl)ddmTemplateVersion).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddmTemplateVersionModelImpl, false);
 		cacheUniqueFindersCache(ddmTemplateVersionModelImpl);

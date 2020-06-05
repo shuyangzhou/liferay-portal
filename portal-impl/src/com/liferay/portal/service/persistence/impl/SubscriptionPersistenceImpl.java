@@ -2883,7 +2883,9 @@ public class SubscriptionPersistenceImpl
 	public void cacheResult(Subscription subscription) {
 		EntityCacheUtil.putResult(
 			SubscriptionModelImpl.ENTITY_CACHE_ENABLED, SubscriptionImpl.class,
-			subscription.getPrimaryKey(), subscription);
+			subscription.getPrimaryKey(), subscription,
+			SubscriptionModelImpl.COLUMN_BITMASK_ENABLED,
+			((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_U_C_C,
@@ -2944,7 +2946,9 @@ public class SubscriptionPersistenceImpl
 	public void clearCache(Subscription subscription) {
 		EntityCacheUtil.removeResult(
 			SubscriptionModelImpl.ENTITY_CACHE_ENABLED, SubscriptionImpl.class,
-			subscription.getPrimaryKey());
+			subscription.getPrimaryKey(), subscription,
+			SubscriptionModelImpl.COLUMN_BITMASK_ENABLED,
+			((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2960,7 +2964,9 @@ public class SubscriptionPersistenceImpl
 		for (Subscription subscription : subscriptions) {
 			EntityCacheUtil.removeResult(
 				SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
-				SubscriptionImpl.class, subscription.getPrimaryKey());
+				SubscriptionImpl.class, subscription.getPrimaryKey(),
+				subscription, SubscriptionModelImpl.COLUMN_BITMASK_ENABLED,
+				((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 			clearUniqueFindersCache((SubscriptionModelImpl)subscription, true);
 		}
@@ -3375,7 +3381,9 @@ public class SubscriptionPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			SubscriptionModelImpl.ENTITY_CACHE_ENABLED, SubscriptionImpl.class,
-			subscription.getPrimaryKey(), subscription, false);
+			subscription.getPrimaryKey(), subscription, false,
+			SubscriptionModelImpl.COLUMN_BITMASK_ENABLED,
+			((SubscriptionModelImpl)subscription).getColumnBitmask());
 
 		clearUniqueFindersCache(subscriptionModelImpl, false);
 		cacheUniqueFindersCache(subscriptionModelImpl);

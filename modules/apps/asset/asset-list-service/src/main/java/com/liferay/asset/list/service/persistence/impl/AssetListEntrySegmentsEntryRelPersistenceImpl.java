@@ -2943,7 +2943,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntrySegmentsEntryRelImpl.class,
 			assetListEntrySegmentsEntryRel.getPrimaryKey(),
-			assetListEntrySegmentsEntryRel);
+			assetListEntrySegmentsEntryRel, _columnBitmaskEnabled,
+			((AssetListEntrySegmentsEntryRelModelImpl)
+				assetListEntrySegmentsEntryRel).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3024,7 +3026,10 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, AssetListEntrySegmentsEntryRelImpl.class,
-			assetListEntrySegmentsEntryRel.getPrimaryKey());
+			assetListEntrySegmentsEntryRel.getPrimaryKey(),
+			assetListEntrySegmentsEntryRel, _columnBitmaskEnabled,
+			((AssetListEntrySegmentsEntryRelModelImpl)
+				assetListEntrySegmentsEntryRel).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3047,7 +3052,10 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AssetListEntrySegmentsEntryRelImpl.class,
-				assetListEntrySegmentsEntryRel.getPrimaryKey());
+				assetListEntrySegmentsEntryRel.getPrimaryKey(),
+				assetListEntrySegmentsEntryRel, _columnBitmaskEnabled,
+				((AssetListEntrySegmentsEntryRelModelImpl)
+					assetListEntrySegmentsEntryRel).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetListEntrySegmentsEntryRelModelImpl)
@@ -3517,7 +3525,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntrySegmentsEntryRelImpl.class,
 			assetListEntrySegmentsEntryRel.getPrimaryKey(),
-			assetListEntrySegmentsEntryRel, false);
+			assetListEntrySegmentsEntryRel, false, _columnBitmaskEnabled,
+			((AssetListEntrySegmentsEntryRelModelImpl)
+				assetListEntrySegmentsEntryRel).getColumnBitmask());
 
 		clearUniqueFindersCache(assetListEntrySegmentsEntryRelModelImpl, false);
 		cacheUniqueFindersCache(assetListEntrySegmentsEntryRelModelImpl);

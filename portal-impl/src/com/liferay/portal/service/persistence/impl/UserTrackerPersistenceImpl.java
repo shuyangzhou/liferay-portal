@@ -1638,7 +1638,9 @@ public class UserTrackerPersistenceImpl
 	public void cacheResult(UserTracker userTracker) {
 		EntityCacheUtil.putResult(
 			UserTrackerModelImpl.ENTITY_CACHE_ENABLED, UserTrackerImpl.class,
-			userTracker.getPrimaryKey(), userTracker);
+			userTracker.getPrimaryKey(), userTracker,
+			UserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserTrackerModelImpl)userTracker).getColumnBitmask());
 
 		userTracker.resetOriginalValues();
 	}
@@ -1691,7 +1693,9 @@ public class UserTrackerPersistenceImpl
 	public void clearCache(UserTracker userTracker) {
 		EntityCacheUtil.removeResult(
 			UserTrackerModelImpl.ENTITY_CACHE_ENABLED, UserTrackerImpl.class,
-			userTracker.getPrimaryKey());
+			userTracker.getPrimaryKey(), userTracker,
+			UserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserTrackerModelImpl)userTracker).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1705,7 +1709,9 @@ public class UserTrackerPersistenceImpl
 		for (UserTracker userTracker : userTrackers) {
 			EntityCacheUtil.removeResult(
 				UserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-				UserTrackerImpl.class, userTracker.getPrimaryKey());
+				UserTrackerImpl.class, userTracker.getPrimaryKey(), userTracker,
+				UserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserTrackerModelImpl)userTracker).getColumnBitmask());
 		}
 	}
 
@@ -1960,7 +1966,9 @@ public class UserTrackerPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			UserTrackerModelImpl.ENTITY_CACHE_ENABLED, UserTrackerImpl.class,
-			userTracker.getPrimaryKey(), userTracker, false);
+			userTracker.getPrimaryKey(), userTracker, false,
+			UserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserTrackerModelImpl)userTracker).getColumnBitmask());
 
 		userTracker.resetOriginalValues();
 

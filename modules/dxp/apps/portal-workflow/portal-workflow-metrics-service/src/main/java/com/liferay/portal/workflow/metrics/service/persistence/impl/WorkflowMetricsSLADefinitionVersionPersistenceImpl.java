@@ -2450,7 +2450,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, WorkflowMetricsSLADefinitionVersionImpl.class,
 			workflowMetricsSLADefinitionVersion.getPrimaryKey(),
-			workflowMetricsSLADefinitionVersion);
+			workflowMetricsSLADefinitionVersion, _columnBitmaskEnabled,
+			((WorkflowMetricsSLADefinitionVersionModelImpl)
+				workflowMetricsSLADefinitionVersion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2530,7 +2532,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, WorkflowMetricsSLADefinitionVersionImpl.class,
-			workflowMetricsSLADefinitionVersion.getPrimaryKey());
+			workflowMetricsSLADefinitionVersion.getPrimaryKey(),
+			workflowMetricsSLADefinitionVersion, _columnBitmaskEnabled,
+			((WorkflowMetricsSLADefinitionVersionModelImpl)
+				workflowMetricsSLADefinitionVersion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2556,7 +2561,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			entityCache.removeResult(
 				entityCacheEnabled,
 				WorkflowMetricsSLADefinitionVersionImpl.class,
-				workflowMetricsSLADefinitionVersion.getPrimaryKey());
+				workflowMetricsSLADefinitionVersion.getPrimaryKey(),
+				workflowMetricsSLADefinitionVersion, _columnBitmaskEnabled,
+				((WorkflowMetricsSLADefinitionVersionModelImpl)
+					workflowMetricsSLADefinitionVersion).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(WorkflowMetricsSLADefinitionVersionModelImpl)
@@ -2993,7 +3001,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, WorkflowMetricsSLADefinitionVersionImpl.class,
 			workflowMetricsSLADefinitionVersion.getPrimaryKey(),
-			workflowMetricsSLADefinitionVersion, false);
+			workflowMetricsSLADefinitionVersion, false, _columnBitmaskEnabled,
+			((WorkflowMetricsSLADefinitionVersionModelImpl)
+				workflowMetricsSLADefinitionVersion).getColumnBitmask());
 
 		clearUniqueFindersCache(
 			workflowMetricsSLADefinitionVersionModelImpl, false);

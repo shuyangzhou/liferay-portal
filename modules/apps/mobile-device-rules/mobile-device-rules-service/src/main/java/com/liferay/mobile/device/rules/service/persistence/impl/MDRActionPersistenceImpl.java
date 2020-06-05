@@ -2006,7 +2006,8 @@ public class MDRActionPersistenceImpl
 	public void cacheResult(MDRAction mdrAction) {
 		entityCache.putResult(
 			entityCacheEnabled, MDRActionImpl.class, mdrAction.getPrimaryKey(),
-			mdrAction);
+			mdrAction, _columnBitmaskEnabled,
+			((MDRActionModelImpl)mdrAction).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2062,7 +2063,9 @@ public class MDRActionPersistenceImpl
 	@Override
 	public void clearCache(MDRAction mdrAction) {
 		entityCache.removeResult(
-			entityCacheEnabled, MDRActionImpl.class, mdrAction.getPrimaryKey());
+			entityCacheEnabled, MDRActionImpl.class, mdrAction.getPrimaryKey(),
+			mdrAction, _columnBitmaskEnabled,
+			((MDRActionModelImpl)mdrAction).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2078,7 +2081,8 @@ public class MDRActionPersistenceImpl
 		for (MDRAction mdrAction : mdrActions) {
 			entityCache.removeResult(
 				entityCacheEnabled, MDRActionImpl.class,
-				mdrAction.getPrimaryKey());
+				mdrAction.getPrimaryKey(), mdrAction, _columnBitmaskEnabled,
+				((MDRActionModelImpl)mdrAction).getColumnBitmask());
 
 			clearUniqueFindersCache((MDRActionModelImpl)mdrAction, true);
 		}
@@ -2413,7 +2417,8 @@ public class MDRActionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MDRActionImpl.class, mdrAction.getPrimaryKey(),
-			mdrAction, false);
+			mdrAction, false, _columnBitmaskEnabled,
+			((MDRActionModelImpl)mdrAction).getColumnBitmask());
 
 		clearUniqueFindersCache(mdrActionModelImpl, false);
 		cacheUniqueFindersCache(mdrActionModelImpl);

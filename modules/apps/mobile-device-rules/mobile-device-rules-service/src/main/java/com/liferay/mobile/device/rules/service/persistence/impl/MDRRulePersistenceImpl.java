@@ -1991,7 +1991,8 @@ public class MDRRulePersistenceImpl
 	public void cacheResult(MDRRule mdrRule) {
 		entityCache.putResult(
 			entityCacheEnabled, MDRRuleImpl.class, mdrRule.getPrimaryKey(),
-			mdrRule);
+			mdrRule, _columnBitmaskEnabled,
+			((MDRRuleModelImpl)mdrRule).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2046,7 +2047,9 @@ public class MDRRulePersistenceImpl
 	@Override
 	public void clearCache(MDRRule mdrRule) {
 		entityCache.removeResult(
-			entityCacheEnabled, MDRRuleImpl.class, mdrRule.getPrimaryKey());
+			entityCacheEnabled, MDRRuleImpl.class, mdrRule.getPrimaryKey(),
+			mdrRule, _columnBitmaskEnabled,
+			((MDRRuleModelImpl)mdrRule).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2061,7 +2064,9 @@ public class MDRRulePersistenceImpl
 
 		for (MDRRule mdrRule : mdrRules) {
 			entityCache.removeResult(
-				entityCacheEnabled, MDRRuleImpl.class, mdrRule.getPrimaryKey());
+				entityCacheEnabled, MDRRuleImpl.class, mdrRule.getPrimaryKey(),
+				mdrRule, _columnBitmaskEnabled,
+				((MDRRuleModelImpl)mdrRule).getColumnBitmask());
 
 			clearUniqueFindersCache((MDRRuleModelImpl)mdrRule, true);
 		}
@@ -2384,7 +2389,8 @@ public class MDRRulePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MDRRuleImpl.class, mdrRule.getPrimaryKey(),
-			mdrRule, false);
+			mdrRule, false, _columnBitmaskEnabled,
+			((MDRRuleModelImpl)mdrRule).getColumnBitmask());
 
 		clearUniqueFindersCache(mdrRuleModelImpl, false);
 		cacheUniqueFindersCache(mdrRuleModelImpl);

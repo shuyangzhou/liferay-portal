@@ -925,7 +925,8 @@ public class ServiceComponentPersistenceImpl
 		EntityCacheUtil.putResult(
 			ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
 			ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
-			serviceComponent);
+			serviceComponent, ServiceComponentModelImpl.COLUMN_BITMASK_ENABLED,
+			((ServiceComponentModelImpl)serviceComponent).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByBNS_BNU,
@@ -986,7 +987,9 @@ public class ServiceComponentPersistenceImpl
 	public void clearCache(ServiceComponent serviceComponent) {
 		EntityCacheUtil.removeResult(
 			ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
-			ServiceComponentImpl.class, serviceComponent.getPrimaryKey());
+			ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
+			serviceComponent, ServiceComponentModelImpl.COLUMN_BITMASK_ENABLED,
+			((ServiceComponentModelImpl)serviceComponent).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1003,7 +1006,11 @@ public class ServiceComponentPersistenceImpl
 		for (ServiceComponent serviceComponent : serviceComponents) {
 			EntityCacheUtil.removeResult(
 				ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
-				ServiceComponentImpl.class, serviceComponent.getPrimaryKey());
+				ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
+				serviceComponent,
+				ServiceComponentModelImpl.COLUMN_BITMASK_ENABLED,
+				((ServiceComponentModelImpl)serviceComponent).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(ServiceComponentModelImpl)serviceComponent, true);
@@ -1261,7 +1268,9 @@ public class ServiceComponentPersistenceImpl
 		EntityCacheUtil.putResult(
 			ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
 			ServiceComponentImpl.class, serviceComponent.getPrimaryKey(),
-			serviceComponent, false);
+			serviceComponent, false,
+			ServiceComponentModelImpl.COLUMN_BITMASK_ENABLED,
+			((ServiceComponentModelImpl)serviceComponent).getColumnBitmask());
 
 		clearUniqueFindersCache(serviceComponentModelImpl, false);
 		cacheUniqueFindersCache(serviceComponentModelImpl);

@@ -1218,7 +1218,9 @@ public class VirtualHostPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
-			virtualHost.getPrimaryKey(), virtualHost);
+			virtualHost.getPrimaryKey(), virtualHost,
+			VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
+			((VirtualHostModelImpl)virtualHost).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByHostname,
@@ -1289,7 +1291,9 @@ public class VirtualHostPersistenceImpl
 	public void clearCache(VirtualHost virtualHost) {
 		EntityCacheUtil.removeResult(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
-			virtualHost.getPrimaryKey());
+			virtualHost.getPrimaryKey(), virtualHost,
+			VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
+			((VirtualHostModelImpl)virtualHost).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1305,7 +1309,9 @@ public class VirtualHostPersistenceImpl
 		for (VirtualHost virtualHost : virtualHosts) {
 			EntityCacheUtil.removeResult(
 				VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-				VirtualHostImpl.class, virtualHost.getPrimaryKey());
+				VirtualHostImpl.class, virtualHost.getPrimaryKey(), virtualHost,
+				VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
+				((VirtualHostModelImpl)virtualHost).getColumnBitmask());
 
 			clearUniqueFindersCache((VirtualHostModelImpl)virtualHost, true);
 		}
@@ -1606,7 +1612,9 @@ public class VirtualHostPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
-			virtualHost.getPrimaryKey(), virtualHost, false);
+			virtualHost.getPrimaryKey(), virtualHost, false,
+			VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
+			((VirtualHostModelImpl)virtualHost).getColumnBitmask());
 
 		clearUniqueFindersCache(virtualHostModelImpl, false);
 		cacheUniqueFindersCache(virtualHostModelImpl);

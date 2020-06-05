@@ -2715,7 +2715,8 @@ public class MBThreadFlagPersistenceImpl
 	public void cacheResult(MBThreadFlag mbThreadFlag) {
 		entityCache.putResult(
 			entityCacheEnabled, MBThreadFlagImpl.class,
-			mbThreadFlag.getPrimaryKey(), mbThreadFlag);
+			mbThreadFlag.getPrimaryKey(), mbThreadFlag, _columnBitmaskEnabled,
+			((MBThreadFlagModelImpl)mbThreadFlag).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2777,7 +2778,8 @@ public class MBThreadFlagPersistenceImpl
 	public void clearCache(MBThreadFlag mbThreadFlag) {
 		entityCache.removeResult(
 			entityCacheEnabled, MBThreadFlagImpl.class,
-			mbThreadFlag.getPrimaryKey());
+			mbThreadFlag.getPrimaryKey(), mbThreadFlag, _columnBitmaskEnabled,
+			((MBThreadFlagModelImpl)mbThreadFlag).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2793,7 +2795,9 @@ public class MBThreadFlagPersistenceImpl
 		for (MBThreadFlag mbThreadFlag : mbThreadFlags) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBThreadFlagImpl.class,
-				mbThreadFlag.getPrimaryKey());
+				mbThreadFlag.getPrimaryKey(), mbThreadFlag,
+				_columnBitmaskEnabled,
+				((MBThreadFlagModelImpl)mbThreadFlag).getColumnBitmask());
 
 			clearUniqueFindersCache((MBThreadFlagModelImpl)mbThreadFlag, true);
 		}
@@ -3185,7 +3189,9 @@ public class MBThreadFlagPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBThreadFlagImpl.class,
-			mbThreadFlag.getPrimaryKey(), mbThreadFlag, false);
+			mbThreadFlag.getPrimaryKey(), mbThreadFlag, false,
+			_columnBitmaskEnabled,
+			((MBThreadFlagModelImpl)mbThreadFlag).getColumnBitmask());
 
 		clearUniqueFindersCache(mbThreadFlagModelImpl, false);
 		cacheUniqueFindersCache(mbThreadFlagModelImpl);

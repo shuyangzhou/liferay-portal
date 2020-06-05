@@ -3978,7 +3978,10 @@ public class LayoutSetPrototypePersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
-			layoutSetPrototype);
+			layoutSetPrototype,
+			LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+				getColumnBitmask());
 
 		layoutSetPrototype.resetOriginalValues();
 	}
@@ -4031,7 +4034,11 @@ public class LayoutSetPrototypePersistenceImpl
 	public void clearCache(LayoutSetPrototype layoutSetPrototype) {
 		EntityCacheUtil.removeResult(
 			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey());
+			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
+			layoutSetPrototype,
+			LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4046,7 +4053,10 @@ public class LayoutSetPrototypePersistenceImpl
 			EntityCacheUtil.removeResult(
 				LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 				LayoutSetPrototypeImpl.class,
-				layoutSetPrototype.getPrimaryKey());
+				layoutSetPrototype.getPrimaryKey(), layoutSetPrototype,
+				LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+					getColumnBitmask());
 		}
 	}
 
@@ -4388,7 +4398,10 @@ public class LayoutSetPrototypePersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
-			layoutSetPrototype, false);
+			layoutSetPrototype, false,
+			LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+				getColumnBitmask());
 
 		layoutSetPrototype.resetOriginalValues();
 

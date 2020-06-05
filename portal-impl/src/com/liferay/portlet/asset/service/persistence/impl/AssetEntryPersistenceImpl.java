@@ -5214,7 +5214,9 @@ public class AssetEntryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AssetEntryModelImpl.ENTITY_CACHE_ENABLED, AssetEntryImpl.class,
-			assetEntry.getPrimaryKey(), assetEntry);
+			assetEntry.getPrimaryKey(), assetEntry,
+			AssetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetEntryModelImpl)assetEntry).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_CU,
@@ -5282,7 +5284,9 @@ public class AssetEntryPersistenceImpl
 	public void clearCache(AssetEntry assetEntry) {
 		EntityCacheUtil.removeResult(
 			AssetEntryModelImpl.ENTITY_CACHE_ENABLED, AssetEntryImpl.class,
-			assetEntry.getPrimaryKey());
+			assetEntry.getPrimaryKey(), assetEntry,
+			AssetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetEntryModelImpl)assetEntry).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5298,7 +5302,9 @@ public class AssetEntryPersistenceImpl
 		for (AssetEntry assetEntry : assetEntries) {
 			EntityCacheUtil.removeResult(
 				AssetEntryModelImpl.ENTITY_CACHE_ENABLED, AssetEntryImpl.class,
-				assetEntry.getPrimaryKey());
+				assetEntry.getPrimaryKey(), assetEntry,
+				AssetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((AssetEntryModelImpl)assetEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((AssetEntryModelImpl)assetEntry, true);
 		}
@@ -5827,7 +5833,9 @@ public class AssetEntryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AssetEntryModelImpl.ENTITY_CACHE_ENABLED, AssetEntryImpl.class,
-			assetEntry.getPrimaryKey(), assetEntry, false);
+			assetEntry.getPrimaryKey(), assetEntry, false,
+			AssetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetEntryModelImpl)assetEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(assetEntryModelImpl, false);
 		cacheUniqueFindersCache(assetEntryModelImpl);

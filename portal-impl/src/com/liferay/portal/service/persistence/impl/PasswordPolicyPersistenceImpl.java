@@ -3494,7 +3494,8 @@ public class PasswordPolicyPersistenceImpl
 		EntityCacheUtil.putResult(
 			PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
 			PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
-			passwordPolicy);
+			passwordPolicy, PasswordPolicyModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordPolicyModelImpl)passwordPolicy).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_DP,
@@ -3561,7 +3562,9 @@ public class PasswordPolicyPersistenceImpl
 	public void clearCache(PasswordPolicy passwordPolicy) {
 		EntityCacheUtil.removeResult(
 			PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
-			PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey());
+			PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
+			passwordPolicy, PasswordPolicyModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordPolicyModelImpl)passwordPolicy).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3577,7 +3580,9 @@ public class PasswordPolicyPersistenceImpl
 		for (PasswordPolicy passwordPolicy : passwordPolicies) {
 			EntityCacheUtil.removeResult(
 				PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
-				PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey());
+				PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
+				passwordPolicy, PasswordPolicyModelImpl.COLUMN_BITMASK_ENABLED,
+				((PasswordPolicyModelImpl)passwordPolicy).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PasswordPolicyModelImpl)passwordPolicy, true);
@@ -3951,7 +3956,9 @@ public class PasswordPolicyPersistenceImpl
 		EntityCacheUtil.putResult(
 			PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
 			PasswordPolicyImpl.class, passwordPolicy.getPrimaryKey(),
-			passwordPolicy, false);
+			passwordPolicy, false,
+			PasswordPolicyModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordPolicyModelImpl)passwordPolicy).getColumnBitmask());
 
 		clearUniqueFindersCache(passwordPolicyModelImpl, false);
 		cacheUniqueFindersCache(passwordPolicyModelImpl);

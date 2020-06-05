@@ -338,7 +338,9 @@ public class PortalPreferencesPersistenceImpl
 		EntityCacheUtil.putResult(
 			PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
-			portalPreferences);
+			portalPreferences,
+			PortalPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortalPreferencesModelImpl)portalPreferences).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByO_O,
@@ -398,7 +400,10 @@ public class PortalPreferencesPersistenceImpl
 	public void clearCache(PortalPreferences portalPreferences) {
 		EntityCacheUtil.removeResult(
 			PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-			PortalPreferencesImpl.class, portalPreferences.getPrimaryKey());
+			PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
+			portalPreferences,
+			PortalPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortalPreferencesModelImpl)portalPreferences).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -415,7 +420,11 @@ public class PortalPreferencesPersistenceImpl
 		for (PortalPreferences portalPreferences : portalPreferenceses) {
 			EntityCacheUtil.removeResult(
 				PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-				PortalPreferencesImpl.class, portalPreferences.getPrimaryKey());
+				PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
+				portalPreferences,
+				PortalPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+				((PortalPreferencesModelImpl)portalPreferences).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PortalPreferencesModelImpl)portalPreferences, true);
@@ -643,7 +652,9 @@ public class PortalPreferencesPersistenceImpl
 		EntityCacheUtil.putResult(
 			PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortalPreferencesImpl.class, portalPreferences.getPrimaryKey(),
-			portalPreferences, false);
+			portalPreferences, false,
+			PortalPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortalPreferencesModelImpl)portalPreferences).getColumnBitmask());
 
 		clearUniqueFindersCache(portalPreferencesModelImpl, false);
 		cacheUniqueFindersCache(portalPreferencesModelImpl);

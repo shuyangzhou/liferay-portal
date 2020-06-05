@@ -2167,7 +2167,9 @@ public class FriendlyURLEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryImpl.class,
-			friendlyURLEntry.getPrimaryKey(), friendlyURLEntry);
+			friendlyURLEntry.getPrimaryKey(), friendlyURLEntry,
+			_columnBitmaskEnabled,
+			((FriendlyURLEntryModelImpl)friendlyURLEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2232,7 +2234,9 @@ public class FriendlyURLEntryPersistenceImpl
 	public void clearCache(FriendlyURLEntry friendlyURLEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, FriendlyURLEntryImpl.class,
-			friendlyURLEntry.getPrimaryKey());
+			friendlyURLEntry.getPrimaryKey(), friendlyURLEntry,
+			_columnBitmaskEnabled,
+			((FriendlyURLEntryModelImpl)friendlyURLEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2249,7 +2253,10 @@ public class FriendlyURLEntryPersistenceImpl
 		for (FriendlyURLEntry friendlyURLEntry : friendlyURLEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, FriendlyURLEntryImpl.class,
-				friendlyURLEntry.getPrimaryKey());
+				friendlyURLEntry.getPrimaryKey(), friendlyURLEntry,
+				_columnBitmaskEnabled,
+				((FriendlyURLEntryModelImpl)friendlyURLEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FriendlyURLEntryModelImpl)friendlyURLEntry, true);
@@ -2621,7 +2628,9 @@ public class FriendlyURLEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryImpl.class,
-			friendlyURLEntry.getPrimaryKey(), friendlyURLEntry, false);
+			friendlyURLEntry.getPrimaryKey(), friendlyURLEntry, false,
+			_columnBitmaskEnabled,
+			((FriendlyURLEntryModelImpl)friendlyURLEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(friendlyURLEntryModelImpl, false);
 		cacheUniqueFindersCache(friendlyURLEntryModelImpl);

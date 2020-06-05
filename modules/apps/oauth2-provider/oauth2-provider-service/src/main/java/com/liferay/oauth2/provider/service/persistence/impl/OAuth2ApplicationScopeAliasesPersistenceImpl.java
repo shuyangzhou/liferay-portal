@@ -1163,7 +1163,9 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ApplicationScopeAliasesImpl.class,
 			oAuth2ApplicationScopeAliases.getPrimaryKey(),
-			oAuth2ApplicationScopeAliases);
+			oAuth2ApplicationScopeAliases, _columnBitmaskEnabled,
+			((OAuth2ApplicationScopeAliasesModelImpl)
+				oAuth2ApplicationScopeAliases).getColumnBitmask());
 
 		oAuth2ApplicationScopeAliases.resetOriginalValues();
 	}
@@ -1221,7 +1223,10 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, OAuth2ApplicationScopeAliasesImpl.class,
-			oAuth2ApplicationScopeAliases.getPrimaryKey());
+			oAuth2ApplicationScopeAliases.getPrimaryKey(),
+			oAuth2ApplicationScopeAliases, _columnBitmaskEnabled,
+			((OAuth2ApplicationScopeAliasesModelImpl)
+				oAuth2ApplicationScopeAliases).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1239,7 +1244,10 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, OAuth2ApplicationScopeAliasesImpl.class,
-				oAuth2ApplicationScopeAliases.getPrimaryKey());
+				oAuth2ApplicationScopeAliases.getPrimaryKey(),
+				oAuth2ApplicationScopeAliases, _columnBitmaskEnabled,
+				((OAuth2ApplicationScopeAliasesModelImpl)
+					oAuth2ApplicationScopeAliases).getColumnBitmask());
 		}
 	}
 
@@ -1506,7 +1514,9 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ApplicationScopeAliasesImpl.class,
 			oAuth2ApplicationScopeAliases.getPrimaryKey(),
-			oAuth2ApplicationScopeAliases, false);
+			oAuth2ApplicationScopeAliases, false, _columnBitmaskEnabled,
+			((OAuth2ApplicationScopeAliasesModelImpl)
+				oAuth2ApplicationScopeAliases).getColumnBitmask());
 
 		oAuth2ApplicationScopeAliases.resetOriginalValues();
 

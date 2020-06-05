@@ -4417,7 +4417,8 @@ public class EntryPersistenceImpl
 	@Override
 	public void cacheResult(Entry entry) {
 		entityCache.putResult(
-			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(), entry);
+			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(), entry,
+			_columnBitmaskEnabled, ((EntryModelImpl)entry).getColumnBitmask());
 
 		entry.resetOriginalValues();
 	}
@@ -4468,7 +4469,8 @@ public class EntryPersistenceImpl
 	@Override
 	public void clearCache(Entry entry) {
 		entityCache.removeResult(
-			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey());
+			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(), entry,
+			_columnBitmaskEnabled, ((EntryModelImpl)entry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4481,7 +4483,9 @@ public class EntryPersistenceImpl
 
 		for (Entry entry : entries) {
 			entityCache.removeResult(
-				entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey());
+				entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(),
+				entry, _columnBitmaskEnabled,
+				((EntryModelImpl)entry).getColumnBitmask());
 		}
 	}
 
@@ -4882,7 +4886,8 @@ public class EntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, EntryImpl.class, entry.getPrimaryKey(), entry,
-			false);
+			false, _columnBitmaskEnabled,
+			((EntryModelImpl)entry).getColumnBitmask());
 
 		entry.resetOriginalValues();
 

@@ -3427,7 +3427,8 @@ public class ModulePersistenceImpl
 	public void cacheResult(Module module) {
 		entityCache.putResult(
 			entityCacheEnabled, ModuleImpl.class, module.getPrimaryKey(),
-			module);
+			module, _columnBitmaskEnabled,
+			((ModuleModelImpl)module).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_CN,
@@ -3490,7 +3491,9 @@ public class ModulePersistenceImpl
 	@Override
 	public void clearCache(Module module) {
 		entityCache.removeResult(
-			entityCacheEnabled, ModuleImpl.class, module.getPrimaryKey());
+			entityCacheEnabled, ModuleImpl.class, module.getPrimaryKey(),
+			module, _columnBitmaskEnabled,
+			((ModuleModelImpl)module).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3505,7 +3508,9 @@ public class ModulePersistenceImpl
 
 		for (Module module : modules) {
 			entityCache.removeResult(
-				entityCacheEnabled, ModuleImpl.class, module.getPrimaryKey());
+				entityCacheEnabled, ModuleImpl.class, module.getPrimaryKey(),
+				module, _columnBitmaskEnabled,
+				((ModuleModelImpl)module).getColumnBitmask());
 
 			clearUniqueFindersCache((ModuleModelImpl)module, true);
 		}
@@ -3891,7 +3896,8 @@ public class ModulePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, ModuleImpl.class, module.getPrimaryKey(),
-			module, false);
+			module, false, _columnBitmaskEnabled,
+			((ModuleModelImpl)module).getColumnBitmask());
 
 		clearUniqueFindersCache(moduleModelImpl, false);
 		cacheUniqueFindersCache(moduleModelImpl);

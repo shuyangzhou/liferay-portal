@@ -842,7 +842,9 @@ public class PasswordPolicyRelPersistenceImpl
 		EntityCacheUtil.putResult(
 			PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
 			PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
-			passwordPolicyRel);
+			passwordPolicyRel,
+			PasswordPolicyRelModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordPolicyRelModelImpl)passwordPolicyRel).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_C,
@@ -903,7 +905,10 @@ public class PasswordPolicyRelPersistenceImpl
 	public void clearCache(PasswordPolicyRel passwordPolicyRel) {
 		EntityCacheUtil.removeResult(
 			PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
-			PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey());
+			PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
+			passwordPolicyRel,
+			PasswordPolicyRelModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordPolicyRelModelImpl)passwordPolicyRel).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -920,7 +925,11 @@ public class PasswordPolicyRelPersistenceImpl
 		for (PasswordPolicyRel passwordPolicyRel : passwordPolicyRels) {
 			EntityCacheUtil.removeResult(
 				PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
-				PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey());
+				PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
+				passwordPolicyRel,
+				PasswordPolicyRelModelImpl.COLUMN_BITMASK_ENABLED,
+				((PasswordPolicyRelModelImpl)passwordPolicyRel).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PasswordPolicyRelModelImpl)passwordPolicyRel, true);
@@ -1183,7 +1192,9 @@ public class PasswordPolicyRelPersistenceImpl
 		EntityCacheUtil.putResult(
 			PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
 			PasswordPolicyRelImpl.class, passwordPolicyRel.getPrimaryKey(),
-			passwordPolicyRel, false);
+			passwordPolicyRel, false,
+			PasswordPolicyRelModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordPolicyRelModelImpl)passwordPolicyRel).getColumnBitmask());
 
 		clearUniqueFindersCache(passwordPolicyRelModelImpl, false);
 		cacheUniqueFindersCache(passwordPolicyRelModelImpl);

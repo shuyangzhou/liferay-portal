@@ -2069,7 +2069,10 @@ public class AssetCategoryPropertyPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetCategoryPropertyImpl.class,
-			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty);
+			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
+			_columnBitmaskEnabled,
+			((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByCA_K,
@@ -2139,7 +2142,10 @@ public class AssetCategoryPropertyPersistenceImpl
 	public void clearCache(AssetCategoryProperty assetCategoryProperty) {
 		entityCache.removeResult(
 			entityCacheEnabled, AssetCategoryPropertyImpl.class,
-			assetCategoryProperty.getPrimaryKey());
+			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
+			_columnBitmaskEnabled,
+			((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2160,7 +2166,10 @@ public class AssetCategoryPropertyPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AssetCategoryPropertyImpl.class,
-				assetCategoryProperty.getPrimaryKey());
+				assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
+				_columnBitmaskEnabled,
+				((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetCategoryPropertyModelImpl)assetCategoryProperty, true);
@@ -2530,8 +2539,10 @@ public class AssetCategoryPropertyPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetCategoryPropertyImpl.class,
-			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
-			false);
+			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty, false,
+			_columnBitmaskEnabled,
+			((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetCategoryPropertyModelImpl, false);
 		cacheUniqueFindersCache(assetCategoryPropertyModelImpl);

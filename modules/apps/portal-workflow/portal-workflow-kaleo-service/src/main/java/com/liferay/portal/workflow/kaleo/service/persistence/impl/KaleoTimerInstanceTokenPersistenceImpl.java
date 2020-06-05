@@ -2041,7 +2041,10 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	public void cacheResult(KaleoTimerInstanceToken kaleoTimerInstanceToken) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
-			kaleoTimerInstanceToken.getPrimaryKey(), kaleoTimerInstanceToken);
+			kaleoTimerInstanceToken.getPrimaryKey(), kaleoTimerInstanceToken,
+			_columnBitmaskEnabled,
+			((KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByKITI_KTI,
@@ -2105,7 +2108,10 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	public void clearCache(KaleoTimerInstanceToken kaleoTimerInstanceToken) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
-			kaleoTimerInstanceToken.getPrimaryKey());
+			kaleoTimerInstanceToken.getPrimaryKey(), kaleoTimerInstanceToken,
+			_columnBitmaskEnabled,
+			((KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2126,7 +2132,10 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
-				kaleoTimerInstanceToken.getPrimaryKey());
+				kaleoTimerInstanceToken.getPrimaryKey(),
+				kaleoTimerInstanceToken, _columnBitmaskEnabled,
+				((KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken,
@@ -2490,7 +2499,9 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
 			kaleoTimerInstanceToken.getPrimaryKey(), kaleoTimerInstanceToken,
-			false);
+			false, _columnBitmaskEnabled,
+			((KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoTimerInstanceTokenModelImpl, false);
 		cacheUniqueFindersCache(kaleoTimerInstanceTokenModelImpl);

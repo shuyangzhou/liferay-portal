@@ -2594,7 +2594,8 @@ public class KaleoProcessPersistenceImpl
 	public void cacheResult(KaleoProcess kaleoProcess) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoProcessImpl.class,
-			kaleoProcess.getPrimaryKey(), kaleoProcess);
+			kaleoProcess.getPrimaryKey(), kaleoProcess, _columnBitmaskEnabled,
+			((KaleoProcessModelImpl)kaleoProcess).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2655,7 +2656,8 @@ public class KaleoProcessPersistenceImpl
 	public void clearCache(KaleoProcess kaleoProcess) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoProcessImpl.class,
-			kaleoProcess.getPrimaryKey());
+			kaleoProcess.getPrimaryKey(), kaleoProcess, _columnBitmaskEnabled,
+			((KaleoProcessModelImpl)kaleoProcess).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2671,7 +2673,9 @@ public class KaleoProcessPersistenceImpl
 		for (KaleoProcess kaleoProcess : kaleoProcesses) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoProcessImpl.class,
-				kaleoProcess.getPrimaryKey());
+				kaleoProcess.getPrimaryKey(), kaleoProcess,
+				_columnBitmaskEnabled,
+				((KaleoProcessModelImpl)kaleoProcess).getColumnBitmask());
 
 			clearUniqueFindersCache((KaleoProcessModelImpl)kaleoProcess, true);
 		}
@@ -3034,7 +3038,9 @@ public class KaleoProcessPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoProcessImpl.class,
-			kaleoProcess.getPrimaryKey(), kaleoProcess, false);
+			kaleoProcess.getPrimaryKey(), kaleoProcess, false,
+			_columnBitmaskEnabled,
+			((KaleoProcessModelImpl)kaleoProcess).getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoProcessModelImpl, false);
 		cacheUniqueFindersCache(kaleoProcessModelImpl);

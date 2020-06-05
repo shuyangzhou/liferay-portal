@@ -1971,7 +1971,9 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryLocalizationImpl.class,
 			friendlyURLEntryLocalization.getPrimaryKey(),
-			friendlyURLEntryLocalization);
+			friendlyURLEntryLocalization, _columnBitmaskEnabled,
+			((FriendlyURLEntryLocalizationModelImpl)
+				friendlyURLEntryLocalization).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByFriendlyURLEntryId_LanguageId,
@@ -2052,7 +2054,10 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, FriendlyURLEntryLocalizationImpl.class,
-			friendlyURLEntryLocalization.getPrimaryKey());
+			friendlyURLEntryLocalization.getPrimaryKey(),
+			friendlyURLEntryLocalization, _columnBitmaskEnabled,
+			((FriendlyURLEntryLocalizationModelImpl)
+				friendlyURLEntryLocalization).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2074,7 +2079,10 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, FriendlyURLEntryLocalizationImpl.class,
-				friendlyURLEntryLocalization.getPrimaryKey());
+				friendlyURLEntryLocalization.getPrimaryKey(),
+				friendlyURLEntryLocalization, _columnBitmaskEnabled,
+				((FriendlyURLEntryLocalizationModelImpl)
+					friendlyURLEntryLocalization).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FriendlyURLEntryLocalizationModelImpl)
@@ -2466,7 +2474,9 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryLocalizationImpl.class,
 			friendlyURLEntryLocalization.getPrimaryKey(),
-			friendlyURLEntryLocalization, false);
+			friendlyURLEntryLocalization, false, _columnBitmaskEnabled,
+			((FriendlyURLEntryLocalizationModelImpl)
+				friendlyURLEntryLocalization).getColumnBitmask());
 
 		clearUniqueFindersCache(friendlyURLEntryLocalizationModelImpl, false);
 		cacheUniqueFindersCache(friendlyURLEntryLocalizationModelImpl);

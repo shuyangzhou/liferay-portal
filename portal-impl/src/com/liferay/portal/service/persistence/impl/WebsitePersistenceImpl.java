@@ -3973,7 +3973,9 @@ public class WebsitePersistenceImpl
 	public void cacheResult(Website website) {
 		EntityCacheUtil.putResult(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED, WebsiteImpl.class,
-			website.getPrimaryKey(), website);
+			website.getPrimaryKey(), website,
+			WebsiteModelImpl.COLUMN_BITMASK_ENABLED,
+			((WebsiteModelImpl)website).getColumnBitmask());
 
 		website.resetOriginalValues();
 	}
@@ -4025,7 +4027,9 @@ public class WebsitePersistenceImpl
 	public void clearCache(Website website) {
 		EntityCacheUtil.removeResult(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED, WebsiteImpl.class,
-			website.getPrimaryKey());
+			website.getPrimaryKey(), website,
+			WebsiteModelImpl.COLUMN_BITMASK_ENABLED,
+			((WebsiteModelImpl)website).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4039,7 +4043,9 @@ public class WebsitePersistenceImpl
 		for (Website website : websites) {
 			EntityCacheUtil.removeResult(
 				WebsiteModelImpl.ENTITY_CACHE_ENABLED, WebsiteImpl.class,
-				website.getPrimaryKey());
+				website.getPrimaryKey(), website,
+				WebsiteModelImpl.COLUMN_BITMASK_ENABLED,
+				((WebsiteModelImpl)website).getColumnBitmask());
 		}
 	}
 
@@ -4456,7 +4462,9 @@ public class WebsitePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED, WebsiteImpl.class,
-			website.getPrimaryKey(), website, false);
+			website.getPrimaryKey(), website, false,
+			WebsiteModelImpl.COLUMN_BITMASK_ENABLED,
+			((WebsiteModelImpl)website).getColumnBitmask());
 
 		website.resetOriginalValues();
 

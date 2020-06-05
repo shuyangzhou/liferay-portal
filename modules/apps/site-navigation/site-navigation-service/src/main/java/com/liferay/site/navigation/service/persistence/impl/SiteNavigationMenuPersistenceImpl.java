@@ -6605,7 +6605,10 @@ public class SiteNavigationMenuPersistenceImpl
 	public void cacheResult(SiteNavigationMenu siteNavigationMenu) {
 		entityCache.putResult(
 			entityCacheEnabled, SiteNavigationMenuImpl.class,
-			siteNavigationMenu.getPrimaryKey(), siteNavigationMenu);
+			siteNavigationMenu.getPrimaryKey(), siteNavigationMenu,
+			_columnBitmaskEnabled,
+			((SiteNavigationMenuModelImpl)siteNavigationMenu).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -6671,7 +6674,10 @@ public class SiteNavigationMenuPersistenceImpl
 	public void clearCache(SiteNavigationMenu siteNavigationMenu) {
 		entityCache.removeResult(
 			entityCacheEnabled, SiteNavigationMenuImpl.class,
-			siteNavigationMenu.getPrimaryKey());
+			siteNavigationMenu.getPrimaryKey(), siteNavigationMenu,
+			_columnBitmaskEnabled,
+			((SiteNavigationMenuModelImpl)siteNavigationMenu).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6688,7 +6694,10 @@ public class SiteNavigationMenuPersistenceImpl
 		for (SiteNavigationMenu siteNavigationMenu : siteNavigationMenus) {
 			entityCache.removeResult(
 				entityCacheEnabled, SiteNavigationMenuImpl.class,
-				siteNavigationMenu.getPrimaryKey());
+				siteNavigationMenu.getPrimaryKey(), siteNavigationMenu,
+				_columnBitmaskEnabled,
+				((SiteNavigationMenuModelImpl)siteNavigationMenu).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SiteNavigationMenuModelImpl)siteNavigationMenu, true);
@@ -7132,7 +7141,10 @@ public class SiteNavigationMenuPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SiteNavigationMenuImpl.class,
-			siteNavigationMenu.getPrimaryKey(), siteNavigationMenu, false);
+			siteNavigationMenu.getPrimaryKey(), siteNavigationMenu, false,
+			_columnBitmaskEnabled,
+			((SiteNavigationMenuModelImpl)siteNavigationMenu).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(siteNavigationMenuModelImpl, false);
 		cacheUniqueFindersCache(siteNavigationMenuModelImpl);

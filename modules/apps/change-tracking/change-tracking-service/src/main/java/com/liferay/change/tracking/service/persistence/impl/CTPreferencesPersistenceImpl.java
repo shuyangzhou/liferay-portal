@@ -1361,7 +1361,8 @@ public class CTPreferencesPersistenceImpl
 	public void cacheResult(CTPreferences ctPreferences) {
 		entityCache.putResult(
 			entityCacheEnabled, CTPreferencesImpl.class,
-			ctPreferences.getPrimaryKey(), ctPreferences);
+			ctPreferences.getPrimaryKey(), ctPreferences, _columnBitmaskEnabled,
+			((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_U,
@@ -1420,7 +1421,8 @@ public class CTPreferencesPersistenceImpl
 	public void clearCache(CTPreferences ctPreferences) {
 		entityCache.removeResult(
 			entityCacheEnabled, CTPreferencesImpl.class,
-			ctPreferences.getPrimaryKey());
+			ctPreferences.getPrimaryKey(), ctPreferences, _columnBitmaskEnabled,
+			((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1436,7 +1438,9 @@ public class CTPreferencesPersistenceImpl
 		for (CTPreferences ctPreferences : ctPreferenceses) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTPreferencesImpl.class,
-				ctPreferences.getPrimaryKey());
+				ctPreferences.getPrimaryKey(), ctPreferences,
+				_columnBitmaskEnabled,
+				((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(CTPreferencesModelImpl)ctPreferences, true);
@@ -1720,7 +1724,9 @@ public class CTPreferencesPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTPreferencesImpl.class,
-			ctPreferences.getPrimaryKey(), ctPreferences, false);
+			ctPreferences.getPrimaryKey(), ctPreferences, false,
+			_columnBitmaskEnabled,
+			((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
 
 		clearUniqueFindersCache(ctPreferencesModelImpl, false);
 		cacheUniqueFindersCache(ctPreferencesModelImpl);

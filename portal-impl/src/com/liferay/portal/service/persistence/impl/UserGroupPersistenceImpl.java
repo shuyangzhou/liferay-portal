@@ -6220,7 +6220,9 @@ public class UserGroupPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			UserGroupModelImpl.ENTITY_CACHE_ENABLED, UserGroupImpl.class,
-			userGroup.getPrimaryKey(), userGroup);
+			userGroup.getPrimaryKey(), userGroup,
+			UserGroupModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserGroupModelImpl)userGroup).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_N,
@@ -6290,7 +6292,9 @@ public class UserGroupPersistenceImpl
 	public void clearCache(UserGroup userGroup) {
 		EntityCacheUtil.removeResult(
 			UserGroupModelImpl.ENTITY_CACHE_ENABLED, UserGroupImpl.class,
-			userGroup.getPrimaryKey());
+			userGroup.getPrimaryKey(), userGroup,
+			UserGroupModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserGroupModelImpl)userGroup).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6306,7 +6310,9 @@ public class UserGroupPersistenceImpl
 		for (UserGroup userGroup : userGroups) {
 			EntityCacheUtil.removeResult(
 				UserGroupModelImpl.ENTITY_CACHE_ENABLED, UserGroupImpl.class,
-				userGroup.getPrimaryKey());
+				userGroup.getPrimaryKey(), userGroup,
+				UserGroupModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserGroupModelImpl)userGroup).getColumnBitmask());
 
 			clearUniqueFindersCache((UserGroupModelImpl)userGroup, true);
 		}
@@ -6729,7 +6735,9 @@ public class UserGroupPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			UserGroupModelImpl.ENTITY_CACHE_ENABLED, UserGroupImpl.class,
-			userGroup.getPrimaryKey(), userGroup, false);
+			userGroup.getPrimaryKey(), userGroup, false,
+			UserGroupModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserGroupModelImpl)userGroup).getColumnBitmask());
 
 		clearUniqueFindersCache(userGroupModelImpl, false);
 		cacheUniqueFindersCache(userGroupModelImpl);

@@ -6062,7 +6062,9 @@ public class LVEntryPersistenceImpl
 	public void cacheResult(LVEntry lvEntry) {
 		entityCache.putResult(
 			LVEntryModelImpl.ENTITY_CACHE_ENABLED, LVEntryImpl.class,
-			lvEntry.getPrimaryKey(), lvEntry);
+			lvEntry.getPrimaryKey(), lvEntry,
+			LVEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryModelImpl)lvEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G_Head,
@@ -6133,7 +6135,9 @@ public class LVEntryPersistenceImpl
 	public void clearCache(LVEntry lvEntry) {
 		entityCache.removeResult(
 			LVEntryModelImpl.ENTITY_CACHE_ENABLED, LVEntryImpl.class,
-			lvEntry.getPrimaryKey());
+			lvEntry.getPrimaryKey(), lvEntry,
+			LVEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryModelImpl)lvEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6149,7 +6153,9 @@ public class LVEntryPersistenceImpl
 		for (LVEntry lvEntry : lvEntries) {
 			entityCache.removeResult(
 				LVEntryModelImpl.ENTITY_CACHE_ENABLED, LVEntryImpl.class,
-				lvEntry.getPrimaryKey());
+				lvEntry.getPrimaryKey(), lvEntry,
+				LVEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((LVEntryModelImpl)lvEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((LVEntryModelImpl)lvEntry, true);
 		}
@@ -6669,7 +6675,9 @@ public class LVEntryPersistenceImpl
 
 		entityCache.putResult(
 			LVEntryModelImpl.ENTITY_CACHE_ENABLED, LVEntryImpl.class,
-			lvEntry.getPrimaryKey(), lvEntry, false);
+			lvEntry.getPrimaryKey(), lvEntry, false,
+			LVEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryModelImpl)lvEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(lvEntryModelImpl, false);
 		cacheUniqueFindersCache(lvEntryModelImpl);

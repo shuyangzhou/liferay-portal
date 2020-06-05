@@ -5979,7 +5979,8 @@ public class LVEntryVersionPersistenceImpl
 		entityCache.putResult(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
-			lvEntryVersion);
+			lvEntryVersion, LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByLvEntryId_Version,
@@ -6055,7 +6056,9 @@ public class LVEntryVersionPersistenceImpl
 	public void clearCache(LVEntryVersion lvEntryVersion) {
 		entityCache.removeResult(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
-			LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey());
+			LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
+			lvEntryVersion, LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6071,7 +6074,9 @@ public class LVEntryVersionPersistenceImpl
 		for (LVEntryVersion lvEntryVersion : lvEntryVersions) {
 			entityCache.removeResult(
 				LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
-				LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey());
+				LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
+				lvEntryVersion, LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+				((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LVEntryVersionModelImpl)lvEntryVersion, true);
@@ -6648,7 +6653,9 @@ public class LVEntryVersionPersistenceImpl
 		entityCache.putResult(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
-			lvEntryVersion, false);
+			lvEntryVersion, false,
+			LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
 
 		clearUniqueFindersCache(lvEntryVersionModelImpl, false);
 		cacheUniqueFindersCache(lvEntryVersionModelImpl);

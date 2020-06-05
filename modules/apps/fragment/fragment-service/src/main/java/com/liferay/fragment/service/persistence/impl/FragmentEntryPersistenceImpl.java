@@ -6440,7 +6440,8 @@ public class FragmentEntryPersistenceImpl
 	public void cacheResult(FragmentEntry fragmentEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, FragmentEntryImpl.class,
-			fragmentEntry.getPrimaryKey(), fragmentEntry);
+			fragmentEntry.getPrimaryKey(), fragmentEntry, _columnBitmaskEnabled,
+			((FragmentEntryModelImpl)fragmentEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -6504,7 +6505,8 @@ public class FragmentEntryPersistenceImpl
 	public void clearCache(FragmentEntry fragmentEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, FragmentEntryImpl.class,
-			fragmentEntry.getPrimaryKey());
+			fragmentEntry.getPrimaryKey(), fragmentEntry, _columnBitmaskEnabled,
+			((FragmentEntryModelImpl)fragmentEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6520,7 +6522,9 @@ public class FragmentEntryPersistenceImpl
 		for (FragmentEntry fragmentEntry : fragmentEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentEntryImpl.class,
-				fragmentEntry.getPrimaryKey());
+				fragmentEntry.getPrimaryKey(), fragmentEntry,
+				_columnBitmaskEnabled,
+				((FragmentEntryModelImpl)fragmentEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FragmentEntryModelImpl)fragmentEntry, true);
@@ -7063,7 +7067,9 @@ public class FragmentEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FragmentEntryImpl.class,
-			fragmentEntry.getPrimaryKey(), fragmentEntry, false);
+			fragmentEntry.getPrimaryKey(), fragmentEntry, false,
+			_columnBitmaskEnabled,
+			((FragmentEntryModelImpl)fragmentEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(fragmentEntryModelImpl, false);
 		cacheUniqueFindersCache(fragmentEntryModelImpl);

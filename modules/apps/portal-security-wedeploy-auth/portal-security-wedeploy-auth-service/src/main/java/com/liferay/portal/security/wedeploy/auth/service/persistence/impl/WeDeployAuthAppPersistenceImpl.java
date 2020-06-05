@@ -710,7 +710,9 @@ public class WeDeployAuthAppPersistenceImpl
 	public void cacheResult(WeDeployAuthApp weDeployAuthApp) {
 		entityCache.putResult(
 			entityCacheEnabled, WeDeployAuthAppImpl.class,
-			weDeployAuthApp.getPrimaryKey(), weDeployAuthApp);
+			weDeployAuthApp.getPrimaryKey(), weDeployAuthApp,
+			_columnBitmaskEnabled,
+			((WeDeployAuthAppModelImpl)weDeployAuthApp).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByRU_CI,
@@ -776,7 +778,9 @@ public class WeDeployAuthAppPersistenceImpl
 	public void clearCache(WeDeployAuthApp weDeployAuthApp) {
 		entityCache.removeResult(
 			entityCacheEnabled, WeDeployAuthAppImpl.class,
-			weDeployAuthApp.getPrimaryKey());
+			weDeployAuthApp.getPrimaryKey(), weDeployAuthApp,
+			_columnBitmaskEnabled,
+			((WeDeployAuthAppModelImpl)weDeployAuthApp).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -793,7 +797,9 @@ public class WeDeployAuthAppPersistenceImpl
 		for (WeDeployAuthApp weDeployAuthApp : weDeployAuthApps) {
 			entityCache.removeResult(
 				entityCacheEnabled, WeDeployAuthAppImpl.class,
-				weDeployAuthApp.getPrimaryKey());
+				weDeployAuthApp.getPrimaryKey(), weDeployAuthApp,
+				_columnBitmaskEnabled,
+				((WeDeployAuthAppModelImpl)weDeployAuthApp).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(WeDeployAuthAppModelImpl)weDeployAuthApp, true);
@@ -1073,7 +1079,9 @@ public class WeDeployAuthAppPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, WeDeployAuthAppImpl.class,
-			weDeployAuthApp.getPrimaryKey(), weDeployAuthApp, false);
+			weDeployAuthApp.getPrimaryKey(), weDeployAuthApp, false,
+			_columnBitmaskEnabled,
+			((WeDeployAuthAppModelImpl)weDeployAuthApp).getColumnBitmask());
 
 		clearUniqueFindersCache(weDeployAuthAppModelImpl, false);
 		cacheUniqueFindersCache(weDeployAuthAppModelImpl);

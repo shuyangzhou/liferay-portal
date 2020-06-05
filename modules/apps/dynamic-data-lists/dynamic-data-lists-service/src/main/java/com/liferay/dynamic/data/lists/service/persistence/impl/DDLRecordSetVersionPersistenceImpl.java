@@ -1432,7 +1432,10 @@ public class DDLRecordSetVersionPersistenceImpl
 	public void cacheResult(DDLRecordSetVersion ddlRecordSetVersion) {
 		entityCache.putResult(
 			entityCacheEnabled, DDLRecordSetVersionImpl.class,
-			ddlRecordSetVersion.getPrimaryKey(), ddlRecordSetVersion);
+			ddlRecordSetVersion.getPrimaryKey(), ddlRecordSetVersion,
+			_columnBitmaskEnabled,
+			((DDLRecordSetVersionModelImpl)ddlRecordSetVersion).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByRS_V,
@@ -1492,7 +1495,10 @@ public class DDLRecordSetVersionPersistenceImpl
 	public void clearCache(DDLRecordSetVersion ddlRecordSetVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDLRecordSetVersionImpl.class,
-			ddlRecordSetVersion.getPrimaryKey());
+			ddlRecordSetVersion.getPrimaryKey(), ddlRecordSetVersion,
+			_columnBitmaskEnabled,
+			((DDLRecordSetVersionModelImpl)ddlRecordSetVersion).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1509,7 +1515,10 @@ public class DDLRecordSetVersionPersistenceImpl
 		for (DDLRecordSetVersion ddlRecordSetVersion : ddlRecordSetVersions) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDLRecordSetVersionImpl.class,
-				ddlRecordSetVersion.getPrimaryKey());
+				ddlRecordSetVersion.getPrimaryKey(), ddlRecordSetVersion,
+				_columnBitmaskEnabled,
+				((DDLRecordSetVersionModelImpl)ddlRecordSetVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDLRecordSetVersionModelImpl)ddlRecordSetVersion, true);
@@ -1799,7 +1808,10 @@ public class DDLRecordSetVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDLRecordSetVersionImpl.class,
-			ddlRecordSetVersion.getPrimaryKey(), ddlRecordSetVersion, false);
+			ddlRecordSetVersion.getPrimaryKey(), ddlRecordSetVersion, false,
+			_columnBitmaskEnabled,
+			((DDLRecordSetVersionModelImpl)ddlRecordSetVersion).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddlRecordSetVersionModelImpl, false);
 		cacheUniqueFindersCache(ddlRecordSetVersionModelImpl);

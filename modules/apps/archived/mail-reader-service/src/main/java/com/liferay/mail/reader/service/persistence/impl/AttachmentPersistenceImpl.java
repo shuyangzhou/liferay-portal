@@ -613,7 +613,8 @@ public class AttachmentPersistenceImpl
 	public void cacheResult(Attachment attachment) {
 		entityCache.putResult(
 			entityCacheEnabled, AttachmentImpl.class,
-			attachment.getPrimaryKey(), attachment);
+			attachment.getPrimaryKey(), attachment, _columnBitmaskEnabled,
+			((AttachmentModelImpl)attachment).getColumnBitmask());
 
 		attachment.resetOriginalValues();
 	}
@@ -665,7 +666,8 @@ public class AttachmentPersistenceImpl
 	public void clearCache(Attachment attachment) {
 		entityCache.removeResult(
 			entityCacheEnabled, AttachmentImpl.class,
-			attachment.getPrimaryKey());
+			attachment.getPrimaryKey(), attachment, _columnBitmaskEnabled,
+			((AttachmentModelImpl)attachment).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -679,7 +681,8 @@ public class AttachmentPersistenceImpl
 		for (Attachment attachment : attachments) {
 			entityCache.removeResult(
 				entityCacheEnabled, AttachmentImpl.class,
-				attachment.getPrimaryKey());
+				attachment.getPrimaryKey(), attachment, _columnBitmaskEnabled,
+				((AttachmentModelImpl)attachment).getColumnBitmask());
 		}
 	}
 
@@ -881,7 +884,9 @@ public class AttachmentPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AttachmentImpl.class,
-			attachment.getPrimaryKey(), attachment, false);
+			attachment.getPrimaryKey(), attachment, false,
+			_columnBitmaskEnabled,
+			((AttachmentModelImpl)attachment).getColumnBitmask());
 
 		attachment.resetOriginalValues();
 

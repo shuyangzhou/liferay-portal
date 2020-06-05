@@ -728,7 +728,9 @@ public class RatingsStatsPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED, RatingsStatsImpl.class,
-			ratingsStats.getPrimaryKey(), ratingsStats);
+			ratingsStats.getPrimaryKey(), ratingsStats,
+			RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
+			((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_C,
@@ -794,7 +796,9 @@ public class RatingsStatsPersistenceImpl
 	public void clearCache(RatingsStats ratingsStats) {
 		EntityCacheUtil.removeResult(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED, RatingsStatsImpl.class,
-			ratingsStats.getPrimaryKey());
+			ratingsStats.getPrimaryKey(), ratingsStats,
+			RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
+			((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -810,7 +814,9 @@ public class RatingsStatsPersistenceImpl
 		for (RatingsStats ratingsStats : ratingsStatses) {
 			EntityCacheUtil.removeResult(
 				RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
-				RatingsStatsImpl.class, ratingsStats.getPrimaryKey());
+				RatingsStatsImpl.class, ratingsStats.getPrimaryKey(),
+				ratingsStats, RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
+				((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
 
 			clearUniqueFindersCache((RatingsStatsModelImpl)ratingsStats, true);
 		}
@@ -1107,7 +1113,9 @@ public class RatingsStatsPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED, RatingsStatsImpl.class,
-			ratingsStats.getPrimaryKey(), ratingsStats, false);
+			ratingsStats.getPrimaryKey(), ratingsStats, false,
+			RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
+			((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
 
 		clearUniqueFindersCache(ratingsStatsModelImpl, false);
 		cacheUniqueFindersCache(ratingsStatsModelImpl);

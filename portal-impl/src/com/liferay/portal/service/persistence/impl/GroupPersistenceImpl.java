@@ -12827,7 +12827,8 @@ public class GroupPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			GroupModelImpl.ENTITY_CACHE_ENABLED, GroupImpl.class,
-			group.getPrimaryKey(), group);
+			group.getPrimaryKey(), group, GroupModelImpl.COLUMN_BITMASK_ENABLED,
+			((GroupModelImpl)group).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -12924,7 +12925,8 @@ public class GroupPersistenceImpl
 	public void clearCache(Group group) {
 		EntityCacheUtil.removeResult(
 			GroupModelImpl.ENTITY_CACHE_ENABLED, GroupImpl.class,
-			group.getPrimaryKey());
+			group.getPrimaryKey(), group, GroupModelImpl.COLUMN_BITMASK_ENABLED,
+			((GroupModelImpl)group).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -12940,7 +12942,9 @@ public class GroupPersistenceImpl
 		for (Group group : groups) {
 			EntityCacheUtil.removeResult(
 				GroupModelImpl.ENTITY_CACHE_ENABLED, GroupImpl.class,
-				group.getPrimaryKey());
+				group.getPrimaryKey(), group,
+				GroupModelImpl.COLUMN_BITMASK_ENABLED,
+				((GroupModelImpl)group).getColumnBitmask());
 
 			clearUniqueFindersCache((GroupModelImpl)group, true);
 		}
@@ -13774,7 +13778,9 @@ public class GroupPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			GroupModelImpl.ENTITY_CACHE_ENABLED, GroupImpl.class,
-			group.getPrimaryKey(), group, false);
+			group.getPrimaryKey(), group, false,
+			GroupModelImpl.COLUMN_BITMASK_ENABLED,
+			((GroupModelImpl)group).getColumnBitmask());
 
 		clearUniqueFindersCache(groupModelImpl, false);
 		cacheUniqueFindersCache(groupModelImpl);

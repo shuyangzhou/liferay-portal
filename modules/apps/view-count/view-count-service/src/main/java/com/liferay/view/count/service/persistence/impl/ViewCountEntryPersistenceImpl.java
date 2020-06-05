@@ -155,7 +155,7 @@ public class ViewCountEntryPersistenceImpl
 	public void clearCache(ViewCountEntry viewCountEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, ViewCountEntryImpl.class,
-			viewCountEntry.getPrimaryKey());
+			viewCountEntry.getPrimaryKey(), viewCountEntry);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -169,7 +169,7 @@ public class ViewCountEntryPersistenceImpl
 		for (ViewCountEntry viewCountEntry : viewCountEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, ViewCountEntryImpl.class,
-				viewCountEntry.getPrimaryKey());
+				viewCountEntry.getPrimaryKey(), viewCountEntry);
 		}
 	}
 

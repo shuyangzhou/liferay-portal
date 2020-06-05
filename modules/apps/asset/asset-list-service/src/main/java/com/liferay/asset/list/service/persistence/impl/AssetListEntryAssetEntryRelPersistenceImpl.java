@@ -3920,7 +3920,9 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntryAssetEntryRelImpl.class,
 			assetListEntryAssetEntryRel.getPrimaryKey(),
-			assetListEntryAssetEntryRel);
+			assetListEntryAssetEntryRel, _columnBitmaskEnabled,
+			((AssetListEntryAssetEntryRelModelImpl)assetListEntryAssetEntryRel).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4001,7 +4003,10 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, AssetListEntryAssetEntryRelImpl.class,
-			assetListEntryAssetEntryRel.getPrimaryKey());
+			assetListEntryAssetEntryRel.getPrimaryKey(),
+			assetListEntryAssetEntryRel, _columnBitmaskEnabled,
+			((AssetListEntryAssetEntryRelModelImpl)assetListEntryAssetEntryRel).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4023,7 +4028,10 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AssetListEntryAssetEntryRelImpl.class,
-				assetListEntryAssetEntryRel.getPrimaryKey());
+				assetListEntryAssetEntryRel.getPrimaryKey(),
+				assetListEntryAssetEntryRel, _columnBitmaskEnabled,
+				((AssetListEntryAssetEntryRelModelImpl)
+					assetListEntryAssetEntryRel).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetListEntryAssetEntryRelModelImpl)
@@ -4494,7 +4502,9 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntryAssetEntryRelImpl.class,
 			assetListEntryAssetEntryRel.getPrimaryKey(),
-			assetListEntryAssetEntryRel, false);
+			assetListEntryAssetEntryRel, false, _columnBitmaskEnabled,
+			((AssetListEntryAssetEntryRelModelImpl)assetListEntryAssetEntryRel).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetListEntryAssetEntryRelModelImpl, false);
 		cacheUniqueFindersCache(assetListEntryAssetEntryRelModelImpl);

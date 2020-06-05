@@ -2848,7 +2848,8 @@ public class SourcePersistenceImpl
 	public void cacheResult(Source source) {
 		entityCache.putResult(
 			entityCacheEnabled, SourceImpl.class, source.getPrimaryKey(),
-			source);
+			source, _columnBitmaskEnabled,
+			((SourceModelImpl)source).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2903,7 +2904,9 @@ public class SourcePersistenceImpl
 	@Override
 	public void clearCache(Source source) {
 		entityCache.removeResult(
-			entityCacheEnabled, SourceImpl.class, source.getPrimaryKey());
+			entityCacheEnabled, SourceImpl.class, source.getPrimaryKey(),
+			source, _columnBitmaskEnabled,
+			((SourceModelImpl)source).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2918,7 +2921,9 @@ public class SourcePersistenceImpl
 
 		for (Source source : sources) {
 			entityCache.removeResult(
-				entityCacheEnabled, SourceImpl.class, source.getPrimaryKey());
+				entityCacheEnabled, SourceImpl.class, source.getPrimaryKey(),
+				source, _columnBitmaskEnabled,
+				((SourceModelImpl)source).getColumnBitmask());
 
 			clearUniqueFindersCache((SourceModelImpl)source, true);
 		}
@@ -3265,7 +3270,8 @@ public class SourcePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SourceImpl.class, source.getPrimaryKey(),
-			source, false);
+			source, false, _columnBitmaskEnabled,
+			((SourceModelImpl)source).getColumnBitmask());
 
 		clearUniqueFindersCache(sourceModelImpl, false);
 		cacheUniqueFindersCache(sourceModelImpl);

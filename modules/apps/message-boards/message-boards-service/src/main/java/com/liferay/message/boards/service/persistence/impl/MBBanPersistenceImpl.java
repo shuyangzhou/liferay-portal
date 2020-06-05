@@ -3191,7 +3191,8 @@ public class MBBanPersistenceImpl
 	@Override
 	public void cacheResult(MBBan mbBan) {
 		entityCache.putResult(
-			entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey(), mbBan);
+			entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey(), mbBan,
+			_columnBitmaskEnabled, ((MBBanModelImpl)mbBan).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3250,7 +3251,8 @@ public class MBBanPersistenceImpl
 	@Override
 	public void clearCache(MBBan mbBan) {
 		entityCache.removeResult(
-			entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey());
+			entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey(), mbBan,
+			_columnBitmaskEnabled, ((MBBanModelImpl)mbBan).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3265,7 +3267,9 @@ public class MBBanPersistenceImpl
 
 		for (MBBan mbBan : mbBans) {
 			entityCache.removeResult(
-				entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey());
+				entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey(),
+				mbBan, _columnBitmaskEnabled,
+				((MBBanModelImpl)mbBan).getColumnBitmask());
 
 			clearUniqueFindersCache((MBBanModelImpl)mbBan, true);
 		}
@@ -3665,7 +3669,8 @@ public class MBBanPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBBanImpl.class, mbBan.getPrimaryKey(), mbBan,
-			false);
+			false, _columnBitmaskEnabled,
+			((MBBanModelImpl)mbBan).getColumnBitmask());
 
 		clearUniqueFindersCache(mbBanModelImpl, false);
 		cacheUniqueFindersCache(mbBanModelImpl);

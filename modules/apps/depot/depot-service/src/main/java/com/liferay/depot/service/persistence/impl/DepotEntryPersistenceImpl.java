@@ -1692,7 +1692,8 @@ public class DepotEntryPersistenceImpl
 	public void cacheResult(DepotEntry depotEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, DepotEntryImpl.class,
-			depotEntry.getPrimaryKey(), depotEntry);
+			depotEntry.getPrimaryKey(), depotEntry, _columnBitmaskEnabled,
+			((DepotEntryModelImpl)depotEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -1753,7 +1754,8 @@ public class DepotEntryPersistenceImpl
 	public void clearCache(DepotEntry depotEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, DepotEntryImpl.class,
-			depotEntry.getPrimaryKey());
+			depotEntry.getPrimaryKey(), depotEntry, _columnBitmaskEnabled,
+			((DepotEntryModelImpl)depotEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1769,7 +1771,8 @@ public class DepotEntryPersistenceImpl
 		for (DepotEntry depotEntry : depotEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, DepotEntryImpl.class,
-				depotEntry.getPrimaryKey());
+				depotEntry.getPrimaryKey(), depotEntry, _columnBitmaskEnabled,
+				((DepotEntryModelImpl)depotEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((DepotEntryModelImpl)depotEntry, true);
 		}
@@ -2099,7 +2102,9 @@ public class DepotEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DepotEntryImpl.class,
-			depotEntry.getPrimaryKey(), depotEntry, false);
+			depotEntry.getPrimaryKey(), depotEntry, false,
+			_columnBitmaskEnabled,
+			((DepotEntryModelImpl)depotEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(depotEntryModelImpl, false);
 		cacheUniqueFindersCache(depotEntryModelImpl);

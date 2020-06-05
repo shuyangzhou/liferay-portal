@@ -3971,7 +3971,8 @@ public class PhonePersistenceImpl
 	public void cacheResult(Phone phone) {
 		EntityCacheUtil.putResult(
 			PhoneModelImpl.ENTITY_CACHE_ENABLED, PhoneImpl.class,
-			phone.getPrimaryKey(), phone);
+			phone.getPrimaryKey(), phone, PhoneModelImpl.COLUMN_BITMASK_ENABLED,
+			((PhoneModelImpl)phone).getColumnBitmask());
 
 		phone.resetOriginalValues();
 	}
@@ -4023,7 +4024,8 @@ public class PhonePersistenceImpl
 	public void clearCache(Phone phone) {
 		EntityCacheUtil.removeResult(
 			PhoneModelImpl.ENTITY_CACHE_ENABLED, PhoneImpl.class,
-			phone.getPrimaryKey());
+			phone.getPrimaryKey(), phone, PhoneModelImpl.COLUMN_BITMASK_ENABLED,
+			((PhoneModelImpl)phone).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4037,7 +4039,9 @@ public class PhonePersistenceImpl
 		for (Phone phone : phones) {
 			EntityCacheUtil.removeResult(
 				PhoneModelImpl.ENTITY_CACHE_ENABLED, PhoneImpl.class,
-				phone.getPrimaryKey());
+				phone.getPrimaryKey(), phone,
+				PhoneModelImpl.COLUMN_BITMASK_ENABLED,
+				((PhoneModelImpl)phone).getColumnBitmask());
 		}
 	}
 
@@ -4446,7 +4450,9 @@ public class PhonePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			PhoneModelImpl.ENTITY_CACHE_ENABLED, PhoneImpl.class,
-			phone.getPrimaryKey(), phone, false);
+			phone.getPrimaryKey(), phone, false,
+			PhoneModelImpl.COLUMN_BITMASK_ENABLED,
+			((PhoneModelImpl)phone).getColumnBitmask());
 
 		phone.resetOriginalValues();
 

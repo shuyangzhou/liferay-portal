@@ -2923,7 +2923,10 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		EntityCacheUtil.putResult(
 			WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
 			WorkflowDefinitionLinkImpl.class,
-			workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink);
+			workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink,
+			WorkflowDefinitionLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((WorkflowDefinitionLinkModelImpl)workflowDefinitionLink).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_C_C_C_T,
@@ -2998,7 +3001,10 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		EntityCacheUtil.removeResult(
 			WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
 			WorkflowDefinitionLinkImpl.class,
-			workflowDefinitionLink.getPrimaryKey());
+			workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink,
+			WorkflowDefinitionLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((WorkflowDefinitionLinkModelImpl)workflowDefinitionLink).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3020,7 +3026,10 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			EntityCacheUtil.removeResult(
 				WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
 				WorkflowDefinitionLinkImpl.class,
-				workflowDefinitionLink.getPrimaryKey());
+				workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink,
+				WorkflowDefinitionLinkModelImpl.COLUMN_BITMASK_ENABLED,
+				((WorkflowDefinitionLinkModelImpl)workflowDefinitionLink).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(WorkflowDefinitionLinkModelImpl)workflowDefinitionLink, true);
@@ -3453,7 +3462,9 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
 			WorkflowDefinitionLinkImpl.class,
 			workflowDefinitionLink.getPrimaryKey(), workflowDefinitionLink,
-			false);
+			false, WorkflowDefinitionLinkModelImpl.COLUMN_BITMASK_ENABLED,
+			((WorkflowDefinitionLinkModelImpl)workflowDefinitionLink).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(workflowDefinitionLinkModelImpl, false);
 		cacheUniqueFindersCache(workflowDefinitionLinkModelImpl);

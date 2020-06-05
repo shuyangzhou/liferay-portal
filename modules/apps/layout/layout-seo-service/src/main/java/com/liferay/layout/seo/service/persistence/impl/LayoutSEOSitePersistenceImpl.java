@@ -1701,7 +1701,8 @@ public class LayoutSEOSitePersistenceImpl
 	public void cacheResult(LayoutSEOSite layoutSEOSite) {
 		entityCache.putResult(
 			entityCacheEnabled, LayoutSEOSiteImpl.class,
-			layoutSEOSite.getPrimaryKey(), layoutSEOSite);
+			layoutSEOSite.getPrimaryKey(), layoutSEOSite, _columnBitmaskEnabled,
+			((LayoutSEOSiteModelImpl)layoutSEOSite).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -1762,7 +1763,8 @@ public class LayoutSEOSitePersistenceImpl
 	public void clearCache(LayoutSEOSite layoutSEOSite) {
 		entityCache.removeResult(
 			entityCacheEnabled, LayoutSEOSiteImpl.class,
-			layoutSEOSite.getPrimaryKey());
+			layoutSEOSite.getPrimaryKey(), layoutSEOSite, _columnBitmaskEnabled,
+			((LayoutSEOSiteModelImpl)layoutSEOSite).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1778,7 +1780,9 @@ public class LayoutSEOSitePersistenceImpl
 		for (LayoutSEOSite layoutSEOSite : layoutSEOSites) {
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutSEOSiteImpl.class,
-				layoutSEOSite.getPrimaryKey());
+				layoutSEOSite.getPrimaryKey(), layoutSEOSite,
+				_columnBitmaskEnabled,
+				((LayoutSEOSiteModelImpl)layoutSEOSite).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutSEOSiteModelImpl)layoutSEOSite, true);
@@ -2115,7 +2119,9 @@ public class LayoutSEOSitePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, LayoutSEOSiteImpl.class,
-			layoutSEOSite.getPrimaryKey(), layoutSEOSite, false);
+			layoutSEOSite.getPrimaryKey(), layoutSEOSite, false,
+			_columnBitmaskEnabled,
+			((LayoutSEOSiteModelImpl)layoutSEOSite).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutSEOSiteModelImpl, false);
 		cacheUniqueFindersCache(layoutSEOSiteModelImpl);

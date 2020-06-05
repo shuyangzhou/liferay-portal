@@ -800,7 +800,8 @@ public class DLSyncEventPersistenceImpl
 	public void cacheResult(DLSyncEvent dlSyncEvent) {
 		entityCache.putResult(
 			entityCacheEnabled, DLSyncEventImpl.class,
-			dlSyncEvent.getPrimaryKey(), dlSyncEvent);
+			dlSyncEvent.getPrimaryKey(), dlSyncEvent, _columnBitmaskEnabled,
+			((DLSyncEventModelImpl)dlSyncEvent).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByTypePK, new Object[] {dlSyncEvent.getTypePK()},
@@ -856,7 +857,8 @@ public class DLSyncEventPersistenceImpl
 	public void clearCache(DLSyncEvent dlSyncEvent) {
 		entityCache.removeResult(
 			entityCacheEnabled, DLSyncEventImpl.class,
-			dlSyncEvent.getPrimaryKey());
+			dlSyncEvent.getPrimaryKey(), dlSyncEvent, _columnBitmaskEnabled,
+			((DLSyncEventModelImpl)dlSyncEvent).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -872,7 +874,8 @@ public class DLSyncEventPersistenceImpl
 		for (DLSyncEvent dlSyncEvent : dlSyncEvents) {
 			entityCache.removeResult(
 				entityCacheEnabled, DLSyncEventImpl.class,
-				dlSyncEvent.getPrimaryKey());
+				dlSyncEvent.getPrimaryKey(), dlSyncEvent, _columnBitmaskEnabled,
+				((DLSyncEventModelImpl)dlSyncEvent).getColumnBitmask());
 
 			clearUniqueFindersCache((DLSyncEventModelImpl)dlSyncEvent, true);
 		}
@@ -1081,7 +1084,9 @@ public class DLSyncEventPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DLSyncEventImpl.class,
-			dlSyncEvent.getPrimaryKey(), dlSyncEvent, false);
+			dlSyncEvent.getPrimaryKey(), dlSyncEvent, false,
+			_columnBitmaskEnabled,
+			((DLSyncEventModelImpl)dlSyncEvent).getColumnBitmask());
 
 		clearUniqueFindersCache(dlSyncEventModelImpl, false);
 		cacheUniqueFindersCache(dlSyncEventModelImpl);

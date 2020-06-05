@@ -935,7 +935,9 @@ public class ListTypePersistenceImpl
 	public void cacheResult(ListType listType) {
 		EntityCacheUtil.putResult(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
-			listType.getPrimaryKey(), listType);
+			listType.getPrimaryKey(), listType,
+			ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((ListTypeModelImpl)listType).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByN_T,
@@ -991,7 +993,9 @@ public class ListTypePersistenceImpl
 	public void clearCache(ListType listType) {
 		EntityCacheUtil.removeResult(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
-			listType.getPrimaryKey());
+			listType.getPrimaryKey(), listType,
+			ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((ListTypeModelImpl)listType).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1007,7 +1011,9 @@ public class ListTypePersistenceImpl
 		for (ListType listType : listTypes) {
 			EntityCacheUtil.removeResult(
 				ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
-				listType.getPrimaryKey());
+				listType.getPrimaryKey(), listType,
+				ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
+				((ListTypeModelImpl)listType).getColumnBitmask());
 
 			clearUniqueFindersCache((ListTypeModelImpl)listType, true);
 		}
@@ -1247,7 +1253,9 @@ public class ListTypePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
-			listType.getPrimaryKey(), listType, false);
+			listType.getPrimaryKey(), listType, false,
+			ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((ListTypeModelImpl)listType).getColumnBitmask());
 
 		clearUniqueFindersCache(listTypeModelImpl, false);
 		cacheUniqueFindersCache(listTypeModelImpl);

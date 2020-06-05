@@ -597,7 +597,9 @@ public class OrgLaborPersistenceImpl
 	public void cacheResult(OrgLabor orgLabor) {
 		EntityCacheUtil.putResult(
 			OrgLaborModelImpl.ENTITY_CACHE_ENABLED, OrgLaborImpl.class,
-			orgLabor.getPrimaryKey(), orgLabor);
+			orgLabor.getPrimaryKey(), orgLabor,
+			OrgLaborModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrgLaborModelImpl)orgLabor).getColumnBitmask());
 
 		orgLabor.resetOriginalValues();
 	}
@@ -649,7 +651,9 @@ public class OrgLaborPersistenceImpl
 	public void clearCache(OrgLabor orgLabor) {
 		EntityCacheUtil.removeResult(
 			OrgLaborModelImpl.ENTITY_CACHE_ENABLED, OrgLaborImpl.class,
-			orgLabor.getPrimaryKey());
+			orgLabor.getPrimaryKey(), orgLabor,
+			OrgLaborModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrgLaborModelImpl)orgLabor).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -663,7 +667,9 @@ public class OrgLaborPersistenceImpl
 		for (OrgLabor orgLabor : orgLabors) {
 			EntityCacheUtil.removeResult(
 				OrgLaborModelImpl.ENTITY_CACHE_ENABLED, OrgLaborImpl.class,
-				orgLabor.getPrimaryKey());
+				orgLabor.getPrimaryKey(), orgLabor,
+				OrgLaborModelImpl.COLUMN_BITMASK_ENABLED,
+				((OrgLaborModelImpl)orgLabor).getColumnBitmask());
 		}
 	}
 
@@ -870,7 +876,9 @@ public class OrgLaborPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			OrgLaborModelImpl.ENTITY_CACHE_ENABLED, OrgLaborImpl.class,
-			orgLabor.getPrimaryKey(), orgLabor, false);
+			orgLabor.getPrimaryKey(), orgLabor, false,
+			OrgLaborModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrgLaborModelImpl)orgLabor).getColumnBitmask());
 
 		orgLabor.resetOriginalValues();
 

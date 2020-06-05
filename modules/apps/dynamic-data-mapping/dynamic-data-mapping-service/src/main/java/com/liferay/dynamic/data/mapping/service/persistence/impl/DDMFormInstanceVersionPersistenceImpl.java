@@ -1507,7 +1507,10 @@ public class DDMFormInstanceVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceVersionImpl.class,
-			ddmFormInstanceVersion.getPrimaryKey(), ddmFormInstanceVersion);
+			ddmFormInstanceVersion.getPrimaryKey(), ddmFormInstanceVersion,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByF_V,
@@ -1577,7 +1580,10 @@ public class DDMFormInstanceVersionPersistenceImpl
 	public void clearCache(DDMFormInstanceVersion ddmFormInstanceVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMFormInstanceVersionImpl.class,
-			ddmFormInstanceVersion.getPrimaryKey());
+			ddmFormInstanceVersion.getPrimaryKey(), ddmFormInstanceVersion,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1598,7 +1604,10 @@ public class DDMFormInstanceVersionPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DDMFormInstanceVersionImpl.class,
-				ddmFormInstanceVersion.getPrimaryKey());
+				ddmFormInstanceVersion.getPrimaryKey(), ddmFormInstanceVersion,
+				_columnBitmaskEnabled,
+				((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion, true);
@@ -1917,7 +1926,9 @@ public class DDMFormInstanceVersionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceVersionImpl.class,
 			ddmFormInstanceVersion.getPrimaryKey(), ddmFormInstanceVersion,
-			false);
+			false, _columnBitmaskEnabled,
+			((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddmFormInstanceVersionModelImpl, false);
 		cacheUniqueFindersCache(ddmFormInstanceVersionModelImpl);

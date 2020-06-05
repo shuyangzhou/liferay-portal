@@ -3219,7 +3219,8 @@ public class DLFileEntryTypePersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileEntryTypeImpl.class, dlFileEntryType.getPrimaryKey(),
-			dlFileEntryType);
+			dlFileEntryType, DLFileEntryTypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryTypeModelImpl)dlFileEntryType).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -3293,7 +3294,9 @@ public class DLFileEntryTypePersistenceImpl
 	public void clearCache(DLFileEntryType dlFileEntryType) {
 		EntityCacheUtil.removeResult(
 			DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryTypeImpl.class, dlFileEntryType.getPrimaryKey());
+			DLFileEntryTypeImpl.class, dlFileEntryType.getPrimaryKey(),
+			dlFileEntryType, DLFileEntryTypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryTypeModelImpl)dlFileEntryType).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3310,7 +3313,10 @@ public class DLFileEntryTypePersistenceImpl
 		for (DLFileEntryType dlFileEntryType : dlFileEntryTypes) {
 			EntityCacheUtil.removeResult(
 				DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryTypeImpl.class, dlFileEntryType.getPrimaryKey());
+				DLFileEntryTypeImpl.class, dlFileEntryType.getPrimaryKey(),
+				dlFileEntryType,
+				DLFileEntryTypeModelImpl.COLUMN_BITMASK_ENABLED,
+				((DLFileEntryTypeModelImpl)dlFileEntryType).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DLFileEntryTypeModelImpl)dlFileEntryType, true);
@@ -3711,7 +3717,9 @@ public class DLFileEntryTypePersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileEntryTypeImpl.class, dlFileEntryType.getPrimaryKey(),
-			dlFileEntryType, false);
+			dlFileEntryType, false,
+			DLFileEntryTypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryTypeModelImpl)dlFileEntryType).getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileEntryTypeModelImpl, false);
 		cacheUniqueFindersCache(dlFileEntryTypeModelImpl);

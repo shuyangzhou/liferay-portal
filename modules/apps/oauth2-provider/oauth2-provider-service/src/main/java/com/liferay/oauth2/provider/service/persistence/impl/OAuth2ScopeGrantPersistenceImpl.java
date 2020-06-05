@@ -1079,7 +1079,9 @@ public class OAuth2ScopeGrantPersistenceImpl
 	public void cacheResult(OAuth2ScopeGrant oAuth2ScopeGrant) {
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ScopeGrantImpl.class,
-			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant);
+			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant,
+			_columnBitmaskEnabled,
+			((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_O_A_B_S,
@@ -1142,7 +1144,9 @@ public class OAuth2ScopeGrantPersistenceImpl
 	public void clearCache(OAuth2ScopeGrant oAuth2ScopeGrant) {
 		entityCache.removeResult(
 			entityCacheEnabled, OAuth2ScopeGrantImpl.class,
-			oAuth2ScopeGrant.getPrimaryKey());
+			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant,
+			_columnBitmaskEnabled,
+			((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1159,7 +1163,10 @@ public class OAuth2ScopeGrantPersistenceImpl
 		for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
 			entityCache.removeResult(
 				entityCacheEnabled, OAuth2ScopeGrantImpl.class,
-				oAuth2ScopeGrant.getPrimaryKey());
+				oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant,
+				_columnBitmaskEnabled,
+				((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant, true);
@@ -1434,7 +1441,9 @@ public class OAuth2ScopeGrantPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ScopeGrantImpl.class,
-			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant, false);
+			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant, false,
+			_columnBitmaskEnabled,
+			((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).getColumnBitmask());
 
 		clearUniqueFindersCache(oAuth2ScopeGrantModelImpl, false);
 		cacheUniqueFindersCache(oAuth2ScopeGrantModelImpl);

@@ -1915,7 +1915,10 @@ public class VersionedEntryVersionPersistenceImpl
 		entityCache.putResult(
 			VersionedEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			VersionedEntryVersionImpl.class,
-			versionedEntryVersion.getPrimaryKey(), versionedEntryVersion);
+			versionedEntryVersion.getPrimaryKey(), versionedEntryVersion,
+			VersionedEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((VersionedEntryVersionModelImpl)versionedEntryVersion).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByVersionedEntryId_Version,
@@ -1981,7 +1984,10 @@ public class VersionedEntryVersionPersistenceImpl
 		entityCache.removeResult(
 			VersionedEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			VersionedEntryVersionImpl.class,
-			versionedEntryVersion.getPrimaryKey());
+			versionedEntryVersion.getPrimaryKey(), versionedEntryVersion,
+			VersionedEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((VersionedEntryVersionModelImpl)versionedEntryVersion).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2001,7 +2007,10 @@ public class VersionedEntryVersionPersistenceImpl
 			entityCache.removeResult(
 				VersionedEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 				VersionedEntryVersionImpl.class,
-				versionedEntryVersion.getPrimaryKey());
+				versionedEntryVersion.getPrimaryKey(), versionedEntryVersion,
+				VersionedEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+				((VersionedEntryVersionModelImpl)versionedEntryVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(VersionedEntryVersionModelImpl)versionedEntryVersion, true);
@@ -2332,8 +2341,10 @@ public class VersionedEntryVersionPersistenceImpl
 		entityCache.putResult(
 			VersionedEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			VersionedEntryVersionImpl.class,
-			versionedEntryVersion.getPrimaryKey(), versionedEntryVersion,
-			false);
+			versionedEntryVersion.getPrimaryKey(), versionedEntryVersion, false,
+			VersionedEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((VersionedEntryVersionModelImpl)versionedEntryVersion).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(versionedEntryVersionModelImpl, false);
 		cacheUniqueFindersCache(versionedEntryVersionModelImpl);

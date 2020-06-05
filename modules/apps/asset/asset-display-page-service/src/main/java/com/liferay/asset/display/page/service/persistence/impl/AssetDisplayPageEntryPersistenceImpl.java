@@ -2928,7 +2928,10 @@ public class AssetDisplayPageEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetDisplayPageEntryImpl.class,
-			assetDisplayPageEntry.getPrimaryKey(), assetDisplayPageEntry);
+			assetDisplayPageEntry.getPrimaryKey(), assetDisplayPageEntry,
+			_columnBitmaskEnabled,
+			((AssetDisplayPageEntryModelImpl)assetDisplayPageEntry).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3007,7 +3010,10 @@ public class AssetDisplayPageEntryPersistenceImpl
 	public void clearCache(AssetDisplayPageEntry assetDisplayPageEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, AssetDisplayPageEntryImpl.class,
-			assetDisplayPageEntry.getPrimaryKey());
+			assetDisplayPageEntry.getPrimaryKey(), assetDisplayPageEntry,
+			_columnBitmaskEnabled,
+			((AssetDisplayPageEntryModelImpl)assetDisplayPageEntry).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3028,7 +3034,10 @@ public class AssetDisplayPageEntryPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AssetDisplayPageEntryImpl.class,
-				assetDisplayPageEntry.getPrimaryKey());
+				assetDisplayPageEntry.getPrimaryKey(), assetDisplayPageEntry,
+				_columnBitmaskEnabled,
+				((AssetDisplayPageEntryModelImpl)assetDisplayPageEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetDisplayPageEntryModelImpl)assetDisplayPageEntry, true);
@@ -3477,8 +3486,10 @@ public class AssetDisplayPageEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetDisplayPageEntryImpl.class,
-			assetDisplayPageEntry.getPrimaryKey(), assetDisplayPageEntry,
-			false);
+			assetDisplayPageEntry.getPrimaryKey(), assetDisplayPageEntry, false,
+			_columnBitmaskEnabled,
+			((AssetDisplayPageEntryModelImpl)assetDisplayPageEntry).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetDisplayPageEntryModelImpl, false);
 		cacheUniqueFindersCache(assetDisplayPageEntryModelImpl);

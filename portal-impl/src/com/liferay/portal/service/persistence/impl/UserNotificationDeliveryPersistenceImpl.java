@@ -947,7 +947,10 @@ public class UserNotificationDeliveryPersistenceImpl
 		EntityCacheUtil.putResult(
 			UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 			UserNotificationDeliveryImpl.class,
-			userNotificationDelivery.getPrimaryKey(), userNotificationDelivery);
+			userNotificationDelivery.getPrimaryKey(), userNotificationDelivery,
+			UserNotificationDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserNotificationDeliveryModelImpl)userNotificationDelivery).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_P_C_N_D,
@@ -1016,7 +1019,10 @@ public class UserNotificationDeliveryPersistenceImpl
 		EntityCacheUtil.removeResult(
 			UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 			UserNotificationDeliveryImpl.class,
-			userNotificationDelivery.getPrimaryKey());
+			userNotificationDelivery.getPrimaryKey(), userNotificationDelivery,
+			UserNotificationDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserNotificationDeliveryModelImpl)userNotificationDelivery).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1038,7 +1044,11 @@ public class UserNotificationDeliveryPersistenceImpl
 			EntityCacheUtil.removeResult(
 				UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 				UserNotificationDeliveryImpl.class,
-				userNotificationDelivery.getPrimaryKey());
+				userNotificationDelivery.getPrimaryKey(),
+				userNotificationDelivery,
+				UserNotificationDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserNotificationDeliveryModelImpl)userNotificationDelivery).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(UserNotificationDeliveryModelImpl)userNotificationDelivery,
@@ -1318,7 +1328,9 @@ public class UserNotificationDeliveryPersistenceImpl
 			UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
 			UserNotificationDeliveryImpl.class,
 			userNotificationDelivery.getPrimaryKey(), userNotificationDelivery,
-			false);
+			false, UserNotificationDeliveryModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserNotificationDeliveryModelImpl)userNotificationDelivery).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(userNotificationDeliveryModelImpl, false);
 		cacheUniqueFindersCache(userNotificationDeliveryModelImpl);

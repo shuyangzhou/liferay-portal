@@ -915,7 +915,10 @@ public class AppBuilderAppDeploymentPersistenceImpl
 	public void cacheResult(AppBuilderAppDeployment appBuilderAppDeployment) {
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
-			appBuilderAppDeployment.getPrimaryKey(), appBuilderAppDeployment);
+			appBuilderAppDeployment.getPrimaryKey(), appBuilderAppDeployment,
+			_columnBitmaskEnabled,
+			((AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_T,
@@ -979,7 +982,10 @@ public class AppBuilderAppDeploymentPersistenceImpl
 	public void clearCache(AppBuilderAppDeployment appBuilderAppDeployment) {
 		entityCache.removeResult(
 			entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
-			appBuilderAppDeployment.getPrimaryKey());
+			appBuilderAppDeployment.getPrimaryKey(), appBuilderAppDeployment,
+			_columnBitmaskEnabled,
+			((AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1000,7 +1006,10 @@ public class AppBuilderAppDeploymentPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
-				appBuilderAppDeployment.getPrimaryKey());
+				appBuilderAppDeployment.getPrimaryKey(),
+				appBuilderAppDeployment, _columnBitmaskEnabled,
+				((AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment,
@@ -1269,7 +1278,9 @@ public class AppBuilderAppDeploymentPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
 			appBuilderAppDeployment.getPrimaryKey(), appBuilderAppDeployment,
-			false);
+			false, _columnBitmaskEnabled,
+			((AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(appBuilderAppDeploymentModelImpl, false);
 		cacheUniqueFindersCache(appBuilderAppDeploymentModelImpl);

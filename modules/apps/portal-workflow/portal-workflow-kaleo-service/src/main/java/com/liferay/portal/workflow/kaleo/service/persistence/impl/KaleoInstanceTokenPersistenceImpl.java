@@ -2887,7 +2887,10 @@ public class KaleoInstanceTokenPersistenceImpl
 	public void cacheResult(KaleoInstanceToken kaleoInstanceToken) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoInstanceTokenImpl.class,
-			kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken);
+			kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken,
+			_columnBitmaskEnabled,
+			((KaleoInstanceTokenModelImpl)kaleoInstanceToken).
+				getColumnBitmask());
 
 		kaleoInstanceToken.resetOriginalValues();
 	}
@@ -2939,7 +2942,10 @@ public class KaleoInstanceTokenPersistenceImpl
 	public void clearCache(KaleoInstanceToken kaleoInstanceToken) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoInstanceTokenImpl.class,
-			kaleoInstanceToken.getPrimaryKey());
+			kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken,
+			_columnBitmaskEnabled,
+			((KaleoInstanceTokenModelImpl)kaleoInstanceToken).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2953,7 +2959,10 @@ public class KaleoInstanceTokenPersistenceImpl
 		for (KaleoInstanceToken kaleoInstanceToken : kaleoInstanceTokens) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoInstanceTokenImpl.class,
-				kaleoInstanceToken.getPrimaryKey());
+				kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken,
+				_columnBitmaskEnabled,
+				((KaleoInstanceTokenModelImpl)kaleoInstanceToken).
+					getColumnBitmask());
 		}
 	}
 
@@ -3328,7 +3337,10 @@ public class KaleoInstanceTokenPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoInstanceTokenImpl.class,
-			kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken, false);
+			kaleoInstanceToken.getPrimaryKey(), kaleoInstanceToken, false,
+			_columnBitmaskEnabled,
+			((KaleoInstanceTokenModelImpl)kaleoInstanceToken).
+				getColumnBitmask());
 
 		kaleoInstanceToken.resetOriginalValues();
 

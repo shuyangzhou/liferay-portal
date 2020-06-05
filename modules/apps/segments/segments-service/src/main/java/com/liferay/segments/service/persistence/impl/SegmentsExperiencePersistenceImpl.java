@@ -9478,7 +9478,10 @@ public class SegmentsExperiencePersistenceImpl
 	public void cacheResult(SegmentsExperience segmentsExperience) {
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperienceImpl.class,
-			segmentsExperience.getPrimaryKey(), segmentsExperience);
+			segmentsExperience.getPrimaryKey(), segmentsExperience,
+			_columnBitmaskEnabled,
+			((SegmentsExperienceModelImpl)segmentsExperience).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -9555,7 +9558,10 @@ public class SegmentsExperiencePersistenceImpl
 	public void clearCache(SegmentsExperience segmentsExperience) {
 		entityCache.removeResult(
 			entityCacheEnabled, SegmentsExperienceImpl.class,
-			segmentsExperience.getPrimaryKey());
+			segmentsExperience.getPrimaryKey(), segmentsExperience,
+			_columnBitmaskEnabled,
+			((SegmentsExperienceModelImpl)segmentsExperience).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -9572,7 +9578,10 @@ public class SegmentsExperiencePersistenceImpl
 		for (SegmentsExperience segmentsExperience : segmentsExperiences) {
 			entityCache.removeResult(
 				entityCacheEnabled, SegmentsExperienceImpl.class,
-				segmentsExperience.getPrimaryKey());
+				segmentsExperience.getPrimaryKey(), segmentsExperience,
+				_columnBitmaskEnabled,
+				((SegmentsExperienceModelImpl)segmentsExperience).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SegmentsExperienceModelImpl)segmentsExperience, true);
@@ -10174,7 +10183,10 @@ public class SegmentsExperiencePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperienceImpl.class,
-			segmentsExperience.getPrimaryKey(), segmentsExperience, false);
+			segmentsExperience.getPrimaryKey(), segmentsExperience, false,
+			_columnBitmaskEnabled,
+			((SegmentsExperienceModelImpl)segmentsExperience).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(segmentsExperienceModelImpl, false);
 		cacheUniqueFindersCache(segmentsExperienceModelImpl);

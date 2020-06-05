@@ -1428,7 +1428,10 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetAutoTaggerEntryImpl.class,
-			assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry);
+			assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry,
+			_columnBitmaskEnabled,
+			((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_A,
@@ -1496,7 +1499,10 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	public void clearCache(AssetAutoTaggerEntry assetAutoTaggerEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, AssetAutoTaggerEntryImpl.class,
-			assetAutoTaggerEntry.getPrimaryKey());
+			assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry,
+			_columnBitmaskEnabled,
+			((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1515,7 +1521,10 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AssetAutoTaggerEntryImpl.class,
-				assetAutoTaggerEntry.getPrimaryKey());
+				assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry,
+				_columnBitmaskEnabled,
+				((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry, true);
@@ -1847,7 +1856,10 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetAutoTaggerEntryImpl.class,
-			assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry, false);
+			assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry, false,
+			_columnBitmaskEnabled,
+			((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetAutoTaggerEntryModelImpl, false);
 		cacheUniqueFindersCache(assetAutoTaggerEntryModelImpl);

@@ -5257,7 +5257,10 @@ public class FragmentCompositionPersistenceImpl
 	public void cacheResult(FragmentComposition fragmentComposition) {
 		entityCache.putResult(
 			entityCacheEnabled, FragmentCompositionImpl.class,
-			fragmentComposition.getPrimaryKey(), fragmentComposition);
+			fragmentComposition.getPrimaryKey(), fragmentComposition,
+			_columnBitmaskEnabled,
+			((FragmentCompositionModelImpl)fragmentComposition).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -5324,7 +5327,10 @@ public class FragmentCompositionPersistenceImpl
 	public void clearCache(FragmentComposition fragmentComposition) {
 		entityCache.removeResult(
 			entityCacheEnabled, FragmentCompositionImpl.class,
-			fragmentComposition.getPrimaryKey());
+			fragmentComposition.getPrimaryKey(), fragmentComposition,
+			_columnBitmaskEnabled,
+			((FragmentCompositionModelImpl)fragmentComposition).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5341,7 +5347,10 @@ public class FragmentCompositionPersistenceImpl
 		for (FragmentComposition fragmentComposition : fragmentCompositions) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentCompositionImpl.class,
-				fragmentComposition.getPrimaryKey());
+				fragmentComposition.getPrimaryKey(), fragmentComposition,
+				_columnBitmaskEnabled,
+				((FragmentCompositionModelImpl)fragmentComposition).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(FragmentCompositionModelImpl)fragmentComposition, true);
@@ -5826,7 +5835,10 @@ public class FragmentCompositionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FragmentCompositionImpl.class,
-			fragmentComposition.getPrimaryKey(), fragmentComposition, false);
+			fragmentComposition.getPrimaryKey(), fragmentComposition, false,
+			_columnBitmaskEnabled,
+			((FragmentCompositionModelImpl)fragmentComposition).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(fragmentCompositionModelImpl, false);
 		cacheUniqueFindersCache(fragmentCompositionModelImpl);

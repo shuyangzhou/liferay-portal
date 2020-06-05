@@ -10076,7 +10076,8 @@ public class RolePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
-			role.getPrimaryKey(), role);
+			role.getPrimaryKey(), role, RoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((RoleModelImpl)role).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_N,
@@ -10153,7 +10154,8 @@ public class RolePersistenceImpl
 	public void clearCache(Role role) {
 		EntityCacheUtil.removeResult(
 			RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
-			role.getPrimaryKey());
+			role.getPrimaryKey(), role, RoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((RoleModelImpl)role).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -10169,7 +10171,9 @@ public class RolePersistenceImpl
 		for (Role role : roles) {
 			EntityCacheUtil.removeResult(
 				RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
-				role.getPrimaryKey());
+				role.getPrimaryKey(), role,
+				RoleModelImpl.COLUMN_BITMASK_ENABLED,
+				((RoleModelImpl)role).getColumnBitmask());
 
 			clearUniqueFindersCache((RoleModelImpl)role, true);
 		}
@@ -10782,7 +10786,9 @@ public class RolePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
-			role.getPrimaryKey(), role, false);
+			role.getPrimaryKey(), role, false,
+			RoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((RoleModelImpl)role).getColumnBitmask());
 
 		clearUniqueFindersCache(roleModelImpl, false);
 		cacheUniqueFindersCache(roleModelImpl);

@@ -918,7 +918,9 @@ public class SamlIdpSsoSessionPersistenceImpl
 	public void cacheResult(SamlIdpSsoSession samlIdpSsoSession) {
 		entityCache.putResult(
 			entityCacheEnabled, SamlIdpSsoSessionImpl.class,
-			samlIdpSsoSession.getPrimaryKey(), samlIdpSsoSession);
+			samlIdpSsoSession.getPrimaryKey(), samlIdpSsoSession,
+			_columnBitmaskEnabled,
+			((SamlIdpSsoSessionModelImpl)samlIdpSsoSession).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchBySamlIdpSsoSessionKey,
@@ -975,7 +977,9 @@ public class SamlIdpSsoSessionPersistenceImpl
 	public void clearCache(SamlIdpSsoSession samlIdpSsoSession) {
 		entityCache.removeResult(
 			entityCacheEnabled, SamlIdpSsoSessionImpl.class,
-			samlIdpSsoSession.getPrimaryKey());
+			samlIdpSsoSession.getPrimaryKey(), samlIdpSsoSession,
+			_columnBitmaskEnabled,
+			((SamlIdpSsoSessionModelImpl)samlIdpSsoSession).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -992,7 +996,10 @@ public class SamlIdpSsoSessionPersistenceImpl
 		for (SamlIdpSsoSession samlIdpSsoSession : samlIdpSsoSessions) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlIdpSsoSessionImpl.class,
-				samlIdpSsoSession.getPrimaryKey());
+				samlIdpSsoSession.getPrimaryKey(), samlIdpSsoSession,
+				_columnBitmaskEnabled,
+				((SamlIdpSsoSessionModelImpl)samlIdpSsoSession).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SamlIdpSsoSessionModelImpl)samlIdpSsoSession, true);
@@ -1246,7 +1253,9 @@ public class SamlIdpSsoSessionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SamlIdpSsoSessionImpl.class,
-			samlIdpSsoSession.getPrimaryKey(), samlIdpSsoSession, false);
+			samlIdpSsoSession.getPrimaryKey(), samlIdpSsoSession, false,
+			_columnBitmaskEnabled,
+			((SamlIdpSsoSessionModelImpl)samlIdpSsoSession).getColumnBitmask());
 
 		clearUniqueFindersCache(samlIdpSsoSessionModelImpl, false);
 		cacheUniqueFindersCache(samlIdpSsoSessionModelImpl);

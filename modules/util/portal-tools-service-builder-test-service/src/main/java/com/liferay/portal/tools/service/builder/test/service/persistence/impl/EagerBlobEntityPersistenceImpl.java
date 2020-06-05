@@ -960,7 +960,8 @@ public class EagerBlobEntityPersistenceImpl
 	public void clearCache(EagerBlobEntity eagerBlobEntity) {
 		entityCache.removeResult(
 			EagerBlobEntityModelImpl.ENTITY_CACHE_ENABLED,
-			EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey());
+			EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey(),
+			eagerBlobEntity);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -977,7 +978,8 @@ public class EagerBlobEntityPersistenceImpl
 		for (EagerBlobEntity eagerBlobEntity : eagerBlobEntities) {
 			entityCache.removeResult(
 				EagerBlobEntityModelImpl.ENTITY_CACHE_ENABLED,
-				EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey());
+				EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey(),
+				eagerBlobEntity);
 
 			clearUniqueFindersCache(
 				(EagerBlobEntityModelImpl)eagerBlobEntity, true);

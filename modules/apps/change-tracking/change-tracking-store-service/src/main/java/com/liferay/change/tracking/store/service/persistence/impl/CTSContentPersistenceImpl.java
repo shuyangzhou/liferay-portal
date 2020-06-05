@@ -2620,7 +2620,8 @@ public class CTSContentPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTSContentImpl.class,
-			ctsContent.getPrimaryKey(), ctsContent);
+			ctsContent.getPrimaryKey(), ctsContent, _columnBitmaskEnabled,
+			((CTSContentModelImpl)ctsContent).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_R_P_V_S,
@@ -2687,7 +2688,8 @@ public class CTSContentPersistenceImpl
 	public void clearCache(CTSContent ctsContent) {
 		entityCache.removeResult(
 			entityCacheEnabled, CTSContentImpl.class,
-			ctsContent.getPrimaryKey());
+			ctsContent.getPrimaryKey(), ctsContent, _columnBitmaskEnabled,
+			((CTSContentModelImpl)ctsContent).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2703,7 +2705,8 @@ public class CTSContentPersistenceImpl
 		for (CTSContent ctsContent : ctsContents) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTSContentImpl.class,
-				ctsContent.getPrimaryKey());
+				ctsContent.getPrimaryKey(), ctsContent, _columnBitmaskEnabled,
+				((CTSContentModelImpl)ctsContent).getColumnBitmask());
 
 			clearUniqueFindersCache((CTSContentModelImpl)ctsContent, true);
 		}
@@ -3023,7 +3026,9 @@ public class CTSContentPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTSContentImpl.class,
-			ctsContent.getPrimaryKey(), ctsContent, false);
+			ctsContent.getPrimaryKey(), ctsContent, false,
+			_columnBitmaskEnabled,
+			((CTSContentModelImpl)ctsContent).getColumnBitmask());
 
 		clearUniqueFindersCache(ctsContentModelImpl, false);
 		cacheUniqueFindersCache(ctsContentModelImpl);

@@ -2979,7 +2979,10 @@ public class AssetListEntryUsagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntryUsageImpl.class,
-			assetListEntryUsage.getPrimaryKey(), assetListEntryUsage);
+			assetListEntryUsage.getPrimaryKey(), assetListEntryUsage,
+			_columnBitmaskEnabled,
+			((AssetListEntryUsageModelImpl)assetListEntryUsage).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3053,7 +3056,10 @@ public class AssetListEntryUsagePersistenceImpl
 	public void clearCache(AssetListEntryUsage assetListEntryUsage) {
 		entityCache.removeResult(
 			entityCacheEnabled, AssetListEntryUsageImpl.class,
-			assetListEntryUsage.getPrimaryKey());
+			assetListEntryUsage.getPrimaryKey(), assetListEntryUsage,
+			_columnBitmaskEnabled,
+			((AssetListEntryUsageModelImpl)assetListEntryUsage).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3070,7 +3076,10 @@ public class AssetListEntryUsagePersistenceImpl
 		for (AssetListEntryUsage assetListEntryUsage : assetListEntryUsages) {
 			entityCache.removeResult(
 				entityCacheEnabled, AssetListEntryUsageImpl.class,
-				assetListEntryUsage.getPrimaryKey());
+				assetListEntryUsage.getPrimaryKey(), assetListEntryUsage,
+				_columnBitmaskEnabled,
+				((AssetListEntryUsageModelImpl)assetListEntryUsage).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetListEntryUsageModelImpl)assetListEntryUsage, true);
@@ -3513,7 +3522,10 @@ public class AssetListEntryUsagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AssetListEntryUsageImpl.class,
-			assetListEntryUsage.getPrimaryKey(), assetListEntryUsage, false);
+			assetListEntryUsage.getPrimaryKey(), assetListEntryUsage, false,
+			_columnBitmaskEnabled,
+			((AssetListEntryUsageModelImpl)assetListEntryUsage).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetListEntryUsageModelImpl, false);
 		cacheUniqueFindersCache(assetListEntryUsageModelImpl);

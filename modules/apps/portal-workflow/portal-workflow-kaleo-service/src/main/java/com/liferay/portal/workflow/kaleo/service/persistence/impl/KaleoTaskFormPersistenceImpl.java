@@ -2427,7 +2427,8 @@ public class KaleoTaskFormPersistenceImpl
 	public void cacheResult(KaleoTaskForm kaleoTaskForm) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskFormImpl.class,
-			kaleoTaskForm.getPrimaryKey(), kaleoTaskForm);
+			kaleoTaskForm.getPrimaryKey(), kaleoTaskForm, _columnBitmaskEnabled,
+			((KaleoTaskFormModelImpl)kaleoTaskForm).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByFormUuid_KTI,
@@ -2486,7 +2487,8 @@ public class KaleoTaskFormPersistenceImpl
 	public void clearCache(KaleoTaskForm kaleoTaskForm) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTaskFormImpl.class,
-			kaleoTaskForm.getPrimaryKey());
+			kaleoTaskForm.getPrimaryKey(), kaleoTaskForm, _columnBitmaskEnabled,
+			((KaleoTaskFormModelImpl)kaleoTaskForm).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2502,7 +2504,9 @@ public class KaleoTaskFormPersistenceImpl
 		for (KaleoTaskForm kaleoTaskForm : kaleoTaskForms) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTaskFormImpl.class,
-				kaleoTaskForm.getPrimaryKey());
+				kaleoTaskForm.getPrimaryKey(), kaleoTaskForm,
+				_columnBitmaskEnabled,
+				((KaleoTaskFormModelImpl)kaleoTaskForm).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoTaskFormModelImpl)kaleoTaskForm, true);
@@ -2860,7 +2864,9 @@ public class KaleoTaskFormPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskFormImpl.class,
-			kaleoTaskForm.getPrimaryKey(), kaleoTaskForm, false);
+			kaleoTaskForm.getPrimaryKey(), kaleoTaskForm, false,
+			_columnBitmaskEnabled,
+			((KaleoTaskFormModelImpl)kaleoTaskForm).getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoTaskFormModelImpl, false);
 		cacheUniqueFindersCache(kaleoTaskFormModelImpl);

@@ -2863,7 +2863,8 @@ public class DefinitionPersistenceImpl
 	public void cacheResult(Definition definition) {
 		entityCache.putResult(
 			entityCacheEnabled, DefinitionImpl.class,
-			definition.getPrimaryKey(), definition);
+			definition.getPrimaryKey(), definition, _columnBitmaskEnabled,
+			((DefinitionModelImpl)definition).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2920,7 +2921,8 @@ public class DefinitionPersistenceImpl
 	public void clearCache(Definition definition) {
 		entityCache.removeResult(
 			entityCacheEnabled, DefinitionImpl.class,
-			definition.getPrimaryKey());
+			definition.getPrimaryKey(), definition, _columnBitmaskEnabled,
+			((DefinitionModelImpl)definition).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2936,7 +2938,8 @@ public class DefinitionPersistenceImpl
 		for (Definition definition : definitions) {
 			entityCache.removeResult(
 				entityCacheEnabled, DefinitionImpl.class,
-				definition.getPrimaryKey());
+				definition.getPrimaryKey(), definition, _columnBitmaskEnabled,
+				((DefinitionModelImpl)definition).getColumnBitmask());
 
 			clearUniqueFindersCache((DefinitionModelImpl)definition, true);
 		}
@@ -3293,7 +3296,9 @@ public class DefinitionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DefinitionImpl.class,
-			definition.getPrimaryKey(), definition, false);
+			definition.getPrimaryKey(), definition, false,
+			_columnBitmaskEnabled,
+			((DefinitionModelImpl)definition).getColumnBitmask());
 
 		clearUniqueFindersCache(definitionModelImpl, false);
 		cacheUniqueFindersCache(definitionModelImpl);

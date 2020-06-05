@@ -603,7 +603,8 @@ public class PasswordTrackerPersistenceImpl
 		EntityCacheUtil.putResult(
 			PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
 			PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
-			passwordTracker);
+			passwordTracker, PasswordTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordTrackerModelImpl)passwordTracker).getColumnBitmask());
 
 		passwordTracker.resetOriginalValues();
 	}
@@ -656,7 +657,9 @@ public class PasswordTrackerPersistenceImpl
 	public void clearCache(PasswordTracker passwordTracker) {
 		EntityCacheUtil.removeResult(
 			PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
-			PasswordTrackerImpl.class, passwordTracker.getPrimaryKey());
+			PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
+			passwordTracker, PasswordTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordTrackerModelImpl)passwordTracker).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -670,7 +673,10 @@ public class PasswordTrackerPersistenceImpl
 		for (PasswordTracker passwordTracker : passwordTrackers) {
 			EntityCacheUtil.removeResult(
 				PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
-				PasswordTrackerImpl.class, passwordTracker.getPrimaryKey());
+				PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
+				passwordTracker,
+				PasswordTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+				((PasswordTrackerModelImpl)passwordTracker).getColumnBitmask());
 		}
 	}
 
@@ -879,7 +885,9 @@ public class PasswordTrackerPersistenceImpl
 		EntityCacheUtil.putResult(
 			PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
 			PasswordTrackerImpl.class, passwordTracker.getPrimaryKey(),
-			passwordTracker, false);
+			passwordTracker, false,
+			PasswordTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((PasswordTrackerModelImpl)passwordTracker).getColumnBitmask());
 
 		passwordTracker.resetOriginalValues();
 

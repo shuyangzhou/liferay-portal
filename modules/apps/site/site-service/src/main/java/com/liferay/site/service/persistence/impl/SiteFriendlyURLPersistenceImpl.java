@@ -2895,7 +2895,9 @@ public class SiteFriendlyURLPersistenceImpl
 	public void cacheResult(SiteFriendlyURL siteFriendlyURL) {
 		entityCache.putResult(
 			entityCacheEnabled, SiteFriendlyURLImpl.class,
-			siteFriendlyURL.getPrimaryKey(), siteFriendlyURL);
+			siteFriendlyURL.getPrimaryKey(), siteFriendlyURL,
+			_columnBitmaskEnabled,
+			((SiteFriendlyURLModelImpl)siteFriendlyURL).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2978,7 +2980,9 @@ public class SiteFriendlyURLPersistenceImpl
 	public void clearCache(SiteFriendlyURL siteFriendlyURL) {
 		entityCache.removeResult(
 			entityCacheEnabled, SiteFriendlyURLImpl.class,
-			siteFriendlyURL.getPrimaryKey());
+			siteFriendlyURL.getPrimaryKey(), siteFriendlyURL,
+			_columnBitmaskEnabled,
+			((SiteFriendlyURLModelImpl)siteFriendlyURL).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2995,7 +2999,9 @@ public class SiteFriendlyURLPersistenceImpl
 		for (SiteFriendlyURL siteFriendlyURL : siteFriendlyURLs) {
 			entityCache.removeResult(
 				entityCacheEnabled, SiteFriendlyURLImpl.class,
-				siteFriendlyURL.getPrimaryKey());
+				siteFriendlyURL.getPrimaryKey(), siteFriendlyURL,
+				_columnBitmaskEnabled,
+				((SiteFriendlyURLModelImpl)siteFriendlyURL).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SiteFriendlyURLModelImpl)siteFriendlyURL, true);
@@ -3445,7 +3451,9 @@ public class SiteFriendlyURLPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SiteFriendlyURLImpl.class,
-			siteFriendlyURL.getPrimaryKey(), siteFriendlyURL, false);
+			siteFriendlyURL.getPrimaryKey(), siteFriendlyURL, false,
+			_columnBitmaskEnabled,
+			((SiteFriendlyURLModelImpl)siteFriendlyURL).getColumnBitmask());
 
 		clearUniqueFindersCache(siteFriendlyURLModelImpl, false);
 		cacheUniqueFindersCache(siteFriendlyURLModelImpl);

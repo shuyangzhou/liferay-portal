@@ -1589,7 +1589,9 @@ public class JournalArticleLocalizationPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, JournalArticleLocalizationImpl.class,
 			journalArticleLocalization.getPrimaryKey(),
-			journalArticleLocalization);
+			journalArticleLocalization, _columnBitmaskEnabled,
+			((JournalArticleLocalizationModelImpl)journalArticleLocalization).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_L,
@@ -1680,7 +1682,10 @@ public class JournalArticleLocalizationPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, JournalArticleLocalizationImpl.class,
-			journalArticleLocalization.getPrimaryKey());
+			journalArticleLocalization.getPrimaryKey(),
+			journalArticleLocalization, _columnBitmaskEnabled,
+			((JournalArticleLocalizationModelImpl)journalArticleLocalization).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1702,7 +1707,10 @@ public class JournalArticleLocalizationPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, JournalArticleLocalizationImpl.class,
-				journalArticleLocalization.getPrimaryKey());
+				journalArticleLocalization.getPrimaryKey(),
+				journalArticleLocalization, _columnBitmaskEnabled,
+				((JournalArticleLocalizationModelImpl)
+					journalArticleLocalization).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(JournalArticleLocalizationModelImpl)journalArticleLocalization,
@@ -2068,7 +2076,9 @@ public class JournalArticleLocalizationPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, JournalArticleLocalizationImpl.class,
 			journalArticleLocalization.getPrimaryKey(),
-			journalArticleLocalization, false);
+			journalArticleLocalization, false, _columnBitmaskEnabled,
+			((JournalArticleLocalizationModelImpl)journalArticleLocalization).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(journalArticleLocalizationModelImpl, false);
 		cacheUniqueFindersCache(journalArticleLocalizationModelImpl);

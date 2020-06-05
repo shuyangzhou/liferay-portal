@@ -605,7 +605,8 @@ public class AuditEventPersistenceImpl
 	public void cacheResult(AuditEvent auditEvent) {
 		entityCache.putResult(
 			entityCacheEnabled, AuditEventImpl.class,
-			auditEvent.getPrimaryKey(), auditEvent);
+			auditEvent.getPrimaryKey(), auditEvent, _columnBitmaskEnabled,
+			((AuditEventModelImpl)auditEvent).getColumnBitmask());
 
 		auditEvent.resetOriginalValues();
 	}
@@ -657,7 +658,8 @@ public class AuditEventPersistenceImpl
 	public void clearCache(AuditEvent auditEvent) {
 		entityCache.removeResult(
 			entityCacheEnabled, AuditEventImpl.class,
-			auditEvent.getPrimaryKey());
+			auditEvent.getPrimaryKey(), auditEvent, _columnBitmaskEnabled,
+			((AuditEventModelImpl)auditEvent).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -671,7 +673,8 @@ public class AuditEventPersistenceImpl
 		for (AuditEvent auditEvent : auditEvents) {
 			entityCache.removeResult(
 				entityCacheEnabled, AuditEventImpl.class,
-				auditEvent.getPrimaryKey());
+				auditEvent.getPrimaryKey(), auditEvent, _columnBitmaskEnabled,
+				((AuditEventModelImpl)auditEvent).getColumnBitmask());
 		}
 	}
 
@@ -871,7 +874,9 @@ public class AuditEventPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AuditEventImpl.class,
-			auditEvent.getPrimaryKey(), auditEvent, false);
+			auditEvent.getPrimaryKey(), auditEvent, false,
+			_columnBitmaskEnabled,
+			((AuditEventModelImpl)auditEvent).getColumnBitmask());
 
 		auditEvent.resetOriginalValues();
 

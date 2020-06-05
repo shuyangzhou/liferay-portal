@@ -1624,7 +1624,10 @@ public class DLFileVersionPreviewPersistenceImpl
 	public void cacheResult(DLFileVersionPreview dlFileVersionPreview) {
 		entityCache.putResult(
 			entityCacheEnabled, DLFileVersionPreviewImpl.class,
-			dlFileVersionPreview.getPrimaryKey(), dlFileVersionPreview);
+			dlFileVersionPreview.getPrimaryKey(), dlFileVersionPreview,
+			_columnBitmaskEnabled,
+			((DLFileVersionPreviewModelImpl)dlFileVersionPreview).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByF_F,
@@ -1695,7 +1698,10 @@ public class DLFileVersionPreviewPersistenceImpl
 	public void clearCache(DLFileVersionPreview dlFileVersionPreview) {
 		entityCache.removeResult(
 			entityCacheEnabled, DLFileVersionPreviewImpl.class,
-			dlFileVersionPreview.getPrimaryKey());
+			dlFileVersionPreview.getPrimaryKey(), dlFileVersionPreview,
+			_columnBitmaskEnabled,
+			((DLFileVersionPreviewModelImpl)dlFileVersionPreview).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1714,7 +1720,10 @@ public class DLFileVersionPreviewPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DLFileVersionPreviewImpl.class,
-				dlFileVersionPreview.getPrimaryKey());
+				dlFileVersionPreview.getPrimaryKey(), dlFileVersionPreview,
+				_columnBitmaskEnabled,
+				((DLFileVersionPreviewModelImpl)dlFileVersionPreview).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DLFileVersionPreviewModelImpl)dlFileVersionPreview, true);
@@ -2038,7 +2047,10 @@ public class DLFileVersionPreviewPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DLFileVersionPreviewImpl.class,
-			dlFileVersionPreview.getPrimaryKey(), dlFileVersionPreview, false);
+			dlFileVersionPreview.getPrimaryKey(), dlFileVersionPreview, false,
+			_columnBitmaskEnabled,
+			((DLFileVersionPreviewModelImpl)dlFileVersionPreview).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileVersionPreviewModelImpl, false);
 		cacheUniqueFindersCache(dlFileVersionPreviewModelImpl);

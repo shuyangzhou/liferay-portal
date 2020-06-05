@@ -3951,7 +3951,8 @@ public class LayoutPrototypePersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
-			layoutPrototype);
+			layoutPrototype, LayoutPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutPrototypeModelImpl)layoutPrototype).getColumnBitmask());
 
 		layoutPrototype.resetOriginalValues();
 	}
@@ -4004,7 +4005,9 @@ public class LayoutPrototypePersistenceImpl
 	public void clearCache(LayoutPrototype layoutPrototype) {
 		EntityCacheUtil.removeResult(
 			LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey());
+			LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
+			layoutPrototype, LayoutPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutPrototypeModelImpl)layoutPrototype).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4018,7 +4021,10 @@ public class LayoutPrototypePersistenceImpl
 		for (LayoutPrototype layoutPrototype : layoutPrototypes) {
 			EntityCacheUtil.removeResult(
 				LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey());
+				LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
+				layoutPrototype,
+				LayoutPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutPrototypeModelImpl)layoutPrototype).getColumnBitmask());
 		}
 	}
 
@@ -4351,7 +4357,9 @@ public class LayoutPrototypePersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutPrototypeImpl.class, layoutPrototype.getPrimaryKey(),
-			layoutPrototype, false);
+			layoutPrototype, false,
+			LayoutPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutPrototypeModelImpl)layoutPrototype).getColumnBitmask());
 
 		layoutPrototype.resetOriginalValues();
 

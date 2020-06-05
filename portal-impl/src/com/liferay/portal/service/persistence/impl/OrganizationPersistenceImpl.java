@@ -9320,7 +9320,9 @@ public class OrganizationPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			OrganizationModelImpl.ENTITY_CACHE_ENABLED, OrganizationImpl.class,
-			organization.getPrimaryKey(), organization);
+			organization.getPrimaryKey(), organization,
+			OrganizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrganizationModelImpl)organization).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_N,
@@ -9392,7 +9394,9 @@ public class OrganizationPersistenceImpl
 	public void clearCache(Organization organization) {
 		EntityCacheUtil.removeResult(
 			OrganizationModelImpl.ENTITY_CACHE_ENABLED, OrganizationImpl.class,
-			organization.getPrimaryKey());
+			organization.getPrimaryKey(), organization,
+			OrganizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrganizationModelImpl)organization).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -9408,7 +9412,9 @@ public class OrganizationPersistenceImpl
 		for (Organization organization : organizations) {
 			EntityCacheUtil.removeResult(
 				OrganizationModelImpl.ENTITY_CACHE_ENABLED,
-				OrganizationImpl.class, organization.getPrimaryKey());
+				OrganizationImpl.class, organization.getPrimaryKey(),
+				organization, OrganizationModelImpl.COLUMN_BITMASK_ENABLED,
+				((OrganizationModelImpl)organization).getColumnBitmask());
 
 			clearUniqueFindersCache((OrganizationModelImpl)organization, true);
 		}
@@ -9862,7 +9868,9 @@ public class OrganizationPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			OrganizationModelImpl.ENTITY_CACHE_ENABLED, OrganizationImpl.class,
-			organization.getPrimaryKey(), organization, false);
+			organization.getPrimaryKey(), organization, false,
+			OrganizationModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrganizationModelImpl)organization).getColumnBitmask());
 
 		clearUniqueFindersCache(organizationModelImpl, false);
 		cacheUniqueFindersCache(organizationModelImpl);

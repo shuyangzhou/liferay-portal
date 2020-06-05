@@ -1938,7 +1938,8 @@ public class AccountEntryPersistenceImpl
 	public void cacheResult(AccountEntry accountEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, AccountEntryImpl.class,
-			accountEntry.getPrimaryKey(), accountEntry);
+			accountEntry.getPrimaryKey(), accountEntry, _columnBitmaskEnabled,
+			((AccountEntryModelImpl)accountEntry).getColumnBitmask());
 
 		accountEntry.resetOriginalValues();
 	}
@@ -1990,7 +1991,8 @@ public class AccountEntryPersistenceImpl
 	public void clearCache(AccountEntry accountEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, AccountEntryImpl.class,
-			accountEntry.getPrimaryKey());
+			accountEntry.getPrimaryKey(), accountEntry, _columnBitmaskEnabled,
+			((AccountEntryModelImpl)accountEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2004,7 +2006,9 @@ public class AccountEntryPersistenceImpl
 		for (AccountEntry accountEntry : accountEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, AccountEntryImpl.class,
-				accountEntry.getPrimaryKey());
+				accountEntry.getPrimaryKey(), accountEntry,
+				_columnBitmaskEnabled,
+				((AccountEntryModelImpl)accountEntry).getColumnBitmask());
 		}
 	}
 
@@ -2263,7 +2267,9 @@ public class AccountEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AccountEntryImpl.class,
-			accountEntry.getPrimaryKey(), accountEntry, false);
+			accountEntry.getPrimaryKey(), accountEntry, false,
+			_columnBitmaskEnabled,
+			((AccountEntryModelImpl)accountEntry).getColumnBitmask());
 
 		accountEntry.resetOriginalValues();
 

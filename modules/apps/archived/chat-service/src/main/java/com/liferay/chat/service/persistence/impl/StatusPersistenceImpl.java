@@ -1846,7 +1846,8 @@ public class StatusPersistenceImpl
 	public void cacheResult(Status status) {
 		entityCache.putResult(
 			entityCacheEnabled, StatusImpl.class, status.getPrimaryKey(),
-			status);
+			status, _columnBitmaskEnabled,
+			((StatusModelImpl)status).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUserId, new Object[] {status.getUserId()},
@@ -1901,7 +1902,9 @@ public class StatusPersistenceImpl
 	@Override
 	public void clearCache(Status status) {
 		entityCache.removeResult(
-			entityCacheEnabled, StatusImpl.class, status.getPrimaryKey());
+			entityCacheEnabled, StatusImpl.class, status.getPrimaryKey(),
+			status, _columnBitmaskEnabled,
+			((StatusModelImpl)status).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1916,7 +1919,9 @@ public class StatusPersistenceImpl
 
 		for (Status status : statuses) {
 			entityCache.removeResult(
-				entityCacheEnabled, StatusImpl.class, status.getPrimaryKey());
+				entityCacheEnabled, StatusImpl.class, status.getPrimaryKey(),
+				status, _columnBitmaskEnabled,
+				((StatusModelImpl)status).getColumnBitmask());
 
 			clearUniqueFindersCache((StatusModelImpl)status, true);
 		}
@@ -2197,7 +2202,8 @@ public class StatusPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, StatusImpl.class, status.getPrimaryKey(),
-			status, false);
+			status, false, _columnBitmaskEnabled,
+			((StatusModelImpl)status).getColumnBitmask());
 
 		clearUniqueFindersCache(statusModelImpl, false);
 		cacheUniqueFindersCache(statusModelImpl);

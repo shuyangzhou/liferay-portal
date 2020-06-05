@@ -2435,7 +2435,10 @@ public class KaleoTaskAssignmentPersistenceImpl
 	public void cacheResult(KaleoTaskAssignment kaleoTaskAssignment) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskAssignmentImpl.class,
-			kaleoTaskAssignment.getPrimaryKey(), kaleoTaskAssignment);
+			kaleoTaskAssignment.getPrimaryKey(), kaleoTaskAssignment,
+			_columnBitmaskEnabled,
+			((KaleoTaskAssignmentModelImpl)kaleoTaskAssignment).
+				getColumnBitmask());
 
 		kaleoTaskAssignment.resetOriginalValues();
 	}
@@ -2487,7 +2490,10 @@ public class KaleoTaskAssignmentPersistenceImpl
 	public void clearCache(KaleoTaskAssignment kaleoTaskAssignment) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTaskAssignmentImpl.class,
-			kaleoTaskAssignment.getPrimaryKey());
+			kaleoTaskAssignment.getPrimaryKey(), kaleoTaskAssignment,
+			_columnBitmaskEnabled,
+			((KaleoTaskAssignmentModelImpl)kaleoTaskAssignment).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2501,7 +2507,10 @@ public class KaleoTaskAssignmentPersistenceImpl
 		for (KaleoTaskAssignment kaleoTaskAssignment : kaleoTaskAssignments) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTaskAssignmentImpl.class,
-				kaleoTaskAssignment.getPrimaryKey());
+				kaleoTaskAssignment.getPrimaryKey(), kaleoTaskAssignment,
+				_columnBitmaskEnabled,
+				((KaleoTaskAssignmentModelImpl)kaleoTaskAssignment).
+					getColumnBitmask());
 		}
 	}
 
@@ -2843,7 +2852,10 @@ public class KaleoTaskAssignmentPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskAssignmentImpl.class,
-			kaleoTaskAssignment.getPrimaryKey(), kaleoTaskAssignment, false);
+			kaleoTaskAssignment.getPrimaryKey(), kaleoTaskAssignment, false,
+			_columnBitmaskEnabled,
+			((KaleoTaskAssignmentModelImpl)kaleoTaskAssignment).
+				getColumnBitmask());
 
 		kaleoTaskAssignment.resetOriginalValues();
 

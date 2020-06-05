@@ -299,7 +299,8 @@ public class BrowserTrackerPersistenceImpl
 		EntityCacheUtil.putResult(
 			BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
 			BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
-			browserTracker);
+			browserTracker, BrowserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((BrowserTrackerModelImpl)browserTracker).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUserId, new Object[] {browserTracker.getUserId()},
@@ -356,7 +357,9 @@ public class BrowserTrackerPersistenceImpl
 	public void clearCache(BrowserTracker browserTracker) {
 		EntityCacheUtil.removeResult(
 			BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-			BrowserTrackerImpl.class, browserTracker.getPrimaryKey());
+			BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
+			browserTracker, BrowserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((BrowserTrackerModelImpl)browserTracker).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -372,7 +375,9 @@ public class BrowserTrackerPersistenceImpl
 		for (BrowserTracker browserTracker : browserTrackers) {
 			EntityCacheUtil.removeResult(
 				BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-				BrowserTrackerImpl.class, browserTracker.getPrimaryKey());
+				BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
+				browserTracker, BrowserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+				((BrowserTrackerModelImpl)browserTracker).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(BrowserTrackerModelImpl)browserTracker, true);
@@ -590,7 +595,9 @@ public class BrowserTrackerPersistenceImpl
 		EntityCacheUtil.putResult(
 			BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
 			BrowserTrackerImpl.class, browserTracker.getPrimaryKey(),
-			browserTracker, false);
+			browserTracker, false,
+			BrowserTrackerModelImpl.COLUMN_BITMASK_ENABLED,
+			((BrowserTrackerModelImpl)browserTracker).getColumnBitmask());
 
 		clearUniqueFindersCache(browserTrackerModelImpl, false);
 		cacheUniqueFindersCache(browserTrackerModelImpl);

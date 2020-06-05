@@ -879,7 +879,8 @@ public class AccountPersistenceImpl
 	public void cacheResult(Account account) {
 		entityCache.putResult(
 			entityCacheEnabled, AccountImpl.class, account.getPrimaryKey(),
-			account);
+			account, _columnBitmaskEnabled,
+			((AccountModelImpl)account).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByU_A,
@@ -934,7 +935,9 @@ public class AccountPersistenceImpl
 	@Override
 	public void clearCache(Account account) {
 		entityCache.removeResult(
-			entityCacheEnabled, AccountImpl.class, account.getPrimaryKey());
+			entityCacheEnabled, AccountImpl.class, account.getPrimaryKey(),
+			account, _columnBitmaskEnabled,
+			((AccountModelImpl)account).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -949,7 +952,9 @@ public class AccountPersistenceImpl
 
 		for (Account account : accounts) {
 			entityCache.removeResult(
-				entityCacheEnabled, AccountImpl.class, account.getPrimaryKey());
+				entityCacheEnabled, AccountImpl.class, account.getPrimaryKey(),
+				account, _columnBitmaskEnabled,
+				((AccountModelImpl)account).getColumnBitmask());
 
 			clearUniqueFindersCache((AccountModelImpl)account, true);
 		}
@@ -1209,7 +1214,8 @@ public class AccountPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AccountImpl.class, account.getPrimaryKey(),
-			account, false);
+			account, false, _columnBitmaskEnabled,
+			((AccountModelImpl)account).getColumnBitmask());
 
 		clearUniqueFindersCache(accountModelImpl, false);
 		cacheUniqueFindersCache(accountModelImpl);

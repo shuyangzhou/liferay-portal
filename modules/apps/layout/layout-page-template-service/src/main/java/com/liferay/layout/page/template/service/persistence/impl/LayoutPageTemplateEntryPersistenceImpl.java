@@ -23476,7 +23476,10 @@ public class LayoutPageTemplateEntryPersistenceImpl
 	public void cacheResult(LayoutPageTemplateEntry layoutPageTemplateEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateEntryImpl.class,
-			layoutPageTemplateEntry.getPrimaryKey(), layoutPageTemplateEntry);
+			layoutPageTemplateEntry.getPrimaryKey(), layoutPageTemplateEntry,
+			_columnBitmaskEnabled,
+			((LayoutPageTemplateEntryModelImpl)layoutPageTemplateEntry).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -23562,7 +23565,10 @@ public class LayoutPageTemplateEntryPersistenceImpl
 	public void clearCache(LayoutPageTemplateEntry layoutPageTemplateEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, LayoutPageTemplateEntryImpl.class,
-			layoutPageTemplateEntry.getPrimaryKey());
+			layoutPageTemplateEntry.getPrimaryKey(), layoutPageTemplateEntry,
+			_columnBitmaskEnabled,
+			((LayoutPageTemplateEntryModelImpl)layoutPageTemplateEntry).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -23583,7 +23589,10 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutPageTemplateEntryImpl.class,
-				layoutPageTemplateEntry.getPrimaryKey());
+				layoutPageTemplateEntry.getPrimaryKey(),
+				layoutPageTemplateEntry, _columnBitmaskEnabled,
+				((LayoutPageTemplateEntryModelImpl)layoutPageTemplateEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutPageTemplateEntryModelImpl)layoutPageTemplateEntry,
@@ -24521,7 +24530,9 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, LayoutPageTemplateEntryImpl.class,
 			layoutPageTemplateEntry.getPrimaryKey(), layoutPageTemplateEntry,
-			false);
+			false, _columnBitmaskEnabled,
+			((LayoutPageTemplateEntryModelImpl)layoutPageTemplateEntry).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(layoutPageTemplateEntryModelImpl, false);
 		cacheUniqueFindersCache(layoutPageTemplateEntryModelImpl);

@@ -1248,7 +1248,10 @@ public class PushNotificationsDevicePersistenceImpl
 	public void cacheResult(PushNotificationsDevice pushNotificationsDevice) {
 		entityCache.putResult(
 			entityCacheEnabled, PushNotificationsDeviceImpl.class,
-			pushNotificationsDevice.getPrimaryKey(), pushNotificationsDevice);
+			pushNotificationsDevice.getPrimaryKey(), pushNotificationsDevice,
+			_columnBitmaskEnabled,
+			((PushNotificationsDeviceModelImpl)pushNotificationsDevice).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByToken,
@@ -1309,7 +1312,10 @@ public class PushNotificationsDevicePersistenceImpl
 	public void clearCache(PushNotificationsDevice pushNotificationsDevice) {
 		entityCache.removeResult(
 			entityCacheEnabled, PushNotificationsDeviceImpl.class,
-			pushNotificationsDevice.getPrimaryKey());
+			pushNotificationsDevice.getPrimaryKey(), pushNotificationsDevice,
+			_columnBitmaskEnabled,
+			((PushNotificationsDeviceModelImpl)pushNotificationsDevice).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1330,7 +1336,10 @@ public class PushNotificationsDevicePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, PushNotificationsDeviceImpl.class,
-				pushNotificationsDevice.getPrimaryKey());
+				pushNotificationsDevice.getPrimaryKey(),
+				pushNotificationsDevice, _columnBitmaskEnabled,
+				((PushNotificationsDeviceModelImpl)pushNotificationsDevice).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PushNotificationsDeviceModelImpl)pushNotificationsDevice,
@@ -1596,7 +1605,9 @@ public class PushNotificationsDevicePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, PushNotificationsDeviceImpl.class,
 			pushNotificationsDevice.getPrimaryKey(), pushNotificationsDevice,
-			false);
+			false, _columnBitmaskEnabled,
+			((PushNotificationsDeviceModelImpl)pushNotificationsDevice).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(pushNotificationsDeviceModelImpl, false);
 		cacheUniqueFindersCache(pushNotificationsDeviceModelImpl);

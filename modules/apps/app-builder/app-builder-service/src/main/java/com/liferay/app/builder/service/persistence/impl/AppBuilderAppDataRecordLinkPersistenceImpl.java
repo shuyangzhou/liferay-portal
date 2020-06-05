@@ -856,7 +856,9 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderAppDataRecordLinkImpl.class,
 			appBuilderAppDataRecordLink.getPrimaryKey(),
-			appBuilderAppDataRecordLink);
+			appBuilderAppDataRecordLink, _columnBitmaskEnabled,
+			((AppBuilderAppDataRecordLinkModelImpl)appBuilderAppDataRecordLink).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByDDLRecordId,
@@ -919,7 +921,10 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, AppBuilderAppDataRecordLinkImpl.class,
-			appBuilderAppDataRecordLink.getPrimaryKey());
+			appBuilderAppDataRecordLink.getPrimaryKey(),
+			appBuilderAppDataRecordLink, _columnBitmaskEnabled,
+			((AppBuilderAppDataRecordLinkModelImpl)appBuilderAppDataRecordLink).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -941,7 +946,10 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AppBuilderAppDataRecordLinkImpl.class,
-				appBuilderAppDataRecordLink.getPrimaryKey());
+				appBuilderAppDataRecordLink.getPrimaryKey(),
+				appBuilderAppDataRecordLink, _columnBitmaskEnabled,
+				((AppBuilderAppDataRecordLinkModelImpl)
+					appBuilderAppDataRecordLink).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AppBuilderAppDataRecordLinkModelImpl)
@@ -1220,7 +1228,9 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderAppDataRecordLinkImpl.class,
 			appBuilderAppDataRecordLink.getPrimaryKey(),
-			appBuilderAppDataRecordLink, false);
+			appBuilderAppDataRecordLink, false, _columnBitmaskEnabled,
+			((AppBuilderAppDataRecordLinkModelImpl)appBuilderAppDataRecordLink).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(appBuilderAppDataRecordLinkModelImpl, false);
 		cacheUniqueFindersCache(appBuilderAppDataRecordLinkModelImpl);

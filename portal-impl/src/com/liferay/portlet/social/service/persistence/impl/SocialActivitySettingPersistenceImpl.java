@@ -2733,7 +2733,10 @@ public class SocialActivitySettingPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivitySettingImpl.class,
-			socialActivitySetting.getPrimaryKey(), socialActivitySetting);
+			socialActivitySetting.getPrimaryKey(), socialActivitySetting,
+			SocialActivitySettingModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivitySettingModelImpl)socialActivitySetting).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_C_A_N,
@@ -2807,7 +2810,10 @@ public class SocialActivitySettingPersistenceImpl
 		EntityCacheUtil.removeResult(
 			SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivitySettingImpl.class,
-			socialActivitySetting.getPrimaryKey());
+			socialActivitySetting.getPrimaryKey(), socialActivitySetting,
+			SocialActivitySettingModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivitySettingModelImpl)socialActivitySetting).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2827,7 +2833,10 @@ public class SocialActivitySettingPersistenceImpl
 			EntityCacheUtil.removeResult(
 				SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
 				SocialActivitySettingImpl.class,
-				socialActivitySetting.getPrimaryKey());
+				socialActivitySetting.getPrimaryKey(), socialActivitySetting,
+				SocialActivitySettingModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialActivitySettingModelImpl)socialActivitySetting).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialActivitySettingModelImpl)socialActivitySetting, true);
@@ -3219,8 +3228,10 @@ public class SocialActivitySettingPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivitySettingImpl.class,
-			socialActivitySetting.getPrimaryKey(), socialActivitySetting,
-			false);
+			socialActivitySetting.getPrimaryKey(), socialActivitySetting, false,
+			SocialActivitySettingModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivitySettingModelImpl)socialActivitySetting).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(socialActivitySettingModelImpl, false);
 		cacheUniqueFindersCache(socialActivitySettingModelImpl);

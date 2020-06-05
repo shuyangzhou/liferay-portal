@@ -3990,7 +3990,9 @@ public class EmailAddressPersistenceImpl
 	public void cacheResult(EmailAddress emailAddress) {
 		EntityCacheUtil.putResult(
 			EmailAddressModelImpl.ENTITY_CACHE_ENABLED, EmailAddressImpl.class,
-			emailAddress.getPrimaryKey(), emailAddress);
+			emailAddress.getPrimaryKey(), emailAddress,
+			EmailAddressModelImpl.COLUMN_BITMASK_ENABLED,
+			((EmailAddressModelImpl)emailAddress).getColumnBitmask());
 
 		emailAddress.resetOriginalValues();
 	}
@@ -4043,7 +4045,9 @@ public class EmailAddressPersistenceImpl
 	public void clearCache(EmailAddress emailAddress) {
 		EntityCacheUtil.removeResult(
 			EmailAddressModelImpl.ENTITY_CACHE_ENABLED, EmailAddressImpl.class,
-			emailAddress.getPrimaryKey());
+			emailAddress.getPrimaryKey(), emailAddress,
+			EmailAddressModelImpl.COLUMN_BITMASK_ENABLED,
+			((EmailAddressModelImpl)emailAddress).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4057,7 +4061,9 @@ public class EmailAddressPersistenceImpl
 		for (EmailAddress emailAddress : emailAddresses) {
 			EntityCacheUtil.removeResult(
 				EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-				EmailAddressImpl.class, emailAddress.getPrimaryKey());
+				EmailAddressImpl.class, emailAddress.getPrimaryKey(),
+				emailAddress, EmailAddressModelImpl.COLUMN_BITMASK_ENABLED,
+				((EmailAddressModelImpl)emailAddress).getColumnBitmask());
 		}
 	}
 
@@ -4484,7 +4490,9 @@ public class EmailAddressPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			EmailAddressModelImpl.ENTITY_CACHE_ENABLED, EmailAddressImpl.class,
-			emailAddress.getPrimaryKey(), emailAddress, false);
+			emailAddress.getPrimaryKey(), emailAddress, false,
+			EmailAddressModelImpl.COLUMN_BITMASK_ENABLED,
+			((EmailAddressModelImpl)emailAddress).getColumnBitmask());
 
 		emailAddress.resetOriginalValues();
 

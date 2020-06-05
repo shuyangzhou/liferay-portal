@@ -2702,7 +2702,8 @@ public class TeamPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			TeamModelImpl.ENTITY_CACHE_ENABLED, TeamImpl.class,
-			team.getPrimaryKey(), team);
+			team.getPrimaryKey(), team, TeamModelImpl.COLUMN_BITMASK_ENABLED,
+			((TeamModelImpl)team).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -2768,7 +2769,8 @@ public class TeamPersistenceImpl
 	public void clearCache(Team team) {
 		EntityCacheUtil.removeResult(
 			TeamModelImpl.ENTITY_CACHE_ENABLED, TeamImpl.class,
-			team.getPrimaryKey());
+			team.getPrimaryKey(), team, TeamModelImpl.COLUMN_BITMASK_ENABLED,
+			((TeamModelImpl)team).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2784,7 +2786,9 @@ public class TeamPersistenceImpl
 		for (Team team : teams) {
 			EntityCacheUtil.removeResult(
 				TeamModelImpl.ENTITY_CACHE_ENABLED, TeamImpl.class,
-				team.getPrimaryKey());
+				team.getPrimaryKey(), team,
+				TeamModelImpl.COLUMN_BITMASK_ENABLED,
+				((TeamModelImpl)team).getColumnBitmask());
 
 			clearUniqueFindersCache((TeamModelImpl)team, true);
 		}
@@ -3161,7 +3165,9 @@ public class TeamPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			TeamModelImpl.ENTITY_CACHE_ENABLED, TeamImpl.class,
-			team.getPrimaryKey(), team, false);
+			team.getPrimaryKey(), team, false,
+			TeamModelImpl.COLUMN_BITMASK_ENABLED,
+			((TeamModelImpl)team).getColumnBitmask());
 
 		clearUniqueFindersCache(teamModelImpl, false);
 		cacheUniqueFindersCache(teamModelImpl);

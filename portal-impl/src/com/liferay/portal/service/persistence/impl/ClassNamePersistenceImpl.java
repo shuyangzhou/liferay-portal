@@ -324,7 +324,9 @@ public class ClassNamePersistenceImpl
 	public void cacheResult(ClassName className) {
 		EntityCacheUtil.putResult(
 			ClassNameModelImpl.ENTITY_CACHE_ENABLED, ClassNameImpl.class,
-			className.getPrimaryKey(), className);
+			className.getPrimaryKey(), className,
+			ClassNameModelImpl.COLUMN_BITMASK_ENABLED,
+			((ClassNameModelImpl)className).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByValue, new Object[] {className.getValue()},
@@ -380,7 +382,9 @@ public class ClassNamePersistenceImpl
 	public void clearCache(ClassName className) {
 		EntityCacheUtil.removeResult(
 			ClassNameModelImpl.ENTITY_CACHE_ENABLED, ClassNameImpl.class,
-			className.getPrimaryKey());
+			className.getPrimaryKey(), className,
+			ClassNameModelImpl.COLUMN_BITMASK_ENABLED,
+			((ClassNameModelImpl)className).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -396,7 +400,9 @@ public class ClassNamePersistenceImpl
 		for (ClassName className : classNames) {
 			EntityCacheUtil.removeResult(
 				ClassNameModelImpl.ENTITY_CACHE_ENABLED, ClassNameImpl.class,
-				className.getPrimaryKey());
+				className.getPrimaryKey(), className,
+				ClassNameModelImpl.COLUMN_BITMASK_ENABLED,
+				((ClassNameModelImpl)className).getColumnBitmask());
 
 			clearUniqueFindersCache((ClassNameModelImpl)className, true);
 		}
@@ -605,7 +611,9 @@ public class ClassNamePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ClassNameModelImpl.ENTITY_CACHE_ENABLED, ClassNameImpl.class,
-			className.getPrimaryKey(), className, false);
+			className.getPrimaryKey(), className, false,
+			ClassNameModelImpl.COLUMN_BITMASK_ENABLED,
+			((ClassNameModelImpl)className).getColumnBitmask());
 
 		clearUniqueFindersCache(classNameModelImpl, false);
 		cacheUniqueFindersCache(classNameModelImpl);

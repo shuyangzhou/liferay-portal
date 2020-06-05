@@ -12313,7 +12313,8 @@ public class DDMTemplatePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMTemplateImpl.class,
-			ddmTemplate.getPrimaryKey(), ddmTemplate);
+			ddmTemplate.getPrimaryKey(), ddmTemplate, _columnBitmaskEnabled,
+			((DDMTemplateModelImpl)ddmTemplate).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -12388,7 +12389,8 @@ public class DDMTemplatePersistenceImpl
 	public void clearCache(DDMTemplate ddmTemplate) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMTemplateImpl.class,
-			ddmTemplate.getPrimaryKey());
+			ddmTemplate.getPrimaryKey(), ddmTemplate, _columnBitmaskEnabled,
+			((DDMTemplateModelImpl)ddmTemplate).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -12404,7 +12406,8 @@ public class DDMTemplatePersistenceImpl
 		for (DDMTemplate ddmTemplate : ddmTemplates) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMTemplateImpl.class,
-				ddmTemplate.getPrimaryKey());
+				ddmTemplate.getPrimaryKey(), ddmTemplate, _columnBitmaskEnabled,
+				((DDMTemplateModelImpl)ddmTemplate).getColumnBitmask());
 
 			clearUniqueFindersCache((DDMTemplateModelImpl)ddmTemplate, true);
 		}
@@ -13129,7 +13132,9 @@ public class DDMTemplatePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMTemplateImpl.class,
-			ddmTemplate.getPrimaryKey(), ddmTemplate, false);
+			ddmTemplate.getPrimaryKey(), ddmTemplate, false,
+			_columnBitmaskEnabled,
+			((DDMTemplateModelImpl)ddmTemplate).getColumnBitmask());
 
 		clearUniqueFindersCache(ddmTemplateModelImpl, false);
 		cacheUniqueFindersCache(ddmTemplateModelImpl);

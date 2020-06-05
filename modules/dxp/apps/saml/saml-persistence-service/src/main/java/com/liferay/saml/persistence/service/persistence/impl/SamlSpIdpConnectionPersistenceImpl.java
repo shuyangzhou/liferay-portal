@@ -903,7 +903,10 @@ public class SamlSpIdpConnectionPersistenceImpl
 	public void cacheResult(SamlSpIdpConnection samlSpIdpConnection) {
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpIdpConnectionImpl.class,
-			samlSpIdpConnection.getPrimaryKey(), samlSpIdpConnection);
+			samlSpIdpConnection.getPrimaryKey(), samlSpIdpConnection,
+			_columnBitmaskEnabled,
+			((SamlSpIdpConnectionModelImpl)samlSpIdpConnection).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_SIEI,
@@ -963,7 +966,10 @@ public class SamlSpIdpConnectionPersistenceImpl
 	public void clearCache(SamlSpIdpConnection samlSpIdpConnection) {
 		entityCache.removeResult(
 			entityCacheEnabled, SamlSpIdpConnectionImpl.class,
-			samlSpIdpConnection.getPrimaryKey());
+			samlSpIdpConnection.getPrimaryKey(), samlSpIdpConnection,
+			_columnBitmaskEnabled,
+			((SamlSpIdpConnectionModelImpl)samlSpIdpConnection).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -980,7 +986,10 @@ public class SamlSpIdpConnectionPersistenceImpl
 		for (SamlSpIdpConnection samlSpIdpConnection : samlSpIdpConnections) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlSpIdpConnectionImpl.class,
-				samlSpIdpConnection.getPrimaryKey());
+				samlSpIdpConnection.getPrimaryKey(), samlSpIdpConnection,
+				_columnBitmaskEnabled,
+				((SamlSpIdpConnectionModelImpl)samlSpIdpConnection).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SamlSpIdpConnectionModelImpl)samlSpIdpConnection, true);
@@ -1264,7 +1273,10 @@ public class SamlSpIdpConnectionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpIdpConnectionImpl.class,
-			samlSpIdpConnection.getPrimaryKey(), samlSpIdpConnection, false);
+			samlSpIdpConnection.getPrimaryKey(), samlSpIdpConnection, false,
+			_columnBitmaskEnabled,
+			((SamlSpIdpConnectionModelImpl)samlSpIdpConnection).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(samlSpIdpConnectionModelImpl, false);
 		cacheUniqueFindersCache(samlSpIdpConnectionModelImpl);

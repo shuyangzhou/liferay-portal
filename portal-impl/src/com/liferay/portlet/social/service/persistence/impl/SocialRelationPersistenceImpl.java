@@ -5870,7 +5870,8 @@ public class SocialRelationPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
 			SocialRelationImpl.class, socialRelation.getPrimaryKey(),
-			socialRelation);
+			socialRelation, SocialRelationModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialRelationModelImpl)socialRelation).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU1_U2_T,
@@ -5937,7 +5938,9 @@ public class SocialRelationPersistenceImpl
 	public void clearCache(SocialRelation socialRelation) {
 		EntityCacheUtil.removeResult(
 			SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-			SocialRelationImpl.class, socialRelation.getPrimaryKey());
+			SocialRelationImpl.class, socialRelation.getPrimaryKey(),
+			socialRelation, SocialRelationModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialRelationModelImpl)socialRelation).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5953,7 +5956,9 @@ public class SocialRelationPersistenceImpl
 		for (SocialRelation socialRelation : socialRelations) {
 			EntityCacheUtil.removeResult(
 				SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-				SocialRelationImpl.class, socialRelation.getPrimaryKey());
+				SocialRelationImpl.class, socialRelation.getPrimaryKey(),
+				socialRelation, SocialRelationModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialRelationModelImpl)socialRelation).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialRelationModelImpl)socialRelation, true);
@@ -6498,7 +6503,9 @@ public class SocialRelationPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
 			SocialRelationImpl.class, socialRelation.getPrimaryKey(),
-			socialRelation, false);
+			socialRelation, false,
+			SocialRelationModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialRelationModelImpl)socialRelation).getColumnBitmask());
 
 		clearUniqueFindersCache(socialRelationModelImpl, false);
 		cacheUniqueFindersCache(socialRelationModelImpl);

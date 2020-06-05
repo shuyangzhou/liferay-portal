@@ -1552,7 +1552,10 @@ public class CTAutoResolutionInfoPersistenceImpl
 	public void cacheResult(CTAutoResolutionInfo ctAutoResolutionInfo) {
 		entityCache.putResult(
 			entityCacheEnabled, CTAutoResolutionInfoImpl.class,
-			ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo);
+			ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo,
+			_columnBitmaskEnabled,
+			((CTAutoResolutionInfoModelImpl)ctAutoResolutionInfo).
+				getColumnBitmask());
 
 		ctAutoResolutionInfo.resetOriginalValues();
 	}
@@ -1606,7 +1609,10 @@ public class CTAutoResolutionInfoPersistenceImpl
 	public void clearCache(CTAutoResolutionInfo ctAutoResolutionInfo) {
 		entityCache.removeResult(
 			entityCacheEnabled, CTAutoResolutionInfoImpl.class,
-			ctAutoResolutionInfo.getPrimaryKey());
+			ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo,
+			_columnBitmaskEnabled,
+			((CTAutoResolutionInfoModelImpl)ctAutoResolutionInfo).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1622,7 +1628,10 @@ public class CTAutoResolutionInfoPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, CTAutoResolutionInfoImpl.class,
-				ctAutoResolutionInfo.getPrimaryKey());
+				ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo,
+				_columnBitmaskEnabled,
+				((CTAutoResolutionInfoModelImpl)ctAutoResolutionInfo).
+					getColumnBitmask());
 		}
 	}
 
@@ -1875,7 +1884,10 @@ public class CTAutoResolutionInfoPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTAutoResolutionInfoImpl.class,
-			ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo, false);
+			ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo, false,
+			_columnBitmaskEnabled,
+			((CTAutoResolutionInfoModelImpl)ctAutoResolutionInfo).
+				getColumnBitmask());
 
 		ctAutoResolutionInfo.resetOriginalValues();
 

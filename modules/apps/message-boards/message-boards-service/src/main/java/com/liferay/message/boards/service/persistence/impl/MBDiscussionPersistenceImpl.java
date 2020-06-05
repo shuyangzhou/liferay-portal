@@ -2425,7 +2425,8 @@ public class MBDiscussionPersistenceImpl
 	public void cacheResult(MBDiscussion mbDiscussion) {
 		entityCache.putResult(
 			entityCacheEnabled, MBDiscussionImpl.class,
-			mbDiscussion.getPrimaryKey(), mbDiscussion);
+			mbDiscussion.getPrimaryKey(), mbDiscussion, _columnBitmaskEnabled,
+			((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2493,7 +2494,8 @@ public class MBDiscussionPersistenceImpl
 	public void clearCache(MBDiscussion mbDiscussion) {
 		entityCache.removeResult(
 			entityCacheEnabled, MBDiscussionImpl.class,
-			mbDiscussion.getPrimaryKey());
+			mbDiscussion.getPrimaryKey(), mbDiscussion, _columnBitmaskEnabled,
+			((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2509,7 +2511,9 @@ public class MBDiscussionPersistenceImpl
 		for (MBDiscussion mbDiscussion : mbDiscussions) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBDiscussionImpl.class,
-				mbDiscussion.getPrimaryKey());
+				mbDiscussion.getPrimaryKey(), mbDiscussion,
+				_columnBitmaskEnabled,
+				((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask());
 
 			clearUniqueFindersCache((MBDiscussionModelImpl)mbDiscussion, true);
 		}
@@ -2901,7 +2905,9 @@ public class MBDiscussionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MBDiscussionImpl.class,
-			mbDiscussion.getPrimaryKey(), mbDiscussion, false);
+			mbDiscussion.getPrimaryKey(), mbDiscussion, false,
+			_columnBitmaskEnabled,
+			((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask());
 
 		clearUniqueFindersCache(mbDiscussionModelImpl, false);
 		cacheUniqueFindersCache(mbDiscussionModelImpl);

@@ -5875,7 +5875,8 @@ public class DLFileVersionPersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileVersionImpl.class, dlFileVersion.getPrimaryKey(),
-			dlFileVersion);
+			dlFileVersion, DLFileVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileVersionModelImpl)dlFileVersion).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -5946,7 +5947,9 @@ public class DLFileVersionPersistenceImpl
 	public void clearCache(DLFileVersion dlFileVersion) {
 		EntityCacheUtil.removeResult(
 			DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileVersionImpl.class, dlFileVersion.getPrimaryKey());
+			DLFileVersionImpl.class, dlFileVersion.getPrimaryKey(),
+			dlFileVersion, DLFileVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileVersionModelImpl)dlFileVersion).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5962,7 +5965,9 @@ public class DLFileVersionPersistenceImpl
 		for (DLFileVersion dlFileVersion : dlFileVersions) {
 			EntityCacheUtil.removeResult(
 				DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileVersionImpl.class, dlFileVersion.getPrimaryKey());
+				DLFileVersionImpl.class, dlFileVersion.getPrimaryKey(),
+				dlFileVersion, DLFileVersionModelImpl.COLUMN_BITMASK_ENABLED,
+				((DLFileVersionModelImpl)dlFileVersion).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DLFileVersionModelImpl)dlFileVersion, true);
@@ -6512,7 +6517,8 @@ public class DLFileVersionPersistenceImpl
 		EntityCacheUtil.putResult(
 			DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
 			DLFileVersionImpl.class, dlFileVersion.getPrimaryKey(),
-			dlFileVersion, false);
+			dlFileVersion, false, DLFileVersionModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileVersionModelImpl)dlFileVersion).getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileVersionModelImpl, false);
 		cacheUniqueFindersCache(dlFileVersionModelImpl);

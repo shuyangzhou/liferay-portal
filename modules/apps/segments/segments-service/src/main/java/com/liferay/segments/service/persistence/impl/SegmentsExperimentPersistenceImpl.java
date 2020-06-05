@@ -5853,7 +5853,10 @@ public class SegmentsExperimentPersistenceImpl
 	public void cacheResult(SegmentsExperiment segmentsExperiment) {
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperimentImpl.class,
-			segmentsExperiment.getPrimaryKey(), segmentsExperiment);
+			segmentsExperiment.getPrimaryKey(), segmentsExperiment,
+			_columnBitmaskEnabled,
+			((SegmentsExperimentModelImpl)segmentsExperiment).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -5920,7 +5923,10 @@ public class SegmentsExperimentPersistenceImpl
 	public void clearCache(SegmentsExperiment segmentsExperiment) {
 		entityCache.removeResult(
 			entityCacheEnabled, SegmentsExperimentImpl.class,
-			segmentsExperiment.getPrimaryKey());
+			segmentsExperiment.getPrimaryKey(), segmentsExperiment,
+			_columnBitmaskEnabled,
+			((SegmentsExperimentModelImpl)segmentsExperiment).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5937,7 +5943,10 @@ public class SegmentsExperimentPersistenceImpl
 		for (SegmentsExperiment segmentsExperiment : segmentsExperiments) {
 			entityCache.removeResult(
 				entityCacheEnabled, SegmentsExperimentImpl.class,
-				segmentsExperiment.getPrimaryKey());
+				segmentsExperiment.getPrimaryKey(), segmentsExperiment,
+				_columnBitmaskEnabled,
+				((SegmentsExperimentModelImpl)segmentsExperiment).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SegmentsExperimentModelImpl)segmentsExperiment, true);
@@ -6462,7 +6471,10 @@ public class SegmentsExperimentPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperimentImpl.class,
-			segmentsExperiment.getPrimaryKey(), segmentsExperiment, false);
+			segmentsExperiment.getPrimaryKey(), segmentsExperiment, false,
+			_columnBitmaskEnabled,
+			((SegmentsExperimentModelImpl)segmentsExperiment).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(segmentsExperimentModelImpl, false);
 		cacheUniqueFindersCache(segmentsExperimentModelImpl);

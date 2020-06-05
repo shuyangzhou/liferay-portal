@@ -3862,7 +3862,8 @@ public class DDLRecordSetPersistenceImpl
 	public void cacheResult(DDLRecordSet ddlRecordSet) {
 		entityCache.putResult(
 			entityCacheEnabled, DDLRecordSetImpl.class,
-			ddlRecordSet.getPrimaryKey(), ddlRecordSet);
+			ddlRecordSet.getPrimaryKey(), ddlRecordSet, _columnBitmaskEnabled,
+			((DDLRecordSetModelImpl)ddlRecordSet).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3926,7 +3927,8 @@ public class DDLRecordSetPersistenceImpl
 	public void clearCache(DDLRecordSet ddlRecordSet) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDLRecordSetImpl.class,
-			ddlRecordSet.getPrimaryKey());
+			ddlRecordSet.getPrimaryKey(), ddlRecordSet, _columnBitmaskEnabled,
+			((DDLRecordSetModelImpl)ddlRecordSet).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3942,7 +3944,9 @@ public class DDLRecordSetPersistenceImpl
 		for (DDLRecordSet ddlRecordSet : ddlRecordSets) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDLRecordSetImpl.class,
-				ddlRecordSet.getPrimaryKey());
+				ddlRecordSet.getPrimaryKey(), ddlRecordSet,
+				_columnBitmaskEnabled,
+				((DDLRecordSetModelImpl)ddlRecordSet).getColumnBitmask());
 
 			clearUniqueFindersCache((DDLRecordSetModelImpl)ddlRecordSet, true);
 		}
@@ -4336,7 +4340,9 @@ public class DDLRecordSetPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDLRecordSetImpl.class,
-			ddlRecordSet.getPrimaryKey(), ddlRecordSet, false);
+			ddlRecordSet.getPrimaryKey(), ddlRecordSet, false,
+			_columnBitmaskEnabled,
+			((DDLRecordSetModelImpl)ddlRecordSet).getColumnBitmask());
 
 		clearUniqueFindersCache(ddlRecordSetModelImpl, false);
 		cacheUniqueFindersCache(ddlRecordSetModelImpl);

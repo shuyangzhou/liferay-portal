@@ -1551,7 +1551,9 @@ public class AppBuilderWorkflowTaskLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderWorkflowTaskLinkImpl.class,
 			appBuilderWorkflowTaskLink.getPrimaryKey(),
-			appBuilderWorkflowTaskLink);
+			appBuilderWorkflowTaskLink, _columnBitmaskEnabled,
+			((AppBuilderWorkflowTaskLinkModelImpl)appBuilderWorkflowTaskLink).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_D_W,
@@ -1618,7 +1620,10 @@ public class AppBuilderWorkflowTaskLinkPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, AppBuilderWorkflowTaskLinkImpl.class,
-			appBuilderWorkflowTaskLink.getPrimaryKey());
+			appBuilderWorkflowTaskLink.getPrimaryKey(),
+			appBuilderWorkflowTaskLink, _columnBitmaskEnabled,
+			((AppBuilderWorkflowTaskLinkModelImpl)appBuilderWorkflowTaskLink).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1640,7 +1645,10 @@ public class AppBuilderWorkflowTaskLinkPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AppBuilderWorkflowTaskLinkImpl.class,
-				appBuilderWorkflowTaskLink.getPrimaryKey());
+				appBuilderWorkflowTaskLink.getPrimaryKey(),
+				appBuilderWorkflowTaskLink, _columnBitmaskEnabled,
+				((AppBuilderWorkflowTaskLinkModelImpl)
+					appBuilderWorkflowTaskLink).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AppBuilderWorkflowTaskLinkModelImpl)appBuilderWorkflowTaskLink,
@@ -1955,7 +1963,9 @@ public class AppBuilderWorkflowTaskLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderWorkflowTaskLinkImpl.class,
 			appBuilderWorkflowTaskLink.getPrimaryKey(),
-			appBuilderWorkflowTaskLink, false);
+			appBuilderWorkflowTaskLink, false, _columnBitmaskEnabled,
+			((AppBuilderWorkflowTaskLinkModelImpl)appBuilderWorkflowTaskLink).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(appBuilderWorkflowTaskLinkModelImpl, false);
 		cacheUniqueFindersCache(appBuilderWorkflowTaskLinkModelImpl);

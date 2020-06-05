@@ -3513,7 +3513,10 @@ public class DDMDataProviderInstancePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMDataProviderInstanceImpl.class,
-			ddmDataProviderInstance.getPrimaryKey(), ddmDataProviderInstance);
+			ddmDataProviderInstance.getPrimaryKey(), ddmDataProviderInstance,
+			_columnBitmaskEnabled,
+			((DDMDataProviderInstanceModelImpl)ddmDataProviderInstance).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3583,7 +3586,10 @@ public class DDMDataProviderInstancePersistenceImpl
 	public void clearCache(DDMDataProviderInstance ddmDataProviderInstance) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMDataProviderInstanceImpl.class,
-			ddmDataProviderInstance.getPrimaryKey());
+			ddmDataProviderInstance.getPrimaryKey(), ddmDataProviderInstance,
+			_columnBitmaskEnabled,
+			((DDMDataProviderInstanceModelImpl)ddmDataProviderInstance).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3604,7 +3610,10 @@ public class DDMDataProviderInstancePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DDMDataProviderInstanceImpl.class,
-				ddmDataProviderInstance.getPrimaryKey());
+				ddmDataProviderInstance.getPrimaryKey(),
+				ddmDataProviderInstance, _columnBitmaskEnabled,
+				((DDMDataProviderInstanceModelImpl)ddmDataProviderInstance).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMDataProviderInstanceModelImpl)ddmDataProviderInstance,
@@ -4014,7 +4023,9 @@ public class DDMDataProviderInstancePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DDMDataProviderInstanceImpl.class,
 			ddmDataProviderInstance.getPrimaryKey(), ddmDataProviderInstance,
-			false);
+			false, _columnBitmaskEnabled,
+			((DDMDataProviderInstanceModelImpl)ddmDataProviderInstance).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddmDataProviderInstanceModelImpl, false);
 		cacheUniqueFindersCache(ddmDataProviderInstanceModelImpl);

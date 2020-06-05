@@ -3247,7 +3247,8 @@ public class LayoutSetBranchPersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetBranchImpl.class, layoutSetBranch.getPrimaryKey(),
-			layoutSetBranch);
+			layoutSetBranch, LayoutSetBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutSetBranchModelImpl)layoutSetBranch).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_P_N,
@@ -3308,7 +3309,9 @@ public class LayoutSetBranchPersistenceImpl
 	public void clearCache(LayoutSetBranch layoutSetBranch) {
 		EntityCacheUtil.removeResult(
 			LayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetBranchImpl.class, layoutSetBranch.getPrimaryKey());
+			LayoutSetBranchImpl.class, layoutSetBranch.getPrimaryKey(),
+			layoutSetBranch, LayoutSetBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutSetBranchModelImpl)layoutSetBranch).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3325,7 +3328,10 @@ public class LayoutSetBranchPersistenceImpl
 		for (LayoutSetBranch layoutSetBranch : layoutSetBranchs) {
 			EntityCacheUtil.removeResult(
 				LayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutSetBranchImpl.class, layoutSetBranch.getPrimaryKey());
+				LayoutSetBranchImpl.class, layoutSetBranch.getPrimaryKey(),
+				layoutSetBranch,
+				LayoutSetBranchModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutSetBranchModelImpl)layoutSetBranch).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LayoutSetBranchModelImpl)layoutSetBranch, true);
@@ -3675,7 +3681,9 @@ public class LayoutSetBranchPersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetBranchImpl.class, layoutSetBranch.getPrimaryKey(),
-			layoutSetBranch, false);
+			layoutSetBranch, false,
+			LayoutSetBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutSetBranchModelImpl)layoutSetBranch).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutSetBranchModelImpl, false);
 		cacheUniqueFindersCache(layoutSetBranchModelImpl);

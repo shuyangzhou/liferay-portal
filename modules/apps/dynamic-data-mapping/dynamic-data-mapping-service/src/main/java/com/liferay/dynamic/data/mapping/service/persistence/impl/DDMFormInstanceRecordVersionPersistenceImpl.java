@@ -2864,7 +2864,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceRecordVersionImpl.class,
 			ddmFormInstanceRecordVersion.getPrimaryKey(),
-			ddmFormInstanceRecordVersion);
+			ddmFormInstanceRecordVersion, _columnBitmaskEnabled,
+			((DDMFormInstanceRecordVersionModelImpl)
+				ddmFormInstanceRecordVersion).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByF_V,
@@ -2936,7 +2938,10 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, DDMFormInstanceRecordVersionImpl.class,
-			ddmFormInstanceRecordVersion.getPrimaryKey());
+			ddmFormInstanceRecordVersion.getPrimaryKey(),
+			ddmFormInstanceRecordVersion, _columnBitmaskEnabled,
+			((DDMFormInstanceRecordVersionModelImpl)
+				ddmFormInstanceRecordVersion).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2958,7 +2963,10 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DDMFormInstanceRecordVersionImpl.class,
-				ddmFormInstanceRecordVersion.getPrimaryKey());
+				ddmFormInstanceRecordVersion.getPrimaryKey(),
+				ddmFormInstanceRecordVersion, _columnBitmaskEnabled,
+				((DDMFormInstanceRecordVersionModelImpl)
+					ddmFormInstanceRecordVersion).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMFormInstanceRecordVersionModelImpl)
@@ -3376,7 +3384,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceRecordVersionImpl.class,
 			ddmFormInstanceRecordVersion.getPrimaryKey(),
-			ddmFormInstanceRecordVersion, false);
+			ddmFormInstanceRecordVersion, false, _columnBitmaskEnabled,
+			((DDMFormInstanceRecordVersionModelImpl)
+				ddmFormInstanceRecordVersion).getColumnBitmask());
 
 		clearUniqueFindersCache(ddmFormInstanceRecordVersionModelImpl, false);
 		cacheUniqueFindersCache(ddmFormInstanceRecordVersionModelImpl);

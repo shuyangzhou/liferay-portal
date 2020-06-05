@@ -1386,7 +1386,10 @@ public class AccountEntryUserRelPersistenceImpl
 	public void cacheResult(AccountEntryUserRel accountEntryUserRel) {
 		entityCache.putResult(
 			entityCacheEnabled, AccountEntryUserRelImpl.class,
-			accountEntryUserRel.getPrimaryKey(), accountEntryUserRel);
+			accountEntryUserRel.getPrimaryKey(), accountEntryUserRel,
+			_columnBitmaskEnabled,
+			((AccountEntryUserRelModelImpl)accountEntryUserRel).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByAEI_AUI,
@@ -1446,7 +1449,10 @@ public class AccountEntryUserRelPersistenceImpl
 	public void clearCache(AccountEntryUserRel accountEntryUserRel) {
 		entityCache.removeResult(
 			entityCacheEnabled, AccountEntryUserRelImpl.class,
-			accountEntryUserRel.getPrimaryKey());
+			accountEntryUserRel.getPrimaryKey(), accountEntryUserRel,
+			_columnBitmaskEnabled,
+			((AccountEntryUserRelModelImpl)accountEntryUserRel).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1463,7 +1469,10 @@ public class AccountEntryUserRelPersistenceImpl
 		for (AccountEntryUserRel accountEntryUserRel : accountEntryUserRels) {
 			entityCache.removeResult(
 				entityCacheEnabled, AccountEntryUserRelImpl.class,
-				accountEntryUserRel.getPrimaryKey());
+				accountEntryUserRel.getPrimaryKey(), accountEntryUserRel,
+				_columnBitmaskEnabled,
+				((AccountEntryUserRelModelImpl)accountEntryUserRel).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AccountEntryUserRelModelImpl)accountEntryUserRel, true);
@@ -1751,7 +1760,10 @@ public class AccountEntryUserRelPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AccountEntryUserRelImpl.class,
-			accountEntryUserRel.getPrimaryKey(), accountEntryUserRel, false);
+			accountEntryUserRel.getPrimaryKey(), accountEntryUserRel, false,
+			_columnBitmaskEnabled,
+			((AccountEntryUserRelModelImpl)accountEntryUserRel).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(accountEntryUserRelModelImpl, false);
 		cacheUniqueFindersCache(accountEntryUserRelModelImpl);

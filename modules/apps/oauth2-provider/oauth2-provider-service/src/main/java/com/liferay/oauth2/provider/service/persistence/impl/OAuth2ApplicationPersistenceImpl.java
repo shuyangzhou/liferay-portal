@@ -1281,7 +1281,9 @@ public class OAuth2ApplicationPersistenceImpl
 	public void cacheResult(OAuth2Application oAuth2Application) {
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ApplicationImpl.class,
-			oAuth2Application.getPrimaryKey(), oAuth2Application);
+			oAuth2Application.getPrimaryKey(), oAuth2Application,
+			_columnBitmaskEnabled,
+			((OAuth2ApplicationModelImpl)oAuth2Application).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_C,
@@ -1341,7 +1343,9 @@ public class OAuth2ApplicationPersistenceImpl
 	public void clearCache(OAuth2Application oAuth2Application) {
 		entityCache.removeResult(
 			entityCacheEnabled, OAuth2ApplicationImpl.class,
-			oAuth2Application.getPrimaryKey());
+			oAuth2Application.getPrimaryKey(), oAuth2Application,
+			_columnBitmaskEnabled,
+			((OAuth2ApplicationModelImpl)oAuth2Application).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1358,7 +1362,10 @@ public class OAuth2ApplicationPersistenceImpl
 		for (OAuth2Application oAuth2Application : oAuth2Applications) {
 			entityCache.removeResult(
 				entityCacheEnabled, OAuth2ApplicationImpl.class,
-				oAuth2Application.getPrimaryKey());
+				oAuth2Application.getPrimaryKey(), oAuth2Application,
+				_columnBitmaskEnabled,
+				((OAuth2ApplicationModelImpl)oAuth2Application).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(OAuth2ApplicationModelImpl)oAuth2Application, true);
@@ -1635,7 +1642,9 @@ public class OAuth2ApplicationPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ApplicationImpl.class,
-			oAuth2Application.getPrimaryKey(), oAuth2Application, false);
+			oAuth2Application.getPrimaryKey(), oAuth2Application, false,
+			_columnBitmaskEnabled,
+			((OAuth2ApplicationModelImpl)oAuth2Application).getColumnBitmask());
 
 		clearUniqueFindersCache(oAuth2ApplicationModelImpl, false);
 		cacheUniqueFindersCache(oAuth2ApplicationModelImpl);

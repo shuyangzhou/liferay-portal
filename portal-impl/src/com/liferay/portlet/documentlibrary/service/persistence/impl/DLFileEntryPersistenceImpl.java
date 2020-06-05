@@ -14954,7 +14954,9 @@ public class DLFileEntryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED, DLFileEntryImpl.class,
-			dlFileEntry.getPrimaryKey(), dlFileEntry);
+			dlFileEntry.getPrimaryKey(), dlFileEntry,
+			DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryModelImpl)dlFileEntry).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -15042,7 +15044,9 @@ public class DLFileEntryPersistenceImpl
 	public void clearCache(DLFileEntry dlFileEntry) {
 		EntityCacheUtil.removeResult(
 			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED, DLFileEntryImpl.class,
-			dlFileEntry.getPrimaryKey());
+			dlFileEntry.getPrimaryKey(), dlFileEntry,
+			DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryModelImpl)dlFileEntry).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -15058,7 +15062,9 @@ public class DLFileEntryPersistenceImpl
 		for (DLFileEntry dlFileEntry : dlFileEntries) {
 			EntityCacheUtil.removeResult(
 				DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryImpl.class, dlFileEntry.getPrimaryKey());
+				DLFileEntryImpl.class, dlFileEntry.getPrimaryKey(), dlFileEntry,
+				DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((DLFileEntryModelImpl)dlFileEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((DLFileEntryModelImpl)dlFileEntry, true);
 		}
@@ -15968,7 +15974,9 @@ public class DLFileEntryPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED, DLFileEntryImpl.class,
-			dlFileEntry.getPrimaryKey(), dlFileEntry, false);
+			dlFileEntry.getPrimaryKey(), dlFileEntry, false,
+			DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFileEntryModelImpl)dlFileEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(dlFileEntryModelImpl, false);
 		cacheUniqueFindersCache(dlFileEntryModelImpl);

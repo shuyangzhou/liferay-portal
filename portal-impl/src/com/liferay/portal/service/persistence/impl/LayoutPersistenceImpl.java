@@ -15549,7 +15549,9 @@ public class LayoutPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			LayoutModelImpl.ENTITY_CACHE_ENABLED, LayoutImpl.class,
-			layout.getPrimaryKey(), layout);
+			layout.getPrimaryKey(), layout,
+			LayoutModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutModelImpl)layout).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G_P,
@@ -15652,7 +15654,9 @@ public class LayoutPersistenceImpl
 	public void clearCache(Layout layout) {
 		EntityCacheUtil.removeResult(
 			LayoutModelImpl.ENTITY_CACHE_ENABLED, LayoutImpl.class,
-			layout.getPrimaryKey());
+			layout.getPrimaryKey(), layout,
+			LayoutModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutModelImpl)layout).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -15668,7 +15672,9 @@ public class LayoutPersistenceImpl
 		for (Layout layout : layouts) {
 			EntityCacheUtil.removeResult(
 				LayoutModelImpl.ENTITY_CACHE_ENABLED, LayoutImpl.class,
-				layout.getPrimaryKey());
+				layout.getPrimaryKey(), layout,
+				LayoutModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutModelImpl)layout).getColumnBitmask());
 
 			clearUniqueFindersCache((LayoutModelImpl)layout, true);
 		}
@@ -16545,7 +16551,9 @@ public class LayoutPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			LayoutModelImpl.ENTITY_CACHE_ENABLED, LayoutImpl.class,
-			layout.getPrimaryKey(), layout, false);
+			layout.getPrimaryKey(), layout, false,
+			LayoutModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutModelImpl)layout).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutModelImpl, false);
 		cacheUniqueFindersCache(layoutModelImpl);

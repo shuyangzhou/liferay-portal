@@ -880,7 +880,9 @@ public class AkismetEntryPersistenceImpl
 	public void cacheResult(AkismetEntry akismetEntry) {
 		entityCache.putResult(
 			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
-			akismetEntry.getPrimaryKey(), akismetEntry);
+			akismetEntry.getPrimaryKey(), akismetEntry,
+			AkismetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AkismetEntryModelImpl)akismetEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_C,
@@ -940,7 +942,9 @@ public class AkismetEntryPersistenceImpl
 	public void clearCache(AkismetEntry akismetEntry) {
 		entityCache.removeResult(
 			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
-			akismetEntry.getPrimaryKey());
+			akismetEntry.getPrimaryKey(), akismetEntry,
+			AkismetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AkismetEntryModelImpl)akismetEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -956,7 +960,9 @@ public class AkismetEntryPersistenceImpl
 		for (AkismetEntry akismetEntry : akismetEntries) {
 			entityCache.removeResult(
 				AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryImpl.class, akismetEntry.getPrimaryKey());
+				AkismetEntryImpl.class, akismetEntry.getPrimaryKey(),
+				akismetEntry, AkismetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((AkismetEntryModelImpl)akismetEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((AkismetEntryModelImpl)akismetEntry, true);
 		}
@@ -1174,7 +1180,9 @@ public class AkismetEntryPersistenceImpl
 
 		entityCache.putResult(
 			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
-			akismetEntry.getPrimaryKey(), akismetEntry, false);
+			akismetEntry.getPrimaryKey(), akismetEntry, false,
+			AkismetEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AkismetEntryModelImpl)akismetEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(akismetEntryModelImpl, false);
 		cacheUniqueFindersCache(akismetEntryModelImpl);

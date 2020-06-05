@@ -3450,7 +3450,8 @@ public class CalendarPersistenceImpl
 	public void cacheResult(Calendar calendar) {
 		entityCache.putResult(
 			entityCacheEnabled, CalendarImpl.class, calendar.getPrimaryKey(),
-			calendar);
+			calendar, _columnBitmaskEnabled,
+			((CalendarModelImpl)calendar).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3505,7 +3506,9 @@ public class CalendarPersistenceImpl
 	@Override
 	public void clearCache(Calendar calendar) {
 		entityCache.removeResult(
-			entityCacheEnabled, CalendarImpl.class, calendar.getPrimaryKey());
+			entityCacheEnabled, CalendarImpl.class, calendar.getPrimaryKey(),
+			calendar, _columnBitmaskEnabled,
+			((CalendarModelImpl)calendar).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3521,7 +3524,8 @@ public class CalendarPersistenceImpl
 		for (Calendar calendar : calendars) {
 			entityCache.removeResult(
 				entityCacheEnabled, CalendarImpl.class,
-				calendar.getPrimaryKey());
+				calendar.getPrimaryKey(), calendar, _columnBitmaskEnabled,
+				((CalendarModelImpl)calendar).getColumnBitmask());
 
 			clearUniqueFindersCache((CalendarModelImpl)calendar, true);
 		}
@@ -3891,7 +3895,8 @@ public class CalendarPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CalendarImpl.class, calendar.getPrimaryKey(),
-			calendar, false);
+			calendar, false, _columnBitmaskEnabled,
+			((CalendarModelImpl)calendar).getColumnBitmask());
 
 		clearUniqueFindersCache(calendarModelImpl, false);
 		cacheUniqueFindersCache(calendarModelImpl);

@@ -4601,7 +4601,9 @@ public class AddressPersistenceImpl
 	public void cacheResult(Address address) {
 		EntityCacheUtil.putResult(
 			AddressModelImpl.ENTITY_CACHE_ENABLED, AddressImpl.class,
-			address.getPrimaryKey(), address);
+			address.getPrimaryKey(), address,
+			AddressModelImpl.COLUMN_BITMASK_ENABLED,
+			((AddressModelImpl)address).getColumnBitmask());
 
 		address.resetOriginalValues();
 	}
@@ -4653,7 +4655,9 @@ public class AddressPersistenceImpl
 	public void clearCache(Address address) {
 		EntityCacheUtil.removeResult(
 			AddressModelImpl.ENTITY_CACHE_ENABLED, AddressImpl.class,
-			address.getPrimaryKey());
+			address.getPrimaryKey(), address,
+			AddressModelImpl.COLUMN_BITMASK_ENABLED,
+			((AddressModelImpl)address).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4667,7 +4671,9 @@ public class AddressPersistenceImpl
 		for (Address address : addresses) {
 			EntityCacheUtil.removeResult(
 				AddressModelImpl.ENTITY_CACHE_ENABLED, AddressImpl.class,
-				address.getPrimaryKey());
+				address.getPrimaryKey(), address,
+				AddressModelImpl.COLUMN_BITMASK_ENABLED,
+				((AddressModelImpl)address).getColumnBitmask());
 		}
 	}
 
@@ -5120,7 +5126,9 @@ public class AddressPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			AddressModelImpl.ENTITY_CACHE_ENABLED, AddressImpl.class,
-			address.getPrimaryKey(), address, false);
+			address.getPrimaryKey(), address, false,
+			AddressModelImpl.COLUMN_BITMASK_ENABLED,
+			((AddressModelImpl)address).getColumnBitmask());
 
 		address.resetOriginalValues();
 

@@ -2835,7 +2835,8 @@ public class MDRRuleGroupPersistenceImpl
 	public void cacheResult(MDRRuleGroup mdrRuleGroup) {
 		entityCache.putResult(
 			entityCacheEnabled, MDRRuleGroupImpl.class,
-			mdrRuleGroup.getPrimaryKey(), mdrRuleGroup);
+			mdrRuleGroup.getPrimaryKey(), mdrRuleGroup, _columnBitmaskEnabled,
+			((MDRRuleGroupModelImpl)mdrRuleGroup).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2892,7 +2893,8 @@ public class MDRRuleGroupPersistenceImpl
 	public void clearCache(MDRRuleGroup mdrRuleGroup) {
 		entityCache.removeResult(
 			entityCacheEnabled, MDRRuleGroupImpl.class,
-			mdrRuleGroup.getPrimaryKey());
+			mdrRuleGroup.getPrimaryKey(), mdrRuleGroup, _columnBitmaskEnabled,
+			((MDRRuleGroupModelImpl)mdrRuleGroup).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2908,7 +2910,9 @@ public class MDRRuleGroupPersistenceImpl
 		for (MDRRuleGroup mdrRuleGroup : mdrRuleGroups) {
 			entityCache.removeResult(
 				entityCacheEnabled, MDRRuleGroupImpl.class,
-				mdrRuleGroup.getPrimaryKey());
+				mdrRuleGroup.getPrimaryKey(), mdrRuleGroup,
+				_columnBitmaskEnabled,
+				((MDRRuleGroupModelImpl)mdrRuleGroup).getColumnBitmask());
 
 			clearUniqueFindersCache((MDRRuleGroupModelImpl)mdrRuleGroup, true);
 		}
@@ -3243,7 +3247,9 @@ public class MDRRuleGroupPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MDRRuleGroupImpl.class,
-			mdrRuleGroup.getPrimaryKey(), mdrRuleGroup, false);
+			mdrRuleGroup.getPrimaryKey(), mdrRuleGroup, false,
+			_columnBitmaskEnabled,
+			((MDRRuleGroupModelImpl)mdrRuleGroup).getColumnBitmask());
 
 		clearUniqueFindersCache(mdrRuleGroupModelImpl, false);
 		cacheUniqueFindersCache(mdrRuleGroupModelImpl);

@@ -898,7 +898,8 @@ public class LazyBlobEntityPersistenceImpl
 		entityCache.putResult(
 			LazyBlobEntityModelImpl.ENTITY_CACHE_ENABLED,
 			LazyBlobEntityImpl.class, lazyBlobEntity.getPrimaryKey(),
-			lazyBlobEntity);
+			lazyBlobEntity, LazyBlobEntityModelImpl.COLUMN_BITMASK_ENABLED,
+			((LazyBlobEntityModelImpl)lazyBlobEntity).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -958,7 +959,9 @@ public class LazyBlobEntityPersistenceImpl
 	public void clearCache(LazyBlobEntity lazyBlobEntity) {
 		entityCache.removeResult(
 			LazyBlobEntityModelImpl.ENTITY_CACHE_ENABLED,
-			LazyBlobEntityImpl.class, lazyBlobEntity.getPrimaryKey());
+			LazyBlobEntityImpl.class, lazyBlobEntity.getPrimaryKey(),
+			lazyBlobEntity, LazyBlobEntityModelImpl.COLUMN_BITMASK_ENABLED,
+			((LazyBlobEntityModelImpl)lazyBlobEntity).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -974,7 +977,9 @@ public class LazyBlobEntityPersistenceImpl
 		for (LazyBlobEntity lazyBlobEntity : lazyBlobEntities) {
 			entityCache.removeResult(
 				LazyBlobEntityModelImpl.ENTITY_CACHE_ENABLED,
-				LazyBlobEntityImpl.class, lazyBlobEntity.getPrimaryKey());
+				LazyBlobEntityImpl.class, lazyBlobEntity.getPrimaryKey(),
+				lazyBlobEntity, LazyBlobEntityModelImpl.COLUMN_BITMASK_ENABLED,
+				((LazyBlobEntityModelImpl)lazyBlobEntity).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(LazyBlobEntityModelImpl)lazyBlobEntity, true);
@@ -1235,7 +1240,9 @@ public class LazyBlobEntityPersistenceImpl
 		entityCache.putResult(
 			LazyBlobEntityModelImpl.ENTITY_CACHE_ENABLED,
 			LazyBlobEntityImpl.class, lazyBlobEntity.getPrimaryKey(),
-			lazyBlobEntity, false);
+			lazyBlobEntity, false,
+			LazyBlobEntityModelImpl.COLUMN_BITMASK_ENABLED,
+			((LazyBlobEntityModelImpl)lazyBlobEntity).getColumnBitmask());
 
 		clearUniqueFindersCache(lazyBlobEntityModelImpl, false);
 		cacheUniqueFindersCache(lazyBlobEntityModelImpl);

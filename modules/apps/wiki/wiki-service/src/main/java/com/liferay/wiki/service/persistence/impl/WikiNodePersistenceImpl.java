@@ -4577,7 +4577,8 @@ public class WikiNodePersistenceImpl
 	public void cacheResult(WikiNode wikiNode) {
 		entityCache.putResult(
 			entityCacheEnabled, WikiNodeImpl.class, wikiNode.getPrimaryKey(),
-			wikiNode);
+			wikiNode, _columnBitmaskEnabled,
+			((WikiNodeModelImpl)wikiNode).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4636,7 +4637,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void clearCache(WikiNode wikiNode) {
 		entityCache.removeResult(
-			entityCacheEnabled, WikiNodeImpl.class, wikiNode.getPrimaryKey());
+			entityCacheEnabled, WikiNodeImpl.class, wikiNode.getPrimaryKey(),
+			wikiNode, _columnBitmaskEnabled,
+			((WikiNodeModelImpl)wikiNode).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4652,7 +4655,8 @@ public class WikiNodePersistenceImpl
 		for (WikiNode wikiNode : wikiNodes) {
 			entityCache.removeResult(
 				entityCacheEnabled, WikiNodeImpl.class,
-				wikiNode.getPrimaryKey());
+				wikiNode.getPrimaryKey(), wikiNode, _columnBitmaskEnabled,
+				((WikiNodeModelImpl)wikiNode).getColumnBitmask());
 
 			clearUniqueFindersCache((WikiNodeModelImpl)wikiNode, true);
 		}
@@ -5095,7 +5099,8 @@ public class WikiNodePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, WikiNodeImpl.class, wikiNode.getPrimaryKey(),
-			wikiNode, false);
+			wikiNode, false, _columnBitmaskEnabled,
+			((WikiNodeModelImpl)wikiNode).getColumnBitmask());
 
 		clearUniqueFindersCache(wikiNodeModelImpl, false);
 		cacheUniqueFindersCache(wikiNodeModelImpl);

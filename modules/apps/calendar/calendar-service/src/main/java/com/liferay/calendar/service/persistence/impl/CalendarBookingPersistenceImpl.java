@@ -5455,7 +5455,9 @@ public class CalendarBookingPersistenceImpl
 	public void cacheResult(CalendarBooking calendarBooking) {
 		entityCache.putResult(
 			entityCacheEnabled, CalendarBookingImpl.class,
-			calendarBooking.getPrimaryKey(), calendarBooking);
+			calendarBooking.getPrimaryKey(), calendarBooking,
+			_columnBitmaskEnabled,
+			((CalendarBookingModelImpl)calendarBooking).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -5529,7 +5531,9 @@ public class CalendarBookingPersistenceImpl
 	public void clearCache(CalendarBooking calendarBooking) {
 		entityCache.removeResult(
 			entityCacheEnabled, CalendarBookingImpl.class,
-			calendarBooking.getPrimaryKey());
+			calendarBooking.getPrimaryKey(), calendarBooking,
+			_columnBitmaskEnabled,
+			((CalendarBookingModelImpl)calendarBooking).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5546,7 +5550,9 @@ public class CalendarBookingPersistenceImpl
 		for (CalendarBooking calendarBooking : calendarBookings) {
 			entityCache.removeResult(
 				entityCacheEnabled, CalendarBookingImpl.class,
-				calendarBooking.getPrimaryKey());
+				calendarBooking.getPrimaryKey(), calendarBooking,
+				_columnBitmaskEnabled,
+				((CalendarBookingModelImpl)calendarBooking).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(CalendarBookingModelImpl)calendarBooking, true);
@@ -6120,7 +6126,9 @@ public class CalendarBookingPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CalendarBookingImpl.class,
-			calendarBooking.getPrimaryKey(), calendarBooking, false);
+			calendarBooking.getPrimaryKey(), calendarBooking, false,
+			_columnBitmaskEnabled,
+			((CalendarBookingModelImpl)calendarBooking).getColumnBitmask());
 
 		clearUniqueFindersCache(calendarBookingModelImpl, false);
 		cacheUniqueFindersCache(calendarBookingModelImpl);

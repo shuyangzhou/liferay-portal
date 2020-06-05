@@ -920,7 +920,8 @@ public class PluginSettingPersistenceImpl
 		EntityCacheUtil.putResult(
 			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
-			pluginSetting);
+			pluginSetting, PluginSettingModelImpl.COLUMN_BITMASK_ENABLED,
+			((PluginSettingModelImpl)pluginSetting).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_I_T,
@@ -981,7 +982,9 @@ public class PluginSettingPersistenceImpl
 	public void clearCache(PluginSetting pluginSetting) {
 		EntityCacheUtil.removeResult(
 			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingImpl.class, pluginSetting.getPrimaryKey());
+			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
+			pluginSetting, PluginSettingModelImpl.COLUMN_BITMASK_ENABLED,
+			((PluginSettingModelImpl)pluginSetting).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -997,7 +1000,9 @@ public class PluginSettingPersistenceImpl
 		for (PluginSetting pluginSetting : pluginSettings) {
 			EntityCacheUtil.removeResult(
 				PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-				PluginSettingImpl.class, pluginSetting.getPrimaryKey());
+				PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
+				pluginSetting, PluginSettingModelImpl.COLUMN_BITMASK_ENABLED,
+				((PluginSettingModelImpl)pluginSetting).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(PluginSettingModelImpl)pluginSetting, true);
@@ -1252,7 +1257,8 @@ public class PluginSettingPersistenceImpl
 		EntityCacheUtil.putResult(
 			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
-			pluginSetting, false);
+			pluginSetting, false, PluginSettingModelImpl.COLUMN_BITMASK_ENABLED,
+			((PluginSettingModelImpl)pluginSetting).getColumnBitmask());
 
 		clearUniqueFindersCache(pluginSettingModelImpl, false);
 		cacheUniqueFindersCache(pluginSettingModelImpl);

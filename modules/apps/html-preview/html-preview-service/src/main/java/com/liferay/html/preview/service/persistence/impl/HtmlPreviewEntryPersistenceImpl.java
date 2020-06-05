@@ -378,7 +378,9 @@ public class HtmlPreviewEntryPersistenceImpl
 	public void cacheResult(HtmlPreviewEntry htmlPreviewEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, HtmlPreviewEntryImpl.class,
-			htmlPreviewEntry.getPrimaryKey(), htmlPreviewEntry);
+			htmlPreviewEntry.getPrimaryKey(), htmlPreviewEntry,
+			_columnBitmaskEnabled,
+			((HtmlPreviewEntryModelImpl)htmlPreviewEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByG_C_C,
@@ -438,7 +440,9 @@ public class HtmlPreviewEntryPersistenceImpl
 	public void clearCache(HtmlPreviewEntry htmlPreviewEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, HtmlPreviewEntryImpl.class,
-			htmlPreviewEntry.getPrimaryKey());
+			htmlPreviewEntry.getPrimaryKey(), htmlPreviewEntry,
+			_columnBitmaskEnabled,
+			((HtmlPreviewEntryModelImpl)htmlPreviewEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -455,7 +459,10 @@ public class HtmlPreviewEntryPersistenceImpl
 		for (HtmlPreviewEntry htmlPreviewEntry : htmlPreviewEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, HtmlPreviewEntryImpl.class,
-				htmlPreviewEntry.getPrimaryKey());
+				htmlPreviewEntry.getPrimaryKey(), htmlPreviewEntry,
+				_columnBitmaskEnabled,
+				((HtmlPreviewEntryModelImpl)htmlPreviewEntry).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(HtmlPreviewEntryModelImpl)htmlPreviewEntry, true);
@@ -706,7 +713,9 @@ public class HtmlPreviewEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, HtmlPreviewEntryImpl.class,
-			htmlPreviewEntry.getPrimaryKey(), htmlPreviewEntry, false);
+			htmlPreviewEntry.getPrimaryKey(), htmlPreviewEntry, false,
+			_columnBitmaskEnabled,
+			((HtmlPreviewEntryModelImpl)htmlPreviewEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(htmlPreviewEntryModelImpl, false);
 		cacheUniqueFindersCache(htmlPreviewEntryModelImpl);

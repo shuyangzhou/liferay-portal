@@ -1878,7 +1878,10 @@ public class RecentLayoutBranchPersistenceImpl
 		EntityCacheUtil.putResult(
 			RecentLayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
 			RecentLayoutBranchImpl.class, recentLayoutBranch.getPrimaryKey(),
-			recentLayoutBranch);
+			recentLayoutBranch,
+			RecentLayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((RecentLayoutBranchModelImpl)recentLayoutBranch).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_L_P,
@@ -1940,7 +1943,11 @@ public class RecentLayoutBranchPersistenceImpl
 	public void clearCache(RecentLayoutBranch recentLayoutBranch) {
 		EntityCacheUtil.removeResult(
 			RecentLayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			RecentLayoutBranchImpl.class, recentLayoutBranch.getPrimaryKey());
+			RecentLayoutBranchImpl.class, recentLayoutBranch.getPrimaryKey(),
+			recentLayoutBranch,
+			RecentLayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((RecentLayoutBranchModelImpl)recentLayoutBranch).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1958,7 +1965,10 @@ public class RecentLayoutBranchPersistenceImpl
 			EntityCacheUtil.removeResult(
 				RecentLayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
 				RecentLayoutBranchImpl.class,
-				recentLayoutBranch.getPrimaryKey());
+				recentLayoutBranch.getPrimaryKey(), recentLayoutBranch,
+				RecentLayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+				((RecentLayoutBranchModelImpl)recentLayoutBranch).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(RecentLayoutBranchModelImpl)recentLayoutBranch, true);
@@ -2278,7 +2288,10 @@ public class RecentLayoutBranchPersistenceImpl
 		EntityCacheUtil.putResult(
 			RecentLayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
 			RecentLayoutBranchImpl.class, recentLayoutBranch.getPrimaryKey(),
-			recentLayoutBranch, false);
+			recentLayoutBranch, false,
+			RecentLayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((RecentLayoutBranchModelImpl)recentLayoutBranch).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(recentLayoutBranchModelImpl, false);
 		cacheUniqueFindersCache(recentLayoutBranchModelImpl);

@@ -712,7 +712,9 @@ public class WeDeployAuthTokenPersistenceImpl
 	public void cacheResult(WeDeployAuthToken weDeployAuthToken) {
 		entityCache.putResult(
 			entityCacheEnabled, WeDeployAuthTokenImpl.class,
-			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken);
+			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken,
+			_columnBitmaskEnabled,
+			((WeDeployAuthTokenModelImpl)weDeployAuthToken).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByT_T,
@@ -779,7 +781,9 @@ public class WeDeployAuthTokenPersistenceImpl
 	public void clearCache(WeDeployAuthToken weDeployAuthToken) {
 		entityCache.removeResult(
 			entityCacheEnabled, WeDeployAuthTokenImpl.class,
-			weDeployAuthToken.getPrimaryKey());
+			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken,
+			_columnBitmaskEnabled,
+			((WeDeployAuthTokenModelImpl)weDeployAuthToken).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -796,7 +800,10 @@ public class WeDeployAuthTokenPersistenceImpl
 		for (WeDeployAuthToken weDeployAuthToken : weDeployAuthTokens) {
 			entityCache.removeResult(
 				entityCacheEnabled, WeDeployAuthTokenImpl.class,
-				weDeployAuthToken.getPrimaryKey());
+				weDeployAuthToken.getPrimaryKey(), weDeployAuthToken,
+				_columnBitmaskEnabled,
+				((WeDeployAuthTokenModelImpl)weDeployAuthToken).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(WeDeployAuthTokenModelImpl)weDeployAuthToken, true);
@@ -1082,7 +1089,9 @@ public class WeDeployAuthTokenPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, WeDeployAuthTokenImpl.class,
-			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken, false);
+			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken, false,
+			_columnBitmaskEnabled,
+			((WeDeployAuthTokenModelImpl)weDeployAuthToken).getColumnBitmask());
 
 		clearUniqueFindersCache(weDeployAuthTokenModelImpl, false);
 		cacheUniqueFindersCache(weDeployAuthTokenModelImpl);

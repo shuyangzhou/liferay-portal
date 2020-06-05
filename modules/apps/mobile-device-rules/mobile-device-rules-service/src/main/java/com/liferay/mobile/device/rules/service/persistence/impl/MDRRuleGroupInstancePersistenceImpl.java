@@ -4743,7 +4743,10 @@ public class MDRRuleGroupInstancePersistenceImpl
 	public void cacheResult(MDRRuleGroupInstance mdrRuleGroupInstance) {
 		entityCache.putResult(
 			entityCacheEnabled, MDRRuleGroupInstanceImpl.class,
-			mdrRuleGroupInstance.getPrimaryKey(), mdrRuleGroupInstance);
+			mdrRuleGroupInstance.getPrimaryKey(), mdrRuleGroupInstance,
+			_columnBitmaskEnabled,
+			((MDRRuleGroupInstanceModelImpl)mdrRuleGroupInstance).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4814,7 +4817,10 @@ public class MDRRuleGroupInstancePersistenceImpl
 	public void clearCache(MDRRuleGroupInstance mdrRuleGroupInstance) {
 		entityCache.removeResult(
 			entityCacheEnabled, MDRRuleGroupInstanceImpl.class,
-			mdrRuleGroupInstance.getPrimaryKey());
+			mdrRuleGroupInstance.getPrimaryKey(), mdrRuleGroupInstance,
+			_columnBitmaskEnabled,
+			((MDRRuleGroupInstanceModelImpl)mdrRuleGroupInstance).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4833,7 +4839,10 @@ public class MDRRuleGroupInstancePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, MDRRuleGroupInstanceImpl.class,
-				mdrRuleGroupInstance.getPrimaryKey());
+				mdrRuleGroupInstance.getPrimaryKey(), mdrRuleGroupInstance,
+				_columnBitmaskEnabled,
+				((MDRRuleGroupInstanceModelImpl)mdrRuleGroupInstance).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(MDRRuleGroupInstanceModelImpl)mdrRuleGroupInstance, true);
@@ -5317,7 +5326,10 @@ public class MDRRuleGroupInstancePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MDRRuleGroupInstanceImpl.class,
-			mdrRuleGroupInstance.getPrimaryKey(), mdrRuleGroupInstance, false);
+			mdrRuleGroupInstance.getPrimaryKey(), mdrRuleGroupInstance, false,
+			_columnBitmaskEnabled,
+			((MDRRuleGroupInstanceModelImpl)mdrRuleGroupInstance).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(mdrRuleGroupInstanceModelImpl, false);
 		cacheUniqueFindersCache(mdrRuleGroupInstanceModelImpl);

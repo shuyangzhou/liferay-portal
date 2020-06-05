@@ -2026,7 +2026,9 @@ public class LayoutBranchPersistenceImpl
 	public void cacheResult(LayoutBranch layoutBranch) {
 		EntityCacheUtil.putResult(
 			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED, LayoutBranchImpl.class,
-			layoutBranch.getPrimaryKey(), layoutBranch);
+			layoutBranch.getPrimaryKey(), layoutBranch,
+			LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutBranchModelImpl)layoutBranch).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByL_P_N,
@@ -2087,7 +2089,9 @@ public class LayoutBranchPersistenceImpl
 	public void clearCache(LayoutBranch layoutBranch) {
 		EntityCacheUtil.removeResult(
 			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED, LayoutBranchImpl.class,
-			layoutBranch.getPrimaryKey());
+			layoutBranch.getPrimaryKey(), layoutBranch,
+			LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutBranchModelImpl)layoutBranch).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2103,7 +2107,9 @@ public class LayoutBranchPersistenceImpl
 		for (LayoutBranch layoutBranch : layoutBranchs) {
 			EntityCacheUtil.removeResult(
 				LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutBranchImpl.class, layoutBranch.getPrimaryKey());
+				LayoutBranchImpl.class, layoutBranch.getPrimaryKey(),
+				layoutBranch, LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutBranchModelImpl)layoutBranch).getColumnBitmask());
 
 			clearUniqueFindersCache((LayoutBranchModelImpl)layoutBranch, true);
 		}
@@ -2426,7 +2432,9 @@ public class LayoutBranchPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED, LayoutBranchImpl.class,
-			layoutBranch.getPrimaryKey(), layoutBranch, false);
+			layoutBranch.getPrimaryKey(), layoutBranch, false,
+			LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED,
+			((LayoutBranchModelImpl)layoutBranch).getColumnBitmask());
 
 		clearUniqueFindersCache(layoutBranchModelImpl, false);
 		cacheUniqueFindersCache(layoutBranchModelImpl);

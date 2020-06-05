@@ -946,7 +946,8 @@ public class OAuthConsumerPersistenceImpl
 		EntityCacheUtil.putResult(
 			OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
 			OAuthConsumerImpl.class, oAuthConsumer.getPrimaryKey(),
-			oAuthConsumer);
+			oAuthConsumer, OAuthConsumerModelImpl.COLUMN_BITMASK_ENABLED,
+			((OAuthConsumerModelImpl)oAuthConsumer).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_S,
@@ -1006,7 +1007,9 @@ public class OAuthConsumerPersistenceImpl
 	public void clearCache(OAuthConsumer oAuthConsumer) {
 		EntityCacheUtil.removeResult(
 			OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-			OAuthConsumerImpl.class, oAuthConsumer.getPrimaryKey());
+			OAuthConsumerImpl.class, oAuthConsumer.getPrimaryKey(),
+			oAuthConsumer, OAuthConsumerModelImpl.COLUMN_BITMASK_ENABLED,
+			((OAuthConsumerModelImpl)oAuthConsumer).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1022,7 +1025,9 @@ public class OAuthConsumerPersistenceImpl
 		for (OAuthConsumer oAuthConsumer : oAuthConsumers) {
 			EntityCacheUtil.removeResult(
 				OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-				OAuthConsumerImpl.class, oAuthConsumer.getPrimaryKey());
+				OAuthConsumerImpl.class, oAuthConsumer.getPrimaryKey(),
+				oAuthConsumer, OAuthConsumerModelImpl.COLUMN_BITMASK_ENABLED,
+				((OAuthConsumerModelImpl)oAuthConsumer).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(OAuthConsumerModelImpl)oAuthConsumer, true);
@@ -1298,7 +1303,8 @@ public class OAuthConsumerPersistenceImpl
 		EntityCacheUtil.putResult(
 			OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
 			OAuthConsumerImpl.class, oAuthConsumer.getPrimaryKey(),
-			oAuthConsumer, false);
+			oAuthConsumer, false, OAuthConsumerModelImpl.COLUMN_BITMASK_ENABLED,
+			((OAuthConsumerModelImpl)oAuthConsumer).getColumnBitmask());
 
 		clearUniqueFindersCache(oAuthConsumerModelImpl, false);
 		cacheUniqueFindersCache(oAuthConsumerModelImpl);

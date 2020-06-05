@@ -1350,7 +1350,8 @@ public class MessagePersistenceImpl
 	public void cacheResult(Message message) {
 		entityCache.putResult(
 			entityCacheEnabled, MessageImpl.class, message.getPrimaryKey(),
-			message);
+			message, _columnBitmaskEnabled,
+			((MessageModelImpl)message).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByF_R,
@@ -1406,7 +1407,9 @@ public class MessagePersistenceImpl
 	@Override
 	public void clearCache(Message message) {
 		entityCache.removeResult(
-			entityCacheEnabled, MessageImpl.class, message.getPrimaryKey());
+			entityCacheEnabled, MessageImpl.class, message.getPrimaryKey(),
+			message, _columnBitmaskEnabled,
+			((MessageModelImpl)message).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1421,7 +1424,9 @@ public class MessagePersistenceImpl
 
 		for (Message message : messages) {
 			entityCache.removeResult(
-				entityCacheEnabled, MessageImpl.class, message.getPrimaryKey());
+				entityCacheEnabled, MessageImpl.class, message.getPrimaryKey(),
+				message, _columnBitmaskEnabled,
+				((MessageModelImpl)message).getColumnBitmask());
 
 			clearUniqueFindersCache((MessageModelImpl)message, true);
 		}
@@ -1708,7 +1713,8 @@ public class MessagePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MessageImpl.class, message.getPrimaryKey(),
-			message, false);
+			message, false, _columnBitmaskEnabled,
+			((MessageModelImpl)message).getColumnBitmask());
 
 		clearUniqueFindersCache(messageModelImpl, false);
 		cacheUniqueFindersCache(messageModelImpl);

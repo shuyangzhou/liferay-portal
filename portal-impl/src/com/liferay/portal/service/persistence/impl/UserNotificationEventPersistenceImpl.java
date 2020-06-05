@@ -11566,7 +11566,10 @@ public class UserNotificationEventPersistenceImpl
 		EntityCacheUtil.putResult(
 			UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 			UserNotificationEventImpl.class,
-			userNotificationEvent.getPrimaryKey(), userNotificationEvent);
+			userNotificationEvent.getPrimaryKey(), userNotificationEvent,
+			UserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserNotificationEventModelImpl)userNotificationEvent).
+				getColumnBitmask());
 
 		userNotificationEvent.resetOriginalValues();
 	}
@@ -11624,7 +11627,10 @@ public class UserNotificationEventPersistenceImpl
 		EntityCacheUtil.removeResult(
 			UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 			UserNotificationEventImpl.class,
-			userNotificationEvent.getPrimaryKey());
+			userNotificationEvent.getPrimaryKey(), userNotificationEvent,
+			UserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserNotificationEventModelImpl)userNotificationEvent).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -11641,7 +11647,10 @@ public class UserNotificationEventPersistenceImpl
 			EntityCacheUtil.removeResult(
 				UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 				UserNotificationEventImpl.class,
-				userNotificationEvent.getPrimaryKey());
+				userNotificationEvent.getPrimaryKey(), userNotificationEvent,
+				UserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserNotificationEventModelImpl)userNotificationEvent).
+					getColumnBitmask());
 		}
 	}
 
@@ -12501,8 +12510,10 @@ public class UserNotificationEventPersistenceImpl
 		EntityCacheUtil.putResult(
 			UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 			UserNotificationEventImpl.class,
-			userNotificationEvent.getPrimaryKey(), userNotificationEvent,
-			false);
+			userNotificationEvent.getPrimaryKey(), userNotificationEvent, false,
+			UserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserNotificationEventModelImpl)userNotificationEvent).
+				getColumnBitmask());
 
 		userNotificationEvent.resetOriginalValues();
 

@@ -2309,7 +2309,8 @@ public class SyncDevicePersistenceImpl
 	public void cacheResult(SyncDevice syncDevice) {
 		entityCache.putResult(
 			entityCacheEnabled, SyncDeviceImpl.class,
-			syncDevice.getPrimaryKey(), syncDevice);
+			syncDevice.getPrimaryKey(), syncDevice, _columnBitmaskEnabled,
+			((SyncDeviceModelImpl)syncDevice).getColumnBitmask());
 
 		syncDevice.resetOriginalValues();
 	}
@@ -2361,7 +2362,8 @@ public class SyncDevicePersistenceImpl
 	public void clearCache(SyncDevice syncDevice) {
 		entityCache.removeResult(
 			entityCacheEnabled, SyncDeviceImpl.class,
-			syncDevice.getPrimaryKey());
+			syncDevice.getPrimaryKey(), syncDevice, _columnBitmaskEnabled,
+			((SyncDeviceModelImpl)syncDevice).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2375,7 +2377,8 @@ public class SyncDevicePersistenceImpl
 		for (SyncDevice syncDevice : syncDevices) {
 			entityCache.removeResult(
 				entityCacheEnabled, SyncDeviceImpl.class,
-				syncDevice.getPrimaryKey());
+				syncDevice.getPrimaryKey(), syncDevice, _columnBitmaskEnabled,
+				((SyncDeviceModelImpl)syncDevice).getColumnBitmask());
 		}
 	}
 
@@ -2665,7 +2668,9 @@ public class SyncDevicePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SyncDeviceImpl.class,
-			syncDevice.getPrimaryKey(), syncDevice, false);
+			syncDevice.getPrimaryKey(), syncDevice, false,
+			_columnBitmaskEnabled,
+			((SyncDeviceModelImpl)syncDevice).getColumnBitmask());
 
 		syncDevice.resetOriginalValues();
 

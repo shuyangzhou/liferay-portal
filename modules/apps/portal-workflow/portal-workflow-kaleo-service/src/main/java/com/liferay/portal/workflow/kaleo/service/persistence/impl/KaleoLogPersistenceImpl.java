@@ -3476,7 +3476,8 @@ public class KaleoLogPersistenceImpl
 	public void cacheResult(KaleoLog kaleoLog) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoLogImpl.class, kaleoLog.getPrimaryKey(),
-			kaleoLog);
+			kaleoLog, _columnBitmaskEnabled,
+			((KaleoLogModelImpl)kaleoLog).getColumnBitmask());
 
 		kaleoLog.resetOriginalValues();
 	}
@@ -3527,7 +3528,9 @@ public class KaleoLogPersistenceImpl
 	@Override
 	public void clearCache(KaleoLog kaleoLog) {
 		entityCache.removeResult(
-			entityCacheEnabled, KaleoLogImpl.class, kaleoLog.getPrimaryKey());
+			entityCacheEnabled, KaleoLogImpl.class, kaleoLog.getPrimaryKey(),
+			kaleoLog, _columnBitmaskEnabled,
+			((KaleoLogModelImpl)kaleoLog).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3541,7 +3544,8 @@ public class KaleoLogPersistenceImpl
 		for (KaleoLog kaleoLog : kaleoLogs) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoLogImpl.class,
-				kaleoLog.getPrimaryKey());
+				kaleoLog.getPrimaryKey(), kaleoLog, _columnBitmaskEnabled,
+				((KaleoLogModelImpl)kaleoLog).getColumnBitmask());
 		}
 	}
 
@@ -3930,7 +3934,8 @@ public class KaleoLogPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoLogImpl.class, kaleoLog.getPrimaryKey(),
-			kaleoLog, false);
+			kaleoLog, false, _columnBitmaskEnabled,
+			((KaleoLogModelImpl)kaleoLog).getColumnBitmask());
 
 		kaleoLog.resetOriginalValues();
 

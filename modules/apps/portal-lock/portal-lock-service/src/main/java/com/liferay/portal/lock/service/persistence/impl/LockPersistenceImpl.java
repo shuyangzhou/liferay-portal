@@ -2580,7 +2580,8 @@ public class LockPersistenceImpl
 	@Override
 	public void cacheResult(Lock lock) {
 		entityCache.putResult(
-			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock);
+			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
+			_columnBitmaskEnabled, ((LockModelImpl)lock).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_K,
@@ -2635,7 +2636,8 @@ public class LockPersistenceImpl
 	@Override
 	public void clearCache(Lock lock) {
 		entityCache.removeResult(
-			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey());
+			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
+			_columnBitmaskEnabled, ((LockModelImpl)lock).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2650,7 +2652,9 @@ public class LockPersistenceImpl
 
 		for (Lock lock : locks) {
 			entityCache.removeResult(
-				entityCacheEnabled, LockImpl.class, lock.getPrimaryKey());
+				entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
+				_columnBitmaskEnabled,
+				((LockModelImpl)lock).getColumnBitmask());
 
 			clearUniqueFindersCache((LockModelImpl)lock, true);
 		}
@@ -2947,7 +2951,8 @@ public class LockPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
-			false);
+			false, _columnBitmaskEnabled,
+			((LockModelImpl)lock).getColumnBitmask());
 
 		clearUniqueFindersCache(lockModelImpl, false);
 		cacheUniqueFindersCache(lockModelImpl);

@@ -307,7 +307,9 @@ public class CompanyInfoPersistenceImpl
 	public void cacheResult(CompanyInfo companyInfo) {
 		EntityCacheUtil.putResult(
 			CompanyInfoModelImpl.ENTITY_CACHE_ENABLED, CompanyInfoImpl.class,
-			companyInfo.getPrimaryKey(), companyInfo);
+			companyInfo.getPrimaryKey(), companyInfo,
+			CompanyInfoModelImpl.COLUMN_BITMASK_ENABLED,
+			((CompanyInfoModelImpl)companyInfo).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByCompanyId,
@@ -364,7 +366,9 @@ public class CompanyInfoPersistenceImpl
 	public void clearCache(CompanyInfo companyInfo) {
 		EntityCacheUtil.removeResult(
 			CompanyInfoModelImpl.ENTITY_CACHE_ENABLED, CompanyInfoImpl.class,
-			companyInfo.getPrimaryKey());
+			companyInfo.getPrimaryKey(), companyInfo,
+			CompanyInfoModelImpl.COLUMN_BITMASK_ENABLED,
+			((CompanyInfoModelImpl)companyInfo).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -380,7 +384,9 @@ public class CompanyInfoPersistenceImpl
 		for (CompanyInfo companyInfo : companyInfos) {
 			EntityCacheUtil.removeResult(
 				CompanyInfoModelImpl.ENTITY_CACHE_ENABLED,
-				CompanyInfoImpl.class, companyInfo.getPrimaryKey());
+				CompanyInfoImpl.class, companyInfo.getPrimaryKey(), companyInfo,
+				CompanyInfoModelImpl.COLUMN_BITMASK_ENABLED,
+				((CompanyInfoModelImpl)companyInfo).getColumnBitmask());
 
 			clearUniqueFindersCache((CompanyInfoModelImpl)companyInfo, true);
 		}
@@ -594,7 +600,9 @@ public class CompanyInfoPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			CompanyInfoModelImpl.ENTITY_CACHE_ENABLED, CompanyInfoImpl.class,
-			companyInfo.getPrimaryKey(), companyInfo, false);
+			companyInfo.getPrimaryKey(), companyInfo, false,
+			CompanyInfoModelImpl.COLUMN_BITMASK_ENABLED,
+			((CompanyInfoModelImpl)companyInfo).getColumnBitmask());
 
 		clearUniqueFindersCache(companyInfoModelImpl, false);
 		cacheUniqueFindersCache(companyInfoModelImpl);

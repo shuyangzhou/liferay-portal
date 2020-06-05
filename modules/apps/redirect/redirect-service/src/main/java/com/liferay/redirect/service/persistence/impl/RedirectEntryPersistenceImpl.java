@@ -3671,7 +3671,8 @@ public class RedirectEntryPersistenceImpl
 	public void cacheResult(RedirectEntry redirectEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, RedirectEntryImpl.class,
-			redirectEntry.getPrimaryKey(), redirectEntry);
+			redirectEntry.getPrimaryKey(), redirectEntry, _columnBitmaskEnabled,
+			((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3735,7 +3736,8 @@ public class RedirectEntryPersistenceImpl
 	public void clearCache(RedirectEntry redirectEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, RedirectEntryImpl.class,
-			redirectEntry.getPrimaryKey());
+			redirectEntry.getPrimaryKey(), redirectEntry, _columnBitmaskEnabled,
+			((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3751,7 +3753,9 @@ public class RedirectEntryPersistenceImpl
 		for (RedirectEntry redirectEntry : redirectEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, RedirectEntryImpl.class,
-				redirectEntry.getPrimaryKey());
+				redirectEntry.getPrimaryKey(), redirectEntry,
+				_columnBitmaskEnabled,
+				((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(RedirectEntryModelImpl)redirectEntry, true);
@@ -4185,7 +4189,9 @@ public class RedirectEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, RedirectEntryImpl.class,
-			redirectEntry.getPrimaryKey(), redirectEntry, false);
+			redirectEntry.getPrimaryKey(), redirectEntry, false,
+			_columnBitmaskEnabled,
+			((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(redirectEntryModelImpl, false);
 		cacheUniqueFindersCache(redirectEntryModelImpl);

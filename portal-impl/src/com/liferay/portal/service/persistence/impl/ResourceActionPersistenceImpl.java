@@ -917,7 +917,8 @@ public class ResourceActionPersistenceImpl
 		EntityCacheUtil.putResult(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionImpl.class, resourceAction.getPrimaryKey(),
-			resourceAction);
+			resourceAction, ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
+			((ResourceActionModelImpl)resourceAction).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByN_A,
@@ -977,7 +978,9 @@ public class ResourceActionPersistenceImpl
 	public void clearCache(ResourceAction resourceAction) {
 		EntityCacheUtil.removeResult(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-			ResourceActionImpl.class, resourceAction.getPrimaryKey());
+			ResourceActionImpl.class, resourceAction.getPrimaryKey(),
+			resourceAction, ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
+			((ResourceActionModelImpl)resourceAction).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -993,7 +996,9 @@ public class ResourceActionPersistenceImpl
 		for (ResourceAction resourceAction : resourceActions) {
 			EntityCacheUtil.removeResult(
 				ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceActionImpl.class, resourceAction.getPrimaryKey());
+				ResourceActionImpl.class, resourceAction.getPrimaryKey(),
+				resourceAction, ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
+				((ResourceActionModelImpl)resourceAction).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(ResourceActionModelImpl)resourceAction, true);
@@ -1242,7 +1247,9 @@ public class ResourceActionPersistenceImpl
 		EntityCacheUtil.putResult(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionImpl.class, resourceAction.getPrimaryKey(),
-			resourceAction, false);
+			resourceAction, false,
+			ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
+			((ResourceActionModelImpl)resourceAction).getColumnBitmask());
 
 		clearUniqueFindersCache(resourceActionModelImpl, false);
 		cacheUniqueFindersCache(resourceActionModelImpl);

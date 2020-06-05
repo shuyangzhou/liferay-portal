@@ -1094,7 +1094,9 @@ public class OrgGroupRolePersistenceImpl
 	public void cacheResult(OrgGroupRole orgGroupRole) {
 		EntityCacheUtil.putResult(
 			OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED, OrgGroupRoleImpl.class,
-			orgGroupRole.getPrimaryKey(), orgGroupRole);
+			orgGroupRole.getPrimaryKey(), orgGroupRole,
+			OrgGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrgGroupRoleModelImpl)orgGroupRole).getColumnBitmask());
 
 		orgGroupRole.resetOriginalValues();
 	}
@@ -1147,7 +1149,9 @@ public class OrgGroupRolePersistenceImpl
 	public void clearCache(OrgGroupRole orgGroupRole) {
 		EntityCacheUtil.removeResult(
 			OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED, OrgGroupRoleImpl.class,
-			orgGroupRole.getPrimaryKey());
+			orgGroupRole.getPrimaryKey(), orgGroupRole,
+			OrgGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrgGroupRoleModelImpl)orgGroupRole).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1161,7 +1165,9 @@ public class OrgGroupRolePersistenceImpl
 		for (OrgGroupRole orgGroupRole : orgGroupRoles) {
 			EntityCacheUtil.removeResult(
 				OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-				OrgGroupRoleImpl.class, orgGroupRole.getPrimaryKey());
+				OrgGroupRoleImpl.class, orgGroupRole.getPrimaryKey(),
+				orgGroupRole, OrgGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+				((OrgGroupRoleModelImpl)orgGroupRole).getColumnBitmask());
 		}
 	}
 
@@ -1392,7 +1398,9 @@ public class OrgGroupRolePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED, OrgGroupRoleImpl.class,
-			orgGroupRole.getPrimaryKey(), orgGroupRole, false);
+			orgGroupRole.getPrimaryKey(), orgGroupRole, false,
+			OrgGroupRoleModelImpl.COLUMN_BITMASK_ENABLED,
+			((OrgGroupRoleModelImpl)orgGroupRole).getColumnBitmask());
 
 		orgGroupRole.resetOriginalValues();
 

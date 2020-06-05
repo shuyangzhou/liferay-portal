@@ -3751,7 +3751,10 @@ public class SiteNavigationMenuItemPersistenceImpl
 	public void cacheResult(SiteNavigationMenuItem siteNavigationMenuItem) {
 		entityCache.putResult(
 			entityCacheEnabled, SiteNavigationMenuItemImpl.class,
-			siteNavigationMenuItem.getPrimaryKey(), siteNavigationMenuItem);
+			siteNavigationMenuItem.getPrimaryKey(), siteNavigationMenuItem,
+			_columnBitmaskEnabled,
+			((SiteNavigationMenuItemModelImpl)siteNavigationMenuItem).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3815,7 +3818,10 @@ public class SiteNavigationMenuItemPersistenceImpl
 	public void clearCache(SiteNavigationMenuItem siteNavigationMenuItem) {
 		entityCache.removeResult(
 			entityCacheEnabled, SiteNavigationMenuItemImpl.class,
-			siteNavigationMenuItem.getPrimaryKey());
+			siteNavigationMenuItem.getPrimaryKey(), siteNavigationMenuItem,
+			_columnBitmaskEnabled,
+			((SiteNavigationMenuItemModelImpl)siteNavigationMenuItem).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3836,7 +3842,10 @@ public class SiteNavigationMenuItemPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, SiteNavigationMenuItemImpl.class,
-				siteNavigationMenuItem.getPrimaryKey());
+				siteNavigationMenuItem.getPrimaryKey(), siteNavigationMenuItem,
+				_columnBitmaskEnabled,
+				((SiteNavigationMenuItemModelImpl)siteNavigationMenuItem).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SiteNavigationMenuItemModelImpl)siteNavigationMenuItem, true);
@@ -4274,7 +4283,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, SiteNavigationMenuItemImpl.class,
 			siteNavigationMenuItem.getPrimaryKey(), siteNavigationMenuItem,
-			false);
+			false, _columnBitmaskEnabled,
+			((SiteNavigationMenuItemModelImpl)siteNavigationMenuItem).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(siteNavigationMenuItemModelImpl, false);
 		cacheUniqueFindersCache(siteNavigationMenuItemModelImpl);

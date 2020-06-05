@@ -12667,7 +12667,9 @@ public class DLFolderPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			DLFolderModelImpl.ENTITY_CACHE_ENABLED, DLFolderImpl.class,
-			dlFolder.getPrimaryKey(), dlFolder);
+			dlFolder.getPrimaryKey(), dlFolder,
+			DLFolderModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFolderModelImpl)dlFolder).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -12742,7 +12744,9 @@ public class DLFolderPersistenceImpl
 	public void clearCache(DLFolder dlFolder) {
 		EntityCacheUtil.removeResult(
 			DLFolderModelImpl.ENTITY_CACHE_ENABLED, DLFolderImpl.class,
-			dlFolder.getPrimaryKey());
+			dlFolder.getPrimaryKey(), dlFolder,
+			DLFolderModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFolderModelImpl)dlFolder).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -12758,7 +12762,9 @@ public class DLFolderPersistenceImpl
 		for (DLFolder dlFolder : dlFolders) {
 			EntityCacheUtil.removeResult(
 				DLFolderModelImpl.ENTITY_CACHE_ENABLED, DLFolderImpl.class,
-				dlFolder.getPrimaryKey());
+				dlFolder.getPrimaryKey(), dlFolder,
+				DLFolderModelImpl.COLUMN_BITMASK_ENABLED,
+				((DLFolderModelImpl)dlFolder).getColumnBitmask());
 
 			clearUniqueFindersCache((DLFolderModelImpl)dlFolder, true);
 		}
@@ -13473,7 +13479,9 @@ public class DLFolderPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			DLFolderModelImpl.ENTITY_CACHE_ENABLED, DLFolderImpl.class,
-			dlFolder.getPrimaryKey(), dlFolder, false);
+			dlFolder.getPrimaryKey(), dlFolder, false,
+			DLFolderModelImpl.COLUMN_BITMASK_ENABLED,
+			((DLFolderModelImpl)dlFolder).getColumnBitmask());
 
 		clearUniqueFindersCache(dlFolderModelImpl, false);
 		cacheUniqueFindersCache(dlFolderModelImpl);

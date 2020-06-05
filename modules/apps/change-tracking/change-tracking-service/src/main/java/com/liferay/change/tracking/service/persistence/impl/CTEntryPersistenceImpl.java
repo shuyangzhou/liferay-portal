@@ -2312,7 +2312,8 @@ public class CTEntryPersistenceImpl
 	public void cacheResult(CTEntry ctEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, CTEntryImpl.class, ctEntry.getPrimaryKey(),
-			ctEntry);
+			ctEntry, _columnBitmaskEnabled,
+			((CTEntryModelImpl)ctEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_MCNI_MCPK,
@@ -2371,7 +2372,9 @@ public class CTEntryPersistenceImpl
 	@Override
 	public void clearCache(CTEntry ctEntry) {
 		entityCache.removeResult(
-			entityCacheEnabled, CTEntryImpl.class, ctEntry.getPrimaryKey());
+			entityCacheEnabled, CTEntryImpl.class, ctEntry.getPrimaryKey(),
+			ctEntry, _columnBitmaskEnabled,
+			((CTEntryModelImpl)ctEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2386,7 +2389,9 @@ public class CTEntryPersistenceImpl
 
 		for (CTEntry ctEntry : ctEntries) {
 			entityCache.removeResult(
-				entityCacheEnabled, CTEntryImpl.class, ctEntry.getPrimaryKey());
+				entityCacheEnabled, CTEntryImpl.class, ctEntry.getPrimaryKey(),
+				ctEntry, _columnBitmaskEnabled,
+				((CTEntryModelImpl)ctEntry).getColumnBitmask());
 
 			clearUniqueFindersCache((CTEntryModelImpl)ctEntry, true);
 		}
@@ -2683,7 +2688,8 @@ public class CTEntryPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, CTEntryImpl.class, ctEntry.getPrimaryKey(),
-			ctEntry, false);
+			ctEntry, false, _columnBitmaskEnabled,
+			((CTEntryModelImpl)ctEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(ctEntryModelImpl, false);
 		cacheUniqueFindersCache(ctEntryModelImpl);

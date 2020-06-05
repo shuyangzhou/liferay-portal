@@ -12204,7 +12204,8 @@ public class AssetCategoryPersistenceImpl
 		EntityCacheUtil.putResult(
 			AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			AssetCategoryImpl.class, assetCategory.getPrimaryKey(),
-			assetCategory);
+			assetCategory, AssetCategoryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetCategoryModelImpl)assetCategory).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByUUID_G,
@@ -12284,7 +12285,9 @@ public class AssetCategoryPersistenceImpl
 	public void clearCache(AssetCategory assetCategory) {
 		EntityCacheUtil.removeResult(
 			AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			AssetCategoryImpl.class, assetCategory.getPrimaryKey());
+			AssetCategoryImpl.class, assetCategory.getPrimaryKey(),
+			assetCategory, AssetCategoryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetCategoryModelImpl)assetCategory).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -12300,7 +12303,9 @@ public class AssetCategoryPersistenceImpl
 		for (AssetCategory assetCategory : assetCategories) {
 			EntityCacheUtil.removeResult(
 				AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				AssetCategoryImpl.class, assetCategory.getPrimaryKey());
+				AssetCategoryImpl.class, assetCategory.getPrimaryKey(),
+				assetCategory, AssetCategoryModelImpl.COLUMN_BITMASK_ENABLED,
+				((AssetCategoryModelImpl)assetCategory).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetCategoryModelImpl)assetCategory, true);
@@ -12983,7 +12988,8 @@ public class AssetCategoryPersistenceImpl
 		EntityCacheUtil.putResult(
 			AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			AssetCategoryImpl.class, assetCategory.getPrimaryKey(),
-			assetCategory, false);
+			assetCategory, false, AssetCategoryModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetCategoryModelImpl)assetCategory).getColumnBitmask());
 
 		clearUniqueFindersCache(assetCategoryModelImpl, false);
 		cacheUniqueFindersCache(assetCategoryModelImpl);

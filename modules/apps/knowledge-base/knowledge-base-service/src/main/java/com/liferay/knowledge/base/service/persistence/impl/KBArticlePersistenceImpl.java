@@ -33758,7 +33758,8 @@ public class KBArticlePersistenceImpl
 	public void cacheResult(KBArticle kbArticle) {
 		entityCache.putResult(
 			entityCacheEnabled, KBArticleImpl.class, kbArticle.getPrimaryKey(),
-			kbArticle);
+			kbArticle, _columnBitmaskEnabled,
+			((KBArticleModelImpl)kbArticle).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -33829,7 +33830,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void clearCache(KBArticle kbArticle) {
 		entityCache.removeResult(
-			entityCacheEnabled, KBArticleImpl.class, kbArticle.getPrimaryKey());
+			entityCacheEnabled, KBArticleImpl.class, kbArticle.getPrimaryKey(),
+			kbArticle, _columnBitmaskEnabled,
+			((KBArticleModelImpl)kbArticle).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -33845,7 +33848,8 @@ public class KBArticlePersistenceImpl
 		for (KBArticle kbArticle : kbArticles) {
 			entityCache.removeResult(
 				entityCacheEnabled, KBArticleImpl.class,
-				kbArticle.getPrimaryKey());
+				kbArticle.getPrimaryKey(), kbArticle, _columnBitmaskEnabled,
+				((KBArticleModelImpl)kbArticle).getColumnBitmask());
 
 			clearUniqueFindersCache((KBArticleModelImpl)kbArticle, true);
 		}
@@ -35062,7 +35066,8 @@ public class KBArticlePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KBArticleImpl.class, kbArticle.getPrimaryKey(),
-			kbArticle, false);
+			kbArticle, false, _columnBitmaskEnabled,
+			((KBArticleModelImpl)kbArticle).getColumnBitmask());
 
 		clearUniqueFindersCache(kbArticleModelImpl, false);
 		cacheUniqueFindersCache(kbArticleModelImpl);

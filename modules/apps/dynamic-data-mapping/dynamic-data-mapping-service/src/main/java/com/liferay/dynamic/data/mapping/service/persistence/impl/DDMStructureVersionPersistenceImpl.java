@@ -1495,7 +1495,10 @@ public class DDMStructureVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStructureVersionImpl.class,
-			ddmStructureVersion.getPrimaryKey(), ddmStructureVersion);
+			ddmStructureVersion.getPrimaryKey(), ddmStructureVersion,
+			_columnBitmaskEnabled,
+			((DDMStructureVersionModelImpl)ddmStructureVersion).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByS_V,
@@ -1561,7 +1564,10 @@ public class DDMStructureVersionPersistenceImpl
 	public void clearCache(DDMStructureVersion ddmStructureVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMStructureVersionImpl.class,
-			ddmStructureVersion.getPrimaryKey());
+			ddmStructureVersion.getPrimaryKey(), ddmStructureVersion,
+			_columnBitmaskEnabled,
+			((DDMStructureVersionModelImpl)ddmStructureVersion).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1578,7 +1584,10 @@ public class DDMStructureVersionPersistenceImpl
 		for (DDMStructureVersion ddmStructureVersion : ddmStructureVersions) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMStructureVersionImpl.class,
-				ddmStructureVersion.getPrimaryKey());
+				ddmStructureVersion.getPrimaryKey(), ddmStructureVersion,
+				_columnBitmaskEnabled,
+				((DDMStructureVersionModelImpl)ddmStructureVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMStructureVersionModelImpl)ddmStructureVersion, true);
@@ -1889,7 +1898,10 @@ public class DDMStructureVersionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStructureVersionImpl.class,
-			ddmStructureVersion.getPrimaryKey(), ddmStructureVersion, false);
+			ddmStructureVersion.getPrimaryKey(), ddmStructureVersion, false,
+			_columnBitmaskEnabled,
+			((DDMStructureVersionModelImpl)ddmStructureVersion).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddmStructureVersionModelImpl, false);
 		cacheUniqueFindersCache(ddmStructureVersionModelImpl);

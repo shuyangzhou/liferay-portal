@@ -969,7 +969,9 @@ public class ExpandoTablePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ExpandoTableModelImpl.ENTITY_CACHE_ENABLED, ExpandoTableImpl.class,
-			expandoTable.getPrimaryKey(), expandoTable);
+			expandoTable.getPrimaryKey(), expandoTable,
+			ExpandoTableModelImpl.COLUMN_BITMASK_ENABLED,
+			((ExpandoTableModelImpl)expandoTable).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_C_N,
@@ -1036,7 +1038,9 @@ public class ExpandoTablePersistenceImpl
 	public void clearCache(ExpandoTable expandoTable) {
 		EntityCacheUtil.removeResult(
 			ExpandoTableModelImpl.ENTITY_CACHE_ENABLED, ExpandoTableImpl.class,
-			expandoTable.getPrimaryKey());
+			expandoTable.getPrimaryKey(), expandoTable,
+			ExpandoTableModelImpl.COLUMN_BITMASK_ENABLED,
+			((ExpandoTableModelImpl)expandoTable).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1052,7 +1056,9 @@ public class ExpandoTablePersistenceImpl
 		for (ExpandoTable expandoTable : expandoTables) {
 			EntityCacheUtil.removeResult(
 				ExpandoTableModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoTableImpl.class, expandoTable.getPrimaryKey());
+				ExpandoTableImpl.class, expandoTable.getPrimaryKey(),
+				expandoTable, ExpandoTableModelImpl.COLUMN_BITMASK_ENABLED,
+				((ExpandoTableModelImpl)expandoTable).getColumnBitmask());
 
 			clearUniqueFindersCache((ExpandoTableModelImpl)expandoTable, true);
 		}
@@ -1328,7 +1334,9 @@ public class ExpandoTablePersistenceImpl
 
 		EntityCacheUtil.putResult(
 			ExpandoTableModelImpl.ENTITY_CACHE_ENABLED, ExpandoTableImpl.class,
-			expandoTable.getPrimaryKey(), expandoTable, false);
+			expandoTable.getPrimaryKey(), expandoTable, false,
+			ExpandoTableModelImpl.COLUMN_BITMASK_ENABLED,
+			((ExpandoTableModelImpl)expandoTable).getColumnBitmask());
 
 		clearUniqueFindersCache(expandoTableModelImpl, false);
 		cacheUniqueFindersCache(expandoTableModelImpl);

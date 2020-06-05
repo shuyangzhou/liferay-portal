@@ -3079,7 +3079,8 @@ public class PowwowMeetingPersistenceImpl
 		EntityCacheUtil.putResult(
 			PowwowMeetingModelImpl.ENTITY_CACHE_ENABLED,
 			PowwowMeetingImpl.class, powwowMeeting.getPrimaryKey(),
-			powwowMeeting);
+			powwowMeeting, PowwowMeetingModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowMeetingModelImpl)powwowMeeting).getColumnBitmask());
 
 		powwowMeeting.resetOriginalValues();
 	}
@@ -3132,7 +3133,9 @@ public class PowwowMeetingPersistenceImpl
 	public void clearCache(PowwowMeeting powwowMeeting) {
 		EntityCacheUtil.removeResult(
 			PowwowMeetingModelImpl.ENTITY_CACHE_ENABLED,
-			PowwowMeetingImpl.class, powwowMeeting.getPrimaryKey());
+			PowwowMeetingImpl.class, powwowMeeting.getPrimaryKey(),
+			powwowMeeting, PowwowMeetingModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowMeetingModelImpl)powwowMeeting).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3146,7 +3149,9 @@ public class PowwowMeetingPersistenceImpl
 		for (PowwowMeeting powwowMeeting : powwowMeetings) {
 			EntityCacheUtil.removeResult(
 				PowwowMeetingModelImpl.ENTITY_CACHE_ENABLED,
-				PowwowMeetingImpl.class, powwowMeeting.getPrimaryKey());
+				PowwowMeetingImpl.class, powwowMeeting.getPrimaryKey(),
+				powwowMeeting, PowwowMeetingModelImpl.COLUMN_BITMASK_ENABLED,
+				((PowwowMeetingModelImpl)powwowMeeting).getColumnBitmask());
 		}
 	}
 
@@ -3496,7 +3501,8 @@ public class PowwowMeetingPersistenceImpl
 		EntityCacheUtil.putResult(
 			PowwowMeetingModelImpl.ENTITY_CACHE_ENABLED,
 			PowwowMeetingImpl.class, powwowMeeting.getPrimaryKey(),
-			powwowMeeting, false);
+			powwowMeeting, false, PowwowMeetingModelImpl.COLUMN_BITMASK_ENABLED,
+			((PowwowMeetingModelImpl)powwowMeeting).getColumnBitmask());
 
 		powwowMeeting.resetOriginalValues();
 

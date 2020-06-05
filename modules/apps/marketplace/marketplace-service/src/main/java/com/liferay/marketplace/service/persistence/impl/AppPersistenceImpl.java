@@ -2473,7 +2473,8 @@ public class AppPersistenceImpl
 	@Override
 	public void cacheResult(App app) {
 		entityCache.putResult(
-			entityCacheEnabled, AppImpl.class, app.getPrimaryKey(), app);
+			entityCacheEnabled, AppImpl.class, app.getPrimaryKey(), app,
+			_columnBitmaskEnabled, ((AppModelImpl)app).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByRemoteAppId, new Object[] {app.getRemoteAppId()},
@@ -2528,7 +2529,8 @@ public class AppPersistenceImpl
 	@Override
 	public void clearCache(App app) {
 		entityCache.removeResult(
-			entityCacheEnabled, AppImpl.class, app.getPrimaryKey());
+			entityCacheEnabled, AppImpl.class, app.getPrimaryKey(), app,
+			_columnBitmaskEnabled, ((AppModelImpl)app).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2543,7 +2545,8 @@ public class AppPersistenceImpl
 
 		for (App app : apps) {
 			entityCache.removeResult(
-				entityCacheEnabled, AppImpl.class, app.getPrimaryKey());
+				entityCacheEnabled, AppImpl.class, app.getPrimaryKey(), app,
+				_columnBitmaskEnabled, ((AppModelImpl)app).getColumnBitmask());
 
 			clearUniqueFindersCache((AppModelImpl)app, true);
 		}
@@ -2881,7 +2884,8 @@ public class AppPersistenceImpl
 		}
 
 		entityCache.putResult(
-			entityCacheEnabled, AppImpl.class, app.getPrimaryKey(), app, false);
+			entityCacheEnabled, AppImpl.class, app.getPrimaryKey(), app, false,
+			_columnBitmaskEnabled, ((AppModelImpl)app).getColumnBitmask());
 
 		clearUniqueFindersCache(appModelImpl, false);
 		cacheUniqueFindersCache(appModelImpl);

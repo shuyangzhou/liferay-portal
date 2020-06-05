@@ -4412,7 +4412,10 @@ public class DDMStructureLayoutPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStructureLayoutImpl.class,
-			ddmStructureLayout.getPrimaryKey(), ddmStructureLayout);
+			ddmStructureLayout.getPrimaryKey(), ddmStructureLayout,
+			_columnBitmaskEnabled,
+			((DDMStructureLayoutModelImpl)ddmStructureLayout).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -4491,7 +4494,10 @@ public class DDMStructureLayoutPersistenceImpl
 	public void clearCache(DDMStructureLayout ddmStructureLayout) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMStructureLayoutImpl.class,
-			ddmStructureLayout.getPrimaryKey());
+			ddmStructureLayout.getPrimaryKey(), ddmStructureLayout,
+			_columnBitmaskEnabled,
+			((DDMStructureLayoutModelImpl)ddmStructureLayout).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -4508,7 +4514,10 @@ public class DDMStructureLayoutPersistenceImpl
 		for (DDMStructureLayout ddmStructureLayout : ddmStructureLayouts) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMStructureLayoutImpl.class,
-				ddmStructureLayout.getPrimaryKey());
+				ddmStructureLayout.getPrimaryKey(), ddmStructureLayout,
+				_columnBitmaskEnabled,
+				((DDMStructureLayoutModelImpl)ddmStructureLayout).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMStructureLayoutModelImpl)ddmStructureLayout, true);
@@ -5045,7 +5054,10 @@ public class DDMStructureLayoutPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStructureLayoutImpl.class,
-			ddmStructureLayout.getPrimaryKey(), ddmStructureLayout, false);
+			ddmStructureLayout.getPrimaryKey(), ddmStructureLayout, false,
+			_columnBitmaskEnabled,
+			((DDMStructureLayoutModelImpl)ddmStructureLayout).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddmStructureLayoutModelImpl, false);
 		cacheUniqueFindersCache(ddmStructureLayoutModelImpl);

@@ -2237,7 +2237,9 @@ public class MembershipRequestPersistenceImpl
 		EntityCacheUtil.putResult(
 			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
-			membershipRequest);
+			membershipRequest,
+			MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+			((MembershipRequestModelImpl)membershipRequest).getColumnBitmask());
 
 		membershipRequest.resetOriginalValues();
 	}
@@ -2290,7 +2292,10 @@ public class MembershipRequestPersistenceImpl
 	public void clearCache(MembershipRequest membershipRequest) {
 		EntityCacheUtil.removeResult(
 			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestImpl.class, membershipRequest.getPrimaryKey());
+			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
+			membershipRequest,
+			MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+			((MembershipRequestModelImpl)membershipRequest).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2304,7 +2309,11 @@ public class MembershipRequestPersistenceImpl
 		for (MembershipRequest membershipRequest : membershipRequests) {
 			EntityCacheUtil.removeResult(
 				MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-				MembershipRequestImpl.class, membershipRequest.getPrimaryKey());
+				MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
+				membershipRequest,
+				MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+				((MembershipRequestModelImpl)membershipRequest).
+					getColumnBitmask());
 		}
 	}
 
@@ -2610,7 +2619,9 @@ public class MembershipRequestPersistenceImpl
 		EntityCacheUtil.putResult(
 			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
-			membershipRequest, false);
+			membershipRequest, false,
+			MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+			((MembershipRequestModelImpl)membershipRequest).getColumnBitmask());
 
 		membershipRequest.resetOriginalValues();
 

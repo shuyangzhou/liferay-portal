@@ -874,7 +874,8 @@ public class FolderPersistenceImpl
 	public void cacheResult(Folder folder) {
 		entityCache.putResult(
 			entityCacheEnabled, FolderImpl.class, folder.getPrimaryKey(),
-			folder);
+			folder, _columnBitmaskEnabled,
+			((FolderModelImpl)folder).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_F,
@@ -929,7 +930,9 @@ public class FolderPersistenceImpl
 	@Override
 	public void clearCache(Folder folder) {
 		entityCache.removeResult(
-			entityCacheEnabled, FolderImpl.class, folder.getPrimaryKey());
+			entityCacheEnabled, FolderImpl.class, folder.getPrimaryKey(),
+			folder, _columnBitmaskEnabled,
+			((FolderModelImpl)folder).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -944,7 +947,9 @@ public class FolderPersistenceImpl
 
 		for (Folder folder : folders) {
 			entityCache.removeResult(
-				entityCacheEnabled, FolderImpl.class, folder.getPrimaryKey());
+				entityCacheEnabled, FolderImpl.class, folder.getPrimaryKey(),
+				folder, _columnBitmaskEnabled,
+				((FolderModelImpl)folder).getColumnBitmask());
 
 			clearUniqueFindersCache((FolderModelImpl)folder, true);
 		}
@@ -1201,7 +1206,8 @@ public class FolderPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, FolderImpl.class, folder.getPrimaryKey(),
-			folder, false);
+			folder, false, _columnBitmaskEnabled,
+			((FolderModelImpl)folder).getColumnBitmask());
 
 		clearUniqueFindersCache(folderModelImpl, false);
 		cacheUniqueFindersCache(folderModelImpl);

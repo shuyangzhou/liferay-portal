@@ -144,7 +144,8 @@ public class UADPartialEntryPersistenceImpl
 	public void clearCache(UADPartialEntry uadPartialEntry) {
 		entityCache.removeResult(
 			UADPartialEntryModelImpl.ENTITY_CACHE_ENABLED,
-			UADPartialEntryImpl.class, uadPartialEntry.getPrimaryKey());
+			UADPartialEntryImpl.class, uadPartialEntry.getPrimaryKey(),
+			uadPartialEntry);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -158,7 +159,8 @@ public class UADPartialEntryPersistenceImpl
 		for (UADPartialEntry uadPartialEntry : uadPartialEntries) {
 			entityCache.removeResult(
 				UADPartialEntryModelImpl.ENTITY_CACHE_ENABLED,
-				UADPartialEntryImpl.class, uadPartialEntry.getPrimaryKey());
+				UADPartialEntryImpl.class, uadPartialEntry.getPrimaryKey(),
+				uadPartialEntry);
 		}
 	}
 

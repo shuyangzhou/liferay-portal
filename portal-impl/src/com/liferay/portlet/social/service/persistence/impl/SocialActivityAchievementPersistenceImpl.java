@@ -3308,7 +3308,10 @@ public class SocialActivityAchievementPersistenceImpl
 			SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityAchievementImpl.class,
 			socialActivityAchievement.getPrimaryKey(),
-			socialActivityAchievement);
+			socialActivityAchievement,
+			SocialActivityAchievementModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityAchievementModelImpl)socialActivityAchievement).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_U_N,
@@ -3383,7 +3386,11 @@ public class SocialActivityAchievementPersistenceImpl
 		EntityCacheUtil.removeResult(
 			SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityAchievementImpl.class,
-			socialActivityAchievement.getPrimaryKey());
+			socialActivityAchievement.getPrimaryKey(),
+			socialActivityAchievement,
+			SocialActivityAchievementModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityAchievementModelImpl)socialActivityAchievement).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3406,7 +3413,11 @@ public class SocialActivityAchievementPersistenceImpl
 			EntityCacheUtil.removeResult(
 				SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
 				SocialActivityAchievementImpl.class,
-				socialActivityAchievement.getPrimaryKey());
+				socialActivityAchievement.getPrimaryKey(),
+				socialActivityAchievement,
+				SocialActivityAchievementModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialActivityAchievementModelImpl)socialActivityAchievement).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialActivityAchievementModelImpl)socialActivityAchievement,
@@ -3832,7 +3843,10 @@ public class SocialActivityAchievementPersistenceImpl
 			SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityAchievementImpl.class,
 			socialActivityAchievement.getPrimaryKey(),
-			socialActivityAchievement, false);
+			socialActivityAchievement, false,
+			SocialActivityAchievementModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityAchievementModelImpl)socialActivityAchievement).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(socialActivityAchievementModelImpl, false);
 		cacheUniqueFindersCache(socialActivityAchievementModelImpl);

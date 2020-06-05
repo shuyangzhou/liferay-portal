@@ -1518,7 +1518,10 @@ public class KaleoDefinitionVersionPersistenceImpl
 	public void cacheResult(KaleoDefinitionVersion kaleoDefinitionVersion) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoDefinitionVersionImpl.class,
-			kaleoDefinitionVersion.getPrimaryKey(), kaleoDefinitionVersion);
+			kaleoDefinitionVersion.getPrimaryKey(), kaleoDefinitionVersion,
+			_columnBitmaskEnabled,
+			((KaleoDefinitionVersionModelImpl)kaleoDefinitionVersion).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_N_V,
@@ -1583,7 +1586,10 @@ public class KaleoDefinitionVersionPersistenceImpl
 	public void clearCache(KaleoDefinitionVersion kaleoDefinitionVersion) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoDefinitionVersionImpl.class,
-			kaleoDefinitionVersion.getPrimaryKey());
+			kaleoDefinitionVersion.getPrimaryKey(), kaleoDefinitionVersion,
+			_columnBitmaskEnabled,
+			((KaleoDefinitionVersionModelImpl)kaleoDefinitionVersion).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1604,7 +1610,10 @@ public class KaleoDefinitionVersionPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoDefinitionVersionImpl.class,
-				kaleoDefinitionVersion.getPrimaryKey());
+				kaleoDefinitionVersion.getPrimaryKey(), kaleoDefinitionVersion,
+				_columnBitmaskEnabled,
+				((KaleoDefinitionVersionModelImpl)kaleoDefinitionVersion).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoDefinitionVersionModelImpl)kaleoDefinitionVersion, true);
@@ -1928,7 +1937,9 @@ public class KaleoDefinitionVersionPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, KaleoDefinitionVersionImpl.class,
 			kaleoDefinitionVersion.getPrimaryKey(), kaleoDefinitionVersion,
-			false);
+			false, _columnBitmaskEnabled,
+			((KaleoDefinitionVersionModelImpl)kaleoDefinitionVersion).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoDefinitionVersionModelImpl, false);
 		cacheUniqueFindersCache(kaleoDefinitionVersionModelImpl);

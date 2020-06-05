@@ -1344,7 +1344,8 @@ public class VersionedEntryPersistenceImpl
 		entityCache.putResult(
 			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
 			VersionedEntryImpl.class, versionedEntry.getPrimaryKey(),
-			versionedEntry);
+			versionedEntry, VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((VersionedEntryModelImpl)versionedEntry).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByHeadId, new Object[] {versionedEntry.getHeadId()},
@@ -1401,7 +1402,9 @@ public class VersionedEntryPersistenceImpl
 	public void clearCache(VersionedEntry versionedEntry) {
 		entityCache.removeResult(
 			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryImpl.class, versionedEntry.getPrimaryKey());
+			VersionedEntryImpl.class, versionedEntry.getPrimaryKey(),
+			versionedEntry, VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((VersionedEntryModelImpl)versionedEntry).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1417,7 +1420,9 @@ public class VersionedEntryPersistenceImpl
 		for (VersionedEntry versionedEntry : versionedEntries) {
 			entityCache.removeResult(
 				VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-				VersionedEntryImpl.class, versionedEntry.getPrimaryKey());
+				VersionedEntryImpl.class, versionedEntry.getPrimaryKey(),
+				versionedEntry, VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((VersionedEntryModelImpl)versionedEntry).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(VersionedEntryModelImpl)versionedEntry, true);
@@ -1689,7 +1694,9 @@ public class VersionedEntryPersistenceImpl
 		entityCache.putResult(
 			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
 			VersionedEntryImpl.class, versionedEntry.getPrimaryKey(),
-			versionedEntry, false);
+			versionedEntry, false,
+			VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED,
+			((VersionedEntryModelImpl)versionedEntry).getColumnBitmask());
 
 		clearUniqueFindersCache(versionedEntryModelImpl, false);
 		cacheUniqueFindersCache(versionedEntryModelImpl);

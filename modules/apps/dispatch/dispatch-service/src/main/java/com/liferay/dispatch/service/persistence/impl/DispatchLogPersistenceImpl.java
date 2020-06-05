@@ -1175,7 +1175,8 @@ public class DispatchLogPersistenceImpl
 	public void cacheResult(DispatchLog dispatchLog) {
 		entityCache.putResult(
 			entityCacheEnabled, DispatchLogImpl.class,
-			dispatchLog.getPrimaryKey(), dispatchLog);
+			dispatchLog.getPrimaryKey(), dispatchLog, _columnBitmaskEnabled,
+			((DispatchLogModelImpl)dispatchLog).getColumnBitmask());
 
 		dispatchLog.resetOriginalValues();
 	}
@@ -1227,7 +1228,8 @@ public class DispatchLogPersistenceImpl
 	public void clearCache(DispatchLog dispatchLog) {
 		entityCache.removeResult(
 			entityCacheEnabled, DispatchLogImpl.class,
-			dispatchLog.getPrimaryKey());
+			dispatchLog.getPrimaryKey(), dispatchLog, _columnBitmaskEnabled,
+			((DispatchLogModelImpl)dispatchLog).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1241,7 +1243,8 @@ public class DispatchLogPersistenceImpl
 		for (DispatchLog dispatchLog : dispatchLogs) {
 			entityCache.removeResult(
 				entityCacheEnabled, DispatchLogImpl.class,
-				dispatchLog.getPrimaryKey());
+				dispatchLog.getPrimaryKey(), dispatchLog, _columnBitmaskEnabled,
+				((DispatchLogModelImpl)dispatchLog).getColumnBitmask());
 		}
 	}
 
@@ -1503,7 +1506,9 @@ public class DispatchLogPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DispatchLogImpl.class,
-			dispatchLog.getPrimaryKey(), dispatchLog, false);
+			dispatchLog.getPrimaryKey(), dispatchLog, false,
+			_columnBitmaskEnabled,
+			((DispatchLogModelImpl)dispatchLog).getColumnBitmask());
 
 		dispatchLog.resetOriginalValues();
 

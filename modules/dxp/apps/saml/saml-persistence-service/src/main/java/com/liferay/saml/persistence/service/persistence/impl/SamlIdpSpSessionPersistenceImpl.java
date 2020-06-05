@@ -1456,7 +1456,9 @@ public class SamlIdpSpSessionPersistenceImpl
 	public void cacheResult(SamlIdpSpSession samlIdpSpSession) {
 		entityCache.putResult(
 			entityCacheEnabled, SamlIdpSpSessionImpl.class,
-			samlIdpSpSession.getPrimaryKey(), samlIdpSpSession);
+			samlIdpSpSession.getPrimaryKey(), samlIdpSpSession,
+			_columnBitmaskEnabled,
+			((SamlIdpSpSessionModelImpl)samlIdpSpSession).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchBySISSI_SSEI,
@@ -1516,7 +1518,9 @@ public class SamlIdpSpSessionPersistenceImpl
 	public void clearCache(SamlIdpSpSession samlIdpSpSession) {
 		entityCache.removeResult(
 			entityCacheEnabled, SamlIdpSpSessionImpl.class,
-			samlIdpSpSession.getPrimaryKey());
+			samlIdpSpSession.getPrimaryKey(), samlIdpSpSession,
+			_columnBitmaskEnabled,
+			((SamlIdpSpSessionModelImpl)samlIdpSpSession).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1533,7 +1537,10 @@ public class SamlIdpSpSessionPersistenceImpl
 		for (SamlIdpSpSession samlIdpSpSession : samlIdpSpSessions) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlIdpSpSessionImpl.class,
-				samlIdpSpSession.getPrimaryKey());
+				samlIdpSpSession.getPrimaryKey(), samlIdpSpSession,
+				_columnBitmaskEnabled,
+				((SamlIdpSpSessionModelImpl)samlIdpSpSession).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SamlIdpSpSessionModelImpl)samlIdpSpSession, true);
@@ -1817,7 +1824,9 @@ public class SamlIdpSpSessionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SamlIdpSpSessionImpl.class,
-			samlIdpSpSession.getPrimaryKey(), samlIdpSpSession, false);
+			samlIdpSpSession.getPrimaryKey(), samlIdpSpSession, false,
+			_columnBitmaskEnabled,
+			((SamlIdpSpSessionModelImpl)samlIdpSpSession).getColumnBitmask());
 
 		clearUniqueFindersCache(samlIdpSpSessionModelImpl, false);
 		cacheUniqueFindersCache(samlIdpSpSessionModelImpl);

@@ -2856,7 +2856,9 @@ public class DDMStorageLinkPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStorageLinkImpl.class,
-			ddmStorageLink.getPrimaryKey(), ddmStorageLink);
+			ddmStorageLink.getPrimaryKey(), ddmStorageLink,
+			_columnBitmaskEnabled,
+			((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByClassPK,
@@ -2918,7 +2920,9 @@ public class DDMStorageLinkPersistenceImpl
 	public void clearCache(DDMStorageLink ddmStorageLink) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMStorageLinkImpl.class,
-			ddmStorageLink.getPrimaryKey());
+			ddmStorageLink.getPrimaryKey(), ddmStorageLink,
+			_columnBitmaskEnabled,
+			((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2934,7 +2938,9 @@ public class DDMStorageLinkPersistenceImpl
 		for (DDMStorageLink ddmStorageLink : ddmStorageLinks) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMStorageLinkImpl.class,
-				ddmStorageLink.getPrimaryKey());
+				ddmStorageLink.getPrimaryKey(), ddmStorageLink,
+				_columnBitmaskEnabled,
+				((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMStorageLinkModelImpl)ddmStorageLink, true);
@@ -3294,7 +3300,9 @@ public class DDMStorageLinkPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStorageLinkImpl.class,
-			ddmStorageLink.getPrimaryKey(), ddmStorageLink, false);
+			ddmStorageLink.getPrimaryKey(), ddmStorageLink, false,
+			_columnBitmaskEnabled,
+			((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask());
 
 		clearUniqueFindersCache(ddmStorageLinkModelImpl, false);
 		cacheUniqueFindersCache(ddmStorageLinkModelImpl);

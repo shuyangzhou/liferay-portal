@@ -2942,7 +2942,10 @@ public class KaleoTaskFormInstancePersistenceImpl
 	public void cacheResult(KaleoTaskFormInstance kaleoTaskFormInstance) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskFormInstanceImpl.class,
-			kaleoTaskFormInstance.getPrimaryKey(), kaleoTaskFormInstance);
+			kaleoTaskFormInstance.getPrimaryKey(), kaleoTaskFormInstance,
+			_columnBitmaskEnabled,
+			((KaleoTaskFormInstanceModelImpl)kaleoTaskFormInstance).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByKaleoTaskFormId,
@@ -3003,7 +3006,10 @@ public class KaleoTaskFormInstancePersistenceImpl
 	public void clearCache(KaleoTaskFormInstance kaleoTaskFormInstance) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTaskFormInstanceImpl.class,
-			kaleoTaskFormInstance.getPrimaryKey());
+			kaleoTaskFormInstance.getPrimaryKey(), kaleoTaskFormInstance,
+			_columnBitmaskEnabled,
+			((KaleoTaskFormInstanceModelImpl)kaleoTaskFormInstance).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3022,7 +3028,10 @@ public class KaleoTaskFormInstancePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTaskFormInstanceImpl.class,
-				kaleoTaskFormInstance.getPrimaryKey());
+				kaleoTaskFormInstance.getPrimaryKey(), kaleoTaskFormInstance,
+				_columnBitmaskEnabled,
+				((KaleoTaskFormInstanceModelImpl)kaleoTaskFormInstance).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoTaskFormInstanceModelImpl)kaleoTaskFormInstance, true);
@@ -3439,8 +3448,10 @@ public class KaleoTaskFormInstancePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTaskFormInstanceImpl.class,
-			kaleoTaskFormInstance.getPrimaryKey(), kaleoTaskFormInstance,
-			false);
+			kaleoTaskFormInstance.getPrimaryKey(), kaleoTaskFormInstance, false,
+			_columnBitmaskEnabled,
+			((KaleoTaskFormInstanceModelImpl)kaleoTaskFormInstance).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoTaskFormInstanceModelImpl, false);
 		cacheUniqueFindersCache(kaleoTaskFormInstanceModelImpl);

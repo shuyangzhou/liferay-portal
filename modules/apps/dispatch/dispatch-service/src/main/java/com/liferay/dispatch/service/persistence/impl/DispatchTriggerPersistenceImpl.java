@@ -2291,7 +2291,9 @@ public class DispatchTriggerPersistenceImpl
 	public void cacheResult(DispatchTrigger dispatchTrigger) {
 		entityCache.putResult(
 			entityCacheEnabled, DispatchTriggerImpl.class,
-			dispatchTrigger.getPrimaryKey(), dispatchTrigger);
+			dispatchTrigger.getPrimaryKey(), dispatchTrigger,
+			_columnBitmaskEnabled,
+			((DispatchTriggerModelImpl)dispatchTrigger).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByC_N,
@@ -2350,7 +2352,9 @@ public class DispatchTriggerPersistenceImpl
 	public void clearCache(DispatchTrigger dispatchTrigger) {
 		entityCache.removeResult(
 			entityCacheEnabled, DispatchTriggerImpl.class,
-			dispatchTrigger.getPrimaryKey());
+			dispatchTrigger.getPrimaryKey(), dispatchTrigger,
+			_columnBitmaskEnabled,
+			((DispatchTriggerModelImpl)dispatchTrigger).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2367,7 +2371,9 @@ public class DispatchTriggerPersistenceImpl
 		for (DispatchTrigger dispatchTrigger : dispatchTriggers) {
 			entityCache.removeResult(
 				entityCacheEnabled, DispatchTriggerImpl.class,
-				dispatchTrigger.getPrimaryKey());
+				dispatchTrigger.getPrimaryKey(), dispatchTrigger,
+				_columnBitmaskEnabled,
+				((DispatchTriggerModelImpl)dispatchTrigger).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DispatchTriggerModelImpl)dispatchTrigger, true);
@@ -2675,7 +2681,9 @@ public class DispatchTriggerPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DispatchTriggerImpl.class,
-			dispatchTrigger.getPrimaryKey(), dispatchTrigger, false);
+			dispatchTrigger.getPrimaryKey(), dispatchTrigger, false,
+			_columnBitmaskEnabled,
+			((DispatchTriggerModelImpl)dispatchTrigger).getColumnBitmask());
 
 		clearUniqueFindersCache(dispatchTriggerModelImpl, false);
 		cacheUniqueFindersCache(dispatchTriggerModelImpl);

@@ -1353,7 +1353,9 @@ public class SegmentsEntryRolePersistenceImpl
 	public void cacheResult(SegmentsEntryRole segmentsEntryRole) {
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsEntryRoleImpl.class,
-			segmentsEntryRole.getPrimaryKey(), segmentsEntryRole);
+			segmentsEntryRole.getPrimaryKey(), segmentsEntryRole,
+			_columnBitmaskEnabled,
+			((SegmentsEntryRoleModelImpl)segmentsEntryRole).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByS_R,
@@ -1413,7 +1415,9 @@ public class SegmentsEntryRolePersistenceImpl
 	public void clearCache(SegmentsEntryRole segmentsEntryRole) {
 		entityCache.removeResult(
 			entityCacheEnabled, SegmentsEntryRoleImpl.class,
-			segmentsEntryRole.getPrimaryKey());
+			segmentsEntryRole.getPrimaryKey(), segmentsEntryRole,
+			_columnBitmaskEnabled,
+			((SegmentsEntryRoleModelImpl)segmentsEntryRole).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1430,7 +1434,10 @@ public class SegmentsEntryRolePersistenceImpl
 		for (SegmentsEntryRole segmentsEntryRole : segmentsEntryRoles) {
 			entityCache.removeResult(
 				entityCacheEnabled, SegmentsEntryRoleImpl.class,
-				segmentsEntryRole.getPrimaryKey());
+				segmentsEntryRole.getPrimaryKey(), segmentsEntryRole,
+				_columnBitmaskEnabled,
+				((SegmentsEntryRoleModelImpl)segmentsEntryRole).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SegmentsEntryRoleModelImpl)segmentsEntryRole, true);
@@ -1738,7 +1745,9 @@ public class SegmentsEntryRolePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsEntryRoleImpl.class,
-			segmentsEntryRole.getPrimaryKey(), segmentsEntryRole, false);
+			segmentsEntryRole.getPrimaryKey(), segmentsEntryRole, false,
+			_columnBitmaskEnabled,
+			((SegmentsEntryRoleModelImpl)segmentsEntryRole).getColumnBitmask());
 
 		clearUniqueFindersCache(segmentsEntryRoleModelImpl, false);
 		cacheUniqueFindersCache(segmentsEntryRoleModelImpl);

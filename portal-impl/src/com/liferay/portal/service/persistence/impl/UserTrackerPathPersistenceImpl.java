@@ -616,7 +616,8 @@ public class UserTrackerPathPersistenceImpl
 		EntityCacheUtil.putResult(
 			UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
 			UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
-			userTrackerPath);
+			userTrackerPath, UserTrackerPathModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserTrackerPathModelImpl)userTrackerPath).getColumnBitmask());
 
 		userTrackerPath.resetOriginalValues();
 	}
@@ -669,7 +670,9 @@ public class UserTrackerPathPersistenceImpl
 	public void clearCache(UserTrackerPath userTrackerPath) {
 		EntityCacheUtil.removeResult(
 			UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-			UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey());
+			UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
+			userTrackerPath, UserTrackerPathModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserTrackerPathModelImpl)userTrackerPath).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -683,7 +686,10 @@ public class UserTrackerPathPersistenceImpl
 		for (UserTrackerPath userTrackerPath : userTrackerPaths) {
 			EntityCacheUtil.removeResult(
 				UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-				UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey());
+				UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
+				userTrackerPath,
+				UserTrackerPathModelImpl.COLUMN_BITMASK_ENABLED,
+				((UserTrackerPathModelImpl)userTrackerPath).getColumnBitmask());
 		}
 	}
 
@@ -898,7 +904,9 @@ public class UserTrackerPathPersistenceImpl
 		EntityCacheUtil.putResult(
 			UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
 			UserTrackerPathImpl.class, userTrackerPath.getPrimaryKey(),
-			userTrackerPath, false);
+			userTrackerPath, false,
+			UserTrackerPathModelImpl.COLUMN_BITMASK_ENABLED,
+			((UserTrackerPathModelImpl)userTrackerPath).getColumnBitmask());
 
 		userTrackerPath.resetOriginalValues();
 

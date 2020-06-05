@@ -882,7 +882,9 @@ public class KaleoProcessLinkPersistenceImpl
 	public void cacheResult(KaleoProcessLink kaleoProcessLink) {
 		entityCache.putResult(
 			entityCacheEnabled, KaleoProcessLinkImpl.class,
-			kaleoProcessLink.getPrimaryKey(), kaleoProcessLink);
+			kaleoProcessLink.getPrimaryKey(), kaleoProcessLink,
+			_columnBitmaskEnabled,
+			((KaleoProcessLinkModelImpl)kaleoProcessLink).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByKPI_WTN,
@@ -942,7 +944,9 @@ public class KaleoProcessLinkPersistenceImpl
 	public void clearCache(KaleoProcessLink kaleoProcessLink) {
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoProcessLinkImpl.class,
-			kaleoProcessLink.getPrimaryKey());
+			kaleoProcessLink.getPrimaryKey(), kaleoProcessLink,
+			_columnBitmaskEnabled,
+			((KaleoProcessLinkModelImpl)kaleoProcessLink).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -959,7 +963,10 @@ public class KaleoProcessLinkPersistenceImpl
 		for (KaleoProcessLink kaleoProcessLink : kaleoProcessLinks) {
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoProcessLinkImpl.class,
-				kaleoProcessLink.getPrimaryKey());
+				kaleoProcessLink.getPrimaryKey(), kaleoProcessLink,
+				_columnBitmaskEnabled,
+				((KaleoProcessLinkModelImpl)kaleoProcessLink).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(KaleoProcessLinkModelImpl)kaleoProcessLink, true);
@@ -1214,7 +1221,9 @@ public class KaleoProcessLinkPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoProcessLinkImpl.class,
-			kaleoProcessLink.getPrimaryKey(), kaleoProcessLink, false);
+			kaleoProcessLink.getPrimaryKey(), kaleoProcessLink, false,
+			_columnBitmaskEnabled,
+			((KaleoProcessLinkModelImpl)kaleoProcessLink).getColumnBitmask());
 
 		clearUniqueFindersCache(kaleoProcessLinkModelImpl, false);
 		cacheUniqueFindersCache(kaleoProcessLinkModelImpl);

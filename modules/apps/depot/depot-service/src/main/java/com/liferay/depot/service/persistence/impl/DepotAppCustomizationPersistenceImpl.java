@@ -1130,7 +1130,10 @@ public class DepotAppCustomizationPersistenceImpl
 	public void cacheResult(DepotAppCustomization depotAppCustomization) {
 		entityCache.putResult(
 			entityCacheEnabled, DepotAppCustomizationImpl.class,
-			depotAppCustomization.getPrimaryKey(), depotAppCustomization);
+			depotAppCustomization.getPrimaryKey(), depotAppCustomization,
+			_columnBitmaskEnabled,
+			((DepotAppCustomizationModelImpl)depotAppCustomization).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByD_E,
@@ -1202,7 +1205,10 @@ public class DepotAppCustomizationPersistenceImpl
 	public void clearCache(DepotAppCustomization depotAppCustomization) {
 		entityCache.removeResult(
 			entityCacheEnabled, DepotAppCustomizationImpl.class,
-			depotAppCustomization.getPrimaryKey());
+			depotAppCustomization.getPrimaryKey(), depotAppCustomization,
+			_columnBitmaskEnabled,
+			((DepotAppCustomizationModelImpl)depotAppCustomization).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1221,7 +1227,10 @@ public class DepotAppCustomizationPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DepotAppCustomizationImpl.class,
-				depotAppCustomization.getPrimaryKey());
+				depotAppCustomization.getPrimaryKey(), depotAppCustomization,
+				_columnBitmaskEnabled,
+				((DepotAppCustomizationModelImpl)depotAppCustomization).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DepotAppCustomizationModelImpl)depotAppCustomization, true);
@@ -1515,8 +1524,10 @@ public class DepotAppCustomizationPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DepotAppCustomizationImpl.class,
-			depotAppCustomization.getPrimaryKey(), depotAppCustomization,
-			false);
+			depotAppCustomization.getPrimaryKey(), depotAppCustomization, false,
+			_columnBitmaskEnabled,
+			((DepotAppCustomizationModelImpl)depotAppCustomization).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(depotAppCustomizationModelImpl, false);
 		cacheUniqueFindersCache(depotAppCustomizationModelImpl);

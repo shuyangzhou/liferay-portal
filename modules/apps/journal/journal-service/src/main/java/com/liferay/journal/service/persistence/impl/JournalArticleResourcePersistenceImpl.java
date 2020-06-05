@@ -2380,7 +2380,10 @@ public class JournalArticleResourcePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, JournalArticleResourceImpl.class,
-			journalArticleResource.getPrimaryKey(), journalArticleResource);
+			journalArticleResource.getPrimaryKey(), journalArticleResource,
+			_columnBitmaskEnabled,
+			((JournalArticleResourceModelImpl)journalArticleResource).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -2458,7 +2461,10 @@ public class JournalArticleResourcePersistenceImpl
 	public void clearCache(JournalArticleResource journalArticleResource) {
 		entityCache.removeResult(
 			entityCacheEnabled, JournalArticleResourceImpl.class,
-			journalArticleResource.getPrimaryKey());
+			journalArticleResource.getPrimaryKey(), journalArticleResource,
+			_columnBitmaskEnabled,
+			((JournalArticleResourceModelImpl)journalArticleResource).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2479,7 +2485,10 @@ public class JournalArticleResourcePersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, JournalArticleResourceImpl.class,
-				journalArticleResource.getPrimaryKey());
+				journalArticleResource.getPrimaryKey(), journalArticleResource,
+				_columnBitmaskEnabled,
+				((JournalArticleResourceModelImpl)journalArticleResource).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(JournalArticleResourceModelImpl)journalArticleResource, true);
@@ -2864,7 +2873,9 @@ public class JournalArticleResourcePersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, JournalArticleResourceImpl.class,
 			journalArticleResource.getPrimaryKey(), journalArticleResource,
-			false);
+			false, _columnBitmaskEnabled,
+			((JournalArticleResourceModelImpl)journalArticleResource).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(journalArticleResourceModelImpl, false);
 		cacheUniqueFindersCache(journalArticleResourceModelImpl);

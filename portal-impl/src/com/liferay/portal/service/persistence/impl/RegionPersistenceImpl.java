@@ -1888,7 +1888,9 @@ public class RegionPersistenceImpl
 	public void cacheResult(Region region) {
 		EntityCacheUtil.putResult(
 			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-			region.getPrimaryKey(), region);
+			region.getPrimaryKey(), region,
+			RegionModelImpl.COLUMN_BITMASK_ENABLED,
+			((RegionModelImpl)region).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_R,
@@ -1945,7 +1947,9 @@ public class RegionPersistenceImpl
 	public void clearCache(Region region) {
 		EntityCacheUtil.removeResult(
 			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-			region.getPrimaryKey());
+			region.getPrimaryKey(), region,
+			RegionModelImpl.COLUMN_BITMASK_ENABLED,
+			((RegionModelImpl)region).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1961,7 +1965,9 @@ public class RegionPersistenceImpl
 		for (Region region : regions) {
 			EntityCacheUtil.removeResult(
 				RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-				region.getPrimaryKey());
+				region.getPrimaryKey(), region,
+				RegionModelImpl.COLUMN_BITMASK_ENABLED,
+				((RegionModelImpl)region).getColumnBitmask());
 
 			clearUniqueFindersCache((RegionModelImpl)region, true);
 		}
@@ -2251,7 +2257,9 @@ public class RegionPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-			region.getPrimaryKey(), region, false);
+			region.getPrimaryKey(), region, false,
+			RegionModelImpl.COLUMN_BITMASK_ENABLED,
+			((RegionModelImpl)region).getColumnBitmask());
 
 		clearUniqueFindersCache(regionModelImpl, false);
 		cacheUniqueFindersCache(regionModelImpl);

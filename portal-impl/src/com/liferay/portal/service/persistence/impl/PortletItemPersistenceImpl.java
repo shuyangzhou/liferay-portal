@@ -1624,7 +1624,9 @@ public class PortletItemPersistenceImpl
 	public void cacheResult(PortletItem portletItem) {
 		EntityCacheUtil.putResult(
 			PortletItemModelImpl.ENTITY_CACHE_ENABLED, PortletItemImpl.class,
-			portletItem.getPrimaryKey(), portletItem);
+			portletItem.getPrimaryKey(), portletItem,
+			PortletItemModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletItemModelImpl)portletItem).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_N_P_C,
@@ -1685,7 +1687,9 @@ public class PortletItemPersistenceImpl
 	public void clearCache(PortletItem portletItem) {
 		EntityCacheUtil.removeResult(
 			PortletItemModelImpl.ENTITY_CACHE_ENABLED, PortletItemImpl.class,
-			portletItem.getPrimaryKey());
+			portletItem.getPrimaryKey(), portletItem,
+			PortletItemModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletItemModelImpl)portletItem).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1701,7 +1705,9 @@ public class PortletItemPersistenceImpl
 		for (PortletItem portletItem : portletItems) {
 			EntityCacheUtil.removeResult(
 				PortletItemModelImpl.ENTITY_CACHE_ENABLED,
-				PortletItemImpl.class, portletItem.getPrimaryKey());
+				PortletItemImpl.class, portletItem.getPrimaryKey(), portletItem,
+				PortletItemModelImpl.COLUMN_BITMASK_ENABLED,
+				((PortletItemModelImpl)portletItem).getColumnBitmask());
 
 			clearUniqueFindersCache((PortletItemModelImpl)portletItem, true);
 		}
@@ -2019,7 +2025,9 @@ public class PortletItemPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			PortletItemModelImpl.ENTITY_CACHE_ENABLED, PortletItemImpl.class,
-			portletItem.getPrimaryKey(), portletItem, false);
+			portletItem.getPrimaryKey(), portletItem, false,
+			PortletItemModelImpl.COLUMN_BITMASK_ENABLED,
+			((PortletItemModelImpl)portletItem).getColumnBitmask());
 
 		clearUniqueFindersCache(portletItemModelImpl, false);
 		cacheUniqueFindersCache(portletItemModelImpl);

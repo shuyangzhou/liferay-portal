@@ -1590,7 +1590,8 @@ public class AccountRolePersistenceImpl
 	public void cacheResult(AccountRole accountRole) {
 		entityCache.putResult(
 			entityCacheEnabled, AccountRoleImpl.class,
-			accountRole.getPrimaryKey(), accountRole);
+			accountRole.getPrimaryKey(), accountRole, _columnBitmaskEnabled,
+			((AccountRoleModelImpl)accountRole).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByRoleId, new Object[] {accountRole.getRoleId()},
@@ -1646,7 +1647,8 @@ public class AccountRolePersistenceImpl
 	public void clearCache(AccountRole accountRole) {
 		entityCache.removeResult(
 			entityCacheEnabled, AccountRoleImpl.class,
-			accountRole.getPrimaryKey());
+			accountRole.getPrimaryKey(), accountRole, _columnBitmaskEnabled,
+			((AccountRoleModelImpl)accountRole).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1662,7 +1664,8 @@ public class AccountRolePersistenceImpl
 		for (AccountRole accountRole : accountRoles) {
 			entityCache.removeResult(
 				entityCacheEnabled, AccountRoleImpl.class,
-				accountRole.getPrimaryKey());
+				accountRole.getPrimaryKey(), accountRole, _columnBitmaskEnabled,
+				((AccountRoleModelImpl)accountRole).getColumnBitmask());
 
 			clearUniqueFindersCache((AccountRoleModelImpl)accountRole, true);
 		}
@@ -1924,7 +1927,9 @@ public class AccountRolePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, AccountRoleImpl.class,
-			accountRole.getPrimaryKey(), accountRole, false);
+			accountRole.getPrimaryKey(), accountRole, false,
+			_columnBitmaskEnabled,
+			((AccountRoleModelImpl)accountRole).getColumnBitmask());
 
 		clearUniqueFindersCache(accountRoleModelImpl, false);
 		cacheUniqueFindersCache(accountRoleModelImpl);

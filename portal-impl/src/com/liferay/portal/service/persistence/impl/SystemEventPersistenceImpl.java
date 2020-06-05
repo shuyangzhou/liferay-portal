@@ -2356,7 +2356,9 @@ public class SystemEventPersistenceImpl
 	public void cacheResult(SystemEvent systemEvent) {
 		EntityCacheUtil.putResult(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED, SystemEventImpl.class,
-			systemEvent.getPrimaryKey(), systemEvent);
+			systemEvent.getPrimaryKey(), systemEvent,
+			SystemEventModelImpl.COLUMN_BITMASK_ENABLED,
+			((SystemEventModelImpl)systemEvent).getColumnBitmask());
 
 		systemEvent.resetOriginalValues();
 	}
@@ -2409,7 +2411,9 @@ public class SystemEventPersistenceImpl
 	public void clearCache(SystemEvent systemEvent) {
 		EntityCacheUtil.removeResult(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED, SystemEventImpl.class,
-			systemEvent.getPrimaryKey());
+			systemEvent.getPrimaryKey(), systemEvent,
+			SystemEventModelImpl.COLUMN_BITMASK_ENABLED,
+			((SystemEventModelImpl)systemEvent).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2423,7 +2427,9 @@ public class SystemEventPersistenceImpl
 		for (SystemEvent systemEvent : systemEvents) {
 			EntityCacheUtil.removeResult(
 				SystemEventModelImpl.ENTITY_CACHE_ENABLED,
-				SystemEventImpl.class, systemEvent.getPrimaryKey());
+				SystemEventImpl.class, systemEvent.getPrimaryKey(), systemEvent,
+				SystemEventModelImpl.COLUMN_BITMASK_ENABLED,
+				((SystemEventModelImpl)systemEvent).getColumnBitmask());
 		}
 	}
 
@@ -2733,7 +2739,9 @@ public class SystemEventPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED, SystemEventImpl.class,
-			systemEvent.getPrimaryKey(), systemEvent, false);
+			systemEvent.getPrimaryKey(), systemEvent, false,
+			SystemEventModelImpl.COLUMN_BITMASK_ENABLED,
+			((SystemEventModelImpl)systemEvent).getColumnBitmask());
 
 		systemEvent.resetOriginalValues();
 

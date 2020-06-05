@@ -2518,7 +2518,10 @@ public class ChangesetCollectionPersistenceImpl
 	public void cacheResult(ChangesetCollection changesetCollection) {
 		entityCache.putResult(
 			entityCacheEnabled, ChangesetCollectionImpl.class,
-			changesetCollection.getPrimaryKey(), changesetCollection);
+			changesetCollection.getPrimaryKey(), changesetCollection,
+			_columnBitmaskEnabled,
+			((ChangesetCollectionModelImpl)changesetCollection).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByG_N,
@@ -2577,7 +2580,10 @@ public class ChangesetCollectionPersistenceImpl
 	public void clearCache(ChangesetCollection changesetCollection) {
 		entityCache.removeResult(
 			entityCacheEnabled, ChangesetCollectionImpl.class,
-			changesetCollection.getPrimaryKey());
+			changesetCollection.getPrimaryKey(), changesetCollection,
+			_columnBitmaskEnabled,
+			((ChangesetCollectionModelImpl)changesetCollection).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2594,7 +2600,10 @@ public class ChangesetCollectionPersistenceImpl
 		for (ChangesetCollection changesetCollection : changesetCollections) {
 			entityCache.removeResult(
 				entityCacheEnabled, ChangesetCollectionImpl.class,
-				changesetCollection.getPrimaryKey());
+				changesetCollection.getPrimaryKey(), changesetCollection,
+				_columnBitmaskEnabled,
+				((ChangesetCollectionModelImpl)changesetCollection).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(ChangesetCollectionModelImpl)changesetCollection, true);
@@ -2966,7 +2975,10 @@ public class ChangesetCollectionPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, ChangesetCollectionImpl.class,
-			changesetCollection.getPrimaryKey(), changesetCollection, false);
+			changesetCollection.getPrimaryKey(), changesetCollection, false,
+			_columnBitmaskEnabled,
+			((ChangesetCollectionModelImpl)changesetCollection).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(changesetCollectionModelImpl, false);
 		cacheUniqueFindersCache(changesetCollectionModelImpl);

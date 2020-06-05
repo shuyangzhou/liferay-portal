@@ -6369,7 +6369,8 @@ public class SocialActivityPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityImpl.class, socialActivity.getPrimaryKey(),
-			socialActivity);
+			socialActivity, SocialActivityModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityModelImpl)socialActivity).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByMirrorActivityId,
@@ -6443,7 +6444,9 @@ public class SocialActivityPersistenceImpl
 	public void clearCache(SocialActivity socialActivity) {
 		EntityCacheUtil.removeResult(
 			SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
-			SocialActivityImpl.class, socialActivity.getPrimaryKey());
+			SocialActivityImpl.class, socialActivity.getPrimaryKey(),
+			socialActivity, SocialActivityModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityModelImpl)socialActivity).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -6459,7 +6462,9 @@ public class SocialActivityPersistenceImpl
 		for (SocialActivity socialActivity : socialActivities) {
 			EntityCacheUtil.removeResult(
 				SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityImpl.class, socialActivity.getPrimaryKey());
+				SocialActivityImpl.class, socialActivity.getPrimaryKey(),
+				socialActivity, SocialActivityModelImpl.COLUMN_BITMASK_ENABLED,
+				((SocialActivityModelImpl)socialActivity).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(SocialActivityModelImpl)socialActivity, true);
@@ -7069,7 +7074,9 @@ public class SocialActivityPersistenceImpl
 		EntityCacheUtil.putResult(
 			SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
 			SocialActivityImpl.class, socialActivity.getPrimaryKey(),
-			socialActivity, false);
+			socialActivity, false,
+			SocialActivityModelImpl.COLUMN_BITMASK_ENABLED,
+			((SocialActivityModelImpl)socialActivity).getColumnBitmask());
 
 		clearUniqueFindersCache(socialActivityModelImpl, false);
 		cacheUniqueFindersCache(socialActivityModelImpl);

@@ -1405,7 +1405,9 @@ public class AccountEntryOrganizationRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AccountEntryOrganizationRelImpl.class,
 			accountEntryOrganizationRel.getPrimaryKey(),
-			accountEntryOrganizationRel);
+			accountEntryOrganizationRel, _columnBitmaskEnabled,
+			((AccountEntryOrganizationRelModelImpl)accountEntryOrganizationRel).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByA_O,
@@ -1471,7 +1473,10 @@ public class AccountEntryOrganizationRelPersistenceImpl
 
 		entityCache.removeResult(
 			entityCacheEnabled, AccountEntryOrganizationRelImpl.class,
-			accountEntryOrganizationRel.getPrimaryKey());
+			accountEntryOrganizationRel.getPrimaryKey(),
+			accountEntryOrganizationRel, _columnBitmaskEnabled,
+			((AccountEntryOrganizationRelModelImpl)accountEntryOrganizationRel).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1493,7 +1498,10 @@ public class AccountEntryOrganizationRelPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, AccountEntryOrganizationRelImpl.class,
-				accountEntryOrganizationRel.getPrimaryKey());
+				accountEntryOrganizationRel.getPrimaryKey(),
+				accountEntryOrganizationRel, _columnBitmaskEnabled,
+				((AccountEntryOrganizationRelModelImpl)
+					accountEntryOrganizationRel).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AccountEntryOrganizationRelModelImpl)
@@ -1808,7 +1816,9 @@ public class AccountEntryOrganizationRelPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, AccountEntryOrganizationRelImpl.class,
 			accountEntryOrganizationRel.getPrimaryKey(),
-			accountEntryOrganizationRel, false);
+			accountEntryOrganizationRel, false, _columnBitmaskEnabled,
+			((AccountEntryOrganizationRelModelImpl)accountEntryOrganizationRel).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(accountEntryOrganizationRelModelImpl, false);
 		cacheUniqueFindersCache(accountEntryOrganizationRelModelImpl);

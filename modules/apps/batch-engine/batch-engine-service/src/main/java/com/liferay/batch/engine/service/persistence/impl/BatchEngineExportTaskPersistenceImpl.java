@@ -1817,7 +1817,10 @@ public class BatchEngineExportTaskPersistenceImpl
 	public void cacheResult(BatchEngineExportTask batchEngineExportTask) {
 		entityCache.putResult(
 			entityCacheEnabled, BatchEngineExportTaskImpl.class,
-			batchEngineExportTask.getPrimaryKey(), batchEngineExportTask);
+			batchEngineExportTask.getPrimaryKey(), batchEngineExportTask,
+			_columnBitmaskEnabled,
+			((BatchEngineExportTaskModelImpl)batchEngineExportTask).
+				getColumnBitmask());
 
 		batchEngineExportTask.resetOriginalValues();
 	}
@@ -1873,7 +1876,10 @@ public class BatchEngineExportTaskPersistenceImpl
 	public void clearCache(BatchEngineExportTask batchEngineExportTask) {
 		entityCache.removeResult(
 			entityCacheEnabled, BatchEngineExportTaskImpl.class,
-			batchEngineExportTask.getPrimaryKey());
+			batchEngineExportTask.getPrimaryKey(), batchEngineExportTask,
+			_columnBitmaskEnabled,
+			((BatchEngineExportTaskModelImpl)batchEngineExportTask).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1889,7 +1895,10 @@ public class BatchEngineExportTaskPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, BatchEngineExportTaskImpl.class,
-				batchEngineExportTask.getPrimaryKey());
+				batchEngineExportTask.getPrimaryKey(), batchEngineExportTask,
+				_columnBitmaskEnabled,
+				((BatchEngineExportTaskModelImpl)batchEngineExportTask).
+					getColumnBitmask());
 		}
 	}
 
@@ -2204,8 +2213,10 @@ public class BatchEngineExportTaskPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, BatchEngineExportTaskImpl.class,
-			batchEngineExportTask.getPrimaryKey(), batchEngineExportTask,
-			false);
+			batchEngineExportTask.getPrimaryKey(), batchEngineExportTask, false,
+			_columnBitmaskEnabled,
+			((BatchEngineExportTaskModelImpl)batchEngineExportTask).
+				getColumnBitmask());
 
 		batchEngineExportTask.resetOriginalValues();
 

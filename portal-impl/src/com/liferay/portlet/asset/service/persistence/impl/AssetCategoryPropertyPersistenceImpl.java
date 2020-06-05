@@ -2067,7 +2067,10 @@ public class AssetCategoryPropertyPersistenceImpl
 		EntityCacheUtil.putResult(
 			AssetCategoryPropertyModelImpl.ENTITY_CACHE_ENABLED,
 			AssetCategoryPropertyImpl.class,
-			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty);
+			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
+			AssetCategoryPropertyModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByCA_K,
@@ -2139,7 +2142,10 @@ public class AssetCategoryPropertyPersistenceImpl
 		EntityCacheUtil.removeResult(
 			AssetCategoryPropertyModelImpl.ENTITY_CACHE_ENABLED,
 			AssetCategoryPropertyImpl.class,
-			assetCategoryProperty.getPrimaryKey());
+			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
+			AssetCategoryPropertyModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2161,7 +2167,10 @@ public class AssetCategoryPropertyPersistenceImpl
 			EntityCacheUtil.removeResult(
 				AssetCategoryPropertyModelImpl.ENTITY_CACHE_ENABLED,
 				AssetCategoryPropertyImpl.class,
-				assetCategoryProperty.getPrimaryKey());
+				assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
+				AssetCategoryPropertyModelImpl.COLUMN_BITMASK_ENABLED,
+				((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(AssetCategoryPropertyModelImpl)assetCategoryProperty, true);
@@ -2536,8 +2545,10 @@ public class AssetCategoryPropertyPersistenceImpl
 		EntityCacheUtil.putResult(
 			AssetCategoryPropertyModelImpl.ENTITY_CACHE_ENABLED,
 			AssetCategoryPropertyImpl.class,
-			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty,
-			false);
+			assetCategoryProperty.getPrimaryKey(), assetCategoryProperty, false,
+			AssetCategoryPropertyModelImpl.COLUMN_BITMASK_ENABLED,
+			((AssetCategoryPropertyModelImpl)assetCategoryProperty).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(assetCategoryPropertyModelImpl, false);
 		cacheUniqueFindersCache(assetCategoryPropertyModelImpl);

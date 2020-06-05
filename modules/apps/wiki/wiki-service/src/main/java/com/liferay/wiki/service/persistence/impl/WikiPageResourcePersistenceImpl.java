@@ -1751,7 +1751,9 @@ public class WikiPageResourcePersistenceImpl
 	public void cacheResult(WikiPageResource wikiPageResource) {
 		entityCache.putResult(
 			entityCacheEnabled, WikiPageResourceImpl.class,
-			wikiPageResource.getPrimaryKey(), wikiPageResource);
+			wikiPageResource.getPrimaryKey(), wikiPageResource,
+			_columnBitmaskEnabled,
+			((WikiPageResourceModelImpl)wikiPageResource).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -1817,7 +1819,9 @@ public class WikiPageResourcePersistenceImpl
 	public void clearCache(WikiPageResource wikiPageResource) {
 		entityCache.removeResult(
 			entityCacheEnabled, WikiPageResourceImpl.class,
-			wikiPageResource.getPrimaryKey());
+			wikiPageResource.getPrimaryKey(), wikiPageResource,
+			_columnBitmaskEnabled,
+			((WikiPageResourceModelImpl)wikiPageResource).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1834,7 +1838,10 @@ public class WikiPageResourcePersistenceImpl
 		for (WikiPageResource wikiPageResource : wikiPageResources) {
 			entityCache.removeResult(
 				entityCacheEnabled, WikiPageResourceImpl.class,
-				wikiPageResource.getPrimaryKey());
+				wikiPageResource.getPrimaryKey(), wikiPageResource,
+				_columnBitmaskEnabled,
+				((WikiPageResourceModelImpl)wikiPageResource).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(WikiPageResourceModelImpl)wikiPageResource, true);
@@ -2157,7 +2164,9 @@ public class WikiPageResourcePersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, WikiPageResourceImpl.class,
-			wikiPageResource.getPrimaryKey(), wikiPageResource, false);
+			wikiPageResource.getPrimaryKey(), wikiPageResource, false,
+			_columnBitmaskEnabled,
+			((WikiPageResourceModelImpl)wikiPageResource).getColumnBitmask());
 
 		clearUniqueFindersCache(wikiPageResourceModelImpl, false);
 		cacheUniqueFindersCache(wikiPageResourceModelImpl);

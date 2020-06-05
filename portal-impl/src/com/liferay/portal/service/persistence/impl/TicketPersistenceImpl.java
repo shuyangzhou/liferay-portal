@@ -1554,7 +1554,9 @@ public class TicketPersistenceImpl
 	public void cacheResult(Ticket ticket) {
 		EntityCacheUtil.putResult(
 			TicketModelImpl.ENTITY_CACHE_ENABLED, TicketImpl.class,
-			ticket.getPrimaryKey(), ticket);
+			ticket.getPrimaryKey(), ticket,
+			TicketModelImpl.COLUMN_BITMASK_ENABLED,
+			((TicketModelImpl)ticket).getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByKey, new Object[] {ticket.getKey()}, ticket);
@@ -1609,7 +1611,9 @@ public class TicketPersistenceImpl
 	public void clearCache(Ticket ticket) {
 		EntityCacheUtil.removeResult(
 			TicketModelImpl.ENTITY_CACHE_ENABLED, TicketImpl.class,
-			ticket.getPrimaryKey());
+			ticket.getPrimaryKey(), ticket,
+			TicketModelImpl.COLUMN_BITMASK_ENABLED,
+			((TicketModelImpl)ticket).getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1625,7 +1629,9 @@ public class TicketPersistenceImpl
 		for (Ticket ticket : tickets) {
 			EntityCacheUtil.removeResult(
 				TicketModelImpl.ENTITY_CACHE_ENABLED, TicketImpl.class,
-				ticket.getPrimaryKey());
+				ticket.getPrimaryKey(), ticket,
+				TicketModelImpl.COLUMN_BITMASK_ENABLED,
+				((TicketModelImpl)ticket).getColumnBitmask());
 
 			clearUniqueFindersCache((TicketModelImpl)ticket, true);
 		}
@@ -1899,7 +1905,9 @@ public class TicketPersistenceImpl
 
 		EntityCacheUtil.putResult(
 			TicketModelImpl.ENTITY_CACHE_ENABLED, TicketImpl.class,
-			ticket.getPrimaryKey(), ticket, false);
+			ticket.getPrimaryKey(), ticket, false,
+			TicketModelImpl.COLUMN_BITMASK_ENABLED,
+			((TicketModelImpl)ticket).getColumnBitmask());
 
 		clearUniqueFindersCache(ticketModelImpl, false);
 		cacheUniqueFindersCache(ticketModelImpl);

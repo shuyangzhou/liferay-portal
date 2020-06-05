@@ -151,7 +151,8 @@ public class RSVEntryPersistenceImpl
 	@Override
 	public void clearCache(RSVEntry rsvEntry) {
 		entityCache.removeResult(
-			entityCacheEnabled, RSVEntryImpl.class, rsvEntry.getPrimaryKey());
+			entityCacheEnabled, RSVEntryImpl.class, rsvEntry.getPrimaryKey(),
+			rsvEntry);
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -165,7 +166,7 @@ public class RSVEntryPersistenceImpl
 		for (RSVEntry rsvEntry : rsvEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, RSVEntryImpl.class,
-				rsvEntry.getPrimaryKey());
+				rsvEntry.getPrimaryKey(), rsvEntry);
 		}
 	}
 

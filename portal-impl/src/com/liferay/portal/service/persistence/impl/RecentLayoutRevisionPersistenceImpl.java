@@ -1890,7 +1890,10 @@ public class RecentLayoutRevisionPersistenceImpl
 		EntityCacheUtil.putResult(
 			RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
 			RecentLayoutRevisionImpl.class,
-			recentLayoutRevision.getPrimaryKey(), recentLayoutRevision);
+			recentLayoutRevision.getPrimaryKey(), recentLayoutRevision,
+			RecentLayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+			((RecentLayoutRevisionModelImpl)recentLayoutRevision).
+				getColumnBitmask());
 
 		FinderCacheUtil.putResult(
 			_finderPathFetchByU_L_P,
@@ -1955,7 +1958,10 @@ public class RecentLayoutRevisionPersistenceImpl
 		EntityCacheUtil.removeResult(
 			RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
 			RecentLayoutRevisionImpl.class,
-			recentLayoutRevision.getPrimaryKey());
+			recentLayoutRevision.getPrimaryKey(), recentLayoutRevision,
+			RecentLayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+			((RecentLayoutRevisionModelImpl)recentLayoutRevision).
+				getColumnBitmask());
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1975,7 +1981,10 @@ public class RecentLayoutRevisionPersistenceImpl
 			EntityCacheUtil.removeResult(
 				RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
 				RecentLayoutRevisionImpl.class,
-				recentLayoutRevision.getPrimaryKey());
+				recentLayoutRevision.getPrimaryKey(), recentLayoutRevision,
+				RecentLayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+				((RecentLayoutRevisionModelImpl)recentLayoutRevision).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(RecentLayoutRevisionModelImpl)recentLayoutRevision, true);
@@ -2299,7 +2308,10 @@ public class RecentLayoutRevisionPersistenceImpl
 		EntityCacheUtil.putResult(
 			RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
 			RecentLayoutRevisionImpl.class,
-			recentLayoutRevision.getPrimaryKey(), recentLayoutRevision, false);
+			recentLayoutRevision.getPrimaryKey(), recentLayoutRevision, false,
+			RecentLayoutRevisionModelImpl.COLUMN_BITMASK_ENABLED,
+			((RecentLayoutRevisionModelImpl)recentLayoutRevision).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(recentLayoutRevisionModelImpl, false);
 		cacheUniqueFindersCache(recentLayoutRevisionModelImpl);

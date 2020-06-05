@@ -3827,7 +3827,10 @@ public class DDMFormInstanceRecordPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceRecordImpl.class,
-			ddmFormInstanceRecord.getPrimaryKey(), ddmFormInstanceRecord);
+			ddmFormInstanceRecord.getPrimaryKey(), ddmFormInstanceRecord,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceRecordModelImpl)ddmFormInstanceRecord).
+				getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
@@ -3897,7 +3900,10 @@ public class DDMFormInstanceRecordPersistenceImpl
 	public void clearCache(DDMFormInstanceRecord ddmFormInstanceRecord) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMFormInstanceRecordImpl.class,
-			ddmFormInstanceRecord.getPrimaryKey());
+			ddmFormInstanceRecord.getPrimaryKey(), ddmFormInstanceRecord,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceRecordModelImpl)ddmFormInstanceRecord).
+				getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -3916,7 +3922,10 @@ public class DDMFormInstanceRecordPersistenceImpl
 
 			entityCache.removeResult(
 				entityCacheEnabled, DDMFormInstanceRecordImpl.class,
-				ddmFormInstanceRecord.getPrimaryKey());
+				ddmFormInstanceRecord.getPrimaryKey(), ddmFormInstanceRecord,
+				_columnBitmaskEnabled,
+				((DDMFormInstanceRecordModelImpl)ddmFormInstanceRecord).
+					getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(DDMFormInstanceRecordModelImpl)ddmFormInstanceRecord, true);
@@ -4388,8 +4397,10 @@ public class DDMFormInstanceRecordPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceRecordImpl.class,
-			ddmFormInstanceRecord.getPrimaryKey(), ddmFormInstanceRecord,
-			false);
+			ddmFormInstanceRecord.getPrimaryKey(), ddmFormInstanceRecord, false,
+			_columnBitmaskEnabled,
+			((DDMFormInstanceRecordModelImpl)ddmFormInstanceRecord).
+				getColumnBitmask());
 
 		clearUniqueFindersCache(ddmFormInstanceRecordModelImpl, false);
 		cacheUniqueFindersCache(ddmFormInstanceRecordModelImpl);

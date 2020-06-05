@@ -1690,7 +1690,8 @@ public class MemberRequestPersistenceImpl
 	public void cacheResult(MemberRequest memberRequest) {
 		entityCache.putResult(
 			entityCacheEnabled, MemberRequestImpl.class,
-			memberRequest.getPrimaryKey(), memberRequest);
+			memberRequest.getPrimaryKey(), memberRequest, _columnBitmaskEnabled,
+			((MemberRequestModelImpl)memberRequest).getColumnBitmask());
 
 		finderCache.putResult(
 			_finderPathFetchByKey, new Object[] {memberRequest.getKey()},
@@ -1754,7 +1755,8 @@ public class MemberRequestPersistenceImpl
 	public void clearCache(MemberRequest memberRequest) {
 		entityCache.removeResult(
 			entityCacheEnabled, MemberRequestImpl.class,
-			memberRequest.getPrimaryKey());
+			memberRequest.getPrimaryKey(), memberRequest, _columnBitmaskEnabled,
+			((MemberRequestModelImpl)memberRequest).getColumnBitmask());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1770,7 +1772,9 @@ public class MemberRequestPersistenceImpl
 		for (MemberRequest memberRequest : memberRequests) {
 			entityCache.removeResult(
 				entityCacheEnabled, MemberRequestImpl.class,
-				memberRequest.getPrimaryKey());
+				memberRequest.getPrimaryKey(), memberRequest,
+				_columnBitmaskEnabled,
+				((MemberRequestModelImpl)memberRequest).getColumnBitmask());
 
 			clearUniqueFindersCache(
 				(MemberRequestModelImpl)memberRequest, true);
@@ -2106,7 +2110,9 @@ public class MemberRequestPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, MemberRequestImpl.class,
-			memberRequest.getPrimaryKey(), memberRequest, false);
+			memberRequest.getPrimaryKey(), memberRequest, false,
+			_columnBitmaskEnabled,
+			((MemberRequestModelImpl)memberRequest).getColumnBitmask());
 
 		clearUniqueFindersCache(memberRequestModelImpl, false);
 		cacheUniqueFindersCache(memberRequestModelImpl);
