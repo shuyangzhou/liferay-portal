@@ -218,6 +218,10 @@ public class ResourceActionsUtil {
 			portletResource, modelResource);
 	}
 
+	public static ResourceActionsBag getResourceActionsBag(String name) {
+		return getResourceActions().getResourceActionsBag(name);
+	}
+
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
