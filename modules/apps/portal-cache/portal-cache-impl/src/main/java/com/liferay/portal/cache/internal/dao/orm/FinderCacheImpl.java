@@ -14,6 +14,8 @@
 
 package com.liferay.portal.cache.internal.dao.orm;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
@@ -47,8 +49,10 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.collections.map.LRUMap;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -291,7 +295,7 @@ public class FinderCacheImpl
 
 	@Activate
 	@Modified
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_valueObjectFinderCacheEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_ENABLED));
 		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
@@ -318,10 +322,23 @@ public class FinderCacheImpl
 			portalCacheManager = _multiVMPool.getPortalCacheManager();
 
 		portalCacheManager.registerPortalCacheManagerListener(this);
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
+			bundleContext, FinderPath.class, "cache.name");
+
+		EntityCacheImpl entityCacheImpl = (EntityCacheImpl)_entityCache;
+
+		entityCacheImpl.setEntityCacheListener(
+			new EntityCacheListener(this, _serviceTrackerMap));
 	}
 
-	@Reference(unbind = "-")
-	protected void setEntityCache(EntityCache entityCache) {
+	@Deactivate
+	protected void deactivate() {
+		EntityCacheImpl entityCacheImpl = (EntityCacheImpl)_entityCache;
+
+		entityCacheImpl.setEntityCacheListener(null);
+
+		_serviceTrackerMap.close();
 	}
 
 	@Reference(unbind = "-")
@@ -387,11 +404,15 @@ public class FinderCacheImpl
 	private static final String _GROUP_KEY_PREFIX =
 		FinderCache.class.getName() + StringPool.PERIOD;
 
+	@Reference
+	private EntityCache _entityCache;
+
 	private ThreadLocal<LRUMap> _localCache;
 	private MultiVMPool _multiVMPool;
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
 		_portalCaches = new ConcurrentHashMap<>();
 	private Props _props;
+	private ServiceTrackerMap<String, List<FinderPath>> _serviceTrackerMap;
 	private boolean _valueObjectFinderCacheEnabled;
 	private int _valueObjectFinderCacheListThreshold;
 

@@ -62,6 +62,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void clearCache() {
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if (entityCacheListener != null) {
+			entityCacheListener.clearCache();
+		}
+
 		clearLocalCache();
 
 		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
@@ -71,6 +77,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void clearCache(Class<?> clazz) {
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if (entityCacheListener != null) {
+			entityCacheListener.clearCache(clazz);
+		}
+
 		clearLocalCache();
 
 		PortalCache<?, ?> portalCache = getPortalCache(clazz);
@@ -87,6 +99,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void dispose() {
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if (entityCacheListener != null) {
+			entityCacheListener.clearCache();
+		}
+
 		_portalCaches.clear();
 	}
 
@@ -279,10 +297,19 @@ public class EntityCacheImpl
 
 	@Override
 	public void notifyPortalCacheRemoved(String portalCacheName) {
+		String cacheName = portalCacheName;
+
 		if (portalCacheName.startsWith(_GROUP_KEY_PREFIX)) {
-			_portalCaches.remove(
-				portalCacheName.substring(_GROUP_KEY_PREFIX.length()));
+			cacheName = portalCacheName.substring(_GROUP_KEY_PREFIX.length());
 		}
+
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if (entityCacheListener != null) {
+			entityCacheListener.removeCache(cacheName);
+		}
+
+		_portalCaches.remove(cacheName);
 	}
 
 	@Override
@@ -328,6 +355,13 @@ public class EntityCacheImpl
 			localCache.put(localCacheKey, result);
 		}
 
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if ((entityCacheListener != null) && (baseModel != result)) {
+			entityCacheListener.put(
+				clazz, baseModel, columnBitmaskEnabled, columnBitmask);
+		}
+
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
@@ -352,6 +386,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void removeCache(String className) {
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if (entityCacheListener != null) {
+			entityCacheListener.removeCache(className);
+		}
+
 		_portalCaches.remove(className);
 
 		String groupKey = _GROUP_KEY_PREFIX.concat(className);
@@ -394,10 +434,24 @@ public class EntityCacheImpl
 			localCache.remove(localCacheKey);
 		}
 
+		EntityCacheListener entityCacheListener = _entityCacheListener;
+
+		if (entityCacheListener != null) {
+			entityCacheListener.remove(
+				clazz, (BaseModel<?>)result, columnBitmaskEnabled,
+				columnBitmask);
+		}
+
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
 		portalCache.remove(primaryKey);
+	}
+
+	public void setEntityCacheListener(
+		EntityCacheListener entityCacheListener) {
+
+		_entityCacheListener = entityCacheListener;
 	}
 
 	@Activate
@@ -467,6 +521,7 @@ public class EntityCacheImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		EntityCacheImpl.class);
 
+	private volatile EntityCacheListener _entityCacheListener;
 	private ThreadLocal<LRUMap> _localCache;
 	private MultiVMPool _multiVMPool;
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
