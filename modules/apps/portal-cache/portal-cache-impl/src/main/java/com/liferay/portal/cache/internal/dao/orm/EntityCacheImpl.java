@@ -290,13 +290,24 @@ public class EntityCacheImpl
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result) {
 
-		putResult(entityCacheEnabled, clazz, primaryKey, result, true);
+		putResult(
+			entityCacheEnabled, clazz, primaryKey, result, true, false, -1);
 	}
 
 	@Override
 	public void putResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result, boolean quiet) {
+
+		putResult(
+			entityCacheEnabled, clazz, primaryKey, result, quiet, false, -1);
+	}
+
+	@Override
+	public void putResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, boolean quiet, boolean columnBitmaskEnabled,
+		long columnBitmask) {
 
 		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
 			!CacheRegistryUtil.isActive() || (result == null)) {
@@ -330,6 +341,16 @@ public class EntityCacheImpl
 	}
 
 	@Override
+	public void putResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, boolean columnBitmaskEnabled, long columnBitmask) {
+
+		putResult(
+			entityCacheEnabled, clazz, primaryKey, result, true,
+			columnBitmaskEnabled, columnBitmask);
+	}
+
+	@Override
 	public void removeCache(String className) {
 		_portalCaches.remove(className);
 
@@ -341,6 +362,22 @@ public class EntityCacheImpl
 	@Override
 	public void removeResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
+
+		removeResult(entityCacheEnabled, clazz, primaryKey, null, false, -1);
+	}
+
+	@Override
+	public void removeResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result) {
+
+		removeResult(entityCacheEnabled, clazz, primaryKey, result, false, -1);
+	}
+
+	@Override
+	public void removeResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, boolean columnBitmaskEnabled, long columnBitmask) {
 
 		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
 			!CacheRegistryUtil.isActive()) {
