@@ -128,6 +128,8 @@ public interface ResourceActions {
 	public List<String> getResourceActions(
 		String portletResource, String modelResource);
 
+	public ResourceActionsBag getResourceActionsBag(String name);
+
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
