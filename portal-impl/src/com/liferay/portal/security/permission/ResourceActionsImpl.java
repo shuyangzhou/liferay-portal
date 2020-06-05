@@ -211,7 +211,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		List<String> modelNames = new ArrayList<>();
 
 		for (String name : _resourceActionsBags.keySet()) {
-			if (name.indexOf(CharPool.PERIOD) != -1) {
+			if (_isModelName(name)) {
 				modelNames.add(name);
 			}
 		}
@@ -363,7 +363,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		List<String> portletNames = new ArrayList<>();
 
 		for (String name : _resourceActionsBags.keySet()) {
-			if (name.indexOf(CharPool.PERIOD) == -1) {
+			if (!_isModelName(name)) {
 				portletNames.add(name);
 			}
 		}
@@ -445,7 +445,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public List<String> getResourceActions(String name) {
-		if (name.indexOf(CharPool.PERIOD) != -1) {
+		if (_isModelName(name)) {
 			return getModelResourceActions(name);
 		}
 
@@ -922,6 +922,14 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		return types;
+	}
+
+	private boolean _isModelName(String name) {
+		if (name.indexOf(CharPool.PERIOD) != -1) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private String _normalizePortletName(
