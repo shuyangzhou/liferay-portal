@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -74,9 +75,12 @@ public class PanelAppMyAccountPermissions {
 
 		for (Portlet portlet : portlets) {
 			try {
-				List<String> actionIds =
-					ResourceActionsUtil.getPortletResourceActions(
+				ResourceActionsBag resourceActionsBag =
+					ResourceActionsUtil.getResourceActionsBag(
 						portlet.getRootPortletId());
+
+				List<String> actionIds =
+					resourceActionsBag.getSupportsActions();
 
 				_initPermissions(
 					companyId, portlet.getPortletId(),

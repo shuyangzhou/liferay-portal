@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 
@@ -44,14 +45,15 @@ public class ExportImportPermissionUtil {
 	public static Map<Long, Set<String>> getRoleIdsToActionIds(
 		long companyId, String resourceName, String resourcePK) {
 
-		List<String> existingActionIds =
-			ResourceActionsUtil.getModelResourceActions(resourceName);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(resourceName);
 
 		Map<Long, Set<String>> existingRoleIdsToActionIds = new HashMap<>();
 
 		try {
 			existingRoleIdsToActionIds = getRoleIdsToActionIds(
-				companyId, resourceName, resourcePK, existingActionIds);
+				companyId, resourceName, resourcePK,
+				resourceActionsBag.getSupportsActions());
 		}
 		catch (PortalException portalException) {
 

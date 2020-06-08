@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.security.permission.propagator;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionServiceUtil;
@@ -36,10 +37,10 @@ import javax.portlet.ActionRequest;
 public abstract class BasePermissionPropagator implements PermissionPropagator {
 
 	protected Set<String> getActionIds(String className) {
-		List<String> actionIds = ResourceActionsUtil.getModelResourceActions(
-			className);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(className);
 
-		return SetUtil.fromCollection(actionIds);
+		return SetUtil.fromCollection(resourceActionsBag.getSupportsActions());
 	}
 
 	protected Set<String> getAvailableActionIds(

@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -979,23 +980,24 @@ public class MainServlet extends HttpServlet {
 
 	private void _initResourceActions(List<Portlet> portlets) throws Exception {
 		for (Portlet portlet : portlets) {
-			List<String> portletActions =
-				ResourceActionsUtil.getPortletResourceActions(
+			ResourceActionsBag portletResourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(
 					portlet.getPortletId());
 
 			ResourceActionLocalServiceUtil.checkResourceActions(
-				portlet.getPortletId(), portletActions);
+				portlet.getPortletId(),
+				portletResourceActionsBag.getSupportsActions());
 
 			List<String> modelNames =
 				ResourceActionsUtil.getPortletModelResources(
 					portlet.getPortletId());
 
 			for (String modelName : modelNames) {
-				List<String> modelActions =
-					ResourceActionsUtil.getModelResourceActions(modelName);
+				ResourceActionsBag modelResourceActionsBag =
+					ResourceActionsUtil.getResourceActionsBag(modelName);
 
 				ResourceActionLocalServiceUtil.checkResourceActions(
-					modelName, modelActions);
+					modelName, modelResourceActionsBag.getSupportsActions());
 			}
 		}
 	}

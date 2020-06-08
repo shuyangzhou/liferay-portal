@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -127,8 +128,10 @@ public abstract class BasePersonalMenuEntry implements PersonalMenuEntry {
 			PermissionChecker permissionChecker, Portlet portlet)
 		throws Exception {
 
-		List<String> actions = ResourceActionsUtil.getResourceActions(
-			portlet.getPortletId());
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(portlet.getPortletId());
+
+		List<String> actions = resourceActionsBag.getSupportsActions();
 
 		if (actions.contains(ActionKeys.ACCESS_IN_CONTROL_PANEL) &&
 			PortletPermissionUtil.contains(

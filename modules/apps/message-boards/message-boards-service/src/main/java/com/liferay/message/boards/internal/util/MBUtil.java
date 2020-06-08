@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.ThemeConstants;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -56,15 +56,17 @@ public class MBUtil {
 		Role guestRole = RoleLocalServiceUtil.getRole(
 			companyId, RoleConstants.GUEST);
 
-		List<String> actionIds = ResourceActionsUtil.getModelResourceActions(
-			MBMessage.class.getName());
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(
+				MBMessage.class.getName());
 
 		Map<Long, Set<String>> roleIdsToActionIds =
 			ResourcePermissionLocalServiceUtil.
 				getAvailableResourcePermissionActionIds(
 					companyId, MBMessage.class.getName(),
 					ResourceConstants.SCOPE_INDIVIDUAL,
-					String.valueOf(parentMessage.getMessageId()), actionIds);
+					String.valueOf(parentMessage.getMessageId()),
+					resourceActionsBag.getSupportsActions());
 
 		String[] groupPermissions = _getRolePermissions(
 			defaultGroupRole, roleIdsToActionIds);

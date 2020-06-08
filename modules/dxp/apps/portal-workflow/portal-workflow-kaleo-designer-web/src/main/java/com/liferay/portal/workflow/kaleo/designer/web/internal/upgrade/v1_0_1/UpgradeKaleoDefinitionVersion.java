@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -180,11 +181,11 @@ public class UpgradeKaleoDefinitionVersion extends UpgradeProcess {
 			KaleoDesignerPortletKeys.KALEO_DESIGNER);
 
 		for (String modelName : modelNames) {
-			List<String> modelActions =
-				_resourceActions.getModelResourceActions(modelName);
+			ResourceActionsBag resourceActionsBag =
+				_resourceActions.getResourceActionsBag(modelName);
 
 			_resourceActionLocalService.checkResourceActions(
-				modelName, modelActions);
+				modelName, resourceActionsBag.getSupportsActions());
 		}
 	}
 

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -131,15 +132,18 @@ public class ModelPermissionsFactory {
 
 		ModelPermissions modelPermissions = new ModelPermissions(className);
 
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(className);
+
 		List<String> modelResourceGroupDefaultActions =
-			ResourceActionsUtil.getModelResourceGroupDefaultActions(className);
+			resourceActionsBag.getGroupDefaultActions();
 
 		modelPermissions.addRolePermissions(
 			RoleConstants.PLACEHOLDER_DEFAULT_GROUP_ROLE,
 			modelResourceGroupDefaultActions.toArray(new String[0]));
 
 		List<String> modelResourceGuestDefaultActions =
-			ResourceActionsUtil.getModelResourceGuestDefaultActions(className);
+			resourceActionsBag.getGuestDefaultActions();
 
 		modelPermissions.addRolePermissions(
 			RoleConstants.GUEST,

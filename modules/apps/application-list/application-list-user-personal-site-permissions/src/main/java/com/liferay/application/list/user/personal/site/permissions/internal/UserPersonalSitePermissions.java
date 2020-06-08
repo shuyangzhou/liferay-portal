@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -173,8 +174,11 @@ public class UserPersonalSitePermissions {
 			primaryKey);
 
 		if (count == 0) {
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(rootPortletId);
+
 			List<String> portletActionIds =
-				ResourceActionsUtil.getPortletResourceActions(rootPortletId);
+				resourceActionsBag.getSupportsActions();
 
 			_resourcePermissionLocalService.setResourcePermissions(
 				companyId, rootPortletId, ResourceConstants.SCOPE_GROUP,
@@ -193,8 +197,11 @@ public class UserPersonalSitePermissions {
 			companyId, modelName, ResourceConstants.SCOPE_GROUP, primaryKey);
 
 		if (count == 0) {
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(modelName);
+
 			List<String> modelActionIds =
-				ResourceActionsUtil.getModelResourceActions(modelName);
+				resourceActionsBag.getSupportsActions();
 
 			_resourcePermissionLocalService.setResourcePermissions(
 				companyId, modelName, ResourceConstants.SCOPE_GROUP,

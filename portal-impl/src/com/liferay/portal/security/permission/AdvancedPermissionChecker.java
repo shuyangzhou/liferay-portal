@@ -15,7 +15,6 @@
 package com.liferay.portal.security.permission;
 
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.internal.security.permission.contributor.RoleCollectionImpl;
 import com.liferay.portal.kernel.exception.NoSuchResourcePermissionException;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.security.permission.UserBagFactoryUtil;
@@ -154,18 +154,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		if (ownerIsDefaultUser) {
-			List<String> guestUnsupportedActions;
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(name);
 
-			if (name.indexOf(CharPool.PERIOD) != -1) {
-				guestUnsupportedActions =
-					ResourceActionsUtil.getModelResourceGuestUnsupportedActions(
-						name);
-			}
-			else {
-				guestUnsupportedActions =
-					ResourceActionsUtil.
-						getPortletResourceGuestUnsupportedActions(name);
-			}
+			List<String> guestUnsupportedActions =
+				resourceActionsBag.getGuestUnsupportedActions();
 
 			if (guestUnsupportedActions.contains(actionId)) {
 				return false;
@@ -1279,36 +1272,20 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	private boolean _hasGuestPermission(
 		Group group, String name, String primKey, String actionId) {
 
-		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
-			name);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(name);
+
+		List<String> resourceActions = resourceActionsBag.getSupportsActions();
 
 		if (!resourceActions.contains(actionId)) {
 			return false;
 		}
 
-		if (name.indexOf(CharPool.PERIOD) != -1) {
+		List<String> guestUnsupportedActions =
+			resourceActionsBag.getGuestUnsupportedActions();
 
-			// Check unsupported model actions
-
-			List<String> actions =
-				ResourceActionsUtil.getModelResourceGuestUnsupportedActions(
-					name);
-
-			if (actions.contains(actionId)) {
-				return false;
-			}
-		}
-		else {
-
-			// Check unsupported portlet actions
-
-			List<String> actions =
-				ResourceActionsUtil.getPortletResourceGuestUnsupportedActions(
-					name);
-
-			if (actions.contains(actionId)) {
-				return false;
-			}
+		if (guestUnsupportedActions.contains(actionId)) {
+			return false;
 		}
 
 		long companyId = user.getCompanyId();

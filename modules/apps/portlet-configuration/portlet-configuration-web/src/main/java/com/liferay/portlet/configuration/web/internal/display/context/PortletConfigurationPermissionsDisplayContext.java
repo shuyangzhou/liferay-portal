@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -120,8 +121,16 @@ public class PortletConfigurationPermissionsDisplayContext {
 			return _actions;
 		}
 
-		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
-			_getPortletResource(), getModelResource());
+		String resourceName = getModelResource();
+
+		if (Validator.isNull(resourceName)) {
+			resourceName = _getPortletResource();
+		}
+
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(resourceName);
+
+		List<String> resourceActions = resourceActionsBag.getSupportsActions();
 
 		if (Objects.equals(getModelResource(), Group.class.getName())) {
 			long modelResourceGroupId = GetterUtil.getLong(

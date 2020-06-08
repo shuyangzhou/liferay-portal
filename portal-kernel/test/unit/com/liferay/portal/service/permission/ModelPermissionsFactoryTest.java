@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleWrapper;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceWrapper;
@@ -28,9 +29,10 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -203,15 +205,22 @@ public class ModelPermissionsFactoryTest extends PowerMockito {
 		mockStatic(ResourceActionsUtil.class);
 
 		when(
-			ResourceActionsUtil.getModelResourceGroupDefaultActions(className)
+			ResourceActionsUtil.getResourceActionsBag(className)
 		).thenReturn(
-			Arrays.asList(ActionKeys.VIEW)
-		);
-
-		when(
-			ResourceActionsUtil.getModelResourceGuestDefaultActions(className)
-		).thenReturn(
-			Arrays.asList(ActionKeys.VIEW)
+			new ResourceActionsBag(
+				Collections.emptySet(),
+				new HashSet<String>() {
+					{
+						add(ActionKeys.VIEW);
+					}
+				},
+				new HashSet<String>() {
+					{
+						add(ActionKeys.VIEW);
+					}
+				},
+				Collections.emptySet(), Collections.emptySet(),
+				Collections.emptySet())
 		);
 
 		ModelPermissions modelPermissions = ModelPermissionsFactory.create(

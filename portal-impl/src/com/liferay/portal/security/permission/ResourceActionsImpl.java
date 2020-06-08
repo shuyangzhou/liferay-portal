@@ -113,7 +113,10 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public void check(String portletName) {
-		_check(portletName, getPortletResourceActions(portletName));
+		ResourceActionsBag portletResourceActionsBag =
+			_getPortletResourceActionsBag(portletName, null);
+
+		_check(portletName, portletResourceActionsBag.getSupportsActions());
 	}
 
 	/**
@@ -546,16 +549,28 @@ public class ResourceActionsImpl implements ResourceActions {
 		String portletResource, String modelResource) {
 
 		if (Validator.isNull(modelResource)) {
-			return getPortletResourceGuestUnsupportedActions(portletResource);
+			ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+				portletResource);
+
+			return resourceActionsBag.getGuestUnsupportedActions();
 		}
 		else if (Validator.isNull(portletResource)) {
-			return getModelResourceGuestUnsupportedActions(modelResource);
+			ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+				modelResource);
+
+			return resourceActionsBag.getGuestUnsupportedActions();
 		}
 		else if (_resourceActionsBags.containsKey(modelResource)) {
-			return getModelResourceGuestUnsupportedActions(modelResource);
+			ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+				modelResource);
+
+			return resourceActionsBag.getGuestUnsupportedActions();
 		}
 		else if (_resourceActionsBags.containsKey(portletResource)) {
-			return getPortletResourceGuestUnsupportedActions(portletResource);
+			ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+				portletResource);
+
+			return resourceActionsBag.getGuestUnsupportedActions();
 		}
 
 		return Collections.emptyList();
@@ -714,8 +729,11 @@ public class ResourceActionsImpl implements ResourceActions {
 			portletName, portletResourceActions);
 
 		for (String modelName : getPortletModelResources(portletName)) {
+			ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
+				modelName);
+
 			ResourceActionLocalServiceUtil.checkResourceActions(
-				modelName, getModelResourceActions(modelName));
+				modelName, modelResourceActionsBag.getSupportsActions());
 		}
 	}
 

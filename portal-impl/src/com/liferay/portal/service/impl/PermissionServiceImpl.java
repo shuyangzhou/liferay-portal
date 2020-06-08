@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
@@ -205,8 +206,11 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 					permissionChecker, team, ActionKeys.PERMISSIONS);
 			}
 			else {
+				ResourceActionsBag resourceActionsBag =
+					ResourceActionsUtil.getResourceActionsBag(name);
+
 				List<String> resourceActions =
-					ResourceActionsUtil.getResourceActions(name);
+					resourceActionsBag.getSupportsActions();
 
 				if (!resourceActions.contains(ActionKeys.DEFINE_PERMISSIONS) ||
 					!permissionChecker.hasPermission(

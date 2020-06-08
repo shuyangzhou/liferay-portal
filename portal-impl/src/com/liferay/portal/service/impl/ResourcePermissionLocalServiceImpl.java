@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandler;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandlerRegistryUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.SQLStateAcceptor;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -161,8 +162,11 @@ public class ResourcePermissionLocalServiceImpl
 			Role ownerRole = roleLocalService.getRole(
 				companyId, RoleConstants.OWNER);
 
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(name);
+
 			List<String> ownerActionIds =
-				ResourceActionsUtil.getModelResourceActions(name);
+				resourceActionsBag.getSupportsActions();
 
 			filterOwnerActions(name, ownerActionIds);
 
@@ -351,15 +355,13 @@ public class ResourcePermissionLocalServiceImpl
 
 		boolean modified = false;
 
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(name);
+
 		try {
-			List<String> actionIds = null;
+			List<String> actionIds = resourceActionsBag.getSupportsActions();
 
-			if (portletActions) {
-				actionIds = ResourceActionsUtil.getPortletResourceActions(name);
-			}
-			else {
-				actionIds = ResourceActionsUtil.getModelResourceActions(name);
-
+			if (!portletActions) {
 				filterOwnerActions(name, actionIds);
 			}
 
@@ -379,18 +381,8 @@ public class ResourcePermissionLocalServiceImpl
 			// Group permissions
 
 			if ((groupId > 0) && addGroupPermissions) {
-				List<String> actions = null;
-
-				if (portletActions) {
-					actions =
-						ResourceActionsUtil.
-							getPortletResourceGroupDefaultActions(name);
-				}
-				else {
-					actions =
-						ResourceActionsUtil.getModelResourceGroupDefaultActions(
-							name);
-				}
+				List<String> actions =
+					resourceActionsBag.getGroupDefaultActions();
 
 				Role groupRole = roleLocalService.getDefaultGroupRole(groupId);
 
@@ -412,18 +404,8 @@ public class ResourcePermissionLocalServiceImpl
 				// Don't add guest permissions when you've already added group
 				// permissions and the given group is the guest group.
 
-				List<String> actions = null;
-
-				if (portletActions) {
-					actions =
-						ResourceActionsUtil.
-							getPortletResourceGuestDefaultActions(name);
-				}
-				else {
-					actions =
-						ResourceActionsUtil.getModelResourceGuestDefaultActions(
-							name);
-				}
+				List<String> actions =
+					resourceActionsBag.getGuestDefaultActions();
 
 				Role guestRole = roleLocalService.getRole(
 					companyId, RoleConstants.GUEST);
@@ -1203,22 +1185,16 @@ public class ResourcePermissionLocalServiceImpl
 		Role siteMemberRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
 
-		List<String> guestPortletActions =
-			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
-				portlet.getRootPortletId());
-
-		List<String> ownerPortletActionIds =
-			ResourceActionsUtil.getPortletResourceActions(
-				portlet.getRootPortletId());
-
-		List<String> groupPortletActionIds =
-			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
+		ResourceActionsBag portletResourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(
 				portlet.getRootPortletId());
 
 		_initPortletDefaultPermissions(
 			portlet.getCompanyId(), portlet.getRootPortletId(), guestRole,
-			ownerRole, siteMemberRole, guestPortletActions,
-			ownerPortletActionIds, groupPortletActionIds);
+			ownerRole, siteMemberRole,
+			portletResourceActionsBag.getGuestDefaultActions(),
+			portletResourceActionsBag.getSupportsActions(),
+			portletResourceActionsBag.getGroupDefaultActions());
 
 		String rootModelResource =
 			ResourceActionsUtil.getPortletRootModelResource(
@@ -1235,26 +1211,24 @@ public class ResourcePermissionLocalServiceImpl
 
 			validate(modelResource, false);
 
+			ResourceActionsBag modelResourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(modelResource);
+
 			List<String> groupModelActionIds = null;
 
 			if (Objects.equals(rootModelResource, modelResource)) {
 				groupModelActionIds =
-					ResourceActionsUtil.getModelResourceGroupDefaultActions(
-						rootModelResource);
+					modelResourceActionsBag.getGroupDefaultActions();
 			}
 
-			List<String> guestModelActionIds =
-				ResourceActionsUtil.getModelResourceGuestDefaultActions(
-					modelResource);
-
-			List<String> ownerModelActionIds =
-				ResourceActionsUtil.getModelResourceActions(modelResource);
-
-			filterOwnerActions(modelResource, ownerModelActionIds);
+			filterOwnerActions(
+				modelResource, modelResourceActionsBag.getSupportsActions());
 
 			_initPortletDefaultPermissions(
 				portlet.getCompanyId(), modelResource, guestRole, ownerRole,
-				siteMemberRole, guestModelActionIds, ownerModelActionIds,
+				siteMemberRole,
+				modelResourceActionsBag.getGuestDefaultActions(),
+				modelResourceActionsBag.getSupportsActions(),
 				groupModelActionIds);
 		}
 	}
@@ -1320,14 +1294,16 @@ public class ResourcePermissionLocalServiceImpl
 
 		Role toRole = roleLocalService.getRole(toRoleId);
 
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(name);
+
 		List<String> actionIds = null;
 
 		if (toRole.getType() == RoleConstants.TYPE_REGULAR) {
-			actionIds = ResourceActionsUtil.getModelResourceActions(name);
+			actionIds = resourceActionsBag.getSupportsActions();
 		}
 		else {
-			actionIds = ResourceActionsUtil.getModelResourceGroupDefaultActions(
-				name);
+			actionIds = resourceActionsBag.getGroupDefaultActions();
 		}
 
 		setResourcePermissions(
@@ -1672,8 +1648,11 @@ public class ResourcePermissionLocalServiceImpl
 	}
 
 	protected void filterOwnerActions(String name, List<String> actionIds) {
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(name);
+
 		List<String> defaultOwnerActions =
-			ResourceActionsUtil.getModelResourceOwnerDefaultActions(name);
+			resourceActionsBag.getOwnerDefaultActions();
 
 		if (!defaultOwnerActions.isEmpty()) {
 			actionIds.retainAll(defaultOwnerActions);
@@ -1863,14 +1842,10 @@ public class ResourcePermissionLocalServiceImpl
 	protected void validate(String name, boolean portletActions)
 		throws PortalException {
 
-		List<String> actions = null;
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(name);
 
-		if (portletActions) {
-			actions = ResourceActionsUtil.getPortletResourceActions(name);
-		}
-		else {
-			actions = ResourceActionsUtil.getModelResourceActions(name);
-		}
+		List<String> actions = resourceActionsBag.getSupportsActions();
 
 		if (ListUtil.isEmpty(actions)) {
 			if (_log.isWarnEnabled()) {

@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
@@ -213,8 +214,8 @@ public class PermissionExportImportTest {
 			Group importGroup, Role role, String importResourcePrimKey)
 		throws Exception {
 
-		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
-			_PORTLET_ID, null);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(_PORTLET_ID);
 
 		Resource resource = ResourceLocalServiceUtil.getResource(
 			TestPropsValues.getCompanyId(), _PORTLET_ID,
@@ -223,9 +224,10 @@ public class PermissionExportImportTest {
 		List<String> currentIndividualActions = new ArrayList<>();
 
 		ResourcePermissionUtil.populateResourcePermissionActionIds(
-			importGroup.getGroupId(), role, resource, resourceActions,
-			currentIndividualActions, new ArrayList<String>(),
-			new ArrayList<String>(), new ArrayList<String>());
+			importGroup.getGroupId(), role, resource,
+			resourceActionsBag.getSupportsActions(), currentIndividualActions,
+			new ArrayList<String>(), new ArrayList<String>(),
+			new ArrayList<String>());
 
 		Assert.assertEquals(
 			currentIndividualActions.toString(), _ACTION_IDS.length,

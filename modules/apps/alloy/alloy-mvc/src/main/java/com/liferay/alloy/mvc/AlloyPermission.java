@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -73,8 +74,10 @@ public class AlloyPermission {
 		PermissionChecker permissionChecker, long groupId, String name,
 		long primKey, String actionId, long ownerId) {
 
-		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
-			name);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(name);
+
+		List<String> resourceActions = resourceActionsBag.getSupportsActions();
 
 		if (!resourceActions.contains(actionId)) {
 			return true;

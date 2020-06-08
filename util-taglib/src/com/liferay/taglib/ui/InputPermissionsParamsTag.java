@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -65,17 +66,17 @@ public class InputPermissionsParamsTag extends TagSupport {
 
 			Group group = themeDisplay.getScopeGroup();
 
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(modelName);
+
 			List<String> supportedActions =
-				ResourceActionsUtil.getModelResourceActions(modelName);
+				resourceActionsBag.getSupportsActions();
 			List<String> groupDefaultActions =
-				ResourceActionsUtil.getModelResourceGroupDefaultActions(
-					modelName);
+				resourceActionsBag.getGroupDefaultActions();
 			List<String> guestDefaultActions =
-				ResourceActionsUtil.getModelResourceGuestDefaultActions(
-					modelName);
+				resourceActionsBag.getGuestDefaultActions();
 			List<String> guestUnsupportedActions =
-				ResourceActionsUtil.getModelResourceGuestUnsupportedActions(
-					modelName);
+				resourceActionsBag.getGuestUnsupportedActions();
 
 			StringBundler sb = new StringBundler();
 
@@ -142,8 +143,11 @@ public class InputPermissionsParamsTag extends TagSupport {
 
 		Layout layout = themeDisplay.getLayout();
 
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(modelName);
+
 		List<String> guestDefaultActions =
-			ResourceActionsUtil.getModelResourceGuestDefaultActions(modelName);
+			resourceActionsBag.getGuestDefaultActions();
 
 		if (layout.isTypeControlPanel()) {
 			long refererPlid = themeDisplay.getRefererPlid();
@@ -175,7 +179,7 @@ public class InputPermissionsParamsTag extends TagSupport {
 		}
 
 		List<String> groupDefaultActions =
-			ResourceActionsUtil.getModelResourceGroupDefaultActions(modelName);
+			resourceActionsBag.getGroupDefaultActions();
 
 		if (groupDefaultActions.contains(ActionKeys.VIEW)) {
 			Group siteGroup = GroupLocalServiceUtil.getGroup(

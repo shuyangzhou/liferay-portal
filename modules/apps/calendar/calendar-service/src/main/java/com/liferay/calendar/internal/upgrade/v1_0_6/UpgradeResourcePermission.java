@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -90,8 +91,11 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 				resourceActionsImpl.read(null, classLoader, config);
 			}
 
-			return resourceActionsImpl.getModelResourceGuestUnsupportedActions(
-				_CALENDAR_RESOURCE_NAME);
+			ResourceActionsBag resourceActionsBag =
+				resourceActionsImpl.getResourceActionsBag(
+					_CALENDAR_RESOURCE_NAME);
+
+			return resourceActionsBag.getGuestUnsupportedActions();
 		}
 		catch (Exception exception) {
 			throw new UpgradeException(exception);
