@@ -140,7 +140,7 @@ public class ResourcePermissionLocalServiceImpl
 			return;
 		}
 
-		validate(name, false);
+		validate(name);
 
 		if (primKey == null) {
 			return;
@@ -331,7 +331,7 @@ public class ResourcePermissionLocalServiceImpl
 			return;
 		}
 
-		validate(name, portletActions);
+		validate(name);
 
 		if (primKey == null) {
 			return;
@@ -1209,7 +1209,7 @@ public class ResourcePermissionLocalServiceImpl
 				continue;
 			}
 
-			validate(modelResource, false);
+			validate(modelResource);
 
 			ResourceActionsBag modelResourceActionsBag =
 				ResourceActionsUtil.getResourceActionsBag(modelResource);
@@ -1839,9 +1839,7 @@ public class ResourcePermissionLocalServiceImpl
 		}
 	}
 
-	protected void validate(String name, boolean portletActions)
-		throws PortalException {
-
+	protected void validate(String name) throws PortalException {
 		ResourceActionsBag resourceActionsBag =
 			ResourceActionsUtil.getResourceActionsBag(name);
 
