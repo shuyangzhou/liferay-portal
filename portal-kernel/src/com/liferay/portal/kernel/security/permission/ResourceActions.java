@@ -69,16 +69,36 @@ public interface ResourceActions {
 
 	public String getModelResource(Locale locale, String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getModelResourceActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getModelResourceGroupDefaultActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getModelResourceGuestDefaultActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getModelResourceGuestUnsupportedActions(String name);
 
 	public String getModelResourceNamePrefix();
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getModelResourceOwnerDefaultActions(String name);
 
 	public Double getModelResourceWeight(String name);
@@ -111,20 +131,48 @@ public interface ResourceActions {
 	@Deprecated
 	public List<String> getPortletResourceActions(Portlet portlet);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getPortletResourceActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getPortletResourceGroupDefaultActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getPortletResourceGuestDefaultActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getPortletResourceGuestUnsupportedActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getPortletResourceLayoutManagerActions(String name);
 
 	public String getPortletRootModelResource(String portletName);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getResourceActions(String name);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public List<String> getResourceActions(
 		String portletResource, String modelResource);
 

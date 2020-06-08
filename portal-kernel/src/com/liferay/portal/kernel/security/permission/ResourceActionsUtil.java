@@ -92,22 +92,38 @@ public class ResourceActionsUtil {
 		return getResourceActions().getModelResource(locale, name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getModelResourceActions(String name) {
 		return getResourceActions().getModelResourceActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getModelResourceGroupDefaultActions(
 		String name) {
 
 		return getResourceActions().getModelResourceGroupDefaultActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getModelResourceGuestDefaultActions(
 		String name) {
 
 		return getResourceActions().getModelResourceGuestDefaultActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getModelResourceGuestUnsupportedActions(
 		String name) {
 
@@ -119,6 +135,10 @@ public class ResourceActionsUtil {
 		return getResourceActions().getModelResourceNamePrefix();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getModelResourceOwnerDefaultActions(
 		String name) {
 
@@ -169,22 +189,38 @@ public class ResourceActionsUtil {
 		return getResourceActions().getPortletResourceActions(portlet);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getPortletResourceActions(String name) {
 		return getResourceActions().getPortletResourceActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getPortletResourceGroupDefaultActions(
 		String name) {
 
 		return getResourceActions().getPortletResourceGroupDefaultActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getPortletResourceGuestDefaultActions(
 		String name) {
 
 		return getResourceActions().getPortletResourceGuestDefaultActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getPortletResourceGuestUnsupportedActions(
 		String name) {
 
@@ -192,6 +228,10 @@ public class ResourceActionsUtil {
 			name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getPortletResourceLayoutManagerActions(
 		String name) {
 
@@ -207,10 +247,18 @@ public class ResourceActionsUtil {
 		return _resourceActions;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getResourceActions(String name) {
 		return getResourceActions().getResourceActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static List<String> getResourceActions(
 		String portletResource, String modelResource) {
 
