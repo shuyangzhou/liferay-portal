@@ -570,8 +570,6 @@ public class PortletPermissionImpl implements PortletPermission {
 		String portletId, String actionId) {
 
 		try {
-			portletId = PortletIdCodec.decodePortletName(portletId);
-
 			ResourceActionsBag resourceActionsBag =
 				ResourceActionsUtil.getResourceActionsBag(portletId);
 
