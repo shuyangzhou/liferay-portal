@@ -260,6 +260,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return value;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getModelResourceActions(String name) {
 		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
@@ -268,6 +272,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return modelResourceActionsBag.getSupportsActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getModelResourceGroupDefaultActions(String name) {
 		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
@@ -276,6 +284,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return modelResourceActionsBag.getGroupDefaultActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getModelResourceGuestDefaultActions(String name) {
 		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
@@ -284,6 +296,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return modelResourceActionsBag.getGuestDefaultActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getModelResourceGuestUnsupportedActions(String name) {
 		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
@@ -297,6 +313,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return _MODEL_RESOURCE_NAME_PREFIX;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getModelResourceOwnerDefaultActions(String name) {
 		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
@@ -387,6 +407,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return new ArrayList<>(actions);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getPortletResourceActions(String name) {
 		name = PortletIdCodec.decodePortletName(name);
@@ -397,6 +421,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return portletResourceActionsBag.getSupportsActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getPortletResourceGroupDefaultActions(String name) {
 		name = PortletIdCodec.decodePortletName(name);
@@ -407,6 +435,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return portletResourceActionsBag.getGroupDefaultActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getPortletResourceGuestDefaultActions(String name) {
 		name = PortletIdCodec.decodePortletName(name);
@@ -417,6 +449,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return portletResourceActionsBag.getGuestDefaultActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getPortletResourceGuestUnsupportedActions(String name) {
 		name = PortletIdCodec.decodePortletName(name);
@@ -427,6 +463,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return portletResourceActionsBag.getGuestUnsupportedActions();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getPortletResourceLayoutManagerActions(String name) {
 		name = PortletIdCodec.decodePortletName(name);
@@ -443,6 +483,10 @@ public class ResourceActionsImpl implements ResourceActions {
 			PortletIdCodec.decodePortletName(portletName));
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getResourceActions(String name) {
 		if (_isModelName(name)) {
@@ -452,6 +496,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return getPortletResourceActions(name);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getResourceActions(
 		String portletResource, String modelResource) {
