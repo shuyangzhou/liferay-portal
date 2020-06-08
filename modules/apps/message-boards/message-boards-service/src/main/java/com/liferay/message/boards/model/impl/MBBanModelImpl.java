@@ -73,17 +73,19 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	public static final String TABLE_NAME = "MBBan";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"uuid_", Types.VARCHAR}, {"banId", Types.BIGINT},
-		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
-		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"banUserId", Types.BIGINT}, {"lastPublishDate", Types.TIMESTAMP}
+		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
+		{"banId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"banUserId", Types.BIGINT},
+		{"lastPublishDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("banId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
@@ -97,7 +99,7 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table MBBan (uuid_ VARCHAR(75) null,banId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,banUserId LONG,lastPublishDate DATE null)";
+		"create table MBBan (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,banId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,banUserId LONG,lastPublishDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table MBBan";
 
@@ -144,6 +146,7 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 		MBBan model = new MBBanImpl();
 
+		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setUuid(soapModel.getUuid());
 		model.setBanId(soapModel.getBanId());
 		model.setGroupId(soapModel.getGroupId());
@@ -299,6 +302,9 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		Map<String, BiConsumer<MBBan, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<MBBan, ?>>();
 
+		attributeGetterFunctions.put("mvccVersion", MBBan::getMvccVersion);
+		attributeSetterBiConsumers.put(
+			"mvccVersion", (BiConsumer<MBBan, Long>)MBBan::setMvccVersion);
 		attributeGetterFunctions.put("uuid", MBBan::getUuid);
 		attributeSetterBiConsumers.put(
 			"uuid", (BiConsumer<MBBan, String>)MBBan::setUuid);
@@ -336,6 +342,17 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
+	}
+
+	@JSON
+	@Override
+	public long getMvccVersion() {
+		return _mvccVersion;
+	}
+
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		_mvccVersion = mvccVersion;
 	}
 
 	@JSON
@@ -596,6 +613,7 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	public Object clone() {
 		MBBanImpl mbBanImpl = new MBBanImpl();
 
+		mbBanImpl.setMvccVersion(getMvccVersion());
 		mbBanImpl.setUuid(getUuid());
 		mbBanImpl.setBanId(getBanId());
 		mbBanImpl.setGroupId(getGroupId());
@@ -694,6 +712,8 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	@Override
 	public CacheModel<MBBan> toCacheModel() {
 		MBBanCacheModel mbBanCacheModel = new MBBanCacheModel();
+
+		mbBanCacheModel.mvccVersion = getMvccVersion();
 
 		mbBanCacheModel.uuid = getUuid();
 
@@ -822,6 +842,7 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 
+	private long _mvccVersion;
 	private String _uuid;
 	private String _originalUuid;
 	private long _banId;
