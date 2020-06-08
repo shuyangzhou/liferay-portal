@@ -1,4 +1,5 @@
 create table MBBan (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	banId LONG not null primary key,
 	groupId LONG,
@@ -12,6 +13,7 @@ create table MBBan (
 );
 
 create table MBCategory (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	categoryId LONG not null primary key,
 	groupId LONG,
@@ -35,6 +37,7 @@ create table MBCategory (
 );
 
 create table MBDiscussion (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	discussionId LONG not null primary key,
 	groupId LONG,
@@ -50,6 +53,7 @@ create table MBDiscussion (
 );
 
 create table MBMailingList (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	mailingListId LONG not null primary key,
 	groupId LONG,
@@ -79,6 +83,7 @@ create table MBMailingList (
 );
 
 create table MBMessage (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	messageId LONG not null primary key,
 	groupId LONG,
@@ -110,6 +115,7 @@ create table MBMessage (
 );
 
 create table MBStatsUser (
+	mvccVersion LONG default 0 not null,
 	statsUserId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,
@@ -119,6 +125,7 @@ create table MBStatsUser (
 );
 
 create table MBThread (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	threadId LONG not null primary key,
 	groupId LONG,
@@ -144,6 +151,7 @@ create table MBThread (
 );
 
 create table MBThreadFlag (
+	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	threadFlagId LONG not null primary key,
 	groupId LONG,
