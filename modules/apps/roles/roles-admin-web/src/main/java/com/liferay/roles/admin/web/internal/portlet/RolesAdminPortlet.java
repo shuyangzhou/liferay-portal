@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.comparator.ActionComparator;
 import com.liferay.portal.kernel.service.GroupService;
@@ -403,22 +404,29 @@ public class RolesAdminPortlet extends MVCPortlet {
 		Map<String, List<String>> resourceActionsMap = new HashMap<>();
 
 		if (Validator.isNotNull(portletResource)) {
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(portletResource);
+
 			resourceActionsMap.put(
-				portletResource,
-				ResourceActionsUtil.getResourceActions(portletResource, null));
+				portletResource, resourceActionsBag.getSupportsActions());
 		}
 
 		for (String relatedPortletResource : relatedPortletResources) {
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(
+					relatedPortletResource);
+
 			resourceActionsMap.put(
 				relatedPortletResource,
-				ResourceActionsUtil.getResourceActions(
-					relatedPortletResource, null));
+				resourceActionsBag.getSupportsActions());
 		}
 
 		for (String modelResource : modelResources) {
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(modelResource);
+
 			resourceActionsMap.put(
-				modelResource,
-				ResourceActionsUtil.getResourceActions(null, modelResource));
+				modelResource, resourceActionsBag.getSupportsActions());
 		}
 
 		int rootResourceScope = ResourceConstants.SCOPE_COMPANY;
@@ -783,8 +791,10 @@ public class RolesAdminPortlet extends MVCPortlet {
 			portletId);
 
 		if (modelResource != null) {
-			List<String> actions = ResourceActionsUtil.getModelResourceActions(
-				modelResource);
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(modelResource);
+
+			List<String> actions = resourceActionsBag.getSupportsActions();
 
 			if (actions.contains(ActionKeys.VIEW)) {
 				updateAction(

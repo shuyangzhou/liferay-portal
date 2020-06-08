@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -179,15 +180,16 @@ public class ServiceContext implements Cloneable, Serializable {
 
 		String[] roleNames = {RoleConstants.GUEST, defaultGroupRole.getName()};
 
-		List<String> supportedActions =
-			ResourceActionsUtil.getModelResourceActions(modelName);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(modelName);
+
+		List<String> supportedActions = resourceActionsBag.getSupportsActions();
 		List<String> groupDefaultActions =
-			ResourceActionsUtil.getModelResourceGroupDefaultActions(modelName);
+			resourceActionsBag.getGroupDefaultActions();
 		List<String> guestDefaultActions =
-			ResourceActionsUtil.getModelResourceGuestDefaultActions(modelName);
+			resourceActionsBag.getGuestDefaultActions();
 		List<String> guestUnsupportedActions =
-			ResourceActionsUtil.getModelResourceGuestUnsupportedActions(
-				modelName);
+			resourceActionsBag.getGuestUnsupportedActions();
 
 		for (String roleName : roleNames) {
 			for (String action : supportedActions) {

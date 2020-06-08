@@ -21,6 +21,7 @@ import com.liferay.oauth2.provider.scope.liferay.OAuth2ProviderScopeLiferayAcces
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.vulcan.yaml.graphql.GraphQLNamingUtil;
@@ -142,8 +143,11 @@ public class ActionUtil {
 			}
 		}
 
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(permissionName);
+
 		List<String> modelResourceActions =
-			ResourceActionsUtil.getModelResourceActions(permissionName);
+			resourceActionsBag.getSupportsActions();
 
 		if (!modelResourceActions.contains(actionName) ||
 			!_hasPermission(

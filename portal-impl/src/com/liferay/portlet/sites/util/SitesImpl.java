@@ -62,6 +62,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
@@ -453,8 +454,8 @@ public class SitesImpl implements Sites {
 			String targetResourcePrimKey = PortletPermissionUtil.getPrimaryKey(
 				targetLayout.getPlid(), sourcePortletId);
 
-			List<String> actionIds =
-				ResourceActionsUtil.getPortletResourceActions(resourceName);
+			ResourceActionsBag resourceActionsBag =
+				ResourceActionsUtil.getResourceActionsBag(resourceName);
 
 			for (Role role : roles) {
 				String roleName = role.getName();
@@ -472,7 +473,8 @@ public class SitesImpl implements Sites {
 						getAvailableResourcePermissionActionIds(
 							targetLayout.getCompanyId(), resourceName,
 							ResourceConstants.SCOPE_INDIVIDUAL,
-							sourceResourcePrimKey, role.getRoleId(), actionIds);
+							sourceResourcePrimKey, role.getRoleId(),
+							resourceActionsBag.getSupportsActions());
 
 				ResourcePermissionLocalServiceUtil.setResourcePermissions(
 					targetLayout.getCompanyId(), resourceName,

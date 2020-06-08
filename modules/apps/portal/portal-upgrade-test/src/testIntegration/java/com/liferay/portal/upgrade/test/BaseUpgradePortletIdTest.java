@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -263,11 +264,11 @@ public class BaseUpgradePortletIdTest extends BaseUpgradePortletId {
 			portlet.setCompanyId(TestPropsValues.getCompanyId());
 			portlet.setPortletId(newPortletId);
 
-			List<String> portletActions =
-				_resourceActions.getPortletResourceActions(newRootPortletId);
+			ResourceActionsBag resourceActionsBag =
+				_resourceActions.getResourceActionsBag(newRootPortletId);
 
 			_resourceActionLocalService.checkResourceActions(
-				newRootPortletId, portletActions);
+				newRootPortletId, resourceActionsBag.getSupportsActions());
 
 			_portletLocalService.checkPortlet(portlet);
 

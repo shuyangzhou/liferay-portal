@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -132,13 +133,13 @@ public class PermissionExporter {
 			String resourcePrimKey, Element permissionsElement)
 		throws Exception {
 
-		List<String> actionIds = ResourceActionsUtil.getPortletResourceActions(
-			resourceName);
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(resourceName);
 
 		Map<Long, Set<String>> roleToActionIds =
 			ExportImportPermissionUtil.getRoleIdsToActionIds(
 				portletDataContext.getCompanyId(), resourceName,
-				resourcePrimKey, actionIds);
+				resourcePrimKey, resourceActionsBag.getSupportsActions());
 
 		for (Map.Entry<Long, Set<String>> entry : roleToActionIds.entrySet()) {
 			long roleId = entry.getKey();

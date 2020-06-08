@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
@@ -450,11 +451,11 @@ public class UpgradeJournal extends UpgradeProcess {
 			JournalPortletKeys.JOURNAL);
 
 		for (String modelName : modelNames) {
-			List<String> modelActions =
-				_resourceActions.getModelResourceActions(modelName);
+			ResourceActionsBag resourceActionsBag =
+				_resourceActions.getResourceActionsBag(modelName);
 
 			_resourceActionLocalService.checkResourceActions(
-				modelName, modelActions);
+				modelName, resourceActionsBag.getSupportsActions());
 		}
 	}
 

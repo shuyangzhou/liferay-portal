@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
@@ -1174,13 +1175,15 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			return;
 		}
 
-		List<String> actionIds = ResourceActionsUtil.getPortletResourceActions(
-			portlet.getRootPortletId());
+		ResourceActionsBag resourceActionsBag =
+			ResourceActionsUtil.getResourceActionsBag(
+				portlet.getRootPortletId());
+
+		List<String> actionIds = resourceActionsBag.getSupportsActions();
 
 		if (actionIds.contains(ActionKeys.ADD_TO_PAGE)) {
 			List<String> guestUnsupportedActionIds =
-				ResourceActionsUtil.getPortletResourceGuestUnsupportedActions(
-					portlet.getRootPortletId());
+				resourceActionsBag.getGuestUnsupportedActions();
 
 			boolean skipGuestRole = guestUnsupportedActionIds.contains(
 				ActionKeys.ADD_TO_PAGE);
