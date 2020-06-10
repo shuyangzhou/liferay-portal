@@ -65,7 +65,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -1337,15 +1336,18 @@ public class ResourceActionsImpl implements ResourceActions {
 			}
 		};
 
-	private final Map<String, Double> _modelResourceWeights = new HashMap<>();
-	private final Set<String> _organizationModelResources = new HashSet<>();
-	private final Set<String> _portalModelResources = new HashSet<>();
+	private final Map<String, Double> _modelResourceWeights =
+		new ConcurrentHashMap<>();
+	private final Set<String> _organizationModelResources =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<String> _portalModelResources = Collections.newSetFromMap(
+		new ConcurrentHashMap<>());
 	private final Map<String, String> _portletRootModelResources =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 	private final Map<String, ResourceActionsBag> _resourceActionsBags =
 		new ConcurrentHashMap<>();
 	private final Map<String, Set<String>> _resourceReferences =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 
 	private static class ResourceBundleLoaderListHolder {
 
