@@ -114,7 +114,7 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Override
 	public void check(String portletName) {
 		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(portletName, null);
+			_getPortletResourceActionsBag(portletName);
 
 		_check(portletName, portletResourceActionsBag.getSupportsActions());
 	}
@@ -419,7 +419,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		name = PortletIdCodec.decodePortletName(name);
 
 		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name, null);
+			_getPortletResourceActionsBag(name);
 
 		return portletResourceActionsBag.getSupportsActions();
 	}
@@ -433,7 +433,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		name = PortletIdCodec.decodePortletName(name);
 
 		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name, null);
+			_getPortletResourceActionsBag(name);
 
 		return portletResourceActionsBag.getGroupDefaultActions();
 	}
@@ -447,7 +447,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		name = PortletIdCodec.decodePortletName(name);
 
 		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name, null);
+			_getPortletResourceActionsBag(name);
 
 		return portletResourceActionsBag.getGuestDefaultActions();
 	}
@@ -461,7 +461,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		name = PortletIdCodec.decodePortletName(name);
 
 		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name, null);
+			_getPortletResourceActionsBag(name);
 
 		return portletResourceActionsBag.getGuestUnsupportedActions();
 	}
@@ -475,7 +475,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		name = PortletIdCodec.decodePortletName(name);
 
 		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name, null);
+			_getPortletResourceActionsBag(name);
 
 		return portletResourceActionsBag.getLayoutManagerActions();
 	}
@@ -527,7 +527,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		return _getPortletResourceActionsBag(
-			PortletIdCodec.decodePortletName(name), null);
+			PortletIdCodec.decodePortletName(name));
 	}
 
 	/**
@@ -874,23 +874,16 @@ public class ResourceActionsImpl implements ResourceActions {
 		return actions;
 	}
 
-	private ResourceActionsBag _getPortletResourceActionsBag(
-		String name, Portlet portlet) {
-
+	private ResourceActionsBag _getPortletResourceActionsBag(String name) {
 		return _resourceActionsBags.computeIfAbsent(
 			name,
 			portletName -> {
 				Set<String> portletActions = new HashSet<>();
 
-				if (portlet == null) {
-					portletActions.addAll(
-						_getPortletMimeTypeActions(
-							name, portletLocalService.getPortletById(name)));
-				}
-				else {
-					portletActions.addAll(
-						_getPortletMimeTypeActions(name, portlet));
-				}
+				Portlet portlet = portletLocalService.getPortletById(name);
+
+				portletActions.addAll(
+					_getPortletMimeTypeActions(name, portlet));
 
 				_checkPortletActions(portlet, portletActions);
 
