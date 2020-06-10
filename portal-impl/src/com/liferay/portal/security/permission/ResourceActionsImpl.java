@@ -1176,18 +1176,24 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 	}
 
-	private void _readActionKeys(
-		Collection<String> actions, Element parentElement) {
+	private Set<String> _readActionKeys(Element parentElement) {
+		Set<String> actions = new HashSet<>();
 
-		for (Element actionKeyElement : parentElement.elements("action-key")) {
-			String actionKey = actionKeyElement.getTextTrim();
+		if (parentElement != null) {
+			for (Element actionKeyElement :
+					parentElement.elements("action-key")) {
 
-			if (Validator.isNull(actionKey)) {
-				continue;
+				String actionKey = actionKeyElement.getTextTrim();
+
+				if (Validator.isNull(actionKey)) {
+					continue;
+				}
+
+				actions.add(actionKey);
 			}
-
-			actions.add(actionKey);
 		}
+
+		return actions;
 	}
 
 	private void _readResource(
@@ -1196,12 +1202,8 @@ public class ResourceActionsImpl implements ResourceActions {
 			Set<String> defaultGuestUnsupportedActions)
 		throws ResourceActionsException {
 
-		Set<String> resourceActions = new HashSet<>();
-
-		Element supportsElement = _getPermissionsChildElement(
-			resourceElement, "supports");
-
-		_readActionKeys(resourceActions, supportsElement);
+		Set<String> resourceActions = _readActionKeys(
+			_getPermissionsChildElement(resourceElement, "supports"));
 
 		resourceActions.addAll(defaultResourceActions);
 
@@ -1209,8 +1211,6 @@ public class ResourceActionsImpl implements ResourceActions {
 			throw new ResourceActionsException(
 				"There are more than 64 actions for resource " + name);
 		}
-
-		Set<String> groupDefaultActions = new HashSet<>();
 
 		Element groupDefaultsElement = _getPermissionsChildElement(
 			resourceElement, "site-member-defaults");
@@ -1226,50 +1226,26 @@ public class ResourceActionsImpl implements ResourceActions {
 			}
 		}
 
-		if (groupDefaultsElement != null) {
-			_readActionKeys(groupDefaultActions, groupDefaultsElement);
-		}
+		Set<String> groupDefaultActions = _readActionKeys(groupDefaultsElement);
 
-		Set<String> guestDefaultActions = new HashSet<>();
+		Set<String> guestDefaultActions = _readActionKeys(
+			_getPermissionsChildElement(resourceElement, "guest-defaults"));
 
-		Element guestDefaultsElement = _getPermissionsChildElement(
-			resourceElement, "guest-defaults");
+		Set<String> guestUnsupportedActions = _readActionKeys(
+			_getPermissionsChildElement(resourceElement, "guest-unsupported"));
 
-		if (guestDefaultsElement != null) {
-			_readActionKeys(guestDefaultActions, guestDefaultsElement);
-		}
-
-		Set<String> guestUnsupportedActions = new HashSet<>();
-
-		Element guestUnsupportedElement = _getPermissionsChildElement(
-			resourceElement, "guest-unsupported");
-
-		if (guestUnsupportedElement != null) {
-			_readActionKeys(guestUnsupportedActions, guestUnsupportedElement);
-		}
-		else {
+		if (guestUnsupportedActions.isEmpty()) {
 			guestUnsupportedActions.addAll(defaultGuestUnsupportedActions);
 		}
 
-		Set<String> ownerDefaultActions = new HashSet<>();
+		Set<String> ownerDefaultActions = _readActionKeys(
+			_getPermissionsChildElement(resourceElement, "owner-defaults"));
 
-		Element ownerDefaultsElement = _getPermissionsChildElement(
-			resourceElement, "owner-defaults");
+		Set<String> layoutManagerActions = _readActionKeys(
+			_getPermissionsChildElement(resourceElement, "layout-manager"));
 
-		if (ownerDefaultsElement != null) {
-			_readActionKeys(ownerDefaultActions, ownerDefaultsElement);
-		}
-
-		Set<String> layoutManagerActions = new HashSet<>();
-
-		Element layoutManagerElement = _getPermissionsChildElement(
-			resourceElement, "layout-manager");
-
-		if (layoutManagerElement == null) {
+		if (layoutManagerActions.isEmpty()) {
 			layoutManagerActions.addAll(resourceActions);
-		}
-		else {
-			_readActionKeys(layoutManagerActions, layoutManagerElement);
 		}
 
 		_resourceActionsBags.compute(
