@@ -526,9 +526,8 @@ public class ResourceActionsImpl implements ResourceActions {
 				name, modelName -> _EMPTY_RESOURCE_ACTIONS_BAG);
 		}
 
-		name = PortletIdCodec.decodePortletName(name);
-
-		return _getPortletResourceActionsBag(name, null);
+		return _getPortletResourceActionsBag(
+			PortletIdCodec.decodePortletName(name), null);
 	}
 
 	/**
