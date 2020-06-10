@@ -527,28 +527,15 @@ public class ResourceActionsImpl implements ResourceActions {
 
 				portletActions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
 
-				Set<String> groupDefaultActions = new HashSet<>();
-
-				_checkPortletGroupDefaultActions(groupDefaultActions);
-
-				Set<String> guestDefaultActions = new HashSet<>();
-
-				_checkPortletGuestDefaultActions(guestDefaultActions);
-
-				Set<String> guestUnsupportedActions = new HashSet<>(
-					_defaultPortletGuestUnsupportedActions);
-
-				_checkGuestUnsupportedActions(
-					guestUnsupportedActions, guestDefaultActions);
-
 				Set<String> layoutManagerActions = new HashSet<>();
 
 				_checkPortletLayoutManagerActions(layoutManagerActions);
 
 				return new ResourceActionsBag(
-					portletActions, groupDefaultActions, guestDefaultActions,
-					guestUnsupportedActions, layoutManagerActions,
-					Collections.emptySet());
+					portletActions, Collections.singleton(ActionKeys.VIEW),
+					Collections.singleton(ActionKeys.VIEW),
+					new HashSet<>(_defaultPortletGuestUnsupportedActions),
+					layoutManagerActions, Collections.emptySet());
 			});
 	}
 
@@ -781,18 +768,6 @@ public class ResourceActionsImpl implements ResourceActions {
 			(portlet.getControlPanelEntryCategory() != null)) {
 
 			actions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
-		}
-	}
-
-	private void _checkPortletGroupDefaultActions(Set<String> actions) {
-		if (actions.isEmpty()) {
-			actions.add(ActionKeys.VIEW);
-		}
-	}
-
-	private void _checkPortletGuestDefaultActions(Set<String> actions) {
-		if (actions.isEmpty()) {
-			actions.add(ActionKeys.VIEW);
 		}
 	}
 
