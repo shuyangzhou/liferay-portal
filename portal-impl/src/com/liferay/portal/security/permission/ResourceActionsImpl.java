@@ -113,10 +113,10 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public void check(String portletName) {
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(portletName);
+		ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+			portletName);
 
-		_check(portletName, portletResourceActionsBag.getSupportsActions());
+		_check(portletName, resourceActionsBag.getSupportsActions());
 	}
 
 	/**
@@ -416,12 +416,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Deprecated
 	@Override
 	public List<String> getPortletResourceActions(String name) {
-		name = PortletIdCodec.decodePortletName(name);
+		ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+			PortletIdCodec.decodePortletName(name));
 
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name);
-
-		return portletResourceActionsBag.getSupportsActions();
+		return resourceActionsBag.getSupportsActions();
 	}
 
 	/**
@@ -430,12 +428,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Deprecated
 	@Override
 	public List<String> getPortletResourceGroupDefaultActions(String name) {
-		name = PortletIdCodec.decodePortletName(name);
+		ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+			PortletIdCodec.decodePortletName(name));
 
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name);
-
-		return portletResourceActionsBag.getGroupDefaultActions();
+		return resourceActionsBag.getGroupDefaultActions();
 	}
 
 	/**
@@ -444,12 +440,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Deprecated
 	@Override
 	public List<String> getPortletResourceGuestDefaultActions(String name) {
-		name = PortletIdCodec.decodePortletName(name);
+		ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+			PortletIdCodec.decodePortletName(name));
 
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name);
-
-		return portletResourceActionsBag.getGuestDefaultActions();
+		return resourceActionsBag.getGuestDefaultActions();
 	}
 
 	/**
@@ -458,12 +452,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Deprecated
 	@Override
 	public List<String> getPortletResourceGuestUnsupportedActions(String name) {
-		name = PortletIdCodec.decodePortletName(name);
+		ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+			PortletIdCodec.decodePortletName(name));
 
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name);
-
-		return portletResourceActionsBag.getGuestUnsupportedActions();
+		return resourceActionsBag.getGuestUnsupportedActions();
 	}
 
 	/**
@@ -472,12 +464,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Deprecated
 	@Override
 	public List<String> getPortletResourceLayoutManagerActions(String name) {
-		name = PortletIdCodec.decodePortletName(name);
+		ResourceActionsBag resourceActionsBag = getResourceActionsBag(
+			PortletIdCodec.decodePortletName(name));
 
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name);
-
-		return portletResourceActionsBag.getLayoutManagerActions();
+		return resourceActionsBag.getLayoutManagerActions();
 	}
 
 	@Override
@@ -521,13 +511,46 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public ResourceActionsBag getResourceActionsBag(String name) {
-		if (_isModelName(name)) {
-			return _resourceActionsBags.computeIfAbsent(
-				name, modelName -> _EMPTY_RESOURCE_ACTIONS_BAG);
-		}
+		return _resourceActionsBags.computeIfAbsent(
+			name,
+			key -> {
+				if (_isModelName(key)) {
+					return _EMPTY_RESOURCE_ACTIONS_BAG;
+				}
 
-		return _getPortletResourceActionsBag(
-			PortletIdCodec.decodePortletName(name));
+				Set<String> portletActions = new HashSet<>();
+
+				Portlet portlet = portletLocalService.getPortletById(key);
+
+				portletActions.addAll(_getPortletMimeTypeActions(key, portlet));
+
+				_checkPortletActions(portlet, portletActions);
+
+				portletActions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
+
+				Set<String> groupDefaultActions = new HashSet<>();
+
+				_checkPortletGroupDefaultActions(groupDefaultActions);
+
+				Set<String> guestDefaultActions = new HashSet<>();
+
+				_checkPortletGuestDefaultActions(guestDefaultActions);
+
+				Set<String> guestUnsupportedActions = new HashSet<>(
+					_defaultPortletGuestUnsupportedActions);
+
+				_checkGuestUnsupportedActions(
+					guestUnsupportedActions, guestDefaultActions);
+
+				Set<String> layoutManagerActions = new HashSet<>();
+
+				_checkPortletLayoutManagerActions(layoutManagerActions);
+
+				return new ResourceActionsBag(
+					portletActions, groupDefaultActions, guestDefaultActions,
+					guestUnsupportedActions, layoutManagerActions,
+					Collections.emptySet());
+			});
 	}
 
 	/**
@@ -872,46 +895,6 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		return actions;
-	}
-
-	private ResourceActionsBag _getPortletResourceActionsBag(String name) {
-		return _resourceActionsBags.computeIfAbsent(
-			name,
-			portletName -> {
-				Set<String> portletActions = new HashSet<>();
-
-				Portlet portlet = portletLocalService.getPortletById(name);
-
-				portletActions.addAll(
-					_getPortletMimeTypeActions(name, portlet));
-
-				_checkPortletActions(portlet, portletActions);
-
-				portletActions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
-
-				Set<String> groupDefaultActions = new HashSet<>();
-
-				_checkPortletGroupDefaultActions(groupDefaultActions);
-
-				Set<String> guestDefaultActions = new HashSet<>();
-
-				_checkPortletGuestDefaultActions(guestDefaultActions);
-
-				Set<String> guestUnsupportedActions = new HashSet<>(
-					_defaultPortletGuestUnsupportedActions);
-
-				_checkGuestUnsupportedActions(
-					guestUnsupportedActions, guestDefaultActions);
-
-				Set<String> layoutManagerActions = new HashSet<>();
-
-				_checkPortletLayoutManagerActions(layoutManagerActions);
-
-				return new ResourceActionsBag(
-					portletActions, groupDefaultActions, guestDefaultActions,
-					guestUnsupportedActions, layoutManagerActions,
-					Collections.emptySet());
-			});
 	}
 
 	private String _getResourceBundlesString(
