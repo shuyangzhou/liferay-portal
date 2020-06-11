@@ -101,14 +101,14 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 * 				#check(String)}
+	 */
+	@Deprecated
 	@Override
 	public void check(Portlet portlet) {
-		String portletName = portlet.getPortletId();
-
-		ResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(portletName, portlet);
-
-		_check(portletName, portletResourceActionsBag.getSupportsActions());
+		check(portlet.getPortletId());
 	}
 
 	@Override
