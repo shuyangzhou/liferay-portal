@@ -267,7 +267,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 		</#if>
 
-		${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName});
+		<#if columnBitmaskEnabled>
+			${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, new Object[]{${columnBitmaskCacheEnabled}, ((${entity.name}ModelImpl)${entity.varName}).getColumnBitmask()});
+		<#else>
+			${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName});
+		</#if>
 
 		<#list entity.uniqueEntityFinders as uniqueEntityFinder>
 			<#assign entityColumns = uniqueEntityFinder.entityColumns />
@@ -343,7 +347,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 */
 	@Override
 	public void clearCache(${entity.name} ${entity.varName}) {
-		${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
+		<#if columnBitmaskEnabled>
+		   	${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, new Object[]{${columnBitmaskCacheEnabled}, ((${entity.name}ModelImpl)${entity.varName}).getColumnBitmask()});
+		<#else>
+			${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName});
+		</#if>
 
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -359,7 +367,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (${entity.name} ${entity.varName} : ${entity.pluralVarName}) {
-			${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
+			<#if columnBitmaskEnabled>
+				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, new Object[]{${columnBitmaskCacheEnabled}, ((${entity.name}ModelImpl)${entity.varName}).getColumnBitmask()});
+			<#else>
+				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName});
+			</#if>
 
 			<#if entity.uniqueEntityFinders?size &gt; 0>
 				clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName}, true);
@@ -898,7 +910,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 		</#if>
 
-		${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
+		<#if columnBitmaskEnabled>
+			${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false, new Object[]{${columnBitmaskCacheEnabled}, ((${entity.name}ModelImpl)${entity.varName}).getColumnBitmask()});
+		<#else>
+			${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
+		</#if>
 
 		<#if entity.uniqueEntityFinders?size &gt; 0>
 			clearUniqueFindersCache(${entity.varName}ModelImpl, false);
@@ -973,7 +989,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						cacheResult(${entity.varName});
 					}
 					else {
-						${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, primaryKey, nullModel);
+						${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, primaryKey, nullModel, null);
 					}
 				}
 				catch (Exception exception) {
@@ -1141,7 +1157,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					}
 
 					for (Serializable primaryKey : uncachedPrimaryKeys) {
-						${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, primaryKey, nullModel);
+						${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, primaryKey, nullModel, null);
 					}
 				}
 				catch (Exception exception) {

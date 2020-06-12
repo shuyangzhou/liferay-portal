@@ -83,6 +83,24 @@ public class EntityCacheUtil {
 			entityCacheEnabled, clazz, primaryKey, result, quiet);
 	}
 
+	public static void putResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, boolean quiet, Object[] columnBitmaskArguments) {
+
+		_entityCache.putResult(
+			entityCacheEnabled, clazz, primaryKey, result, quiet,
+			columnBitmaskArguments);
+	}
+
+	public static void putResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, Object[] columnBitmaskArguments) {
+
+		_entityCache.putResult(
+			entityCacheEnabled, clazz, primaryKey, result,
+			columnBitmaskArguments);
+	}
+
 	public static void removeCache(String className) {
 		_entityCache.removeCache(className);
 	}
@@ -91,6 +109,23 @@ public class EntityCacheUtil {
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
 		_entityCache.removeResult(entityCacheEnabled, clazz, primaryKey);
+	}
+
+	public static void removeResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result) {
+
+		_entityCache.removeResult(
+			entityCacheEnabled, clazz, primaryKey, result);
+	}
+
+	public static void removeResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, Object[] columnBitmaskArguments) {
+
+		_entityCache.removeResult(
+			entityCacheEnabled, clazz, primaryKey, result,
+			columnBitmaskArguments);
 	}
 
 	private static volatile EntityCache _entityCache =

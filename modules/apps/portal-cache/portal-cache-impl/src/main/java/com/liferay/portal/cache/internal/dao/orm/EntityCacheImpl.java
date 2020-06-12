@@ -290,13 +290,25 @@ public class EntityCacheImpl
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result) {
 
-		putResult(entityCacheEnabled, clazz, primaryKey, result, true);
+		putResult(
+			entityCacheEnabled, clazz, primaryKey, result, true,
+			_defaultColumnBitmaskArguments);
 	}
 
 	@Override
 	public void putResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result, boolean quiet) {
+
+		putResult(
+			entityCacheEnabled, clazz, primaryKey, result, quiet,
+			_defaultColumnBitmaskArguments);
+	}
+
+	@Override
+	public void putResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, boolean quiet, Object[] bitmaskArguments) {
 
 		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
 			!CacheRegistryUtil.isActive() || (result == null)) {
@@ -330,6 +342,16 @@ public class EntityCacheImpl
 	}
 
 	@Override
+	public void putResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, Object[] columnBitmaskArguments) {
+
+		putResult(
+			entityCacheEnabled, clazz, primaryKey, result, true,
+			columnBitmaskArguments);
+	}
+
+	@Override
 	public void removeCache(String className) {
 		_portalCaches.remove(className);
 
@@ -341,6 +363,26 @@ public class EntityCacheImpl
 	@Override
 	public void removeResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
+
+		removeResult(
+			entityCacheEnabled, clazz, primaryKey, null,
+			_defaultColumnBitmaskArguments);
+	}
+
+	@Override
+	public void removeResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result) {
+
+		removeResult(
+			entityCacheEnabled, clazz, primaryKey, result,
+			_defaultColumnBitmaskArguments);
+	}
+
+	@Override
+	public void removeResult(
+		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
+		Serializable result, Object[] bitmaskArguments) {
 
 		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
 			!CacheRegistryUtil.isActive()) {
@@ -429,6 +471,8 @@ public class EntityCacheImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EntityCacheImpl.class);
+
+	private static final Object[] _defaultColumnBitmaskArguments = {false, -1L};
 
 	private ThreadLocal<LRUMap> _localCache;
 	private MultiVMPool _multiVMPool;

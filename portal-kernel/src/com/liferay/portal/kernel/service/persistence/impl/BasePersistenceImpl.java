@@ -282,7 +282,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 				if (model == null) {
 					entityCache.putResult(
 						entityCacheEnabled, _modelImplClass, primaryKey,
-						nullModel);
+						nullModel, null);
 				}
 				else {
 					cacheResult(model);
@@ -419,7 +419,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
 				entityCache.putResult(
-					entityCacheEnabled, _modelImplClass, primaryKey, nullModel);
+					entityCacheEnabled, _modelImplClass, primaryKey, nullModel,
+					null);
 			}
 		}
 		catch (Exception exception) {
