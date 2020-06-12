@@ -2165,32 +2165,28 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				${finderCacheEnabled},
 				Long.class,
 				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"countAncestors",
-				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()});
+				"countAncestors", new String[0]);
 
 			_finderPathWithPaginationCountDescendants = new FinderPath(
 				${entityCacheEnabled},
 				${finderCacheEnabled},
 				Long.class,
 				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"countDescendants",
-				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()});
+				"countDescendants", new String[0]);
 
 			_finderPathWithPaginationGetAncestors = new FinderPath(
 				${entityCacheEnabled},
 				${finderCacheEnabled},
 				${entity.name}Impl.class,
 				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"getAncestors",
-				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()});
+				"getAncestors", new String[0]);
 
 			_finderPathWithPaginationGetDescendants = new FinderPath(
 				${entityCacheEnabled},
 				${finderCacheEnabled},
 				${entity.name}Impl.class,
 				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"getDescendants",
-				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()});
+				"getDescendants", new String[0]);
 		</#if>
 
 		<#list entity.entityFinders as entityFinder>
@@ -2203,13 +2199,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					${entity.name}Impl.class,
 					FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 					"findBy${entityFinder.name}",
-					new String[] {
-						<#list entityColumns as entityColumn>
-							${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName(),
-						</#list>
-
-						Integer.class.getName(), Integer.class.getName(), OrderByComparator.class.getName()
-					});
+					new String[0]);
 
 				<#if !entityFinder.hasCustomComparator()>
 					_finderPathWithoutPaginationFindBy${entityFinder.name} = new FinderPath(
@@ -2217,16 +2207,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						${finderCacheEnabled},
 						${entity.name}Impl.class,
 						FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-						"findBy${entityFinder.name}",
-						new String[] {
-							<#list entityColumns as entityColumn>
-								${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
-
-								<#if entityColumn_has_next>
-									,
-								</#if>
-							</#list>
-						}
+						"findBy${entityFinder.name}"
 
 						<#if columnBitmaskEnabled>
 							,
@@ -2259,15 +2240,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					${entity.name}Impl.class,
 					FINDER_CLASS_NAME_ENTITY,
 					"fetchBy${entityFinder.name}",
-					new String[] {
-						<#list entityColumns as entityColumn>
-							${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
-
-							<#if entityColumn_has_next>
-								,
-							</#if>
-						</#list>
-					}
+					new String[0],
 
 					<#if columnBitmaskEnabled>
 						,
@@ -2291,15 +2264,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					Long.class,
 					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 					"countBy${entityFinder.name}",
-					new String[] {
-						<#list entityColumns as entityColumn>
-							${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
-
-							<#if entityColumn_has_next>
-								,
-							</#if>
-						</#list>
-					});
+					new String[0]);
 			</#if>
 
 			<#if entityFinder.hasArrayableOperator() || entityFinder.hasCustomComparator()>
@@ -2309,15 +2274,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					Long.class,
 					FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 					"countBy${entityFinder.name}",
-					new String[] {
-						<#list entityColumns as entityColumn>
-							${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
-
-							<#if entityColumn_has_next>
-								,
-							</#if>
-						</#list>
-					});
+					new String[0]);
 			</#if>
 		</#list>
 	}
