@@ -102,7 +102,7 @@ public class FinderCacheImpl
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl) {
 
-		if (!_valueObjectFinderCacheEnabled ||
+		if (!_valueObjectFinderCacheEnabled || (finderPath == null) ||
 			!finderPath.isFinderCacheEnabled() ||
 			!CacheRegistryUtil.isActive()) {
 
@@ -206,7 +206,7 @@ public class FinderCacheImpl
 	public void putResult(
 		FinderPath finderPath, Object[] args, Object result, boolean quiet) {
 
-		if (!_valueObjectFinderCacheEnabled ||
+		if (!_valueObjectFinderCacheEnabled || (finderPath == null) ||
 			!finderPath.isFinderCacheEnabled() ||
 			!CacheRegistryUtil.isActive() || (result == null)) {
 
