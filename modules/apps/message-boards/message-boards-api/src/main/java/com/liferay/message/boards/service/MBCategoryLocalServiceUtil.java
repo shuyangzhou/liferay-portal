@@ -690,6 +690,12 @@ public class MBCategoryLocalServiceUtil {
 			serviceContext);
 	}
 
+	public static void updateLastPostDate(
+		long categoryId, java.util.Date lastPostDate) {
+
+		getService().updateLastPostDate(categoryId, lastPostDate);
+	}
+
 	/**
 	 * Updates the message boards category in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
