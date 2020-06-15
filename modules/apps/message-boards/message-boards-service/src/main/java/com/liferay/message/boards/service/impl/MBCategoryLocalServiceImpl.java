@@ -27,16 +27,23 @@ import com.liferay.message.boards.service.base.MBCategoryLocalServiceBaseImpl;
 import com.liferay.message.boards.service.persistence.MBMessagePersistence;
 import com.liferay.message.boards.service.persistence.MBThreadPersistence;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.dao.orm.LockMode;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.increment.BufferedIncrement;
+import com.liferay.portal.kernel.increment.DateOverrideIncrement;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
+import com.liferay.portal.kernel.spring.aop.Property;
+import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -840,46 +847,140 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 		return category;
 	}
 
+	@BufferedIncrement(
+		configuration = "MBCategory",
+		incrementClass = DateOverrideIncrement.class
+	)
 	@Override
-	public MBCategory updateMessageCount(long categoryId) {
-		MBCategory mbCategory = mbCategoryPersistence.fetchByPrimaryKey(
-			categoryId);
-
-		if (mbCategory == null) {
-			return null;
+	@Retry(
+		acceptor = ExceptionRetryAcceptor.class,
+		properties = {
+			@Property(
+				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
+				value = "org.hibernate.StaleObjectStateException"
+			)
 		}
+	)
+	public void updateLastPostDate(long categoryId, Date lastPostDate) {
+		Session session = null;
 
-		int messageCount = _mbMessagePersistence.countByG_C_S(
-			mbCategory.getGroupId(), mbCategory.getCategoryId(),
-			WorkflowConstants.STATUS_APPROVED);
+		try {
+			session = mbCategoryPersistence.openSession();
 
-		mbCategory.setMessageCount(messageCount);
+			MBCategory category = (MBCategory)session.get(
+				MBCategoryImpl.class, categoryId, LockMode.UPGRADE);
 
-		return mbCategoryPersistence.update(mbCategory);
+			if (category == null) {
+				return;
+			}
+
+			category.setLastPostDate(lastPostDate);
+
+			session.saveOrUpdate(category);
+
+			session.flush();
+
+			mbCategoryPersistence.clearCache(category);
+
+			mbCategoryPersistence.cacheResult(category);
+		}
+		finally {
+			mbCategoryPersistence.closeSession(session);
+		}
 	}
 
 	@Override
-	public MBCategory updateStatistics(long categoryId) {
-		MBCategory mbCategory = mbCategoryPersistence.fetchByPrimaryKey(
-			categoryId);
-
-		if (mbCategory == null) {
-			return null;
+	@Retry(
+		acceptor = ExceptionRetryAcceptor.class,
+		properties = {
+			@Property(
+				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
+				value = "org.hibernate.StaleObjectStateException"
+			)
 		}
+	)
+	public MBCategory updateMessageCount(long categoryId) {
+		Session session = null;
 
-		int messageCount = _mbMessagePersistence.countByG_C_S(
-			mbCategory.getGroupId(), mbCategory.getCategoryId(),
-			WorkflowConstants.STATUS_APPROVED);
+		try {
+			session = mbCategoryPersistence.openSession();
 
-		mbCategory.setMessageCount(messageCount);
+			MBCategory category = (MBCategory)session.get(
+				MBCategoryImpl.class, categoryId, LockMode.UPGRADE);
 
-		int threadCount = _mbThreadPersistence.countByG_C_S(
-			mbCategory.getGroupId(), mbCategory.getCategoryId(),
-			WorkflowConstants.STATUS_APPROVED);
+			if (category == null) {
+				return null;
+			}
 
-		mbCategory.setThreadCount(threadCount);
+			int messageCount = _mbMessagePersistence.countByG_C_S(
+				category.getGroupId(), category.getCategoryId(),
+				WorkflowConstants.STATUS_APPROVED);
 
-		return mbCategoryPersistence.update(mbCategory);
+			category.setMessageCount(messageCount);
+
+			session.saveOrUpdate(category);
+
+			session.flush();
+
+			mbCategoryPersistence.clearCache(category);
+
+			mbCategoryPersistence.cacheResult(category);
+
+			return category;
+		}
+		finally {
+			mbCategoryPersistence.closeSession(session);
+		}
+	}
+
+	@Override
+	@Retry(
+		acceptor = ExceptionRetryAcceptor.class,
+		properties = {
+			@Property(
+				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
+				value = "org.hibernate.StaleObjectStateException"
+			)
+		}
+	)
+	public MBCategory updateStatistics(long categoryId) {
+		Session session = null;
+
+		try {
+			session = mbCategoryPersistence.openSession();
+
+			MBCategory category = (MBCategory)session.get(
+				MBCategoryImpl.class, categoryId, LockMode.UPGRADE);
+
+			if (category == null) {
+				return null;
+			}
+
+			int messageCount = _mbMessagePersistence.countByG_C_S(
+				category.getGroupId(), category.getCategoryId(),
+				WorkflowConstants.STATUS_APPROVED);
+
+			category.setMessageCount(messageCount);
+
+			int threadCount = _mbThreadPersistence.countByG_C_S(
+				category.getGroupId(), category.getCategoryId(),
+				WorkflowConstants.STATUS_APPROVED);
+
+			category.setThreadCount(threadCount);
+
+			session.saveOrUpdate(category);
+
+			session.flush();
+
+			mbCategoryPersistence.clearCache(category);
+
+			mbCategoryPersistence.cacheResult(category);
+
+			return category;
+		}
+		finally {
+			mbCategoryPersistence.closeSession(session);
+		}
 	}
 
 	@Override
@@ -902,21 +1003,39 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 	}
 
 	@Override
-	public MBCategory updateThreadCount(long categoryId) {
-		MBCategory mbCategory = mbCategoryPersistence.fetchByPrimaryKey(
-			categoryId);
-
-		if (mbCategory == null) {
-			return null;
+	@Retry(
+		acceptor = ExceptionRetryAcceptor.class,
+		properties = {
+			@Property(
+				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
+				value = "org.hibernate.StaleObjectStateException"
+			)
 		}
+	)
+	public MBCategory updateThreadCount(long categoryId) {
+		Session session = null;
 
-		int threadCount = _mbThreadPersistence.countByG_C_S(
-			mbCategory.getGroupId(), mbCategory.getCategoryId(),
-			WorkflowConstants.STATUS_APPROVED);
+		try {
+			session = mbCategoryPersistence.openSession();
 
-		mbCategory.setThreadCount(threadCount);
+			MBCategory category = (MBCategory)session.get(
+				MBCategoryImpl.class, categoryId, LockMode.UPGRADE);
 
-		return mbCategoryPersistence.update(mbCategory);
+			if (category == null) {
+				return null;
+			}
+
+			int threadCount = _mbThreadPersistence.countByG_C_S(
+				category.getGroupId(), category.getCategoryId(),
+				WorkflowConstants.STATUS_APPROVED);
+
+			category.setThreadCount(threadCount);
+
+			return mbCategoryPersistence.update(category);
+		}
+		finally {
+			mbCategoryPersistence.closeSession(session);
+		}
 	}
 
 	protected long getParentCategoryId(long groupId, long parentCategoryId) {
