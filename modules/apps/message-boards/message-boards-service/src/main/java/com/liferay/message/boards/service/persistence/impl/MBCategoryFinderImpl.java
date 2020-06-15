@@ -19,10 +19,10 @@ import com.liferay.message.boards.model.MBCategory;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.impl.MBCategoryImpl;
 import com.liferay.message.boards.model.impl.MBThreadImpl;
-import com.liferay.message.boards.service.MBMessageLocalService;
-import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.message.boards.service.persistence.MBCategoryFinder;
 import com.liferay.message.boards.service.persistence.MBCategoryUtil;
+import com.liferay.message.boards.service.persistence.MBMessagePersistence;
+import com.liferay.message.boards.service.persistence.MBThreadPersistence;
 import com.liferay.message.boards.service.persistence.MBThreadUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -562,13 +562,12 @@ public class MBCategoryFinderImpl
 					groupId);
 
 			if (subscription != null) {
-				int threadCount = _mbThreadLocalService.getCategoryThreadsCount(
+				int threadCount = _mbThreadPersistence.countByG_C_S(
 					groupId, MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
 					WorkflowConstants.STATUS_APPROVED);
-				int messageCount =
-					_mbMessageLocalService.getCategoryMessagesCount(
-						groupId, MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
-						WorkflowConstants.STATUS_APPROVED);
+				int messageCount = _mbMessagePersistence.countByG_C_S(
+					groupId, MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
+					WorkflowConstants.STATUS_APPROVED);
 
 				MBCategory category = new MBCategoryImpl();
 
@@ -728,10 +727,10 @@ public class MBCategoryFinderImpl
 	private GroupLocalService _groupLocalService;
 
 	@Reference
-	private MBMessageLocalService _mbMessageLocalService;
+	private MBMessagePersistence _mbMessagePersistence;
 
 	@Reference
-	private MBThreadLocalService _mbThreadLocalService;
+	private MBThreadPersistence _mbThreadPersistence;
 
 	@Reference
 	private Portal _portal;
