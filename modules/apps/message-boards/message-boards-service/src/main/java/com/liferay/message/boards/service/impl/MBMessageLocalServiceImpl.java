@@ -43,6 +43,7 @@ import com.liferay.message.boards.model.MBMessageDisplay;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.model.impl.MBCategoryImpl;
 import com.liferay.message.boards.model.impl.MBMessageDisplayImpl;
+import com.liferay.message.boards.service.MBCategoryLocalService;
 import com.liferay.message.boards.service.MBDiscussionLocalService;
 import com.liferay.message.boards.service.MBStatsUserLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
@@ -2472,14 +2473,8 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			thread.setLastPostDate(modifiedDate);
 
 			if (category != null) {
-				category.setLastPostDate(modifiedDate);
-
-				category = _mbCategoryPersistence.update(category);
-
-				Indexer<MBCategory> indexer =
-					_indexerRegistry.nullSafeGetIndexer(MBCategory.class);
-
-				indexer.reindex(category);
+				_mbCategoryLocalService.updateLastPostDate(
+					category.getCategoryId(), modifiedDate);
 			}
 		}
 
@@ -2837,6 +2832,9 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;
+
+	@Reference
+	private MBCategoryLocalService _mbCategoryLocalService;
 
 	@Reference
 	private MBCategoryPersistence _mbCategoryPersistence;

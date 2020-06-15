@@ -31,14 +31,17 @@ import com.liferay.message.boards.model.MBCategory;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.model.MBTreeWalker;
+import com.liferay.message.boards.model.impl.MBThreadImpl;
 import com.liferay.message.boards.model.impl.MBTreeWalkerImpl;
 import com.liferay.message.boards.service.MBStatsUserLocalService;
 import com.liferay.message.boards.service.base.MBThreadLocalServiceBaseImpl;
 import com.liferay.message.boards.service.persistence.MBCategoryPersistence;
 import com.liferay.message.boards.util.comparator.MessageThreadComparator;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.dao.orm.LockMode;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -57,8 +60,11 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.social.SocialActivityManagerUtil;
+import com.liferay.portal.kernel.spring.aop.Property;
+import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -1097,19 +1103,46 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 	}
 
 	@Override
-	public MBThread updateMessageCount(long threadId) {
-		MBThread mbThread = mbThreadPersistence.fetchByPrimaryKey(threadId);
-
-		if (mbThread == null) {
-			return null;
+	@Retry(
+		acceptor = ExceptionRetryAcceptor.class,
+		properties = {
+			@Property(
+				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
+				value = "org.hibernate.StaleObjectStateException"
+			)
 		}
+	)
+	public MBThread updateMessageCount(long threadId) {
+		Session session = null;
 
-		int messageCount = mbMessagePersistence.countByT_S(
-			threadId, WorkflowConstants.STATUS_APPROVED);
+		try {
+			session = mbThreadPersistence.openSession();
 
-		mbThread.setMessageCount(messageCount);
+			MBThread thread = (MBThread)session.get(
+				MBThreadImpl.class, threadId, LockMode.UPGRADE);
 
-		return mbThreadPersistence.update(mbThread);
+			if (thread == null) {
+				return null;
+			}
+
+			int messageCount = mbMessagePersistence.countByT_S(
+				threadId, WorkflowConstants.STATUS_APPROVED);
+
+			thread.setMessageCount(messageCount);
+
+			session.saveOrUpdate(thread);
+
+			session.flush();
+
+			mbThreadPersistence.clearCache(thread);
+
+			mbThreadPersistence.cacheResult(thread);
+
+			return thread;
+		}
+		finally {
+			mbThreadPersistence.closeSession(session);
+		}
 	}
 
 	@Override
