@@ -33,11 +33,13 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -48,15 +50,22 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -90,13 +99,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUuid;
-	private FinderPath _finderPathWithoutPaginationFindByUuid;
-	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the fragment entry links where uuid = &#63;.
@@ -176,12 +178,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid");
 				finderArgs = new Object[] {uuid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid");
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
@@ -575,7 +579,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByUuid(String uuid) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid");
 
 		Object[] finderArgs = new Object[] {uuid};
 
@@ -634,9 +639,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3 =
 		"(fragmentEntryLink.uuid IS NULL OR fragmentEntryLink.uuid = '')";
-
-	private FinderPath _finderPathFetchByUUID_G;
-	private FinderPath _finderPathCountByUUID_G;
 
 	/**
 	 * Returns the fragment entry link where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryLinkException</code> if it could not be found.
@@ -709,9 +711,11 @@ public class FragmentEntryLinkPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G");
+
 		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByUUID_G, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof FragmentEntryLink) {
@@ -763,8 +767,7 @@ public class FragmentEntryLinkPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByUUID_G, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -777,8 +780,7 @@ public class FragmentEntryLinkPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByUUID_G, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -823,7 +825,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByUUID_G(String uuid, long groupId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUUID_G;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G");
 
 		Object[] finderArgs = new Object[] {uuid, groupId};
 
@@ -889,10 +892,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 =
 		"fragmentEntryLink.groupId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByUuid_C;
-	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
-	private FinderPath _finderPathCountByUuid_C;
 
 	/**
 	 * Returns all the fragment entry links where uuid = &#63; and companyId = &#63;.
@@ -980,12 +979,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C");
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C");
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
 			};
@@ -1412,7 +1413,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByUuid_C(String uuid, long companyId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C");
 
 		Object[] finderArgs = new Object[] {uuid, companyId};
 
@@ -1478,10 +1480,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"fragmentEntryLink.companyId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByGroupId;
-	private FinderPath _finderPathWithoutPaginationFindByGroupId;
-	private FinderPath _finderPathCountByGroupId;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63;.
@@ -1562,12 +1560,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByGroupId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId");
 				finderArgs = new Object[] {groupId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByGroupId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId");
 			finderArgs = new Object[] {groupId, start, end, orderByComparator};
 		}
 
@@ -1938,7 +1938,8 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countByGroupId(long groupId) {
-		FinderPath finderPath = _finderPathCountByGroupId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId");
 
 		Object[] finderArgs = new Object[] {groupId};
 
@@ -1983,10 +1984,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"fragmentEntryLink.groupId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByFragmentEntryId;
-	private FinderPath _finderPathWithoutPaginationFindByFragmentEntryId;
-	private FinderPath _finderPathCountByFragmentEntryId;
 
 	/**
 	 * Returns all the fragment entry links where fragmentEntryId = &#63;.
@@ -2068,12 +2065,16 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByFragmentEntryId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByFragmentEntryId");
 				finderArgs = new Object[] {fragmentEntryId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByFragmentEntryId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"findByFragmentEntryId");
 			finderArgs = new Object[] {
 				fragmentEntryId, start, end, orderByComparator
 			};
@@ -2454,7 +2455,9 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countByFragmentEntryId(long fragmentEntryId) {
-		FinderPath finderPath = _finderPathCountByFragmentEntryId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByFragmentEntryId");
 
 		Object[] finderArgs = new Object[] {fragmentEntryId};
 
@@ -2500,10 +2503,6 @@ public class FragmentEntryLinkPersistenceImpl
 	private static final String
 		_FINDER_COLUMN_FRAGMENTENTRYID_FRAGMENTENTRYID_2 =
 			"fragmentEntryLink.fragmentEntryId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByRendererKey;
-	private FinderPath _finderPathWithoutPaginationFindByRendererKey;
-	private FinderPath _finderPathCountByRendererKey;
 
 	/**
 	 * Returns all the fragment entry links where rendererKey = &#63;.
@@ -2587,12 +2586,15 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByRendererKey;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByRendererKey");
 				finderArgs = new Object[] {rendererKey};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByRendererKey;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRendererKey");
 			finderArgs = new Object[] {
 				rendererKey, start, end, orderByComparator
 			};
@@ -2998,7 +3000,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByRendererKey(String rendererKey) {
 		rendererKey = Objects.toString(rendererKey, "");
 
-		FinderPath finderPath = _finderPathCountByRendererKey;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRendererKey");
 
 		Object[] finderArgs = new Object[] {rendererKey};
 
@@ -3057,10 +3060,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_RENDERERKEY_RENDERERKEY_3 =
 		"(fragmentEntryLink.rendererKey IS NULL OR fragmentEntryLink.rendererKey = '')";
-
-	private FinderPath _finderPathWithPaginationFindByG_F;
-	private FinderPath _finderPathWithoutPaginationFindByG_F;
-	private FinderPath _finderPathCountByG_F;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and fragmentEntryId = &#63;.
@@ -3149,12 +3148,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_F;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F");
 				finderArgs = new Object[] {groupId, fragmentEntryId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_F;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F");
 			finderArgs = new Object[] {
 				groupId, fragmentEntryId, start, end, orderByComparator
 			};
@@ -3557,7 +3558,8 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countByG_F(long groupId, long fragmentEntryId) {
-		FinderPath finderPath = _finderPathCountByG_F;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F");
 
 		Object[] finderArgs = new Object[] {groupId, fragmentEntryId};
 
@@ -3609,10 +3611,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_F_FRAGMENTENTRYID_2 =
 		"fragmentEntryLink.fragmentEntryId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_P;
-	private FinderPath _finderPathWithoutPaginationFindByG_P;
-	private FinderPath _finderPathCountByG_P;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and plid = &#63;.
@@ -3697,12 +3695,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_P;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P");
 				finderArgs = new Object[] {groupId, plid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_P;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P");
 			finderArgs = new Object[] {
 				groupId, plid, start, end, orderByComparator
 			};
@@ -4103,7 +4103,8 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countByG_P(long groupId, long plid) {
-		FinderPath finderPath = _finderPathCountByG_P;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P");
 
 		Object[] finderArgs = new Object[] {groupId, plid};
 
@@ -4155,10 +4156,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_P_PLID_2 =
 		"fragmentEntryLink.plid = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_F_C;
-	private FinderPath _finderPathWithoutPaginationFindByG_F_C;
-	private FinderPath _finderPathCountByG_F_C;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and fragmentEntryId = &#63; and classNameId = &#63;.
@@ -4254,14 +4251,16 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_F_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_C");
 				finderArgs = new Object[] {
 					groupId, fragmentEntryId, classNameId
 				};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_F_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_C");
 			finderArgs = new Object[] {
 				groupId, fragmentEntryId, classNameId, start, end,
 				orderByComparator
@@ -4693,7 +4692,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByG_F_C(
 		long groupId, long fragmentEntryId, long classNameId) {
 
-		FinderPath finderPath = _finderPathCountByG_F_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_C");
 
 		Object[] finderArgs = new Object[] {
 			groupId, fragmentEntryId, classNameId
@@ -4754,10 +4754,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_F_C_CLASSNAMEID_2 =
 		"fragmentEntryLink.classNameId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_F_P;
-	private FinderPath _finderPathWithoutPaginationFindByG_F_P;
-	private FinderPath _finderPathCountByG_F_P;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and fragmentEntryId = &#63; and plid = &#63;.
@@ -4851,12 +4847,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_F_P;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_P");
 				finderArgs = new Object[] {groupId, fragmentEntryId, plid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_F_P;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_P");
 			finderArgs = new Object[] {
 				groupId, fragmentEntryId, plid, start, end, orderByComparator
 			};
@@ -5282,7 +5280,8 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countByG_F_P(long groupId, long fragmentEntryId, long plid) {
-		FinderPath finderPath = _finderPathCountByG_F_P;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_P");
 
 		Object[] finderArgs = new Object[] {groupId, fragmentEntryId, plid};
 
@@ -5341,10 +5340,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_F_P_PLID_2 =
 		"fragmentEntryLink.plid = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_S_P;
-	private FinderPath _finderPathWithoutPaginationFindByG_S_P;
-	private FinderPath _finderPathCountByG_S_P;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and segmentsExperienceId = &#63; and plid = &#63;.
@@ -5440,12 +5435,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_S_P;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S_P");
 				finderArgs = new Object[] {groupId, segmentsExperienceId, plid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_S_P;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S_P");
 			finderArgs = new Object[] {
 				groupId, segmentsExperienceId, plid, start, end,
 				orderByComparator
@@ -5876,7 +5873,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByG_S_P(
 		long groupId, long segmentsExperienceId, long plid) {
 
-		FinderPath finderPath = _finderPathCountByG_S_P;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S_P");
 
 		Object[] finderArgs = new Object[] {
 			groupId, segmentsExperienceId, plid
@@ -5937,10 +5935,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_S_P_PLID_2 =
 		"fragmentEntryLink.plid = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_C_C;
-	private FinderPath _finderPathWithoutPaginationFindByG_C_C;
-	private FinderPath _finderPathCountByG_C_C;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -6033,12 +6027,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_C_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C");
 				finderArgs = new Object[] {groupId, classNameId, classPK};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_C_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C");
 			finderArgs = new Object[] {
 				groupId, classNameId, classPK, start, end, orderByComparator
 			};
@@ -6463,7 +6459,8 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countByG_C_C(long groupId, long classNameId, long classPK) {
-		FinderPath finderPath = _finderPathCountByG_C_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C");
 
 		Object[] finderArgs = new Object[] {groupId, classNameId, classPK};
 
@@ -6522,10 +6519,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_C_C_CLASSPK_2 =
 		"fragmentEntryLink.classPK = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_F_C_C;
-	private FinderPath _finderPathWithoutPaginationFindByG_F_C_C;
-	private FinderPath _finderPathCountByG_F_C_C;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and fragmentEntryId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -6627,14 +6620,16 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_F_C_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_C_C");
 				finderArgs = new Object[] {
 					groupId, fragmentEntryId, classNameId, classPK
 				};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_F_C_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_C_C");
 			finderArgs = new Object[] {
 				groupId, fragmentEntryId, classNameId, classPK, start, end,
 				orderByComparator
@@ -7090,7 +7085,8 @@ public class FragmentEntryLinkPersistenceImpl
 	public int countByG_F_C_C(
 		long groupId, long fragmentEntryId, long classNameId, long classPK) {
 
-		FinderPath finderPath = _finderPathCountByG_F_C_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_C_C");
 
 		Object[] finderArgs = new Object[] {
 			groupId, fragmentEntryId, classNameId, classPK
@@ -7158,10 +7154,6 @@ public class FragmentEntryLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_F_C_C_CLASSPK_2 =
 		"fragmentEntryLink.classPK = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_S_C_C;
-	private FinderPath _finderPathWithoutPaginationFindByG_S_C_C;
-	private FinderPath _finderPathCountByG_S_C_C;
 
 	/**
 	 * Returns all the fragment entry links where groupId = &#63; and segmentsExperienceId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -7265,14 +7257,16 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_S_C_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S_C_C");
 				finderArgs = new Object[] {
 					groupId, segmentsExperienceId, classNameId, classPK
 				};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_S_C_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S_C_C");
 			finderArgs = new Object[] {
 				groupId, segmentsExperienceId, classNameId, classPK, start, end,
 				orderByComparator
@@ -7734,7 +7728,8 @@ public class FragmentEntryLinkPersistenceImpl
 		long groupId, long segmentsExperienceId, long classNameId,
 		long classPK) {
 
-		FinderPath finderPath = _finderPathCountByG_S_C_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S_C_C");
 
 		Object[] finderArgs = new Object[] {
 			groupId, segmentsExperienceId, classNameId, classPK
@@ -7827,10 +7822,15 @@ public class FragmentEntryLinkPersistenceImpl
 	public void cacheResult(FragmentEntryLink fragmentEntryLink) {
 		entityCache.putResult(
 			entityCacheEnabled, FragmentEntryLinkImpl.class,
-			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink);
+			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((FragmentEntryLinkModelImpl)fragmentEntryLink).
+					getColumnBitmask()
+			});
 
 		finderCache.putResult(
-			_finderPathFetchByUUID_G,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G"),
 			new Object[] {
 				fragmentEntryLink.getUuid(), fragmentEntryLink.getGroupId()
 			},
@@ -7869,10 +7869,6 @@ public class FragmentEntryLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FragmentEntryLinkImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -7886,36 +7882,30 @@ public class FragmentEntryLinkPersistenceImpl
 	public void clearCache(FragmentEntryLink fragmentEntryLink) {
 		entityCache.removeResult(
 			entityCacheEnabled, FragmentEntryLinkImpl.class,
-			fragmentEntryLink.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(FragmentEntryLinkModelImpl)fragmentEntryLink, true);
+			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((FragmentEntryLinkModelImpl)fragmentEntryLink).
+					getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<FragmentEntryLink> fragmentEntryLinks) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentEntryLinkImpl.class,
-				fragmentEntryLink.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(FragmentEntryLinkModelImpl)fragmentEntryLink, true);
+				fragmentEntryLink.getPrimaryKey(), fragmentEntryLink,
+				new Object[] {
+					_columnBitmaskEnabled,
+					((FragmentEntryLinkModelImpl)fragmentEntryLink).
+						getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentEntryLinkImpl.class, primaryKey);
@@ -7931,36 +7921,12 @@ public class FragmentEntryLinkPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByUUID_G, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByUUID_G, args, fragmentEntryLinkModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				fragmentEntryLinkModelImpl.getUuid(),
-				fragmentEntryLinkModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				fragmentEntryLinkModelImpl.getOriginalUuid(),
-				fragmentEntryLinkModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G"), args,
+			fragmentEntryLinkModelImpl, false);
 	}
 
 	/**
@@ -8134,10 +8100,8 @@ public class FragmentEntryLinkPersistenceImpl
 		try {
 			session = openSession();
 
-			if (fragmentEntryLink.isNew()) {
+			if (isNew) {
 				session.save(fragmentEntryLink);
-
-				fragmentEntryLink.setNew(false);
 			}
 			else {
 				fragmentEntryLink = (FragmentEntryLink)session.merge(
@@ -8151,448 +8115,22 @@ public class FragmentEntryLinkPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {fragmentEntryLinkModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getUuid(),
-				fragmentEntryLinkModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {fragmentEntryLinkModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getFragmentEntryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByFragmentEntryId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByFragmentEntryId, args);
-
-			args = new Object[] {fragmentEntryLinkModelImpl.getRendererKey()};
-
-			finderCache.removeResult(_finderPathCountByRendererKey, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByRendererKey, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getFragmentEntryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_F, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_F, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getPlid()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_P, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getFragmentEntryId(),
-				fragmentEntryLinkModelImpl.getClassNameId()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_F_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_F_C, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getFragmentEntryId(),
-				fragmentEntryLinkModelImpl.getPlid()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_F_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_F_P, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getSegmentsExperienceId(),
-				fragmentEntryLinkModelImpl.getPlid()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_S_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_S_P, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getClassNameId(),
-				fragmentEntryLinkModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_C_C, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getFragmentEntryId(),
-				fragmentEntryLinkModelImpl.getClassNameId(),
-				fragmentEntryLinkModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_F_C_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_F_C_C, args);
-
-			args = new Object[] {
-				fragmentEntryLinkModelImpl.getGroupId(),
-				fragmentEntryLinkModelImpl.getSegmentsExperienceId(),
-				fragmentEntryLinkModelImpl.getClassNameId(),
-				fragmentEntryLinkModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_S_C_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_S_C_C, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {fragmentEntryLinkModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalUuid(),
-					fragmentEntryLinkModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getUuid(),
-					fragmentEntryLinkModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {fragmentEntryLinkModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByFragmentEntryId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalFragmentEntryId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByFragmentEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFragmentEntryId, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getFragmentEntryId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByFragmentEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFragmentEntryId, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByRendererKey.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalRendererKey()
-				};
-
-				finderCache.removeResult(_finderPathCountByRendererKey, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByRendererKey, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getRendererKey()
-				};
-
-				finderCache.removeResult(_finderPathCountByRendererKey, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByRendererKey, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_F.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.getOriginalFragmentEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getFragmentEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.getOriginalPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_P, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_P, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_F_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.getOriginalFragmentEntryId(),
-					fragmentEntryLinkModelImpl.getOriginalClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F_C, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getFragmentEntryId(),
-					fragmentEntryLinkModelImpl.getClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F_C, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_F_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.getOriginalFragmentEntryId(),
-					fragmentEntryLinkModelImpl.getOriginalPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F_P, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getFragmentEntryId(),
-					fragmentEntryLinkModelImpl.getPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F_P, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.
-						getOriginalSegmentsExperienceId(),
-					fragmentEntryLinkModelImpl.getOriginalPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_S_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_S_P, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getSegmentsExperienceId(),
-					fragmentEntryLinkModelImpl.getPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_S_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_S_P, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_C_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.getOriginalClassNameId(),
-					fragmentEntryLinkModelImpl.getOriginalClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_C_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_C_C, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getClassNameId(),
-					fragmentEntryLinkModelImpl.getClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_C_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_C_C, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_F_C_C.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.getOriginalFragmentEntryId(),
-					fragmentEntryLinkModelImpl.getOriginalClassNameId(),
-					fragmentEntryLinkModelImpl.getOriginalClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F_C_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F_C_C, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getFragmentEntryId(),
-					fragmentEntryLinkModelImpl.getClassNameId(),
-					fragmentEntryLinkModelImpl.getClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_F_C_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_F_C_C, args);
-			}
-
-			if ((fragmentEntryLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S_C_C.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					fragmentEntryLinkModelImpl.getOriginalGroupId(),
-					fragmentEntryLinkModelImpl.
-						getOriginalSegmentsExperienceId(),
-					fragmentEntryLinkModelImpl.getOriginalClassNameId(),
-					fragmentEntryLinkModelImpl.getOriginalClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_S_C_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_S_C_C, args);
-
-				args = new Object[] {
-					fragmentEntryLinkModelImpl.getGroupId(),
-					fragmentEntryLinkModelImpl.getSegmentsExperienceId(),
-					fragmentEntryLinkModelImpl.getClassNameId(),
-					fragmentEntryLinkModelImpl.getClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_S_C_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_S_C_C, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, FragmentEntryLinkImpl.class,
-			fragmentEntryLink.getPrimaryKey(), fragmentEntryLink, false);
+			fragmentEntryLinkModelImpl.getPrimaryKey(),
+			fragmentEntryLinkModelImpl, false,
+			new Object[] {
+				_columnBitmaskEnabled,
+				fragmentEntryLinkModelImpl.getColumnBitmask()
+			});
 
-		clearUniqueFindersCache(fragmentEntryLinkModelImpl, false);
 		cacheUniqueFindersCache(fragmentEntryLinkModelImpl);
 
 		fragmentEntryLink.resetOriginalValues();
+
+		if (isNew) {
+			fragmentEntryLink.setNew(false);
+		}
 
 		return fragmentEntryLink;
 	}
@@ -8719,12 +8257,14 @@ public class FragmentEntryLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -8805,8 +8345,11 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -8818,12 +8361,10 @@ public class FragmentEntryLinkPersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -8864,378 +8405,26 @@ public class FragmentEntryLinkPersistenceImpl
 	 * Initializes the fragment entry link persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
 		FragmentEntryLinkModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		FragmentEntryLinkModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_bundleContext = bundleContext;
+		Bundle bundle = FrameworkUtil.getBundle(
+			FragmentEntryLinkPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			FragmentEntryLinkModelImpl.UUID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
-
-		_finderPathFetchByUUID_G = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()},
-			FragmentEntryLinkModelImpl.UUID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK);
-
-		_finderPathCountByUUID_G = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			FragmentEntryLinkModelImpl.UUID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.COMPANYID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByGroupId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByFragmentEntryId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFragmentEntryId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByFragmentEntryId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFragmentEntryId",
-			new String[] {Long.class.getName()},
-			FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByFragmentEntryId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFragmentEntryId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByRendererKey = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRendererKey",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByRendererKey = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRendererKey",
-			new String[] {String.class.getName()},
-			FragmentEntryLinkModelImpl.RENDERERKEY_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByRendererKey = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRendererKey",
-			new String[] {String.class.getName()});
-
-		_finderPathWithPaginationFindByG_F = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_F = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_F = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.PLID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_F_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_F_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_F_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
-
-		_finderPathWithPaginationFindByG_F_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_F_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.PLID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_F_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
-
-		_finderPathWithPaginationFindByG_S_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_S_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.PLID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_S_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S_P",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
-
-		_finderPathWithPaginationFindByG_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
-
-		_finderPathWithPaginationFindByG_F_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_F_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Long.class.getName()
-			},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_F_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Long.class.getName()
-			});
-
-		_finderPathWithPaginationFindByG_S_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_S_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Long.class.getName()
-			},
-			FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK);
-
-		_finderPathCountByG_S_C_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Long.class.getName()
-			});
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(FragmentEntryLinkImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -9271,6 +8460,7 @@ public class FragmentEntryLinkPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -9311,6 +8501,463 @@ public class FragmentEntryLinkPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!finderCacheEnabled) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = FragmentEntryLinkImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0], (long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					_serviceRegistrations.add(
+						_bundleContext.registerService(
+							FinderPath.class, finderPath,
+							MapUtil.singletonDictionary(
+								"cache.name", cacheName)));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid",
+			new Object[] {
+				FragmentEntryLinkModelImpl.UUID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {fragmentEntryLinkModelImpl.getUuid()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalUuid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByUUID_G",
+			new Object[] {
+				FragmentEntryLinkModelImpl.UUID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getUuid(),
+						fragmentEntryLinkModelImpl.getGroupId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalUuid(),
+						fragmentEntryLinkModelImpl.getOriginalGroupId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid_C",
+			new Object[] {
+				FragmentEntryLinkModelImpl.UUID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.COMPANYID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getUuid(),
+						fragmentEntryLinkModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalUuid(),
+						fragmentEntryLinkModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByGroupId",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByFragmentEntryId",
+			new Object[] {
+				FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getFragmentEntryId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalFragmentEntryId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByRendererKey",
+			new Object[] {
+				FragmentEntryLinkModelImpl.RENDERERKEY_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getRendererKey()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalRendererKey()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_F",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getFragmentEntryId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.getOriginalFragmentEntryId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_P",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.PLID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getPlid()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.getOriginalPlid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_F_C",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getFragmentEntryId(),
+						fragmentEntryLinkModelImpl.getClassNameId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.getOriginalFragmentEntryId(),
+						fragmentEntryLinkModelImpl.getOriginalClassNameId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_F_P",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.PLID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getFragmentEntryId(),
+						fragmentEntryLinkModelImpl.getPlid()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.getOriginalFragmentEntryId(),
+						fragmentEntryLinkModelImpl.getOriginalPlid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_S_P",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.PLID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getSegmentsExperienceId(),
+						fragmentEntryLinkModelImpl.getPlid()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.
+							getOriginalSegmentsExperienceId(),
+						fragmentEntryLinkModelImpl.getOriginalPlid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_C_C",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getClassNameId(),
+						fragmentEntryLinkModelImpl.getClassPK()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.getOriginalClassNameId(),
+						fragmentEntryLinkModelImpl.getOriginalClassPK()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_F_C_C",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.FRAGMENTENTRYID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getFragmentEntryId(),
+						fragmentEntryLinkModelImpl.getClassNameId(),
+						fragmentEntryLinkModelImpl.getClassPK()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.getOriginalFragmentEntryId(),
+						fragmentEntryLinkModelImpl.getOriginalClassNameId(),
+						fragmentEntryLinkModelImpl.getOriginalClassPK()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_S_C_C",
+			new Object[] {
+				FragmentEntryLinkModelImpl.GROUPID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.CLASSPK_COLUMN_BITMASK |
+				FragmentEntryLinkModelImpl.POSITION_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getGroupId(),
+						fragmentEntryLinkModelImpl.getSegmentsExperienceId(),
+						fragmentEntryLinkModelImpl.getClassNameId(),
+						fragmentEntryLinkModelImpl.getClassPK()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl =
+						(FragmentEntryLinkModelImpl)baseModel;
+
+					return new Object[] {
+						fragmentEntryLinkModelImpl.getOriginalGroupId(),
+						fragmentEntryLinkModelImpl.
+							getOriginalSegmentsExperienceId(),
+						fragmentEntryLinkModelImpl.getOriginalClassNameId(),
+						fragmentEntryLinkModelImpl.getOriginalClassPK()
+					};
+				}
+			});
 	}
 
 }

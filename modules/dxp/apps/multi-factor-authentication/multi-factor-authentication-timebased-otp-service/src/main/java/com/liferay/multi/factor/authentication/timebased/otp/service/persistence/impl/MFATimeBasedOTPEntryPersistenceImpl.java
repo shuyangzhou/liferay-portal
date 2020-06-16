@@ -33,11 +33,13 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -45,13 +47,21 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -85,12 +95,6 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByUserId;
-	private FinderPath _finderPathCountByUserId;
 
 	/**
 	 * Returns the mfa time based otp entry where userId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -155,9 +159,11 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByUserId");
+
 		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByUserId, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof MFATimeBasedOTPEntry) {
@@ -193,8 +199,7 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByUserId, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -207,8 +212,7 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByUserId, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -249,7 +253,8 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByUserId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId");
 
 		Object[] finderArgs = new Object[] {userId};
 
@@ -313,10 +318,15 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	public void cacheResult(MFATimeBasedOTPEntry mfaTimeBasedOTPEntry) {
 		entityCache.putResult(
 			entityCacheEnabled, MFATimeBasedOTPEntryImpl.class,
-			mfaTimeBasedOTPEntry.getPrimaryKey(), mfaTimeBasedOTPEntry);
+			mfaTimeBasedOTPEntry.getPrimaryKey(), mfaTimeBasedOTPEntry,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((MFATimeBasedOTPEntryModelImpl)mfaTimeBasedOTPEntry).
+					getColumnBitmask()
+			});
 
 		finderCache.putResult(
-			_finderPathFetchByUserId,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByUserId"),
 			new Object[] {mfaTimeBasedOTPEntry.getUserId()},
 			mfaTimeBasedOTPEntry);
 
@@ -355,10 +365,6 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MFATimeBasedOTPEntryImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -372,37 +378,31 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	public void clearCache(MFATimeBasedOTPEntry mfaTimeBasedOTPEntry) {
 		entityCache.removeResult(
 			entityCacheEnabled, MFATimeBasedOTPEntryImpl.class,
-			mfaTimeBasedOTPEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(MFATimeBasedOTPEntryModelImpl)mfaTimeBasedOTPEntry, true);
+			mfaTimeBasedOTPEntry.getPrimaryKey(), mfaTimeBasedOTPEntry,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((MFATimeBasedOTPEntryModelImpl)mfaTimeBasedOTPEntry).
+					getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<MFATimeBasedOTPEntry> mfaTimeBasedOTPEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (MFATimeBasedOTPEntry mfaTimeBasedOTPEntry :
 				mfaTimeBasedOTPEntries) {
 
 			entityCache.removeResult(
 				entityCacheEnabled, MFATimeBasedOTPEntryImpl.class,
-				mfaTimeBasedOTPEntry.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(MFATimeBasedOTPEntryModelImpl)mfaTimeBasedOTPEntry, true);
+				mfaTimeBasedOTPEntry.getPrimaryKey(), mfaTimeBasedOTPEntry,
+				new Object[] {
+					_columnBitmaskEnabled,
+					((MFATimeBasedOTPEntryModelImpl)mfaTimeBasedOTPEntry).
+						getColumnBitmask()
+				});
 		}
 	}
 
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, MFATimeBasedOTPEntryImpl.class, primaryKey);
@@ -417,35 +417,12 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByUserId, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByUserId, args, mfaTimeBasedOTPEntryModelImpl,
-			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		MFATimeBasedOTPEntryModelImpl mfaTimeBasedOTPEntryModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				mfaTimeBasedOTPEntryModelImpl.getUserId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(_finderPathFetchByUserId, args);
-		}
-
-		if ((mfaTimeBasedOTPEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUserId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				mfaTimeBasedOTPEntryModelImpl.getOriginalUserId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(_finderPathFetchByUserId, args);
-		}
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByUserId"), args,
+			mfaTimeBasedOTPEntryModelImpl, false);
 	}
 
 	/**
@@ -612,10 +589,8 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mfaTimeBasedOTPEntry.isNew()) {
+			if (isNew) {
 				session.save(mfaTimeBasedOTPEntry);
-
-				mfaTimeBasedOTPEntry.setNew(false);
 			}
 			else {
 				mfaTimeBasedOTPEntry = (MFATimeBasedOTPEntry)session.merge(
@@ -629,25 +604,22 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, MFATimeBasedOTPEntryImpl.class,
-			mfaTimeBasedOTPEntry.getPrimaryKey(), mfaTimeBasedOTPEntry, false);
+			mfaTimeBasedOTPEntryModelImpl.getPrimaryKey(),
+			mfaTimeBasedOTPEntryModelImpl, false,
+			new Object[] {
+				_columnBitmaskEnabled,
+				mfaTimeBasedOTPEntryModelImpl.getColumnBitmask()
+			});
 
-		clearUniqueFindersCache(mfaTimeBasedOTPEntryModelImpl, false);
 		cacheUniqueFindersCache(mfaTimeBasedOTPEntryModelImpl);
 
 		mfaTimeBasedOTPEntry.resetOriginalValues();
+
+		if (isNew) {
+			mfaTimeBasedOTPEntry.setNew(false);
+		}
 
 		return mfaTimeBasedOTPEntry;
 	}
@@ -775,12 +747,14 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -861,8 +835,11 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -875,12 +852,10 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -916,44 +891,26 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	 * Initializes the mfa time based otp entry persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
 		MFATimeBasedOTPEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		MFATimeBasedOTPEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			MFATimeBasedOTPEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_bundleContext = bundleContext;
+		Bundle bundle = FrameworkUtil.getBundle(
+			MFATimeBasedOTPEntryPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			MFATimeBasedOTPEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByUserId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			MFATimeBasedOTPEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByUserId", new String[] {Long.class.getName()},
-			MFATimeBasedOTPEntryModelImpl.USERID_COLUMN_BITMASK);
-
-		_finderPathCountByUserId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(MFATimeBasedOTPEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -989,6 +946,7 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -1027,6 +985,93 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!finderCacheEnabled) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = MFATimeBasedOTPEntryImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0], (long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					_serviceRegistrations.add(
+						_bundleContext.registerService(
+							FinderPath.class, finderPath,
+							MapUtil.singletonDictionary(
+								"cache.name", cacheName)));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByUserId",
+			new Object[] {
+				MFATimeBasedOTPEntryModelImpl.USERID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MFATimeBasedOTPEntryModelImpl
+						mfaTimeBasedOTPEntryModelImpl =
+							(MFATimeBasedOTPEntryModelImpl)baseModel;
+
+					return new Object[] {
+						mfaTimeBasedOTPEntryModelImpl.getUserId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MFATimeBasedOTPEntryModelImpl
+						mfaTimeBasedOTPEntryModelImpl =
+							(MFATimeBasedOTPEntryModelImpl)baseModel;
+
+					return new Object[] {
+						mfaTimeBasedOTPEntryModelImpl.getOriginalUserId()
+					};
+				}
+			});
 	}
 
 }
