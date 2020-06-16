@@ -700,6 +700,8 @@ public class S3Store implements Store {
 	protected SystemException transform(
 		AmazonClientException amazonClientException) {
 
+		SystemException systemException = null;
+
 		if (amazonClientException instanceof AmazonServiceException) {
 			AmazonServiceException amazonServiceException =
 				(AmazonServiceException)amazonClientException;
@@ -723,14 +725,26 @@ public class S3Store implements Store {
 			sb.append("}");
 
 			if (errorCode.equals("AccessDenied")) {
-				return new AccessDeniedException(sb.toString());
+				systemException = new AccessDeniedException(sb.toString());
+
+				_log.error(systemException, systemException);
+
+				return systemException;
 			}
 
-			return new SystemException(sb.toString());
+			systemException = new SystemException(sb.toString());
+
+			_log.error(systemException, systemException);
+
+			return systemException;
 		}
 
-		return new SystemException(
+		systemException = new SystemException(
 			amazonClientException.getMessage(), amazonClientException);
+
+		_log.error(systemException, systemException);
+
+		return systemException;
 	}
 
 	private static final int _DELETE_MAX = 1000;
