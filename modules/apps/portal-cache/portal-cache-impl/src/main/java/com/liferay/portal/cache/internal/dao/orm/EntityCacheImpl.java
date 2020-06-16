@@ -62,6 +62,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void clearCache() {
+		FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+		if (finderCacheImpl != null) {
+			finderCacheImpl.clearCache();
+		}
+
 		clearLocalCache();
 
 		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
@@ -71,6 +77,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void clearCache(Class<?> clazz) {
+		FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+		if (finderCacheImpl != null) {
+			finderCacheImpl.clearCacheByEntity(clazz);
+		}
+
 		clearLocalCache();
 
 		PortalCache<?, ?> portalCache = getPortalCache(clazz);
@@ -87,6 +99,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void dispose() {
+		FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+		if (finderCacheImpl != null) {
+			finderCacheImpl.dispose();
+		}
+
 		_portalCaches.clear();
 	}
 
@@ -279,10 +297,19 @@ public class EntityCacheImpl
 
 	@Override
 	public void notifyPortalCacheRemoved(String portalCacheName) {
+		String cacheName = portalCacheName;
+
 		if (portalCacheName.startsWith(_GROUP_KEY_PREFIX)) {
-			_portalCaches.remove(
-				portalCacheName.substring(_GROUP_KEY_PREFIX.length()));
+			cacheName = portalCacheName.substring(_GROUP_KEY_PREFIX.length());
 		}
+
+		FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+		if (finderCacheImpl != null) {
+			finderCacheImpl.removeCacheByEntity(cacheName);
+		}
+
+		_portalCaches.remove(cacheName);
 	}
 
 	@Override
@@ -329,6 +356,16 @@ public class EntityCacheImpl
 			localCache.put(localCacheKey, result);
 		}
 
+		if ((bitmaskArguments != null) && (bitmaskArguments.length == 2)) {
+			FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+			if (finderCacheImpl != null) {
+				finderCacheImpl.updateByEntity(
+					clazz, baseModel, (boolean)bitmaskArguments[0],
+					(long)bitmaskArguments[1]);
+			}
+		}
+
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
@@ -353,6 +390,12 @@ public class EntityCacheImpl
 
 	@Override
 	public void removeCache(String className) {
+		FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+		if (finderCacheImpl != null) {
+			finderCacheImpl.removeCacheByEntity(className);
+		}
+
 		_portalCaches.remove(className);
 
 		String groupKey = _GROUP_KEY_PREFIX.concat(className);
@@ -399,10 +442,24 @@ public class EntityCacheImpl
 			localCache.remove(localCacheKey);
 		}
 
+		if ((bitmaskArguments != null) && (bitmaskArguments.length == 2)) {
+			FinderCacheImpl finderCacheImpl = _finderCacheImpl;
+
+			if (finderCacheImpl != null) {
+				finderCacheImpl.removeByEntity(
+					clazz, (BaseModel<?>)result, (boolean)bitmaskArguments[0],
+					(long)bitmaskArguments[1]);
+			}
+		}
+
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
 		portalCache.remove(primaryKey);
+	}
+
+	public void setFinderCacheImpl(FinderCacheImpl finderCacheImpl) {
+		_finderCacheImpl = finderCacheImpl;
 	}
 
 	@Activate
@@ -474,6 +531,7 @@ public class EntityCacheImpl
 
 	private static final Object[] _defaultColumnBitmaskArguments = {false, -1L};
 
+	private volatile FinderCacheImpl _finderCacheImpl;
 	private ThreadLocal<LRUMap> _localCache;
 	private MultiVMPool _multiVMPool;
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
