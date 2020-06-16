@@ -26,23 +26,32 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchMembershipRequestException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MembershipRequest;
 import com.liferay.portal.kernel.model.MembershipRequestTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.MembershipRequestPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.MembershipRequestImpl;
 import com.liferay.portal.model.impl.MembershipRequestModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * The persistence implementation for the membership request service.
@@ -71,13 +80,6 @@ public class MembershipRequestPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByGroupId;
-	private FinderPath _finderPathWithoutPaginationFindByGroupId;
-	private FinderPath _finderPathCountByGroupId;
 
 	/**
 	 * Returns all the membership requests where groupId = &#63;.
@@ -158,12 +160,14 @@ public class MembershipRequestPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByGroupId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId");
 				finderArgs = new Object[] {groupId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByGroupId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId");
 			finderArgs = new Object[] {groupId, start, end, orderByComparator};
 		}
 
@@ -534,7 +538,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByGroupId(long groupId) {
-		FinderPath finderPath = _finderPathCountByGroupId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId");
 
 		Object[] finderArgs = new Object[] {groupId};
 
@@ -580,10 +585,6 @@ public class MembershipRequestPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"membershipRequest.groupId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByUserId;
-	private FinderPath _finderPathWithoutPaginationFindByUserId;
-	private FinderPath _finderPathCountByUserId;
 
 	/**
 	 * Returns all the membership requests where userId = &#63;.
@@ -663,12 +664,14 @@ public class MembershipRequestPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUserId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId");
 				finderArgs = new Object[] {userId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUserId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId");
 			finderArgs = new Object[] {userId, start, end, orderByComparator};
 		}
 
@@ -1037,7 +1040,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByUserId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId");
 
 		Object[] finderArgs = new Object[] {userId};
 
@@ -1083,10 +1087,6 @@ public class MembershipRequestPersistenceImpl
 
 	private static final String _FINDER_COLUMN_USERID_USERID_2 =
 		"membershipRequest.userId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_S;
-	private FinderPath _finderPathWithoutPaginationFindByG_S;
-	private FinderPath _finderPathCountByG_S;
 
 	/**
 	 * Returns all the membership requests where groupId = &#63; and statusId = &#63;.
@@ -1172,12 +1172,14 @@ public class MembershipRequestPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_S;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S");
 				finderArgs = new Object[] {groupId, statusId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_S;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S");
 			finderArgs = new Object[] {
 				groupId, statusId, start, end, orderByComparator
 			};
@@ -1578,7 +1580,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByG_S(long groupId, long statusId) {
-		FinderPath finderPath = _finderPathCountByG_S;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S");
 
 		Object[] finderArgs = new Object[] {groupId, statusId};
 
@@ -1631,10 +1634,6 @@ public class MembershipRequestPersistenceImpl
 
 	private static final String _FINDER_COLUMN_G_S_STATUSID_2 =
 		"membershipRequest.statusId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_U_S;
-	private FinderPath _finderPathWithoutPaginationFindByG_U_S;
-	private FinderPath _finderPathCountByG_U_S;
 
 	/**
 	 * Returns all the membership requests where groupId = &#63; and userId = &#63; and statusId = &#63;.
@@ -1727,12 +1726,14 @@ public class MembershipRequestPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_U_S;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U_S");
 				finderArgs = new Object[] {groupId, userId, statusId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_U_S;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_U_S");
 			finderArgs = new Object[] {
 				groupId, userId, statusId, start, end, orderByComparator
 			};
@@ -2156,7 +2157,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByG_U_S(long groupId, long userId, long statusId) {
-		FinderPath finderPath = _finderPathCountByG_U_S;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U_S");
 
 		Object[] finderArgs = new Object[] {groupId, userId, statusId};
 
@@ -2237,7 +2239,12 @@ public class MembershipRequestPersistenceImpl
 		EntityCacheUtil.putResult(
 			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
-			membershipRequest);
+			membershipRequest,
+			new Object[] {
+				MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+				((MembershipRequestModelImpl)membershipRequest).
+					getColumnBitmask()
+			});
 
 		membershipRequest.resetOriginalValues();
 	}
@@ -2273,10 +2280,6 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(MembershipRequestImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2290,30 +2293,32 @@ public class MembershipRequestPersistenceImpl
 	public void clearCache(MembershipRequest membershipRequest) {
 		EntityCacheUtil.removeResult(
 			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestImpl.class, membershipRequest.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
+			membershipRequest,
+			new Object[] {
+				MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+				((MembershipRequestModelImpl)membershipRequest).
+					getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<MembershipRequest> membershipRequests) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (MembershipRequest membershipRequest : membershipRequests) {
 			EntityCacheUtil.removeResult(
 				MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-				MembershipRequestImpl.class, membershipRequest.getPrimaryKey());
+				MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
+				membershipRequest,
+				new Object[] {
+					MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+					((MembershipRequestModelImpl)membershipRequest).
+						getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
@@ -2457,10 +2462,8 @@ public class MembershipRequestPersistenceImpl
 		try {
 			session = openSession();
 
-			if (membershipRequest.isNew()) {
+			if (isNew) {
 				session.save(membershipRequest);
-
-				membershipRequest.setNew(false);
 			}
 			else {
 				membershipRequest = (MembershipRequest)session.merge(
@@ -2474,145 +2477,21 @@ public class MembershipRequestPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				membershipRequestModelImpl.getGroupId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {membershipRequestModelImpl.getUserId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
-
-			args = new Object[] {
-				membershipRequestModelImpl.getGroupId(),
-				membershipRequestModelImpl.getStatusId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_S, args);
-
-			args = new Object[] {
-				membershipRequestModelImpl.getGroupId(),
-				membershipRequestModelImpl.getUserId(),
-				membershipRequestModelImpl.getStatusId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_U_S, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalGroupId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {membershipRequestModelImpl.getGroupId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {membershipRequestModelImpl.getUserId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalGroupId(),
-					membershipRequestModelImpl.getOriginalStatusId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-
-				args = new Object[] {
-					membershipRequestModelImpl.getGroupId(),
-					membershipRequestModelImpl.getStatusId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-			}
-
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_U_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalGroupId(),
-					membershipRequestModelImpl.getOriginalUserId(),
-					membershipRequestModelImpl.getOriginalStatusId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U_S, args);
-
-				args = new Object[] {
-					membershipRequestModelImpl.getGroupId(),
-					membershipRequestModelImpl.getUserId(),
-					membershipRequestModelImpl.getStatusId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U_S, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
-			membershipRequest, false);
+			MembershipRequestImpl.class,
+			membershipRequestModelImpl.getPrimaryKey(),
+			membershipRequestModelImpl, false,
+			new Object[] {
+				MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED,
+				membershipRequestModelImpl.getColumnBitmask()
+			});
 
 		membershipRequest.resetOriginalValues();
+
+		if (isNew) {
+			membershipRequest.setNew(false);
+		}
 
 		return membershipRequest;
 	}
@@ -2739,12 +2618,14 @@ public class MembershipRequestPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -2825,8 +2706,11 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -2838,12 +2722,10 @@ public class MembershipRequestPersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				FinderCacheUtil.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				FinderCacheUtil.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				FinderCacheUtil.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				FinderCacheUtil.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -2879,140 +2761,16 @@ public class MembershipRequestPersistenceImpl
 	 * Initializes the membership request persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByGroupId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()},
-			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByGroupId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByUserId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUserId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] {Long.class.getName()},
-			MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByUserId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_U_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_U_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_U_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_U_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(MembershipRequestImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_MEMBERSHIPREQUEST =
@@ -3037,5 +2795,173 @@ public class MembershipRequestPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MembershipRequestPersistenceImpl.class);
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!MembershipRequestModelImpl.FINDER_CACHE_ENABLED) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = MembershipRequestImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						MembershipRequestModelImpl.ENTITY_CACHE_ENABLED, true,
+						returnClass, cacheName, methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						MembershipRequestModelImpl.ENTITY_CACHE_ENABLED, true,
+						returnClass, cacheName, methodName, new String[0],
+						(long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					Registry registry = RegistryUtil.getRegistry();
+
+					_serviceRegistrations.add(
+						registry.registerService(
+							FinderPath.class, finderPath,
+							HashMapBuilder.<String, Object>put(
+								"cache.name", cacheName
+							).build()));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByGroupId",
+			new Object[] {
+				MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getGroupId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getOriginalGroupId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUserId",
+			new Object[] {
+				MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getUserId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getOriginalUserId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_S",
+			new Object[] {
+				MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getGroupId(),
+						membershipRequestModelImpl.getStatusId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getOriginalGroupId(),
+						membershipRequestModelImpl.getOriginalStatusId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByG_U_S",
+			new Object[] {
+				MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
+				MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getGroupId(),
+						membershipRequestModelImpl.getUserId(),
+						membershipRequestModelImpl.getStatusId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)baseModel;
+
+					return new Object[] {
+						membershipRequestModelImpl.getOriginalGroupId(),
+						membershipRequestModelImpl.getOriginalUserId(),
+						membershipRequestModelImpl.getOriginalStatusId()
+					};
+				}
+			});
+	}
 
 }

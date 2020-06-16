@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
@@ -42,6 +43,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -49,17 +51,23 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsEntryImpl;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsEntryModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * The persistence implementation for the announcements entry service.
@@ -88,13 +96,6 @@ public class AnnouncementsEntryPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUuid;
-	private FinderPath _finderPathWithoutPaginationFindByUuid;
-	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the announcements entries where uuid = &#63;.
@@ -176,12 +177,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid");
 				finderArgs = new Object[] {uuid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid");
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
@@ -935,7 +938,8 @@ public class AnnouncementsEntryPersistenceImpl
 	public int countByUuid(String uuid) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid");
 
 		Object[] finderArgs = new Object[] {uuid};
 
@@ -1063,10 +1067,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
 		"(announcementsEntry.uuid_ IS NULL OR announcementsEntry.uuid_ = '')";
 
-	private FinderPath _finderPathWithPaginationFindByUuid_C;
-	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
-	private FinderPath _finderPathCountByUuid_C;
-
 	/**
 	 * Returns all the announcements entries where uuid = &#63; and companyId = &#63;.
 	 *
@@ -1153,12 +1153,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C");
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C");
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
 			};
@@ -1960,7 +1962,8 @@ public class AnnouncementsEntryPersistenceImpl
 	public int countByUuid_C(String uuid, long companyId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C");
 
 		Object[] finderArgs = new Object[] {uuid, companyId};
 
@@ -2100,10 +2103,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"announcementsEntry.companyId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByCompanyId;
-	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
-	private FinderPath _finderPathCountByCompanyId;
-
 	/**
 	 * Returns all the announcements entries where companyId = &#63;.
 	 *
@@ -2183,12 +2182,15 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCompanyId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByCompanyId");
 				finderArgs = new Object[] {companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCompanyId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId");
 			finderArgs = new Object[] {
 				companyId, start, end, orderByComparator
 			};
@@ -2900,7 +2902,8 @@ public class AnnouncementsEntryPersistenceImpl
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = _finderPathCountByCompanyId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId");
 
 		Object[] finderArgs = new Object[] {companyId};
 
@@ -2995,10 +2998,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"announcementsEntry.companyId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByUserId;
-	private FinderPath _finderPathWithoutPaginationFindByUserId;
-	private FinderPath _finderPathCountByUserId;
-
 	/**
 	 * Returns all the announcements entries where userId = &#63;.
 	 *
@@ -3077,12 +3076,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUserId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId");
 				finderArgs = new Object[] {userId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUserId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId");
 			finderArgs = new Object[] {userId, start, end, orderByComparator};
 		}
 
@@ -3785,7 +3786,8 @@ public class AnnouncementsEntryPersistenceImpl
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByUserId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId");
 
 		Object[] finderArgs = new Object[] {userId};
 
@@ -3880,10 +3882,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_USERID_USERID_2 =
 		"announcementsEntry.userId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByC_C;
-	private FinderPath _finderPathWithoutPaginationFindByC_C;
-	private FinderPath _finderPathCountByC_C;
-
 	/**
 	 * Returns all the announcements entries where classNameId = &#63; and classPK = &#63;.
 	 *
@@ -3968,12 +3966,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C");
 				finderArgs = new Object[] {classNameId, classPK};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C");
 			finderArgs = new Object[] {
 				classNameId, classPK, start, end, orderByComparator
 			};
@@ -4726,7 +4726,8 @@ public class AnnouncementsEntryPersistenceImpl
 	 */
 	@Override
 	public int countByC_C(long classNameId, long classPK) {
-		FinderPath finderPath = _finderPathCountByC_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C");
 
 		Object[] finderArgs = new Object[] {classNameId, classPK};
 
@@ -4833,10 +4834,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_CLASSPK_2 =
 		"announcementsEntry.classPK = ?";
 
-	private FinderPath _finderPathWithPaginationFindByC_C_C;
-	private FinderPath _finderPathWithoutPaginationFindByC_C_C;
-	private FinderPath _finderPathCountByC_C_C;
-
 	/**
 	 * Returns all the announcements entries where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
 	 *
@@ -4929,12 +4926,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C");
 				finderArgs = new Object[] {companyId, classNameId, classPK};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C");
 			finderArgs = new Object[] {
 				companyId, classNameId, classPK, start, end, orderByComparator
 			};
@@ -5724,7 +5723,8 @@ public class AnnouncementsEntryPersistenceImpl
 	 */
 	@Override
 	public int countByC_C_C(long companyId, long classNameId, long classPK) {
-		FinderPath finderPath = _finderPathCountByC_C_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C");
 
 		Object[] finderArgs = new Object[] {companyId, classNameId, classPK};
 
@@ -5845,10 +5845,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_C_CLASSPK_2 =
 		"announcementsEntry.classPK = ?";
 
-	private FinderPath _finderPathWithPaginationFindByC_C_A;
-	private FinderPath _finderPathWithoutPaginationFindByC_C_A;
-	private FinderPath _finderPathCountByC_C_A;
-
 	/**
 	 * Returns all the announcements entries where classNameId = &#63; and classPK = &#63; and alert = &#63;.
 	 *
@@ -5940,12 +5936,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C_A;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_A");
 				finderArgs = new Object[] {classNameId, classPK, alert};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C_A;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_A");
 			finderArgs = new Object[] {
 				classNameId, classPK, alert, start, end, orderByComparator
 			};
@@ -6733,7 +6731,8 @@ public class AnnouncementsEntryPersistenceImpl
 	 */
 	@Override
 	public int countByC_C_A(long classNameId, long classPK, boolean alert) {
-		FinderPath finderPath = _finderPathCountByC_C_A;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_A");
 
 		Object[] finderArgs = new Object[] {classNameId, classPK, alert};
 
@@ -6854,10 +6853,6 @@ public class AnnouncementsEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_A_ALERT_2 =
 		"announcementsEntry.alert = ?";
 
-	private FinderPath _finderPathWithPaginationFindByC_C_C_A;
-	private FinderPath _finderPathWithoutPaginationFindByC_C_C_A;
-	private FinderPath _finderPathCountByC_C_C_A;
-
 	/**
 	 * Returns all the announcements entries where companyId = &#63; and classNameId = &#63; and classPK = &#63; and alert = &#63;.
 	 *
@@ -6958,14 +6953,16 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C_C_A;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C_A");
 				finderArgs = new Object[] {
 					companyId, classNameId, classPK, alert
 				};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C_C_A;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C_A");
 			finderArgs = new Object[] {
 				companyId, classNameId, classPK, alert, start, end,
 				orderByComparator
@@ -7800,7 +7797,8 @@ public class AnnouncementsEntryPersistenceImpl
 	public int countByC_C_C_A(
 		long companyId, long classNameId, long classPK, boolean alert) {
 
-		FinderPath finderPath = _finderPathCountByC_C_C_A;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C_A");
 
 		Object[] finderArgs = new Object[] {
 			companyId, classNameId, classPK, alert
@@ -7962,7 +7960,12 @@ public class AnnouncementsEntryPersistenceImpl
 		EntityCacheUtil.putResult(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class, announcementsEntry.getPrimaryKey(),
-			announcementsEntry);
+			announcementsEntry,
+			new Object[] {
+				AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((AnnouncementsEntryModelImpl)announcementsEntry).
+					getColumnBitmask()
+			});
 
 		announcementsEntry.resetOriginalValues();
 	}
@@ -7998,10 +8001,6 @@ public class AnnouncementsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -8015,31 +8014,32 @@ public class AnnouncementsEntryPersistenceImpl
 	public void clearCache(AnnouncementsEntry announcementsEntry) {
 		EntityCacheUtil.removeResult(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class, announcementsEntry.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			AnnouncementsEntryImpl.class, announcementsEntry.getPrimaryKey(),
+			announcementsEntry,
+			new Object[] {
+				AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				((AnnouncementsEntryModelImpl)announcementsEntry).
+					getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<AnnouncementsEntry> announcementsEntries) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AnnouncementsEntry announcementsEntry : announcementsEntries) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 				AnnouncementsEntryImpl.class,
-				announcementsEntry.getPrimaryKey());
+				announcementsEntry.getPrimaryKey(), announcementsEntry,
+				new Object[] {
+					AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED,
+					((AnnouncementsEntryModelImpl)announcementsEntry).
+						getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -8244,10 +8244,8 @@ public class AnnouncementsEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (announcementsEntry.isNew()) {
+			if (isNew) {
 				session.save(announcementsEntry);
-
-				announcementsEntry.setNew(false);
 			}
 			else {
 				announcementsEntry = (AnnouncementsEntry)session.merge(
@@ -8261,277 +8259,21 @@ public class AnnouncementsEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				announcementsEntryModelImpl.getUuid()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getUuid(),
-				announcementsEntryModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {announcementsEntryModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {announcementsEntryModelImpl.getUserId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getCompanyId(),
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK(),
-				announcementsEntryModelImpl.isAlert()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_A, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getCompanyId(),
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK(),
-				announcementsEntryModelImpl.isAlert()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C_A, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {announcementsEntryModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUuid(),
-					announcementsEntryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getUuid(),
-					announcementsEntryModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {announcementsEntryModelImpl.getUserId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId(),
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getCompanyId(),
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_A.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK(),
-					announcementsEntryModelImpl.getOriginalAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_A, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK(),
-					announcementsEntryModelImpl.isAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_A, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C_A.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId(),
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK(),
-					announcementsEntryModelImpl.getOriginalAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_A, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getCompanyId(),
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK(),
-					announcementsEntryModelImpl.isAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_A, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class, announcementsEntry.getPrimaryKey(),
-			announcementsEntry, false);
+			AnnouncementsEntryImpl.class,
+			announcementsEntryModelImpl.getPrimaryKey(),
+			announcementsEntryModelImpl, false,
+			new Object[] {
+				AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED,
+				announcementsEntryModelImpl.getColumnBitmask()
+			});
 
 		announcementsEntry.resetOriginalValues();
+
+		if (isNew) {
+			announcementsEntry.setNew(false);
+		}
 
 		return announcementsEntry;
 	}
@@ -8658,12 +8400,14 @@ public class AnnouncementsEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -8744,8 +8488,11 @@ public class AnnouncementsEntryPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -8758,12 +8505,10 @@ public class AnnouncementsEntryPersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				FinderCacheUtil.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				FinderCacheUtil.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				FinderCacheUtil.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				FinderCacheUtil.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -8804,270 +8549,16 @@ public class AnnouncementsEntryPersistenceImpl
 	 * Initializes the announcements entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
-
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] {Long.class.getName()},
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByCompanyId = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByUserId = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] {Long.class.getName()},
-			AnnouncementsEntryModelImpl.USERID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByUserId = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByC_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByC_C_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C_C = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
-
-		_finderPathWithPaginationFindByC_C_A = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_A",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Boolean.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C_A = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_A",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Boolean.class.getName()
-			},
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C_A = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_A",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Boolean.class.getName()
-			});
-
-		_finderPathWithPaginationFindByC_C_C_A = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C_A",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Boolean.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C_C_A = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
-			AnnouncementsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C_A",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Boolean.class.getName()
-			},
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C_C_A = new FinderPath(
-			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C_A",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Boolean.class.getName()
-			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(AnnouncementsEntryImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_ANNOUNCEMENTSENTRY =
@@ -9118,5 +8609,289 @@ public class AnnouncementsEntryPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "type"});
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = AnnouncementsEntryImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED, true,
+						returnClass, cacheName, methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED, true,
+						returnClass, cacheName, methodName, new String[0],
+						(long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					Registry registry = RegistryUtil.getRegistry();
+
+					_serviceRegistrations.add(
+						registry.registerService(
+							FinderPath.class, finderPath,
+							HashMapBuilder.<String, Object>put(
+								"cache.name", cacheName
+							).build()));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid",
+			new Object[] {
+				AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {announcementsEntryModelImpl.getUuid()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalUuid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid_C",
+			new Object[] {
+				AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getUuid(),
+						announcementsEntryModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalUuid(),
+						announcementsEntryModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByCompanyId",
+			new Object[] {
+				AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUserId",
+			new Object[] {
+				AnnouncementsEntryModelImpl.USERID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getUserId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalUserId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByC_C",
+			new Object[] {
+				AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getClassNameId(),
+						announcementsEntryModelImpl.getClassPK()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalClassNameId(),
+						announcementsEntryModelImpl.getOriginalClassPK()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByC_C_C",
+			new Object[] {
+				AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getCompanyId(),
+						announcementsEntryModelImpl.getClassNameId(),
+						announcementsEntryModelImpl.getClassPK()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalCompanyId(),
+						announcementsEntryModelImpl.getOriginalClassNameId(),
+						announcementsEntryModelImpl.getOriginalClassPK()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByC_C_A",
+			new Object[] {
+				AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getClassNameId(),
+						announcementsEntryModelImpl.getClassPK(),
+						announcementsEntryModelImpl.isAlert()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalClassNameId(),
+						announcementsEntryModelImpl.getOriginalClassPK(),
+						announcementsEntryModelImpl.getOriginalAlert()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByC_C_C_A",
+			new Object[] {
+				AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
+				AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getCompanyId(),
+						announcementsEntryModelImpl.getClassNameId(),
+						announcementsEntryModelImpl.getClassPK(),
+						announcementsEntryModelImpl.isAlert()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)baseModel;
+
+					return new Object[] {
+						announcementsEntryModelImpl.getOriginalCompanyId(),
+						announcementsEntryModelImpl.getOriginalClassNameId(),
+						announcementsEntryModelImpl.getOriginalClassPK(),
+						announcementsEntryModelImpl.getOriginalAlert()
+					};
+				}
+			});
+	}
 
 }

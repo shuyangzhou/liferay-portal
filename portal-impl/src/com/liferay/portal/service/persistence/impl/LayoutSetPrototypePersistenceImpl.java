@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchLayoutSetPrototypeException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.LayoutSetPrototypeTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -35,6 +36,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -42,17 +44,23 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.impl.LayoutSetPrototypeImpl;
 import com.liferay.portal.model.impl.LayoutSetPrototypeModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * The persistence implementation for the layout set prototype service.
@@ -81,13 +89,6 @@ public class LayoutSetPrototypePersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUuid;
-	private FinderPath _finderPathWithoutPaginationFindByUuid;
-	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the layout set prototypes where uuid = &#63;.
@@ -169,12 +170,14 @@ public class LayoutSetPrototypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid");
 				finderArgs = new Object[] {uuid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid");
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
@@ -931,7 +934,8 @@ public class LayoutSetPrototypePersistenceImpl
 	public int countByUuid(String uuid) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid");
 
 		Object[] finderArgs = new Object[] {uuid};
 
@@ -1059,10 +1063,6 @@ public class LayoutSetPrototypePersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
 		"(layoutSetPrototype.uuid_ IS NULL OR layoutSetPrototype.uuid_ = '')";
 
-	private FinderPath _finderPathWithPaginationFindByUuid_C;
-	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
-	private FinderPath _finderPathCountByUuid_C;
-
 	/**
 	 * Returns all the layout set prototypes where uuid = &#63; and companyId = &#63;.
 	 *
@@ -1149,12 +1149,14 @@ public class LayoutSetPrototypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C");
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C");
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
 			};
@@ -1958,7 +1960,8 @@ public class LayoutSetPrototypePersistenceImpl
 	public int countByUuid_C(String uuid, long companyId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C");
 
 		Object[] finderArgs = new Object[] {uuid, companyId};
 
@@ -2098,10 +2101,6 @@ public class LayoutSetPrototypePersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"layoutSetPrototype.companyId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByCompanyId;
-	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
-	private FinderPath _finderPathCountByCompanyId;
-
 	/**
 	 * Returns all the layout set prototypes where companyId = &#63;.
 	 *
@@ -2181,12 +2180,15 @@ public class LayoutSetPrototypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCompanyId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByCompanyId");
 				finderArgs = new Object[] {companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCompanyId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId");
 			finderArgs = new Object[] {
 				companyId, start, end, orderByComparator
 			};
@@ -2900,7 +2902,8 @@ public class LayoutSetPrototypePersistenceImpl
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = _finderPathCountByCompanyId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId");
 
 		Object[] finderArgs = new Object[] {companyId};
 
@@ -2995,10 +2998,6 @@ public class LayoutSetPrototypePersistenceImpl
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"layoutSetPrototype.companyId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByC_A;
-	private FinderPath _finderPathWithoutPaginationFindByC_A;
-	private FinderPath _finderPathCountByC_A;
-
 	/**
 	 * Returns all the layout set prototypes where companyId = &#63; and active = &#63;.
 	 *
@@ -3083,12 +3082,14 @@ public class LayoutSetPrototypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_A;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A");
 				finderArgs = new Object[] {companyId, active};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_A;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A");
 			finderArgs = new Object[] {
 				companyId, active, start, end, orderByComparator
 			};
@@ -3840,7 +3841,8 @@ public class LayoutSetPrototypePersistenceImpl
 	 */
 	@Override
 	public int countByC_A(long companyId, boolean active) {
-		FinderPath finderPath = _finderPathCountByC_A;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A");
 
 		Object[] finderArgs = new Object[] {companyId, active};
 
@@ -3978,7 +3980,12 @@ public class LayoutSetPrototypePersistenceImpl
 		EntityCacheUtil.putResult(
 			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
-			layoutSetPrototype);
+			layoutSetPrototype,
+			new Object[] {
+				LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+					getColumnBitmask()
+			});
 
 		layoutSetPrototype.resetOriginalValues();
 	}
@@ -4014,10 +4021,6 @@ public class LayoutSetPrototypePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(LayoutSetPrototypeImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -4031,31 +4034,32 @@ public class LayoutSetPrototypePersistenceImpl
 	public void clearCache(LayoutSetPrototype layoutSetPrototype) {
 		EntityCacheUtil.removeResult(
 			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
+			layoutSetPrototype,
+			new Object[] {
+				LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+				((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+					getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<LayoutSetPrototype> layoutSetPrototypes) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (LayoutSetPrototype layoutSetPrototype : layoutSetPrototypes) {
 			EntityCacheUtil.removeResult(
 				LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 				LayoutSetPrototypeImpl.class,
-				layoutSetPrototype.getPrimaryKey());
+				layoutSetPrototype.getPrimaryKey(), layoutSetPrototype,
+				new Object[] {
+					LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+					((LayoutSetPrototypeModelImpl)layoutSetPrototype).
+						getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
@@ -4236,10 +4240,8 @@ public class LayoutSetPrototypePersistenceImpl
 		try {
 			session = openSession();
 
-			if (layoutSetPrototype.isNew()) {
+			if (isNew) {
 				session.save(layoutSetPrototype);
-
-				layoutSetPrototype.setNew(false);
 			}
 			else {
 				layoutSetPrototype = (LayoutSetPrototype)session.merge(
@@ -4253,144 +4255,21 @@ public class LayoutSetPrototypePersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				layoutSetPrototypeModelImpl.getUuid()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				layoutSetPrototypeModelImpl.getUuid(),
-				layoutSetPrototypeModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {layoutSetPrototypeModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {
-				layoutSetPrototypeModelImpl.getCompanyId(),
-				layoutSetPrototypeModelImpl.isActive()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_A, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_A, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((layoutSetPrototypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutSetPrototypeModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {layoutSetPrototypeModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((layoutSetPrototypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutSetPrototypeModelImpl.getOriginalUuid(),
-					layoutSetPrototypeModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					layoutSetPrototypeModelImpl.getUuid(),
-					layoutSetPrototypeModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((layoutSetPrototypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					layoutSetPrototypeModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {
-					layoutSetPrototypeModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((layoutSetPrototypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_A.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutSetPrototypeModelImpl.getOriginalCompanyId(),
-					layoutSetPrototypeModelImpl.getOriginalActive()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_A, args);
-
-				args = new Object[] {
-					layoutSetPrototypeModelImpl.getCompanyId(),
-					layoutSetPrototypeModelImpl.isActive()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_A, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
-			layoutSetPrototype, false);
+			LayoutSetPrototypeImpl.class,
+			layoutSetPrototypeModelImpl.getPrimaryKey(),
+			layoutSetPrototypeModelImpl, false,
+			new Object[] {
+				LayoutSetPrototypeModelImpl.COLUMN_BITMASK_ENABLED,
+				layoutSetPrototypeModelImpl.getColumnBitmask()
+			});
 
 		layoutSetPrototype.resetOriginalValues();
+
+		if (isNew) {
+			layoutSetPrototype.setNew(false);
+		}
 
 		return layoutSetPrototype;
 	}
@@ -4517,12 +4396,14 @@ public class LayoutSetPrototypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -4603,8 +4484,11 @@ public class LayoutSetPrototypePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -4617,12 +4501,10 @@ public class LayoutSetPrototypePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				FinderCacheUtil.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				FinderCacheUtil.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				FinderCacheUtil.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				FinderCacheUtil.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -4663,131 +4545,16 @@ public class LayoutSetPrototypePersistenceImpl
 	 * Initializes the layout set prototype persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			LayoutSetPrototypeModelImpl.UUID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
-
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			LayoutSetPrototypeModelImpl.UUID_COLUMN_BITMASK |
-			LayoutSetPrototypeModelImpl.COMPANYID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] {Long.class.getName()},
-			LayoutSetPrototypeModelImpl.COMPANYID_COLUMN_BITMASK);
-
-		_finderPathCountByCompanyId = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByC_A = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A",
-			new String[] {
-				Long.class.getName(), Boolean.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_A = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED,
-			LayoutSetPrototypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A",
-			new String[] {Long.class.getName(), Boolean.class.getName()},
-			LayoutSetPrototypeModelImpl.COMPANYID_COLUMN_BITMASK |
-			LayoutSetPrototypeModelImpl.ACTIVE_COLUMN_BITMASK);
-
-		_finderPathCountByC_A = new FinderPath(
-			LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A",
-			new String[] {Long.class.getName(), Boolean.class.getName()});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(LayoutSetPrototypeImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_LAYOUTSETPROTOTYPE =
@@ -4838,5 +4605,164 @@ public class LayoutSetPrototypePersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "settings", "active"});
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!LayoutSetPrototypeModelImpl.FINDER_CACHE_ENABLED) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = LayoutSetPrototypeImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED, true,
+						returnClass, cacheName, methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED, true,
+						returnClass, cacheName, methodName, new String[0],
+						(long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					Registry registry = RegistryUtil.getRegistry();
+
+					_serviceRegistrations.add(
+						registry.registerService(
+							FinderPath.class, finderPath,
+							HashMapBuilder.<String, Object>put(
+								"cache.name", cacheName
+							).build()));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid",
+			new Object[] {
+				LayoutSetPrototypeModelImpl.UUID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {layoutSetPrototypeModelImpl.getUuid()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getOriginalUuid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid_C",
+			new Object[] {
+				LayoutSetPrototypeModelImpl.UUID_COLUMN_BITMASK |
+				LayoutSetPrototypeModelImpl.COMPANYID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getUuid(),
+						layoutSetPrototypeModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getOriginalUuid(),
+						layoutSetPrototypeModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByCompanyId",
+			new Object[] {
+				LayoutSetPrototypeModelImpl.COMPANYID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByC_A",
+			new Object[] {
+				LayoutSetPrototypeModelImpl.COMPANYID_COLUMN_BITMASK |
+				LayoutSetPrototypeModelImpl.ACTIVE_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getCompanyId(),
+						layoutSetPrototypeModelImpl.isActive()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)baseModel;
+
+					return new Object[] {
+						layoutSetPrototypeModelImpl.getOriginalCompanyId(),
+						layoutSetPrototypeModelImpl.getOriginalActive()
+					};
+				}
+			});
+	}
 
 }

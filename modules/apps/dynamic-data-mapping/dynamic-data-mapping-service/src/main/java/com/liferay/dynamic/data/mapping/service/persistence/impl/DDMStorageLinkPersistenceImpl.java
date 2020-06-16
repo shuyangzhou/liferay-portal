@@ -34,11 +34,13 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -60,9 +62,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -96,13 +104,6 @@ public class DDMStorageLinkPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUuid;
-	private FinderPath _finderPathWithoutPaginationFindByUuid;
-	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the ddm storage links where uuid = &#63;.
@@ -185,12 +186,14 @@ public class DDMStorageLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache && productionMode) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid");
 				finderArgs = new Object[] {uuid};
 			}
 		}
 		else if (useFinderCache && productionMode) {
-			finderPath = _finderPathWithPaginationFindByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid");
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
@@ -590,7 +593,8 @@ public class DDMStorageLinkPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathCountByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid");
 
 			finderArgs = new Object[] {uuid};
 
@@ -654,10 +658,6 @@ public class DDMStorageLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3 =
 		"(ddmStorageLink.uuid IS NULL OR ddmStorageLink.uuid = '')";
-
-	private FinderPath _finderPathWithPaginationFindByUuid_C;
-	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
-	private FinderPath _finderPathCountByUuid_C;
 
 	/**
 	 * Returns all the ddm storage links where uuid = &#63; and companyId = &#63;.
@@ -748,12 +748,14 @@ public class DDMStorageLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache && productionMode) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C");
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
 		else if (useFinderCache && productionMode) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C");
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
 			};
@@ -1188,7 +1190,8 @@ public class DDMStorageLinkPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathCountByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C");
 
 			finderArgs = new Object[] {uuid, companyId};
 
@@ -1260,9 +1263,6 @@ public class DDMStorageLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"ddmStorageLink.companyId = ?";
 
-	private FinderPath _finderPathFetchByClassPK;
-	private FinderPath _finderPathCountByClassPK;
-
 	/**
 	 * Returns the ddm storage link where classPK = &#63; or throws a <code>NoSuchStorageLinkException</code> if it could not be found.
 	 *
@@ -1327,9 +1327,11 @@ public class DDMStorageLinkPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByClassPK");
+
 		if (useFinderCache && productionMode) {
-			result = finderCache.getResult(
-				_finderPathFetchByClassPK, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof DDMStorageLink) {
@@ -1364,8 +1366,7 @@ public class DDMStorageLinkPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache && productionMode) {
-						finderCache.putResult(
-							_finderPathFetchByClassPK, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -1378,8 +1379,7 @@ public class DDMStorageLinkPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache && productionMode) {
-					finderCache.removeResult(
-						_finderPathFetchByClassPK, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -1429,7 +1429,8 @@ public class DDMStorageLinkPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathCountByClassPK;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassPK");
 
 			finderArgs = new Object[] {classPK};
 
@@ -1479,10 +1480,6 @@ public class DDMStorageLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_CLASSPK_CLASSPK_2 =
 		"ddmStorageLink.classPK = ?";
-
-	private FinderPath _finderPathWithPaginationFindByStructureId;
-	private FinderPath _finderPathWithoutPaginationFindByStructureId;
-	private FinderPath _finderPathCountByStructureId;
 
 	/**
 	 * Returns all the ddm storage links where structureId = &#63;.
@@ -1567,12 +1564,15 @@ public class DDMStorageLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache && productionMode) {
-				finderPath = _finderPathWithoutPaginationFindByStructureId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByStructureId");
 				finderArgs = new Object[] {structureId};
 			}
 		}
 		else if (useFinderCache && productionMode) {
-			finderPath = _finderPathWithPaginationFindByStructureId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStructureId");
 			finderArgs = new Object[] {
 				structureId, start, end, orderByComparator
 			};
@@ -1952,7 +1952,9 @@ public class DDMStorageLinkPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathCountByStructureId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+				"countByStructureId");
 
 			finderArgs = new Object[] {structureId};
 
@@ -2002,11 +2004,6 @@ public class DDMStorageLinkPersistenceImpl
 
 	private static final String _FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2 =
 		"ddmStorageLink.structureId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByStructureVersionId;
-	private FinderPath _finderPathWithoutPaginationFindByStructureVersionId;
-	private FinderPath _finderPathCountByStructureVersionId;
-	private FinderPath _finderPathWithPaginationCountByStructureVersionId;
 
 	/**
 	 * Returns all the ddm storage links where structureVersionId = &#63;.
@@ -2093,13 +2090,16 @@ public class DDMStorageLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache && productionMode) {
-				finderPath =
-					_finderPathWithoutPaginationFindByStructureVersionId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByStructureVersionId");
 				finderArgs = new Object[] {structureVersionId};
 			}
 		}
 		else if (useFinderCache && productionMode) {
-			finderPath = _finderPathWithPaginationFindByStructureVersionId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"findByStructureVersionId");
 			finderArgs = new Object[] {
 				structureVersionId, start, end, orderByComparator
 			};
@@ -2567,10 +2567,12 @@ public class DDMStorageLinkPersistenceImpl
 
 		List<DDMStorageLink> list = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStructureVersionId");
+
 		if (useFinderCache && productionMode) {
 			list = (List<DDMStorageLink>)finderCache.getResult(
-				_finderPathWithPaginationFindByStructureVersionId, finderArgs,
-				this);
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DDMStorageLink ddmStorageLink : list) {
@@ -2630,16 +2632,12 @@ public class DDMStorageLinkPersistenceImpl
 				cacheResult(list);
 
 				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByStructureVersionId,
-						finderArgs, list);
+					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 			catch (Exception exception) {
 				if (useFinderCache && productionMode) {
-					finderCache.removeResult(
-						_finderPathWithPaginationFindByStructureVersionId,
-						finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -2685,7 +2683,9 @@ public class DDMStorageLinkPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathCountByStructureVersionId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+				"countByStructureVersionId");
 
 			finderArgs = new Object[] {structureVersionId};
 
@@ -2748,6 +2748,10 @@ public class DDMStorageLinkPersistenceImpl
 			structureVersionIds = ArrayUtil.sortedUnique(structureVersionIds);
 		}
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"countByStructureVersionId");
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStorageLink.class);
 
@@ -2758,9 +2762,7 @@ public class DDMStorageLinkPersistenceImpl
 		if (productionMode) {
 			finderArgs = new Object[] {StringUtil.merge(structureVersionIds)};
 
-			count = (Long)finderCache.getResult(
-				_finderPathWithPaginationCountByStructureVersionId, finderArgs,
-				this);
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (count == null) {
@@ -2796,16 +2798,12 @@ public class DDMStorageLinkPersistenceImpl
 				count = (Long)query.uniqueResult();
 
 				if (productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationCountByStructureVersionId,
-						finderArgs, count);
+					finderCache.putResult(finderPath, finderArgs, count);
 				}
 			}
 			catch (Exception exception) {
 				if (productionMode) {
-					finderCache.removeResult(
-						_finderPathWithPaginationCountByStructureVersionId,
-						finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -2856,10 +2854,14 @@ public class DDMStorageLinkPersistenceImpl
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStorageLinkImpl.class,
-			ddmStorageLink.getPrimaryKey(), ddmStorageLink);
+			ddmStorageLink.getPrimaryKey(), ddmStorageLink,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask()
+			});
 
 		finderCache.putResult(
-			_finderPathFetchByClassPK,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByClassPK"),
 			new Object[] {ddmStorageLink.getClassPK()}, ddmStorageLink);
 
 		ddmStorageLink.resetOriginalValues();
@@ -2901,10 +2903,6 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMStorageLinkImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2918,35 +2916,28 @@ public class DDMStorageLinkPersistenceImpl
 	public void clearCache(DDMStorageLink ddmStorageLink) {
 		entityCache.removeResult(
 			entityCacheEnabled, DDMStorageLinkImpl.class,
-			ddmStorageLink.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((DDMStorageLinkModelImpl)ddmStorageLink, true);
+			ddmStorageLink.getPrimaryKey(), ddmStorageLink,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<DDMStorageLink> ddmStorageLinks) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (DDMStorageLink ddmStorageLink : ddmStorageLinks) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMStorageLinkImpl.class,
-				ddmStorageLink.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(DDMStorageLinkModelImpl)ddmStorageLink, true);
+				ddmStorageLink.getPrimaryKey(), ddmStorageLink,
+				new Object[] {
+					_columnBitmaskEnabled,
+					((DDMStorageLinkModelImpl)ddmStorageLink).getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMStorageLinkImpl.class, primaryKey);
@@ -2959,31 +2950,12 @@ public class DDMStorageLinkPersistenceImpl
 		Object[] args = new Object[] {ddmStorageLinkModelImpl.getClassPK()};
 
 		finderCache.putResult(
-			_finderPathCountByClassPK, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassPK"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByClassPK, args, ddmStorageLinkModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DDMStorageLinkModelImpl ddmStorageLinkModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {ddmStorageLinkModelImpl.getClassPK()};
-
-			finderCache.removeResult(_finderPathCountByClassPK, args);
-			finderCache.removeResult(_finderPathFetchByClassPK, args);
-		}
-
-		if ((ddmStorageLinkModelImpl.getColumnBitmask() &
-			 _finderPathFetchByClassPK.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ddmStorageLinkModelImpl.getOriginalClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByClassPK, args);
-			finderCache.removeResult(_finderPathFetchByClassPK, args);
-		}
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByClassPK"), args,
+			ddmStorageLinkModelImpl, false);
 	}
 
 	/**
@@ -3146,8 +3118,6 @@ public class DDMStorageLinkPersistenceImpl
 				}
 
 				session.save(ddmStorageLink);
-
-				ddmStorageLink.setNew(false);
 			}
 			else {
 				ddmStorageLink = (DDMStorageLink)session.merge(ddmStorageLink);
@@ -3163,143 +3133,29 @@ public class DDMStorageLinkPersistenceImpl
 		if (ddmStorageLink.getCtCollectionId() != 0) {
 			ddmStorageLink.resetOriginalValues();
 
+			if (isNew) {
+				ddmStorageLink.setNew(false);
+			}
+
 			return ddmStorageLink;
-		}
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {ddmStorageLinkModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				ddmStorageLinkModelImpl.getUuid(),
-				ddmStorageLinkModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {ddmStorageLinkModelImpl.getStructureId()};
-
-			finderCache.removeResult(_finderPathCountByStructureId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByStructureId, args);
-
-			args = new Object[] {
-				ddmStorageLinkModelImpl.getStructureVersionId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByStructureVersionId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByStructureVersionId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((ddmStorageLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					ddmStorageLinkModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {ddmStorageLinkModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((ddmStorageLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					ddmStorageLinkModelImpl.getOriginalUuid(),
-					ddmStorageLinkModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					ddmStorageLinkModelImpl.getUuid(),
-					ddmStorageLinkModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((ddmStorageLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByStructureId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ddmStorageLinkModelImpl.getOriginalStructureId()
-				};
-
-				finderCache.removeResult(_finderPathCountByStructureId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByStructureId, args);
-
-				args = new Object[] {ddmStorageLinkModelImpl.getStructureId()};
-
-				finderCache.removeResult(_finderPathCountByStructureId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByStructureId, args);
-			}
-
-			if ((ddmStorageLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByStructureVersionId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ddmStorageLinkModelImpl.getOriginalStructureVersionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByStructureVersionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByStructureVersionId, args);
-
-				args = new Object[] {
-					ddmStorageLinkModelImpl.getStructureVersionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByStructureVersionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByStructureVersionId, args);
-			}
 		}
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMStorageLinkImpl.class,
-			ddmStorageLink.getPrimaryKey(), ddmStorageLink, false);
+			ddmStorageLinkModelImpl.getPrimaryKey(), ddmStorageLinkModelImpl,
+			false,
+			new Object[] {
+				_columnBitmaskEnabled,
+				ddmStorageLinkModelImpl.getColumnBitmask()
+			});
 
-		clearUniqueFindersCache(ddmStorageLinkModelImpl, false);
 		cacheUniqueFindersCache(ddmStorageLinkModelImpl);
 
 		ddmStorageLink.resetOriginalValues();
+
+		if (isNew) {
+			ddmStorageLink.setNew(false);
+		}
 
 		return ddmStorageLink;
 	}
@@ -3537,12 +3393,14 @@ public class DDMStorageLinkPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache && productionMode) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache && productionMode) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -3623,6 +3481,9 @@ public class DDMStorageLinkPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStorageLink.class);
 
@@ -3630,7 +3491,7 @@ public class DDMStorageLinkPersistenceImpl
 
 		if (productionMode) {
 			count = (Long)finderCache.getResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+				finderPath, FINDER_ARGS_EMPTY, this);
 		}
 
 		if (count == null) {
@@ -3644,14 +3505,12 @@ public class DDMStorageLinkPersistenceImpl
 				count = (Long)query.uniqueResult();
 
 				if (productionMode) {
-					finderCache.putResult(
-						_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+					finderCache.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 				}
 			}
 			catch (Exception exception) {
 				if (productionMode) {
-					finderCache.removeResult(
-						_finderPathCountAll, FINDER_ARGS_EMPTY);
+					finderCache.removeResult(finderPath, FINDER_ARGS_EMPTY);
 				}
 
 				throw processException(exception);
@@ -3751,125 +3610,26 @@ public class DDMStorageLinkPersistenceImpl
 	 * Initializes the ddm storage link persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
 		DDMStorageLinkModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		DDMStorageLinkModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_bundleContext = bundleContext;
+		Bundle bundle = FrameworkUtil.getBundle(
+			DDMStorageLinkPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			DDMStorageLinkModelImpl.UUID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
-
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			DDMStorageLinkModelImpl.UUID_COLUMN_BITMASK |
-			DDMStorageLinkModelImpl.COMPANYID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathFetchByClassPK = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByClassPK",
-			new String[] {Long.class.getName()},
-			DDMStorageLinkModelImpl.CLASSPK_COLUMN_BITMASK);
-
-		_finderPathCountByClassPK = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassPK",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByStructureId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStructureId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByStructureId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStructureId",
-			new String[] {Long.class.getName()},
-			DDMStorageLinkModelImpl.STRUCTUREID_COLUMN_BITMASK);
-
-		_finderPathCountByStructureId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByStructureId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByStructureVersionId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStructureVersionId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByStructureVersionId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMStorageLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByStructureVersionId", new String[] {Long.class.getName()},
-			DDMStorageLinkModelImpl.STRUCTUREVERSIONID_COLUMN_BITMASK);
-
-		_finderPathCountByStructureVersionId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByStructureVersionId", new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationCountByStructureVersionId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByStructureVersionId",
-			new String[] {Long.class.getName()});
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(DDMStorageLinkImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -3905,6 +3665,7 @@ public class DDMStorageLinkPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected CTPersistenceHelper ctPersistenceHelper;
@@ -3948,6 +3709,178 @@ public class DDMStorageLinkPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!finderCacheEnabled) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = DDMStorageLinkImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0], (long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					_serviceRegistrations.add(
+						_bundleContext.registerService(
+							FinderPath.class, finderPath,
+							MapUtil.singletonDictionary(
+								"cache.name", cacheName)));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid",
+			new Object[] {
+				DDMStorageLinkModelImpl.UUID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {ddmStorageLinkModelImpl.getUuid()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getOriginalUuid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid_C",
+			new Object[] {
+				DDMStorageLinkModelImpl.UUID_COLUMN_BITMASK |
+				DDMStorageLinkModelImpl.COMPANYID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getUuid(),
+						ddmStorageLinkModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getOriginalUuid(),
+						ddmStorageLinkModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByClassPK",
+			new Object[] {
+				DDMStorageLinkModelImpl.CLASSPK_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {ddmStorageLinkModelImpl.getClassPK()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getOriginalClassPK()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByStructureId",
+			new Object[] {
+				DDMStorageLinkModelImpl.STRUCTUREID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getStructureId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getOriginalStructureId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByStructureVersionId",
+			new Object[] {
+				DDMStorageLinkModelImpl.STRUCTUREVERSIONID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getStructureVersionId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)baseModel;
+
+					return new Object[] {
+						ddmStorageLinkModelImpl.getOriginalStructureVersionId()
+					};
+				}
+			});
 	}
 
 }

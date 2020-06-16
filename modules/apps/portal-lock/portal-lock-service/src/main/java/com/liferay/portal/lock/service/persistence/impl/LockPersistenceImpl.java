@@ -26,9 +26,11 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -48,15 +50,22 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -89,13 +98,6 @@ public class LockPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUuid;
-	private FinderPath _finderPathWithoutPaginationFindByUuid;
-	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the locks where uuid = &#63;.
@@ -174,12 +176,14 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid");
 				finderArgs = new Object[] {uuid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid");
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
@@ -565,7 +569,8 @@ public class LockPersistenceImpl
 	public int countByUuid(String uuid) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid");
 
 		Object[] finderArgs = new Object[] {uuid};
 
@@ -623,10 +628,6 @@ public class LockPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3 =
 		"(lock_.uuid IS NULL OR lock_.uuid = '')";
-
-	private FinderPath _finderPathWithPaginationFindByUuid_C;
-	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
-	private FinderPath _finderPathCountByUuid_C;
 
 	/**
 	 * Returns all the locks where uuid = &#63; and companyId = &#63;.
@@ -713,12 +714,14 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C");
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C");
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
 			};
@@ -1138,7 +1141,8 @@ public class LockPersistenceImpl
 	public int countByUuid_C(String uuid, long companyId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C");
 
 		Object[] finderArgs = new Object[] {uuid, companyId};
 
@@ -1204,10 +1208,6 @@ public class LockPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"lock_.companyId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByClassName;
-	private FinderPath _finderPathWithoutPaginationFindByClassName;
-	private FinderPath _finderPathCountByClassName;
 
 	/**
 	 * Returns all the locks where className = &#63;.
@@ -1287,12 +1287,15 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByClassName;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByClassName");
 				finderArgs = new Object[] {className};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByClassName;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByClassName");
 			finderArgs = new Object[] {
 				className, start, end, orderByComparator
 			};
@@ -1683,7 +1686,8 @@ public class LockPersistenceImpl
 	public int countByClassName(String className) {
 		className = Objects.toString(className, "");
 
-		FinderPath finderPath = _finderPathCountByClassName;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassName");
 
 		Object[] finderArgs = new Object[] {className};
 
@@ -1742,9 +1746,6 @@ public class LockPersistenceImpl
 
 	private static final String _FINDER_COLUMN_CLASSNAME_CLASSNAME_3 =
 		"(lock_.className IS NULL OR lock_.className = '')";
-
-	private FinderPath _finderPathWithPaginationFindByLtExpirationDate;
-	private FinderPath _finderPathWithPaginationCountByLtExpirationDate;
 
 	/**
 	 * Returns all the locks where expirationDate &lt; &#63;.
@@ -1821,7 +1822,8 @@ public class LockPersistenceImpl
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		finderPath = _finderPathWithPaginationFindByLtExpirationDate;
+		finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtExpirationDate");
 		finderArgs = new Object[] {
 			_getTime(expirationDate), start, end, orderByComparator
 		};
@@ -2213,8 +2215,8 @@ public class LockPersistenceImpl
 	 */
 	@Override
 	public int countByLtExpirationDate(Date expirationDate) {
-		FinderPath finderPath =
-			_finderPathWithPaginationCountByLtExpirationDate;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtExpirationDate");
 
 		Object[] finderArgs = new Object[] {_getTime(expirationDate)};
 
@@ -2275,9 +2277,6 @@ public class LockPersistenceImpl
 	private static final String
 		_FINDER_COLUMN_LTEXPIRATIONDATE_EXPIRATIONDATE_2 =
 			"lock_.expirationDate < ?";
-
-	private FinderPath _finderPathFetchByC_K;
-	private FinderPath _finderPathCountByC_K;
 
 	/**
 	 * Returns the lock where className = &#63; and key = &#63; or throws a <code>NoSuchLockException</code> if it could not be found.
@@ -2351,9 +2350,11 @@ public class LockPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByC_K");
+
 		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByC_K, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof Lock) {
@@ -2416,8 +2417,7 @@ public class LockPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByC_K, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -2430,7 +2430,7 @@ public class LockPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache) {
-					finderCache.removeResult(_finderPathFetchByC_K, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -2476,7 +2476,8 @@ public class LockPersistenceImpl
 		className = Objects.toString(className, "");
 		key = Objects.toString(key, "");
 
-		FinderPath finderPath = _finderPathCountByC_K;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_K");
 
 		Object[] finderArgs = new Object[] {className, key};
 
@@ -2580,10 +2581,13 @@ public class LockPersistenceImpl
 	@Override
 	public void cacheResult(Lock lock) {
 		entityCache.putResult(
-			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock);
+			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
+			new Object[] {
+				_columnBitmaskEnabled, ((LockModelImpl)lock).getColumnBitmask()
+			});
 
 		finderCache.putResult(
-			_finderPathFetchByC_K,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByC_K"),
 			new Object[] {lock.getClassName(), lock.getKey()}, lock);
 
 		lock.resetOriginalValues();
@@ -2619,10 +2623,6 @@ public class LockPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LockImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2635,33 +2635,26 @@ public class LockPersistenceImpl
 	@Override
 	public void clearCache(Lock lock) {
 		entityCache.removeResult(
-			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((LockModelImpl)lock, true);
+			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
+			new Object[] {
+				_columnBitmaskEnabled, ((LockModelImpl)lock).getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<Lock> locks) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Lock lock : locks) {
 			entityCache.removeResult(
-				entityCacheEnabled, LockImpl.class, lock.getPrimaryKey());
-
-			clearUniqueFindersCache((LockModelImpl)lock, true);
+				entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
+				new Object[] {
+					_columnBitmaskEnabled,
+					((LockModelImpl)lock).getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, LockImpl.class, primaryKey);
@@ -2674,34 +2667,12 @@ public class LockPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByC_K, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_K"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByC_K, args, lockModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		LockModelImpl lockModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				lockModelImpl.getClassName(), lockModelImpl.getKey()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_K, args);
-			finderCache.removeResult(_finderPathFetchByC_K, args);
-		}
-
-		if ((lockModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_K.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				lockModelImpl.getOriginalClassName(),
-				lockModelImpl.getOriginalKey()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_K, args);
-			finderCache.removeResult(_finderPathFetchByC_K, args);
-		}
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByC_K"), args,
+			lockModelImpl, false);
 	}
 
 	/**
@@ -2839,10 +2810,8 @@ public class LockPersistenceImpl
 		try {
 			session = openSession();
 
-			if (lock.isNew()) {
+			if (isNew) {
 				session.save(lock);
-
-				lock.setNew(false);
 			}
 			else {
 				lock = (Lock)session.merge(lock);
@@ -2855,104 +2824,20 @@ public class LockPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {lockModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				lockModelImpl.getUuid(), lockModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {lockModelImpl.getClassName()};
-
-			finderCache.removeResult(_finderPathCountByClassName, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByClassName, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((lockModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {lockModelImpl.getOriginalUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {lockModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((lockModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					lockModelImpl.getOriginalUuid(),
-					lockModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					lockModelImpl.getUuid(), lockModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((lockModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByClassName.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					lockModelImpl.getOriginalClassName()
-				};
-
-				finderCache.removeResult(_finderPathCountByClassName, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByClassName, args);
-
-				args = new Object[] {lockModelImpl.getClassName()};
-
-				finderCache.removeResult(_finderPathCountByClassName, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByClassName, args);
-			}
-		}
-
 		entityCache.putResult(
-			entityCacheEnabled, LockImpl.class, lock.getPrimaryKey(), lock,
-			false);
+			entityCacheEnabled, LockImpl.class, lockModelImpl.getPrimaryKey(),
+			lockModelImpl, false,
+			new Object[] {
+				_columnBitmaskEnabled, lockModelImpl.getColumnBitmask()
+			});
 
-		clearUniqueFindersCache(lockModelImpl, false);
 		cacheUniqueFindersCache(lockModelImpl);
 
 		lock.resetOriginalValues();
+
+		if (isNew) {
+			lock.setNew(false);
+		}
 
 		return lock;
 	}
@@ -3075,12 +2960,14 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -3161,8 +3048,11 @@ public class LockPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -3174,12 +3064,10 @@ public class LockPersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -3220,115 +3108,25 @@ public class LockPersistenceImpl
 	 * Initializes the lock persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
 		LockModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		LockModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_bundleContext = bundleContext;
+		Bundle bundle = FrameworkUtil.getBundle(LockPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			LockModelImpl.UUID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
-
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			LockModelImpl.UUID_COLUMN_BITMASK |
-			LockModelImpl.COMPANYID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByClassName = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByClassName",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByClassName = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByClassName",
-			new String[] {String.class.getName()},
-			LockModelImpl.CLASSNAME_COLUMN_BITMASK);
-
-		_finderPathCountByClassName = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassName",
-			new String[] {String.class.getName()});
-
-		_finderPathWithPaginationFindByLtExpirationDate = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtExpirationDate",
-			new String[] {
-				Date.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithPaginationCountByLtExpirationDate = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtExpirationDate",
-			new String[] {Date.class.getName()});
-
-		_finderPathFetchByC_K = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, LockImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_K",
-			new String[] {String.class.getName(), String.class.getName()},
-			LockModelImpl.CLASSNAME_COLUMN_BITMASK |
-			LockModelImpl.KEY_COLUMN_BITMASK);
-
-		_finderPathCountByC_K = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_K",
-			new String[] {String.class.getName(), String.class.getName()});
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(LockImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -3364,6 +3162,7 @@ public class LockPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -3412,6 +3211,145 @@ public class LockPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!finderCacheEnabled) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = LockImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0], (long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					_serviceRegistrations.add(
+						_bundleContext.registerService(
+							FinderPath.class, finderPath,
+							MapUtil.singletonDictionary(
+								"cache.name", cacheName)));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid",
+			new Object[] {
+				LockModelImpl.UUID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {lockModelImpl.getUuid()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {lockModelImpl.getOriginalUuid()};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid_C",
+			new Object[] {
+				LockModelImpl.UUID_COLUMN_BITMASK |
+				LockModelImpl.COMPANYID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {
+						lockModelImpl.getUuid(), lockModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {
+						lockModelImpl.getOriginalUuid(),
+						lockModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByClassName",
+			new Object[] {
+				LockModelImpl.CLASSNAME_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {lockModelImpl.getClassName()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {lockModelImpl.getOriginalClassName()};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByC_K",
+			new Object[] {
+				LockModelImpl.CLASSNAME_COLUMN_BITMASK |
+				LockModelImpl.KEY_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {
+						lockModelImpl.getClassName(), lockModelImpl.getKey()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					LockModelImpl lockModelImpl = (LockModelImpl)baseModel;
+
+					return new Object[] {
+						lockModelImpl.getOriginalClassName(),
+						lockModelImpl.getOriginalKey()
+					};
+				}
+			});
 	}
 
 }

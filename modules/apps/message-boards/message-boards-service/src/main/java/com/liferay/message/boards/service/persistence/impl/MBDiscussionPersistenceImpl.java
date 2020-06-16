@@ -33,11 +33,13 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -48,15 +50,22 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -90,13 +99,6 @@ public class MBDiscussionPersistenceImpl
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
 		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUuid;
-	private FinderPath _finderPathWithoutPaginationFindByUuid;
-	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the message boards discussions where uuid = &#63;.
@@ -176,12 +178,14 @@ public class MBDiscussionPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid");
 				finderArgs = new Object[] {uuid};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid");
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
@@ -569,7 +573,8 @@ public class MBDiscussionPersistenceImpl
 	public int countByUuid(String uuid) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid");
 
 		Object[] finderArgs = new Object[] {uuid};
 
@@ -628,9 +633,6 @@ public class MBDiscussionPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3 =
 		"(mbDiscussion.uuid IS NULL OR mbDiscussion.uuid = '')";
-
-	private FinderPath _finderPathFetchByUUID_G;
-	private FinderPath _finderPathCountByUUID_G;
 
 	/**
 	 * Returns the message boards discussion where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchDiscussionException</code> if it could not be found.
@@ -703,9 +705,11 @@ public class MBDiscussionPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G");
+
 		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByUUID_G, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof MBDiscussion) {
@@ -757,8 +761,7 @@ public class MBDiscussionPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByUUID_G, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -771,8 +774,7 @@ public class MBDiscussionPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByUUID_G, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -817,7 +819,8 @@ public class MBDiscussionPersistenceImpl
 	public int countByUUID_G(String uuid, long groupId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUUID_G;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G");
 
 		Object[] finderArgs = new Object[] {uuid, groupId};
 
@@ -883,10 +886,6 @@ public class MBDiscussionPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 =
 		"mbDiscussion.groupId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByUuid_C;
-	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
-	private FinderPath _finderPathCountByUuid_C;
 
 	/**
 	 * Returns all the message boards discussions where uuid = &#63; and companyId = &#63;.
@@ -974,12 +973,14 @@ public class MBDiscussionPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C");
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C");
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
 			};
@@ -1403,7 +1404,8 @@ public class MBDiscussionPersistenceImpl
 	public int countByUuid_C(String uuid, long companyId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C");
 
 		Object[] finderArgs = new Object[] {uuid, companyId};
 
@@ -1469,10 +1471,6 @@ public class MBDiscussionPersistenceImpl
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"mbDiscussion.companyId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByClassNameId;
-	private FinderPath _finderPathWithoutPaginationFindByClassNameId;
-	private FinderPath _finderPathCountByClassNameId;
 
 	/**
 	 * Returns all the message boards discussions where classNameId = &#63;.
@@ -1554,12 +1552,15 @@ public class MBDiscussionPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByClassNameId;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+					"findByClassNameId");
 				finderArgs = new Object[] {classNameId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByClassNameId;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByClassNameId");
 			finderArgs = new Object[] {
 				classNameId, start, end, orderByComparator
 			};
@@ -1927,7 +1928,8 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public int countByClassNameId(long classNameId) {
-		FinderPath finderPath = _finderPathCountByClassNameId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassNameId");
 
 		Object[] finderArgs = new Object[] {classNameId};
 
@@ -1972,9 +1974,6 @@ public class MBDiscussionPersistenceImpl
 
 	private static final String _FINDER_COLUMN_CLASSNAMEID_CLASSNAMEID_2 =
 		"mbDiscussion.classNameId = ?";
-
-	private FinderPath _finderPathFetchByThreadId;
-	private FinderPath _finderPathCountByThreadId;
 
 	/**
 	 * Returns the message boards discussion where threadId = &#63; or throws a <code>NoSuchDiscussionException</code> if it could not be found.
@@ -2037,9 +2036,11 @@ public class MBDiscussionPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByThreadId");
+
 		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByThreadId, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof MBDiscussion) {
@@ -2074,8 +2075,7 @@ public class MBDiscussionPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByThreadId, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -2088,8 +2088,7 @@ public class MBDiscussionPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByThreadId, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -2130,7 +2129,8 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public int countByThreadId(long threadId) {
-		FinderPath finderPath = _finderPathCountByThreadId;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByThreadId");
 
 		Object[] finderArgs = new Object[] {threadId};
 
@@ -2175,9 +2175,6 @@ public class MBDiscussionPersistenceImpl
 
 	private static final String _FINDER_COLUMN_THREADID_THREADID_2 =
 		"mbDiscussion.threadId = ?";
-
-	private FinderPath _finderPathFetchByC_C;
-	private FinderPath _finderPathCountByC_C;
 
 	/**
 	 * Returns the message boards discussion where classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchDiscussionException</code> if it could not be found.
@@ -2248,9 +2245,11 @@ public class MBDiscussionPersistenceImpl
 
 		Object result = null;
 
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByC_C");
+
 		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByC_C, finderArgs, this);
+			result = finderCache.getResult(finderPath, finderArgs, this);
 		}
 
 		if (result instanceof MBDiscussion) {
@@ -2291,8 +2290,7 @@ public class MBDiscussionPersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByC_C, finderArgs, list);
+						finderCache.putResult(finderPath, finderArgs, list);
 					}
 				}
 				else {
@@ -2305,7 +2303,7 @@ public class MBDiscussionPersistenceImpl
 			}
 			catch (Exception exception) {
 				if (useFinderCache) {
-					finderCache.removeResult(_finderPathFetchByC_C, finderArgs);
+					finderCache.removeResult(finderPath, finderArgs);
 				}
 
 				throw processException(exception);
@@ -2348,7 +2346,8 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public int countByC_C(long classNameId, long classPK) {
-		FinderPath finderPath = _finderPathCountByC_C;
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C");
 
 		Object[] finderArgs = new Object[] {classNameId, classPK};
 
@@ -2425,19 +2424,23 @@ public class MBDiscussionPersistenceImpl
 	public void cacheResult(MBDiscussion mbDiscussion) {
 		entityCache.putResult(
 			entityCacheEnabled, MBDiscussionImpl.class,
-			mbDiscussion.getPrimaryKey(), mbDiscussion);
+			mbDiscussion.getPrimaryKey(), mbDiscussion,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask()
+			});
 
 		finderCache.putResult(
-			_finderPathFetchByUUID_G,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G"),
 			new Object[] {mbDiscussion.getUuid(), mbDiscussion.getGroupId()},
 			mbDiscussion);
 
 		finderCache.putResult(
-			_finderPathFetchByThreadId,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByThreadId"),
 			new Object[] {mbDiscussion.getThreadId()}, mbDiscussion);
 
 		finderCache.putResult(
-			_finderPathFetchByC_C,
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByC_C"),
 			new Object[] {
 				mbDiscussion.getClassNameId(), mbDiscussion.getClassPK()
 			},
@@ -2476,10 +2479,6 @@ public class MBDiscussionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBDiscussionImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2493,34 +2492,28 @@ public class MBDiscussionPersistenceImpl
 	public void clearCache(MBDiscussion mbDiscussion) {
 		entityCache.removeResult(
 			entityCacheEnabled, MBDiscussionImpl.class,
-			mbDiscussion.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((MBDiscussionModelImpl)mbDiscussion, true);
+			mbDiscussion.getPrimaryKey(), mbDiscussion,
+			new Object[] {
+				_columnBitmaskEnabled,
+				((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask()
+			});
 	}
 
 	@Override
 	public void clearCache(List<MBDiscussion> mbDiscussions) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (MBDiscussion mbDiscussion : mbDiscussions) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBDiscussionImpl.class,
-				mbDiscussion.getPrimaryKey());
-
-			clearUniqueFindersCache((MBDiscussionModelImpl)mbDiscussion, true);
+				mbDiscussion.getPrimaryKey(), mbDiscussion,
+				new Object[] {
+					_columnBitmaskEnabled,
+					((MBDiscussionModelImpl)mbDiscussion).getColumnBitmask()
+				});
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, MBDiscussionImpl.class, primaryKey);
@@ -2535,16 +2528,22 @@ public class MBDiscussionPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByUUID_G, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByUUID_G, args, mbDiscussionModelImpl, false);
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G"), args,
+			mbDiscussionModelImpl, false);
 
 		args = new Object[] {mbDiscussionModelImpl.getThreadId()};
 
 		finderCache.putResult(
-			_finderPathCountByThreadId, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByThreadId"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByThreadId, args, mbDiscussionModelImpl, false);
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByThreadId"), args,
+			mbDiscussionModelImpl, false);
 
 		args = new Object[] {
 			mbDiscussionModelImpl.getClassNameId(),
@@ -2552,75 +2551,12 @@ public class MBDiscussionPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByC_C, args, Long.valueOf(1), false);
+			_getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C"),
+			args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByC_C, args, mbDiscussionModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		MBDiscussionModelImpl mbDiscussionModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getUuid(),
-				mbDiscussionModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((mbDiscussionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getOriginalUuid(),
-				mbDiscussionModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {mbDiscussionModelImpl.getThreadId()};
-
-			finderCache.removeResult(_finderPathCountByThreadId, args);
-			finderCache.removeResult(_finderPathFetchByThreadId, args);
-		}
-
-		if ((mbDiscussionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByThreadId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getOriginalThreadId()
-			};
-
-			finderCache.removeResult(_finderPathCountByThreadId, args);
-			finderCache.removeResult(_finderPathFetchByThreadId, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getClassNameId(),
-				mbDiscussionModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
-
-		if ((mbDiscussionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getOriginalClassNameId(),
-				mbDiscussionModelImpl.getOriginalClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
+			_getFinderPath(FINDER_CLASS_NAME_ENTITY, "fetchByC_C"), args,
+			mbDiscussionModelImpl, false);
 	}
 
 	/**
@@ -2789,10 +2725,8 @@ public class MBDiscussionPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mbDiscussion.isNew()) {
+			if (isNew) {
 				session.save(mbDiscussion);
-
-				mbDiscussion.setNew(false);
 			}
 			else {
 				mbDiscussion = (MBDiscussion)session.merge(mbDiscussion);
@@ -2805,108 +2739,20 @@ public class MBDiscussionPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {mbDiscussionModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				mbDiscussionModelImpl.getUuid(),
-				mbDiscussionModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {mbDiscussionModelImpl.getClassNameId()};
-
-			finderCache.removeResult(_finderPathCountByClassNameId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByClassNameId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((mbDiscussionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					mbDiscussionModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {mbDiscussionModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((mbDiscussionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					mbDiscussionModelImpl.getOriginalUuid(),
-					mbDiscussionModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					mbDiscussionModelImpl.getUuid(),
-					mbDiscussionModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((mbDiscussionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByClassNameId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					mbDiscussionModelImpl.getOriginalClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByClassNameId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByClassNameId, args);
-
-				args = new Object[] {mbDiscussionModelImpl.getClassNameId()};
-
-				finderCache.removeResult(_finderPathCountByClassNameId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByClassNameId, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, MBDiscussionImpl.class,
-			mbDiscussion.getPrimaryKey(), mbDiscussion, false);
+			mbDiscussionModelImpl.getPrimaryKey(), mbDiscussionModelImpl, false,
+			new Object[] {
+				_columnBitmaskEnabled, mbDiscussionModelImpl.getColumnBitmask()
+			});
 
-		clearUniqueFindersCache(mbDiscussionModelImpl, false);
 		cacheUniqueFindersCache(mbDiscussionModelImpl);
 
 		mbDiscussion.resetOriginalValues();
+
+		if (isNew) {
+			mbDiscussion.setNew(false);
+		}
 
 		return mbDiscussion;
 	}
@@ -3031,12 +2877,14 @@ public class MBDiscussionPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
+				finderPath = _getFinderPath(
+					FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll");
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
+			finderPath = _getFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll");
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
@@ -3117,8 +2965,11 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
+		FinderPath finderPath = _getFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll");
+
 		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			finderPath, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -3130,12 +2981,10 @@ public class MBDiscussionPersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(finderPath, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(finderPath, FINDER_ARGS_EMPTY);
 
 				throw processException(exception);
 			}
@@ -3176,125 +3025,26 @@ public class MBDiscussionPersistenceImpl
 	 * Initializes the message boards discussion persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
 		MBDiscussionModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		MBDiscussionModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_bundleContext = bundleContext;
+		Bundle bundle = FrameworkUtil.getBundle(
+			MBDiscussionPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			MBDiscussionModelImpl.UUID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
-
-		_finderPathFetchByUUID_G = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()},
-			MBDiscussionModelImpl.UUID_COLUMN_BITMASK |
-			MBDiscussionModelImpl.GROUPID_COLUMN_BITMASK);
-
-		_finderPathCountByUUID_G = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			MBDiscussionModelImpl.UUID_COLUMN_BITMASK |
-			MBDiscussionModelImpl.COMPANYID_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByClassNameId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByClassNameId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByClassNameId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByClassNameId",
-			new String[] {Long.class.getName()},
-			MBDiscussionModelImpl.CLASSNAMEID_COLUMN_BITMASK);
-
-		_finderPathCountByClassNameId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassNameId",
-			new String[] {Long.class.getName()});
-
-		_finderPathFetchByThreadId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByThreadId",
-			new String[] {Long.class.getName()},
-			MBDiscussionModelImpl.THREADID_COLUMN_BITMASK);
-
-		_finderPathCountByThreadId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByThreadId",
-			new String[] {Long.class.getName()});
-
-		_finderPathFetchByC_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			MBDiscussionModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			MBDiscussionModelImpl.CLASSPK_COLUMN_BITMASK);
-
-		_finderPathCountByC_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(MBDiscussionImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -3330,6 +3080,7 @@ public class MBDiscussionPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -3370,6 +3121,206 @@ public class MBDiscussionPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _getFinderPath(String cacheName, String methodName) {
+		if (!finderCacheEnabled) {
+			return null;
+		}
+
+		return _finderPathMap.computeIfAbsent(
+			StringBundler.concat(cacheName, "_", methodName),
+			key -> {
+				Class<?> returnClass = MBDiscussionImpl.class;
+
+				Object[] bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+					methodName);
+
+				if (methodName.startsWith("count")) {
+					returnClass = Long.class;
+
+					String methodNamePostfix = methodName.substring(5);
+
+					bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+						"find" + methodNamePostfix);
+
+					if (bitMaskArray == null) {
+						bitMaskArray = _COLUMN_BITMASK_ARRAY_MAP.get(
+							"fetch" + methodNamePostfix);
+					}
+				}
+
+				FinderPath finderPath = null;
+
+				if ((bitMaskArray == null) || (bitMaskArray.length != 3)) {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0]);
+				}
+				else {
+					finderPath = new FinderPath(
+						entityCacheEnabled, true, returnClass, cacheName,
+						methodName, new String[0], (long)bitMaskArray[0],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[1],
+						(Function<BaseModel<?>, Object[]>)bitMaskArray[2]);
+				}
+
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					_serviceRegistrations.add(
+						_bundleContext.registerService(
+							FinderPath.class, finderPath,
+							MapUtil.singletonDictionary(
+								"cache.name", cacheName)));
+				}
+
+				return finderPath;
+			});
+	}
+
+	private Map<String, FinderPath> _finderPathMap = new ConcurrentHashMap<>();
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+	private static final Map<String, Object[]> _COLUMN_BITMASK_ARRAY_MAP =
+		new HashMap<>();
+
+	static {
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid",
+			new Object[] {
+				MBDiscussionModelImpl.UUID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {mbDiscussionModelImpl.getUuid()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getOriginalUuid()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByUUID_G",
+			new Object[] {
+				MBDiscussionModelImpl.UUID_COLUMN_BITMASK |
+				MBDiscussionModelImpl.GROUPID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getUuid(),
+						mbDiscussionModelImpl.getGroupId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getOriginalUuid(),
+						mbDiscussionModelImpl.getOriginalGroupId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByUuid_C",
+			new Object[] {
+				MBDiscussionModelImpl.UUID_COLUMN_BITMASK |
+				MBDiscussionModelImpl.COMPANYID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getUuid(),
+						mbDiscussionModelImpl.getCompanyId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getOriginalUuid(),
+						mbDiscussionModelImpl.getOriginalCompanyId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"findByClassNameId",
+			new Object[] {
+				MBDiscussionModelImpl.CLASSNAMEID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getClassNameId()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getOriginalClassNameId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByThreadId",
+			new Object[] {
+				MBDiscussionModelImpl.THREADID_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {mbDiscussionModelImpl.getThreadId()};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getOriginalThreadId()
+					};
+				}
+			});
+
+		_COLUMN_BITMASK_ARRAY_MAP.put(
+			"fetchByC_C",
+			new Object[] {
+				MBDiscussionModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				MBDiscussionModelImpl.CLASSPK_COLUMN_BITMASK,
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getClassNameId(),
+						mbDiscussionModelImpl.getClassPK()
+					};
+				},
+				(Function<BaseModel<?>, Object[]>)baseModel -> {
+					MBDiscussionModelImpl mbDiscussionModelImpl =
+						(MBDiscussionModelImpl)baseModel;
+
+					return new Object[] {
+						mbDiscussionModelImpl.getOriginalClassNameId(),
+						mbDiscussionModelImpl.getOriginalClassPK()
+					};
+				}
+			});
 	}
 
 }
