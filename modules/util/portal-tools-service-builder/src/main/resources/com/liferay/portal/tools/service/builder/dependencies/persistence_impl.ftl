@@ -2242,22 +2242,24 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						new String[0]);
 				</#if>
 
-				<#if osgiModule>
-					_serviceRegistrations.add(
-						_bundleContext.registerService(
-							FinderPath.class, finderPath,
-							MapUtil.singletonDictionary(
-								"cache.name", cacheName)));
-				<#else>
-					Registry registry = RegistryUtil.getRegistry();
+				if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+					<#if osgiModule>
+						_serviceRegistrations.add(
+							_bundleContext.registerService(
+								FinderPath.class, finderPath,
+								MapUtil.singletonDictionary(
+									"cache.name", cacheName)));
+					<#else>
+						Registry registry = RegistryUtil.getRegistry();
 
-					_serviceRegistrations.add(
-						registry.registerService(
-							FinderPath.class, finderPath,
-							HashMapBuilder.<String, Object>put(
-								"cache.name", cacheName
-							).build()));
-				</#if>
+						_serviceRegistrations.add(
+							registry.registerService(
+								FinderPath.class, finderPath,
+								HashMapBuilder.<String, Object>put(
+									"cache.name", cacheName
+								).build()));
+					</#if>
+				}
 
 				return finderPath;
 			});
