@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.Serializable;
 
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Brian Wing Shun Chan
@@ -39,7 +40,7 @@ public class FinderPath {
 
 		this(
 			entityCacheEnabled, finderCacheEnabled, resultClass, cacheName,
-			methodName, params, -1);
+			methodName, params, -1, null, null);
 	}
 
 	public FinderPath(
@@ -47,11 +48,25 @@ public class FinderPath {
 		Class<?> resultClass, String cacheName, String methodName,
 		String[] params, long columnBitmask) {
 
+		this(
+			entityCacheEnabled, finderCacheEnabled, resultClass, cacheName,
+			methodName, params, columnBitmask, null, null);
+	}
+
+	public FinderPath(
+		boolean entityCacheEnabled, boolean finderCacheEnabled,
+		Class<?> resultClass, String cacheName, String methodName,
+		String[] params, long columnBitmask,
+		Function<BaseModel<?>, Object[]> argumentsFunction,
+		Function<BaseModel<?>, Object[]> originalArgumentsFunction) {
+
 		_entityCacheEnabled = entityCacheEnabled;
 		_finderCacheEnabled = finderCacheEnabled;
 		_resultClass = resultClass;
 		_cacheName = cacheName;
 		_columnBitmask = columnBitmask;
+		_argumentsFunction = argumentsFunction;
+		_originalArgumentsFunction = originalArgumentsFunction;
 
 		if (BaseModel.class.isAssignableFrom(_resultClass)) {
 			_cacheKeyGeneratorCacheName = _BASE_MODEL_CACHE_KEY_GENERATOR_NAME;
@@ -141,12 +156,28 @@ public class FinderPath {
 			});
 	}
 
+	public Object[] getArguments(BaseModel<?> baseModel) {
+		if (_argumentsFunction == null) {
+			return null;
+		}
+
+		return _argumentsFunction.apply(baseModel);
+	}
+
 	public String getCacheName() {
 		return _cacheName;
 	}
 
 	public long getColumnBitmask() {
 		return _columnBitmask;
+	}
+
+	public Object[] getOriginalArguments(BaseModel<?> baseModel) {
+		if (_originalArgumentsFunction == null) {
+			return null;
+		}
+
+		return _originalArgumentsFunction.apply(baseModel);
 	}
 
 	public Class<?> getResultClass() {
@@ -223,6 +254,7 @@ public class FinderPath {
 
 	private static final Map<String, String> _encodedTypes = _getEncodedTypes();
 
+	private final Function<BaseModel<?>, Object[]> _argumentsFunction;
 	private final CacheKeyGenerator _cacheKeyGenerator;
 	private final String _cacheKeyGeneratorCacheName;
 	private String _cacheKeyPrefix;
@@ -230,6 +262,7 @@ public class FinderPath {
 	private final long _columnBitmask;
 	private final boolean _entityCacheEnabled;
 	private final boolean _finderCacheEnabled;
+	private final Function<BaseModel<?>, Object[]> _originalArgumentsFunction;
 	private final Class<?> _resultClass;
 
 }
