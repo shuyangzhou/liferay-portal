@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -690,9 +689,7 @@ public class ResourceActionsImpl implements ResourceActions {
 	private void _checkPortletActions(Portlet portlet, Set<String> actions) {
 		_checkPortletLayoutManagerActions(actions);
 
-		if ((portlet != null) &&
-			(portlet.getControlPanelEntryCategory() != null)) {
-
+		if (portlet != null) {
 			actions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
 		}
 	}
