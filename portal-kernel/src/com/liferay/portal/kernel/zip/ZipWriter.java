@@ -36,16 +36,24 @@ public interface ZipWriter {
 
 	public void addEntry(String name, StringBuilder sb) throws IOException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
+	 */
+	@Deprecated
 	public byte[] finish() throws IOException;
 
 	public File getFile();
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
+	 */
+	@Deprecated
 	public String getPath();
 
 	/**
-	 * Silently unmounts the file entry attached to this Zip writer. If the
-	 * operation fails, a message is logged with a warning level.
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
 	 */
+	@Deprecated
 	public void umount();
 
 }

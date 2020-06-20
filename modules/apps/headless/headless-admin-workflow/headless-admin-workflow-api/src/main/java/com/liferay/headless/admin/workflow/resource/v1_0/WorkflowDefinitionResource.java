@@ -68,10 +68,6 @@ public interface WorkflowDefinitionResource {
 			Boolean active, String name, String version)
 		throws Exception;
 
-	public WorkflowDefinition postWorkflowDefinitionUpdateTitle(
-			String name, String title, String version)
-		throws Exception;
-
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

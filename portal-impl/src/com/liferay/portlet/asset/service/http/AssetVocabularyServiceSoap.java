@@ -116,6 +116,37 @@ public class AssetVocabularyServiceSoap {
 		}
 	}
 
+	public static com.liferay.asset.kernel.model.AssetVocabularySoap
+			addVocabulary(
+				long groupId, String name, String title,
+				String[] titleMapLanguageIds, String[] titleMapValues,
+				String[] descriptionMapLanguageIds,
+				String[] descriptionMapValues, String settings,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+
+		try {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
+				titleMapLanguageIds, titleMapValues);
+			Map<Locale, String> descriptionMap =
+				LocalizationUtil.getLocalizationMap(
+					descriptionMapLanguageIds, descriptionMapValues);
+
+			com.liferay.asset.kernel.model.AssetVocabulary returnValue =
+				AssetVocabularyServiceUtil.addVocabulary(
+					groupId, name, title, titleMap, descriptionMap, settings,
+					serviceContext);
+
+			return com.liferay.asset.kernel.model.AssetVocabularySoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static com.liferay.asset.kernel.model.AssetVocabularySoap[]
 			deleteVocabularies(
 				long[] vocabularyIds,
@@ -519,6 +550,37 @@ public class AssetVocabularyServiceSoap {
 				AssetVocabularyServiceUtil.updateVocabulary(
 					vocabularyId, title, titleMap, descriptionMap, settings,
 					serviceContext);
+
+			return com.liferay.asset.kernel.model.AssetVocabularySoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.asset.kernel.model.AssetVocabularySoap
+			updateVocabulary(
+				long vocabularyId, String name, String title,
+				String[] titleMapLanguageIds, String[] titleMapValues,
+				String[] descriptionMapLanguageIds,
+				String[] descriptionMapValues, String settings,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+
+		try {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
+				titleMapLanguageIds, titleMapValues);
+			Map<Locale, String> descriptionMap =
+				LocalizationUtil.getLocalizationMap(
+					descriptionMapLanguageIds, descriptionMapValues);
+
+			com.liferay.asset.kernel.model.AssetVocabulary returnValue =
+				AssetVocabularyServiceUtil.updateVocabulary(
+					vocabularyId, name, title, titleMap, descriptionMap,
+					settings, serviceContext);
 
 			return com.liferay.asset.kernel.model.AssetVocabularySoap.
 				toSoapModel(returnValue);

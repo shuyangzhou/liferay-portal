@@ -14,12 +14,18 @@
 
 import ClayIcon from '@clayui/icon';
 import ClayTabs from '@clayui/tabs';
-import {useIsMounted} from 'frontend-js-react-web';
-import {fetch, openToast} from 'frontend-js-web';
-import React, {useState} from 'react';
+import {useIsMounted, usePrevious} from 'frontend-js-react-web';
+import {cancelDebounce, debounce, fetch, openToast} from 'frontend-js-web';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import CodeMirrorEditor from './CodeMirrorEditor';
 import FragmentPreview from './FragmentPreview';
+
+const CHANGES_STATUS = {
+	saved: Liferay.Language.get('changes-saved'),
+	saving: Liferay.Language.get('saving-changes'),
+	unsaved: Liferay.Language.get('unsaved-changes'),
+};
 
 const FragmentEditor = ({
 	context: {namespace},
@@ -41,13 +47,12 @@ const FragmentEditor = ({
 		name,
 		propagationEnabled,
 		readOnly,
-		status,
 		urls,
 	},
 }) => {
 	const [activeTabKeyValue, setActiveTabKeyValue] = useState(0);
 	const [isCacheable, setIsCacheable] = useState(cacheable);
-	const [isSaving, setIsSaving] = useState(false);
+	const [changesStatus, setChangesStatus] = useState(null);
 	const [configuration, setConfiguration] = useState(initialConfiguration);
 	const [css, setCss] = useState(initialCSS);
 	const [html, setHtml] = useState(initialHTML);
@@ -55,27 +60,30 @@ const FragmentEditor = ({
 
 	const isMounted = useIsMounted();
 
-	const handleSaveButtonClick = (event) => {
-		const status = event.currentTarget.value;
+	const contentHasChanged = useCallback(() => {
+		return (
+			initialConfiguration !== configuration ||
+			initialCSS !== css ||
+			initialHTML !== html ||
+			initialJS !== js
+		);
+	}, [
+		configuration,
+		css,
+		html,
+		initialCSS,
+		initialConfiguration,
+		initialHTML,
+		initialJS,
+		js,
+	]);
 
-		setIsSaving(true);
-
+	const publish = () => {
 		const formData = new FormData();
 
-		formData.append(`${namespace}cacheable`, isCacheable);
-		formData.append(`${namespace}configurationContent`, configuration);
-		formData.append(`${namespace}cssContent`, css);
-		formData.append(`${namespace}htmlContent`, html);
-		formData.append(
-			`${namespace}fragmentCollectionId`,
-			fragmentCollectionId
-		);
 		formData.append(`${namespace}fragmentEntryId`, fragmentEntryId);
-		formData.append(`${namespace}jsContent`, js);
-		formData.append(`${namespace}name`, name);
-		formData.append(`${namespace}status`, status);
 
-		fetch(urls.edit, {
+		fetch(urls.publish, {
 			body: formData,
 			method: 'POST',
 		})
@@ -94,7 +102,7 @@ const FragmentEditor = ({
 			})
 			.catch((error) => {
 				if (isMounted()) {
-					setIsSaving(false);
+					setChangesStatus(CHANGES_STATUS.unsaved);
 				}
 
 				const message =
@@ -110,10 +118,79 @@ const FragmentEditor = ({
 			});
 	};
 
+	const saveDraft = useCallback(
+		debounce(() => {
+			setChangesStatus(CHANGES_STATUS.saving);
+
+			const formData = new FormData();
+
+			formData.append(`${namespace}cacheable`, isCacheable);
+			formData.append(`${namespace}configurationContent`, configuration);
+			formData.append(`${namespace}cssContent`, css);
+			formData.append(`${namespace}htmlContent`, html);
+			formData.append(
+				`${namespace}fragmentCollectionId`,
+				fragmentCollectionId
+			);
+			formData.append(`${namespace}fragmentEntryId`, fragmentEntryId);
+			formData.append(`${namespace}jsContent`, js);
+			formData.append(`${namespace}name`, name);
+			formData.append(`${namespace}status`, allowedStatus.draft);
+
+			fetch(urls.edit, {
+				body: formData,
+				method: 'POST',
+			})
+				.then((response) => response.json())
+				.then((response) => {
+					if (response.error) {
+						throw response.error;
+					}
+
+					return response;
+				})
+				.then(() => {
+					setChangesStatus(CHANGES_STATUS.saved);
+				})
+				.catch((error) => {
+					if (isMounted()) {
+						setChangesStatus(CHANGES_STATUS.unsaved);
+					}
+
+					const message =
+						typeof error === 'string'
+							? error
+							: Liferay.Language.get('error');
+
+					openToast({
+						message,
+						title: Liferay.Language.get('error'),
+						type: 'danger',
+					});
+				});
+		}, 500),
+		[configuration, css, html, js]
+	);
+
+	const previousSaveDraft = usePrevious(saveDraft);
+
+	useEffect(() => {
+		if (previousSaveDraft && previousSaveDraft !== saveDraft) {
+			cancelDebounce(previousSaveDraft);
+		}
+	}, [previousSaveDraft, saveDraft]);
+
+	useEffect(() => {
+		if (contentHasChanged()) {
+			setChangesStatus(CHANGES_STATUS.unsaved);
+			saveDraft();
+		}
+	}, [contentHasChanged, saveDraft]);
+
 	return (
 		<div className="fragment-editor-container">
-			<div className="nav-bar-container">
-				<div className="navbar navbar-default">
+			<div className="fragment-editor__toolbar nav-bar-container">
+				<div className="navbar navbar-default pb-2 pt-2">
 					<div className="container">
 						<div className="navbar navbar-collapse-absolute navbar-expand-md navbar-underline navigation-bar navigation-bar-light">
 							<ClayTabs modern>
@@ -169,7 +246,13 @@ const FragmentEditor = ({
 										</span>
 									)}
 
-									<div className="btn-group-item custom-checkbox custom-control ml-2 mr-4 mt-1">
+									<div className="btn-group-item ml-2 mr-4">
+										<span className="my-0 navbar-text p-0">
+											{changesStatus}
+										</span>
+									</div>
+
+									<div className="btn-group-item custom-checkbox custom-control mb-1 mr-4 mt-1">
 										<label
 											className="lfr-portal-tooltip"
 											data-title={Liferay.Language.get(
@@ -200,31 +283,15 @@ const FragmentEditor = ({
 										</label>
 									</div>
 
-									{status === allowedStatus.draft && (
-										<div className="btn-group-item">
-											<button
-												className="btn btn-secondary btn-sm"
-												disabled={isSaving}
-												onClick={handleSaveButtonClick}
-												type="button"
-												value={allowedStatus.draft}
-											>
-												<span className="lfr-btn-label">
-													{Liferay.Language.get(
-														'save-as-draft'
-													)}
-												</span>
-											</button>
-										</div>
-									)}
-
 									<div className="btn-group-item">
 										<button
 											className="btn btn-primary btn-sm"
-											disabled={isSaving}
-											onClick={handleSaveButtonClick}
+											disabled={
+												changesStatus ===
+												CHANGES_STATUS.saving
+											}
+											onClick={publish}
 											type="button"
-											value={allowedStatus.approved}
 										>
 											<span className="lfr-btn-label">
 												{Liferay.Language.get(

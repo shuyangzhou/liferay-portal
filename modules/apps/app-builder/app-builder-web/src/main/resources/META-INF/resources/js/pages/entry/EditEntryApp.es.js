@@ -15,12 +15,14 @@
 import React from 'react';
 
 import {AppContextProvider} from '../../AppContext.es';
-import EditEntry from './EditEntry.es';
+import useLazy from '../../hooks/useLazy.es';
 
-export default (props) => {
+export default ({appTab, ...props}) => {
+	const EditPage = useLazy();
+
 	return (
 		<AppContextProvider {...props}>
-			<EditEntry {...props} />
+			<EditPage module={appTab.editEntryPoint} props={props} />
 		</AppContextProvider>
 	);
 };

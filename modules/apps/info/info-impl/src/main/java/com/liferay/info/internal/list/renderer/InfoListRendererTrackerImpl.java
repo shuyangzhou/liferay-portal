@@ -14,21 +14,14 @@
 
 package com.liferay.info.internal.list.renderer;
 
+import com.liferay.info.item.provider.InfoItemServiceTracker;
 import com.liferay.info.list.renderer.InfoListRenderer;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
-import com.liferay.petra.reflect.GenericUtil;
-import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * @author Jorge Ferrer
@@ -38,62 +31,27 @@ public class InfoListRendererTrackerImpl implements InfoListRendererTracker {
 
 	@Override
 	public InfoListRenderer<?> getInfoListRenderer(String key) {
-		if (Validator.isNull(key)) {
-			return null;
-		}
-
-		return _infoListRenderers.get(key);
+		return _infoItemServiceTracker.getInfoItemProvider(
+			InfoListRenderer.class, key);
 	}
 
 	@Override
 	public List<InfoListRenderer<?>> getInfoListRenderers() {
-		return new ArrayList<>(_infoListRenderers.values());
+		return (List<InfoListRenderer<?>>)
+			(List<?>)_infoItemServiceTracker.getAllInfoItemServices(
+				InfoListRenderer.class);
 	}
 
 	@Override
 	public List<InfoListRenderer<?>> getInfoListRenderers(
 		String itemClassName) {
 
-		List<InfoListRenderer<?>> infoListRenderers =
-			_itemClassNameInfoListRenderers.get(itemClassName);
-
-		if (infoListRenderers != null) {
-			return new ArrayList<>(infoListRenderers);
-		}
-
-		return Collections.emptyList();
+		return (List<InfoListRenderer<?>>)
+			(List<?>)_infoItemServiceTracker.getAllInfoItemServices(
+				InfoListRenderer.class, itemClassName);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setInfoListRenderer(InfoListRenderer<?> infoListRenderer) {
-		_infoListRenderers.put(infoListRenderer.getKey(), infoListRenderer);
-
-		List<InfoListRenderer<?>> itemClassInfoListRenderers =
-			_itemClassNameInfoListRenderers.computeIfAbsent(
-				GenericUtil.getGenericClassName(infoListRenderer),
-				itemClass -> new ArrayList<>());
-
-		itemClassInfoListRenderers.add(infoListRenderer);
-	}
-
-	protected void unsetInfoListRenderer(InfoListRenderer<?> infoListRenderer) {
-		_infoListRenderers.remove(infoListRenderer.getKey());
-
-		List<InfoListRenderer<?>> itemClassInfoListRenderers =
-			_itemClassNameInfoListRenderers.get(
-				GenericUtil.getGenericClassName(infoListRenderer));
-
-		if (itemClassInfoListRenderers != null) {
-			itemClassInfoListRenderers.remove(infoListRenderer);
-		}
-	}
-
-	private final Map<String, InfoListRenderer<?>> _infoListRenderers =
-		new ConcurrentHashMap<>();
-	private final Map<String, List<InfoListRenderer<?>>>
-		_itemClassNameInfoListRenderers = new ConcurrentHashMap<>();
+	@Reference
+	private InfoItemServiceTracker _infoItemServiceTracker;
 
 }

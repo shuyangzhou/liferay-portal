@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Eudaldo Alonso
  */
 @Component(
-	property = "service.ranking:Integer=300", service = InfoItemRenderer.class
+	property = "service.ranking:Integer=100", service = InfoItemRenderer.class
 )
 public class AssetEntryAbstractInfoItemRenderer
 	extends BaseAssetEntryInfoItemRenderer {

@@ -25,7 +25,7 @@ copyGradleTestDependencies {
 dependencies {
 	compile group: "com.github.jk1", name: "gradle-license-report", version: "1.8"
 	compile group: "com.gradle.publish", name: "plugin-publish-plugin", version: "0.11.0"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins", version: "8.0.3"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins", version: "9.0.0"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.app.javadoc.builder", version: "1.2.3"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.baseline", version: "6.0.2"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.cache", version: "1.0.17"
@@ -35,7 +35,7 @@ dependencies {
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.jsdoc", version: "2.0.51"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.lang.merger", version: "2.0.1"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.patcher", version: "1.0.18"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins.poshi.runner", version: "2.2.28"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins.poshi.runner", version: "2.2.29"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.whip", version: "1.0.8"
 	compile group: "com.netflix.nebula", name: "gradle-extra-configurations-plugin", version: "3.1.0"
 	compile group: "gradle.plugin.com.github.spotbugs.snom", name: "spotbugs-gradle-plugin", version: "4.0.0"

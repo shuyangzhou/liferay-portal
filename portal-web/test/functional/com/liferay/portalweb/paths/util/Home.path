@@ -130,7 +130,7 @@
 </tr>
 <tr>
 	<td>ERROR_MESSAGE_EXPIRED_SESSION</td>
-	<td>//div[contains(@class,'liferayalert')]//div</td>
+	<td>//div[contains(@class,'liferayalert')]//div | //div[contains(@class,'autofit-section')]//div</td>
 	<td></td>
 </tr>
 <tr>

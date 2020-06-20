@@ -22,8 +22,10 @@ import groovy.lang.Closure;
 
 import java.io.File;
 
+import java.util.Collections;
 import java.util.concurrent.Callable;
 
+import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -31,12 +33,17 @@ import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTreeElement;
 import org.gradle.api.file.SourceDirectorySet;
+import org.gradle.api.plugins.Convention;
+import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.plugins.WarPlugin;
 import org.gradle.api.plugins.WarPluginConvention;
+import org.gradle.api.provider.Property;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.SourceSet;
+import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.Sync;
+import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.bundling.Jar;
 import org.gradle.api.tasks.bundling.War;
 import org.gradle.util.GUtil;
@@ -52,228 +59,144 @@ public class LiferayExtPlugin implements Plugin<Project> {
 
 	public static final String BUILD_EXT_INFO_TASK_NAME = "buildExtInfo";
 
-	public static final String EXT_IMPL_SOURCESET_NAME = "extImpl";
+	public static final String EXT_IMPL_SOURCE_SET_NAME = "extImpl";
 
-	public static final String EXT_KERNEL_SOURCESET_NAME = "extKernel";
+	public static final String EXT_KERNEL_SOURCE_SET_NAME = "extKernel";
 
-	public static final String EXT_UTIL_BRIDGES_SOURCESET_NAME =
+	public static final String EXT_UTIL_BRIDGES_SOURCE_SET_NAME =
 		"extUtilBridges";
 
-	public static final String EXT_UTIL_JAVA_SOURCESET_NAME = "extUtilJava";
+	public static final String EXT_UTIL_JAVA_SOURCE_SET_NAME = "extUtilJava";
 
-	public static final String EXT_UTIL_TAGLIB_SOURCESET_NAME = "extUtilTaglib";
+	public static final String EXT_UTIL_TAGLIB_SOURCE_SET_NAME =
+		"extUtilTaglib";
 
 	@Override
 	public void apply(Project project) {
+
+		// Plugins
+
 		_applyPlugins(project);
 
-		War war = (War)GradleUtil.getTask(project, WarPlugin.WAR_TASK_NAME);
-
-		WarPluginConvention warPluginConvention = GradleUtil.getConvention(
-			project, WarPluginConvention.class);
+		// Configurations
 
 		Configuration portalConfiguration = GradleUtil.getConfiguration(
 			project, LiferayBasePlugin.PORTAL_CONFIGURATION_NAME);
 
+		// Conventions
+
+		Convention convention = project.getConvention();
+
+		JavaPluginConvention javaPluginConvention = convention.getPlugin(
+			JavaPluginConvention.class);
+		WarPluginConvention warPluginConvention = convention.getPlugin(
+			WarPluginConvention.class);
+
+		SourceSetContainer sourceSetContainer =
+			javaPluginConvention.getSourceSets();
+
+		SourceSet extImplSourceSet = sourceSetContainer.create(
+			EXT_IMPL_SOURCE_SET_NAME);
+		SourceSet extKernelSourceSet = sourceSetContainer.create(
+			EXT_KERNEL_SOURCE_SET_NAME);
+		SourceSet extUtilBridgesSourceSet = sourceSetContainer.create(
+			EXT_UTIL_BRIDGES_SOURCE_SET_NAME);
+		SourceSet extUtilJavaSourceSet = sourceSetContainer.create(
+			EXT_UTIL_JAVA_SOURCE_SET_NAME);
+		SourceSet extUtilTaglibSourceSet = sourceSetContainer.create(
+			EXT_UTIL_TAGLIB_SOURCE_SET_NAME);
+
+		_configureSourceSetExt(warPluginConvention, extImplSourceSet);
+		_configureSourceSetExt(warPluginConvention, extKernelSourceSet);
+		_configureSourceSetExt(warPluginConvention, extUtilBridgesSourceSet);
+		_configureSourceSetExt(warPluginConvention, extUtilJavaSourceSet);
+		_configureSourceSetExt(warPluginConvention, extUtilTaglibSourceSet);
+
+		// Tasks
+
+		TaskProvider<Sync> buildExtInfoBaseDirTaskProvider =
+			GradleUtil.addTaskProvider(
+				project, BUILD_EXT_INFO_BASE_DIR_TASK_NAME, Sync.class);
+		TaskProvider<BuildExtInfoTask> buildExtInfoTaskProvider =
+			GradleUtil.addTaskProvider(
+				project, BUILD_EXT_INFO_TASK_NAME, BuildExtInfoTask.class);
+		TaskProvider<Jar> extImplJarTaskProvider = GradleUtil.addTaskProvider(
+			project, extImplSourceSet.getJarTaskName(), Jar.class);
+		TaskProvider<Jar> extKernelJarTaskProvider = GradleUtil.addTaskProvider(
+			project, extKernelSourceSet.getJarTaskName(), Jar.class);
+		TaskProvider<Jar> extUtilBridgesJarTaskProvider =
+			GradleUtil.addTaskProvider(
+				project, extUtilBridgesSourceSet.getJarTaskName(), Jar.class);
+		TaskProvider<Jar> extUtilJavaJarTaskProvider =
+			GradleUtil.addTaskProvider(
+				project, extUtilJavaSourceSet.getJarTaskName(), Jar.class);
+		TaskProvider<Jar> extUtilTaglibJarTaskProvider =
+			GradleUtil.addTaskProvider(
+				project, extUtilTaglibSourceSet.getJarTaskName(), Jar.class);
+
+		TaskProvider<Copy> deployTaskProvider = GradleUtil.getTaskProvider(
+			project, LiferayBasePlugin.DEPLOY_TASK_NAME, Copy.class);
+		TaskProvider<War> warTaskProvider = GradleUtil.getTaskProvider(
+			project, WarPlugin.WAR_TASK_NAME, War.class);
+
+		_configureTaskBuildExtInfoBaseDirProvider(
+			project, buildExtInfoBaseDirTaskProvider, buildExtInfoTaskProvider,
+			warTaskProvider);
+		_configureTaskBuildExtInfoProvider(
+			buildExtInfoBaseDirTaskProvider, buildExtInfoTaskProvider,
+			warTaskProvider, portalConfiguration);
+		_configureTaskDeployProvider(deployTaskProvider, warTaskProvider);
+		_configureTaskExtImplJarProvider(
+			project, extImplJarTaskProvider, extUtilBridgesJarTaskProvider,
+			extUtilJavaJarTaskProvider, extUtilTaglibJarTaskProvider);
+		_configureTaskExtJarProvider(extImplSourceSet, extImplJarTaskProvider);
+		_configureTaskExtJarProvider(
+			extKernelSourceSet, extKernelJarTaskProvider);
+		_configureTaskExtJarProvider(
+			extUtilBridgesSourceSet, extUtilBridgesJarTaskProvider);
+		_configureTaskExtJarProvider(
+			extUtilJavaSourceSet, extUtilJavaJarTaskProvider);
+		_configureTaskExtJarProvider(
+			extUtilTaglibSourceSet, extUtilTaglibJarTaskProvider);
+		_configureTaskWarProvider(
+			project, buildExtInfoTaskProvider, warTaskProvider,
+			extImplJarTaskProvider, extKernelJarTaskProvider,
+			extUtilBridgesJarTaskProvider, extUtilJavaJarTaskProvider,
+			extUtilTaglibJarTaskProvider);
+
+		// Other
+
 		_configureLiferay(project);
-		_configureTaskDeploy(war);
 
-		Jar extKernelJar = _addSourceSet(
-			war, warPluginConvention, EXT_KERNEL_SOURCESET_NAME,
-			portalConfiguration);
+		FileCollection fileCollection = project.files(
+			extKernelJarTaskProvider, extUtilBridgesJarTaskProvider,
+			extUtilJavaJarTaskProvider, extUtilTaglibJarTaskProvider);
 
-		FileCollection compileClasspath = portalConfiguration.plus(
-			project.files(extKernelJar));
+		extImplSourceSet.setCompileClasspath(
+			portalConfiguration.plus(fileCollection));
 
-		Jar utilBridgesJar = _addSourceSet(
-			war, warPluginConvention, EXT_UTIL_BRIDGES_SOURCESET_NAME,
-			compileClasspath);
+		fileCollection = project.files(Collections.emptyList());
 
-		compileClasspath = compileClasspath.plus(project.files(utilBridgesJar));
+		extKernelSourceSet.setCompileClasspath(
+			portalConfiguration.plus(fileCollection));
 
-		Jar utilJavaJar = _addSourceSet(
-			war, warPluginConvention, EXT_UTIL_JAVA_SOURCESET_NAME,
-			compileClasspath);
+		fileCollection = project.files(extKernelJarTaskProvider);
 
-		compileClasspath = compileClasspath.plus(project.files(utilJavaJar));
+		extUtilBridgesSourceSet.setCompileClasspath(
+			portalConfiguration.plus(fileCollection));
 
-		Jar utilTaglibJar = _addSourceSet(
-			war, warPluginConvention, EXT_UTIL_TAGLIB_SOURCESET_NAME,
-			compileClasspath);
+		fileCollection = project.files(
+			extKernelJarTaskProvider, extUtilBridgesJarTaskProvider);
 
-		compileClasspath = compileClasspath.plus(project.files(utilTaglibJar));
+		extUtilJavaSourceSet.setCompileClasspath(
+			portalConfiguration.plus(fileCollection));
 
-		Jar extImplJar = _addSourceSet(
-			war, warPluginConvention, EXT_IMPL_SOURCESET_NAME,
-			compileClasspath);
+		fileCollection = project.files(
+			extKernelJarTaskProvider, extUtilBridgesJarTaskProvider,
+			extUtilJavaJarTaskProvider);
 
-		Sync buildExtInfoBaseDirSync = _addTaskBuildExtInfoBaseDir(war);
-
-		BuildExtInfoTask buildExtInfoTask = _addTaskBuildExtInfo(
-			buildExtInfoBaseDirSync, war, portalConfiguration);
-
-		_configureTaskBuildExtInfoBaseDir(
-			buildExtInfoBaseDirSync, buildExtInfoTask);
-
-		_configureTaskExtImplJar(
-			extImplJar, utilBridgesJar, utilJavaJar, utilTaglibJar);
-		_configureTaskWar(war, buildExtInfoTask);
-	}
-
-	@SuppressWarnings("serial")
-	private Jar _addSourceSet(
-		War war, final WarPluginConvention warPluginConvention, String name,
-		FileCollection compileClasspath) {
-
-		// Source set
-
-		Project project = war.getProject();
-
-		SourceSet sourceSet = GradleUtil.addSourceSet(project, name);
-
-		sourceSet.setCompileClasspath(compileClasspath);
-
-		// Jar task
-
-		final Jar jar = GradleUtil.addTask(
-			project, sourceSet.getJarTaskName(), Jar.class);
-
-		jar.from(sourceSet.getOutput());
-
-		jar.setAppendix(GUtil.toWords(name, '-'));
-
-		jar.setDescription(
-			"Assembles a jar archive containing the " + jar.getAppendix() +
-				" classes.");
-
-		// Source directories
-
-		Callable<File> srcDirCallable = new Callable<File>() {
-
-			@Override
-			public File call() throws Exception {
-				return new File(
-					warPluginConvention.getWebAppDir(),
-					"WEB-INF/" + jar.getAppendix() + "/src");
-			}
-
-		};
-
-		SourceDirectorySet javaSourceDirectorySet = sourceSet.getJava();
-
-		javaSourceDirectorySet.srcDir(srcDirCallable);
-
-		SourceDirectorySet resourcesDirectorySet = sourceSet.getResources();
-
-		resourcesDirectorySet.srcDir(srcDirCallable);
-
-		// War task
-
-		CopySpec copySpec = war.getWebInf();
-
-		copySpec.from(jar);
-
-		copySpec.into(
-			new Callable<String>() {
-
-				@Override
-				public String call() throws Exception {
-					return jar.getAppendix();
-				}
-
-			});
-
-		copySpec.rename(
-			new Closure<String>(project) {
-
-				@SuppressWarnings("unused")
-				public String doCall(String fileName) {
-					return jar.getAppendix() + "." + jar.getExtension();
-				}
-
-			});
-
-		return jar;
-	}
-
-	private BuildExtInfoTask _addTaskBuildExtInfo(
-		final Sync buildExtInfoBaseDirSync, final War war,
-		FileCollection classpath) {
-
-		final BuildExtInfoTask buildExtInfoTask = GradleUtil.addTask(
-			buildExtInfoBaseDirSync.getProject(), BUILD_EXT_INFO_TASK_NAME,
-			BuildExtInfoTask.class);
-
-		buildExtInfoTask.dependsOn(buildExtInfoBaseDirSync);
-
-		buildExtInfoTask.setBaseDir(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return new File(
-						buildExtInfoBaseDirSync.getDestinationDir(), "WEB-INF");
-				}
-
-			});
-
-		buildExtInfoTask.setClasspath(classpath);
-		buildExtInfoTask.setDescription(
-			"Generates the ext information xml file.");
-
-		buildExtInfoTask.setOutputDir(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return buildExtInfoTask.getTemporaryDir();
-				}
-
-			});
-
-		buildExtInfoTask.setServletContextName(
-			new Callable<String>() {
-
-				@Override
-				public String call() throws Exception {
-					String servletContextName = war.getBaseName();
-
-					String appendix = war.getAppendix();
-
-					if (appendix != null) {
-						servletContextName =
-							servletContextName + "-" + appendix;
-					}
-
-					return servletContextName;
-				}
-
-			});
-
-		return buildExtInfoTask;
-	}
-
-	private Sync _addTaskBuildExtInfoBaseDir(War war) {
-		final Project project = war.getProject();
-
-		Sync sync = GradleUtil.addTask(
-			project, BUILD_EXT_INFO_BASE_DIR_TASK_NAME, Sync.class);
-
-		sync.into(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return new File(project.getBuildDir(), "build-ext-info");
-				}
-
-			});
-
-		sync.setDescription(
-			"Copies the exploded war archive into a temporary directory.");
-		sync.with(war);
-
-		return sync;
+		extUtilTaglibSourceSet.setCompileClasspath(
+			portalConfiguration.plus(fileCollection));
 	}
 
 	private void _applyPlugins(Project project) {
@@ -297,111 +220,352 @@ public class LiferayExtPlugin implements Plugin<Project> {
 			});
 	}
 
-	private void _configureTaskBuildExtInfoBaseDir(
-		Sync buildExtInfoBaseDirSync, final BuildExtInfoTask buildExtInfoTask) {
+	private void _configureSourceSetExt(
+		final WarPluginConvention warPluginConvention, SourceSet extSourceSet) {
 
-		buildExtInfoBaseDirSync.exclude(
-			new Spec<FileTreeElement>() {
+		SourceDirectorySet javaSourceDirectorySet = extSourceSet.getJava();
 
-				@Override
-				public boolean isSatisfiedBy(FileTreeElement fileTreeElement) {
-					File outputFile = buildExtInfoTask.getOutputFile();
-
-					String outputFileName = outputFile.getName();
-
-					if (outputFileName.equals(fileTreeElement.getPath())) {
-						return true;
-					}
-
-					return false;
-				}
-
-			});
-	}
-
-	private void _configureTaskDeploy(War war) {
-		Copy copy = (Copy)GradleUtil.getTask(
-			war.getProject(), LiferayBasePlugin.DEPLOY_TASK_NAME);
-
-		copy.from(war);
-	}
-
-	@SuppressWarnings("serial")
-	private void _configureTaskExtImplJar(
-		final Jar extImplJar, final Jar... jars) {
-
-		final Project project = extImplJar.getProject();
-
-		for (final Jar jar : jars) {
-			extImplJar.into(
-				"com/liferay/portal/deploy/dependencies",
-				new Closure<Void>(project) {
-
-					@SuppressWarnings("unused")
-					public void doCall(CopySpec copySpec) {
-						copySpec.from(jar);
-						copySpec.rename(
-							new PortalDeployDependencyRenameClosure(jar));
-					}
-
-				});
-		}
-	}
-
-	private void _configureTaskWar(
-		War war, final BuildExtInfoTask buildExtInfoTask) {
-
-		Project project = war.getProject();
-
-		String name = project.getName();
-
-		if (!name.endsWith("-ext")) {
-			war.setAppendix("ext");
-		}
-
-		CopySpec copySpec = war.getWebInf();
-
-		war.dependsOn(buildExtInfoTask);
-
-		copySpec.from(
+		javaSourceDirectorySet.srcDir(
 			new Callable<File>() {
 
 				@Override
 				public File call() throws Exception {
-					return buildExtInfoTask.getOutputFile();
+					String s = GUtil.toWords(extSourceSet.getName(), '-');
+
+					return new File(
+						warPluginConvention.getWebAppDir(),
+						"WEB-INF/" + s + "/src");
+				}
+
+			});
+
+		SourceDirectorySet resourcesDirectorySet = extSourceSet.getResources();
+
+		resourcesDirectorySet.srcDir(
+			new Callable<File>() {
+
+				@Override
+				public File call() throws Exception {
+					String s = GUtil.toWords(extSourceSet.getName(), '-');
+
+					return new File(
+						warPluginConvention.getWebAppDir(),
+						"WEB-INF/" + s + "/src");
 				}
 
 			});
 	}
 
-	@SuppressWarnings("serial")
-	private static class PortalDeployDependencyRenameClosure
-		extends Closure<String> {
+	private void _configureTaskBuildExtInfoBaseDirProvider(
+		final Project project,
+		TaskProvider<Sync> buildExtInfoBaseDirTaskProvider,
+		final TaskProvider<BuildExtInfoTask> buildExtInfoTaskProvider,
+		final TaskProvider<War> warTaskProvider) {
 
-		public PortalDeployDependencyRenameClosure(Jar jar) {
-			super(jar.getProject());
+		buildExtInfoBaseDirTaskProvider.configure(
+			new Action<Sync>() {
 
-			_jar = jar;
-		}
+				@Override
+				public void execute(Sync buildExtInfoBaseDirSync) {
+					buildExtInfoBaseDirSync.exclude(
+						new Spec<FileTreeElement>() {
 
-		@SuppressWarnings("unused")
-		public String doCall(String fileName) {
-			Project project = _jar.getProject();
+							@Override
+							public boolean isSatisfiedBy(
+								FileTreeElement fileTreeElement) {
 
-			StringBuilder sb = new StringBuilder();
+								BuildExtInfoTask buildExtInfoTask =
+									buildExtInfoTaskProvider.get();
 
-			sb.append("ext-");
-			sb.append(project.getName());
-			sb.append('-');
-			sb.append(_jar.getAppendix());
-			sb.append('.');
-			sb.append(_jar.getExtension());
+								File outputFile =
+									buildExtInfoTask.getOutputFile();
 
-			return sb.toString();
-		}
+								String outputFileName = outputFile.getName();
 
-		private final Jar _jar;
+								if (outputFileName.equals(
+										fileTreeElement.getPath())) {
 
+									return true;
+								}
+
+								return false;
+							}
+
+						});
+
+					buildExtInfoBaseDirSync.into(
+						new Callable<File>() {
+
+							@Override
+							public File call() throws Exception {
+								return new File(
+									project.getBuildDir(), "build-ext-info");
+							}
+
+						});
+
+					buildExtInfoBaseDirSync.setDescription(
+						"Copies the exploded war archive into a temporary " +
+							"directory.");
+					buildExtInfoBaseDirSync.with(warTaskProvider.get());
+				}
+
+			});
+	}
+
+	private void _configureTaskBuildExtInfoProvider(
+		final TaskProvider<Sync> buildExtInfoBaseDirTaskProvider,
+		TaskProvider<BuildExtInfoTask> buildExtInfoTaskProvider,
+		final TaskProvider<War> warTaskProvider,
+		final FileCollection classpath) {
+
+		buildExtInfoTaskProvider.configure(
+			new Action<BuildExtInfoTask>() {
+
+				@Override
+				public void execute(BuildExtInfoTask buildExtInfoTask) {
+					final Sync buildExtInfoBaseDirSync =
+						buildExtInfoBaseDirTaskProvider.get();
+
+					buildExtInfoTask.dependsOn(buildExtInfoBaseDirSync);
+
+					buildExtInfoTask.setBaseDir(
+						new Callable<File>() {
+
+							@Override
+							public File call() throws Exception {
+								return new File(
+									buildExtInfoBaseDirSync.getDestinationDir(),
+									"WEB-INF");
+							}
+
+						});
+
+					buildExtInfoTask.setClasspath(classpath);
+					buildExtInfoTask.setDescription(
+						"Generates the ext information xml file.");
+
+					buildExtInfoTask.setOutputDir(
+						new Callable<File>() {
+
+							@Override
+							public File call() throws Exception {
+								return buildExtInfoTask.getTemporaryDir();
+							}
+
+						});
+
+					buildExtInfoTask.setServletContextName(
+						new Callable<String>() {
+
+							@Override
+							public String call() throws Exception {
+								War war = warTaskProvider.get();
+
+								Property<String> archiveAppendixProperty =
+									war.getArchiveAppendix();
+								Property<String> archiveBaseNameProperty =
+									war.getArchiveBaseName();
+
+								String servletContextName =
+									archiveBaseNameProperty.get();
+
+								if (archiveAppendixProperty.isPresent()) {
+									servletContextName +=
+										'-' + archiveAppendixProperty.get();
+								}
+
+								return servletContextName;
+							}
+
+						});
+				}
+
+			});
+	}
+
+	private void _configureTaskDeployProvider(
+		TaskProvider<Copy> deployTaskProvider,
+		final TaskProvider<War> warTaskProvider) {
+
+		deployTaskProvider.configure(
+			new Action<Copy>() {
+
+				@Override
+				public void execute(Copy deployCopy) {
+					deployCopy.from(warTaskProvider);
+				}
+
+			});
+	}
+
+	private void _configureTaskExtImplJarProvider(
+		final Project project, TaskProvider<Jar> extImplJarTaskProvider,
+		final TaskProvider<Jar>... extJarTaskProviders) {
+
+		extImplJarTaskProvider.configure(
+			new Action<Jar>() {
+
+				@Override
+				public void execute(Jar extImplJar) {
+					for (final TaskProvider<Jar> extJarTaskProvider :
+							extJarTaskProviders) {
+
+						extImplJar.into(
+							"com/liferay/portal/deploy/dependencies",
+							new Closure<Void>(project) {
+
+								@SuppressWarnings("unused")
+								public void doCall(CopySpec copySpec) {
+									Jar extJar = extJarTaskProvider.get();
+
+									Property<String> archiveAppendixProperty =
+										extJar.getArchiveAppendix();
+
+									final String archiveAppendix =
+										archiveAppendixProperty.get();
+
+									Property<String> archiveExtensionProperty =
+										extJar.getArchiveExtension();
+
+									final String archiveExtension =
+										archiveExtensionProperty.get();
+
+									copySpec.from(extJar);
+									copySpec.rename(
+										new Closure<String>(project) {
+
+											public String doCall(
+												String fileName) {
+
+												StringBuilder sb =
+													new StringBuilder();
+
+												sb.append("ext-");
+												sb.append(project.getName());
+												sb.append('-');
+												sb.append(archiveAppendix);
+												sb.append('.');
+												sb.append(archiveExtension);
+
+												return sb.toString();
+											}
+
+										});
+								}
+
+							});
+					}
+				}
+
+			});
+	}
+
+	private void _configureTaskExtJarProvider(
+		final SourceSet extSourceSet, TaskProvider<Jar> extJarTaskProvider) {
+
+		extJarTaskProvider.configure(
+			new Action<Jar>() {
+
+				@Override
+				public void execute(Jar extJar) {
+					extJar.from(extSourceSet.getOutput());
+
+					Property<String> archiveAppendixProperty =
+						extJar.getArchiveAppendix();
+
+					String archiveAppendix = GUtil.toWords(
+						extSourceSet.getName(), '-');
+
+					archiveAppendixProperty.set(archiveAppendix);
+
+					extJar.setDescription(
+						"Assembles a jar archive containing the " +
+							archiveAppendix + " classes.");
+				}
+
+			});
+	}
+
+	private void _configureTaskWarProvider(
+		final Project project,
+		final TaskProvider<BuildExtInfoTask> buildExtInfoTaskProvider,
+		TaskProvider<War> warTaskProvider,
+		final TaskProvider<Jar>... extJarTaskProviders) {
+
+		warTaskProvider.configure(
+			new Action<War>() {
+
+				@Override
+				public void execute(War war) {
+					String name = project.getName();
+
+					if (!name.endsWith("-ext")) {
+						Property<String> archiveAppendixProperty =
+							war.getArchiveAppendix();
+
+						archiveAppendixProperty.set("ext");
+					}
+
+					CopySpec copySpec = war.getWebInf();
+
+					war.dependsOn(buildExtInfoTaskProvider);
+
+					copySpec.from(
+						new Callable<File>() {
+
+							@Override
+							public File call() throws Exception {
+								BuildExtInfoTask buildExtInfoTask =
+									buildExtInfoTaskProvider.get();
+
+								return buildExtInfoTask.getOutputFile();
+							}
+
+						});
+
+					for (TaskProvider<Jar> extJarTaskProvider :
+							extJarTaskProviders) {
+
+						Jar extJar = extJarTaskProvider.get();
+
+						Property<String> archiveAppendixProperty =
+							extJar.getArchiveAppendix();
+
+						final String archiveAppendix =
+							archiveAppendixProperty.get();
+
+						Property<String> archiveExtensionProperty =
+							extJar.getArchiveExtension();
+
+						final String archiveExtension =
+							archiveExtensionProperty.get();
+
+						copySpec.from(
+							extJarTaskProvider,
+							new Closure<Void>(project) {
+
+								public void doCall(CopySpec copySpec) {
+									copySpec.into(archiveAppendix);
+
+									copySpec.rename(
+										new Closure<String>(project) {
+
+											public String doCall(
+												String fileName) {
+
+												return archiveAppendix + '.' +
+													archiveExtension;
+											}
+
+										});
+								}
+
+							});
+					}
+				}
+
+			});
 	}
 
 }

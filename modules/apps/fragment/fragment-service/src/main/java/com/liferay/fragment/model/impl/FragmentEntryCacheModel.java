@@ -77,12 +77,14 @@ public class FragmentEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(51);
+		StringBundler sb = new StringBundler(53);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
 		sb.append(", uuid=");
 		sb.append(uuid);
+		sb.append(", headId=");
+		sb.append(headId);
 		sb.append(", fragmentEntryId=");
 		sb.append(fragmentEntryId);
 		sb.append(", groupId=");
@@ -147,6 +149,8 @@ public class FragmentEntryCacheModel
 			fragmentEntryImpl.setUuid(uuid);
 		}
 
+		fragmentEntryImpl.setHeadId(headId);
+		fragmentEntryImpl.setHead(head);
 		fragmentEntryImpl.setFragmentEntryId(fragmentEntryId);
 		fragmentEntryImpl.setGroupId(groupId);
 		fragmentEntryImpl.setCompanyId(companyId);
@@ -259,6 +263,10 @@ public class FragmentEntryCacheModel
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
+		headId = objectInput.readLong();
+
+		head = objectInput.readBoolean();
+
 		fragmentEntryId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -304,6 +312,10 @@ public class FragmentEntryCacheModel
 		else {
 			objectOutput.writeUTF(uuid);
 		}
+
+		objectOutput.writeLong(headId);
+
+		objectOutput.writeBoolean(head);
 
 		objectOutput.writeLong(fragmentEntryId);
 
@@ -392,6 +404,8 @@ public class FragmentEntryCacheModel
 
 	public long mvccVersion;
 	public String uuid;
+	public long headId;
+	public boolean head;
 	public long fragmentEntryId;
 	public long groupId;
 	public long companyId;

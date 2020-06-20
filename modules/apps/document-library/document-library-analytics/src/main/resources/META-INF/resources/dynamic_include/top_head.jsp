@@ -64,7 +64,9 @@
 		}
 	}
 
-	document.body.addEventListener('click', handleDownloadClick);
+	document.addEventListener('DOMContentLoaded', function () {
+		document.body.addEventListener('click', handleDownloadClick);
+	});
 
 	var onDestroyPortlet = function () {
 		document.body.removeEventListener('click', handleDownloadClick);

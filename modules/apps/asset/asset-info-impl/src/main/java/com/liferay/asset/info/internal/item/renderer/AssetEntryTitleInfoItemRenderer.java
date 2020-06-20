@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Pavel Savinov
  */
 @Component(
-	property = "service.ranking:Integer=100", service = InfoItemRenderer.class
+	property = "service.ranking:Integer=300", service = InfoItemRenderer.class
 )
 public class AssetEntryTitleInfoItemRenderer
 	implements InfoItemRenderer<AssetEntry> {

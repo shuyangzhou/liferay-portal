@@ -14,14 +14,23 @@
 
 package com.liferay.info.internal.item.provider;
 
-import com.liferay.info.internal.util.ItemClassNameServiceReferenceMapper;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.info.item.provider.InfoItemServiceTracker;
+import com.liferay.info.item.renderer.InfoItemRenderer;
+import com.liferay.info.item.selector.InfoItemSelector;
+import com.liferay.info.list.provider.InfoListProvider;
+import com.liferay.info.list.renderer.InfoListRenderer;
+import com.liferay.info.type.Keyed;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.reflect.GenericUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,41 +47,111 @@ import org.osgi.service.component.annotations.Component;
 public class InfoItemServiceTrackerImpl implements InfoItemServiceTracker {
 
 	@Override
+	public <P> List<P> getAllInfoItemServices(Class<P> serviceClass) {
+		ServiceTrackerMap<String, ?> serviceTrackerMap =
+			_keyedInfoItemServiceTrackerMap.get(serviceClass.getName());
+
+		return (List<P>)serviceTrackerMap.values();
+	}
+
+	@Override
+	public <P> List<P> getAllInfoItemServices(
+		Class<P> serviceClass, String itemClassName) {
+
+		ServiceTrackerMap<String, List<P>> infoItemServiceTrackerMap =
+			(ServiceTrackerMap<String, List<P>>)
+				_itemClassNameInfoItemServiceTrackerMap.get(
+					serviceClass.getName());
+
+		List<P> services = infoItemServiceTrackerMap.getService(itemClassName);
+
+		if (services != null) {
+			return new ArrayList<>(services);
+		}
+
+		return Collections.emptyList();
+	}
+
+	@Override
 	public <P> List<String> getInfoItemClassNames(Class<P> serviceClass) {
 		ServiceTrackerMap<String, ?> infoItemProviderServiceTrackerMap =
-			_infoItemServiceTrackerMap.get(serviceClass.getName());
+			_itemClassNameInfoItemServiceTrackerMap.get(serviceClass.getName());
 
 		return new ArrayList<>(infoItemProviderServiceTrackerMap.keySet());
+	}
+
+	@Override
+	public <P> P getInfoItemProvider(Class<P> serviceClass, String serviceKey) {
+		if (Validator.isNull(serviceKey)) {
+			return null;
+		}
+
+		ServiceTrackerMap<String, ?> infoItemProviderServiceTrackerMap =
+			_keyedInfoItemServiceTrackerMap.get(serviceClass.getName());
+
+		return (P)infoItemProviderServiceTrackerMap.getService(serviceKey);
 	}
 
 	@Override
 	public <P> P getInfoItemService(
 		Class<P> serviceClass, String itemClassName) {
 
-		ServiceTrackerMap<String, ?> infoItemProviderServiceTrackerMap =
-			_infoItemServiceTrackerMap.get(serviceClass.getName());
+		List<?> infoItemServices = getAllInfoItemServices(
+			serviceClass, itemClassName);
 
-		return (P)infoItemProviderServiceTrackerMap.getService(itemClassName);
+		if (ListUtil.isEmpty(infoItemServices)) {
+			return null;
+		}
+
+		return (P)infoItemServices.get(0);
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		Class<?>[] infoItemProviderClasses = new Class<?>[] {
-			InfoItemFormProvider.class, InfoItemObjectProvider.class
+		Class<?>[] serviceClasses = new Class<?>[] {
+			InfoItemFormProvider.class, InfoItemObjectProvider.class,
+			InfoItemRenderer.class, InfoItemSelector.class,
+			InfoListRenderer.class, InfoListProvider.class
 		};
 
-		for (Class<?> infoItemProviderClass : infoItemProviderClasses) {
-			ServiceTrackerMap<String, ?> serviceTrackerMap =
-				ServiceTrackerMapFactory.openSingleValueMap(
-					bundleContext, infoItemProviderClass, null,
-					new ItemClassNameServiceReferenceMapper(bundleContext));
+		for (Class<?> serviceClass : serviceClasses) {
+			ServiceTrackerMap<String, ? extends List<?>>
+				itemClassNameInfoItemServiceTrackerMap =
+					ServiceTrackerMapFactory.openMultiValueMap(
+						bundleContext, serviceClass, null,
+						ServiceReferenceMapperFactory.create(
+							bundleContext,
+							(service, emitter) -> emitter.emit(
+								GenericUtil.getGenericClassName(service))));
 
-			_infoItemServiceTrackerMap.put(
-				infoItemProviderClass.getName(), serviceTrackerMap);
+			_itemClassNameInfoItemServiceTrackerMap.put(
+				serviceClass.getName(), itemClassNameInfoItemServiceTrackerMap);
+
+			ServiceTrackerMap<String, ?> infoItemServiceTrackerMap =
+				ServiceTrackerMapFactory.openSingleValueMap(
+					bundleContext, serviceClass, null,
+					ServiceReferenceMapperFactory.create(
+						bundleContext,
+						(service, emitter) -> {
+							String key = serviceClass.getName();
+
+							if (service instanceof Keyed) {
+								Keyed keyedService = (Keyed)service;
+
+								key = keyedService.getKey();
+							}
+
+							emitter.emit(key);
+						}));
+
+			_keyedInfoItemServiceTrackerMap.put(
+				serviceClass.getName(), infoItemServiceTrackerMap);
 		}
 	}
 
+	private final Map<String, ServiceTrackerMap<String, ? extends List<?>>>
+		_itemClassNameInfoItemServiceTrackerMap = new HashMap<>();
 	private final Map<String, ServiceTrackerMap<String, ?>>
-		_infoItemServiceTrackerMap = new HashMap<>();
+		_keyedInfoItemServiceTrackerMap = new HashMap<>();
 
 }

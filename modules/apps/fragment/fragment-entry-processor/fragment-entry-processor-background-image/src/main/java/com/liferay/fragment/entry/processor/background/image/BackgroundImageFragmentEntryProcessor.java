@@ -20,6 +20,7 @@ import com.liferay.fragment.exception.FragmentEntryContentException;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.FragmentEntryProcessor;
 import com.liferay.fragment.processor.FragmentEntryProcessorContext;
+import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -147,6 +148,14 @@ public class BackgroundImageFragmentEntryProcessor
 							(JSONObject)fieldValue;
 
 						value = fieldValueJSONObject.getString("url");
+					}
+					else if (fieldValue instanceof WebImage) {
+						WebImage webImage = (WebImage)fieldValue;
+
+						JSONObject fieldValueJSONObject =
+							webImage.toJSONObject();
+
+						value = fieldValueJSONObject.toString();
 					}
 					else {
 						value = String.valueOf(fieldValue);

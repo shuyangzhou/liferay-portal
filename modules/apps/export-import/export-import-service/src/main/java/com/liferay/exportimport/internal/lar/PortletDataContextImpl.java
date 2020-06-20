@@ -1432,7 +1432,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			if (isPrivateLayout() &&
 				resourceName.equals(Layout.class.getName()) &&
-				roleName.equals(RoleConstants.GUEST)) {
+				roleName.equals(RoleConstants.GUEST) &&
+				!_isGroupLayoutSetPrototype()) {
 
 				continue;
 			}
@@ -2663,6 +2664,16 @@ public class PortletDataContextImpl implements PortletDataContext {
 				}
 			}
 		}
+	}
+
+	private boolean _isGroupLayoutSetPrototype() throws PortalException {
+		Group group = GroupLocalServiceUtil.getGroup(getGroupId());
+
+		if (group.isLayoutSetPrototype()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final Class<?>[] _XSTREAM_DEFAULT_ALLOWED_TYPES = {

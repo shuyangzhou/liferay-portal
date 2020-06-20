@@ -21,7 +21,6 @@ definition {
 
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
-			panel = "Site Administration",
 			portlet = "Pages");
 
 		SitePages.addChildPage(
@@ -61,7 +60,6 @@ definition {
 
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
-			panel = "Site Administration",
 			portlet = "Pages");
 
 		LexiconEntry.gotoAdd();
@@ -358,7 +356,7 @@ definition {
 			menuItem = "Manage",
 			rowEntry = "Site Template Name");
 
-		ProductMenuHelper.expandPanel(panel = "Site Administration");
+		ProductMenuHelper.openProductMenu();
 
 		ProductMenuHelper.expandCategory(category = "Configuration");
 

@@ -155,3 +155,8 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 		</div>
 	</div>
 </clay:container>
+
+<liferay-frontend:component
+	componentId="<%= contentDashboardAdminManagementToolbarDisplayContext.getDefaultEventHandler() %>"
+	module="js/ContentDashboardManagementToolbarDefaultEventHandler"
+/>

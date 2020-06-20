@@ -50,6 +50,8 @@ AppBuilderApp appBuilderApp = (AppBuilderApp)request.getAttribute(AppBuilderWebK
 								).put(
 									"appId", appBuilderApp.getAppBuilderAppId()
 								).put(
+									"appTab", request.getAttribute(AppBuilderWebKeys.APP_TAB)
+								).put(
 									"basePortletURL", String.valueOf(renderResponse.createRenderURL())
 								).put(
 									"controlMenuElementId", renderResponse.getNamespace() + "-control-menu"

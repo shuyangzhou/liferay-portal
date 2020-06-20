@@ -14,87 +14,77 @@
 
 package com.liferay.portal.zip;
 
+import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.io.unsync.UnsyncFilterInputStream;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.zip.ZipReader;
-import com.liferay.portal.util.PropsValues;
 
-import de.schlichtherle.io.ArchiveBusyWarningException;
-import de.schlichtherle.io.ArchiveDetector;
-import de.schlichtherle.io.ArchiveException;
-import de.schlichtherle.io.DefaultArchiveDetector;
-import de.schlichtherle.io.File;
-import de.schlichtherle.io.FileInputStream;
-import de.schlichtherle.io.FileOutputStream;
-import de.schlichtherle.io.archive.zip.ZipDriver;
-
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.UncheckedIOException;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author Raymond Augé
  */
 public class ZipReaderImpl implements ZipReader {
 
-	public ZipReaderImpl(InputStream inputStream) throws IOException {
-		_zipFile = new File(FileUtil.createTempFile("zip"));
-
-		try (OutputStream outputStream = new FileOutputStream(_zipFile)) {
-			File.cat(inputStream, outputStream);
-		}
-		finally {
-			inputStream.close();
-		}
+	public ZipReaderImpl(File file) {
+		_file = file;
 	}
 
-	public ZipReaderImpl(java.io.File file) {
-		_zipFile = new File(file);
+	public ZipReaderImpl(InputStream inputStream) throws IOException {
+		this(FileUtil.createTempFile(inputStream));
+
+		_tempFile = _file;
 	}
 
 	@Override
 	public void close() {
-		try {
-			File.umount(_zipFile);
-		}
-		catch (ArchiveBusyWarningException archiveBusyWarningException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					archiveBusyWarningException, archiveBusyWarningException);
-			}
-		}
-		catch (ArchiveException archiveException) {
-			_log.error(archiveException, archiveException);
+		if (_tempFile != null) {
+			_tempFile.delete();
 		}
 	}
 
 	@Override
 	public List<String> getEntries() {
-		File[] files = (File[])_zipFile.listFiles();
+		List<String> entries = new ArrayList<>();
 
-		if (files == null) {
-			return null;
+		try (ZipFile zipFile = new ZipFile(_file)) {
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+
+			while (enumeration.hasMoreElements()) {
+				ZipEntry zipEntry = enumeration.nextElement();
+
+				if (zipEntry.isDirectory()) {
+					continue;
+				}
+
+				entries.add(zipEntry.getName());
+			}
+		}
+		catch (IOException ioException) {
+			throw new UncheckedIOException(ioException);
 		}
 
-		List<String> folderEntries = new ArrayList<>();
+		entries.sort(null);
 
-		for (File file : files) {
-			if (!file.isDirectory()) {
-				folderEntries.add(file.getEnclEntryName());
-			}
-			else {
-				processDirectory(file, folderEntries);
-			}
-		}
-
-		return folderEntries;
+		return entries;
 	}
 
 	@Override
@@ -103,20 +93,14 @@ public class ZipReaderImpl implements ZipReader {
 			return null;
 		}
 
-		byte[] bytes = null;
-
 		try {
-			InputStream is = getEntryAsInputStream(name);
-
-			if (is != null) {
-				bytes = FileUtil.getBytes(is);
-			}
+			return StreamUtil.toByteArray(getEntryAsInputStream(name));
 		}
 		catch (IOException ioException) {
 			_log.error(ioException, ioException);
 		}
 
-		return bytes;
+		return null;
 	}
 
 	@Override
@@ -129,22 +113,39 @@ public class ZipReaderImpl implements ZipReader {
 			name = name.substring(1);
 		}
 
-		File file = new File(_zipFile, name, DefaultArchiveDetector.NULL);
+		try {
+			final ZipFile zipFile = new ZipFile(_file);
 
-		if (file.exists() && !file.isDirectory()) {
-			try {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Extracting " + name);
+			ZipEntry zipEntry = zipFile.getEntry(name);
+
+			if ((zipEntry != null) && !zipEntry.isDirectory()) {
+				InputStream inputStream = zipFile.getInputStream(zipEntry);
+
+				// Null check inputStream to overcome
+				// jdk.util.zip.ensureTrailingSlash issue in between
+				// [JDK 8u141, JDK 8u144)
+
+				if (inputStream != null) {
+					return new UnsyncFilterInputStream(inputStream) {
+
+						@Override
+						public void close() throws IOException {
+							super.close();
+
+							zipFile.close();
+						}
+
+					};
 				}
+			}
 
-				return new FileInputStream(file);
-			}
-			catch (IOException ioException) {
-				_log.error(ioException, ioException);
-			}
+			zipFile.close();
+
+			return null;
 		}
-
-		return null;
+		catch (IOException ioException) {
+			throw new UncheckedIOException(ioException);
+		}
 	}
 
 	@Override
@@ -168,51 +169,55 @@ public class ZipReaderImpl implements ZipReader {
 			return Collections.emptyList();
 		}
 
-		List<String> folderEntries = new ArrayList<>();
-
-		File directory = new File(_zipFile.getPath() + StringPool.SLASH + path);
-
-		if (!directory.exists()) {
-			return folderEntries;
+		if (path.startsWith(StringPool.SLASH)) {
+			path = path.substring(1);
 		}
 
-		File[] files = (File[])directory.listFiles();
+		Path javaPath = Paths.get(path);
 
-		for (File file : files) {
-			if (!file.isDirectory()) {
-				folderEntries.add(file.getEnclEntryName());
+		javaPath = javaPath.normalize();
+
+		path = javaPath.toString();
+
+		List<String> entries = new ArrayList<>();
+
+		try (ZipFile zipFile = new ZipFile(_file)) {
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+
+			while (enumeration.hasMoreElements()) {
+				ZipEntry zipEntry = enumeration.nextElement();
+
+				if (zipEntry.isDirectory()) {
+					continue;
+				}
+
+				String fileName = zipEntry.getName();
+
+				int pos = fileName.lastIndexOf(CharPool.SLASH);
+
+				String folderName = StringPool.BLANK;
+
+				if (pos > 0) {
+					folderName = fileName.substring(0, pos);
+				}
+
+				if (folderName.equals(path)) {
+					entries.add(fileName);
+				}
 			}
 		}
-
-		return folderEntries;
-	}
-
-	protected void processDirectory(
-		File directory, List<String> folderEntries) {
-
-		File[] files = (File[])directory.listFiles();
-
-		for (File file : files) {
-			if (!file.isDirectory()) {
-				folderEntries.add(file.getEnclEntryName());
-			}
-			else {
-				processDirectory(file, folderEntries);
-			}
+		catch (IOException ioException) {
+			throw new UncheckedIOException(ioException);
 		}
+
+		entries.sort(null);
+
+		return entries;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ZipReaderImpl.class);
 
-	static {
-		File.setDefaultArchiveDetector(
-			new DefaultArchiveDetector(
-				ArchiveDetector.ALL, "lar|" + ArchiveDetector.ALL.getSuffixes(),
-				new ZipDriver(PropsValues.ZIP_FILE_NAME_ENCODING)));
-
-		TrueZIPHelperUtil.initialize();
-	}
-
-	private final File _zipFile;
+	private final File _file;
+	private File _tempFile;
 
 }

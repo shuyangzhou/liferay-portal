@@ -116,6 +116,7 @@ public class AppBuilderAppLocalServiceImpl
 			scope);
 	}
 
+	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public AppBuilderApp deleteAppBuilderApp(long appBuilderAppId)
 		throws PortalException {
@@ -131,7 +132,7 @@ public class AppBuilderAppLocalServiceImpl
 				appBuilderAppDeployment.getAppBuilderAppDeploymentId());
 		}
 
-		return super.deleteAppBuilderApp(appBuilderAppId);
+		return appBuilderAppPersistence.remove(appBuilderAppId);
 	}
 
 	@Override
@@ -141,7 +142,8 @@ public class AppBuilderAppLocalServiceImpl
 		List<AppBuilderApp> appBuilderApps = getAppBuilderApps(ddmStructureId);
 
 		for (AppBuilderApp appBuilderApp : appBuilderApps) {
-			deleteAppBuilderApp(appBuilderApp.getAppBuilderAppId());
+			appBuilderAppLocalService.deleteAppBuilderApp(
+				appBuilderApp.getAppBuilderAppId());
 		}
 	}
 

@@ -32,10 +32,9 @@ import com.liferay.info.item.NoSuchInfoItemException;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderFieldSetProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -148,19 +147,21 @@ public class BlogsEntryInfoItemFormProvider
 					_descriptionInfoField, blogsEntry.getDescription()));
 
 			if (themeDisplay != null) {
-				blogsEntryFieldValues.add(
-					new InfoFieldValue<>(
-						_smallImageInfoField,
-						_getImageJSONObject(
-							blogsEntry.getSmallImageAlt(),
-							blogsEntry.getSmallImageURL(themeDisplay))));
+				WebImage smallWebImage = new WebImage(
+					blogsEntry.getSmallImageURL(themeDisplay));
+
+				smallWebImage.setAlt(blogsEntry.getSmallImageAlt());
 
 				blogsEntryFieldValues.add(
-					new InfoFieldValue<>(
-						_coverImageInfoField,
-						_getImageJSONObject(
-							blogsEntry.getCoverImageAlt(),
-							blogsEntry.getCoverImageURL(themeDisplay))));
+					new InfoFieldValue<>(_smallImageInfoField, smallWebImage));
+
+				WebImage coverWebImage = new WebImage(
+					blogsEntry.getCoverImageURL(themeDisplay));
+
+				coverWebImage.setAlt(blogsEntry.getCoverImageAlt());
+
+				blogsEntryFieldValues.add(
+					new InfoFieldValue<>(_coverImageInfoField, coverWebImage));
 			}
 
 			blogsEntryFieldValues.add(
@@ -176,12 +177,14 @@ public class BlogsEntryInfoItemFormProvider
 						_authorNameInfoField, user.getFullName()));
 
 				if (themeDisplay != null) {
+					WebImage webImage = new WebImage(
+						user.getPortraitURL(themeDisplay));
+
+					webImage.setAlt(user.getFullName());
+
 					blogsEntryFieldValues.add(
 						new InfoFieldValue<>(
-							_authorProfileImageInfoField,
-							_getImageJSONObject(
-								user.getFullName(),
-								user.getPortraitURL(themeDisplay))));
+							_authorProfileImageInfoField, webImage));
 				}
 			}
 
@@ -227,14 +230,6 @@ public class BlogsEntryInfoItemFormProvider
 		return _assetDisplayPageFriendlyURLProvider.getFriendlyURL(
 			BlogsEntry.class.getName(), blogsEntry.getEntryId(),
 			_getThemeDisplay());
-	}
-
-	private JSONObject _getImageJSONObject(String alt, String url) {
-		return JSONUtil.put(
-			"alt", alt
-		).put(
-			"url", url
-		);
 	}
 
 	private ThemeDisplay _getThemeDisplay() {

@@ -14,6 +14,7 @@
 
 package com.liferay.info.item.renderer;
 
+import com.liferay.info.type.Keyed;
 import com.liferay.portal.kernel.language.LanguageUtil;
 
 import java.util.Locale;
@@ -24,13 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Jorge Ferrer
  */
-public interface InfoItemRenderer<T> {
-
-	public default String getKey() {
-		Class<?> clazz = getClass();
-
-		return clazz.getName();
-	}
+public interface InfoItemRenderer<T> extends Keyed {
 
 	public default String getLabel(Locale locale) {
 		return LanguageUtil.get(locale, getKey());

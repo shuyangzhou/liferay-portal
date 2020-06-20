@@ -103,7 +103,9 @@ const openPortletWindow = ({bodyCssClass, portlet, uri, ...otherProps}) => {
 const Modal = ({
 	bodyHTML,
 	buttons,
+	customEvents = [],
 	headerHTML,
+	height,
 	id,
 	iframeBodyCssClass,
 	iframeProps = {},
@@ -237,6 +239,16 @@ const Modal = ({
 			eventHandlers.push(selectEventHandler);
 		}
 
+		customEvents.forEach((customEvent) => {
+			if (customEvent.name && customEvent.onEvent) {
+				const eventHandler = Liferay.on(customEvent.name, (event) => {
+					customEvent.onEvent(event);
+				});
+
+				eventHandlers.push(eventHandler);
+			}
+		});
+
 		const closeEventHandler = Liferay.on('closeModal', (event) => {
 			if (event.id && id && event.id !== id) {
 				return;
@@ -259,6 +271,7 @@ const Modal = ({
 			eventHandlers.splice(0, eventHandlers.length);
 		};
 	}, [
+		customEvents,
 		eventHandlersRef,
 		id,
 		onClose,
@@ -292,6 +305,9 @@ const Modal = ({
 						className={classNames('modal-body', {
 							'modal-body-iframe': url,
 						})}
+						style={{
+							height,
+						}}
 					>
 						{url ? (
 							<>
@@ -461,7 +477,14 @@ Modal.propTypes = {
 			type: PropTypes.oneOf(['cancel', 'submit']),
 		})
 	),
+	customEvents: PropTypes.arrayOf(
+		PropTypes.shape({
+			name: PropTypes.string,
+			onEvent: PropTypes.func,
+		})
+	),
 	headerHTML: PropTypes.string,
+	height: PropTypes.string,
 	id: PropTypes.string,
 	iframeProps: PropTypes.object,
 	onClose: PropTypes.func,

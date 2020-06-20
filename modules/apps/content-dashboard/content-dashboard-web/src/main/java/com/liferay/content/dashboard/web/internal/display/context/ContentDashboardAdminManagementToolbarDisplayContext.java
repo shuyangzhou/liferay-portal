@@ -20,17 +20,23 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemListBuilder;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.portlet.PortletURL;
 
@@ -43,11 +49,11 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
 
 	public ContentDashboardAdminManagementToolbarDisplayContext(
+		ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext,
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		ContentDashboardAdminDisplayContext
-			contentDashboardAdminDisplayContext) {
+		UserLocalService userLocalService) {
 
 		super(
 			httpServletRequest, liferayPortletRequest, liferayPortletResponse,
@@ -55,12 +61,14 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 		_contentDashboardAdminDisplayContext =
 			contentDashboardAdminDisplayContext;
+		_userLocalService = userLocalService;
 	}
 
 	@Override
 	public String getClearResultsURL() {
 		PortletURL clearResultsURL = getPortletURL();
 
+		clearResultsURL.setParameter("authorIds", (String)null);
 		clearResultsURL.setParameter("keywords", StringPool.BLANK);
 		clearResultsURL.setParameter(
 			"status", String.valueOf(WorkflowConstants.STATUS_ANY));
@@ -69,8 +77,20 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	}
 
 	@Override
+	public String getDefaultEventHandler() {
+		return "contentDashboardManagementToolbarDefaultEventHandle";
+	}
+
+	@Override
 	public List<DropdownItem> getFilterDropdownItems() {
 		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					_getFilterAuthorDropdownItems());
+				dropdownGroupItem.setLabel(
+					LanguageUtil.get(request, "filter-by-author"));
+			}
+		).addGroup(
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
 					_getFilterStatusDropdownItems());
@@ -89,23 +109,70 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	public List<LabelItem> getFilterLabelItems() {
 		int status = _contentDashboardAdminDisplayContext.getStatus();
 
-		return LabelItemListBuilder.add(
-			() -> status != WorkflowConstants.STATUS_ANY,
-			labelItem -> {
-				PortletURL removeLabelURL = PortletURLUtil.clone(
-					currentURLObj, liferayPortletResponse);
+		LabelItemListBuilder.LabelItemListWrapper labelItemListWrapper =
+			LabelItemListBuilder.add(
+				() -> status != WorkflowConstants.STATUS_ANY,
+				labelItem -> {
+					PortletURL removeLabelURL = PortletURLUtil.clone(
+						currentURLObj, liferayPortletResponse);
 
-				removeLabelURL.setParameter("status", (String)null);
+					removeLabelURL.setParameter("status", (String)null);
 
-				labelItem.putData("removeLabelURL", removeLabelURL.toString());
+					labelItem.putData(
+						"removeLabelURL", removeLabelURL.toString());
 
-				labelItem.setCloseable(true);
+					labelItem.setCloseable(true);
 
-				labelItem.setLabel(
-					LanguageUtil.get(request, "status") + ": " +
-						_getStatusLabel(status));
-			}
-		).build();
+					labelItem.setLabel(
+						LanguageUtil.get(request, "status") + ": " +
+							_getStatusLabel(status));
+				});
+
+		List<Long> authorIds =
+			_contentDashboardAdminDisplayContext.getAuthorIds();
+
+		for (Long authorId : authorIds) {
+			labelItemListWrapper.add(
+				labelItem -> {
+					PortletURL portletURL = PortletURLUtil.clone(
+						currentURLObj, liferayPortletResponse);
+
+					Stream<Long> stream = authorIds.stream();
+
+					portletURL.setParameter(
+						"authorIds",
+						stream.filter(
+							id -> id != authorId
+						).map(
+							String::valueOf
+						).collect(
+							Collectors.toList()
+						).toArray(
+							new String[0]
+						));
+
+					labelItem.putData(
+						"removeLabelURL",
+						String.valueOf(portletURL.toString()));
+
+					labelItem.setCloseable(true);
+					labelItem.setLabel(
+						StringBundler.concat(
+							LanguageUtil.get(request, "author"),
+							StringPool.COLON,
+							LanguageUtil.get(
+								request,
+								Optional.ofNullable(
+									_userLocalService.fetchUser(authorId)
+								).map(
+									User::getFullName
+								).orElse(
+									StringPool.BLANK
+								))));
+				});
+		}
+
+		return labelItemListWrapper.build();
 	}
 
 	@Override
@@ -150,6 +217,71 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		return new String[] {"title", "modified-date"};
 	}
 
+	private List<DropdownItem> _getFilterAuthorDropdownItems() {
+		List<Long> authorIds =
+			_contentDashboardAdminDisplayContext.getAuthorIds();
+
+		return DropdownItemList.of(
+			() -> {
+				DropdownItem dropdownItem = new DropdownItem();
+
+				dropdownItem.setActive(authorIds.isEmpty());
+				dropdownItem.setHref(getPortletURL());
+				dropdownItem.setLabel(LanguageUtil.get(request, "all"));
+
+				return dropdownItem;
+			},
+			() -> {
+				DropdownItem dropdownItem = new DropdownItem();
+
+				if ((authorIds.size() == 1) &&
+					authorIds.contains(
+						_contentDashboardAdminDisplayContext.getUserId())) {
+
+					dropdownItem.setActive(true);
+				}
+
+				dropdownItem.setHref(
+					getPortletURL(), "authorIds",
+					_contentDashboardAdminDisplayContext.getUserId());
+				dropdownItem.setLabel(LanguageUtil.get(request, "mine"));
+
+				return dropdownItem;
+			},
+			() -> {
+				DropdownItem dropdownItem = new DropdownItem();
+
+				if (((authorIds.size() == 1) &&
+					 !authorIds.contains(
+						 _contentDashboardAdminDisplayContext.getUserId())) ||
+					(authorIds.size() > 1)) {
+
+					dropdownItem.setActive(true);
+				}
+
+				dropdownItem.putData("action", "selectAuthor");
+				dropdownItem.putData(
+					"dialogTitle", LanguageUtil.get(request, "select-author"));
+
+				PortletURL portletURL = getPortletURL();
+
+				portletURL.setParameter("authorIds", (String)null);
+
+				dropdownItem.putData("redirectURL", String.valueOf(portletURL));
+
+				dropdownItem.putData(
+					"selectAuthorURL",
+					String.valueOf(
+						_contentDashboardAdminDisplayContext.
+							getAuthorItemSelectorURL()));
+				dropdownItem.setLabel(
+					LanguageUtil.get(request, "author") +
+						StringPool.TRIPLE_PERIOD);
+
+				return dropdownItem;
+			});
+	}
+
 	private List<DropdownItem> _getFilterStatusDropdownItems() {
 		return new DropdownItemList() {
 			{
@@ -189,5 +321,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 	private final ContentDashboardAdminDisplayContext
 		_contentDashboardAdminDisplayContext;
+	private final UserLocalService _userLocalService;
 
 }

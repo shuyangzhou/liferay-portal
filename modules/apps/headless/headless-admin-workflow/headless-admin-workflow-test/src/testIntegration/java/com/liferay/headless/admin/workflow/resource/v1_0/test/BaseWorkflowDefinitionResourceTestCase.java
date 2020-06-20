@@ -297,28 +297,6 @@ public abstract class BaseWorkflowDefinitionResourceTestCase {
 			"This method needs to be implemented");
 	}
 
-	@Test
-	public void testPostWorkflowDefinitionUpdateTitle() throws Exception {
-		WorkflowDefinition randomWorkflowDefinition =
-			randomWorkflowDefinition();
-
-		WorkflowDefinition postWorkflowDefinition =
-			testPostWorkflowDefinitionUpdateTitle_addWorkflowDefinition(
-				randomWorkflowDefinition);
-
-		assertEquals(randomWorkflowDefinition, postWorkflowDefinition);
-		assertValid(postWorkflowDefinition);
-	}
-
-	protected WorkflowDefinition
-			testPostWorkflowDefinitionUpdateTitle_addWorkflowDefinition(
-				WorkflowDefinition workflowDefinition)
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

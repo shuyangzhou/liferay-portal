@@ -68,8 +68,8 @@ export default ({onCancel}) => {
 		setModalVisible(false);
 	};
 
-	const onError = ({message}) => {
-		errorToast(message);
+	const onError = ({title}) => {
+		errorToast(title ? `${title}.` : title);
 		setDeploying(false);
 		setModalVisible(false);
 	};

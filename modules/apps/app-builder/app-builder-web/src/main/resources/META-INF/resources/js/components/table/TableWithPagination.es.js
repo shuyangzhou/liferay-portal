@@ -35,8 +35,8 @@ const TableWithPagination = ({actions, columns, items, totalCount}) => {
 			{totalCount > deltaValues[0] && (
 				<div className="taglib-search-iterator-page-iterator-bottom">
 					<ClayPaginationBarWithBasicItems
-						activeDelta={pageSize}
-						activePage={page}
+						activeDelta={Number(pageSize)}
+						activePage={Number(page)}
 						deltas={deltas}
 						ellipsisBuffer={3}
 						onDeltaChange={(pageSize) =>

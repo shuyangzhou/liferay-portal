@@ -15,6 +15,7 @@
 package com.liferay.info.list.renderer;
 
 import com.liferay.info.item.renderer.InfoItemRenderer;
+import com.liferay.info.type.Keyed;
 import com.liferay.portal.kernel.language.LanguageUtil;
 
 import java.util.Collections;
@@ -27,16 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Jorge Ferrer
  */
-public interface InfoListRenderer<T> {
+public interface InfoListRenderer<T> extends Keyed {
 
 	public default List<InfoItemRenderer<?>> getAvailableInfoItemRenderers() {
 		return Collections.emptyList();
-	}
-
-	public default String getKey() {
-		Class<?> clazz = getClass();
-
-		return clazz.getName();
 	}
 
 	public default String getLabel(Locale locale) {

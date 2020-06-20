@@ -14,13 +14,10 @@
 
 package com.liferay.asset.list.web.internal.display.context;
 
-import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.asset.list.asset.entry.provider.AssetListAssetEntryProvider;
 import com.liferay.asset.list.constants.AssetListActionKeys;
 import com.liferay.asset.list.constants.AssetListEntryTypeConstants;
 import com.liferay.asset.list.constants.AssetListPortletKeys;
-import com.liferay.asset.list.constants.AssetListWebKeys;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryLocalServiceUtil;
 import com.liferay.asset.list.service.AssetListEntryServiceUtil;
@@ -68,9 +65,6 @@ public class AssetListDisplayContext {
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
 
-		_assetListAssetEntryProvider =
-			(AssetListAssetEntryProvider)_httpServletRequest.getAttribute(
-				AssetListWebKeys.ASSET_LIST_ASSET_ENTRY_PROVIDER);
 		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
 			_httpServletRequest);
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
@@ -87,32 +81,6 @@ public class AssetListDisplayContext {
 				AssetListEntryTypeConstants.TYPE_DYNAMIC_LABEL,
 				"dynamic-selection", AssetListEntryTypeConstants.TYPE_DYNAMIC)
 		).build();
-	}
-
-	public SearchContainer<AssetEntry> getAssetListContentSearchContainer() {
-		if (_assetListContentSearchContainer != null) {
-			return _assetListContentSearchContainer;
-		}
-
-		SearchContainer<AssetEntry> searchContainer = new SearchContainer(
-			_renderRequest, _getAssetListContentURL(), null,
-			"there-are-no-asset-entries");
-
-		List<AssetEntry> assetEntries =
-			_assetListAssetEntryProvider.getAssetEntries(
-				getAssetListEntry(), getSegmentsEntryId(),
-				searchContainer.getStart(), searchContainer.getEnd());
-
-		searchContainer.setResults(assetEntries);
-
-		int totalCount = _assetListAssetEntryProvider.getAssetEntriesCount(
-			getAssetListEntry(), getSegmentsEntryId());
-
-		searchContainer.setTotal(totalCount);
-
-		_assetListContentSearchContainer = searchContainer;
-
-		return _assetListContentSearchContainer;
 	}
 
 	public int getAssetListEntriesCount() {
@@ -389,18 +357,6 @@ public class AssetListDisplayContext {
 			_httpServletRequest, "add-x-collection", title, true);
 	}
 
-	private PortletURL _getAssetListContentURL() {
-		PortletURL portletURL = _renderResponse.createRenderURL();
-
-		portletURL.setParameter("mvcPath", "/view_content.jsp");
-		portletURL.setParameter(
-			"assetListEntryId", String.valueOf(getAssetListEntryId()));
-		portletURL.setParameter(
-			"segmentsEntryId", String.valueOf(getSegmentsEntryId()));
-
-		return portletURL;
-	}
-
 	private String _getKeywords() {
 		if (_keywords != null) {
 			return _keywords;
@@ -430,8 +386,6 @@ public class AssetListDisplayContext {
 		return false;
 	}
 
-	private final AssetListAssetEntryProvider _assetListAssetEntryProvider;
-	private SearchContainer<AssetEntry> _assetListContentSearchContainer;
 	private Integer _assetListEntriesCount;
 	private SearchContainer<AssetListEntry> _assetListEntriesSearchContainer;
 	private AssetListEntry _assetListEntry;

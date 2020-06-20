@@ -14,6 +14,8 @@
 
 package com.liferay.info.item.selector;
 
+import com.liferay.info.type.Keyed;
+
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,16 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Eudaldo Alonso
  */
-public interface InfoItemSelector<T> {
+public interface InfoItemSelector<T> extends Keyed {
 
 	public PortletURL getInfoItemSelectorPortletURL(
 			HttpServletRequest httpServletRequest)
 		throws Exception;
-
-	public default String getKey() {
-		Class<?> clazz = getClass();
-
-		return clazz.getName();
-	}
 
 }

@@ -17,19 +17,31 @@ package com.liferay.content.dashboard.web.internal.display.context;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
+import com.liferay.item.selector.ItemSelector;
+import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.users.admin.item.selector.UserItemSelectorCriterion;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,12 +51,13 @@ import javax.servlet.http.HttpServletRequest;
 public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
-		Http http, Language language,
+		Http http, ItemSelector itemSelector, Language language,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, Portal portal,
 		SearchContainer<ContentDashboardItem<?>> searchContainer) {
 
 		_http = http;
+		_itemSelector = itemSelector;
 		_language = language;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
@@ -54,6 +67,42 @@ public class ContentDashboardAdminDisplayContext {
 		_currentURL = String.valueOf(
 			PortletURLUtil.getCurrent(
 				_liferayPortletRequest, _liferayPortletResponse));
+	}
+
+	public List<Long> getAuthorIds() {
+		if (_authorIds != null) {
+			return _authorIds;
+		}
+
+		_authorIds = Arrays.asList(
+			ArrayUtil.toLongArray(
+				ParamUtil.getLongValues(_liferayPortletRequest, "authorIds")));
+
+		return _authorIds;
+	}
+
+	public String getAuthorItemSelectorEventName() {
+		return _liferayPortletResponse.getNamespace() + "selectedAuthorItem";
+	}
+
+	public String getAuthorItemSelectorURL() throws PortalException {
+		RequestBackedPortletURLFactory requestBackedPortletURLFactory =
+			RequestBackedPortletURLFactoryUtil.create(_liferayPortletRequest);
+
+		UserItemSelectorCriterion userItemSelectorCriterion =
+			new UserItemSelectorCriterion();
+
+		userItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			Collections.singletonList(new UUIDItemSelectorReturnType()));
+
+		PortletURL portletURL = _itemSelector.getItemSelectorURL(
+			requestBackedPortletURLFactory, getAuthorItemSelectorEventName(),
+			userItemSelectorCriterion);
+
+		portletURL.setParameter(
+			"checkedUserIds", StringUtil.merge(getAuthorIds()));
+
+		return portletURL.toString();
 	}
 
 	public List<DropdownItem> getDropdownItems(
@@ -117,6 +166,16 @@ public class ContentDashboardAdminDisplayContext {
 		return _status;
 	}
 
+	public long getUserId() {
+		if (_userId > 0) {
+			return _userId;
+		}
+
+		_userId = _portal.getUserId(_liferayPortletRequest);
+
+		return _userId;
+	}
+
 	private String _getURLWithBackURL(String url) {
 		String backURL = ParamUtil.getString(_liferayPortletRequest, "backURL");
 
@@ -127,13 +186,16 @@ public class ContentDashboardAdminDisplayContext {
 		return _http.setParameter(url, "p_l_back_url", _currentURL);
 	}
 
+	private List<Long> _authorIds;
 	private final String _currentURL;
 	private final Http _http;
+	private final ItemSelector _itemSelector;
 	private final Language _language;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final Portal _portal;
 	private final SearchContainer<ContentDashboardItem<?>> _searchContainer;
 	private Integer _status;
+	private long _userId;
 
 }

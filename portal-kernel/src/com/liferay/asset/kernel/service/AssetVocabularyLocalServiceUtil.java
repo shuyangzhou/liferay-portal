@@ -78,6 +78,19 @@ public class AssetVocabularyLocalServiceUtil {
 			userId, groupId, title, serviceContext);
 	}
 
+	public static com.liferay.asset.kernel.model.AssetVocabulary addVocabulary(
+			long userId, long groupId, String name, String title,
+			java.util.Map<java.util.Locale, String> titleMap,
+			java.util.Map<java.util.Locale, String> descriptionMap,
+			String settings,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().addVocabulary(
+			userId, groupId, name, title, titleMap, descriptionMap, settings,
+			serviceContext);
+	}
+
 	public static void addVocabularyResources(
 			com.liferay.asset.kernel.model.AssetVocabulary vocabulary,
 			boolean addGroupPermissions, boolean addGuestPermissions)
@@ -568,6 +581,20 @@ public class AssetVocabularyLocalServiceUtil {
 
 		return getService().updateVocabulary(
 			vocabularyId, title, titleMap, descriptionMap, settings,
+			serviceContext);
+	}
+
+	public static com.liferay.asset.kernel.model.AssetVocabulary
+			updateVocabulary(
+				long vocabularyId, String name, String title,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String settings,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateVocabulary(
+			vocabularyId, name, title, titleMap, descriptionMap, settings,
 			serviceContext);
 	}
 

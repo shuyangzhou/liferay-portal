@@ -79,7 +79,6 @@ definition {
 
 		ProductMenu.gotoPortlet(
 			category = "${category}",
-			panel = "Site Administration",
 			portlet = "${portlet}");
 	}
 
@@ -88,7 +87,7 @@ definition {
 			GlobalMenu.gotoSite(site = "Guest");
 		}
 
-		ProductMenuHelper.expandPanel(panel = "Site Administration");
+		ProductMenuHelper.openProductMenu();
 
 		ProductMenuHelper.openWorkspace();
 

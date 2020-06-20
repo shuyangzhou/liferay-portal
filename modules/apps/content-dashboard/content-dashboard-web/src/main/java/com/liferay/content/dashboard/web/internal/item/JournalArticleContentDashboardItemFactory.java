@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Cristina González
  */
 @Component(service = ContentDashboardItemFactory.class)
-public class JournalArticleContentDashboardInfoItemFactory
+public class JournalArticleContentDashboardItemFactory
 	implements ContentDashboardItemFactory<JournalArticle> {
 
 	@Override

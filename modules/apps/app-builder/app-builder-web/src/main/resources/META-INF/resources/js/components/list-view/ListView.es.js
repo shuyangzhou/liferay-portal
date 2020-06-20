@@ -64,14 +64,14 @@ export default withRouter(
 
 		let items = [];
 		let totalCount = 0;
-		let totalPages = 1;
+		let totalPages;
 
 		if (response) {
 			({items = [], totalCount, lastPage: totalPages} = response);
 		}
 
 		useEffect(() => {
-			if (query.page > totalPages) {
+			if (totalPages && Number(query.page) > totalPages) {
 				dispatch({page: totalPages, type: 'CHANGE_PAGE'});
 			}
 		}, [dispatch, query.page, totalPages]);

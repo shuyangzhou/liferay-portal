@@ -46,6 +46,10 @@ public interface InfoLocalizedValue<T> {
 		return new ResourceBundleInfoLocalizedValue(symbolicName, valueKey);
 	}
 
+	public static InfoLocalizedValue<String> singleValue(String value) {
+		return new SingleValueInfoLocalizedValue(value);
+	}
+
 	public Set<Locale> getAvailableLocales();
 
 	public Locale getDefaultLocale();

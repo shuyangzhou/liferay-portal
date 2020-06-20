@@ -42,9 +42,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -70,6 +67,7 @@ import com.liferay.portal.test.mail.MailMessage;
 import com.liferay.portal.test.mail.MailServiceTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 
 import java.util.ArrayList;
@@ -86,7 +84,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -102,7 +99,9 @@ public class CalendarBookingLocalServiceTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), SynchronousMailTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE,
+			SynchronousMailTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -796,7 +795,6 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertNull(calendarBooking);
 	}
 
-	@Ignore
 	@Test
 	public void testDeleteStagingCalendarBookingDeletesLiveCalendarBooking()
 		throws Exception {
@@ -974,7 +972,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, resourceCalendar);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteLiveSiteCalendarCreatesStagingSiteCalendarBooking()
 		throws Exception {
@@ -1005,7 +1002,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 1);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteLiveSiteCalendarWithDeletedStagingSiteCalendarCreatesNoCalendarBooking()
 		throws Exception {
@@ -1038,7 +1034,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 0);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteLiveSiteResourceCalendarCreatesStagingSiteResourceCalendarBooking()
 		throws Exception {
@@ -1070,7 +1065,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 1);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteLiveSiteResourceCalendarWithDeletedStagingSiteCalendarCreatesNoCalendarBooking()
 		throws Exception {
@@ -1105,7 +1099,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 0);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteNonstagedSiteCalendarCreatesLiveSiteCalendarBooking()
 		throws Exception {
@@ -1130,7 +1123,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, liveCalendar);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteNonstagedSiteResourceCalendarCreatesLiveSiteResourceCalendarBooking()
 		throws Exception {
@@ -1156,7 +1148,6 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, liveCalendar);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteStagingCalendarShouldNotCreatesPendingLiveCalendarBookingAfterPublish()
 		throws Exception {
@@ -1268,7 +1259,6 @@ public class CalendarBookingLocalServiceTest {
 		assertStatus(childCalendarBooking, WorkflowConstants.STATUS_PENDING);
 	}
 
-	@Ignore
 	@Test
 	public void testInviteToStagedCalendarBookingResultsInMasterStagedChild()
 		throws Exception {
@@ -1293,7 +1283,6 @@ public class CalendarBookingLocalServiceTest {
 			calendarBooking.getStatus());
 	}
 
-	@Ignore
 	@Test
 	public void testInviteToStagedCalendarBookingResultsInPendingLiveChild()
 		throws Exception {
@@ -1329,7 +1318,6 @@ public class CalendarBookingLocalServiceTest {
 			calendarBooking.getTitle(), childCalendarBooking.getTitle());
 	}
 
-	@Ignore
 	@Test
 	public void testInviteUserCalendarWithWorkflowShouldInviteCalendarBookingOnlyAfterApprovedAndPublished()
 		throws Exception {
@@ -1385,7 +1373,6 @@ public class CalendarBookingLocalServiceTest {
 			childCalendarBookings.toString(), 1, childCalendarBookings.size());
 	}
 
-	@Ignore
 	@Test
 	public void testInviteUserCalendarWithWorkflowShouldNotCreatesCalendarBookingAfterPublish()
 		throws Exception {
@@ -3311,11 +3298,6 @@ public class CalendarBookingLocalServiceTest {
 		try (CaptureAppender captureAppender =
 				Log4JLoggerTestUtil.configureLog4JLogger(
 					MailEngine.class.getName(), Level.OFF)) {
-
-			PermissionChecker userPermissionChecker =
-				PermissionCheckerFactoryUtil.create(TestPropsValues.getUser());
-
-			PermissionThreadLocal.setPermissionChecker(userPermissionChecker);
 
 			for (WorkflowTask workflowTask : _getWorkflowTasks()) {
 				workflowTask = _workflowTaskManager.assignWorkflowTaskToUser(

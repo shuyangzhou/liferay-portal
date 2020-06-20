@@ -16,12 +16,16 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+AssetListContentDisplayContext assetListContentDisplayContext = (AssetListContentDisplayContext)request.getAttribute(AssetListWebKeys.ASSET_LIST_CONTENT_DISPLAY_CONTEXT);
+%>
+
 <clay:container-fluid
-	cssClass="pt-3"
+	cssClass="container-view"
 >
 	<liferay-ui:search-container
 		id="assetEntries"
-		searchContainer="<%= assetListDisplayContext.getAssetListContentSearchContainer() %>"
+		searchContainer="<%= assetListContentDisplayContext.getAssetListContentSearchContainer() %>"
 	>
 		<liferay-ui:search-container-row
 			className="com.liferay.asset.kernel.model.AssetEntry"
@@ -44,6 +48,21 @@
 				name="type"
 				value="<%= assetRendererFactory.getTypeName(locale) %>"
 			/>
+
+			<liferay-ui:search-container-column-text
+				name="author"
+				value="<%= assetEntry.getUserName() %>"
+			/>
+
+			<liferay-ui:search-container-column-date
+				name="modified-date"
+				value="<%= assetEntry.getModifiedDate() %>"
+			/>
+
+			<liferay-ui:search-container-column-date
+				name="create-date"
+				value="<%= assetEntry.getCreateDate() %>"
+			/>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator
@@ -51,7 +70,3 @@
 		/>
 	</liferay-ui:search-container>
 </clay:container-fluid>
-
-<aui:button-row>
-	<aui:button type="cancel" value="close" />
-</aui:button-row>

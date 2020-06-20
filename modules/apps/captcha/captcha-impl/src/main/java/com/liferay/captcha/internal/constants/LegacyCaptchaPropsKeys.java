@@ -33,6 +33,34 @@ public class LegacyCaptchaPropsKeys {
 		CAPTCHA_CHECK_PORTLET_MESSAGE_BOARDS_EDIT_MESSAGE =
 			"captcha.check.portlet.message_boards.edit_message";
 
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_BLOCK_GYMPY_RENDERER_CLASS =
+			"com.liferay.captcha.simplecaptcha.gimpy.BlockGimpyRenderer";
+
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_BLOCK_GYMPY_RENDERER_DEPRECATED_CLASS =
+			"nl.captcha.gimpy.BlockGimpyRenderer";
+
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_DROP_SHADOW_GYMPY_RENDERER_CLASS =
+			"com.liferay.captcha.simplecaptcha.gimpy.DropShadowGimpyRenderer";
+
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_DROP_SHADOW_GYMPY_RENDERER_DEPRECATED_CLASS =
+			"nl.captcha.gimpy.DropShadowGimpyRenderer";
+
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_GIMPY_RENDERERS_PROPERTY =
+			"simpleCaptchaGimpyRenderers";
+
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_RIPPLE_GYMPY_RENDERER_CLASS =
+			"com.liferay.captcha.simplecaptcha.gimpy.RippleGimpyRenderer";
+
+	public static final String
+		CAPTCHA_CONFIGURATION_SIMPLECAPTCHA_RIPPLE_GYMPY_RENDERER_DEPRECATED_CLASS =
+			"nl.captcha.gimpy.RippleGimpyRenderer";
+
 	public static final String CAPTCHA_ENGINE_IMPL = "captcha.engine.impl";
 
 	public static final String CAPTCHA_ENGINE_RECAPTCHA_KEY_PRIVATE =

@@ -120,15 +120,15 @@ else {
 
 	function <portlet:namespace />deleteUsers(cmd) {
 		if (
-			(cmd == '<%= Constants.DEACTIVATE %>' &&
+			(cmd === '<%= Constants.DEACTIVATE %>' &&
 				confirm(
 					'<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-deactivate-the-selected-users") %>'
 				)) ||
-			(cmd == '<%= Constants.DELETE %>' &&
+			(cmd === '<%= Constants.DELETE %>' &&
 				confirm(
 					'<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-permanently-delete-the-selected-users") %>'
 				)) ||
-			cmd == '<%= Constants.RESTORE %>'
+			cmd === '<%= Constants.RESTORE %>'
 		) {
 			var form = document.<portlet:namespace />fm;
 
@@ -256,6 +256,15 @@ else {
 			})
 			.then(function (response) {
 				callback(response);
+			})
+			.catch(function (error) {
+				Liferay.Util.openToast({
+					message: Liferay.Language.get(
+						'an-unexpected-system-error-occurred'
+					),
+					title: Liferay.Language.get('error'),
+					type: 'danger',
+				});
 			});
 	}
 
@@ -285,7 +294,7 @@ else {
 		);
 	}
 
-	Liferay.provide(window, '<portlet:namespace />openSelectUsersDialog', function (
+	window['<portlet:namespace />openSelectUsersDialog'] = function (
 		organizationId
 	) {
 		<portlet:renderURL var="selectUsersURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
@@ -347,5 +356,5 @@ else {
 				itemSelectorDialog.open();
 			}
 		);
-	});
+	};
 </aui:script>

@@ -193,34 +193,6 @@ public abstract class BaseWorkflowDefinitionResourceImpl
 		return new WorkflowDefinition();
 	}
 
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-workflow/v1.0/workflow-definitions/update-title'  -u 'test@liferay.com:test'
-	 */
-	@Override
-	@POST
-	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.QUERY, name = "name"),
-			@Parameter(in = ParameterIn.QUERY, name = "title"),
-			@Parameter(in = ParameterIn.QUERY, name = "version")
-		}
-	)
-	@Path("/workflow-definitions/update-title")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "WorkflowDefinition")})
-	public WorkflowDefinition postWorkflowDefinitionUpdateTitle(
-			@NotNull @Parameter(hidden = true) @QueryParam("name") String name,
-			@NotNull @Parameter(hidden = true) @QueryParam("title") String
-				title,
-			@NotNull @Parameter(hidden = true) @QueryParam("version") String
-				version)
-		throws Exception {
-
-		return new WorkflowDefinition();
-	}
-
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
 	}

@@ -19,7 +19,9 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.configuration.admin.definition.ConfigurationFieldOptionsProvider;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,8 +56,11 @@ public class AssetVocabularyConfigurationFieldOptionsProvider
 				return Collections.emptyList();
 			}
 
+			Company company = _companyLocalService.getCompany(companyId);
+
 			List<AssetVocabulary> assetVocabularies =
-				_assetVocabularyLocalService.getCompanyVocabularies(companyId);
+				_assetVocabularyLocalService.getGroupsVocabularies(
+					new long[] {company.getGroupId()});
 
 			Stream<AssetVocabulary> stream = assetVocabularies.stream();
 
@@ -97,5 +102,8 @@ public class AssetVocabularyConfigurationFieldOptionsProvider
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
 
 }

@@ -14,22 +14,17 @@
 
 package com.liferay.info.internal.item.selector;
 
+import com.liferay.info.item.provider.InfoItemServiceTracker;
 import com.liferay.info.item.selector.InfoItemSelector;
 import com.liferay.info.item.selector.InfoItemSelectorTracker;
-import com.liferay.petra.reflect.GenericUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.info.list.provider.InfoListProvider;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * @author Eudaldo Alonso
@@ -39,67 +34,34 @@ public class InfoItemSelectorTrackerImpl implements InfoItemSelectorTracker {
 
 	@Override
 	public InfoItemSelector<?> getInfoItemSelector(String key) {
-		if (Validator.isNull(key)) {
-			return null;
-		}
-
-		return _infoItemSelectors.get(key);
+		return _infoItemServiceTracker.getInfoItemProvider(
+			InfoItemSelector.class, key);
 	}
 
 	@Override
 	public List<InfoItemSelector<?>> getInfoItemSelectors() {
-		return new ArrayList<>(_infoItemSelectors.values());
+		return (List<InfoItemSelector<?>>)
+			(List<?>)_infoItemServiceTracker.getAllInfoItemServices(
+				InfoItemSelector.class);
 	}
 
 	@Override
 	public List<InfoItemSelector<?>> getInfoItemSelectors(
 		String itemClassName) {
 
-		List<InfoItemSelector<?>> infoItemSelectors =
-			_itemClassNameInfoItemSelectors.get(itemClassName);
-
-		if (infoItemSelectors != null) {
-			return new ArrayList<>(infoItemSelectors);
-		}
-
-		return Collections.emptyList();
+		return (List<InfoItemSelector<?>>)
+			(List<?>)_infoItemServiceTracker.getAllInfoItemServices(
+				InfoItemSelector.class, itemClassName);
 	}
 
 	@Override
 	public Set<String> getInfoItemSelectorsClassNames() {
-		return _itemClassNameInfoItemSelectors.keySet();
+		return new HashSet(
+			_infoItemServiceTracker.getInfoItemClassNames(
+				InfoListProvider.class));
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setInfoItemSelector(InfoItemSelector<?> infoItemSelector) {
-		_infoItemSelectors.put(infoItemSelector.getKey(), infoItemSelector);
-
-		List<InfoItemSelector<?>> itemClassInfoItemSelectors =
-			_itemClassNameInfoItemSelectors.computeIfAbsent(
-				GenericUtil.getGenericClassName(infoItemSelector),
-				itemClass -> new ArrayList<>());
-
-		itemClassInfoItemSelectors.add(infoItemSelector);
-	}
-
-	protected void unsetInfoItemSelector(InfoItemSelector<?> infoItemSelector) {
-		_infoItemSelectors.remove(infoItemSelector.getKey());
-
-		List<InfoItemSelector<?>> itemClassInfoItemSelectors =
-			_itemClassNameInfoItemSelectors.get(
-				GenericUtil.getGenericClassName(infoItemSelector));
-
-		if (itemClassInfoItemSelectors != null) {
-			itemClassInfoItemSelectors.remove(infoItemSelector);
-		}
-	}
-
-	private final Map<String, InfoItemSelector<?>> _infoItemSelectors =
-		new ConcurrentHashMap<>();
-	private final Map<String, List<InfoItemSelector<?>>>
-		_itemClassNameInfoItemSelectors = new ConcurrentHashMap<>();
+	@Reference
+	private InfoItemServiceTracker _infoItemServiceTracker;
 
 }

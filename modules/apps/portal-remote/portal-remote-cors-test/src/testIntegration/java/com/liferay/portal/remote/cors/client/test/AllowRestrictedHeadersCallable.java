@@ -16,6 +16,7 @@ package com.liferay.portal.remote.cors.client.test;
 
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessException;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.net.HttpURLConnection;
@@ -24,15 +25,21 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.HttpMethod;
+
 /**
  * @author Preston Crary
  */
 public class AllowRestrictedHeadersCallable
 	implements ProcessCallable<String[]> {
 
-	public AllowRestrictedHeadersCallable(String url, String origin) {
+	public AllowRestrictedHeadersCallable(
+		String url, String origin, String method, boolean authenticate) {
+
 		_url = url;
 		_origin = origin;
+		_method = method;
+		_authenticate = authenticate;
 	}
 
 	@Override
@@ -45,7 +52,16 @@ public class AllowRestrictedHeadersCallable
 
 			httpURLConnection.setRequestProperty("Origin", _origin);
 			httpURLConnection.setRequestProperty(
-				_ACCESS_CONTROL_REQUEST_METHOD, "GET");
+				_ACCESS_CONTROL_REQUEST_METHOD, HttpMethod.GET);
+			httpURLConnection.setRequestMethod(_method);
+
+			if (_authenticate) {
+				String encodedUserNameAndPassword = Base64.encode(
+					"test@liferay.com:test".getBytes());
+
+				httpURLConnection.setRequestProperty(
+					"Authorization", "Basic " + encodedUserNameAndPassword);
+			}
 
 			Map<String, List<String>> headerFields =
 				httpURLConnection.getHeaderFields();
@@ -70,6 +86,8 @@ public class AllowRestrictedHeadersCallable
 
 	private static final long serialVersionUID = 1L;
 
+	private final boolean _authenticate;
+	private final String _method;
 	private final String _origin;
 	private final String _url;
 

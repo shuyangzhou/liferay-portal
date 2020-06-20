@@ -89,7 +89,6 @@ public interface AssetVocabularyLocalService
 	public AssetVocabulary addDefaultVocabulary(long groupId)
 		throws PortalException;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public AssetVocabulary addVocabulary(
 			long userId, long groupId, String title,
 			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
@@ -99,6 +98,13 @@ public interface AssetVocabularyLocalService
 	public AssetVocabulary addVocabulary(
 			long userId, long groupId, String title,
 			ServiceContext serviceContext)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public AssetVocabulary addVocabulary(
+			long userId, long groupId, String name, String title,
+			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
+			String settings, ServiceContext serviceContext)
 		throws PortalException;
 
 	public void addVocabularyResources(
@@ -430,11 +436,17 @@ public interface AssetVocabularyLocalService
 	public AssetVocabulary updateAssetVocabulary(
 		AssetVocabulary assetVocabulary);
 
-	@Indexable(type = IndexableType.REINDEX)
 	public AssetVocabulary updateVocabulary(
 			long vocabularyId, String title, Map<Locale, String> titleMap,
 			Map<Locale, String> descriptionMap, String settings,
 			ServiceContext serviceContext)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public AssetVocabulary updateVocabulary(
+			long vocabularyId, String name, String title,
+			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
+			String settings, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Override

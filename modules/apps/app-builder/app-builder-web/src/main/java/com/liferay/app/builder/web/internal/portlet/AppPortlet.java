@@ -15,8 +15,12 @@
 package com.liferay.app.builder.web.internal.portlet;
 
 import com.liferay.app.builder.model.AppBuilderApp;
+import com.liferay.app.builder.portlet.tab.AppBuilderAppPortletTab;
 import com.liferay.app.builder.web.internal.constants.AppBuilderWebKeys;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.io.IOException;
@@ -27,6 +31,9 @@ import java.util.Map;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Gabriel Albuquerque
@@ -51,6 +58,14 @@ public class AppPortlet extends MVCPortlet {
 		_portletName = portletName;
 		_showFormView = showFormView;
 		_showTableView = showTableView;
+
+		Bundle bundle = FrameworkUtil.getBundle(AppPortlet.class);
+
+		_appBuilderAppPortletTabServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundle.getBundleContext(), AppBuilderAppPortletTab.class,
+				"app.builder.app.tab.name");
+
 		_viewTemplate = showTableView ? "/view_entries.jsp" : "/edit_entry.jsp";
 	}
 
@@ -95,6 +110,21 @@ public class AppPortlet extends MVCPortlet {
 		renderRequest.setAttribute(AppBuilderWebKeys.APP, _appBuilderApp);
 		renderRequest.setAttribute(
 			AppBuilderWebKeys.APP_DEPLOYMENT_TYPE, _appDeploymentType);
+
+		AppBuilderAppPortletTab appBuilderAppPortletTab =
+			_appBuilderAppPortletTabServiceTrackerMap.getService(
+				_appBuilderApp.getScope());
+
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.APP_TAB,
+			HashMapBuilder.<String, Object>put(
+				"editEntryPoint", appBuilderAppPortletTab.getEditEntryPoint()
+			).put(
+				"listEntryPoint", appBuilderAppPortletTab.getListEntryPoint()
+			).put(
+				"viewEntryPoint", appBuilderAppPortletTab.getViewEntryPoint()
+			).build());
+
 		renderRequest.setAttribute(
 			AppBuilderWebKeys.SHOW_FORM_VIEW, _showFormView);
 		renderRequest.setAttribute(
@@ -104,6 +134,8 @@ public class AppPortlet extends MVCPortlet {
 	}
 
 	private final AppBuilderApp _appBuilderApp;
+	private final ServiceTrackerMap<String, AppBuilderAppPortletTab>
+		_appBuilderAppPortletTabServiceTrackerMap;
 	private final String _appDeploymentType;
 	private final String _appName;
 	private final String _portletName;

@@ -149,21 +149,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public WorkflowDefinition createWorkflowDefinitionUpdateTitle(
-			@GraphQLName("name") String name,
-			@GraphQLName("title") String title,
-			@GraphQLName("version") String version)
-		throws Exception {
-
-		return _applyComponentServiceObjects(
-			_workflowDefinitionResourceComponentServiceObjects,
-			this::_populateResourceContext,
-			workflowDefinitionResource ->
-				workflowDefinitionResource.postWorkflowDefinitionUpdateTitle(
-					name, title, version));
-	}
-
-	@GraphQLField
 	public WorkflowInstance createWorkflowInstanceSubmit(
 			@GraphQLName("workflowInstanceSubmit") WorkflowInstanceSubmit
 				workflowInstanceSubmit)

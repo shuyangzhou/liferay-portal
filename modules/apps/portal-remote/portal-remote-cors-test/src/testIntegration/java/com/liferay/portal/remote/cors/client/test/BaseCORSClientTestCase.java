@@ -25,7 +25,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.remote.cors.configuration.WebContextCORSConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +45,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.Application;
 
 import org.junit.AfterClass;
@@ -83,50 +83,19 @@ public abstract class BaseCORSClientTestCase {
 		_autoCloseables.clear();
 	}
 
-	protected void assertURL(String urlString, boolean allowOrigin)
+	protected void assertJaxRSUrl(
+			String urlString, String method, boolean allowOrigin)
 		throws Exception {
 
-		ProcessConfig.Builder builder = new ProcessConfig.Builder();
-
-		List<String> arguments = new ArrayList<>();
-
-		arguments.add("-Djava.net.preferIPv4Stack=true");
-
-		if (Boolean.getBoolean("jvm.debug")) {
-			arguments.add(
-				"-agentlib:jdwp=transport=dt_socket,address=8001,server=y," +
-					"suspend=y");
-			arguments.add("-Djvm.debug=true");
-		}
-
-		arguments.add("-Dliferay.mode=test");
-		arguments.add("-Dsun.zip.disableMemoryMapping=true");
-		arguments.add("-Dsun.net.http.allowRestrictedHeaders=true");
-
-		builder.setArguments(arguments);
-
-		StringBundler sb = new StringBundler();
-
-		sb.append(ClassPathUtil.getJVMClassPath(true));
-
-		_addToClassPath(sb, AllowRestrictedHeadersCallable.class);
-		_addToClassPath(sb, ClassPathUtil.class);
-		_addToClassPath(sb, ClassResolverUtil.class);
-		_addToClassPath(sb, ClassLoaderObjectInputStream.class);
-		_addToClassPath(sb, StringBundler.class);
-		_addToClassPath(sb, StringUtil.class);
-
-		String classPath = sb.toString();
-
-		builder.setBootstrapClassPath(classPath);
-		builder.setRuntimeClassPath(classPath);
+		ProcessConfig.Builder builder = _generateTestBuilder();
 
 		ProcessExecutor processExecutor = new LocalProcessExecutor();
 
 		ProcessChannel<String[]> processChannel = processExecutor.execute(
 			builder.build(),
 			new AllowRestrictedHeadersCallable(
-				"http://localhost:8080/o" + urlString, _TEST_CORS_URI));
+				"http://localhost:8080/o" + urlString, _TEST_CORS_URI, method,
+				false));
 
 		Future<String[]> future = processChannel.getProcessNoticeableFuture();
 
@@ -139,12 +108,47 @@ public abstract class BaseCORSClientTestCase {
 			Assert.assertNull(results[0]);
 		}
 
-		Assert.assertEquals("get", results[1]);
+		if (!HttpMethod.OPTIONS.equals(method)) {
+			Assert.assertNotEquals(StringPool.BLANK, results[1]);
+		}
+
+		Assert.assertEquals("200", results[2]);
+	}
+
+	protected void assertJsonWSUrl(
+			String urlString, String method, boolean allowOrigin)
+		throws Exception {
+
+		ProcessConfig.Builder builder = _generateTestBuilder();
+
+		ProcessExecutor processExecutor = new LocalProcessExecutor();
+
+		ProcessChannel<String[]> processChannel = processExecutor.execute(
+			builder.build(),
+			new AllowRestrictedHeadersCallable(
+				"http://localhost:8080/api/jsonws" + urlString, _TEST_CORS_URI,
+				method, true));
+
+		Future<String[]> future = processChannel.getProcessNoticeableFuture();
+
+		String[] results = future.get();
+
+		if (allowOrigin) {
+			Assert.assertEquals(_TEST_CORS_URI, results[0]);
+		}
+		else {
+			Assert.assertNull(results[0]);
+		}
+
+		if (!HttpMethod.OPTIONS.equals(method)) {
+			Assert.assertNotEquals(StringPool.BLANK, results[1]);
+		}
+
 		Assert.assertEquals("200", results[2]);
 	}
 
 	protected void createFactoryConfiguration(
-		Dictionary<String, Object> properties) {
+		String configurationClassName, Dictionary<String, Object> properties) {
 
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -152,7 +156,7 @@ public abstract class BaseCORSClientTestCase {
 			new HashMapDictionary<>();
 
 		registrationProperties.put(
-			Constants.SERVICE_PID, WebContextCORSConfiguration.class.getName());
+			Constants.SERVICE_PID, configurationClassName);
 
 		ServiceRegistration<ManagedServiceFactory> serviceRegistration =
 			_bundleContext.registerService(
@@ -166,7 +170,7 @@ public abstract class BaseCORSClientTestCase {
 					@Override
 					public String getName() {
 						return "Test managed service factory for PID " +
-							WebContextCORSConfiguration.class.getName();
+							configurationClassName;
 					}
 
 					@Override
@@ -211,8 +215,7 @@ public abstract class BaseCORSClientTestCase {
 
 			try {
 				configuration = configurationAdmin.createFactoryConfiguration(
-					WebContextCORSConfiguration.class.getName(),
-					StringPool.QUESTION);
+					configurationClassName, StringPool.QUESTION);
 
 				configuration.update(properties);
 
@@ -270,6 +273,45 @@ public abstract class BaseCORSClientTestCase {
 
 		sb.append(File.pathSeparator);
 		sb.append(location.getPath());
+	}
+
+	private ProcessConfig.Builder _generateTestBuilder() {
+		ProcessConfig.Builder builder = new ProcessConfig.Builder();
+
+		List<String> arguments = new ArrayList<>();
+
+		arguments.add("-Djava.net.preferIPv4Stack=true");
+
+		if (Boolean.getBoolean("jvm.debug")) {
+			arguments.add(
+				"-agentlib:jdwp=transport=dt_socket,address=8001,server=y," +
+					"suspend=y");
+			arguments.add("-Djvm.debug=true");
+		}
+
+		arguments.add("-Dliferay.mode=test");
+		arguments.add("-Dsun.net.http.allowRestrictedHeaders=true");
+		arguments.add("-Dsun.zip.disableMemoryMapping=true");
+
+		builder.setArguments(arguments);
+
+		StringBundler sb = new StringBundler();
+
+		sb.append(ClassPathUtil.getJVMClassPath(true));
+
+		_addToClassPath(sb, AllowRestrictedHeadersCallable.class);
+		_addToClassPath(sb, ClassPathUtil.class);
+		_addToClassPath(sb, ClassResolverUtil.class);
+		_addToClassPath(sb, ClassLoaderObjectInputStream.class);
+		_addToClassPath(sb, StringBundler.class);
+		_addToClassPath(sb, StringUtil.class);
+
+		String classPath = sb.toString();
+
+		builder.setBootstrapClassPath(classPath);
+		builder.setRuntimeClassPath(classPath);
+
+		return builder;
 	}
 
 	private static final String _TEST_CORS_URI = "http://test-cors.com";

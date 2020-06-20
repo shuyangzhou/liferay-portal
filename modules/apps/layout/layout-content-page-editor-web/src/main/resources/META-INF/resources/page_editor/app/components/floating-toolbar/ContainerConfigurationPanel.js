@@ -41,7 +41,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 	const dispatch = useDispatch();
 	const segmentsExperienceId = useSelector(selectSegmentsExperienceId);
 
-	const isHorizontalMarginDisabled = item.config.containerWidth === 'fixed';
+	const isHorizontalMarginDisabled = item.config.widthType === 'fixed';
 
 	const horizontalMarginOptions = isHorizontalMarginDisabled
 		? [MARGIN_AUTO_OPTION]
@@ -65,7 +65,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 			config.align = '';
 		}
 
-		if (name === 'containerWidth' && value === 'fixed') {
+		if (name === 'widthType' && value === 'fixed') {
 			config.marginLeft = '';
 			config.marginRight = '';
 		}
@@ -166,7 +166,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 									},
 								}}
 								onValueSelect={handleValueSelect}
-								value={item.config.horizontalAlign}
+								value={item.config.justify}
 							/>
 						</FormRow.Column>
 
@@ -213,7 +213,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 									},
 								}}
 								onValueSelect={handleValueSelect}
-								value={item.config.verticalAlign}
+								value={item.config.align}
 							/>
 						</FormRow.Column>
 					</FormRow>
@@ -222,7 +222,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 				<SelectField
 					field={{
 						label: Liferay.Language.get('container-width'),
-						name: 'containerWidth',
+						name: 'widthType',
 						typeOptions: {
 							validValues: [
 								{
@@ -237,7 +237,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 						},
 					}}
 					onValueSelect={handleValueSelect}
-					value={item.config.containerWidth}
+					value={item.config.widthType}
 				/>
 
 				<Section label={Liferay.Language.get('margin')}>
@@ -275,7 +275,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 								value={
 									isHorizontalMarginDisabled
 										? MARGIN_AUTO_OPTION.value
-										: item.config.marginLeft
+										: item.config.marginRight
 								}
 							/>
 						</FormRow.Column>
@@ -374,10 +374,12 @@ export const ContainerConfigurationPanel = ({item}) => {
 					<ColorPaletteField
 						field={{
 							label: Liferay.Language.get('color'),
-							name: 'backgroundColor',
+							name: 'backgroundColorCssClass',
 						}}
-						onValueSelect={handleValueSelect}
-						value={item.config.backgroundColor}
+						onValueSelect={(name, {cssClass}) =>
+							handleValueSelect(name, cssClass)
+						}
+						value={{cssClass: item.config.backgroundColorCssClass}}
 					/>
 
 					<ImageSelector
@@ -455,8 +457,10 @@ export const ContainerConfigurationPanel = ({item}) => {
 							label: Liferay.Language.get('border-color'),
 							name: 'borderColor',
 						}}
-						onValueSelect={handleValueSelect}
-						value={item.config.borderColor}
+						onValueSelect={(name, {cssClass}) =>
+							handleValueSelect(name, cssClass)
+						}
+						value={{cssClass: item.config.borderColor}}
 					/>
 				</Section>
 
@@ -485,9 +489,13 @@ export const ContainerConfigurationPanel = ({item}) => {
 					<SelectField
 						field={{
 							label: Liferay.Language.get('drop-shadow'),
-							name: 'dropShadow',
+							name: 'shadow',
 							typeOptions: {
 								validValues: [
+									{
+										label: Liferay.Language.get('default'),
+										value: '',
+									},
 									{
 										label: Liferay.Language.get('none'),
 										value: 'shadow-none',
@@ -508,7 +516,7 @@ export const ContainerConfigurationPanel = ({item}) => {
 							},
 						}}
 						onValueSelect={handleValueSelect}
-						value={item.config.dropShadow}
+						value={item.config.shadow}
 					/>
 				</Section>
 			</ClayForm.Group>

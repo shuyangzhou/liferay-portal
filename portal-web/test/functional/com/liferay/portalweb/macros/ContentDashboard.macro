@@ -1,0 +1,13 @@
+definition {
+
+	macro filterByTitle {
+		if (IsElementPresent(locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN")) {
+			AssertClickNoError(
+				locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN",
+				value1 = "Filter and Order");
+		}
+
+		Click(locator1 = "ContentDashboard#FILTER_BY_TITLE_OPTION");
+	}
+
+}

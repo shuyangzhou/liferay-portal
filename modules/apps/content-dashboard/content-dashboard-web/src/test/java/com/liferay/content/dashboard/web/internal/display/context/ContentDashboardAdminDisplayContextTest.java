@@ -93,8 +93,8 @@ public class ContentDashboardAdminDisplayContextTest {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, _language, mockLiferayPortletRenderRequest, null,
-					new PortalImpl(), null);
+					_http, null, _language, mockLiferayPortletRenderRequest,
+					null, new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -141,8 +141,8 @@ public class ContentDashboardAdminDisplayContextTest {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, _language, mockLiferayPortletRenderRequest, null,
-					new PortalImpl(), null);
+					_http, null, _language, mockLiferayPortletRenderRequest,
+					null, new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -189,8 +189,8 @@ public class ContentDashboardAdminDisplayContextTest {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, _language, mockLiferayPortletRenderRequest, null,
-					new PortalImpl(), null);
+					_http, null, _language, mockLiferayPortletRenderRequest,
+					null, new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -239,8 +239,8 @@ public class ContentDashboardAdminDisplayContextTest {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, _language, mockLiferayPortletRenderRequest, null,
-					new PortalImpl(), null);
+					_http, null, _language, mockLiferayPortletRenderRequest,
+					null, new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);

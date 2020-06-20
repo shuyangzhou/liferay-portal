@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>ContentDashboard</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ContentDashboard</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>FILTER_AND_ORDER_DROPDOWN</td>
+	<td>//*[contains(@class, 'dropdown-toggle btn nav-link btn-unstyled')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FILTER_BY_TITLE_OPTION</td>
+	<td>//*[contains(@class, 'dropdown-item') and contains(text(),'Title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FIRST_ELEMENT_LISTED</td>
+	<td>(//*[contains(@class, 'text-truncate')])[4]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

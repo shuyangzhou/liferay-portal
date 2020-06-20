@@ -29,6 +29,7 @@ import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.field.InfoFormValues;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.item.provider.InfoItemServiceTracker;
+import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
@@ -248,6 +249,11 @@ public class FragmentEntryProcessorHelperImpl
 			ContentAccessor contentAccessor = (ContentAccessor)fieldValue;
 
 			fieldValue = contentAccessor.getContent();
+		}
+		else if (fieldValue instanceof WebImage) {
+			WebImage webImage = (WebImage)fieldValue;
+
+			fieldValue = webImage.toJSONObject();
 		}
 
 		return fieldValue;

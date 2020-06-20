@@ -474,12 +474,27 @@ public class EditFragmentEntryDisplayContext {
 				"preview",
 				_getFragmentEntryRenderURL("/fragment/preview_fragment_entry")
 			).put(
+				"publish", _getPublishFragmentEntryActionURL()
+			).put(
 				"redirect", getRedirect()
 			).put(
 				"render",
 				_getFragmentEntryRenderURL("/fragment/render_fragment_entry")
 			).build()
 		).build();
+	}
+
+	private String _getPublishFragmentEntryActionURL() {
+		PortletURL publishFragmentEntryURL = PortletURLFactoryUtil.create(
+			_httpServletRequest, FragmentPortletKeys.FRAGMENT,
+			PortletRequest.ACTION_PHASE);
+
+		publishFragmentEntryURL.setParameter(
+			ActionRequest.ACTION_NAME, "/fragment/publish_fragment_entry");
+		publishFragmentEntryURL.setParameter(
+			"fragmentEntryId", String.valueOf(getFragmentEntryId()));
+
+		return publishFragmentEntryURL.toString();
 	}
 
 	private boolean _isReadOnlyFragmentEntry() {

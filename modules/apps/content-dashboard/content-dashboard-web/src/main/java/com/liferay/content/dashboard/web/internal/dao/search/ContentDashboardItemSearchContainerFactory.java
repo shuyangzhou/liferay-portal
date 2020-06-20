@@ -23,6 +23,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.search.BooleanClause;
+import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
@@ -31,6 +34,10 @@ import com.liferay.portal.kernel.search.SearchContextFactory;
 import com.liferay.portal.kernel.search.SearchResult;
 import com.liferay.portal.kernel.search.SearchResultUtil;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.kernel.search.filter.TermsFilter;
+import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -99,6 +106,35 @@ public class ContentDashboardItemSearchContainerFactory {
 		_renderResponse = renderResponse;
 	}
 
+	private long[] _getAuthorIds() {
+		return ParamUtil.getLongValues(_renderRequest, "authorIds");
+	}
+
+	private BooleanClause[] _getBooleanClauses(long[] authorIds) {
+		if (ArrayUtil.isEmpty(authorIds)) {
+			return new BooleanClause[0];
+		}
+
+		BooleanQueryImpl booleanQueryImpl = new BooleanQueryImpl();
+
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		TermsFilter termsFilter = new TermsFilter(Field.USER_ID);
+
+		for (long authorId : authorIds) {
+			termsFilter.addValue(String.valueOf(authorId));
+		}
+
+		booleanFilter.add(termsFilter, BooleanClauseOccur.MUST);
+
+		booleanQueryImpl.setPreBooleanFilter(booleanFilter);
+
+		return new BooleanClause[] {
+			BooleanClauseFactoryUtil.create(
+				booleanQueryImpl, BooleanClauseOccur.MUST.getName())
+		};
+	}
+
 	private List<ContentDashboardItem<?>> _getContentDashboardItems(
 		Hits hits, Locale locale) {
 
@@ -139,6 +175,7 @@ public class ContentDashboardItemSearchContainerFactory {
 		}
 
 		searchContext.setAttribute("status", status);
+		searchContext.setBooleanClauses(_getBooleanClauses(_getAuthorIds()));
 		searchContext.setEnd(end);
 		searchContext.setGroupIds(null);
 		searchContext.setKeywords(_getKeywords());

@@ -26,6 +26,7 @@ import com.liferay.info.list.renderer.DefaultInfoListRendererContext;
 import com.liferay.info.list.renderer.InfoListRenderer;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
 import com.liferay.info.pagination.Pagination;
+import com.liferay.info.type.WebImage;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.list.retriever.DefaultLayoutListRetrieverContext;
 import com.liferay.layout.list.retriever.LayoutListRetriever;
@@ -251,6 +252,11 @@ public class GetCollectionFieldMVCResourceCommand
 				ContentAccessor contentAccessor = (ContentAccessor)value;
 
 				value = contentAccessor.getContent();
+			}
+			else if (value instanceof WebImage) {
+				WebImage webImage = (WebImage)value;
+
+				value = webImage.toJSONObject();
 			}
 
 			InfoField infoField = infoFieldValue.getInfoField();

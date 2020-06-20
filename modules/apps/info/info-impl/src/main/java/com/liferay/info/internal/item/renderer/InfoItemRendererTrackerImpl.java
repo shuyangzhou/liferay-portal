@@ -14,23 +14,14 @@
 
 package com.liferay.info.internal.item.renderer;
 
+import com.liferay.info.item.provider.InfoItemServiceTracker;
 import com.liferay.info.item.renderer.InfoItemRenderer;
 import com.liferay.info.item.renderer.InfoItemRendererTracker;
-import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
-import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.petra.reflect.GenericUtil;
-import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jorge Ferrer
@@ -40,65 +31,27 @@ public class InfoItemRendererTrackerImpl implements InfoItemRendererTracker {
 
 	@Override
 	public InfoItemRenderer<?> getInfoItemRenderer(String key) {
-		if (Validator.isNull(key)) {
-			return null;
-		}
-
-		return _infoItemRenderersServiceTrackerMap.getService(key);
+		return _infoItemServiceTracker.getInfoItemProvider(
+			InfoItemRenderer.class, key);
 	}
 
 	@Override
 	public List<InfoItemRenderer<?>> getInfoItemRenderers() {
-		return new ArrayList<>(_infoItemRenderersServiceTrackerMap.values());
+		return (List<InfoItemRenderer<?>>)
+			(List<?>)_infoItemServiceTracker.getAllInfoItemServices(
+				InfoItemRenderer.class);
 	}
 
 	@Override
 	public List<InfoItemRenderer<?>> getInfoItemRenderers(
 		String itemClassName) {
 
-		List<InfoItemRenderer<?>> infoItemRenderers =
-			_itemClassNameInfoItemRendererServiceTrackerMap.getService(
-				itemClassName);
-
-		if (infoItemRenderers != null) {
-			return new ArrayList<>(infoItemRenderers);
-		}
-
-		return Collections.emptyList();
+		return (List<InfoItemRenderer<?>>)
+			(List<?>)_infoItemServiceTracker.getAllInfoItemServices(
+				InfoItemRenderer.class, itemClassName);
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_itemClassNameInfoItemRendererServiceTrackerMap =
-			ServiceTrackerMapFactory.openMultiValueMap(
-				bundleContext,
-				(Class<InfoItemRenderer<?>>)(Class<?>)InfoItemRenderer.class,
-				null,
-				ServiceReferenceMapperFactory.create(
-					bundleContext,
-					(infoItemRenderer, emitter) -> emitter.emit(
-						GenericUtil.getGenericClassName(infoItemRenderer))),
-				Collections.reverseOrder(
-					new PropertyServiceReferenceComparator<>(
-						"service.ranking")));
-
-		_infoItemRenderersServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext,
-				(Class<InfoItemRenderer<?>>)(Class<?>)InfoItemRenderer.class,
-				null,
-				ServiceReferenceMapperFactory.createFromFunction(
-					bundleContext, InfoItemRenderer::getKey));
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_itemClassNameInfoItemRendererServiceTrackerMap.close();
-	}
-
-	private ServiceTrackerMap<String, InfoItemRenderer<?>>
-		_infoItemRenderersServiceTrackerMap;
-	private ServiceTrackerMap<String, List<InfoItemRenderer<?>>>
-		_itemClassNameInfoItemRendererServiceTrackerMap;
+	@Reference
+	private InfoItemServiceTracker _infoItemServiceTracker;
 
 }
