@@ -33,9 +33,11 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -47,13 +49,17 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -965,34 +971,33 @@ public class AppBuilderAppDeploymentPersistenceImpl
 	 */
 	@Override
 	public void clearCache(AppBuilderAppDeployment appBuilderAppDeployment) {
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		entityCache.removeResult(
 			entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
-			appBuilderAppDeployment.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment, true);
+			appBuilderAppDeployment, _columnBitmaskEnabled);
 	}
 
 	@Override
 	public void clearCache(
 		List<AppBuilderAppDeployment> appBuilderAppDeployments) {
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (AppBuilderAppDeployment appBuilderAppDeployment :
 				appBuilderAppDeployments) {
 
 			entityCache.removeResult(
 				entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
-				appBuilderAppDeployment.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(AppBuilderAppDeploymentModelImpl)appBuilderAppDeployment,
-				true);
+				appBuilderAppDeployment, _columnBitmaskEnabled);
 		}
 	}
 
@@ -1022,33 +1027,6 @@ public class AppBuilderAppDeploymentPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByA_T, args, appBuilderAppDeploymentModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		AppBuilderAppDeploymentModelImpl appBuilderAppDeploymentModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				appBuilderAppDeploymentModelImpl.getAppBuilderAppId(),
-				appBuilderAppDeploymentModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByA_T, args);
-			finderCache.removeResult(_finderPathFetchByA_T, args);
-		}
-
-		if ((appBuilderAppDeploymentModelImpl.getColumnBitmask() &
-			 _finderPathFetchByA_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				appBuilderAppDeploymentModelImpl.getOriginalAppBuilderAppId(),
-				appBuilderAppDeploymentModelImpl.getOriginalType()
-			};
-
-			finderCache.removeResult(_finderPathCountByA_T, args);
-			finderCache.removeResult(_finderPathFetchByA_T, args);
-		}
 	}
 
 	/**
@@ -1192,10 +1170,8 @@ public class AppBuilderAppDeploymentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (appBuilderAppDeployment.isNew()) {
+			if (isNew) {
 				session.save(appBuilderAppDeployment);
-
-				appBuilderAppDeployment.setNew(false);
 			}
 			else {
 				appBuilderAppDeployment =
@@ -1210,57 +1186,21 @@ public class AppBuilderAppDeploymentPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				appBuilderAppDeploymentModelImpl.getAppBuilderAppId()
-			};
-
-			finderCache.removeResult(_finderPathCountByAppBuilderAppId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByAppBuilderAppId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((appBuilderAppDeploymentModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByAppBuilderAppId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					appBuilderAppDeploymentModelImpl.
-						getOriginalAppBuilderAppId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByAppBuilderAppId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAppBuilderAppId, args);
-
-				args = new Object[] {
-					appBuilderAppDeploymentModelImpl.getAppBuilderAppId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByAppBuilderAppId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAppBuilderAppId, args);
-			}
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		entityCache.putResult(
 			entityCacheEnabled, AppBuilderAppDeploymentImpl.class,
-			appBuilderAppDeployment.getPrimaryKey(), appBuilderAppDeployment,
-			false);
+			appBuilderAppDeploymentModelImpl, false, _columnBitmaskEnabled);
 
-		clearUniqueFindersCache(appBuilderAppDeploymentModelImpl, false);
 		cacheUniqueFindersCache(appBuilderAppDeploymentModelImpl);
+
+		if (isNew) {
+			appBuilderAppDeployment.setNew(false);
+		}
 
 		appBuilderAppDeployment.resetOriginalValues();
 
@@ -1533,69 +1473,60 @@ public class AppBuilderAppDeploymentPersistenceImpl
 	 * Initializes the app builder app deployment persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		AppBuilderAppDeploymentModelImpl.setEntityCacheEnabled(
 			entityCacheEnabled);
 		AppBuilderAppDeploymentModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			AppBuilderAppDeploymentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			AppBuilderAppDeploymentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByAppBuilderAppId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			AppBuilderAppDeploymentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAppBuilderAppId",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByAppBuilderAppId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "AppBuilderAppId",
+			"findByAppBuilderAppId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByAppBuilderAppId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			AppBuilderAppDeploymentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAppBuilderAppId",
-			new String[] {Long.class.getName()},
-			AppBuilderAppDeploymentModelImpl.APPBUILDERAPPID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByAppBuilderAppId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "AppBuilderAppId",
+			"findByAppBuilderAppId", new String[] {Long.class.getName()});
 
-		_finderPathCountByAppBuilderAppId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAppBuilderAppId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByAppBuilderAppId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "AppBuilderAppId",
+			"countByAppBuilderAppId", new String[] {Long.class.getName()});
 
-		_finderPathFetchByA_T = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			AppBuilderAppDeploymentImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByA_T",
-			new String[] {Long.class.getName(), String.class.getName()},
-			AppBuilderAppDeploymentModelImpl.APPBUILDERAPPID_COLUMN_BITMASK |
-			AppBuilderAppDeploymentModelImpl.TYPE_COLUMN_BITMASK);
+		_finderPathFetchByA_T = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "A_T", "fetchByA_T",
+			new String[] {Long.class.getName(), String.class.getName()});
 
-		_finderPathCountByA_T = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_T",
+		_finderPathCountByA_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "A_T", "countByA_T",
 			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(AppBuilderAppDeploymentImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -1631,6 +1562,7 @@ public class AppBuilderAppDeploymentPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -1672,6 +1604,151 @@ public class AppBuilderAppDeploymentPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = AppBuilderAppDeploymentImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				finderCacheEnabled, returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			finderCacheEnabled, returnClass, cacheName, methodName, params,
+			_ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"AppBuilderAppId",
+			AppBuilderAppDeploymentModelImpl.APPBUILDERAPPID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"A_T",
+			AppBuilderAppDeploymentModelImpl.APPBUILDERAPPID_COLUMN_BITMASK |
+			AppBuilderAppDeploymentModelImpl.TYPE_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"AppBuilderAppId",
+			(baseModel, checkColumns) -> {
+				AppBuilderAppDeploymentModelImpl
+					appBuilderAppDeploymentModelImpl =
+						(AppBuilderAppDeploymentModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((appBuilderAppDeploymentModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("AppBuilderAppId")) != 0)) {
+
+					return new Object[] {
+						appBuilderAppDeploymentModelImpl.getAppBuilderAppId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"AppBuilderAppId",
+			(baseModel, checkColumns) -> {
+				AppBuilderAppDeploymentModelImpl
+					appBuilderAppDeploymentModelImpl =
+						(AppBuilderAppDeploymentModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((appBuilderAppDeploymentModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("AppBuilderAppId")) != 0)) {
+
+					return new Object[] {
+						appBuilderAppDeploymentModelImpl.
+							getOriginalAppBuilderAppId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"A_T",
+			(baseModel, checkColumns) -> {
+				AppBuilderAppDeploymentModelImpl
+					appBuilderAppDeploymentModelImpl =
+						(AppBuilderAppDeploymentModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((appBuilderAppDeploymentModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("A_T")) != 0)) {
+
+					return new Object[] {
+						appBuilderAppDeploymentModelImpl.getAppBuilderAppId(),
+						appBuilderAppDeploymentModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"A_T",
+			(baseModel, checkColumns) -> {
+				AppBuilderAppDeploymentModelImpl
+					appBuilderAppDeploymentModelImpl =
+						(AppBuilderAppDeploymentModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((appBuilderAppDeploymentModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("A_T")) != 0)) {
+
+					return new Object[] {
+						appBuilderAppDeploymentModelImpl.
+							getOriginalAppBuilderAppId(),
+						appBuilderAppDeploymentModelImpl.getOriginalType()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }
