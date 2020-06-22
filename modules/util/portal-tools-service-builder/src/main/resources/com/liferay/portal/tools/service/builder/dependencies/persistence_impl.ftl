@@ -355,7 +355,15 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 */
 	@Override
 	public void clearCache(${entity.name} ${entity.varName}) {
-		${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
+		<#if serviceBuilder.isVersionGTE_7_3_0()>
+			<#if columnBitmaskEnabled>
+				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}, ${columnBitmaskCacheEnabled});
+			<#else>
+				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}, true);
+			</#if>
+		<#else>
+			${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
+		</#if>
 
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -396,7 +404,15 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#if>
 
 		for (${entity.name} ${entity.varName} : ${entity.pluralVarName}) {
-			${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
+			<#if serviceBuilder.isVersionGTE_7_3_0()>
+				<#if columnBitmaskEnabled>
+					${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}, ${columnBitmaskCacheEnabled});
+				<#else>
+					${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}, true);
+				</#if>
+			<#else>
+				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
+			</#if>
 		}
 	}
 
@@ -932,7 +948,15 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 		</#if>
 
-		${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
+		<#if serviceBuilder.isVersionGTE_7_3_0()>
+			<#if columnBitmaskEnabled>
+				${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}, false, ${columnBitmaskCacheEnabled});
+			<#else>
+				${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}, false, true);
+			</#if>
+		<#else>
+			${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
+		</#if>
 
 		<#if entity.uniqueEntityFinders?size &gt; 0>
 			<#if columnBitmaskEnabled>
