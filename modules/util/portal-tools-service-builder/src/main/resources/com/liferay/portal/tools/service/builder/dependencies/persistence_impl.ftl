@@ -361,6 +361,14 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		<#if entity.uniqueEntityFinders?size &gt; 0>
+			<#if columnBitmaskEnabled>
+				if (!${columnBitmaskCacheEnabled}) {
+					${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
+
+					return;
+				}
+			</#if>
+
 			clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName}, true);
 		</#if>
 	}
@@ -370,12 +378,25 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
+		<#if entity.uniqueEntityFinders?size &gt; 0>
+			<#if columnBitmaskEnabled>
+				if (!${columnBitmaskCacheEnabled}) {
+					${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
+				}
+				else {
+			</#if>
+
+				for (${entity.name} ${entity.varName} : ${entity.pluralVarName}) {
+					clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName}, true);
+				}
+
+			<#if columnBitmaskEnabled>
+				}
+			</#if>
+		</#if>
+
 		for (${entity.name} ${entity.varName} : ${entity.pluralVarName}) {
 			${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
-
-			<#if entity.uniqueEntityFinders?size &gt; 0>
-				clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName}, true);
-			</#if>
 		}
 	}
 
@@ -914,7 +935,19 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		${entityCache}.putResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
 
 		<#if entity.uniqueEntityFinders?size &gt; 0>
-			clearUniqueFindersCache(${entity.varName}ModelImpl, false);
+			<#if columnBitmaskEnabled>
+				if (!${columnBitmaskCacheEnabled}) {
+					${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
+				}
+				else {
+			</#if>
+
+				clearUniqueFindersCache(${entity.varName}ModelImpl, false);
+
+			<#if columnBitmaskEnabled>
+				}
+			</#if>
+
 			cacheUniqueFindersCache(${entity.varName}ModelImpl);
 		</#if>
 
