@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.Serializable;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,26 +33,55 @@ import java.util.Map;
  */
 public class FinderPath {
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #FinderPath(
+	 * 		boolean, Class, String, String, String[])}
+	 */
+	@Deprecated
 	public FinderPath(
 		boolean entityCacheEnabled, boolean finderCacheEnabled,
 		Class<?> resultClass, String cacheName, String methodName,
 		String[] params) {
 
-		this(
-			entityCacheEnabled, finderCacheEnabled, resultClass, cacheName,
-			methodName, params, -1);
+		this(finderCacheEnabled, resultClass, cacheName, methodName, params);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #FinderPath(
+	 * 		boolean, Class, String, String, String[], BiFunction, BiFunction)}
+	 */
+	@Deprecated
 	public FinderPath(
 		boolean entityCacheEnabled, boolean finderCacheEnabled,
 		Class<?> resultClass, String cacheName, String methodName,
 		String[] params, long columnBitmask) {
 
-		_entityCacheEnabled = entityCacheEnabled;
+		this(
+			finderCacheEnabled, resultClass, cacheName, methodName, params,
+			null, null);
+	}
+
+	public FinderPath(
+		boolean finderCacheEnabled, Class<?> resultClass, String cacheName,
+		String methodName, String[] params) {
+
+		this(
+			finderCacheEnabled, resultClass, cacheName, methodName, params,
+			null, null);
+	}
+
+	public FinderPath(
+		boolean finderCacheEnabled, Class<?> resultClass, String cacheName,
+		String methodName, String[] params,
+		BiFunction<BaseModel<?>, Boolean, Object[]> argumentsBiFunction,
+		BiFunction<BaseModel<?>, Boolean, Object[]>
+			originalArgumentsBiFunction) {
+
 		_finderCacheEnabled = finderCacheEnabled;
 		_resultClass = resultClass;
 		_cacheName = cacheName;
-		_columnBitmask = columnBitmask;
+		_argumentsBiFunction = argumentsBiFunction;
+		_originalArgumentsBiFunction = originalArgumentsBiFunction;
 
 		if (BaseModel.class.isAssignableFrom(_resultClass)) {
 			_cacheKeyGeneratorCacheName = _BASE_MODEL_CACHE_KEY_GENERATOR_NAME;
@@ -141,12 +171,34 @@ public class FinderPath {
 			});
 	}
 
+	public Object[] getArguments(BaseModel<?> baseModel, boolean checkColumns) {
+		if (_argumentsBiFunction == null) {
+			return null;
+		}
+
+		return _argumentsBiFunction.apply(baseModel, checkColumns);
+	}
+
 	public String getCacheName() {
 		return _cacheName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public long getColumnBitmask() {
-		return _columnBitmask;
+		return -1;
+	}
+
+	public Object[] getOriginalArguments(
+		BaseModel<?> baseModel, boolean checkColumns) {
+
+		if (_originalArgumentsBiFunction == null) {
+			return null;
+		}
+
+		return _originalArgumentsBiFunction.apply(baseModel, checkColumns);
 	}
 
 	public Class<?> getResultClass() {
@@ -158,7 +210,7 @@ public class FinderPath {
 	 */
 	@Deprecated
 	public boolean isEntityCacheEnabled() {
-		return _entityCacheEnabled;
+		return true;
 	}
 
 	public boolean isFinderCacheEnabled() {
@@ -223,13 +275,15 @@ public class FinderPath {
 
 	private static final Map<String, String> _encodedTypes = _getEncodedTypes();
 
+	private final BiFunction<BaseModel<?>, Boolean, Object[]>
+		_argumentsBiFunction;
 	private final CacheKeyGenerator _cacheKeyGenerator;
 	private final String _cacheKeyGeneratorCacheName;
 	private String _cacheKeyPrefix;
 	private final String _cacheName;
-	private final long _columnBitmask;
-	private final boolean _entityCacheEnabled;
 	private final boolean _finderCacheEnabled;
+	private final BiFunction<BaseModel<?>, Boolean, Object[]>
+		_originalArgumentsBiFunction;
 	private final Class<?> _resultClass;
 
 }
