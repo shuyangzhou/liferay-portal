@@ -62,7 +62,6 @@ public class PortletPreferencesFinderImpl
 
 	public static final FinderPath FINDER_PATH_FIND_BY_C_G_O_O_P_P =
 		new FinderPath(
-			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			PortletPreferencesPersistenceImpl.
