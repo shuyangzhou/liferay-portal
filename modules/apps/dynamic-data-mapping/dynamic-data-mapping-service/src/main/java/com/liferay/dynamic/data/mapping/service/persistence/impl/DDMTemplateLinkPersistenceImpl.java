@@ -34,10 +34,12 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -54,9 +56,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -1450,29 +1455,29 @@ public class DDMTemplateLinkPersistenceImpl
 	 */
 	@Override
 	public void clearCache(DDMTemplateLink ddmTemplateLink) {
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		entityCache.removeResult(
-			entityCacheEnabled, DDMTemplateLinkImpl.class,
-			ddmTemplateLink.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(DDMTemplateLinkModelImpl)ddmTemplateLink, true);
+			entityCacheEnabled, DDMTemplateLinkImpl.class, ddmTemplateLink,
+			_columnBitmaskEnabled);
 	}
 
 	@Override
 	public void clearCache(List<DDMTemplateLink> ddmTemplateLinks) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (DDMTemplateLink ddmTemplateLink : ddmTemplateLinks) {
 			entityCache.removeResult(
-				entityCacheEnabled, DDMTemplateLinkImpl.class,
-				ddmTemplateLink.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(DDMTemplateLinkModelImpl)ddmTemplateLink, true);
+				entityCacheEnabled, DDMTemplateLinkImpl.class, ddmTemplateLink,
+				_columnBitmaskEnabled);
 		}
 	}
 
@@ -1500,33 +1505,6 @@ public class DDMTemplateLinkPersistenceImpl
 			_finderPathCountByC_C, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_C, args, ddmTemplateLinkModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				ddmTemplateLinkModelImpl.getClassNameId(),
-				ddmTemplateLinkModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
-
-		if ((ddmTemplateLinkModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ddmTemplateLinkModelImpl.getOriginalClassNameId(),
-				ddmTemplateLinkModelImpl.getOriginalClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
 	}
 
 	/**
@@ -1679,8 +1657,6 @@ public class DDMTemplateLinkPersistenceImpl
 				}
 
 				session.save(ddmTemplateLink);
-
-				ddmTemplateLink.setNew(false);
 			}
 			else {
 				ddmTemplateLink = (DDMTemplateLink)session.merge(
@@ -1695,81 +1671,30 @@ public class DDMTemplateLinkPersistenceImpl
 		}
 
 		if (ddmTemplateLink.getCtCollectionId() != 0) {
+			if (isNew) {
+				ddmTemplateLink.setNew(false);
+			}
+
 			ddmTemplateLink.resetOriginalValues();
 
 			return ddmTemplateLink;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				ddmTemplateLinkModelImpl.getClassNameId()
-			};
-
-			finderCache.removeResult(_finderPathCountByClassNameId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByClassNameId, args);
-
-			args = new Object[] {ddmTemplateLinkModelImpl.getTemplateId()};
-
-			finderCache.removeResult(_finderPathCountByTemplateId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByTemplateId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((ddmTemplateLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByClassNameId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ddmTemplateLinkModelImpl.getOriginalClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByClassNameId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByClassNameId, args);
-
-				args = new Object[] {ddmTemplateLinkModelImpl.getClassNameId()};
-
-				finderCache.removeResult(_finderPathCountByClassNameId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByClassNameId, args);
-			}
-
-			if ((ddmTemplateLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByTemplateId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ddmTemplateLinkModelImpl.getOriginalTemplateId()
-				};
-
-				finderCache.removeResult(_finderPathCountByTemplateId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByTemplateId, args);
-
-				args = new Object[] {ddmTemplateLinkModelImpl.getTemplateId()};
-
-				finderCache.removeResult(_finderPathCountByTemplateId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByTemplateId, args);
-			}
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		entityCache.putResult(
 			entityCacheEnabled, DDMTemplateLinkImpl.class,
-			ddmTemplateLink.getPrimaryKey(), ddmTemplateLink, false);
+			ddmTemplateLinkModelImpl, false, _columnBitmaskEnabled);
 
-		clearUniqueFindersCache(ddmTemplateLinkModelImpl, false);
 		cacheUniqueFindersCache(ddmTemplateLinkModelImpl);
+
+		if (isNew) {
+			ddmTemplateLink.setNew(false);
+		}
 
 		ddmTemplateLink.resetOriginalValues();
 
@@ -2208,81 +2133,74 @@ public class DDMTemplateLinkPersistenceImpl
 	 * Initializes the ddm template link persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		DDMTemplateLinkModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		DDMTemplateLinkModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByClassNameId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByClassNameId",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByClassNameId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "ClassNameId",
+			"findByClassNameId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByClassNameId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByClassNameId",
-			new String[] {Long.class.getName()},
-			DDMTemplateLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByClassNameId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "ClassNameId",
+			"findByClassNameId", new String[] {Long.class.getName()});
 
-		_finderPathCountByClassNameId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByClassNameId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByClassNameId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "ClassNameId",
+			"countByClassNameId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByTemplateId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByTemplateId",
+		_finderPathWithPaginationFindByTemplateId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "TemplateId",
+			"findByTemplateId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByTemplateId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByTemplateId",
-			new String[] {Long.class.getName()},
-			DDMTemplateLinkModelImpl.TEMPLATEID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByTemplateId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "TemplateId",
+			"findByTemplateId", new String[] {Long.class.getName()});
 
-		_finderPathCountByTemplateId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTemplateId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByTemplateId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "TemplateId",
+			"countByTemplateId", new String[] {Long.class.getName()});
 
-		_finderPathFetchByC_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			DDMTemplateLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			DDMTemplateLinkModelImpl.CLASSPK_COLUMN_BITMASK);
+		_finderPathFetchByC_C = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_C", "fetchByC_C",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByC_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
+		_finderPathCountByC_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_C", "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(DDMTemplateLinkImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -2318,6 +2236,7 @@ public class DDMTemplateLinkPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected CTPersistenceHelper ctPersistenceHelper;
@@ -2358,6 +2277,183 @@ public class DDMTemplateLinkPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = DDMTemplateLinkImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				finderCacheEnabled, returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			finderCacheEnabled, returnClass, cacheName, methodName, params,
+			_ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"ClassNameId", DDMTemplateLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"TemplateId", DDMTemplateLinkModelImpl.TEMPLATEID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_C",
+			DDMTemplateLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			DDMTemplateLinkModelImpl.CLASSPK_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"ClassNameId",
+			(baseModel, checkColumns) -> {
+				DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl =
+					(DDMTemplateLinkModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((ddmTemplateLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("ClassNameId")) != 0)) {
+
+					return new Object[] {
+						ddmTemplateLinkModelImpl.getClassNameId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"ClassNameId",
+			(baseModel, checkColumns) -> {
+				DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl =
+					(DDMTemplateLinkModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((ddmTemplateLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("ClassNameId")) != 0)) {
+
+					return new Object[] {
+						ddmTemplateLinkModelImpl.getOriginalClassNameId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"TemplateId",
+			(baseModel, checkColumns) -> {
+				DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl =
+					(DDMTemplateLinkModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((ddmTemplateLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("TemplateId")) != 0)) {
+
+					return new Object[] {
+						ddmTemplateLinkModelImpl.getTemplateId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"TemplateId",
+			(baseModel, checkColumns) -> {
+				DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl =
+					(DDMTemplateLinkModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((ddmTemplateLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("TemplateId")) != 0)) {
+
+					return new Object[] {
+						ddmTemplateLinkModelImpl.getOriginalTemplateId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_C",
+			(baseModel, checkColumns) -> {
+				DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl =
+					(DDMTemplateLinkModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((ddmTemplateLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_C")) != 0)) {
+
+					return new Object[] {
+						ddmTemplateLinkModelImpl.getClassNameId(),
+						ddmTemplateLinkModelImpl.getClassPK()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_C",
+			(baseModel, checkColumns) -> {
+				DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl =
+					(DDMTemplateLinkModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((ddmTemplateLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_C")) != 0)) {
+
+					return new Object[] {
+						ddmTemplateLinkModelImpl.getOriginalClassNameId(),
+						ddmTemplateLinkModelImpl.getOriginalClassPK()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

@@ -26,11 +26,13 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -48,12 +50,17 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -2078,34 +2085,33 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	 */
 	@Override
 	public void clearCache(KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		entityCache.removeResult(
 			entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
-			kaleoTimerInstanceToken.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken, true);
+			kaleoTimerInstanceToken, _columnBitmaskEnabled);
 	}
 
 	@Override
 	public void clearCache(
 		List<KaleoTimerInstanceToken> kaleoTimerInstanceTokens) {
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
 				kaleoTimerInstanceTokens) {
 
 			entityCache.removeResult(
 				entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
-				kaleoTimerInstanceToken.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(KaleoTimerInstanceTokenModelImpl)kaleoTimerInstanceToken,
-				true);
+				kaleoTimerInstanceToken, _columnBitmaskEnabled);
 		}
 	}
 
@@ -2135,34 +2141,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByKITI_KTI, args, kaleoTimerInstanceTokenModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		KaleoTimerInstanceTokenModelImpl kaleoTimerInstanceTokenModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
-				kaleoTimerInstanceTokenModelImpl.getKaleoTimerId()
-			};
-
-			finderCache.removeResult(_finderPathCountByKITI_KTI, args);
-			finderCache.removeResult(_finderPathFetchByKITI_KTI, args);
-		}
-
-		if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
-			 _finderPathFetchByKITI_KTI.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				kaleoTimerInstanceTokenModelImpl.
-					getOriginalKaleoInstanceTokenId(),
-				kaleoTimerInstanceTokenModelImpl.getOriginalKaleoTimerId()
-			};
-
-			finderCache.removeResult(_finderPathCountByKITI_KTI, args);
-			finderCache.removeResult(_finderPathFetchByKITI_KTI, args);
-		}
 	}
 
 	/**
@@ -2331,10 +2309,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		try {
 			session = openSession();
 
-			if (kaleoTimerInstanceToken.isNew()) {
+			if (isNew) {
 				session.save(kaleoTimerInstanceToken);
-
-				kaleoTimerInstanceToken.setNew(false);
 			}
 			else {
 				kaleoTimerInstanceToken =
@@ -2349,126 +2325,21 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				kaleoTimerInstanceTokenModelImpl.getKaleoInstanceId()
-			};
-
-			finderCache.removeResult(_finderPathCountByKaleoInstanceId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByKaleoInstanceId, args);
-
-			args = new Object[] {
-				kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
-				kaleoTimerInstanceTokenModelImpl.isCompleted()
-			};
-
-			finderCache.removeResult(_finderPathCountByKITI_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByKITI_C, args);
-
-			args = new Object[] {
-				kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
-				kaleoTimerInstanceTokenModelImpl.isBlocking(),
-				kaleoTimerInstanceTokenModelImpl.isCompleted()
-			};
-
-			finderCache.removeResult(_finderPathCountByKITI_B_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByKITI_B_C, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByKaleoInstanceId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					kaleoTimerInstanceTokenModelImpl.
-						getOriginalKaleoInstanceId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByKaleoInstanceId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByKaleoInstanceId, args);
-
-				args = new Object[] {
-					kaleoTimerInstanceTokenModelImpl.getKaleoInstanceId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByKaleoInstanceId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByKaleoInstanceId, args);
-			}
-
-			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByKITI_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					kaleoTimerInstanceTokenModelImpl.
-						getOriginalKaleoInstanceTokenId(),
-					kaleoTimerInstanceTokenModelImpl.getOriginalCompleted()
-				};
-
-				finderCache.removeResult(_finderPathCountByKITI_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByKITI_C, args);
-
-				args = new Object[] {
-					kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
-					kaleoTimerInstanceTokenModelImpl.isCompleted()
-				};
-
-				finderCache.removeResult(_finderPathCountByKITI_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByKITI_C, args);
-			}
-
-			if ((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByKITI_B_C.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					kaleoTimerInstanceTokenModelImpl.
-						getOriginalKaleoInstanceTokenId(),
-					kaleoTimerInstanceTokenModelImpl.getOriginalBlocking(),
-					kaleoTimerInstanceTokenModelImpl.getOriginalCompleted()
-				};
-
-				finderCache.removeResult(_finderPathCountByKITI_B_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByKITI_B_C, args);
-
-				args = new Object[] {
-					kaleoTimerInstanceTokenModelImpl.getKaleoInstanceTokenId(),
-					kaleoTimerInstanceTokenModelImpl.isBlocking(),
-					kaleoTimerInstanceTokenModelImpl.isCompleted()
-				};
-
-				finderCache.removeResult(_finderPathCountByKITI_B_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByKITI_B_C, args);
-			}
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		entityCache.putResult(
 			entityCacheEnabled, KaleoTimerInstanceTokenImpl.class,
-			kaleoTimerInstanceToken.getPrimaryKey(), kaleoTimerInstanceToken,
-			false);
+			kaleoTimerInstanceTokenModelImpl, false, _columnBitmaskEnabled);
 
-		clearUniqueFindersCache(kaleoTimerInstanceTokenModelImpl, false);
 		cacheUniqueFindersCache(kaleoTimerInstanceTokenModelImpl);
+
+		if (isNew) {
+			kaleoTimerInstanceToken.setNew(false);
+		}
 
 		kaleoTimerInstanceToken.resetOriginalValues();
 
@@ -2736,113 +2607,88 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	 * Initializes the kaleo timer instance token persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		KaleoTimerInstanceTokenModelImpl.setEntityCacheEnabled(
 			entityCacheEnabled);
 		KaleoTimerInstanceTokenModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByKaleoInstanceId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKaleoInstanceId",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByKaleoInstanceId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "KaleoInstanceId",
+			"findByKaleoInstanceId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByKaleoInstanceId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKaleoInstanceId",
-			new String[] {Long.class.getName()},
-			KaleoTimerInstanceTokenModelImpl.KALEOINSTANCEID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByKaleoInstanceId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KaleoInstanceId",
+			"findByKaleoInstanceId", new String[] {Long.class.getName()});
 
-		_finderPathCountByKaleoInstanceId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKaleoInstanceId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByKaleoInstanceId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KaleoInstanceId",
+			"countByKaleoInstanceId", new String[] {Long.class.getName()});
 
-		_finderPathFetchByKITI_KTI = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByKITI_KTI",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			KaleoTimerInstanceTokenModelImpl.
-				KALEOINSTANCETOKENID_COLUMN_BITMASK |
-			KaleoTimerInstanceTokenModelImpl.KALEOTIMERID_COLUMN_BITMASK);
-
-		_finderPathCountByKITI_KTI = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_KTI",
+		_finderPathFetchByKITI_KTI = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "KITI_KTI", "fetchByKITI_KTI",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByKITI_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKITI_C",
+		_finderPathCountByKITI_KTI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KITI_KTI",
+			"countByKITI_KTI",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByKITI_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "KITI_C", "findByKITI_C",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByKITI_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKITI_C",
-			new String[] {Long.class.getName(), Boolean.class.getName()},
-			KaleoTimerInstanceTokenModelImpl.
-				KALEOINSTANCETOKENID_COLUMN_BITMASK |
-			KaleoTimerInstanceTokenModelImpl.COMPLETED_COLUMN_BITMASK);
-
-		_finderPathCountByKITI_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_C",
+		_finderPathWithoutPaginationFindByKITI_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KITI_C", "findByKITI_C",
 			new String[] {Long.class.getName(), Boolean.class.getName()});
 
-		_finderPathWithPaginationFindByKITI_B_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKITI_B_C",
+		_finderPathCountByKITI_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KITI_C",
+			"countByKITI_C",
+			new String[] {Long.class.getName(), Boolean.class.getName()});
+
+		_finderPathWithPaginationFindByKITI_B_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "KITI_B_C",
+			"findByKITI_B_C",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByKITI_B_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			KaleoTimerInstanceTokenImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKITI_B_C",
+		_finderPathWithoutPaginationFindByKITI_B_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KITI_B_C",
+			"findByKITI_B_C",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
-			},
-			KaleoTimerInstanceTokenModelImpl.
-				KALEOINSTANCETOKENID_COLUMN_BITMASK |
-			KaleoTimerInstanceTokenModelImpl.BLOCKING_COLUMN_BITMASK |
-			KaleoTimerInstanceTokenModelImpl.COMPLETED_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByKITI_B_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_B_C",
+		_finderPathCountByKITI_B_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "KITI_B_C",
+			"countByKITI_B_C",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
@@ -2852,9 +2698,12 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(KaleoTimerInstanceTokenImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -2890,6 +2739,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -2928,6 +2778,253 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = KaleoTimerInstanceTokenImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				finderCacheEnabled, returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			finderCacheEnabled, returnClass, cacheName, methodName, params,
+			_ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"KaleoInstanceId",
+			KaleoTimerInstanceTokenModelImpl.KALEOINSTANCEID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"KITI_KTI",
+			KaleoTimerInstanceTokenModelImpl.
+				KALEOINSTANCETOKENID_COLUMN_BITMASK |
+			KaleoTimerInstanceTokenModelImpl.KALEOTIMERID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"KITI_C",
+			KaleoTimerInstanceTokenModelImpl.
+				KALEOINSTANCETOKENID_COLUMN_BITMASK |
+			KaleoTimerInstanceTokenModelImpl.COMPLETED_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"KITI_B_C",
+			KaleoTimerInstanceTokenModelImpl.
+				KALEOINSTANCETOKENID_COLUMN_BITMASK |
+			KaleoTimerInstanceTokenModelImpl.BLOCKING_COLUMN_BITMASK |
+			KaleoTimerInstanceTokenModelImpl.COMPLETED_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KaleoInstanceId",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KaleoInstanceId")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.getKaleoInstanceId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KaleoInstanceId",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KaleoInstanceId")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getOriginalKaleoInstanceId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KITI_KTI",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KITI_KTI")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getKaleoTimerId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KITI_KTI",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KITI_KTI")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getOriginalKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.
+							getOriginalKaleoTimerId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KITI_C",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KITI_C")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.isCompleted()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KITI_C",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KITI_C")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getOriginalKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getOriginalCompleted()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KITI_B_C",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KITI_B_C")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.isBlocking(),
+						kaleoTimerInstanceTokenModelImpl.isCompleted()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"KITI_B_C",
+			(baseModel, checkColumns) -> {
+				KaleoTimerInstanceTokenModelImpl
+					kaleoTimerInstanceTokenModelImpl =
+						(KaleoTimerInstanceTokenModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((kaleoTimerInstanceTokenModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("KITI_B_C")) != 0)) {
+
+					return new Object[] {
+						kaleoTimerInstanceTokenModelImpl.
+							getOriginalKaleoInstanceTokenId(),
+						kaleoTimerInstanceTokenModelImpl.getOriginalBlocking(),
+						kaleoTimerInstanceTokenModelImpl.getOriginalCompleted()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

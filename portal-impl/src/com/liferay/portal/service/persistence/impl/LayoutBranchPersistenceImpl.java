@@ -26,24 +26,32 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchLayoutBranchException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.LayoutBranch;
 import com.liferay.portal.kernel.model.LayoutBranchTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.LayoutBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.LayoutBranchImpl;
 import com.liferay.portal.model.impl.LayoutBranchModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 /**
  * The persistence implementation for the layout branch service.
@@ -2060,27 +2068,32 @@ public class LayoutBranchPersistenceImpl
 	 */
 	@Override
 	public void clearCache(LayoutBranch layoutBranch) {
+		if (!LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		EntityCacheUtil.removeResult(
 			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED, LayoutBranchImpl.class,
-			layoutBranch.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((LayoutBranchModelImpl)layoutBranch, true);
+			layoutBranch, LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED);
 	}
 
 	@Override
 	public void clearCache(List<LayoutBranch> layoutBranchs) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (LayoutBranch layoutBranch : layoutBranchs) {
 			EntityCacheUtil.removeResult(
 				LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutBranchImpl.class, layoutBranch.getPrimaryKey());
-
-			clearUniqueFindersCache((LayoutBranchModelImpl)layoutBranch, true);
+				LayoutBranchImpl.class, layoutBranch,
+				LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED);
 		}
 	}
 
@@ -2109,33 +2122,6 @@ public class LayoutBranchPersistenceImpl
 			_finderPathCountByL_P_N, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByL_P_N, args, layoutBranchModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		LayoutBranchModelImpl layoutBranchModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				layoutBranchModelImpl.getLayoutSetBranchId(),
-				layoutBranchModelImpl.getPlid(), layoutBranchModelImpl.getName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByL_P_N, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByL_P_N, args);
-		}
-
-		if ((layoutBranchModelImpl.getColumnBitmask() &
-			 _finderPathFetchByL_P_N.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				layoutBranchModelImpl.getOriginalLayoutSetBranchId(),
-				layoutBranchModelImpl.getOriginalPlid(),
-				layoutBranchModelImpl.getOriginalName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByL_P_N, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByL_P_N, args);
-		}
 	}
 
 	/**
@@ -2270,10 +2256,8 @@ public class LayoutBranchPersistenceImpl
 		try {
 			session = openSession();
 
-			if (layoutBranch.isNew()) {
+			if (isNew) {
 				session.save(layoutBranch);
-
-				layoutBranch.setNew(false);
 			}
 			else {
 				layoutBranch = (LayoutBranch)session.merge(layoutBranch);
@@ -2286,125 +2270,23 @@ public class LayoutBranchPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			FinderCacheUtil.clearCache(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				layoutBranchModelImpl.getLayoutSetBranchId()
-			};
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountByLayoutSetBranchId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByLayoutSetBranchId, args);
-
-			args = new Object[] {
-				layoutBranchModelImpl.getLayoutSetBranchId(),
-				layoutBranchModelImpl.getPlid()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByL_P, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByL_P, args);
-
-			args = new Object[] {
-				layoutBranchModelImpl.getLayoutSetBranchId(),
-				layoutBranchModelImpl.getPlid(),
-				layoutBranchModelImpl.isMaster()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByL_P_M, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByL_P_M, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((layoutBranchModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByLayoutSetBranchId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					layoutBranchModelImpl.getOriginalLayoutSetBranchId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByLayoutSetBranchId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByLayoutSetBranchId, args);
-
-				args = new Object[] {
-					layoutBranchModelImpl.getLayoutSetBranchId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByLayoutSetBranchId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByLayoutSetBranchId, args);
-			}
-
-			if ((layoutBranchModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByL_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutBranchModelImpl.getOriginalLayoutSetBranchId(),
-					layoutBranchModelImpl.getOriginalPlid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByL_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByL_P, args);
-
-				args = new Object[] {
-					layoutBranchModelImpl.getLayoutSetBranchId(),
-					layoutBranchModelImpl.getPlid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByL_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByL_P, args);
-			}
-
-			if ((layoutBranchModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByL_P_M.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutBranchModelImpl.getOriginalLayoutSetBranchId(),
-					layoutBranchModelImpl.getOriginalPlid(),
-					layoutBranchModelImpl.getOriginalMaster()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByL_P_M, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByL_P_M, args);
-
-				args = new Object[] {
-					layoutBranchModelImpl.getLayoutSetBranchId(),
-					layoutBranchModelImpl.getPlid(),
-					layoutBranchModelImpl.isMaster()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByL_P_M, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByL_P_M, args);
-			}
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		EntityCacheUtil.putResult(
 			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED, LayoutBranchImpl.class,
-			layoutBranch.getPrimaryKey(), layoutBranch, false);
+			layoutBranchModelImpl, false,
+			LayoutBranchModelImpl.COLUMN_BITMASK_ENABLED);
 
-		clearUniqueFindersCache(layoutBranchModelImpl, false);
 		cacheUniqueFindersCache(layoutBranchModelImpl);
+
+		if (isNew) {
+			layoutBranch.setNew(false);
+		}
 
 		layoutBranch.resetOriginalValues();
 
@@ -2664,116 +2546,81 @@ public class LayoutBranchPersistenceImpl
 	 * Initializes the layout branch persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByLayoutSetBranchId = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLayoutSetBranchId",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByLayoutSetBranchId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "LayoutSetBranchId",
+			"findByLayoutSetBranchId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByLayoutSetBranchId = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByLayoutSetBranchId", new String[] {Long.class.getName()},
-			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByLayoutSetBranchId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "LayoutSetBranchId",
+			"findByLayoutSetBranchId", new String[] {Long.class.getName()});
 
-		_finderPathCountByLayoutSetBranchId = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByLayoutSetBranchId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "LayoutSetBranchId",
 			"countByLayoutSetBranchId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByL_P = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByL_P",
+		_finderPathWithPaginationFindByL_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "L_P", "findByL_P",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByL_P = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByL_P",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK |
-			LayoutBranchModelImpl.PLID_COLUMN_BITMASK);
-
-		_finderPathCountByL_P = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByL_P",
+		_finderPathWithoutPaginationFindByL_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "L_P", "findByL_P",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathFetchByL_P_N = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByL_P_N",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				String.class.getName()
-			},
-			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK |
-			LayoutBranchModelImpl.PLID_COLUMN_BITMASK |
-			LayoutBranchModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathCountByL_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "L_P", "countByL_P",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByL_P_N = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByL_P_N",
+		_finderPathFetchByL_P_N = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "L_P_N", "fetchByL_P_N",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
 
-		_finderPathWithPaginationFindByL_P_M = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByL_P_M",
+		_finderPathCountByL_P_N = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "L_P_N", "countByL_P_N",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				String.class.getName()
+			});
+
+		_finderPathWithPaginationFindByL_P_M = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "L_P_M", "findByL_P_M",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByL_P_M = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, LayoutBranchImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByL_P_M",
+		_finderPathWithoutPaginationFindByL_P_M = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "L_P_M", "findByL_P_M",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
-			},
-			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK |
-			LayoutBranchModelImpl.PLID_COLUMN_BITMASK |
-			LayoutBranchModelImpl.MASTER_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByL_P_M = new FinderPath(
-			LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByL_P_M",
+		_finderPathCountByL_P_M = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "L_P_M", "countByL_P_M",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
@@ -2782,9 +2629,12 @@ public class LayoutBranchPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(LayoutBranchImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_LAYOUTBRANCH =
@@ -2809,5 +2659,243 @@ public class LayoutBranchPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutBranchPersistenceImpl.class);
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = LayoutBranchImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				LayoutBranchModelImpl.FINDER_CACHE_ENABLED, returnClass,
+				cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			LayoutBranchModelImpl.FINDER_CACHE_ENABLED, returnClass, cacheName,
+			methodName, params, _ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				FinderPath.class, finderPath,
+				HashMapBuilder.<String, Object>put(
+					"cache.name", cacheName
+				).build()));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"LayoutSetBranchId",
+			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"L_P",
+			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK |
+			LayoutBranchModelImpl.PLID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"L_P_N",
+			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK |
+			LayoutBranchModelImpl.PLID_COLUMN_BITMASK |
+			LayoutBranchModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"L_P_M",
+			LayoutBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK |
+			LayoutBranchModelImpl.PLID_COLUMN_BITMASK |
+			LayoutBranchModelImpl.MASTER_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"LayoutSetBranchId",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("LayoutSetBranchId")) !=
+						  0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getLayoutSetBranchId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"LayoutSetBranchId",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("LayoutSetBranchId")) !=
+						  0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getOriginalLayoutSetBranchId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"L_P",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("L_P")) != 0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getLayoutSetBranchId(),
+						layoutBranchModelImpl.getPlid()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"L_P",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("L_P")) != 0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getOriginalLayoutSetBranchId(),
+						layoutBranchModelImpl.getOriginalPlid()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"L_P_N",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("L_P_N")) != 0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getLayoutSetBranchId(),
+						layoutBranchModelImpl.getPlid(),
+						layoutBranchModelImpl.getName()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"L_P_N",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("L_P_N")) != 0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getOriginalLayoutSetBranchId(),
+						layoutBranchModelImpl.getOriginalPlid(),
+						layoutBranchModelImpl.getOriginalName()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"L_P_M",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("L_P_M")) != 0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getLayoutSetBranchId(),
+						layoutBranchModelImpl.getPlid(),
+						layoutBranchModelImpl.isMaster()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"L_P_M",
+			(baseModel, checkColumns) -> {
+				LayoutBranchModelImpl layoutBranchModelImpl =
+					(LayoutBranchModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((layoutBranchModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("L_P_M")) != 0)) {
+
+					return new Object[] {
+						layoutBranchModelImpl.getOriginalLayoutSetBranchId(),
+						layoutBranchModelImpl.getOriginalPlid(),
+						layoutBranchModelImpl.getOriginalMaster()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }

@@ -24,7 +24,9 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -39,9 +41,17 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * The persistence implementation for the versioned entry service.
@@ -1380,28 +1390,31 @@ public class VersionedEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(VersionedEntry versionedEntry) {
+		if (!VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		entityCache.removeResult(
 			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryImpl.class, versionedEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((VersionedEntryModelImpl)versionedEntry, true);
+			VersionedEntryImpl.class, versionedEntry,
+			VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED);
 	}
 
 	@Override
 	public void clearCache(List<VersionedEntry> versionedEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (VersionedEntry versionedEntry : versionedEntries) {
 			entityCache.removeResult(
 				VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-				VersionedEntryImpl.class, versionedEntry.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(VersionedEntryModelImpl)versionedEntry, true);
+				VersionedEntryImpl.class, versionedEntry,
+				VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED);
 		}
 	}
 
@@ -1427,28 +1440,6 @@ public class VersionedEntryPersistenceImpl
 			_finderPathCountByHeadId, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByHeadId, args, versionedEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		VersionedEntryModelImpl versionedEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {versionedEntryModelImpl.getHeadId()};
-
-			finderCache.removeResult(_finderPathCountByHeadId, args);
-			finderCache.removeResult(_finderPathFetchByHeadId, args);
-		}
-
-		if ((versionedEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByHeadId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				versionedEntryModelImpl.getOriginalHeadId()
-			};
-
-			finderCache.removeResult(_finderPathCountByHeadId, args);
-			finderCache.removeResult(_finderPathFetchByHeadId, args);
-		}
 	}
 
 	/**
@@ -1582,10 +1573,8 @@ public class VersionedEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (versionedEntry.isNew()) {
+			if (isNew) {
 				session.save(versionedEntry);
-
-				versionedEntry.setNew(false);
 			}
 			else {
 				versionedEntry = (VersionedEntry)session.merge(versionedEntry);
@@ -1598,82 +1587,22 @@ public class VersionedEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {versionedEntryModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				versionedEntryModelImpl.getGroupId(),
-				versionedEntryModelImpl.isHead()
-			};
-
-			finderCache.removeResult(_finderPathCountByGroupId_Head, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId_Head, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((versionedEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					versionedEntryModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {versionedEntryModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((versionedEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId_Head.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					versionedEntryModelImpl.getOriginalGroupId(),
-					versionedEntryModelImpl.getOriginalHead()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId_Head, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId_Head, args);
-
-				args = new Object[] {
-					versionedEntryModelImpl.getGroupId(),
-					versionedEntryModelImpl.isHead()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId_Head, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId_Head, args);
-			}
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		entityCache.putResult(
 			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryImpl.class, versionedEntry.getPrimaryKey(),
-			versionedEntry, false);
+			VersionedEntryImpl.class, versionedEntryModelImpl, false,
+			VersionedEntryModelImpl.COLUMN_BITMASK_ENABLED);
 
-		clearUniqueFindersCache(versionedEntryModelImpl, false);
 		cacheUniqueFindersCache(versionedEntryModelImpl);
+
+		if (isNew) {
+			versionedEntry.setNew(false);
+		}
 
 		versionedEntry.resetOriginalValues();
 
@@ -1934,51 +1863,40 @@ public class VersionedEntryPersistenceImpl
 	 * Initializes the versioned entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+		Bundle bundle = FrameworkUtil.getBundle(
+			VersionedEntryPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
+		_bundleContext = bundle.getBundleContext();
 
-		_finderPathCountAll = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByGroupId",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByGroupId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "GroupId", "findByGroupId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByGroupId", new String[] {Long.class.getName()},
-			VersionedEntryModelImpl.GROUPID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByGroupId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "GroupId",
+			"findByGroupId", new String[] {Long.class.getName()});
 
-		_finderPathCountByGroupId = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByGroupId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "GroupId",
+			"countByGroupId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByGroupId_Head = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByGroupId_Head = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "GroupId_Head",
 			"findByGroupId_Head",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
@@ -1986,41 +1904,36 @@ public class VersionedEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId_Head = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathWithoutPaginationFindByGroupId_Head = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "GroupId_Head",
 			"findByGroupId_Head",
-			new String[] {Long.class.getName(), Boolean.class.getName()},
-			VersionedEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			VersionedEntryModelImpl.HEAD_COLUMN_BITMASK);
-
-		_finderPathCountByGroupId_Head = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId_Head",
 			new String[] {Long.class.getName(), Boolean.class.getName()});
 
-		_finderPathFetchByHeadId = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED,
-			VersionedEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByHeadId",
-			new String[] {Long.class.getName()},
-			VersionedEntryModelImpl.HEADID_COLUMN_BITMASK);
+		_finderPathCountByGroupId_Head = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "GroupId_Head",
+			"countByGroupId_Head",
+			new String[] {Long.class.getName(), Boolean.class.getName()});
 
-		_finderPathCountByHeadId = new FinderPath(
-			VersionedEntryModelImpl.ENTITY_CACHE_ENABLED,
-			VersionedEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByHeadId",
+		_finderPathFetchByHeadId = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "HeadId", "fetchByHeadId",
 			new String[] {Long.class.getName()});
+
+		_finderPathCountByHeadId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "HeadId",
+			"countByHeadId", new String[] {Long.class.getName()});
 	}
 
 	public void destroy() {
 		entityCache.removeCache(VersionedEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
+
+	private BundleContext _bundleContext;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
@@ -2050,5 +1963,180 @@ public class VersionedEntryPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		VersionedEntryPersistenceImpl.class);
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = VersionedEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				VersionedEntryModelImpl.FINDER_CACHE_ENABLED, returnClass,
+				cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			VersionedEntryModelImpl.FINDER_CACHE_ENABLED, returnClass,
+			cacheName, methodName, params,
+			_ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"GroupId", VersionedEntryModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"GroupId_Head",
+			VersionedEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			VersionedEntryModelImpl.HEAD_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"HeadId", VersionedEntryModelImpl.HEADID_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"GroupId",
+			(baseModel, checkColumns) -> {
+				VersionedEntryModelImpl versionedEntryModelImpl =
+					(VersionedEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((versionedEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("GroupId")) != 0)) {
+
+					return new Object[] {versionedEntryModelImpl.getGroupId()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"GroupId",
+			(baseModel, checkColumns) -> {
+				VersionedEntryModelImpl versionedEntryModelImpl =
+					(VersionedEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((versionedEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("GroupId")) != 0)) {
+
+					return new Object[] {
+						versionedEntryModelImpl.getOriginalGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"GroupId_Head",
+			(baseModel, checkColumns) -> {
+				VersionedEntryModelImpl versionedEntryModelImpl =
+					(VersionedEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((versionedEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("GroupId_Head")) != 0)) {
+
+					return new Object[] {
+						versionedEntryModelImpl.getGroupId(),
+						versionedEntryModelImpl.isHead()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"GroupId_Head",
+			(baseModel, checkColumns) -> {
+				VersionedEntryModelImpl versionedEntryModelImpl =
+					(VersionedEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((versionedEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("GroupId_Head")) != 0)) {
+
+					return new Object[] {
+						versionedEntryModelImpl.getOriginalGroupId(),
+						versionedEntryModelImpl.getOriginalHead()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"HeadId",
+			(baseModel, checkColumns) -> {
+				VersionedEntryModelImpl versionedEntryModelImpl =
+					(VersionedEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((versionedEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("HeadId")) != 0)) {
+
+					return new Object[] {versionedEntryModelImpl.getHeadId()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"HeadId",
+			(baseModel, checkColumns) -> {
+				VersionedEntryModelImpl versionedEntryModelImpl =
+					(VersionedEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((versionedEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("HeadId")) != 0)) {
+
+					return new Object[] {
+						versionedEntryModelImpl.getOriginalHeadId()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }

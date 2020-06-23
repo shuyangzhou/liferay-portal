@@ -33,12 +33,14 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -52,13 +54,17 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -5452,29 +5458,29 @@ public class CalendarBookingPersistenceImpl
 	 */
 	@Override
 	public void clearCache(CalendarBooking calendarBooking) {
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		entityCache.removeResult(
-			entityCacheEnabled, CalendarBookingImpl.class,
-			calendarBooking.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(CalendarBookingModelImpl)calendarBooking, true);
+			entityCacheEnabled, CalendarBookingImpl.class, calendarBooking,
+			_columnBitmaskEnabled);
 	}
 
 	@Override
 	public void clearCache(List<CalendarBooking> calendarBookings) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (CalendarBooking calendarBooking : calendarBookings) {
 			entityCache.removeResult(
-				entityCacheEnabled, CalendarBookingImpl.class,
-				calendarBooking.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(CalendarBookingModelImpl)calendarBooking, true);
+				entityCacheEnabled, CalendarBookingImpl.class, calendarBooking,
+				_columnBitmaskEnabled);
 		}
 	}
 
@@ -5522,77 +5528,6 @@ public class CalendarBookingPersistenceImpl
 			_finderPathCountByC_V, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_V, args, calendarBookingModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		CalendarBookingModelImpl calendarBookingModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				calendarBookingModelImpl.getUuid(),
-				calendarBookingModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((calendarBookingModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				calendarBookingModelImpl.getOriginalUuid(),
-				calendarBookingModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				calendarBookingModelImpl.getCalendarId(),
-				calendarBookingModelImpl.getParentCalendarBookingId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_P, args);
-			finderCache.removeResult(_finderPathFetchByC_P, args);
-		}
-
-		if ((calendarBookingModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_P.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				calendarBookingModelImpl.getOriginalCalendarId(),
-				calendarBookingModelImpl.getOriginalParentCalendarBookingId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_P, args);
-			finderCache.removeResult(_finderPathFetchByC_P, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				calendarBookingModelImpl.getCalendarId(),
-				calendarBookingModelImpl.getVEventUid()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_V, args);
-			finderCache.removeResult(_finderPathFetchByC_V, args);
-		}
-
-		if ((calendarBookingModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_V.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				calendarBookingModelImpl.getOriginalCalendarId(),
-				calendarBookingModelImpl.getOriginalVEventUid()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_V, args);
-			finderCache.removeResult(_finderPathFetchByC_V, args);
-		}
 	}
 
 	/**
@@ -5763,10 +5698,8 @@ public class CalendarBookingPersistenceImpl
 		try {
 			session = openSession();
 
-			if (calendarBooking.isNew()) {
+			if (isNew) {
 				session.save(calendarBooking);
-
-				calendarBooking.setNew(false);
 			}
 			else {
 				calendarBooking = (CalendarBooking)session.merge(
@@ -5780,275 +5713,21 @@ public class CalendarBookingPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {calendarBookingModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				calendarBookingModelImpl.getUuid(),
-				calendarBookingModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {calendarBookingModelImpl.getCalendarId()};
-
-			finderCache.removeResult(_finderPathCountByCalendarId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCalendarId, args);
-
-			args = new Object[] {
-				calendarBookingModelImpl.getCalendarResourceId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByCalendarResourceId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCalendarResourceId, args);
-
-			args = new Object[] {
-				calendarBookingModelImpl.getParentCalendarBookingId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByParentCalendarBookingId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByParentCalendarBookingId,
-				args);
-
-			args = new Object[] {
-				calendarBookingModelImpl.getRecurringCalendarBookingId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByRecurringCalendarBookingId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByRecurringCalendarBookingId,
-				args);
-
-			args = new Object[] {
-				calendarBookingModelImpl.getCalendarId(),
-				calendarBookingModelImpl.getStatus()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_S, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_S, args);
-
-			args = new Object[] {
-				calendarBookingModelImpl.getParentCalendarBookingId(),
-				calendarBookingModelImpl.getStatus()
-			};
-
-			finderCache.removeResult(_finderPathCountByP_S, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByP_S, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {calendarBookingModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.getOriginalUuid(),
-					calendarBookingModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					calendarBookingModelImpl.getUuid(),
-					calendarBookingModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCalendarId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.getOriginalCalendarId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCalendarId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCalendarId, args);
-
-				args = new Object[] {calendarBookingModelImpl.getCalendarId()};
-
-				finderCache.removeResult(_finderPathCountByCalendarId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCalendarId, args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCalendarResourceId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.getOriginalCalendarResourceId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByCalendarResourceId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCalendarResourceId, args);
-
-				args = new Object[] {
-					calendarBookingModelImpl.getCalendarResourceId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByCalendarResourceId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCalendarResourceId, args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByParentCalendarBookingId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.
-						getOriginalParentCalendarBookingId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByParentCalendarBookingId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByParentCalendarBookingId,
-					args);
-
-				args = new Object[] {
-					calendarBookingModelImpl.getParentCalendarBookingId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByParentCalendarBookingId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByParentCalendarBookingId,
-					args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByRecurringCalendarBookingId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.
-						getOriginalRecurringCalendarBookingId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByRecurringCalendarBookingId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByRecurringCalendarBookingId,
-					args);
-
-				args = new Object[] {
-					calendarBookingModelImpl.getRecurringCalendarBookingId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByRecurringCalendarBookingId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByRecurringCalendarBookingId,
-					args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.getOriginalCalendarId(),
-					calendarBookingModelImpl.getOriginalStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_S, args);
-
-				args = new Object[] {
-					calendarBookingModelImpl.getCalendarId(),
-					calendarBookingModelImpl.getStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_S, args);
-			}
-
-			if ((calendarBookingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByP_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					calendarBookingModelImpl.
-						getOriginalParentCalendarBookingId(),
-					calendarBookingModelImpl.getOriginalStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByP_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByP_S, args);
-
-				args = new Object[] {
-					calendarBookingModelImpl.getParentCalendarBookingId(),
-					calendarBookingModelImpl.getStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByP_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByP_S, args);
-			}
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		entityCache.putResult(
 			entityCacheEnabled, CalendarBookingImpl.class,
-			calendarBooking.getPrimaryKey(), calendarBooking, false);
+			calendarBookingModelImpl, false, _columnBitmaskEnabled);
 
-		clearUniqueFindersCache(calendarBookingModelImpl, false);
 		cacheUniqueFindersCache(calendarBookingModelImpl);
+
+		if (isNew) {
+			calendarBooking.setNew(false);
+		}
 
 		calendarBooking.resetOriginalValues();
 
@@ -6315,154 +5994,123 @@ public class CalendarBookingPersistenceImpl
 	 * Initializes the calendar booking persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		CalendarBookingModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		CalendarBookingModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid", "findByUuid",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			CalendarBookingModelImpl.UUID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
+		_finderPathWithoutPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "findByUuid",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByUUID_G = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()},
-			CalendarBookingModelImpl.UUID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.GROUPID_COLUMN_BITMASK);
+		_finderPathCountByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "countByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathCountByUUID_G = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
+		_finderPathFetchByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "UUID_G", "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
+		_finderPathCountByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UUID_G",
+			"countByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			CalendarBookingModelImpl.UUID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.COMPANYID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
+		_finderPathWithoutPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByCalendarId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCalendarId",
+		_finderPathCountByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C",
+			"countByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByCalendarId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CalendarId",
+			"findByCalendarId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCalendarId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCalendarId",
-			new String[] {Long.class.getName()},
-			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCalendarId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CalendarId",
+			"findByCalendarId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCalendarId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCalendarId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByCalendarId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CalendarId",
+			"countByCalendarId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByCalendarResourceId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCalendarResourceId",
+		_finderPathWithPaginationFindByCalendarResourceId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CalendarResourceId",
+			"findByCalendarResourceId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCalendarResourceId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByCalendarResourceId", new String[] {Long.class.getName()},
-			CalendarBookingModelImpl.CALENDARRESOURCEID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCalendarResourceId =
+			_createFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CalendarResourceId",
+				"findByCalendarResourceId",
+				new String[] {Long.class.getName()});
 
-		_finderPathCountByCalendarResourceId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCalendarResourceId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CalendarResourceId",
 			"countByCalendarResourceId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByParentCalendarBookingId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByParentCalendarBookingId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
+		_finderPathWithPaginationFindByParentCalendarBookingId =
+			_createFinderPath(
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"ParentCalendarBookingId", "findByParentCalendarBookingId",
+				new String[] {
+					Long.class.getName(), Integer.class.getName(),
+					Integer.class.getName(), OrderByComparator.class.getName()
+				});
 
 		_finderPathWithoutPaginationFindByParentCalendarBookingId =
-			new FinderPath(
-				entityCacheEnabled, finderCacheEnabled,
-				CalendarBookingImpl.class,
+			_createFinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-				"findByParentCalendarBookingId",
-				new String[] {Long.class.getName()},
-				CalendarBookingModelImpl.
-					PARENTCALENDARBOOKINGID_COLUMN_BITMASK |
-				CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-				CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+				"ParentCalendarBookingId", "findByParentCalendarBookingId",
+				new String[] {Long.class.getName()});
 
-		_finderPathCountByParentCalendarBookingId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
+		_finderPathCountByParentCalendarBookingId = _createFinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByParentCalendarBookingId",
+			"ParentCalendarBookingId", "countByParentCalendarBookingId",
 			new String[] {Long.class.getName()});
 
 		_finderPathWithPaginationFindByRecurringCalendarBookingId =
-			new FinderPath(
-				entityCacheEnabled, finderCacheEnabled,
-				CalendarBookingImpl.class,
+			_createFinderPath(
 				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"RecurringCalendarBookingId",
 				"findByRecurringCalendarBookingId",
 				new String[] {
 					Long.class.getName(), Integer.class.getName(),
@@ -6470,105 +6118,79 @@ public class CalendarBookingPersistenceImpl
 				});
 
 		_finderPathWithoutPaginationFindByRecurringCalendarBookingId =
-			new FinderPath(
-				entityCacheEnabled, finderCacheEnabled,
-				CalendarBookingImpl.class,
+			_createFinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+				"RecurringCalendarBookingId",
 				"findByRecurringCalendarBookingId",
-				new String[] {Long.class.getName()},
-				CalendarBookingModelImpl.
-					RECURRINGCALENDARBOOKINGID_COLUMN_BITMASK |
-				CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-				CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+				new String[] {Long.class.getName()});
 
-		_finderPathCountByRecurringCalendarBookingId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
+		_finderPathCountByRecurringCalendarBookingId = _createFinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByRecurringCalendarBookingId",
+			"RecurringCalendarBookingId", "countByRecurringCalendarBookingId",
 			new String[] {Long.class.getName()});
 
-		_finderPathFetchByC_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_P",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.PARENTCALENDARBOOKINGID_COLUMN_BITMASK);
-
-		_finderPathCountByC_P = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_P",
+		_finderPathFetchByC_P = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_P", "fetchByC_P",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathFetchByC_V = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_V",
-			new String[] {Long.class.getName(), String.class.getName()},
-			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.VEVENTUID_COLUMN_BITMASK);
+		_finderPathCountByC_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_P", "countByC_P",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByC_V = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_V",
+		_finderPathFetchByC_V = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_V", "fetchByC_V",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_finderPathWithPaginationFindByC_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_S",
+		_finderPathCountByC_V = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_V", "countByC_V",
+			new String[] {Long.class.getName(), String.class.getName()});
+
+		_finderPathWithPaginationFindByC_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_S", "findByC_S",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_S",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STATUS_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
-
-		_finderPathCountByC_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
+		_finderPathWithoutPaginationFindByC_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_S", "findByC_S",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathWithPaginationCountByC_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_S",
+		_finderPathCountByC_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_S", "countByC_S",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathWithPaginationFindByP_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByP_S",
+		_finderPathWithPaginationCountByC_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_S", "countByC_S",
+			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_finderPathWithPaginationFindByP_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "P_S", "findByP_S",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByP_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CalendarBookingImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByP_S",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			CalendarBookingModelImpl.PARENTCALENDARBOOKINGID_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STATUS_COLUMN_BITMASK |
-			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
-			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByP_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "P_S", "findByP_S",
+			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathCountByP_S = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByP_S",
+		_finderPathCountByP_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "P_S", "countByP_S",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(CalendarBookingImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -6604,6 +6226,7 @@ public class CalendarBookingPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -6644,6 +6267,544 @@ public class CalendarBookingPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = CalendarBookingImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				finderCacheEnabled, returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			finderCacheEnabled, returnClass, cacheName, methodName, params,
+			_ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid",
+			CalendarBookingModelImpl.UUID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UUID_G",
+			CalendarBookingModelImpl.UUID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid_C",
+			CalendarBookingModelImpl.UUID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.COMPANYID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CalendarId",
+			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CalendarResourceId",
+			CalendarBookingModelImpl.CALENDARRESOURCEID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"ParentCalendarBookingId",
+			CalendarBookingModelImpl.PARENTCALENDARBOOKINGID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"RecurringCalendarBookingId",
+			CalendarBookingModelImpl.RECURRINGCALENDARBOOKINGID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_P",
+			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.PARENTCALENDARBOOKINGID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_V",
+			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.VEVENTUID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_S",
+			CalendarBookingModelImpl.CALENDARID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STATUS_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"P_S",
+			CalendarBookingModelImpl.PARENTCALENDARBOOKINGID_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STATUS_COLUMN_BITMASK |
+			CalendarBookingModelImpl.STARTTIME_COLUMN_BITMASK |
+			CalendarBookingModelImpl.TITLE_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					return new Object[] {calendarBookingModelImpl.getUuid()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalUuid()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UUID_G")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getUuid(),
+						calendarBookingModelImpl.getGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UUID_G")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalUuid(),
+						calendarBookingModelImpl.getOriginalGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getUuid(),
+						calendarBookingModelImpl.getCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalUuid(),
+						calendarBookingModelImpl.getOriginalCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CalendarId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CalendarId")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getCalendarId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CalendarId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CalendarId")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalCalendarId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CalendarResourceId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CalendarResourceId")) !=
+						  0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getCalendarResourceId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CalendarResourceId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CalendarResourceId")) !=
+						  0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalCalendarResourceId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"ParentCalendarBookingId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get(
+						  "ParentCalendarBookingId")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getParentCalendarBookingId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"ParentCalendarBookingId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get(
+						  "ParentCalendarBookingId")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.
+							getOriginalParentCalendarBookingId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"RecurringCalendarBookingId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get(
+						  "RecurringCalendarBookingId")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getRecurringCalendarBookingId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"RecurringCalendarBookingId",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get(
+						  "RecurringCalendarBookingId")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.
+							getOriginalRecurringCalendarBookingId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_P",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_P")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getCalendarId(),
+						calendarBookingModelImpl.getParentCalendarBookingId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_P",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_P")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalCalendarId(),
+						calendarBookingModelImpl.
+							getOriginalParentCalendarBookingId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_V",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_V")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getCalendarId(),
+						calendarBookingModelImpl.getVEventUid()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_V",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_V")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalCalendarId(),
+						calendarBookingModelImpl.getOriginalVEventUid()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_S",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_S")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getCalendarId(),
+						calendarBookingModelImpl.getStatus()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_S",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_S")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getOriginalCalendarId(),
+						calendarBookingModelImpl.getOriginalStatus()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"P_S",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("P_S")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.getParentCalendarBookingId(),
+						calendarBookingModelImpl.getStatus()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"P_S",
+			(baseModel, checkColumns) -> {
+				CalendarBookingModelImpl calendarBookingModelImpl =
+					(CalendarBookingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((calendarBookingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("P_S")) != 0)) {
+
+					return new Object[] {
+						calendarBookingModelImpl.
+							getOriginalParentCalendarBookingId(),
+						calendarBookingModelImpl.getOriginalStatus()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -46,6 +48,9 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
@@ -62,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 /**
  * The persistence implementation for the document library file entry service.
@@ -14830,27 +14836,32 @@ public class DLFileEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(DLFileEntry dlFileEntry) {
+		if (!DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		EntityCacheUtil.removeResult(
 			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED, DLFileEntryImpl.class,
-			dlFileEntry.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((DLFileEntryModelImpl)dlFileEntry, true);
+			dlFileEntry, DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED);
 	}
 
 	@Override
 	public void clearCache(List<DLFileEntry> dlFileEntries) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (DLFileEntry dlFileEntry : dlFileEntries) {
 			EntityCacheUtil.removeResult(
 				DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryImpl.class, dlFileEntry.getPrimaryKey());
-
-			clearUniqueFindersCache((DLFileEntryModelImpl)dlFileEntry, true);
+				DLFileEntryImpl.class, dlFileEntry,
+				DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED);
 		}
 	}
 
@@ -14909,104 +14920,6 @@ public class DLFileEntryPersistenceImpl
 			_finderPathCountByG_F_T, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_F_T, args, dlFileEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DLFileEntryModelImpl dlFileEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getUuid(),
-				dlFileEntryModelImpl.getGroupId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((dlFileEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getOriginalUuid(),
-				dlFileEntryModelImpl.getOriginalGroupId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getFolderId(),
-				dlFileEntryModelImpl.getName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_N, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_F_N, args);
-		}
-
-		if ((dlFileEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_F_N.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getOriginalGroupId(),
-				dlFileEntryModelImpl.getOriginalFolderId(),
-				dlFileEntryModelImpl.getOriginalName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_N, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_F_N, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getFolderId(),
-				dlFileEntryModelImpl.getFileName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_FN, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_F_FN, args);
-		}
-
-		if ((dlFileEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_F_FN.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getOriginalGroupId(),
-				dlFileEntryModelImpl.getOriginalFolderId(),
-				dlFileEntryModelImpl.getOriginalFileName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_FN, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_F_FN, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getFolderId(),
-				dlFileEntryModelImpl.getTitle()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_F_T, args);
-		}
-
-		if ((dlFileEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_F_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				dlFileEntryModelImpl.getOriginalGroupId(),
-				dlFileEntryModelImpl.getOriginalFolderId(),
-				dlFileEntryModelImpl.getOriginalTitle()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_F_T, args);
-		}
 	}
 
 	/**
@@ -15189,8 +15102,6 @@ public class DLFileEntryPersistenceImpl
 				}
 
 				session.save(dlFileEntry);
-
-				dlFileEntry.setNew(false);
 			}
 			else {
 				dlFileEntry = (DLFileEntry)session.merge(dlFileEntry);
@@ -15204,564 +15115,32 @@ public class DLFileEntryPersistenceImpl
 		}
 
 		if (dlFileEntry.getCtCollectionId() != 0) {
+			if (isNew) {
+				dlFileEntry.setNew(false);
+			}
+
 			dlFileEntry.resetOriginalValues();
 
 			return dlFileEntry;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			FinderCacheUtil.clearCache(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {dlFileEntryModelImpl.getUuid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getUuid(),
-				dlFileEntryModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getGroupId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getRepositoryId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByRepositoryId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByRepositoryId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getMimeType()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByMimeType, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByMimeType, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getFileEntryTypeId()};
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountByFileEntryTypeId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByFileEntryTypeId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getSmallImageId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountBySmallImageId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindBySmallImageId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getLargeImageId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByLargeImageId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByLargeImageId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getCustom1ImageId()};
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountByCustom1ImageId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCustom1ImageId, args);
-
-			args = new Object[] {dlFileEntryModelImpl.getCustom2ImageId()};
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountByCustom2ImageId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCustom2ImageId, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_U, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_U, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getFolderId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_F, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getRepositoryId(),
-				dlFileEntryModelImpl.getFolderId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByR_F, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByR_F, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getFolderId(),
-				dlFileEntryModelImpl.getName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByF_N, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByF_N, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getUserId(),
-				dlFileEntryModelImpl.getFolderId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_U_F, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_U_F, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getGroupId(),
-				dlFileEntryModelImpl.getFolderId(),
-				dlFileEntryModelImpl.getFileEntryTypeId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_F_F, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_F_F, args);
-
-			args = new Object[] {
-				dlFileEntryModelImpl.getSmallImageId(),
-				dlFileEntryModelImpl.getLargeImageId(),
-				dlFileEntryModelImpl.getCustom1ImageId(),
-				dlFileEntryModelImpl.getCustom2ImageId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByS_L_C1_C2, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByS_L_C1_C2, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalUuid(),
-					dlFileEntryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getUuid(),
-					dlFileEntryModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalGroupId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getGroupId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getCompanyId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByRepositoryId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalRepositoryId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByRepositoryId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByRepositoryId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getRepositoryId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByRepositoryId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByRepositoryId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByMimeType.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalMimeType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByMimeType, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByMimeType, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getMimeType()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByMimeType, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByMimeType, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByFileEntryTypeId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalFileEntryTypeId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByFileEntryTypeId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByFileEntryTypeId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getFileEntryTypeId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByFileEntryTypeId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByFileEntryTypeId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindBySmallImageId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalSmallImageId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountBySmallImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindBySmallImageId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getSmallImageId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountBySmallImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindBySmallImageId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByLargeImageId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalLargeImageId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByLargeImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByLargeImageId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getLargeImageId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByLargeImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByLargeImageId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCustom1ImageId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalCustom1ImageId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByCustom1ImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCustom1ImageId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getCustom1ImageId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByCustom1ImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCustom1ImageId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCustom2ImageId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalCustom2ImageId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByCustom2ImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCustom2ImageId, args);
-
-				args = new Object[] {dlFileEntryModelImpl.getCustom2ImageId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByCustom2ImageId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCustom2ImageId, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_U.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalGroupId(),
-					dlFileEntryModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getGroupId(),
-					dlFileEntryModelImpl.getUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_F.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalGroupId(),
-					dlFileEntryModelImpl.getOriginalFolderId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_F, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getGroupId(),
-					dlFileEntryModelImpl.getFolderId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_F, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByR_F.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalRepositoryId(),
-					dlFileEntryModelImpl.getOriginalFolderId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByR_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByR_F, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getRepositoryId(),
-					dlFileEntryModelImpl.getFolderId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByR_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByR_F, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByF_N.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalFolderId(),
-					dlFileEntryModelImpl.getOriginalName()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByF_N, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByF_N, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getFolderId(),
-					dlFileEntryModelImpl.getName()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByF_N, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByF_N, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_U_F.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalGroupId(),
-					dlFileEntryModelImpl.getOriginalUserId(),
-					dlFileEntryModelImpl.getOriginalFolderId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U_F, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getGroupId(),
-					dlFileEntryModelImpl.getUserId(),
-					dlFileEntryModelImpl.getFolderId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U_F, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_F_F.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalGroupId(),
-					dlFileEntryModelImpl.getOriginalFolderId(),
-					dlFileEntryModelImpl.getOriginalFileEntryTypeId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_F_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_F_F, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getGroupId(),
-					dlFileEntryModelImpl.getFolderId(),
-					dlFileEntryModelImpl.getFileEntryTypeId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_F_F, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_F_F, args);
-			}
-
-			if ((dlFileEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByS_L_C1_C2.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dlFileEntryModelImpl.getOriginalSmallImageId(),
-					dlFileEntryModelImpl.getOriginalLargeImageId(),
-					dlFileEntryModelImpl.getOriginalCustom1ImageId(),
-					dlFileEntryModelImpl.getOriginalCustom2ImageId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByS_L_C1_C2, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByS_L_C1_C2, args);
-
-				args = new Object[] {
-					dlFileEntryModelImpl.getSmallImageId(),
-					dlFileEntryModelImpl.getLargeImageId(),
-					dlFileEntryModelImpl.getCustom1ImageId(),
-					dlFileEntryModelImpl.getCustom2ImageId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByS_L_C1_C2, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByS_L_C1_C2, args);
-			}
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		EntityCacheUtil.putResult(
 			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED, DLFileEntryImpl.class,
-			dlFileEntry.getPrimaryKey(), dlFileEntry, false);
+			dlFileEntryModelImpl, false,
+			DLFileEntryModelImpl.COLUMN_BITMASK_ENABLED);
 
-		clearUniqueFindersCache(dlFileEntryModelImpl, false);
 		cacheUniqueFindersCache(dlFileEntryModelImpl);
+
+		if (isNew) {
+			dlFileEntry.setNew(false);
+		}
 
 		dlFileEntry.resetOriginalValues();
 
@@ -16234,552 +15613,368 @@ public class DLFileEntryPersistenceImpl
 	 * Initializes the document library file entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid", "findByUuid",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()},
-			DLFileEntryModelImpl.UUID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByUuid = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
+		_finderPathWithoutPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "findByUuid",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByUUID_G = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()},
-			DLFileEntryModelImpl.UUID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK);
+		_finderPathCountByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "countByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathCountByUUID_G = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
+		_finderPathFetchByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "UUID_G", "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
+		_finderPathCountByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UUID_G",
+			"countByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			DLFileEntryModelImpl.UUID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByUuid_C = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
+		_finderPathWithoutPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
+		_finderPathCountByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C",
+			"countByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByGroupId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "GroupId", "findByGroupId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByGroupId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "GroupId",
+			"findByGroupId", new String[] {Long.class.getName()});
 
-		_finderPathCountByGroupId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByGroupId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "GroupId",
+			"countByGroupId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
+		_finderPathWithPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CompanyId",
+			"findByCompanyId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
+			"findByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCompanyId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
+			"countByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByRepositoryId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRepositoryId",
+		_finderPathWithPaginationFindByRepositoryId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "RepositoryId",
+			"findByRepositoryId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByRepositoryId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRepositoryId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByRepositoryId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "RepositoryId",
+			"findByRepositoryId", new String[] {Long.class.getName()});
 
-		_finderPathCountByRepositoryId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRepositoryId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByRepositoryId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "RepositoryId",
+			"countByRepositoryId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByMimeType = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByMimeType",
+		_finderPathWithPaginationFindByMimeType = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "MimeType",
+			"findByMimeType",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByMimeType = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByMimeType",
-			new String[] {String.class.getName()},
-			DLFileEntryModelImpl.MIMETYPE_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByMimeType = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "MimeType",
+			"findByMimeType", new String[] {String.class.getName()});
 
-		_finderPathCountByMimeType = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMimeType",
-			new String[] {String.class.getName()});
+		_finderPathCountByMimeType = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "MimeType",
+			"countByMimeType", new String[] {String.class.getName()});
 
-		_finderPathWithPaginationFindByFileEntryTypeId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFileEntryTypeId",
+		_finderPathWithPaginationFindByFileEntryTypeId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "FileEntryTypeId",
+			"findByFileEntryTypeId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByFileEntryTypeId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFileEntryTypeId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.FILEENTRYTYPEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByFileEntryTypeId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "FileEntryTypeId",
+			"findByFileEntryTypeId", new String[] {Long.class.getName()});
 
-		_finderPathCountByFileEntryTypeId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFileEntryTypeId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByFileEntryTypeId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "FileEntryTypeId",
+			"countByFileEntryTypeId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindBySmallImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySmallImageId",
+		_finderPathWithPaginationFindBySmallImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "SmallImageId",
+			"findBySmallImageId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindBySmallImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySmallImageId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.SMALLIMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindBySmallImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "SmallImageId",
+			"findBySmallImageId", new String[] {Long.class.getName()});
 
-		_finderPathCountBySmallImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySmallImageId",
-			new String[] {Long.class.getName()});
+		_finderPathCountBySmallImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "SmallImageId",
+			"countBySmallImageId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByLargeImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLargeImageId",
+		_finderPathWithPaginationFindByLargeImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "LargeImageId",
+			"findByLargeImageId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByLargeImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByLargeImageId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.LARGEIMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByLargeImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "LargeImageId",
+			"findByLargeImageId", new String[] {Long.class.getName()});
 
-		_finderPathCountByLargeImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLargeImageId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByLargeImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "LargeImageId",
+			"countByLargeImageId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByCustom1ImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCustom1ImageId",
+		_finderPathWithPaginationFindByCustom1ImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Custom1ImageId",
+			"findByCustom1ImageId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCustom1ImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCustom1ImageId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.CUSTOM1IMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCustom1ImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Custom1ImageId",
+			"findByCustom1ImageId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCustom1ImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCustom1ImageId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByCustom1ImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Custom1ImageId",
+			"countByCustom1ImageId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByCustom2ImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCustom2ImageId",
+		_finderPathWithPaginationFindByCustom2ImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Custom2ImageId",
+			"findByCustom2ImageId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCustom2ImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCustom2ImageId",
-			new String[] {Long.class.getName()},
-			DLFileEntryModelImpl.CUSTOM2IMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCustom2ImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Custom2ImageId",
+			"findByCustom2ImageId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCustom2ImageId = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCustom2ImageId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByCustom2ImageId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Custom2ImageId",
+			"countByCustom2ImageId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByG_U = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_U",
+		_finderPathWithPaginationFindByG_U = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_U", "findByG_U",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_U = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.USERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByG_U = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U",
+		_finderPathWithoutPaginationFindByG_U = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_U", "findByG_U",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByG_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F",
+		_finderPathCountByG_U = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_U", "countByG_U",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByG_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_F", "findByG_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByG_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F",
+		_finderPathWithoutPaginationFindByG_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F", "findByG_F",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationCountByG_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_F",
+		_finderPathCountByG_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F", "countByG_F",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByR_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_F",
+		_finderPathWithPaginationCountByG_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_F", "countByG_F",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByR_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "R_F", "findByR_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByR_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_F",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			DLFileEntryModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByR_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_F",
+		_finderPathWithoutPaginationFindByR_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "R_F", "findByR_F",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByF_N = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByF_N",
+		_finderPathCountByR_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "R_F", "countByR_F",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByF_N = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "F_N", "findByF_N",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByF_N = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByF_N",
-			new String[] {Long.class.getName(), String.class.getName()},
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByF_N = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_N",
+		_finderPathWithoutPaginationFindByF_N = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "F_N", "findByF_N",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_finderPathWithPaginationFindByG_U_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_U_F",
+		_finderPathCountByF_N = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "F_N", "countByF_N",
+			new String[] {Long.class.getName(), String.class.getName()});
+
+		_finderPathWithPaginationFindByG_U_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_U_F", "findByG_U_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_U_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U_F",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.USERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByG_U_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U_F",
+		_finderPathWithoutPaginationFindByG_U_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_U_F", "findByG_U_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationCountByG_U_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_U_F",
+		_finderPathCountByG_U_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_U_F", "countByG_U_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathFetchByG_F_N = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByG_F_N",
+		_finderPathWithPaginationCountByG_U_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_U_F", "countByG_U_F",
 			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				String.class.getName()
-			},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			});
 
-		_finderPathCountByG_F_N = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_N",
+		_finderPathFetchByG_F_N = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "G_F_N", "fetchByG_F_N",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
 
-		_finderPathFetchByG_F_FN = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByG_F_FN",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				String.class.getName()
-			},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FILENAME_COLUMN_BITMASK);
-
-		_finderPathCountByG_F_FN = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_FN",
+		_finderPathCountByG_F_N = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F_N", "countByG_F_N",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
 
-		_finderPathFetchByG_F_T = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByG_F_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				String.class.getName()
-			},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.TITLE_COLUMN_BITMASK);
-
-		_finderPathCountByG_F_T = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_T",
+		_finderPathFetchByG_F_FN = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "G_F_FN", "fetchByG_F_FN",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
 
-		_finderPathWithPaginationFindByG_F_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_F_F",
+		_finderPathCountByG_F_FN = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F_FN",
+			"countByG_F_FN",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				String.class.getName()
+			});
+
+		_finderPathFetchByG_F_T = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "G_F_T", "fetchByG_F_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				String.class.getName()
+			});
+
+		_finderPathCountByG_F_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F_T", "countByG_F_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				String.class.getName()
+			});
+
+		_finderPathWithPaginationFindByG_F_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_F_F", "findByG_F_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_F_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_F_F",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FILEENTRYTYPEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByG_F_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F_F",
+		_finderPathWithoutPaginationFindByG_F_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F_F", "findByG_F_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationCountByG_F_F = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_F_F",
+		_finderPathCountByG_F_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_F_F", "countByG_F_F",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationFindByS_L_C1_C2 = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByS_L_C1_C2",
+		_finderPathWithPaginationCountByG_F_F = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_F_F", "countByG_F_F",
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			});
+
+		_finderPathWithPaginationFindByS_L_C1_C2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "S_L_C1_C2",
+			"findByS_L_C1_C2",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Long.class.getName(),
@@ -16787,25 +15982,17 @@ public class DLFileEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByS_L_C1_C2 = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, DLFileEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByS_L_C1_C2",
+		_finderPathWithoutPaginationFindByS_L_C1_C2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "S_L_C1_C2",
+			"findByS_L_C1_C2",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Long.class.getName()
-			},
-			DLFileEntryModelImpl.SMALLIMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.LARGEIMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.CUSTOM1IMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.CUSTOM2IMAGEID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByS_L_C1_C2 = new FinderPath(
-			DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByS_L_C1_C2",
+		_finderPathCountByS_L_C1_C2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "S_L_C1_C2",
+			"countByS_L_C1_C2",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Long.class.getName()
@@ -16814,9 +16001,12 @@ public class DLFileEntryPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(DLFileEntryImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_DLFILEENTRY =
@@ -16867,5 +16057,1025 @@ public class DLFileEntryPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "size"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = DLFileEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				DLFileEntryModelImpl.FINDER_CACHE_ENABLED, returnClass,
+				cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			DLFileEntryModelImpl.FINDER_CACHE_ENABLED, returnClass, cacheName,
+			methodName, params, _ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				FinderPath.class, finderPath,
+				HashMapBuilder.<String, Object>put(
+					"cache.name", cacheName
+				).build()));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid",
+			DLFileEntryModelImpl.UUID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UUID_G",
+			DLFileEntryModelImpl.UUID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid_C",
+			DLFileEntryModelImpl.UUID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"GroupId",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CompanyId",
+			DLFileEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"RepositoryId",
+			DLFileEntryModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"MimeType",
+			DLFileEntryModelImpl.MIMETYPE_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"FileEntryTypeId",
+			DLFileEntryModelImpl.FILEENTRYTYPEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"SmallImageId",
+			DLFileEntryModelImpl.SMALLIMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"LargeImageId",
+			DLFileEntryModelImpl.LARGEIMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Custom1ImageId",
+			DLFileEntryModelImpl.CUSTOM1IMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Custom2ImageId",
+			DLFileEntryModelImpl.CUSTOM2IMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_U",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.USERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_F",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"R_F",
+			DLFileEntryModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"F_N",
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_U_F",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.USERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_F_N",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_F_FN",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FILENAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_F_T",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.TITLE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_F_F",
+			DLFileEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FILEENTRYTYPEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"S_L_C1_C2",
+			DLFileEntryModelImpl.SMALLIMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.LARGEIMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.CUSTOM1IMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.CUSTOM2IMAGEID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.FOLDERID_COLUMN_BITMASK |
+			DLFileEntryModelImpl.NAME_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					return new Object[] {dlFileEntryModelImpl.getUuid()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalUuid()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UUID_G")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getUuid(),
+						dlFileEntryModelImpl.getGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UUID_G")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalUuid(),
+						dlFileEntryModelImpl.getOriginalGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getUuid(),
+						dlFileEntryModelImpl.getCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalUuid(),
+						dlFileEntryModelImpl.getOriginalCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"GroupId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("GroupId")) != 0)) {
+
+					return new Object[] {dlFileEntryModelImpl.getGroupId()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"GroupId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("GroupId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CompanyId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CompanyId")) != 0)) {
+
+					return new Object[] {dlFileEntryModelImpl.getCompanyId()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CompanyId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CompanyId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"RepositoryId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("RepositoryId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getRepositoryId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"RepositoryId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("RepositoryId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalRepositoryId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"MimeType",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("MimeType")) != 0)) {
+
+					return new Object[] {dlFileEntryModelImpl.getMimeType()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"MimeType",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("MimeType")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalMimeType()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"FileEntryTypeId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("FileEntryTypeId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getFileEntryTypeId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"FileEntryTypeId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("FileEntryTypeId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalFileEntryTypeId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"SmallImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("SmallImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getSmallImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"SmallImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("SmallImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalSmallImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"LargeImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("LargeImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getLargeImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"LargeImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("LargeImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalLargeImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Custom1ImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Custom1ImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getCustom1ImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Custom1ImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Custom1ImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalCustom1ImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Custom2ImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Custom2ImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getCustom2ImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Custom2ImageId",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Custom2ImageId")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalCustom2ImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_U",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_U")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getUserId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_U",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_U")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalUserId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getFolderId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalFolderId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"R_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("R_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getRepositoryId(),
+						dlFileEntryModelImpl.getFolderId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"R_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("R_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalRepositoryId(),
+						dlFileEntryModelImpl.getOriginalFolderId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"F_N",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("F_N")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getFolderId(),
+						dlFileEntryModelImpl.getName()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"F_N",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("F_N")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalFolderId(),
+						dlFileEntryModelImpl.getOriginalName()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_U_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_U_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getUserId(),
+						dlFileEntryModelImpl.getFolderId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_U_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_U_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalUserId(),
+						dlFileEntryModelImpl.getOriginalFolderId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_N",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_N")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getFolderId(),
+						dlFileEntryModelImpl.getName()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_N",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_N")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalFolderId(),
+						dlFileEntryModelImpl.getOriginalName()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_FN",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_FN")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getFolderId(),
+						dlFileEntryModelImpl.getFileName()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_FN",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_FN")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalFolderId(),
+						dlFileEntryModelImpl.getOriginalFileName()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_T",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_T")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getFolderId(),
+						dlFileEntryModelImpl.getTitle()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_T",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_T")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalFolderId(),
+						dlFileEntryModelImpl.getOriginalTitle()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getGroupId(),
+						dlFileEntryModelImpl.getFolderId(),
+						dlFileEntryModelImpl.getFileEntryTypeId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"G_F_F",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_F_F")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalGroupId(),
+						dlFileEntryModelImpl.getOriginalFolderId(),
+						dlFileEntryModelImpl.getOriginalFileEntryTypeId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"S_L_C1_C2",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("S_L_C1_C2")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getSmallImageId(),
+						dlFileEntryModelImpl.getLargeImageId(),
+						dlFileEntryModelImpl.getCustom1ImageId(),
+						dlFileEntryModelImpl.getCustom2ImageId()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"S_L_C1_C2",
+			(baseModel, checkColumns) -> {
+				DLFileEntryModelImpl dlFileEntryModelImpl =
+					(DLFileEntryModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((dlFileEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("S_L_C1_C2")) != 0)) {
+
+					return new Object[] {
+						dlFileEntryModelImpl.getOriginalSmallImageId(),
+						dlFileEntryModelImpl.getOriginalLargeImageId(),
+						dlFileEntryModelImpl.getOriginalCustom1ImageId(),
+						dlFileEntryModelImpl.getOriginalCustom2ImageId()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }

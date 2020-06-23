@@ -33,8 +33,10 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -44,12 +46,16 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -1875,25 +1881,29 @@ public class StatusPersistenceImpl
 	 */
 	@Override
 	public void clearCache(Status status) {
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		entityCache.removeResult(
-			entityCacheEnabled, StatusImpl.class, status.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((StatusModelImpl)status, true);
+			entityCacheEnabled, StatusImpl.class, status,
+			_columnBitmaskEnabled);
 	}
 
 	@Override
 	public void clearCache(List<Status> statuses) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (Status status : statuses) {
 			entityCache.removeResult(
-				entityCacheEnabled, StatusImpl.class, status.getPrimaryKey());
-
-			clearUniqueFindersCache((StatusModelImpl)status, true);
+				entityCacheEnabled, StatusImpl.class, status,
+				_columnBitmaskEnabled);
 		}
 	}
 
@@ -1916,26 +1926,6 @@ public class StatusPersistenceImpl
 			_finderPathCountByUserId, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByUserId, args, statusModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		StatusModelImpl statusModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {statusModelImpl.getUserId()};
-
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(_finderPathFetchByUserId, args);
-		}
-
-		if ((statusModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUserId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {statusModelImpl.getOriginalUserId()};
-
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(_finderPathFetchByUserId, args);
-		}
 	}
 
 	/**
@@ -2061,10 +2051,8 @@ public class StatusPersistenceImpl
 		try {
 			session = openSession();
 
-			if (status.isNew()) {
+			if (isNew) {
 				session.save(status);
-
-				status.setNew(false);
 			}
 			else {
 				status = (Status)session.merge(status);
@@ -2077,105 +2065,21 @@ public class StatusPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!_columnBitmaskEnabled) {
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {statusModelImpl.getModifiedDate()};
-
-			finderCache.removeResult(_finderPathCountByModifiedDate, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByModifiedDate, args);
-
-			args = new Object[] {statusModelImpl.isOnline()};
-
-			finderCache.removeResult(_finderPathCountByOnline, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByOnline, args);
-
-			args = new Object[] {
-				statusModelImpl.getModifiedDate(), statusModelImpl.isOnline()
-			};
-
-			finderCache.removeResult(_finderPathCountByM_O, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByM_O, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((statusModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByModifiedDate.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					statusModelImpl.getOriginalModifiedDate()
-				};
-
-				finderCache.removeResult(_finderPathCountByModifiedDate, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByModifiedDate, args);
-
-				args = new Object[] {statusModelImpl.getModifiedDate()};
-
-				finderCache.removeResult(_finderPathCountByModifiedDate, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByModifiedDate, args);
-			}
-
-			if ((statusModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByOnline.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					statusModelImpl.getOriginalOnline()
-				};
-
-				finderCache.removeResult(_finderPathCountByOnline, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByOnline, args);
-
-				args = new Object[] {statusModelImpl.isOnline()};
-
-				finderCache.removeResult(_finderPathCountByOnline, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByOnline, args);
-			}
-
-			if ((statusModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByM_O.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					statusModelImpl.getOriginalModifiedDate(),
-					statusModelImpl.getOriginalOnline()
-				};
-
-				finderCache.removeResult(_finderPathCountByM_O, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByM_O, args);
-
-				args = new Object[] {
-					statusModelImpl.getModifiedDate(),
-					statusModelImpl.isOnline()
-				};
-
-				finderCache.removeResult(_finderPathCountByM_O, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByM_O, args);
-			}
+			finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		entityCache.putResult(
-			entityCacheEnabled, StatusImpl.class, status.getPrimaryKey(),
-			status, false);
+			entityCacheEnabled, StatusImpl.class, statusModelImpl, false,
+			_columnBitmaskEnabled);
 
-		clearUniqueFindersCache(statusModelImpl, false);
 		cacheUniqueFindersCache(statusModelImpl);
+
+		if (isNew) {
+			status.setNew(false);
+		}
 
 		status.resetOriginalValues();
 
@@ -2438,101 +2342,89 @@ public class StatusPersistenceImpl
 	 * Initializes the status persistence.
 	 */
 	@Activate
-	public void activate() {
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		StatusModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		StatusModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathFetchByUserId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUserId",
-			new String[] {Long.class.getName()},
-			StatusModelImpl.USERID_COLUMN_BITMASK);
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
 
-		_finderPathCountByUserId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+		_finderPathFetchByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "UserId", "fetchByUserId",
 			new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByModifiedDate = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByModifiedDate",
+		_finderPathCountByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UserId",
+			"countByUserId", new String[] {Long.class.getName()});
+
+		_finderPathWithPaginationFindByModifiedDate = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "ModifiedDate",
+			"findByModifiedDate",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByModifiedDate = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByModifiedDate",
-			new String[] {Long.class.getName()},
-			StatusModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByModifiedDate = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "ModifiedDate",
+			"findByModifiedDate", new String[] {Long.class.getName()});
 
-		_finderPathCountByModifiedDate = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModifiedDate",
-			new String[] {Long.class.getName()});
+		_finderPathCountByModifiedDate = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "ModifiedDate",
+			"countByModifiedDate", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByOnline = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByOnline",
+		_finderPathWithPaginationFindByOnline = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Online", "findByOnline",
 			new String[] {
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByOnline = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByOnline",
-			new String[] {Boolean.class.getName()},
-			StatusModelImpl.ONLINE_COLUMN_BITMASK);
-
-		_finderPathCountByOnline = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByOnline",
+		_finderPathWithoutPaginationFindByOnline = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Online", "findByOnline",
 			new String[] {Boolean.class.getName()});
 
-		_finderPathWithPaginationFindByM_O = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByM_O",
+		_finderPathCountByOnline = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Online",
+			"countByOnline", new String[] {Boolean.class.getName()});
+
+		_finderPathWithPaginationFindByM_O = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "M_O", "findByM_O",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByM_O = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, StatusImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByM_O",
-			new String[] {Long.class.getName(), Boolean.class.getName()},
-			StatusModelImpl.MODIFIEDDATE_COLUMN_BITMASK |
-			StatusModelImpl.ONLINE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByM_O = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "M_O", "findByM_O",
+			new String[] {Long.class.getName(), Boolean.class.getName()});
 
-		_finderPathCountByM_O = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByM_O",
+		_finderPathCountByM_O = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "M_O", "countByM_O",
 			new String[] {Long.class.getName(), Boolean.class.getName()});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(StatusImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -2568,6 +2460,7 @@ public class StatusPersistenceImpl
 	}
 
 	private boolean _columnBitmaskEnabled;
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -2608,6 +2501,204 @@ public class StatusPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = StatusImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				finderCacheEnabled, returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			finderCacheEnabled, returnClass, cacheName, methodName, params,
+			_ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UserId", StatusModelImpl.USERID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"ModifiedDate", StatusModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Online", StatusModelImpl.ONLINE_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"M_O",
+			StatusModelImpl.MODIFIEDDATE_COLUMN_BITMASK |
+			StatusModelImpl.ONLINE_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"UserId",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UserId")) != 0)) {
+
+					return new Object[] {statusModelImpl.getUserId()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"UserId",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UserId")) != 0)) {
+
+					return new Object[] {statusModelImpl.getOriginalUserId()};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"ModifiedDate",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("ModifiedDate")) != 0)) {
+
+					return new Object[] {statusModelImpl.getModifiedDate()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"ModifiedDate",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("ModifiedDate")) != 0)) {
+
+					return new Object[] {
+						statusModelImpl.getOriginalModifiedDate()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Online",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Online")) != 0)) {
+
+					return new Object[] {statusModelImpl.isOnline()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"Online",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Online")) != 0)) {
+
+					return new Object[] {statusModelImpl.getOriginalOnline()};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"M_O",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("M_O")) != 0)) {
+
+					return new Object[] {
+						statusModelImpl.getModifiedDate(),
+						statusModelImpl.isOnline()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"M_O",
+			(baseModel, checkColumns) -> {
+				StatusModelImpl statusModelImpl = (StatusModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((statusModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("M_O")) != 0)) {
+
+					return new Object[] {
+						statusModelImpl.getOriginalModifiedDate(),
+						statusModelImpl.getOriginalOnline()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

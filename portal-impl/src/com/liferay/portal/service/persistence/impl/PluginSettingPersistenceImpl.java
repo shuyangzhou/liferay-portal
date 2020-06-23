@@ -26,26 +26,33 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchPluginSettingException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.model.PluginSettingTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PluginSettingPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.model.impl.PluginSettingImpl;
 import com.liferay.portal.model.impl.PluginSettingModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 /**
  * The persistence implementation for the plugin setting service.
@@ -966,28 +973,33 @@ public class PluginSettingPersistenceImpl
 	 */
 	@Override
 	public void clearCache(PluginSetting pluginSetting) {
+		if (!PluginSettingModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
+
 		EntityCacheUtil.removeResult(
 			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingImpl.class, pluginSetting.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((PluginSettingModelImpl)pluginSetting, true);
+			PluginSettingImpl.class, pluginSetting,
+			PluginSettingModelImpl.COLUMN_BITMASK_ENABLED);
 	}
 
 	@Override
 	public void clearCache(List<PluginSetting> pluginSettings) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (!PluginSettingModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		}
 
 		for (PluginSetting pluginSetting : pluginSettings) {
 			EntityCacheUtil.removeResult(
 				PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-				PluginSettingImpl.class, pluginSetting.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(PluginSettingModelImpl)pluginSetting, true);
+				PluginSettingImpl.class, pluginSetting,
+				PluginSettingModelImpl.COLUMN_BITMASK_ENABLED);
 		}
 	}
 
@@ -1017,34 +1029,6 @@ public class PluginSettingPersistenceImpl
 			_finderPathCountByC_I_T, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_I_T, args, pluginSettingModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		PluginSettingModelImpl pluginSettingModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				pluginSettingModelImpl.getCompanyId(),
-				pluginSettingModelImpl.getPluginId(),
-				pluginSettingModelImpl.getPluginType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_I_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_I_T, args);
-		}
-
-		if ((pluginSettingModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_I_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				pluginSettingModelImpl.getOriginalCompanyId(),
-				pluginSettingModelImpl.getOriginalPluginId(),
-				pluginSettingModelImpl.getOriginalPluginType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_I_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_I_T, args);
-		}
 	}
 
 	/**
@@ -1179,10 +1163,8 @@ public class PluginSettingPersistenceImpl
 		try {
 			session = openSession();
 
-			if (pluginSetting.isNew()) {
+			if (isNew) {
 				session.save(pluginSetting);
-
-				pluginSetting.setNew(false);
 			}
 			else {
 				pluginSetting = (PluginSetting)session.merge(pluginSetting);
@@ -1195,54 +1177,23 @@ public class PluginSettingPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
 		if (!PluginSettingModelImpl.COLUMN_BITMASK_ENABLED) {
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			FinderCacheUtil.clearCache(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				pluginSettingModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((pluginSettingModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					pluginSettingModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {pluginSettingModelImpl.getCompanyId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		}
 
 		EntityCacheUtil.putResult(
 			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
-			pluginSetting, false);
+			PluginSettingImpl.class, pluginSettingModelImpl, false,
+			PluginSettingModelImpl.COLUMN_BITMASK_ENABLED);
 
-		clearUniqueFindersCache(pluginSettingModelImpl, false);
 		cacheUniqueFindersCache(pluginSettingModelImpl);
+
+		if (isNew) {
+			pluginSetting.setNew(false);
+		}
 
 		pluginSetting.resetOriginalValues();
 
@@ -1508,63 +1459,43 @@ public class PluginSettingPersistenceImpl
 	 * Initializes the plugin setting persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CompanyId",
 			"findByCompanyId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByCompanyId", new String[] {Long.class.getName()},
-			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
+			"findByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCompanyId = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+		_finderPathCountByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
+			"countByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathFetchByC_I_T = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_I_T",
+		_finderPathFetchByC_I_T = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_I_T", "fetchByC_I_T",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
-			},
-			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK |
-			PluginSettingModelImpl.PLUGINID_COLUMN_BITMASK |
-			PluginSettingModelImpl.PLUGINTYPE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByC_I_T = new FinderPath(
-			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_I_T",
+		_finderPathCountByC_I_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_I_T", "countByC_I_T",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
@@ -1573,9 +1504,12 @@ public class PluginSettingPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(PluginSettingImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_PLUGINSETTING =
@@ -1603,5 +1537,149 @@ public class PluginSettingPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"active"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = PluginSettingImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(
+				PluginSettingModelImpl.FINDER_CACHE_ENABLED, returnClass,
+				cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED, returnClass, cacheName,
+			methodName, params, _ARGUMENTS_BIFUNCTION_MAP.get(finderName),
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.get(finderName));
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				FinderPath.class, finderPath,
+				HashMapBuilder.<String, Object>put(
+					"cache.name", cacheName
+				).build()));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	static {
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CompanyId", PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_I_T",
+			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK |
+			PluginSettingModelImpl.PLUGINID_COLUMN_BITMASK |
+			PluginSettingModelImpl.PLUGINTYPE_COLUMN_BITMASK);
+	}
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	private static final Map
+		<String, BiFunction<BaseModel<?>, Boolean, Object[]>>
+			_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"all",
+			(baseModel, checkColumns) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CompanyId",
+			(baseModel, checkColumns) -> {
+				PluginSettingModelImpl pluginSettingModelImpl =
+					(PluginSettingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((pluginSettingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CompanyId")) != 0)) {
+
+					return new Object[] {pluginSettingModelImpl.getCompanyId()};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"CompanyId",
+			(baseModel, checkColumns) -> {
+				PluginSettingModelImpl pluginSettingModelImpl =
+					(PluginSettingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((pluginSettingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CompanyId")) != 0)) {
+
+					return new Object[] {
+						pluginSettingModelImpl.getOriginalCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_I_T",
+			(baseModel, checkColumns) -> {
+				PluginSettingModelImpl pluginSettingModelImpl =
+					(PluginSettingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((pluginSettingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_I_T")) != 0)) {
+
+					return new Object[] {
+						pluginSettingModelImpl.getCompanyId(),
+						pluginSettingModelImpl.getPluginId(),
+						pluginSettingModelImpl.getPluginType()
+					};
+				}
+
+				return null;
+			});
+
+		_ORIGINAL_ARGUMENTS_BIFUNCTION_MAP.put(
+			"C_I_T",
+			(baseModel, checkColumns) -> {
+				PluginSettingModelImpl pluginSettingModelImpl =
+					(PluginSettingModelImpl)baseModel;
+
+				if (!checkColumns ||
+					((pluginSettingModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_I_T")) != 0)) {
+
+					return new Object[] {
+						pluginSettingModelImpl.getOriginalCompanyId(),
+						pluginSettingModelImpl.getOriginalPluginId(),
+						pluginSettingModelImpl.getOriginalPluginType()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }
