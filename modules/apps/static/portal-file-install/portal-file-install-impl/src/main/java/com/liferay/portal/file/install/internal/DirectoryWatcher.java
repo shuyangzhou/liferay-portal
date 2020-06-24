@@ -17,13 +17,11 @@ package com.liferay.portal.file.install.internal;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.file.install.FileInstaller;
 import com.liferay.portal.file.install.internal.manifest.Clause;
 import com.liferay.portal.file.install.internal.manifest.Parser;
 import com.liferay.portal.file.install.internal.version.VersionRange;
 import com.liferay.portal.file.install.internal.version.VersionTable;
-import com.liferay.portal.file.install.listener.ArtifactInstaller;
-import com.liferay.portal.file.install.listener.ArtifactListener;
-import com.liferay.portal.file.install.listener.ArtifactUrlTransformer;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -183,12 +181,12 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 			_watchedDirectory, _filter, properties.get(SUBDIR_MODE));
 	}
 
-	public void addListener(ArtifactListener listener, long timeStamp) {
+	public void addFileInstaller(FileInstaller fileInstaller, long timeStamp) {
 		if (_updateWithListeners) {
 			for (Artifact artifact : _getArtifacts()) {
 				long bundleId = artifact.getBundleId();
 
-				if ((artifact.getListener() == null) && (bundleId > 0)) {
+				if ((artifact.getFileInstaller() == null) && (bundleId > 0)) {
 					Bundle bundle = _bundleContext.getBundle(bundleId);
 
 					if ((bundle != null) &&
@@ -196,7 +194,9 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 						File path = artifact.getPath();
 
-						if (listener.canHandle(path)) {
+						if (fileInstaller.canInstall(path) ||
+							fileInstaller.canTransformURL(path)) {
+
 							synchronized (_processingFailures) {
 								_processingFailures.add(path);
 							}
@@ -277,10 +277,10 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		return _properties;
 	}
 
-	public void removeListener(ArtifactListener listener) {
+	public void removeFileInstaller(FileInstaller fileInstaller) {
 		for (Artifact artifact : _getArtifacts()) {
-			if (artifact.getListener() == listener) {
-				artifact.setListener(null);
+			if (artifact.getFileInstaller() == fileInstaller) {
+				artifact.setFileInstaller(null);
 			}
 		}
 
@@ -678,7 +678,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 	}
 
 	private void _doProcess(Set<File> files) throws InterruptedException {
-		List<ArtifactListener> listeners = _fileInstall.getListeners();
+		List<FileInstaller> fileInstallers = _fileInstall.getFileInstallers();
 		List<Artifact> deleted = new ArrayList<>();
 		List<Artifact> modified = new ArrayList<>();
 		List<Artifact> created = new ArrayList<>();
@@ -738,11 +738,11 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				if (artifact != null) {
 					artifact.setChecksum(scanner.getChecksum(file));
 
-					if (artifact.getListener() == null) {
-						ArtifactListener listener = _findListener(
-							jar, listeners);
+					if (artifact.getFileInstaller() == null) {
+						FileInstaller fileInstaller = _findFileInstaller(
+							jar, fileInstallers);
 
-						if (listener == null) {
+						if (fileInstaller == null) {
 							synchronized (_processingFailures) {
 								_processingFailures.add(file);
 							}
@@ -750,13 +750,14 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 							continue;
 						}
 
-						artifact.setListener(listener);
+						artifact.setFileInstaller(fileInstaller);
 					}
 
-					ArtifactListener artifactListener = artifact.getListener();
+					FileInstaller fileInstaller = artifact.getFileInstaller();
 
-					if (!listeners.contains(artifactListener) ||
-						!artifactListener.canHandle(jar)) {
+					if (!fileInstallers.contains(fileInstaller) ||
+						!(fileInstaller.canInstall(jar) ||
+						  fileInstaller.canTransformURL(jar))) {
 
 						deleted.add(artifact);
 					}
@@ -777,9 +778,10 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 					}
 				}
 				else {
-					ArtifactListener listener = _findListener(jar, listeners);
+					FileInstaller fileInstaller = _findFileInstaller(
+						jar, fileInstallers);
 
-					if (listener == null) {
+					if (fileInstaller == null) {
 						synchronized (_processingFailures) {
 							_processingFailures.add(file);
 						}
@@ -792,7 +794,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 					artifact.setPath(file);
 					artifact.setJaredDirectory(jar);
 					artifact.setJaredUrl(jaredUrl);
-					artifact.setListener(listener);
+					artifact.setFileInstaller(fileInstaller);
 					artifact.setChecksum(scanner.getChecksum(file));
 
 					if (_transformArtifact(artifact)) {
@@ -857,12 +859,14 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		}
 	}
 
-	private ArtifactListener _findListener(
-		File artifact, List<ArtifactListener> listeners) {
+	private FileInstaller _findFileInstaller(
+		File artifact, List<FileInstaller> fileInstallers) {
 
-		for (ArtifactListener listener : listeners) {
-			if (listener.canHandle(artifact)) {
-				return listener;
+		for (FileInstaller fileInstaller : fileInstallers) {
+			if (fileInstaller.canInstall(artifact) ||
+				fileInstaller.canTransformURL(artifact)) {
+
+				return fileInstaller;
 			}
 		}
 
@@ -1041,7 +1045,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 				artifact.setBundleId(bundle.getBundleId());
 				artifact.setChecksum(Util.loadChecksum(bundle, _bundleContext));
-				artifact.setListener(null);
+				artifact.setFileInstaller(null);
 				artifact.setPath(new File(path));
 
 				_setArtifact(new File(path), artifact);
@@ -1061,17 +1065,14 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		AtomicBoolean modified = new AtomicBoolean();
 
 		try {
-			ArtifactListener artifactListener = artifact.getListener();
+			FileInstaller fileInstaller = artifact.getFileInstaller();
 
 			long checksum = artifact.getChecksum();
 
-			if (artifactListener instanceof ArtifactInstaller) {
-				ArtifactInstaller artifactInstaller =
-					(ArtifactInstaller)artifactListener;
-
-				artifactInstaller.install(path);
+			if (fileInstaller.canInstall(path)) {
+				fileInstaller.install(path);
 			}
-			else if (artifactListener instanceof ArtifactUrlTransformer) {
+			else if (fileInstaller.canTransformURL(path)) {
 				Artifact badArtifact = _installationFailures.get(path);
 
 				if ((badArtifact != null) &&
@@ -1461,16 +1462,15 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 	}
 
 	private boolean _transformArtifact(Artifact artifact) {
-		ArtifactListener artifactListener = artifact.getListener();
+		FileInstaller fileInstaller = artifact.getFileInstaller();
 
-		if (artifactListener instanceof ArtifactUrlTransformer) {
+		File file = artifact.getPath();
+
+		if (fileInstaller.canTransformURL(file)) {
 			try {
 				URL url = artifact.getJaredUrl();
 
-				ArtifactUrlTransformer artifactUrlTransformer =
-					(ArtifactUrlTransformer)artifactListener;
-
-				URL transformed = artifactUrlTransformer.transform(url);
+				URL transformed = fileInstaller.transform(url);
 
 				if (transformed != null) {
 					artifact.setTransformedUrl(transformed);
@@ -1479,8 +1479,6 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				}
 			}
 			catch (Exception exception) {
-				File file = artifact.getPath();
-
 				_log(
 					Util.Logger.LOG_WARNING,
 					"Unable to transform artifact: " + file.getAbsolutePath(),
@@ -1499,24 +1497,21 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		try {
 			File path = artifact.getPath();
 
-			if (artifact.getListener() == null) {
-				artifact.setListener(
-					_findListener(path, _fileInstall.getListeners()));
+			if (artifact.getFileInstaller() == null) {
+				artifact.setFileInstaller(
+					_findFileInstaller(path, _fileInstall.getFileInstallers()));
 			}
 
 			_removeArtifact(path);
 
 			_deleteTransformedFile(artifact);
 
-			ArtifactListener artifactListener = artifact.getListener();
+			FileInstaller fileInstaller = artifact.getFileInstaller();
 
 			long bundleId = artifact.getBundleId();
 
-			if (artifactListener instanceof ArtifactInstaller) {
-				ArtifactInstaller artifactInstaller =
-					(ArtifactInstaller)artifactListener;
-
-				artifactInstaller.uninstall(path);
+			if (fileInstaller.canInstall(path)) {
+				fileInstaller.uninstall(path);
 			}
 			else if (bundleId != 0) {
 				bundle = _bundleContext.getBundle(bundleId);
@@ -1575,19 +1570,16 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		try {
 			File path = artifact.getPath();
 
-			ArtifactListener artifactListener = artifact.getListener();
+			FileInstaller fileInstaller = artifact.getFileInstaller();
 
 			long checksum = artifact.getChecksum();
 
 			long bundleId = artifact.getBundleId();
 
-			if (artifactListener instanceof ArtifactInstaller) {
-				ArtifactInstaller artifactInstaller =
-					(ArtifactInstaller)artifactListener;
-
-				artifactInstaller.update(path);
+			if (fileInstaller.canInstall(path)) {
+				fileInstaller.update(path);
 			}
-			else if (artifactListener instanceof ArtifactUrlTransformer) {
+			else if (fileInstaller.canTransformURL(path)) {
 				bundle = _bundleContext.getBundle(bundleId);
 
 				if (bundle == null) {
