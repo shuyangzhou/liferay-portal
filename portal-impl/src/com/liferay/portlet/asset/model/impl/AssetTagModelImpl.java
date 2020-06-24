@@ -117,16 +117,28 @@ public class AssetTagModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.entity.cache.enabled.com.liferay.asset.kernel.model.AssetTag"),
 		true);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.finder.cache.enabled.com.liferay.asset.kernel.model.AssetTag"),
 		true);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetTag"),
@@ -202,6 +214,10 @@ public class AssetTagModelImpl
 	public static final String MAPPING_TABLE_ASSETENTRIES_ASSETTAGS_SQL_CREATE =
 		"create table AssetEntries_AssetTags (companyId LONG not null,entryId LONG not null,tagId LONG not null,ctCollectionId LONG default 0 not null,ctChangeType BOOLEAN,primary key (entryId, tagId, ctCollectionId))";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED_ASSETENTRIES_ASSETTAGS =
 		GetterUtil.getBoolean(
 			com.liferay.portal.util.PropsUtil.get(
@@ -262,9 +278,6 @@ public class AssetTagModelImpl
 			attributes.put(
 				attributeName, attributeGetterFunction.apply((AssetTag)this));
 		}
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -716,11 +729,19 @@ public class AssetTagModelImpl
 		return (int)getPrimaryKey();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public boolean isEntityCacheEnabled() {
 		return ENTITY_CACHE_ENABLED;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public boolean isFinderCacheEnabled() {
 		return FINDER_CACHE_ENABLED;

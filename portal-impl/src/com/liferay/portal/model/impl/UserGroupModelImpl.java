@@ -118,16 +118,28 @@ public class UserGroupModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.entity.cache.enabled.com.liferay.portal.kernel.model.UserGroup"),
 		true);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.finder.cache.enabled.com.liferay.portal.kernel.model.UserGroup"),
 		true);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserGroup"),
@@ -207,6 +219,10 @@ public class UserGroupModelImpl
 	public static final String MAPPING_TABLE_GROUPS_USERGROUPS_SQL_CREATE =
 		"create table Groups_UserGroups (companyId LONG not null,groupId LONG not null,userGroupId LONG not null,ctCollectionId LONG default 0 not null,ctChangeType BOOLEAN,primary key (groupId, userGroupId, ctCollectionId))";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED_GROUPS_USERGROUPS =
 		GetterUtil.getBoolean(
 			com.liferay.portal.util.PropsUtil.get(
@@ -224,6 +240,10 @@ public class UserGroupModelImpl
 	public static final String MAPPING_TABLE_USERGROUPS_TEAMS_SQL_CREATE =
 		"create table UserGroups_Teams (companyId LONG not null,teamId LONG not null,userGroupId LONG not null,ctCollectionId LONG default 0 not null,ctChangeType BOOLEAN,primary key (teamId, userGroupId, ctCollectionId))";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED_USERGROUPS_TEAMS =
 		GetterUtil.getBoolean(
 			com.liferay.portal.util.PropsUtil.get(
@@ -241,6 +261,10 @@ public class UserGroupModelImpl
 	public static final String MAPPING_TABLE_USERS_USERGROUPS_SQL_CREATE =
 		"create table Users_UserGroups (companyId LONG not null,userId LONG not null,userGroupId LONG not null,ctCollectionId LONG default 0 not null,ctChangeType BOOLEAN,primary key (userId, userGroupId, ctCollectionId))";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED_USERS_USERGROUPS =
 		GetterUtil.getBoolean(
 			com.liferay.portal.util.PropsUtil.get(
@@ -301,9 +325,6 @@ public class UserGroupModelImpl
 			attributes.put(
 				attributeName, attributeGetterFunction.apply((UserGroup)this));
 		}
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -815,11 +836,19 @@ public class UserGroupModelImpl
 		return (int)getPrimaryKey();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public boolean isEntityCacheEnabled() {
 		return ENTITY_CACHE_ENABLED;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public boolean isFinderCacheEnabled() {
 		return FINDER_CACHE_ENABLED;

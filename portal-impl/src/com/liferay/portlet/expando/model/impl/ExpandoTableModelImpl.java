@@ -98,16 +98,28 @@ public class ExpandoTableModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.entity.cache.enabled.com.liferay.expando.kernel.model.ExpandoTable"),
 		true);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.finder.cache.enabled.com.liferay.expando.kernel.model.ExpandoTable"),
 		true);
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
 		com.liferay.portal.util.PropsUtil.get(
 			"value.object.column.bitmask.enabled.com.liferay.expando.kernel.model.ExpandoTable"),
@@ -176,9 +188,6 @@ public class ExpandoTableModelImpl
 				attributeName,
 				attributeGetterFunction.apply((ExpandoTable)this));
 		}
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -487,11 +496,19 @@ public class ExpandoTableModelImpl
 		return (int)getPrimaryKey();
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public boolean isEntityCacheEnabled() {
 		return ENTITY_CACHE_ENABLED;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public boolean isFinderCacheEnabled() {
 		return FINDER_CACHE_ENABLED;
