@@ -62,16 +62,16 @@ public class FinderPath {
 		Class<?> resultClass, String cacheName, String methodName,
 		String[] params) {
 
-		this(resultClass, cacheName, methodName, params, -1);
+		this(resultClass, cacheName, methodName, params, null);
 	}
 
 	public FinderPath(
 		Class<?> resultClass, String cacheName, String methodName,
-		String[] params, long columnBitmask) {
+		String[] params, ArgumentsResolver argumentsResolver) {
 
 		_resultClass = resultClass;
 		_cacheName = cacheName;
-		_columnBitmask = columnBitmask;
+		_argumentsResolver = argumentsResolver;
 
 		if (BaseModel.class.isAssignableFrom(_resultClass)) {
 			_cacheKeyGeneratorCacheName = _BASE_MODEL_CACHE_KEY_GENERATOR_NAME;
@@ -92,6 +92,18 @@ public class FinderPath {
 		}
 
 		_initCacheKeyPrefix(methodName, params);
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #FinderPath(
+	 * 		Class, String, String, String[], ArgumentsResolver)}
+	 */
+	@Deprecated
+	public FinderPath(
+		Class<?> resultClass, String cacheName, String methodName,
+		String[] params, long columnBitmask) {
+
+		this(resultClass, cacheName, methodName, params, null);
 	}
 
 	/**
@@ -161,12 +173,27 @@ public class FinderPath {
 			});
 	}
 
+	public Object[] getArguments(
+		BaseModel<?> baseModel, boolean checkColumn, boolean original) {
+
+		if (_argumentsResolver == null) {
+			return null;
+		}
+
+		return _argumentsResolver.getArguments(
+			baseModel, checkColumn, original);
+	}
+
 	public String getCacheName() {
 		return _cacheName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public long getColumnBitmask() {
-		return _columnBitmask;
+		return -1;
 	}
 
 	public Class<?> getResultClass() {
@@ -247,11 +274,11 @@ public class FinderPath {
 
 	private static final Map<String, String> _encodedTypes = _getEncodedTypes();
 
+	private final ArgumentsResolver _argumentsResolver;
 	private final CacheKeyGenerator _cacheKeyGenerator;
 	private final String _cacheKeyGeneratorCacheName;
 	private String _cacheKeyPrefix;
 	private final String _cacheName;
-	private final long _columnBitmask;
 	private final Class<?> _resultClass;
 
 }
