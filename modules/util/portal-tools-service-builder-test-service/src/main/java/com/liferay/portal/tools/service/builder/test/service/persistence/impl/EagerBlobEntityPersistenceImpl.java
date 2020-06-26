@@ -15,6 +15,7 @@
 package com.liferay.portal.tools.service.builder.test.service.persistence.impl;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -43,10 +45,16 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * The persistence implementation for the eager blob entity service.
@@ -942,27 +950,14 @@ public class EagerBlobEntityPersistenceImpl
 	 */
 	@Override
 	public void clearCache(EagerBlobEntity eagerBlobEntity) {
-		entityCache.removeResult(
-			EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(EagerBlobEntityModelImpl)eagerBlobEntity, true);
+		entityCache.removeResult(EagerBlobEntityImpl.class, eagerBlobEntity);
 	}
 
 	@Override
 	public void clearCache(List<EagerBlobEntity> eagerBlobEntities) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (EagerBlobEntity eagerBlobEntity : eagerBlobEntities) {
 			entityCache.removeResult(
-				EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(EagerBlobEntityModelImpl)eagerBlobEntity, true);
+				EagerBlobEntityImpl.class, eagerBlobEntity);
 		}
 	}
 
@@ -989,36 +984,6 @@ public class EagerBlobEntityPersistenceImpl
 			_finderPathCountByUUID_G, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, eagerBlobEntityModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		EagerBlobEntityModelImpl eagerBlobEntityModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				eagerBlobEntityModelImpl.getUuid(),
-				eagerBlobEntityModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (!Objects.equals(
-				eagerBlobEntityModelImpl.getUuid(),
-				eagerBlobEntityModelImpl.getOriginalUuid()) ||
-			(eagerBlobEntityModelImpl.getGroupId() !=
-				eagerBlobEntityModelImpl.getOriginalGroupId())) {
-
-			Object[] args = new Object[] {
-				eagerBlobEntityModelImpl.getOriginalUuid(),
-				eagerBlobEntityModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
 	}
 
 	/**
@@ -1162,10 +1127,8 @@ public class EagerBlobEntityPersistenceImpl
 		try {
 			session = openSession();
 
-			if (eagerBlobEntity.isNew()) {
+			if (isNew) {
 				session.save(eagerBlobEntity);
-
-				eagerBlobEntity.setNew(false);
 			}
 			else {
 				eagerBlobEntity = (EagerBlobEntity)session.merge(
@@ -1179,40 +1142,14 @@ public class EagerBlobEntityPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			EagerBlobEntityImpl.class, eagerBlobEntityModelImpl, false, true);
+
+		cacheUniqueFindersCache(eagerBlobEntityModelImpl);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			eagerBlobEntity.setNew(false);
 		}
-		else {
-			if (!Objects.equals(
-					eagerBlobEntity.getUuid(),
-					eagerBlobEntityModelImpl.getOriginalUuid())) {
-
-				Object[] args = new Object[] {
-					eagerBlobEntityModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {eagerBlobEntityModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-		}
-
-		entityCache.putResult(
-			EagerBlobEntityImpl.class, eagerBlobEntity.getPrimaryKey(),
-			eagerBlobEntity, false);
-
-		clearUniqueFindersCache(eagerBlobEntityModelImpl, false);
-		cacheUniqueFindersCache(eagerBlobEntityModelImpl);
 
 		eagerBlobEntity.resetOriginalValues();
 
@@ -1479,53 +1416,59 @@ public class EagerBlobEntityPersistenceImpl
 	 * Initializes the eager blob entity persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			EagerBlobEntityImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+		Bundle bundle = FrameworkUtil.getBundle(
+			EagerBlobEntityPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			EagerBlobEntityImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_bundleContext = bundle.getBundleContext();
+
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			EagerBlobEntityImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid", "findByUuid",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			EagerBlobEntityImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
+		_finderPathWithoutPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "findByUuid",
 			new String[] {String.class.getName()});
 
-		_finderPathCountByUuid = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByUuid", new String[] {String.class.getName()});
+		_finderPathCountByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "countByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathFetchByUUID_G = new FinderPath(
-			EagerBlobEntityImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByUUID_G",
+		_finderPathFetchByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "UUID_G", "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathCountByUUID_G = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UUID_G",
 			"countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()});
 	}
 
 	public void destroy() {
 		entityCache.removeCache(EagerBlobEntityImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
+
+	private BundleContext _bundleContext;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
@@ -1558,5 +1501,101 @@ public class EagerBlobEntityPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "blob"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = EagerBlobEntityImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid",
+			(baseModel, checkColumn, original) -> {
+				EagerBlobEntityModelImpl eagerBlobEntityModelImpl =
+					(EagerBlobEntityModelImpl)baseModel;
+
+				if (!checkColumn ||
+					!Objects.equals(
+						eagerBlobEntityModelImpl.getUuid(),
+						eagerBlobEntityModelImpl.getOriginalUuid())) {
+
+					if (original) {
+						return new Object[] {
+							eagerBlobEntityModelImpl.getOriginalUuid()
+						};
+					}
+
+					return new Object[] {eagerBlobEntityModelImpl.getUuid()};
+				}
+
+				return null;
+			});
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumn, original) -> {
+				EagerBlobEntityModelImpl eagerBlobEntityModelImpl =
+					(EagerBlobEntityModelImpl)baseModel;
+
+				if (!checkColumn ||
+					!Objects.equals(
+						eagerBlobEntityModelImpl.getUuid(),
+						eagerBlobEntityModelImpl.getOriginalUuid()) ||
+					(eagerBlobEntityModelImpl.getGroupId() !=
+						eagerBlobEntityModelImpl.getOriginalGroupId())) {
+
+					if (original) {
+						return new Object[] {
+							eagerBlobEntityModelImpl.getOriginalUuid(),
+							eagerBlobEntityModelImpl.getOriginalGroupId()
+						};
+					}
+
+					return new Object[] {
+						eagerBlobEntityModelImpl.getUuid(),
+						eagerBlobEntityModelImpl.getGroupId()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }

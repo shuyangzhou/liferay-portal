@@ -23,6 +23,7 @@ import com.liferay.microblogs.service.persistence.MicroblogsEntryPersistence;
 import com.liferay.microblogs.service.persistence.impl.constants.MicroblogsPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -40,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -53,6 +55,7 @@ import java.sql.Timestamp;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -60,6 +63,8 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -13235,21 +13240,14 @@ public class MicroblogsEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(MicroblogsEntry microblogsEntry) {
-		entityCache.removeResult(
-			MicroblogsEntryImpl.class, microblogsEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		entityCache.removeResult(MicroblogsEntryImpl.class, microblogsEntry);
 	}
 
 	@Override
 	public void clearCache(List<MicroblogsEntry> microblogsEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (MicroblogsEntry microblogsEntry : microblogsEntries) {
 			entityCache.removeResult(
-				MicroblogsEntryImpl.class, microblogsEntry.getPrimaryKey());
+				MicroblogsEntryImpl.class, microblogsEntry);
 		}
 	}
 
@@ -13422,10 +13420,8 @@ public class MicroblogsEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (microblogsEntry.isNew()) {
+			if (isNew) {
 				session.save(microblogsEntry);
-
-				microblogsEntry.setNew(false);
 			}
 			else {
 				microblogsEntry = (MicroblogsEntry)session.merge(
@@ -13439,380 +13435,12 @@ public class MicroblogsEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			MicroblogsEntryImpl.class, microblogsEntryModelImpl, false, true);
 
 		if (isNew) {
-			Object[] args = new Object[] {
-				microblogsEntryModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByCompanyId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {microblogsEntryModelImpl.getUserId()};
-
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getUserId(),
-				microblogsEntryModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByU_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByU_T, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getCreatorClassNameId(),
-				microblogsEntryModelImpl.getCreatorClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByCCNI_CCPK, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCCNI_CCPK, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getCreatorClassNameId(),
-				microblogsEntryModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByCCNI_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCCNI_T, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getType(),
-				microblogsEntryModelImpl.getParentMicroblogsEntryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByT_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByT_P, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getCompanyId(),
-				microblogsEntryModelImpl.getCreatorClassNameId(),
-				microblogsEntryModelImpl.getCreatorClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_CCNI_CCPK, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_CCNI_CCPK, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getCompanyId(),
-				microblogsEntryModelImpl.getCreatorClassNameId(),
-				microblogsEntryModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_CCNI_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_CCNI_T, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getCreatorClassNameId(),
-				microblogsEntryModelImpl.getCreatorClassPK(),
-				microblogsEntryModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByCCNI_CCPK_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCCNI_CCPK_T, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getCompanyId(),
-				microblogsEntryModelImpl.getCreatorClassNameId(),
-				microblogsEntryModelImpl.getCreatorClassPK(),
-				microblogsEntryModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_CCNI_CCPK_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_CCNI_CCPK_T, args);
-
-			args = new Object[] {
-				microblogsEntryModelImpl.getUserId(),
-				microblogsEntryModelImpl.getCreateDate(),
-				microblogsEntryModelImpl.getType(),
-				microblogsEntryModelImpl.getSocialRelationType()
-			};
-
-			finderCache.removeResult(_finderPathCountByU_C_T_S, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByU_C_T_S, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			microblogsEntry.setNew(false);
 		}
-		else {
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {microblogsEntryModelImpl.getCompanyId()};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalUserId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUserId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {microblogsEntryModelImpl.getUserId()};
-
-				finderCache.removeResult(_finderPathCountByUserId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByU_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalUserId(),
-					microblogsEntryModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByU_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByU_T, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getUserId(),
-					microblogsEntryModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByU_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByU_T, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCCNI_CCPK.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCreatorClassNameId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByCCNI_CCPK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCCNI_CCPK, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getCreatorClassNameId(),
-					microblogsEntryModelImpl.getCreatorClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByCCNI_CCPK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCCNI_CCPK, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCCNI_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCreatorClassNameId(),
-					microblogsEntryModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByCCNI_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCCNI_T, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getCreatorClassNameId(),
-					microblogsEntryModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByCCNI_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCCNI_T, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByT_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalType(),
-					microblogsEntryModelImpl.
-						getOriginalParentMicroblogsEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByT_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByT_P, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getType(),
-					microblogsEntryModelImpl.getParentMicroblogsEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByT_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByT_P, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_CCNI_CCPK.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCompanyId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassNameId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_CCNI_CCPK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_CCNI_CCPK, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getCompanyId(),
-					microblogsEntryModelImpl.getCreatorClassNameId(),
-					microblogsEntryModelImpl.getCreatorClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_CCNI_CCPK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_CCNI_CCPK, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_CCNI_T.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCompanyId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassNameId(),
-					microblogsEntryModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_CCNI_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_CCNI_T, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getCompanyId(),
-					microblogsEntryModelImpl.getCreatorClassNameId(),
-					microblogsEntryModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_CCNI_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_CCNI_T, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCCNI_CCPK_T.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCreatorClassNameId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassPK(),
-					microblogsEntryModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByCCNI_CCPK_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCCNI_CCPK_T, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getCreatorClassNameId(),
-					microblogsEntryModelImpl.getCreatorClassPK(),
-					microblogsEntryModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByCCNI_CCPK_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCCNI_CCPK_T, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_CCNI_CCPK_T.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalCompanyId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassNameId(),
-					microblogsEntryModelImpl.getOriginalCreatorClassPK(),
-					microblogsEntryModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_CCNI_CCPK_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_CCNI_CCPK_T, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getCompanyId(),
-					microblogsEntryModelImpl.getCreatorClassNameId(),
-					microblogsEntryModelImpl.getCreatorClassPK(),
-					microblogsEntryModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_CCNI_CCPK_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_CCNI_CCPK_T, args);
-			}
-
-			if ((microblogsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByU_C_T_S.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					microblogsEntryModelImpl.getOriginalUserId(),
-					microblogsEntryModelImpl.getOriginalCreateDate(),
-					microblogsEntryModelImpl.getOriginalType(),
-					microblogsEntryModelImpl.getOriginalSocialRelationType()
-				};
-
-				finderCache.removeResult(_finderPathCountByU_C_T_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByU_C_T_S, args);
-
-				args = new Object[] {
-					microblogsEntryModelImpl.getUserId(),
-					microblogsEntryModelImpl.getCreateDate(),
-					microblogsEntryModelImpl.getType(),
-					microblogsEntryModelImpl.getSocialRelationType()
-				};
-
-				finderCache.removeResult(_finderPathCountByU_C_T_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByU_C_T_S, args);
-			}
-		}
-
-		entityCache.putResult(
-			MicroblogsEntryImpl.class, microblogsEntry.getPrimaryKey(),
-			microblogsEntry, false);
 
 		microblogsEntry.resetOriginalValues();
 
@@ -14079,81 +13707,70 @@ public class MicroblogsEntryPersistenceImpl
 	 * Initializes the microblogs entry persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CompanyId",
 			"findByCompanyId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] {Long.class.getName()},
-			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
+			"findByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCompanyId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
 			"countByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByUserId = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUserId",
+		_finderPathWithPaginationFindByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "UserId", "findByUserId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] {Long.class.getName()},
-			MicroblogsEntryModelImpl.USERID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UserId", "findByUserId",
+			new String[] {Long.class.getName()});
 
-		_finderPathCountByUserId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UserId",
 			"countByUserId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByU_T = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByU_T",
+		_finderPathWithPaginationFindByU_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "U_T", "findByU_T",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByU_T = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_T",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			MicroblogsEntryModelImpl.USERID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByU_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_T",
+		_finderPathWithoutPaginationFindByU_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "U_T", "findByU_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathWithPaginationFindByCCNI_CCPK = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathCountByU_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "U_T", "countByU_T",
+			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_finderPathWithPaginationFindByCCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CCNI_CCPK",
 			"findByCCNI_CCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -14161,69 +13778,56 @@ public class MicroblogsEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCCNI_CCPK = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCCNI_CCPK",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CCNI_CCPK",
+			"findByCCNI_CCPK",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByCCNI_CCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CCNI_CCPK",
 			"countByCCNI_CCPK",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationCountByCCNI_CCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByCCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CCNI_CCPK",
 			"countByCCNI_CCPK",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByCCNI_T = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByCCNI_T",
+		_finderPathWithPaginationFindByCCNI_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CCNI_T", "findByCCNI_T",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCCNI_T = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCCNI_T",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCCNI_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CCNI_T", "findByCCNI_T",
+			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathCountByCCNI_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCCNI_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CCNI_T",
 			"countByCCNI_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathWithPaginationFindByT_P = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByT_P",
+		_finderPathWithPaginationFindByT_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "T_P", "findByT_P",
 			new String[] {
 				Integer.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByT_P = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByT_P",
-			new String[] {Integer.class.getName(), Long.class.getName()},
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.PARENTMICROBLOGSENTRYID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByT_P = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_P",
+		_finderPathWithoutPaginationFindByT_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "T_P", "findByT_P",
 			new String[] {Integer.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByC_CCNI_CCPK = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathCountByT_P = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "T_P", "countByT_P",
+			new String[] {Integer.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByC_CCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_CCNI_CCPK",
 			"findByC_CCNI_CCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -14231,33 +13835,29 @@ public class MicroblogsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_CCNI_CCPK = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CCNI_CCPK",
+		_finderPathWithoutPaginationFindByC_CCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_CCNI_CCPK",
+			"findByC_CCNI_CCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByC_CCNI_CCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByC_CCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_CCNI_CCPK",
 			"countByC_CCNI_CCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationCountByC_CCNI_CCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByC_CCNI_CCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_CCNI_CCPK",
 			"countByC_CCNI_CCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationFindByC_CCNI_T = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByC_CCNI_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_CCNI_T",
 			"findByC_CCNI_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -14265,28 +13865,24 @@ public class MicroblogsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_CCNI_T = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CCNI_T",
+		_finderPathWithoutPaginationFindByC_CCNI_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_CCNI_T",
+			"findByC_CCNI_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
-			},
-			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByC_CCNI_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByC_CCNI_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_CCNI_T",
 			"countByC_CCNI_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByCCNI_CCPK_T = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByCCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CCNI_CCPK_T",
 			"findByCCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -14294,36 +13890,32 @@ public class MicroblogsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCCNI_CCPK_T = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCCNI_CCPK_T",
+		_finderPathWithoutPaginationFindByCCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CCNI_CCPK_T",
+			"findByCCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
-			},
-			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByCCNI_CCPK_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CCNI_CCPK_T",
 			"countByCCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationCountByCCNI_CCPK_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByCCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CCNI_CCPK_T",
 			"countByCCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByC_CCNI_CCPK_T = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByC_CCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_CCNI_CCPK_T",
 			"findByC_CCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -14332,38 +13924,32 @@ public class MicroblogsEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_CCNI_CCPK_T = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CCNI_CCPK_T",
+		_finderPathWithoutPaginationFindByC_CCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_CCNI_CCPK_T",
+			"findByC_CCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
-			},
-			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByC_CCNI_CCPK_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByC_CCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_CCNI_CCPK_T",
 			"countByC_CCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			});
 
-		_finderPathWithPaginationCountByC_CCNI_CCPK_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByC_CCNI_CCPK_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_CCNI_CCPK_T",
 			"countByC_CCNI_CCPK_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByU_C_T_S = new FinderPath(
-			MicroblogsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByU_C_T_S",
+		_finderPathWithPaginationFindByU_C_T_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "U_C_T_S", "findByU_C_T_S",
 			new String[] {
 				Long.class.getName(), Date.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
@@ -14371,20 +13957,16 @@ public class MicroblogsEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByU_C_T_S = new FinderPath(
-			MicroblogsEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_C_T_S",
+		_finderPathWithoutPaginationFindByU_C_T_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "U_C_T_S",
+			"findByU_C_T_S",
 			new String[] {
 				Long.class.getName(), Date.class.getName(),
 				Integer.class.getName(), Integer.class.getName()
-			},
-			MicroblogsEntryModelImpl.USERID_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
-			MicroblogsEntryModelImpl.SOCIALRELATIONTYPE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByU_C_T_S = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByU_C_T_S = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "U_C_T_S",
 			"countByU_C_T_S",
 			new String[] {
 				Long.class.getName(), Date.class.getName(),
@@ -14395,9 +13977,12 @@ public class MicroblogsEntryPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(MicroblogsEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -14426,13 +14011,15 @@ public class MicroblogsEntryPersistenceImpl
 		super.setSessionFactory(sessionFactory);
 	}
 
+	private BundleContext _bundleContext;
+
 	@Reference
 	protected EntityCache entityCache;
 
 	@Reference
 	protected FinderCache finderCache;
 
-	private Long _getTime(Date date) {
+	private static Long _getTime(Date date) {
 		if (date == null) {
 			return null;
 		}
@@ -14496,6 +14083,429 @@ public class MicroblogsEntryPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = MicroblogsEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CompanyId",
+			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CompanyId",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CompanyId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalCompanyId()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UserId",
+			MicroblogsEntryModelImpl.USERID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"UserId",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UserId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalUserId()
+						};
+					}
+
+					return new Object[] {microblogsEntryModelImpl.getUserId()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"U_T",
+			MicroblogsEntryModelImpl.USERID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"U_T",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("U_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalUserId(),
+							microblogsEntryModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getUserId(),
+						microblogsEntryModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CCNI_CCPK",
+			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CCNI_CCPK",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CCNI_CCPK")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassNameId(),
+							microblogsEntryModelImpl.getOriginalCreatorClassPK()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCreatorClassNameId(),
+						microblogsEntryModelImpl.getCreatorClassPK()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CCNI_T",
+			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CCNI_T",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CCNI_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassNameId(),
+							microblogsEntryModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCreatorClassNameId(),
+						microblogsEntryModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"T_P",
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.PARENTMICROBLOGSENTRYID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"T_P",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("T_P")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalType(),
+							microblogsEntryModelImpl.
+								getOriginalParentMicroblogsEntryId()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getType(),
+						microblogsEntryModelImpl.getParentMicroblogsEntryId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_CCNI_CCPK",
+			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_CCNI_CCPK",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_CCNI_CCPK")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalCompanyId(),
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassNameId(),
+							microblogsEntryModelImpl.getOriginalCreatorClassPK()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCompanyId(),
+						microblogsEntryModelImpl.getCreatorClassNameId(),
+						microblogsEntryModelImpl.getCreatorClassPK()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_CCNI_T",
+			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_CCNI_T",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_CCNI_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalCompanyId(),
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassNameId(),
+							microblogsEntryModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCompanyId(),
+						microblogsEntryModelImpl.getCreatorClassNameId(),
+						microblogsEntryModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CCNI_CCPK_T",
+			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CCNI_CCPK_T",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CCNI_CCPK_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassNameId(),
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassPK(),
+							microblogsEntryModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCreatorClassNameId(),
+						microblogsEntryModelImpl.getCreatorClassPK(),
+						microblogsEntryModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_CCNI_CCPK_T",
+			MicroblogsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSNAMEID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATORCLASSPK_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_CCNI_CCPK_T",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_CCNI_CCPK_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalCompanyId(),
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassNameId(),
+							microblogsEntryModelImpl.
+								getOriginalCreatorClassPK(),
+							microblogsEntryModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getCompanyId(),
+						microblogsEntryModelImpl.getCreatorClassNameId(),
+						microblogsEntryModelImpl.getCreatorClassPK(),
+						microblogsEntryModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"U_C_T_S",
+			MicroblogsEntryModelImpl.USERID_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.CREATEDATE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.TYPE_COLUMN_BITMASK |
+			MicroblogsEntryModelImpl.SOCIALRELATIONTYPE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"U_C_T_S",
+			(baseModel, checkColumn, original) -> {
+				MicroblogsEntryModelImpl microblogsEntryModelImpl =
+					(MicroblogsEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((microblogsEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("U_C_T_S")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							microblogsEntryModelImpl.getOriginalUserId(),
+							_getTime(
+								microblogsEntryModelImpl.
+									getOriginalCreateDate()),
+							microblogsEntryModelImpl.getOriginalType(),
+							microblogsEntryModelImpl.
+								getOriginalSocialRelationType()
+						};
+					}
+
+					return new Object[] {
+						microblogsEntryModelImpl.getUserId(),
+						_getTime(microblogsEntryModelImpl.getCreateDate()),
+						microblogsEntryModelImpl.getType(),
+						microblogsEntryModelImpl.getSocialRelationType()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

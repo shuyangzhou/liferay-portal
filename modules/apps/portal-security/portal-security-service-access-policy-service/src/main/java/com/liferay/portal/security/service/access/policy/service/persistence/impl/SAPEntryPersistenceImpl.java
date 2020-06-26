@@ -16,6 +16,7 @@ package com.liferay.portal.security.service.access.policy.service.persistence.im
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -32,6 +33,7 @@ import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -53,6 +55,7 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -60,6 +63,8 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -4188,24 +4193,13 @@ public class SAPEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(SAPEntry sapEntry) {
-		entityCache.removeResult(SAPEntryImpl.class, sapEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((SAPEntryModelImpl)sapEntry, true);
+		entityCache.removeResult(SAPEntryImpl.class, sapEntry);
 	}
 
 	@Override
 	public void clearCache(List<SAPEntry> sapEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (SAPEntry sapEntry : sapEntries) {
-			entityCache.removeResult(
-				SAPEntryImpl.class, sapEntry.getPrimaryKey());
-
-			clearUniqueFindersCache((SAPEntryModelImpl)sapEntry, true);
+			entityCache.removeResult(SAPEntryImpl.class, sapEntry);
 		}
 	}
 
@@ -4231,31 +4225,6 @@ public class SAPEntryPersistenceImpl
 			_finderPathCountByC_N, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_N, args, sapEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		SAPEntryModelImpl sapEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				sapEntryModelImpl.getCompanyId(), sapEntryModelImpl.getName()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_N, args);
-			finderCache.removeResult(_finderPathFetchByC_N, args);
-		}
-
-		if ((sapEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_N.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				sapEntryModelImpl.getOriginalCompanyId(),
-				sapEntryModelImpl.getOriginalName()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_N, args);
-			finderCache.removeResult(_finderPathFetchByC_N, args);
-		}
 	}
 
 	/**
@@ -4419,10 +4388,8 @@ public class SAPEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (sapEntry.isNew()) {
+			if (isNew) {
 				session.save(sapEntry);
-
-				sapEntry.setNew(false);
 			}
 			else {
 				sapEntry = (SAPEntry)session.merge(sapEntry);
@@ -4435,133 +4402,14 @@ public class SAPEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			SAPEntryImpl.class, sapEntryModelImpl, false, true);
+
+		cacheUniqueFindersCache(sapEntryModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {sapEntryModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				sapEntryModelImpl.getUuid(), sapEntryModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {sapEntryModelImpl.getCompanyId()};
-
-			finderCache.removeResult(_finderPathCountByCompanyId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {
-				sapEntryModelImpl.getCompanyId(),
-				sapEntryModelImpl.isDefaultSAPEntry()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_D, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_D, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			sapEntry.setNew(false);
 		}
-		else {
-			if ((sapEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {sapEntryModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((sapEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalUuid(),
-					sapEntryModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					sapEntryModelImpl.getUuid(),
-					sapEntryModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((sapEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {sapEntryModelImpl.getCompanyId()};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((sapEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_D.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalCompanyId(),
-					sapEntryModelImpl.getOriginalDefaultSAPEntry()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_D, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_D, args);
-
-				args = new Object[] {
-					sapEntryModelImpl.getCompanyId(),
-					sapEntryModelImpl.isDefaultSAPEntry()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_D, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_D, args);
-			}
-		}
-
-		entityCache.putResult(
-			SAPEntryImpl.class, sapEntry.getPrimaryKey(), sapEntry, false);
-
-		clearUniqueFindersCache(sapEntryModelImpl, false);
-		cacheUniqueFindersCache(sapEntryModelImpl);
 
 		sapEntry.resetOriginalValues();
 
@@ -4826,111 +4674,103 @@ public class SAPEntryPersistenceImpl
 	 * Initializes the sap entry persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid", "findByUuid",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUuid", new String[] {String.class.getName()},
-			SAPEntryModelImpl.UUID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "findByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathCountByUuid = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByUuid", new String[] {String.class.getName()});
+		_finderPathCountByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "countByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid_C",
+		_finderPathWithPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			SAPEntryModelImpl.UUID_COLUMN_BITMASK |
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C", "findByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathCountByUuid_C = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C",
 			"countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CompanyId",
 			"findByCompanyId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByCompanyId", new String[] {Long.class.getName()},
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
+			"findByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCompanyId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCompanyId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CompanyId",
 			"countByCompanyId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByC_D = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByC_D",
+		_finderPathWithPaginationFindByC_D = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_D", "findByC_D",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_D = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByC_D",
-			new String[] {Long.class.getName(), Boolean.class.getName()},
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			SAPEntryModelImpl.DEFAULTSAPENTRY_COLUMN_BITMASK);
-
-		_finderPathCountByC_D = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_D",
+		_finderPathWithoutPaginationFindByC_D = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_D", "findByC_D",
 			new String[] {Long.class.getName(), Boolean.class.getName()});
 
-		_finderPathFetchByC_N = new FinderPath(
-			SAPEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_N",
-			new String[] {Long.class.getName(), String.class.getName()},
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			SAPEntryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathCountByC_D = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_D", "countByC_D",
+			new String[] {Long.class.getName(), Boolean.class.getName()});
 
-		_finderPathCountByC_N = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",
+		_finderPathFetchByC_N = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_N", "fetchByC_N",
+			new String[] {Long.class.getName(), String.class.getName()});
+
+		_finderPathCountByC_N = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_N", "countByC_N",
 			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(SAPEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -4958,6 +4798,8 @@ public class SAPEntryPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -5021,6 +4863,196 @@ public class SAPEntryPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = SAPEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid", SAPEntryModelImpl.UUID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid",
+			(baseModel, checkColumn, original) -> {
+				SAPEntryModelImpl sapEntryModelImpl =
+					(SAPEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((sapEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							sapEntryModelImpl.getOriginalUuid()
+						};
+					}
+
+					return new Object[] {sapEntryModelImpl.getUuid()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid_C",
+			SAPEntryModelImpl.UUID_COLUMN_BITMASK |
+			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumn, original) -> {
+				SAPEntryModelImpl sapEntryModelImpl =
+					(SAPEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((sapEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							sapEntryModelImpl.getOriginalUuid(),
+							sapEntryModelImpl.getOriginalCompanyId()
+						};
+					}
+
+					return new Object[] {
+						sapEntryModelImpl.getUuid(),
+						sapEntryModelImpl.getCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CompanyId", SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CompanyId",
+			(baseModel, checkColumn, original) -> {
+				SAPEntryModelImpl sapEntryModelImpl =
+					(SAPEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((sapEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CompanyId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							sapEntryModelImpl.getOriginalCompanyId()
+						};
+					}
+
+					return new Object[] {sapEntryModelImpl.getCompanyId()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_D",
+			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			SAPEntryModelImpl.DEFAULTSAPENTRY_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_D",
+			(baseModel, checkColumn, original) -> {
+				SAPEntryModelImpl sapEntryModelImpl =
+					(SAPEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((sapEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_D")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							sapEntryModelImpl.getOriginalCompanyId(),
+							sapEntryModelImpl.getOriginalDefaultSAPEntry()
+						};
+					}
+
+					return new Object[] {
+						sapEntryModelImpl.getCompanyId(),
+						sapEntryModelImpl.isDefaultSAPEntry()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_N",
+			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			SAPEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_N",
+			(baseModel, checkColumn, original) -> {
+				SAPEntryModelImpl sapEntryModelImpl =
+					(SAPEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((sapEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_N")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							sapEntryModelImpl.getOriginalCompanyId(),
+							sapEntryModelImpl.getOriginalName()
+						};
+					}
+
+					return new Object[] {
+						sapEntryModelImpl.getCompanyId(),
+						sapEntryModelImpl.getName()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

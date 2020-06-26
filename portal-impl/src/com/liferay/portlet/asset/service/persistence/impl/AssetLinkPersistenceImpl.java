@@ -20,6 +20,7 @@ import com.liferay.asset.kernel.model.AssetLinkTable;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -33,11 +34,15 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portlet.asset.model.impl.AssetLinkImpl;
 import com.liferay.portlet.asset.model.impl.AssetLinkModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
@@ -3094,25 +3099,13 @@ public class AssetLinkPersistenceImpl
 	 */
 	@Override
 	public void clearCache(AssetLink assetLink) {
-		EntityCacheUtil.removeResult(
-			AssetLinkImpl.class, assetLink.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((AssetLinkModelImpl)assetLink, true);
+		EntityCacheUtil.removeResult(AssetLinkImpl.class, assetLink);
 	}
 
 	@Override
 	public void clearCache(List<AssetLink> assetLinks) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AssetLink assetLink : assetLinks) {
-			EntityCacheUtil.removeResult(
-				AssetLinkImpl.class, assetLink.getPrimaryKey());
-
-			clearUniqueFindersCache((AssetLinkModelImpl)assetLink, true);
+			EntityCacheUtil.removeResult(AssetLinkImpl.class, assetLink);
 		}
 	}
 
@@ -3139,33 +3132,6 @@ public class AssetLinkPersistenceImpl
 			_finderPathCountByE_E_T, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByE_E_T, args, assetLinkModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		AssetLinkModelImpl assetLinkModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				assetLinkModelImpl.getEntryId1(),
-				assetLinkModelImpl.getEntryId2(), assetLinkModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE_E_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByE_E_T, args);
-		}
-
-		if ((assetLinkModelImpl.getColumnBitmask() &
-			 _finderPathFetchByE_E_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				assetLinkModelImpl.getOriginalEntryId1(),
-				assetLinkModelImpl.getOriginalEntryId2(),
-				assetLinkModelImpl.getOriginalType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE_E_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByE_E_T, args);
-		}
 	}
 
 	/**
@@ -3311,8 +3277,6 @@ public class AssetLinkPersistenceImpl
 				}
 
 				session.save(assetLink);
-
-				assetLink.setNew(false);
 			}
 			else {
 				assetLink = (AssetLink)session.merge(assetLink);
@@ -3326,170 +3290,23 @@ public class AssetLinkPersistenceImpl
 		}
 
 		if (assetLink.getCtCollectionId() != 0) {
+			if (isNew) {
+				assetLink.setNew(false);
+			}
+
 			assetLink.resetOriginalValues();
 
 			return assetLink;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		EntityCacheUtil.putResult(
+			AssetLinkImpl.class, assetLinkModelImpl, false, true);
+
+		cacheUniqueFindersCache(assetLinkModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {assetLinkModelImpl.getEntryId1()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE1, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByE1, args);
-
-			args = new Object[] {assetLinkModelImpl.getEntryId2()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE2, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByE2, args);
-
-			args = new Object[] {
-				assetLinkModelImpl.getEntryId1(),
-				assetLinkModelImpl.getEntryId2()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE_E, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByE_E, args);
-
-			args = new Object[] {
-				assetLinkModelImpl.getEntryId1(), assetLinkModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE1_T, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByE1_T, args);
-
-			args = new Object[] {
-				assetLinkModelImpl.getEntryId2(), assetLinkModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByE2_T, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByE2_T, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			assetLink.setNew(false);
 		}
-		else {
-			if ((assetLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByE1.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					assetLinkModelImpl.getOriginalEntryId1()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE1, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE1, args);
-
-				args = new Object[] {assetLinkModelImpl.getEntryId1()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE1, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE1, args);
-			}
-
-			if ((assetLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByE2.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					assetLinkModelImpl.getOriginalEntryId2()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE2, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE2, args);
-
-				args = new Object[] {assetLinkModelImpl.getEntryId2()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE2, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE2, args);
-			}
-
-			if ((assetLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByE_E.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					assetLinkModelImpl.getOriginalEntryId1(),
-					assetLinkModelImpl.getOriginalEntryId2()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE_E, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE_E, args);
-
-				args = new Object[] {
-					assetLinkModelImpl.getEntryId1(),
-					assetLinkModelImpl.getEntryId2()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE_E, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE_E, args);
-			}
-
-			if ((assetLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByE1_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					assetLinkModelImpl.getOriginalEntryId1(),
-					assetLinkModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE1_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE1_T, args);
-
-				args = new Object[] {
-					assetLinkModelImpl.getEntryId1(),
-					assetLinkModelImpl.getType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE1_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE1_T, args);
-			}
-
-			if ((assetLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByE2_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					assetLinkModelImpl.getOriginalEntryId2(),
-					assetLinkModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE2_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE2_T, args);
-
-				args = new Object[] {
-					assetLinkModelImpl.getEntryId2(),
-					assetLinkModelImpl.getType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByE2_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByE2_T, args);
-			}
-		}
-
-		EntityCacheUtil.putResult(
-			AssetLinkImpl.class, assetLink.getPrimaryKey(), assetLink, false);
-
-		clearUniqueFindersCache(assetLinkModelImpl, false);
-		cacheUniqueFindersCache(assetLinkModelImpl);
 
 		assetLink.resetOriginalValues();
 
@@ -3931,132 +3748,105 @@ public class AssetLinkPersistenceImpl
 	 * Initializes the asset link persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByE1 = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByE1",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByE1 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "E1", "findByE1",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByE1 = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByE1", new String[] {Long.class.getName()},
-			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
-			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
-
-		_finderPathCountByE1 = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByE1",
+		_finderPathWithoutPaginationFindByE1 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E1", "findByE1",
 			new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByE2 = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByE2",
+		_finderPathCountByE1 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E1", "countByE1",
+			new String[] {Long.class.getName()});
+
+		_finderPathWithPaginationFindByE2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "E2", "findByE2",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByE2 = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByE2", new String[] {Long.class.getName()},
-			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
-			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
-
-		_finderPathCountByE2 = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByE2",
+		_finderPathWithoutPaginationFindByE2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E2", "findByE2",
 			new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByE_E = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByE_E",
+		_finderPathCountByE2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E2", "countByE2",
+			new String[] {Long.class.getName()});
+
+		_finderPathWithPaginationFindByE_E = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "E_E", "findByE_E",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByE_E = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByE_E",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
-			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
-			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
-
-		_finderPathCountByE_E = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByE_E",
+		_finderPathWithoutPaginationFindByE_E = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E_E", "findByE_E",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByE1_T = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByE1_T",
+		_finderPathCountByE_E = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E_E", "countByE_E",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByE1_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "E1_T", "findByE1_T",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByE1_T = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByE1_T",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
-			AssetLinkModelImpl.TYPE_COLUMN_BITMASK |
-			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
-
-		_finderPathCountByE1_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByE1_T",
+		_finderPathWithoutPaginationFindByE1_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E1_T", "findByE1_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathWithPaginationFindByE2_T = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByE2_T",
+		_finderPathCountByE1_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E1_T", "countByE1_T",
+			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_finderPathWithPaginationFindByE2_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "E2_T", "findByE2_T",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByE2_T = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByE2_T",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
-			AssetLinkModelImpl.TYPE_COLUMN_BITMASK |
-			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
-
-		_finderPathCountByE2_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByE2_T",
+		_finderPathWithoutPaginationFindByE2_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E2_T", "findByE2_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathFetchByE_E_T = new FinderPath(
-			AssetLinkImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByE_E_T",
+		_finderPathCountByE2_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E2_T", "countByE2_T",
+			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_finderPathFetchByE_E_T = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "E_E_T", "fetchByE_E_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
-			},
-			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
-			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
-			AssetLinkModelImpl.TYPE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByE_E_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByE_E_T",
+		_finderPathCountByE_E_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "E_E_T", "countByE_E_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
@@ -4065,9 +3855,12 @@ public class AssetLinkPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(AssetLinkImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_ASSETLINK =
@@ -4095,5 +3888,240 @@ public class AssetLinkPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"type"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = AssetLinkImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				FinderPath.class, finderPath,
+				HashMapBuilder.<String, Object>put(
+					"cache.name", cacheName
+				).build()));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"E1",
+			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
+			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"E1",
+			(baseModel, checkColumn, original) -> {
+				AssetLinkModelImpl assetLinkModelImpl =
+					(AssetLinkModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((assetLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("E1")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							assetLinkModelImpl.getOriginalEntryId1()
+						};
+					}
+
+					return new Object[] {assetLinkModelImpl.getEntryId1()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"E2",
+			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
+			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"E2",
+			(baseModel, checkColumn, original) -> {
+				AssetLinkModelImpl assetLinkModelImpl =
+					(AssetLinkModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((assetLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("E2")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							assetLinkModelImpl.getOriginalEntryId2()
+						};
+					}
+
+					return new Object[] {assetLinkModelImpl.getEntryId2()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"E_E",
+			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
+			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
+			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"E_E",
+			(baseModel, checkColumn, original) -> {
+				AssetLinkModelImpl assetLinkModelImpl =
+					(AssetLinkModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((assetLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("E_E")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							assetLinkModelImpl.getOriginalEntryId1(),
+							assetLinkModelImpl.getOriginalEntryId2()
+						};
+					}
+
+					return new Object[] {
+						assetLinkModelImpl.getEntryId1(),
+						assetLinkModelImpl.getEntryId2()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"E1_T",
+			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
+			AssetLinkModelImpl.TYPE_COLUMN_BITMASK |
+			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"E1_T",
+			(baseModel, checkColumn, original) -> {
+				AssetLinkModelImpl assetLinkModelImpl =
+					(AssetLinkModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((assetLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("E1_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							assetLinkModelImpl.getOriginalEntryId1(),
+							assetLinkModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						assetLinkModelImpl.getEntryId1(),
+						assetLinkModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"E2_T",
+			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
+			AssetLinkModelImpl.TYPE_COLUMN_BITMASK |
+			AssetLinkModelImpl.WEIGHT_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"E2_T",
+			(baseModel, checkColumn, original) -> {
+				AssetLinkModelImpl assetLinkModelImpl =
+					(AssetLinkModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((assetLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("E2_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							assetLinkModelImpl.getOriginalEntryId2(),
+							assetLinkModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						assetLinkModelImpl.getEntryId2(),
+						assetLinkModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"E_E_T",
+			AssetLinkModelImpl.ENTRYID1_COLUMN_BITMASK |
+			AssetLinkModelImpl.ENTRYID2_COLUMN_BITMASK |
+			AssetLinkModelImpl.TYPE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"E_E_T",
+			(baseModel, checkColumn, original) -> {
+				AssetLinkModelImpl assetLinkModelImpl =
+					(AssetLinkModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((assetLinkModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("E_E_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							assetLinkModelImpl.getOriginalEntryId1(),
+							assetLinkModelImpl.getOriginalEntryId2(),
+							assetLinkModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						assetLinkModelImpl.getEntryId1(),
+						assetLinkModelImpl.getEntryId2(),
+						assetLinkModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }

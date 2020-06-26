@@ -23,6 +23,7 @@ import com.liferay.message.boards.service.persistence.MBMailingListPersistence;
 import com.liferay.message.boards.service.persistence.impl.constants.MBPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -49,6 +51,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -56,6 +59,8 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -2254,26 +2259,13 @@ public class MBMailingListPersistenceImpl
 	 */
 	@Override
 	public void clearCache(MBMailingList mbMailingList) {
-		entityCache.removeResult(
-			MBMailingListImpl.class, mbMailingList.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((MBMailingListModelImpl)mbMailingList, true);
+		entityCache.removeResult(MBMailingListImpl.class, mbMailingList);
 	}
 
 	@Override
 	public void clearCache(List<MBMailingList> mbMailingLists) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (MBMailingList mbMailingList : mbMailingLists) {
-			entityCache.removeResult(
-				MBMailingListImpl.class, mbMailingList.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(MBMailingListModelImpl)mbMailingList, true);
+			entityCache.removeResult(MBMailingListImpl.class, mbMailingList);
 		}
 	}
 
@@ -2310,54 +2302,6 @@ public class MBMailingListPersistenceImpl
 			_finderPathCountByG_C, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByG_C, args, mbMailingListModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		MBMailingListModelImpl mbMailingListModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				mbMailingListModelImpl.getUuid(),
-				mbMailingListModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((mbMailingListModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				mbMailingListModelImpl.getOriginalUuid(),
-				mbMailingListModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				mbMailingListModelImpl.getGroupId(),
-				mbMailingListModelImpl.getCategoryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C, args);
-			finderCache.removeResult(_finderPathFetchByG_C, args);
-		}
-
-		if ((mbMailingListModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				mbMailingListModelImpl.getOriginalGroupId(),
-				mbMailingListModelImpl.getOriginalCategoryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C, args);
-			finderCache.removeResult(_finderPathFetchByG_C, args);
-		}
 	}
 
 	/**
@@ -2526,10 +2470,8 @@ public class MBMailingListPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mbMailingList.isNew()) {
+			if (isNew) {
 				session.save(mbMailingList);
-
-				mbMailingList.setNew(false);
 			}
 			else {
 				mbMailingList = (MBMailingList)session.merge(mbMailingList);
@@ -2542,103 +2484,14 @@ public class MBMailingListPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			MBMailingListImpl.class, mbMailingListModelImpl, false, true);
+
+		cacheUniqueFindersCache(mbMailingListModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {mbMailingListModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				mbMailingListModelImpl.getUuid(),
-				mbMailingListModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {mbMailingListModelImpl.isActive()};
-
-			finderCache.removeResult(_finderPathCountByActive, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByActive, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			mbMailingList.setNew(false);
 		}
-		else {
-			if ((mbMailingListModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					mbMailingListModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {mbMailingListModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((mbMailingListModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					mbMailingListModelImpl.getOriginalUuid(),
-					mbMailingListModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					mbMailingListModelImpl.getUuid(),
-					mbMailingListModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((mbMailingListModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByActive.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					mbMailingListModelImpl.getOriginalActive()
-				};
-
-				finderCache.removeResult(_finderPathCountByActive, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByActive, args);
-
-				args = new Object[] {mbMailingListModelImpl.isActive()};
-
-				finderCache.removeResult(_finderPathCountByActive, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByActive, args);
-			}
-		}
-
-		entityCache.putResult(
-			MBMailingListImpl.class, mbMailingList.getPrimaryKey(),
-			mbMailingList, false);
-
-		clearUniqueFindersCache(mbMailingListModelImpl, false);
-		cacheUniqueFindersCache(mbMailingListModelImpl);
 
 		mbMailingList.resetOriginalValues();
 
@@ -2904,102 +2757,95 @@ public class MBMailingListPersistenceImpl
 	 * Initializes the message boards mailing list persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid", "findByUuid",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUuid", new String[] {String.class.getName()},
-			MBMailingListModelImpl.UUID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "findByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathCountByUuid = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByUuid", new String[] {String.class.getName()});
+		_finderPathCountByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "countByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathFetchByUUID_G = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()},
-			MBMailingListModelImpl.UUID_COLUMN_BITMASK |
-			MBMailingListModelImpl.GROUPID_COLUMN_BITMASK);
+		_finderPathFetchByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "UUID_G", "fetchByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathCountByUUID_G = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UUID_G",
 			"countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid_C",
+		_finderPathWithPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			MBMailingListModelImpl.UUID_COLUMN_BITMASK |
-			MBMailingListModelImpl.COMPANYID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C", "findByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathCountByUuid_C = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C",
 			"countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByActive = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByActive",
+		_finderPathWithPaginationFindByActive = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Active", "findByActive",
 			new String[] {
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByActive = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByActive", new String[] {Boolean.class.getName()},
-			MBMailingListModelImpl.ACTIVE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByActive = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Active", "findByActive",
+			new String[] {Boolean.class.getName()});
 
-		_finderPathCountByActive = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByActive = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Active",
 			"countByActive", new String[] {Boolean.class.getName()});
 
-		_finderPathFetchByG_C = new FinderPath(
-			MBMailingListImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByG_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			MBMailingListModelImpl.GROUPID_COLUMN_BITMASK |
-			MBMailingListModelImpl.CATEGORYID_COLUMN_BITMASK);
+		_finderPathFetchByG_C = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "G_C", "fetchByG_C",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByG_C = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
+		_finderPathCountByG_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_C", "countByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(MBMailingListImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -3027,6 +2873,8 @@ public class MBMailingListPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -3067,6 +2915,196 @@ public class MBMailingListPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = MBMailingListImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid", MBMailingListModelImpl.UUID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid",
+			(baseModel, checkColumn, original) -> {
+				MBMailingListModelImpl mbMailingListModelImpl =
+					(MBMailingListModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((mbMailingListModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							mbMailingListModelImpl.getOriginalUuid()
+						};
+					}
+
+					return new Object[] {mbMailingListModelImpl.getUuid()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UUID_G",
+			MBMailingListModelImpl.UUID_COLUMN_BITMASK |
+			MBMailingListModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumn, original) -> {
+				MBMailingListModelImpl mbMailingListModelImpl =
+					(MBMailingListModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((mbMailingListModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UUID_G")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							mbMailingListModelImpl.getOriginalUuid(),
+							mbMailingListModelImpl.getOriginalGroupId()
+						};
+					}
+
+					return new Object[] {
+						mbMailingListModelImpl.getUuid(),
+						mbMailingListModelImpl.getGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid_C",
+			MBMailingListModelImpl.UUID_COLUMN_BITMASK |
+			MBMailingListModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumn, original) -> {
+				MBMailingListModelImpl mbMailingListModelImpl =
+					(MBMailingListModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((mbMailingListModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							mbMailingListModelImpl.getOriginalUuid(),
+							mbMailingListModelImpl.getOriginalCompanyId()
+						};
+					}
+
+					return new Object[] {
+						mbMailingListModelImpl.getUuid(),
+						mbMailingListModelImpl.getCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Active", MBMailingListModelImpl.ACTIVE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Active",
+			(baseModel, checkColumn, original) -> {
+				MBMailingListModelImpl mbMailingListModelImpl =
+					(MBMailingListModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((mbMailingListModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Active")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							mbMailingListModelImpl.getOriginalActive()
+						};
+					}
+
+					return new Object[] {mbMailingListModelImpl.isActive()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_C",
+			MBMailingListModelImpl.GROUPID_COLUMN_BITMASK |
+			MBMailingListModelImpl.CATEGORYID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"G_C",
+			(baseModel, checkColumn, original) -> {
+				MBMailingListModelImpl mbMailingListModelImpl =
+					(MBMailingListModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((mbMailingListModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_C")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							mbMailingListModelImpl.getOriginalGroupId(),
+							mbMailingListModelImpl.getOriginalCategoryId()
+						};
+					}
+
+					return new Object[] {
+						mbMailingListModelImpl.getGroupId(),
+						mbMailingListModelImpl.getCategoryId()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

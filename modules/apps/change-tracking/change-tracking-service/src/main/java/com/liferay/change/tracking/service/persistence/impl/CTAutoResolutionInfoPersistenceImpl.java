@@ -23,6 +23,7 @@ import com.liferay.change.tracking.service.persistence.CTAutoResolutionInfoPersi
 import com.liferay.change.tracking.service.persistence.impl.constants.CTPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -44,12 +46,16 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -1583,24 +1589,16 @@ public class CTAutoResolutionInfoPersistenceImpl
 	@Override
 	public void clearCache(CTAutoResolutionInfo ctAutoResolutionInfo) {
 		entityCache.removeResult(
-			CTAutoResolutionInfoImpl.class,
-			ctAutoResolutionInfo.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			CTAutoResolutionInfoImpl.class, ctAutoResolutionInfo);
 	}
 
 	@Override
 	public void clearCache(List<CTAutoResolutionInfo> ctAutoResolutionInfos) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (CTAutoResolutionInfo ctAutoResolutionInfo :
 				ctAutoResolutionInfos) {
 
 			entityCache.removeResult(
-				CTAutoResolutionInfoImpl.class,
-				ctAutoResolutionInfo.getPrimaryKey());
+				CTAutoResolutionInfoImpl.class, ctAutoResolutionInfo);
 		}
 	}
 
@@ -1755,10 +1753,8 @@ public class CTAutoResolutionInfoPersistenceImpl
 		try {
 			session = openSession();
 
-			if (ctAutoResolutionInfo.isNew()) {
+			if (isNew) {
 				session.save(ctAutoResolutionInfo);
-
-				ctAutoResolutionInfo.setNew(false);
 			}
 			else {
 				ctAutoResolutionInfo = (CTAutoResolutionInfo)session.merge(
@@ -1772,85 +1768,13 @@ public class CTAutoResolutionInfoPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			CTAutoResolutionInfoImpl.class, ctAutoResolutionInfoModelImpl,
+			false, true);
 
 		if (isNew) {
-			Object[] args = new Object[] {
-				ctAutoResolutionInfoModelImpl.getCtCollectionId()
-			};
-
-			finderCache.removeResult(_finderPathCountByCTCollectionId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCTCollectionId, args);
-
-			args = new Object[] {
-				ctAutoResolutionInfoModelImpl.getCtCollectionId(),
-				ctAutoResolutionInfoModelImpl.getModelClassNameId(),
-				ctAutoResolutionInfoModelImpl.getSourceModelClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_MCNI_SMCPK, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_MCNI_SMCPK, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			ctAutoResolutionInfo.setNew(false);
 		}
-		else {
-			if ((ctAutoResolutionInfoModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCTCollectionId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ctAutoResolutionInfoModelImpl.getOriginalCtCollectionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByCTCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCTCollectionId, args);
-
-				args = new Object[] {
-					ctAutoResolutionInfoModelImpl.getCtCollectionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByCTCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCTCollectionId, args);
-			}
-
-			if ((ctAutoResolutionInfoModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_MCNI_SMCPK.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ctAutoResolutionInfoModelImpl.getOriginalCtCollectionId(),
-					ctAutoResolutionInfoModelImpl.getOriginalModelClassNameId(),
-					ctAutoResolutionInfoModelImpl.
-						getOriginalSourceModelClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_MCNI_SMCPK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_MCNI_SMCPK, args);
-
-				args = new Object[] {
-					ctAutoResolutionInfoModelImpl.getCtCollectionId(),
-					ctAutoResolutionInfoModelImpl.getModelClassNameId(),
-					ctAutoResolutionInfoModelImpl.getSourceModelClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_MCNI_SMCPK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_MCNI_SMCPK, args);
-			}
-		}
-
-		entityCache.putResult(
-			CTAutoResolutionInfoImpl.class,
-			ctAutoResolutionInfo.getPrimaryKey(), ctAutoResolutionInfo, false);
 
 		ctAutoResolutionInfo.resetOriginalValues();
 
@@ -2114,68 +2038,62 @@ public class CTAutoResolutionInfoPersistenceImpl
 	 * Initializes the ct auto resolution info persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			CTAutoResolutionInfoImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			CTAutoResolutionInfoImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByCTCollectionId = new FinderPath(
-			CTAutoResolutionInfoImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCTCollectionId",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCTCollectionId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CTCollectionId",
+			"findByCTCollectionId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCTCollectionId = new FinderPath(
-			CTAutoResolutionInfoImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCTCollectionId",
-			new String[] {Long.class.getName()},
-			CTAutoResolutionInfoModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.CREATEDATE_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCTCollectionId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CTCollectionId",
+			"findByCTCollectionId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCTCollectionId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCTCollectionId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CTCollectionId",
 			"countByCTCollectionId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByC_MCNI_SMCPK = new FinderPath(
-			CTAutoResolutionInfoImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_MCNI_SMCPK",
+		_finderPathWithPaginationFindByC_MCNI_SMCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_MCNI_SMCPK",
+			"findByC_MCNI_SMCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_MCNI_SMCPK = new FinderPath(
-			CTAutoResolutionInfoImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_MCNI_SMCPK",
+		_finderPathWithoutPaginationFindByC_MCNI_SMCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_MCNI_SMCPK",
+			"findByC_MCNI_SMCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			CTAutoResolutionInfoModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.SOURCEMODELCLASSPK_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.CREATEDATE_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByC_MCNI_SMCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByC_MCNI_SMCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_MCNI_SMCPK",
 			"countByC_MCNI_SMCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationCountByC_MCNI_SMCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByC_MCNI_SMCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_MCNI_SMCPK",
 			"countByC_MCNI_SMCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
@@ -2185,9 +2103,12 @@ public class CTAutoResolutionInfoPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(CTAutoResolutionInfoImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -2215,6 +2136,8 @@ public class CTAutoResolutionInfoPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -2253,6 +2176,121 @@ public class CTAutoResolutionInfoPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = CTAutoResolutionInfoImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CTCollectionId",
+			CTAutoResolutionInfoModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
+			CTAutoResolutionInfoModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CTCollectionId",
+			(baseModel, checkColumn, original) -> {
+				CTAutoResolutionInfoModelImpl ctAutoResolutionInfoModelImpl =
+					(CTAutoResolutionInfoModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((ctAutoResolutionInfoModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CTCollectionId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							ctAutoResolutionInfoModelImpl.
+								getOriginalCtCollectionId()
+						};
+					}
+
+					return new Object[] {
+						ctAutoResolutionInfoModelImpl.getCtCollectionId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_MCNI_SMCPK",
+			CTAutoResolutionInfoModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
+			CTAutoResolutionInfoModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK |
+			CTAutoResolutionInfoModelImpl.SOURCEMODELCLASSPK_COLUMN_BITMASK |
+			CTAutoResolutionInfoModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_MCNI_SMCPK",
+			(baseModel, checkColumn, original) -> {
+				CTAutoResolutionInfoModelImpl ctAutoResolutionInfoModelImpl =
+					(CTAutoResolutionInfoModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((ctAutoResolutionInfoModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_MCNI_SMCPK")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							ctAutoResolutionInfoModelImpl.
+								getOriginalCtCollectionId(),
+							ctAutoResolutionInfoModelImpl.
+								getOriginalModelClassNameId(),
+							ctAutoResolutionInfoModelImpl.
+								getOriginalSourceModelClassPK()
+						};
+					}
+
+					return new Object[] {
+						ctAutoResolutionInfoModelImpl.getCtCollectionId(),
+						ctAutoResolutionInfoModelImpl.getModelClassNameId(),
+						ctAutoResolutionInfoModelImpl.getSourceModelClassPK()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

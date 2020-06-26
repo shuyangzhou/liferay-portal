@@ -23,6 +23,7 @@ import com.liferay.change.tracking.service.persistence.CTEntryPersistence;
 import com.liferay.change.tracking.service.persistence.impl.constants.CTPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -47,12 +49,16 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -2333,24 +2339,13 @@ public class CTEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(CTEntry ctEntry) {
-		entityCache.removeResult(CTEntryImpl.class, ctEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((CTEntryModelImpl)ctEntry, true);
+		entityCache.removeResult(CTEntryImpl.class, ctEntry);
 	}
 
 	@Override
 	public void clearCache(List<CTEntry> ctEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (CTEntry ctEntry : ctEntries) {
-			entityCache.removeResult(
-				CTEntryImpl.class, ctEntry.getPrimaryKey());
-
-			clearUniqueFindersCache((CTEntryModelImpl)ctEntry, true);
+			entityCache.removeResult(CTEntryImpl.class, ctEntry);
 		}
 	}
 
@@ -2376,34 +2371,6 @@ public class CTEntryPersistenceImpl
 			_finderPathCountByC_MCNI_MCPK, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_MCNI_MCPK, args, ctEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		CTEntryModelImpl ctEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				ctEntryModelImpl.getCtCollectionId(),
-				ctEntryModelImpl.getModelClassNameId(),
-				ctEntryModelImpl.getModelClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_MCNI_MCPK, args);
-			finderCache.removeResult(_finderPathFetchByC_MCNI_MCPK, args);
-		}
-
-		if ((ctEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_MCNI_MCPK.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ctEntryModelImpl.getOriginalCtCollectionId(),
-				ctEntryModelImpl.getOriginalModelClassNameId(),
-				ctEntryModelImpl.getOriginalModelClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_MCNI_MCPK, args);
-			finderCache.removeResult(_finderPathFetchByC_MCNI_MCPK, args);
-		}
 	}
 
 	/**
@@ -2555,10 +2522,8 @@ public class CTEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (ctEntry.isNew()) {
+			if (isNew) {
 				session.save(ctEntry);
-
-				ctEntry.setNew(false);
 			}
 			else {
 				ctEntry = (CTEntry)session.merge(ctEntry);
@@ -2571,79 +2536,13 @@ public class CTEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(CTEntryImpl.class, ctEntryModelImpl, false, true);
+
+		cacheUniqueFindersCache(ctEntryModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {ctEntryModelImpl.getCtCollectionId()};
-
-			finderCache.removeResult(_finderPathCountByCTCollectionId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCTCollectionId, args);
-
-			args = new Object[] {
-				ctEntryModelImpl.getCtCollectionId(),
-				ctEntryModelImpl.getModelClassNameId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_MCNI, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_MCNI, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			ctEntry.setNew(false);
 		}
-		else {
-			if ((ctEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCTCollectionId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ctEntryModelImpl.getOriginalCtCollectionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByCTCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCTCollectionId, args);
-
-				args = new Object[] {ctEntryModelImpl.getCtCollectionId()};
-
-				finderCache.removeResult(
-					_finderPathCountByCTCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCTCollectionId, args);
-			}
-
-			if ((ctEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_MCNI.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					ctEntryModelImpl.getOriginalCtCollectionId(),
-					ctEntryModelImpl.getOriginalModelClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_MCNI, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_MCNI, args);
-
-				args = new Object[] {
-					ctEntryModelImpl.getCtCollectionId(),
-					ctEntryModelImpl.getModelClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_MCNI, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_MCNI, args);
-			}
-		}
-
-		entityCache.putResult(
-			CTEntryImpl.class, ctEntry.getPrimaryKey(), ctEntry, false);
-
-		clearUniqueFindersCache(ctEntryModelImpl, false);
-		cacheUniqueFindersCache(ctEntryModelImpl);
 
 		ctEntry.resetOriginalValues();
 
@@ -2903,75 +2802,69 @@ public class CTEntryPersistenceImpl
 	 * Initializes the ct entry persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByCTCollectionId = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCTCollectionId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "CTCollectionId",
 			"findByCTCollectionId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCTCollectionId = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByCTCollectionId", new String[] {Long.class.getName()},
-			CTEntryModelImpl.CTCOLLECTIONID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByCTCollectionId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CTCollectionId",
+			"findByCTCollectionId", new String[] {Long.class.getName()});
 
-		_finderPathCountByCTCollectionId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByCTCollectionId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "CTCollectionId",
 			"countByCTCollectionId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByC_MCNI = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByC_MCNI",
+		_finderPathWithPaginationFindByC_MCNI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "C_MCNI", "findByC_MCNI",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_MCNI = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByC_MCNI",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			CTEntryModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
-			CTEntryModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByC_MCNI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_MCNI", "findByC_MCNI",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByC_MCNI = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByC_MCNI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_MCNI",
 			"countByC_MCNI",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathFetchByC_MCNI_MCPK = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_MCNI_MCPK",
+		_finderPathFetchByC_MCNI_MCPK = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_MCNI_MCPK", "fetchByC_MCNI_MCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			CTEntryModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
-			CTEntryModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK |
-			CTEntryModelImpl.MODELCLASSPK_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByC_MCNI_MCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByC_MCNI_MCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_MCNI_MCPK",
 			"countByC_MCNI_MCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationFindByNotC_MCNI_MCPK = new FinderPath(
-			CTEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByNotC_MCNI_MCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "NotC_MCNI_MCPK",
 			"findByNotC_MCNI_MCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -2979,8 +2872,8 @@ public class CTEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByNotC_MCNI_MCPK = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByNotC_MCNI_MCPK = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "NotC_MCNI_MCPK",
 			"countByNotC_MCNI_MCPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
@@ -2990,9 +2883,12 @@ public class CTEntryPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(CTEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -3020,6 +2916,8 @@ public class CTEntryPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -3057,6 +2955,140 @@ public class CTEntryPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = CTEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"CTCollectionId", CTEntryModelImpl.CTCOLLECTIONID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"CTCollectionId",
+			(baseModel, checkColumn, original) -> {
+				CTEntryModelImpl ctEntryModelImpl = (CTEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((ctEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("CTCollectionId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							ctEntryModelImpl.getOriginalCtCollectionId()
+						};
+					}
+
+					return new Object[] {ctEntryModelImpl.getCtCollectionId()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_MCNI",
+			CTEntryModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
+			CTEntryModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_MCNI",
+			(baseModel, checkColumn, original) -> {
+				CTEntryModelImpl ctEntryModelImpl = (CTEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((ctEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_MCNI")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							ctEntryModelImpl.getOriginalCtCollectionId(),
+							ctEntryModelImpl.getOriginalModelClassNameId()
+						};
+					}
+
+					return new Object[] {
+						ctEntryModelImpl.getCtCollectionId(),
+						ctEntryModelImpl.getModelClassNameId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_MCNI_MCPK",
+			CTEntryModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
+			CTEntryModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK |
+			CTEntryModelImpl.MODELCLASSPK_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_MCNI_MCPK",
+			(baseModel, checkColumn, original) -> {
+				CTEntryModelImpl ctEntryModelImpl = (CTEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((ctEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_MCNI_MCPK")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							ctEntryModelImpl.getOriginalCtCollectionId(),
+							ctEntryModelImpl.getOriginalModelClassNameId(),
+							ctEntryModelImpl.getOriginalModelClassPK()
+						};
+					}
+
+					return new Object[] {
+						ctEntryModelImpl.getCtCollectionId(),
+						ctEntryModelImpl.getModelClassNameId(),
+						ctEntryModelImpl.getModelClassPK()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

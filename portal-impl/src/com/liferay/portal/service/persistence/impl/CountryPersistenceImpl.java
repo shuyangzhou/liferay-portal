@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -30,17 +31,22 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.CountryTable;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.model.impl.CountryImpl;
 import com.liferay.portal.model.impl.CountryModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1310,25 +1316,13 @@ public class CountryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(Country country) {
-		EntityCacheUtil.removeResult(
-			CountryImpl.class, country.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((CountryModelImpl)country, true);
+		EntityCacheUtil.removeResult(CountryImpl.class, country);
 	}
 
 	@Override
 	public void clearCache(List<Country> countries) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Country country : countries) {
-			EntityCacheUtil.removeResult(
-				CountryImpl.class, country.getPrimaryKey());
-
-			clearUniqueFindersCache((CountryModelImpl)country, true);
+			EntityCacheUtil.removeResult(CountryImpl.class, country);
 		}
 	}
 
@@ -1364,58 +1358,6 @@ public class CountryPersistenceImpl
 			_finderPathCountByA3, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByA3, args, countryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		CountryModelImpl countryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {countryModelImpl.getName()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByName, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByName, args);
-		}
-
-		if ((countryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByName.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {countryModelImpl.getOriginalName()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByName, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByName, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {countryModelImpl.getA2()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByA2, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByA2, args);
-		}
-
-		if ((countryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByA2.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {countryModelImpl.getOriginalA2()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByA2, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByA2, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {countryModelImpl.getA3()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByA3, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByA3, args);
-		}
-
-		if ((countryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByA3.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {countryModelImpl.getOriginalA3()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByA3, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByA3, args);
-		}
 	}
 
 	/**
@@ -1544,10 +1486,8 @@ public class CountryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (country.isNew()) {
+			if (isNew) {
 				session.save(country);
-
-				country.setNew(false);
 			}
 			else {
 				country = (Country)session.merge(country);
@@ -1560,46 +1500,14 @@ public class CountryPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		EntityCacheUtil.putResult(
+			CountryImpl.class, countryModelImpl, false, true);
+
+		cacheUniqueFindersCache(countryModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {countryModelImpl.isActive()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByActive, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByActive, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			country.setNew(false);
 		}
-		else {
-			if ((countryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByActive.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					countryModelImpl.getOriginalActive()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByActive, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByActive, args);
-
-				args = new Object[] {countryModelImpl.isActive()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByActive, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByActive, args);
-			}
-		}
-
-		EntityCacheUtil.putResult(
-			CountryImpl.class, country.getPrimaryKey(), country, false);
-
-		clearUniqueFindersCache(countryModelImpl, false);
-		cacheUniqueFindersCache(countryModelImpl);
 
 		country.resetOriginalValues();
 
@@ -1864,69 +1772,66 @@ public class CountryPersistenceImpl
 	 * Initializes the country persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathFetchByName = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByName",
-			new String[] {String.class.getName()},
-			CountryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
 
-		_finderPathCountByName = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByName", new String[] {String.class.getName()});
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
 
-		_finderPathFetchByA2 = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByA2",
-			new String[] {String.class.getName()},
-			CountryModelImpl.A2_COLUMN_BITMASK);
-
-		_finderPathCountByA2 = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA2",
+		_finderPathFetchByName = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "Name", "fetchByName",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByA3 = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByA3",
-			new String[] {String.class.getName()},
-			CountryModelImpl.A3_COLUMN_BITMASK);
-
-		_finderPathCountByA3 = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA3",
+		_finderPathCountByName = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Name", "countByName",
 			new String[] {String.class.getName()});
 
-		_finderPathWithPaginationFindByActive = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByActive",
+		_finderPathFetchByA2 = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "A2", "fetchByA2",
+			new String[] {String.class.getName()});
+
+		_finderPathCountByA2 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "A2", "countByA2",
+			new String[] {String.class.getName()});
+
+		_finderPathFetchByA3 = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "A3", "fetchByA3",
+			new String[] {String.class.getName()});
+
+		_finderPathCountByA3 = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "A3", "countByA3",
+			new String[] {String.class.getName()});
+
+		_finderPathWithPaginationFindByActive = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Active", "findByActive",
 			new String[] {
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByActive = new FinderPath(
-			CountryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByActive", new String[] {Boolean.class.getName()},
-			CountryModelImpl.ACTIVE_COLUMN_BITMASK |
-			CountryModelImpl.NAME_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByActive = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Active", "findByActive",
+			new String[] {Boolean.class.getName()});
 
-		_finderPathCountByActive = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByActive = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Active",
 			"countByActive", new String[] {Boolean.class.getName()});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(CountryImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_COUNTRY =
@@ -1954,5 +1859,148 @@ public class CountryPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"number", "idd", "active"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = CountryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				FinderPath.class, finderPath,
+				HashMapBuilder.<String, Object>put(
+					"cache.name", cacheName
+				).build()));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Name", CountryModelImpl.NAME_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Name",
+			(baseModel, checkColumn, original) -> {
+				CountryModelImpl countryModelImpl = (CountryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((countryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Name")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							countryModelImpl.getOriginalName()
+						};
+					}
+
+					return new Object[] {countryModelImpl.getName()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put("A2", CountryModelImpl.A2_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"A2",
+			(baseModel, checkColumn, original) -> {
+				CountryModelImpl countryModelImpl = (CountryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((countryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("A2")) != 0)) {
+
+					if (original) {
+						return new Object[] {countryModelImpl.getOriginalA2()};
+					}
+
+					return new Object[] {countryModelImpl.getA2()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put("A3", CountryModelImpl.A3_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"A3",
+			(baseModel, checkColumn, original) -> {
+				CountryModelImpl countryModelImpl = (CountryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((countryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("A3")) != 0)) {
+
+					if (original) {
+						return new Object[] {countryModelImpl.getOriginalA3()};
+					}
+
+					return new Object[] {countryModelImpl.getA3()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Active",
+			CountryModelImpl.ACTIVE_COLUMN_BITMASK |
+			CountryModelImpl.NAME_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Active",
+			(baseModel, checkColumn, original) -> {
+				CountryModelImpl countryModelImpl = (CountryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((countryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Active")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							countryModelImpl.getOriginalActive()
+						};
+					}
+
+					return new Object[] {countryModelImpl.isActive()};
+				}
+
+				return null;
+			});
+	}
 
 }

@@ -23,6 +23,7 @@ import com.liferay.data.engine.service.persistence.DEDataListViewPersistence;
 import com.liferay.data.engine.service.persistence.impl.constants.DEPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -49,6 +51,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -56,6 +59,8 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -2627,26 +2632,13 @@ public class DEDataListViewPersistenceImpl
 	 */
 	@Override
 	public void clearCache(DEDataListView deDataListView) {
-		entityCache.removeResult(
-			DEDataListViewImpl.class, deDataListView.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((DEDataListViewModelImpl)deDataListView, true);
+		entityCache.removeResult(DEDataListViewImpl.class, deDataListView);
 	}
 
 	@Override
 	public void clearCache(List<DEDataListView> deDataListViews) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (DEDataListView deDataListView : deDataListViews) {
-			entityCache.removeResult(
-				DEDataListViewImpl.class, deDataListView.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(DEDataListViewModelImpl)deDataListView, true);
+			entityCache.removeResult(DEDataListViewImpl.class, deDataListView);
 		}
 	}
 
@@ -2673,32 +2665,6 @@ public class DEDataListViewPersistenceImpl
 			_finderPathCountByUUID_G, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, deDataListViewModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DEDataListViewModelImpl deDataListViewModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				deDataListViewModelImpl.getUuid(),
-				deDataListViewModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((deDataListViewModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				deDataListViewModelImpl.getOriginalUuid(),
-				deDataListViewModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
 	}
 
 	/**
@@ -2868,10 +2834,8 @@ public class DEDataListViewPersistenceImpl
 		try {
 			session = openSession();
 
-			if (deDataListView.isNew()) {
+			if (isNew) {
 				session.save(deDataListView);
-
-				deDataListView.setNew(false);
 			}
 			else {
 				deDataListView = (DEDataListView)session.merge(deDataListView);
@@ -2884,142 +2848,14 @@ public class DEDataListViewPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			DEDataListViewImpl.class, deDataListViewModelImpl, false, true);
+
+		cacheUniqueFindersCache(deDataListViewModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {deDataListViewModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				deDataListViewModelImpl.getUuid(),
-				deDataListViewModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {deDataListViewModelImpl.getDdmStructureId()};
-
-			finderCache.removeResult(_finderPathCountByDDMStructureId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByDDMStructureId, args);
-
-			args = new Object[] {
-				deDataListViewModelImpl.getGroupId(),
-				deDataListViewModelImpl.getCompanyId(),
-				deDataListViewModelImpl.getDdmStructureId()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C_DDMSI, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_C_DDMSI, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			deDataListView.setNew(false);
 		}
-		else {
-			if ((deDataListViewModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					deDataListViewModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {deDataListViewModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((deDataListViewModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					deDataListViewModelImpl.getOriginalUuid(),
-					deDataListViewModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					deDataListViewModelImpl.getUuid(),
-					deDataListViewModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((deDataListViewModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByDDMStructureId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					deDataListViewModelImpl.getOriginalDdmStructureId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByDDMStructureId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByDDMStructureId, args);
-
-				args = new Object[] {
-					deDataListViewModelImpl.getDdmStructureId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByDDMStructureId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByDDMStructureId, args);
-			}
-
-			if ((deDataListViewModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_C_DDMSI.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					deDataListViewModelImpl.getOriginalGroupId(),
-					deDataListViewModelImpl.getOriginalCompanyId(),
-					deDataListViewModelImpl.getOriginalDdmStructureId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_C_DDMSI, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_C_DDMSI, args);
-
-				args = new Object[] {
-					deDataListViewModelImpl.getGroupId(),
-					deDataListViewModelImpl.getCompanyId(),
-					deDataListViewModelImpl.getDdmStructureId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_C_DDMSI, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_C_DDMSI, args);
-			}
-		}
-
-		entityCache.putResult(
-			DEDataListViewImpl.class, deDataListView.getPrimaryKey(),
-			deDataListView, false);
-
-		clearUniqueFindersCache(deDataListViewModelImpl, false);
-		cacheUniqueFindersCache(deDataListViewModelImpl);
 
 		deDataListView.resetOriginalValues();
 
@@ -3285,87 +3121,80 @@ public class DEDataListViewPersistenceImpl
 	 * Initializes the de data list view persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid", "findByUuid",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUuid", new String[] {String.class.getName()},
-			DEDataListViewModelImpl.UUID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "findByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathCountByUuid = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByUuid", new String[] {String.class.getName()});
+		_finderPathCountByUuid = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid", "countByUuid",
+			new String[] {String.class.getName()});
 
-		_finderPathFetchByUUID_G = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()},
-			DEDataListViewModelImpl.UUID_COLUMN_BITMASK |
-			DEDataListViewModelImpl.GROUPID_COLUMN_BITMASK);
+		_finderPathFetchByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "UUID_G", "fetchByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathCountByUUID_G = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUUID_G = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UUID_G",
 			"countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUuid_C",
+		_finderPathWithPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "Uuid_C", "findByUuid_C",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()},
-			DEDataListViewModelImpl.UUID_COLUMN_BITMASK |
-			DEDataListViewModelImpl.COMPANYID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C", "findByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathCountByUuid_C = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUuid_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "Uuid_C",
 			"countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByDDMStructureId = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByDDMStructureId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "DDMStructureId",
 			"findByDDMStructureId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByDDMStructureId = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByDDMStructureId", new String[] {Long.class.getName()},
-			DEDataListViewModelImpl.DDMSTRUCTUREID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByDDMStructureId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "DDMStructureId",
+			"findByDDMStructureId", new String[] {Long.class.getName()});
 
-		_finderPathCountByDDMStructureId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByDDMStructureId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "DDMStructureId",
 			"countByDDMStructureId", new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByG_C_DDMSI = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationFindByG_C_DDMSI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "G_C_DDMSI",
 			"findByG_C_DDMSI",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
@@ -3373,18 +3202,15 @@ public class DEDataListViewPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_C_DDMSI = new FinderPath(
-			DEDataListViewImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathWithoutPaginationFindByG_C_DDMSI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_C_DDMSI",
 			"findByG_C_DDMSI",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			DEDataListViewModelImpl.GROUPID_COLUMN_BITMASK |
-			DEDataListViewModelImpl.COMPANYID_COLUMN_BITMASK |
-			DEDataListViewModelImpl.DDMSTRUCTUREID_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByG_C_DDMSI = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByG_C_DDMSI = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_C_DDMSI",
 			"countByG_C_DDMSI",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
@@ -3394,9 +3220,12 @@ public class DEDataListViewPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(DEDataListViewImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -3424,6 +3253,8 @@ public class DEDataListViewPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -3464,6 +3295,202 @@ public class DEDataListViewPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = DEDataListViewImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid", DEDataListViewModelImpl.UUID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid",
+			(baseModel, checkColumn, original) -> {
+				DEDataListViewModelImpl deDataListViewModelImpl =
+					(DEDataListViewModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((deDataListViewModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							deDataListViewModelImpl.getOriginalUuid()
+						};
+					}
+
+					return new Object[] {deDataListViewModelImpl.getUuid()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UUID_G",
+			DEDataListViewModelImpl.UUID_COLUMN_BITMASK |
+			DEDataListViewModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"UUID_G",
+			(baseModel, checkColumn, original) -> {
+				DEDataListViewModelImpl deDataListViewModelImpl =
+					(DEDataListViewModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((deDataListViewModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UUID_G")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							deDataListViewModelImpl.getOriginalUuid(),
+							deDataListViewModelImpl.getOriginalGroupId()
+						};
+					}
+
+					return new Object[] {
+						deDataListViewModelImpl.getUuid(),
+						deDataListViewModelImpl.getGroupId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"Uuid_C",
+			DEDataListViewModelImpl.UUID_COLUMN_BITMASK |
+			DEDataListViewModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"Uuid_C",
+			(baseModel, checkColumn, original) -> {
+				DEDataListViewModelImpl deDataListViewModelImpl =
+					(DEDataListViewModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((deDataListViewModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("Uuid_C")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							deDataListViewModelImpl.getOriginalUuid(),
+							deDataListViewModelImpl.getOriginalCompanyId()
+						};
+					}
+
+					return new Object[] {
+						deDataListViewModelImpl.getUuid(),
+						deDataListViewModelImpl.getCompanyId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"DDMStructureId",
+			DEDataListViewModelImpl.DDMSTRUCTUREID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"DDMStructureId",
+			(baseModel, checkColumn, original) -> {
+				DEDataListViewModelImpl deDataListViewModelImpl =
+					(DEDataListViewModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((deDataListViewModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("DDMStructureId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							deDataListViewModelImpl.getOriginalDdmStructureId()
+						};
+					}
+
+					return new Object[] {
+						deDataListViewModelImpl.getDdmStructureId()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_C_DDMSI",
+			DEDataListViewModelImpl.GROUPID_COLUMN_BITMASK |
+			DEDataListViewModelImpl.COMPANYID_COLUMN_BITMASK |
+			DEDataListViewModelImpl.DDMSTRUCTUREID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"G_C_DDMSI",
+			(baseModel, checkColumn, original) -> {
+				DEDataListViewModelImpl deDataListViewModelImpl =
+					(DEDataListViewModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((deDataListViewModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_C_DDMSI")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							deDataListViewModelImpl.getOriginalGroupId(),
+							deDataListViewModelImpl.getOriginalCompanyId(),
+							deDataListViewModelImpl.getOriginalDdmStructureId()
+						};
+					}
+
+					return new Object[] {
+						deDataListViewModelImpl.getGroupId(),
+						deDataListViewModelImpl.getCompanyId(),
+						deDataListViewModelImpl.getDdmStructureId()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }

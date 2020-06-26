@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -31,17 +32,22 @@ import com.liferay.portal.kernel.model.UserIdMapperTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.UserIdMapperPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.model.impl.UserIdMapperImpl;
 import com.liferay.portal.model.impl.UserIdMapperModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1180,25 +1186,13 @@ public class UserIdMapperPersistenceImpl
 	 */
 	@Override
 	public void clearCache(UserIdMapper userIdMapper) {
-		EntityCacheUtil.removeResult(
-			UserIdMapperImpl.class, userIdMapper.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((UserIdMapperModelImpl)userIdMapper, true);
+		EntityCacheUtil.removeResult(UserIdMapperImpl.class, userIdMapper);
 	}
 
 	@Override
 	public void clearCache(List<UserIdMapper> userIdMappers) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (UserIdMapper userIdMapper : userIdMappers) {
-			EntityCacheUtil.removeResult(
-				UserIdMapperImpl.class, userIdMapper.getPrimaryKey());
-
-			clearUniqueFindersCache((UserIdMapperModelImpl)userIdMapper, true);
+			EntityCacheUtil.removeResult(UserIdMapperImpl.class, userIdMapper);
 		}
 	}
 
@@ -1234,54 +1228,6 @@ public class UserIdMapperPersistenceImpl
 			_finderPathCountByT_E, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByT_E, args, userIdMapperModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		UserIdMapperModelImpl userIdMapperModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userIdMapperModelImpl.getUserId(),
-				userIdMapperModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByU_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByU_T, args);
-		}
-
-		if ((userIdMapperModelImpl.getColumnBitmask() &
-			 _finderPathFetchByU_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userIdMapperModelImpl.getOriginalUserId(),
-				userIdMapperModelImpl.getOriginalType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByU_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByU_T, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userIdMapperModelImpl.getType(),
-				userIdMapperModelImpl.getExternalUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByT_E, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByT_E, args);
-		}
-
-		if ((userIdMapperModelImpl.getColumnBitmask() &
-			 _finderPathFetchByT_E.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userIdMapperModelImpl.getOriginalType(),
-				userIdMapperModelImpl.getOriginalExternalUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByT_E, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByT_E, args);
-		}
 	}
 
 	/**
@@ -1416,10 +1362,8 @@ public class UserIdMapperPersistenceImpl
 		try {
 			session = openSession();
 
-			if (userIdMapper.isNew()) {
+			if (isNew) {
 				session.save(userIdMapper);
-
-				userIdMapper.setNew(false);
 			}
 			else {
 				userIdMapper = (UserIdMapper)session.merge(userIdMapper);
@@ -1432,47 +1376,14 @@ public class UserIdMapperPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		EntityCacheUtil.putResult(
+			UserIdMapperImpl.class, userIdMapperModelImpl, false, true);
+
+		cacheUniqueFindersCache(userIdMapperModelImpl);
 
 		if (isNew) {
-			Object[] args = new Object[] {userIdMapperModelImpl.getUserId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			userIdMapper.setNew(false);
 		}
-		else {
-			if ((userIdMapperModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					userIdMapperModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {userIdMapperModelImpl.getUserId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-		}
-
-		EntityCacheUtil.putResult(
-			UserIdMapperImpl.class, userIdMapper.getPrimaryKey(), userIdMapper,
-			false);
-
-		clearUniqueFindersCache(userIdMapperModelImpl, false);
-		cacheUniqueFindersCache(userIdMapperModelImpl);
 
 		userIdMapper.resetOriginalValues();
 
@@ -1737,61 +1648,58 @@ public class UserIdMapperPersistenceImpl
 	 * Initializes the user ID mapper persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			UserIdMapperImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			UserIdMapperImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUserId = new FinderPath(
-			UserIdMapperImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUserId",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "UserId", "findByUserId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
-			UserIdMapperImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUserId", new String[] {Long.class.getName()},
-			UserIdMapperModelImpl.USERID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UserId", "findByUserId",
+			new String[] {Long.class.getName()});
 
-		_finderPathCountByUserId = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+		_finderPathCountByUserId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "UserId",
 			"countByUserId", new String[] {Long.class.getName()});
 
-		_finderPathFetchByU_T = new FinderPath(
-			UserIdMapperImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByU_T",
-			new String[] {Long.class.getName(), String.class.getName()},
-			UserIdMapperModelImpl.USERID_COLUMN_BITMASK |
-			UserIdMapperModelImpl.TYPE_COLUMN_BITMASK);
-
-		_finderPathCountByU_T = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_T",
+		_finderPathFetchByU_T = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "U_T", "fetchByU_T",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_finderPathFetchByT_E = new FinderPath(
-			UserIdMapperImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByT_E",
-			new String[] {String.class.getName(), String.class.getName()},
-			UserIdMapperModelImpl.TYPE_COLUMN_BITMASK |
-			UserIdMapperModelImpl.EXTERNALUSERID_COLUMN_BITMASK);
+		_finderPathCountByU_T = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "U_T", "countByU_T",
+			new String[] {Long.class.getName(), String.class.getName()});
 
-		_finderPathCountByT_E = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_E",
+		_finderPathFetchByT_E = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "T_E", "fetchByT_E",
+			new String[] {String.class.getName(), String.class.getName()});
+
+		_finderPathCountByT_E = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "T_E", "countByT_E",
 			new String[] {String.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(UserIdMapperImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_USERIDMAPPER =
@@ -1819,5 +1727,143 @@ public class UserIdMapperPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"type"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = UserIdMapperImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				FinderPath.class, finderPath,
+				HashMapBuilder.<String, Object>put(
+					"cache.name", cacheName
+				).build()));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"UserId", UserIdMapperModelImpl.USERID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"UserId",
+			(baseModel, checkColumn, original) -> {
+				UserIdMapperModelImpl userIdMapperModelImpl =
+					(UserIdMapperModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((userIdMapperModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("UserId")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							userIdMapperModelImpl.getOriginalUserId()
+						};
+					}
+
+					return new Object[] {userIdMapperModelImpl.getUserId()};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"U_T",
+			UserIdMapperModelImpl.USERID_COLUMN_BITMASK |
+			UserIdMapperModelImpl.TYPE_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"U_T",
+			(baseModel, checkColumn, original) -> {
+				UserIdMapperModelImpl userIdMapperModelImpl =
+					(UserIdMapperModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((userIdMapperModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("U_T")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							userIdMapperModelImpl.getOriginalUserId(),
+							userIdMapperModelImpl.getOriginalType()
+						};
+					}
+
+					return new Object[] {
+						userIdMapperModelImpl.getUserId(),
+						userIdMapperModelImpl.getType()
+					};
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"T_E",
+			UserIdMapperModelImpl.TYPE_COLUMN_BITMASK |
+			UserIdMapperModelImpl.EXTERNALUSERID_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"T_E",
+			(baseModel, checkColumn, original) -> {
+				UserIdMapperModelImpl userIdMapperModelImpl =
+					(UserIdMapperModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((userIdMapperModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("T_E")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							userIdMapperModelImpl.getOriginalType(),
+							userIdMapperModelImpl.getOriginalExternalUserId()
+						};
+					}
+
+					return new Object[] {
+						userIdMapperModelImpl.getType(),
+						userIdMapperModelImpl.getExternalUserId()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }

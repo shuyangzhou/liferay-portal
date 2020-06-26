@@ -21,6 +21,7 @@ import com.liferay.akismet.model.impl.AkismetEntryImpl;
 import com.liferay.akismet.model.impl.AkismetEntryModelImpl;
 import com.liferay.akismet.service.persistence.AkismetEntryPersistence;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -46,9 +48,15 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * The persistence implementation for the akismet entry service.
@@ -923,25 +931,13 @@ public class AkismetEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(AkismetEntry akismetEntry) {
-		entityCache.removeResult(
-			AkismetEntryImpl.class, akismetEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((AkismetEntryModelImpl)akismetEntry, true);
+		entityCache.removeResult(AkismetEntryImpl.class, akismetEntry);
 	}
 
 	@Override
 	public void clearCache(List<AkismetEntry> akismetEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AkismetEntry akismetEntry : akismetEntries) {
-			entityCache.removeResult(
-				AkismetEntryImpl.class, akismetEntry.getPrimaryKey());
-
-			clearUniqueFindersCache((AkismetEntryModelImpl)akismetEntry, true);
+			entityCache.removeResult(AkismetEntryImpl.class, akismetEntry);
 		}
 	}
 
@@ -968,32 +964,6 @@ public class AkismetEntryPersistenceImpl
 			_finderPathCountByC_C, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_C, args, akismetEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		AkismetEntryModelImpl akismetEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				akismetEntryModelImpl.getClassNameId(),
-				akismetEntryModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
-
-		if ((akismetEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				akismetEntryModelImpl.getOriginalClassNameId(),
-				akismetEntryModelImpl.getOriginalClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
 	}
 
 	/**
@@ -1126,10 +1096,8 @@ public class AkismetEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (akismetEntry.isNew()) {
+			if (isNew) {
 				session.save(akismetEntry);
-
-				akismetEntry.setNew(false);
 			}
 			else {
 				akismetEntry = (AkismetEntry)session.merge(akismetEntry);
@@ -1142,20 +1110,14 @@ public class AkismetEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			AkismetEntryImpl.class, akismetEntryModelImpl, false, true);
+
+		cacheUniqueFindersCache(akismetEntryModelImpl);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			akismetEntry.setNew(false);
 		}
-
-		entityCache.putResult(
-			AkismetEntryImpl.class, akismetEntry.getPrimaryKey(), akismetEntry,
-			false);
-
-		clearUniqueFindersCache(akismetEntryModelImpl, false);
-		cacheUniqueFindersCache(akismetEntryModelImpl);
 
 		akismetEntry.resetOriginalValues();
 
@@ -1420,47 +1382,55 @@ public class AkismetEntryPersistenceImpl
 	 * Initializes the akismet entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+		Bundle bundle = FrameworkUtil.getBundle(
+			AkismetEntryPersistenceImpl.class);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
+		_bundleContext = bundle.getBundleContext();
 
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByLtModifiedDate = new FinderPath(
-			AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
+			new String[0]);
+
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByLtModifiedDate = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "LtModifiedDate",
 			"findByLtModifiedDate",
 			new String[] {
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByLtModifiedDate = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+		_finderPathWithPaginationCountByLtModifiedDate = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "LtModifiedDate",
 			"countByLtModifiedDate", new String[] {Date.class.getName()});
 
-		_finderPathFetchByC_C = new FinderPath(
-			AkismetEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			AkismetEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AkismetEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+		_finderPathFetchByC_C = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "C_C", "fetchByC_C",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathCountByC_C = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
+		_finderPathCountByC_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "C_C", "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 
 	public void destroy() {
 		entityCache.removeCache(AkismetEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
+
+	private BundleContext _bundleContext;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
@@ -1468,7 +1438,7 @@ public class AkismetEntryPersistenceImpl
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
 
-	private Long _getTime(Date date) {
+	private static Long _getTime(Date date) {
 		if (date == null) {
 			return null;
 		}
@@ -1501,5 +1471,83 @@ public class AkismetEntryPersistenceImpl
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"type"});
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = AkismetEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"C_C",
+			AkismetEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			AkismetEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"C_C",
+			(baseModel, checkColumn, original) -> {
+				AkismetEntryModelImpl akismetEntryModelImpl =
+					(AkismetEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((akismetEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("C_C")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							akismetEntryModelImpl.getOriginalClassNameId(),
+							akismetEntryModelImpl.getOriginalClassPK()
+						};
+					}
+
+					return new Object[] {
+						akismetEntryModelImpl.getClassNameId(),
+						akismetEntryModelImpl.getClassPK()
+					};
+				}
+
+				return null;
+			});
+	}
 
 }
