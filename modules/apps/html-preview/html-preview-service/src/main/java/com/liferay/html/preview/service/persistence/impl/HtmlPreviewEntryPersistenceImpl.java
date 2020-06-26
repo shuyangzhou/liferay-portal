@@ -23,6 +23,7 @@ import com.liferay.html.preview.service.persistence.HtmlPreviewEntryPersistence;
 import com.liferay.html.preview.service.persistence.impl.constants.PreviewPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -47,12 +49,16 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -428,27 +434,14 @@ public class HtmlPreviewEntryPersistenceImpl
 	 */
 	@Override
 	public void clearCache(HtmlPreviewEntry htmlPreviewEntry) {
-		entityCache.removeResult(
-			HtmlPreviewEntryImpl.class, htmlPreviewEntry.getPrimaryKey());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(HtmlPreviewEntryModelImpl)htmlPreviewEntry, true);
+		entityCache.removeResult(HtmlPreviewEntryImpl.class, htmlPreviewEntry);
 	}
 
 	@Override
 	public void clearCache(List<HtmlPreviewEntry> htmlPreviewEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (HtmlPreviewEntry htmlPreviewEntry : htmlPreviewEntries) {
 			entityCache.removeResult(
-				HtmlPreviewEntryImpl.class, htmlPreviewEntry.getPrimaryKey());
-
-			clearUniqueFindersCache(
-				(HtmlPreviewEntryModelImpl)htmlPreviewEntry, true);
+				HtmlPreviewEntryImpl.class, htmlPreviewEntry);
 		}
 	}
 
@@ -476,35 +469,6 @@ public class HtmlPreviewEntryPersistenceImpl
 			_finderPathCountByG_C_C, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByG_C_C, args, htmlPreviewEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		HtmlPreviewEntryModelImpl htmlPreviewEntryModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				htmlPreviewEntryModelImpl.getGroupId(),
-				htmlPreviewEntryModelImpl.getClassNameId(),
-				htmlPreviewEntryModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C_C, args);
-			finderCache.removeResult(_finderPathFetchByG_C_C, args);
-		}
-
-		if ((htmlPreviewEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_C_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				htmlPreviewEntryModelImpl.getOriginalGroupId(),
-				htmlPreviewEntryModelImpl.getOriginalClassNameId(),
-				htmlPreviewEntryModelImpl.getOriginalClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C_C, args);
-			finderCache.removeResult(_finderPathFetchByG_C_C, args);
-		}
 	}
 
 	/**
@@ -665,10 +629,8 @@ public class HtmlPreviewEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (htmlPreviewEntry.isNew()) {
+			if (isNew) {
 				session.save(htmlPreviewEntry);
-
-				htmlPreviewEntry.setNew(false);
 			}
 			else {
 				htmlPreviewEntry = (HtmlPreviewEntry)session.merge(
@@ -682,20 +644,14 @@ public class HtmlPreviewEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		entityCache.putResult(
+			HtmlPreviewEntryImpl.class, htmlPreviewEntryModelImpl, false, true);
+
+		cacheUniqueFindersCache(htmlPreviewEntryModelImpl);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			htmlPreviewEntry.setNew(false);
 		}
-
-		entityCache.putResult(
-			HtmlPreviewEntryImpl.class, htmlPreviewEntry.getPrimaryKey(),
-			htmlPreviewEntry, false);
-
-		clearUniqueFindersCache(htmlPreviewEntryModelImpl, false);
-		cacheUniqueFindersCache(htmlPreviewEntryModelImpl);
 
 		htmlPreviewEntry.resetOriginalValues();
 
@@ -957,33 +913,29 @@ public class HtmlPreviewEntryPersistenceImpl
 	 * Initializes the html preview entry persistence.
 	 */
 	@Activate
-	public void activate() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			HtmlPreviewEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
+	public void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			HtmlPreviewEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+		_finderPathWithPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "findAll",
 			new String[0]);
 
-		_finderPathFetchByG_C_C = new FinderPath(
-			HtmlPreviewEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByG_C_C",
+		_finderPathCountAll = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "all", "countAll",
+			new String[0]);
+
+		_finderPathFetchByG_C_C = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "G_C_C", "fetchByG_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			HtmlPreviewEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			HtmlPreviewEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			HtmlPreviewEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+			});
 
-		_finderPathCountByG_C_C = new FinderPath(
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByG_C_C",
+		_finderPathCountByG_C_C = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "G_C_C", "countByG_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
@@ -992,9 +944,12 @@ public class HtmlPreviewEntryPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(HtmlPreviewEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Override
@@ -1022,6 +977,8 @@ public class HtmlPreviewEntryPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -1059,6 +1016,87 @@ public class HtmlPreviewEntryPersistenceImpl
 		catch (ClassNotFoundException classNotFoundException) {
 			throw new ExceptionInInitializerError(classNotFoundException);
 		}
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String finderName, String methodName,
+		String[] params) {
+
+		Class<?> returnClass = HtmlPreviewEntryImpl.class;
+
+		if (methodName.startsWith("count")) {
+			returnClass = Long.class;
+		}
+
+		if (cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			return new FinderPath(returnClass, cacheName, methodName, params);
+		}
+
+		FinderPath finderPath = new FinderPath(
+			returnClass, cacheName, methodName, params,
+			_ARGUMENTS_RESOLVER_MAP.get(finderName));
+
+		_serviceRegistrations.add(
+			_bundleContext.registerService(
+				FinderPath.class, finderPath,
+				MapUtil.singletonDictionary("cache.name", cacheName)));
+
+		return finderPath;
+	}
+
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static final Map<String, Long> _FINDER_PATH_BITMASK_MAP =
+		new HashMap<>();
+
+	private static final Map<String, ArgumentsResolver>
+		_ARGUMENTS_RESOLVER_MAP = new HashMap<>();
+
+	static {
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"all",
+			(baseModel, checkColumn, original) -> {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			});
+
+		_FINDER_PATH_BITMASK_MAP.put(
+			"G_C_C",
+			HtmlPreviewEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			HtmlPreviewEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			HtmlPreviewEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+
+		_ARGUMENTS_RESOLVER_MAP.put(
+			"G_C_C",
+			(baseModel, checkColumn, original) -> {
+				HtmlPreviewEntryModelImpl htmlPreviewEntryModelImpl =
+					(HtmlPreviewEntryModelImpl)baseModel;
+
+				if (!checkColumn ||
+					((htmlPreviewEntryModelImpl.getColumnBitmask() &
+					  _FINDER_PATH_BITMASK_MAP.get("G_C_C")) != 0)) {
+
+					if (original) {
+						return new Object[] {
+							htmlPreviewEntryModelImpl.getOriginalGroupId(),
+							htmlPreviewEntryModelImpl.getOriginalClassNameId(),
+							htmlPreviewEntryModelImpl.getOriginalClassPK()
+						};
+					}
+
+					return new Object[] {
+						htmlPreviewEntryModelImpl.getGroupId(),
+						htmlPreviewEntryModelImpl.getClassNameId(),
+						htmlPreviewEntryModelImpl.getClassPK()
+					};
+				}
+
+				return null;
+			});
 	}
 
 }
