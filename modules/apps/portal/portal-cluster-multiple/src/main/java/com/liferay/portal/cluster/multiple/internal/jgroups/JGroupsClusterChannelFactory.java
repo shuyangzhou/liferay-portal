@@ -25,7 +25,6 @@ import com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfigur
 import com.liferay.portal.cluster.multiple.internal.ClusterChannel;
 import com.liferay.portal.cluster.multiple.internal.ClusterChannelFactory;
 import com.liferay.portal.cluster.multiple.internal.ClusterReceiver;
-import com.liferay.portal.cluster.multiple.internal.io.ClusterClassLoaderPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -52,16 +51,11 @@ import java.util.concurrent.ExecutorService;
 import org.jgroups.conf.ConfiguratorFactory;
 import org.jgroups.conf.ProtocolStackConfigurator;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.BundleTracker;
 
 /**
  * @author Tina Tian
@@ -103,9 +97,7 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 
 	@Activate
 	@Modified
-	protected synchronized void activate(
-		BundleContext bundleContext, Map<String, Object> properties) {
-
+	protected synchronized void activate(Map<String, Object> properties) {
 		_clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
 			ClusterExecutorConfiguration.class, properties);
 
@@ -115,41 +107,10 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 		initBindAddress(
 			GetterUtil.getString(
 				_props.get(PropsKeys.CLUSTER_LINK_AUTODETECT_ADDRESS)));
-
-		_bundleTracker = new BundleTracker<ClassLoader>(
-			bundleContext, Bundle.ACTIVE, null) {
-
-			@Override
-			public ClassLoader addingBundle(Bundle bundle, BundleEvent event) {
-				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
-
-				ClassLoader classLoader = bundleWiring.getClassLoader();
-
-				ClusterClassLoaderPool.registerFallback(
-					bundle.getSymbolicName(), bundle.getVersion(), classLoader);
-
-				return classLoader;
-			}
-
-			@Override
-			public void removedBundle(
-				Bundle bundle, BundleEvent event, ClassLoader classLoader) {
-
-				ClusterClassLoaderPool.unregisterFallback(
-					bundle.getSymbolicName(), bundle.getVersion());
-			}
-
-		};
-
-		_bundleTracker.open();
 	}
 
 	@Deactivate
 	protected synchronized void deactivate() {
-		if (_bundleTracker != null) {
-			_bundleTracker.close();
-		}
-
 		_classLoaders.clear();
 	}
 
@@ -343,7 +304,6 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 
 	private InetAddress _bindInetAddress;
 	private NetworkInterface _bindNetworkInterface;
-	private BundleTracker<ClassLoader> _bundleTracker;
 	private final ConcurrentMap<ClassLoader, ClassLoader> _classLoaders =
 		new ConcurrentReferenceKeyHashMap<>(
 			FinalizeManager.WEAK_REFERENCE_FACTORY);
