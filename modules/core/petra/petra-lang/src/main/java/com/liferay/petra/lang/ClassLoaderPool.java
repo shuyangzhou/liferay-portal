@@ -16,6 +16,7 @@ package com.liferay.petra.lang;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 
 /**
  * Maps servlet context names to/from the servlet context's class loader.
@@ -43,9 +44,20 @@ public class ClassLoaderPool {
 		}
 
 		if (classLoader == null) {
-			Thread currentThread = Thread.currentThread();
+			BiFunction<String, Map<String, ClassLoader>, ClassLoader>
+				fallbackFunction =
+					ClassLoaderPoolThreadLocal.getFallbackFunction();
 
-			classLoader = currentThread.getContextClassLoader();
+			if (fallbackFunction != null) {
+				classLoader = fallbackFunction.apply(
+					contextName, _classLoaders);
+			}
+
+			if (classLoader == null) {
+				Thread currentThread = Thread.currentThread();
+
+				classLoader = currentThread.getContextClassLoader();
+			}
 		}
 
 		return classLoader;
