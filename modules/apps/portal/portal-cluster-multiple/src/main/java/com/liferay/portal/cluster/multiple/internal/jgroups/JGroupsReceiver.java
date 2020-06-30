@@ -14,6 +14,10 @@
 
 package com.liferay.portal.cluster.multiple.internal.jgroups;
 
+import com.liferay.petra.lang.ClassLoaderPoolThreadLocal;
+import com.liferay.petra.lang.SafeClosable;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.cluster.multiple.internal.ClusterReceiver;
 import com.liferay.portal.cluster.multiple.internal.io.ClusterSerializationUtil;
 import com.liferay.portal.kernel.cluster.Address;
@@ -24,6 +28,7 @@ import com.liferay.portal.kernel.util.AggregateClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
@@ -44,6 +49,36 @@ public class JGroupsReceiver extends ReceiverAdapter {
 
 		_clusterReceiver = clusterReceiver;
 		_classLoaders = classLoaders;
+
+		_fallbackFunction = (contextName, classLoaderMap) -> {
+			int index = contextName.lastIndexOf(CharPool.UNDERLINE);
+
+			if (index == -1) {
+				return null;
+			}
+
+			String contextNamePrefix = contextName.substring(0, index + 1);
+
+			for (Map.Entry<String, ClassLoader> entry :
+					classLoaderMap.entrySet()) {
+
+				String key = entry.getKey();
+
+				if (key.startsWith(contextNamePrefix)) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to find class loader for ", contextName,
+								", class loader ", key,
+								" is provided instead"));
+					}
+
+					return entry.getValue();
+				}
+			}
+
+			return null;
+		};
 	}
 
 	@Override
@@ -69,7 +104,10 @@ public class JGroupsReceiver extends ReceiverAdapter {
 
 		currentThread.setContextClassLoader(aggregatedClassLoader);
 
-		try {
+		try (SafeClosable safeClosable =
+				ClassLoaderPoolThreadLocal.setFallbackFunction(
+					_fallbackFunction)) {
+
 			_clusterReceiver.receive(
 				ClusterSerializationUtil.readObject(
 					rawBuffer, message.getOffset(), message.getLength()),
@@ -118,5 +156,7 @@ public class JGroupsReceiver extends ReceiverAdapter {
 
 	private final Map<ClassLoader, ClassLoader> _classLoaders;
 	private final ClusterReceiver _clusterReceiver;
+	private final BiFunction<String, Map<String, ClassLoader>, ClassLoader>
+		_fallbackFunction;
 
 }
