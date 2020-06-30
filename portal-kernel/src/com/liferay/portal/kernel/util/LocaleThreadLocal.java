@@ -55,6 +55,7 @@ public class LocaleThreadLocal {
 			LocaleThreadLocal.class + "._siteDefaultLocale");
 	private static final ThreadLocal<Locale> _themeDisplayLocale =
 		new CentralizedThreadLocal<>(
-			LocaleThreadLocal.class + "._themeDisplayLocale");
+			LocaleThreadLocal.class + "._themeDisplayLocale",
+			LocaleUtil::getDefault);
 
 }
