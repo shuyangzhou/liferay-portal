@@ -14,11 +14,7 @@
 
 package com.liferay.portal.file.install.internal;
 
-import com.liferay.portal.file.install.FileInstaller;
-
 import java.io.File;
-
-import java.net.URL;
 
 /**
  * @author Matthew Tambara
@@ -33,16 +29,8 @@ public class Artifact {
 		return _checksum;
 	}
 
-	public FileInstaller getFileInstaller() {
-		return _fileInstaller;
-	}
-
 	public File getPath() {
 		return _path;
-	}
-
-	public URL getTransformedUrl() {
-		return _transformedURL;
 	}
 
 	public void setBundleId(long bundleId) {
@@ -53,22 +41,12 @@ public class Artifact {
 		_checksum = checksum;
 	}
 
-	public void setFileInstaller(FileInstaller fileInstaller) {
-		_fileInstaller = fileInstaller;
-	}
-
 	public void setPath(File path) {
 		_path = path;
 	}
 
-	public void setTransformedUrl(URL transformedUrl) {
-		_transformedURL = transformedUrl;
-	}
-
 	private long _bundleId = -1;
 	private long _checksum;
-	private FileInstaller _fileInstaller;
 	private File _path;
-	private URL _transformedURL;
 
 }

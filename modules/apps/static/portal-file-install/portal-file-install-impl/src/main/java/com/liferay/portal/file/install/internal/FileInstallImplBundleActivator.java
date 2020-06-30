@@ -120,7 +120,7 @@ public class FileInstallImplBundleActivator
 		ServiceReference<FileInstaller> serviceReference,
 		FileInstaller fileInstaller) {
 
-		_removeFileInstaller(serviceReference, fileInstaller);
+		_removeFileInstaller(serviceReference);
 
 		_addFileInstaller(serviceReference, fileInstaller);
 	}
@@ -130,7 +130,7 @@ public class FileInstallImplBundleActivator
 		ServiceReference<FileInstaller> serviceReference,
 		FileInstaller fileInstaller) {
 
-		_removeFileInstaller(serviceReference, fileInstaller);
+		_removeFileInstaller(serviceReference);
 	}
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -294,38 +294,13 @@ public class FileInstallImplBundleActivator
 		synchronized (_fileInstallers) {
 			_fileInstallers.put(serviceReference, fileInstaller);
 		}
-
-		Bundle bundle = serviceReference.getBundle();
-
-		long currentStamp = bundle.getLastModified();
-
-		List<DirectoryWatcher> toNotify = new ArrayList<>();
-
-		synchronized (_watchers) {
-			toNotify.addAll(_watchers.values());
-		}
-
-		for (DirectoryWatcher directoryWatcher : toNotify) {
-			directoryWatcher.addFileInstaller(fileInstaller, currentStamp);
-		}
 	}
 
 	private void _removeFileInstaller(
-		ServiceReference<FileInstaller> serviceReference,
-		FileInstaller fileInstaller) {
+		ServiceReference<FileInstaller> serviceReference) {
 
 		synchronized (_fileInstallers) {
 			_fileInstallers.remove(serviceReference);
-		}
-
-		List<DirectoryWatcher> toNotify = new ArrayList<>();
-
-		synchronized (_watchers) {
-			toNotify.addAll(_watchers.values());
-		}
-
-		for (DirectoryWatcher directoryWatcher : toNotify) {
-			directoryWatcher.removeFileInstaller(fileInstaller);
 		}
 	}
 
