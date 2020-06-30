@@ -49,12 +49,15 @@ public class LocaleThreadLocal {
 
 	private static final ThreadLocal<Locale> _defaultLocale =
 		new CentralizedThreadLocal<>(
-			LocaleThreadLocal.class + "._defaultLocale");
+			LocaleThreadLocal.class + "._defaultLocale",
+			() -> new Locale("en", "US"));
 	private static final ThreadLocal<Locale> _siteDefaultLocale =
 		new CentralizedThreadLocal<>(
-			LocaleThreadLocal.class + "._siteDefaultLocale");
+			LocaleThreadLocal.class + "._siteDefaultLocale",
+			() -> new Locale("en", "US"));
 	private static final ThreadLocal<Locale> _themeDisplayLocale =
 		new CentralizedThreadLocal<>(
-			LocaleThreadLocal.class + "._themeDisplayLocale");
+			LocaleThreadLocal.class + "._themeDisplayLocale",
+			() -> new Locale("en", "US"));
 
 }
