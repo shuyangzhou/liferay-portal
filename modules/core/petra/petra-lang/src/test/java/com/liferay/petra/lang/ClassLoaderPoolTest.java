@@ -55,6 +55,34 @@ public class ClassLoaderPoolTest {
 	}
 
 	@Test
+	public void testGetClassLoaderWithFallbackFunction() {
+		ClassLoader classLoader = new URLClassLoader(new URL[0]);
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		Assert.assertSame(
+			contextClassLoader, ClassLoaderPool.getClassLoader("null"));
+
+		try (SafeClosable safeClosable =
+				ClassLoaderPoolThreadLocal.setFallbackFunction(
+					(contextName, classLoaderMap) -> classLoader)) {
+
+			Assert.assertSame(
+				classLoader, ClassLoaderPool.getClassLoader("null"));
+		}
+
+		try (SafeClosable safeClosable =
+				ClassLoaderPoolThreadLocal.setFallbackFunction(
+					(contextName, classLoaderMap) -> null)) {
+
+			Assert.assertSame(
+				contextClassLoader, ClassLoaderPool.getClassLoader("null"));
+		}
+	}
+
+	@Test
 	public void testGetClassLoaderWithInvalidContextName() {
 		ClassLoader classLoader = new URLClassLoader(new URL[0]);
 
