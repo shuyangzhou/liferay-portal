@@ -31,7 +31,6 @@ import com.liferay.portal.tools.sample.sql.builder.io.UnsyncTeeWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -368,7 +367,7 @@ public class SampleSQLBuilder {
 
 	public class CSVWriterHolder implements AutoCloseable {
 
-		public CSVWriterHolder() throws FileNotFoundException {
+		public CSVWriterHolder() throws IOException {
 			File outputDir = new File(BenchmarksPropsValues.OUTPUT_DIR);
 
 			outputDir.mkdirs();
@@ -378,21 +377,8 @@ public class SampleSQLBuilder {
 
 				_csvWriters.put(
 					csvFileName,
-					new UnsyncBufferedWriter(
-						new OutputStreamWriter(
-							new FileOutputStream(
-								new File(
-									outputDir, csvFileName.concat(".csv")))),
-						_WRITER_BUFFER_SIZE) {
-
-						@Override
-						public void flush() {
-
-							// Disable FreeMarker from flushing
-
-						}
-
-					});
+					createFileWriter(
+						new File(outputDir, csvFileName.concat(".csv"))));
 			}
 		}
 
