@@ -163,9 +163,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
 import com.liferay.portal.kernel.model.AccountModel;
@@ -275,13 +273,10 @@ import com.liferay.wiki.model.impl.WikiPageModelImpl;
 import com.liferay.wiki.model.impl.WikiPageResourceModelImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Writer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -312,29 +307,6 @@ public class DataFactory {
 	public DataFactory() throws Exception {
 		_simpleDateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss", TimeZone.getDefault());
-
-		File outputDir = new File(BenchmarksPropsValues.OUTPUT_DIR);
-
-		outputDir.mkdirs();
-
-		for (String csvFileName : BenchmarksPropsValues.OUTPUT_CSV_FILE_NAMES) {
-			_csvWriters.put(
-				csvFileName,
-				new UnsyncBufferedWriter(
-					new OutputStreamWriter(
-						new FileOutputStream(
-							new File(outputDir, csvFileName.concat(".csv")))),
-					_WRITER_BUFFER_SIZE) {
-
-					@Override
-					public void flush() {
-
-						// Disable FreeMarker from flushing
-
-					}
-
-				});
-		}
 
 		_counter = new SimpleCounter(BenchmarksPropsValues.MAX_GROUP_COUNT + 1);
 		_timeCounter = new SimpleCounter();
@@ -400,12 +372,6 @@ public class DataFactory {
 
 		initRoleModels();
 		initUserNames();
-	}
-
-	public void closeCSVWriters() throws IOException {
-		for (Writer writer : _csvWriters.values()) {
-			writer.close();
-		}
 	}
 
 	public ResourcePermissionModel commerceCatalogResourcePermission() {
@@ -618,17 +584,6 @@ public class DataFactory {
 
 	public List<CPTaxCategoryModel> getCPTaxCategoryModels() {
 		return new ArrayList<>(_cpTaxCategoryModels);
-	}
-
-	public Writer getCSVWriter(String csvFileName) {
-		Writer writer = _csvWriters.get(csvFileName);
-
-		if (writer == null) {
-			throw new IllegalArgumentException(
-				"Unknown CSV file name: " + csvFileName);
-		}
-
-		return writer;
 	}
 
 	public long getDefaultDLDDMStructureId() {
@@ -4453,8 +4408,6 @@ public class DataFactory {
 
 	private static final String _SAMPLE_USER_NAME = "Sample";
 
-	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
-
 	private static final PortletPreferencesFactory _portletPreferencesFactory =
 		new PortletPreferencesFactoryImpl();
 
@@ -4490,7 +4443,6 @@ public class DataFactory {
 	private List<CPInstanceModel> _cpInstanceModels;
 	private List<CProductModel> _cProductModels;
 	private List<CPTaxCategoryModel> _cpTaxCategoryModels;
-	private final Map<String, Writer> _csvWriters = new HashMap<>();
 	private final PortletPreferencesImpl
 		_defaultAssetPublisherPortletPreferencesImpl;
 	private AssetVocabularyModel _defaultAssetVocabularyModel;

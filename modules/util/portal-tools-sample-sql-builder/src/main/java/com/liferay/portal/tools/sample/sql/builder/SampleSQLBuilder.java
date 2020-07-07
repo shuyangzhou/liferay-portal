@@ -24,12 +24,14 @@ import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.tools.ToolDependencies;
 import com.liferay.portal.tools.sample.sql.builder.io.CharPipe;
 import com.liferay.portal.tools.sample.sql.builder.io.UnsyncTeeWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,7 +43,6 @@ import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -257,7 +258,7 @@ public class SampleSQLBuilder {
 			public void run() {
 				Writer sampleSQLWriter = null;
 
-				try {
+				try (CSVWriterHolder csvWriterHolder = new CSVWriterHolder()) {
 					sampleSQLWriter = new UnsyncTeeWriter(
 						createUnsyncBufferedWriter(charPipe.getWriter()),
 						createFileWriter(
@@ -267,20 +268,17 @@ public class SampleSQLBuilder {
 
 					FreeMarkerUtil.process(
 						BenchmarksPropsValues.SCRIPT,
-						Collections.singletonMap("dataFactory", _dataFactory),
+						HashMapBuilder.<String, Object>put(
+							"csvWriterHolder", csvWriterHolder
+						).put(
+							"dataFactory", _dataFactory
+						).build(),
 						sampleSQLWriter);
 				}
 				catch (Throwable t) {
 					_freeMarkerThrowable = t;
 				}
 				finally {
-					try {
-						_dataFactory.closeCSVWriters();
-					}
-					catch (IOException ioException) {
-						ioException.printStackTrace();
-					}
-
 					if (sampleSQLWriter != null) {
 						try {
 							sampleSQLWriter.close();
@@ -367,5 +365,56 @@ public class SampleSQLBuilder {
 
 	private final DataFactory _dataFactory;
 	private volatile Throwable _freeMarkerThrowable;
+
+	public class CSVWriterHolder implements AutoCloseable {
+
+		public CSVWriterHolder() throws FileNotFoundException {
+			File outputDir = new File(BenchmarksPropsValues.OUTPUT_DIR);
+
+			outputDir.mkdirs();
+
+			for (String csvFileName :
+					BenchmarksPropsValues.OUTPUT_CSV_FILE_NAMES) {
+
+				_csvWriters.put(
+					csvFileName,
+					new UnsyncBufferedWriter(
+						new OutputStreamWriter(
+							new FileOutputStream(
+								new File(
+									outputDir, csvFileName.concat(".csv")))),
+						_WRITER_BUFFER_SIZE) {
+
+						@Override
+						public void flush() {
+
+							// Disable FreeMarker from flushing
+
+						}
+
+					});
+			}
+		}
+
+		public void close() throws IOException {
+			for (Writer writer : _csvWriters.values()) {
+				writer.close();
+			}
+		}
+
+		public Writer getCSVWriter(String csvFileName) {
+			Writer writer = _csvWriters.get(csvFileName);
+
+			if (writer == null) {
+				throw new IllegalArgumentException(
+					"Unknown CSV file name: " + csvFileName);
+			}
+
+			return writer;
+		}
+
+		private Map<String, Writer> _csvWriters = new HashMap<>();
+
+	}
 
 }
