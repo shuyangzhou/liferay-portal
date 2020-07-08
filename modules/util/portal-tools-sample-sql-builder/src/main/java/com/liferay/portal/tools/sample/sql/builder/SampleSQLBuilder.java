@@ -56,17 +56,14 @@ public class SampleSQLBuilder {
 		ToolDependencies.wireBasic();
 
 		try {
-			DataFactory dataFactory = new DataFactory();
-
-			new SampleSQLBuilder(dataFactory);
+			new SampleSQLBuilder();
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();
 		}
 	}
 
-	public SampleSQLBuilder(DataFactory dataFactory) throws Exception {
-		_dataFactory = dataFactory;
+	public SampleSQLBuilder() throws Exception {
 
 		// Generic
 
@@ -304,7 +301,7 @@ public class SampleSQLBuilder {
 						HashMapBuilder.<String, Object>put(
 							"csvWriterHolder", csvWriterHolder
 						).put(
-							"dataFactory", _dataFactory
+							"dataFactory", new DataFactory()
 						).build(),
 						sampleSQLWriter);
 				}
@@ -385,7 +382,6 @@ public class SampleSQLBuilder {
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
 
-	private final DataFactory _dataFactory;
 	private volatile Throwable _freeMarkerThrowable;
 
 }
