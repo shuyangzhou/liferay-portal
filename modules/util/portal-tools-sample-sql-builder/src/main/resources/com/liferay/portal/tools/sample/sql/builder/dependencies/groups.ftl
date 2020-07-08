@@ -50,5 +50,5 @@
 
 	<@insertGroup _groupModel=groupModel />
 
-	${csvWriterHolder.getCSVWriter("repository").write(groupId + ", " + groupModel.name + "\n")}
+	${csvWriterHolder.write("repository", groupId + ", " + groupModel.name + "\n")}
 </#list>

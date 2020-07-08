@@ -14,5 +14,5 @@ ${dataFactory.toInsertSQL(fragmentEntryModel)}
 		_layoutModel=contentLayoutModel
 	/>
 
-	${csvWriterHolder.getCSVWriter("fragment").write(contentLayoutModel.friendlyURL + "\n")}
+	${csvWriterHolder.write("fragment", contentLayoutModel.friendlyURL + "\n")}
 </#list>
