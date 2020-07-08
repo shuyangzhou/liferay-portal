@@ -116,44 +116,6 @@ public class SampleSQLBuilder {
 			BenchmarksPropsValues.ACTUAL_PROPERTIES_CONTENT);
 	}
 
-	public class CSVWriterHolder implements AutoCloseable {
-
-		public CSVWriterHolder() throws IOException {
-			File outputDir = new File(BenchmarksPropsValues.OUTPUT_DIR);
-
-			outputDir.mkdirs();
-
-			for (String csvFileName :
-					BenchmarksPropsValues.OUTPUT_CSV_FILE_NAMES) {
-
-				_csvWriters.put(
-					csvFileName,
-					createFileWriter(
-						new File(outputDir, csvFileName.concat(".csv"))));
-			}
-		}
-
-		public void close() throws IOException {
-			for (Writer writer : _csvWriters.values()) {
-				writer.close();
-			}
-		}
-
-		public Writer getCSVWriter(String csvFileName) {
-			Writer writer = _csvWriters.get(csvFileName);
-
-			if (writer == null) {
-				throw new IllegalArgumentException(
-					"Unknown CSV file name: " + csvFileName);
-			}
-
-			return writer;
-		}
-
-		private Map<String, Writer> _csvWriters = new HashMap<>();
-
-	}
-
 	protected void compressSQL(
 			DB db, File directory, Map<String, Writer> insertSQLWriters,
 			Map<String, StringBundler> sqls, String insertSQL)
