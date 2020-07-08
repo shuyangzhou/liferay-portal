@@ -29,9 +29,9 @@ import java.util.Map;
 /**
  * @author Tina Tian
  */
-public class CSVWriterHolder implements AutoCloseable {
+public class CSVFileWriter implements AutoCloseable {
 
-	public CSVWriterHolder() throws FileNotFoundException {
+	public CSVFileWriter() throws FileNotFoundException {
 		File outputDir = new File(BenchmarksPropsValues.OUTPUT_DIR);
 
 		outputDir.mkdirs();

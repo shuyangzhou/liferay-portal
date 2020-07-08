@@ -250,7 +250,7 @@ public class SampleSQLBuilder {
 
 		Thread thread = new Thread(
 			() -> {
-				try (CSVWriterHolder csvWriterHolder = new CSVWriterHolder();
+				try (CSVFileWriter csvFileWriter = new CSVFileWriter();
 					Writer sampleSQLWriter = new UnsyncTeeWriter(
 						createUnsyncBufferedWriter(charPipe.getWriter()),
 						createFileWriter(
@@ -261,7 +261,7 @@ public class SampleSQLBuilder {
 					FreeMarkerUtil.process(
 						BenchmarksPropsValues.SCRIPT,
 						HashMapBuilder.<String, Object>put(
-							"csvWriterHolder", csvWriterHolder
+							"csvFileWriter", csvFileWriter
 						).put(
 							"dataFactory", new DataFactory()
 						).build(),

@@ -6,4 +6,4 @@ ${dataFactory.toInsertSQL(dataFactory.newAccountModel())}
 
 ${dataFactory.toInsertSQL(dataFactory.newVirtualHostModel())}
 
-${csvWriterHolder.write("company", companyModel.companyId + "\n")}
+${csvFileWriter.write("company", companyModel.companyId + "\n")}
