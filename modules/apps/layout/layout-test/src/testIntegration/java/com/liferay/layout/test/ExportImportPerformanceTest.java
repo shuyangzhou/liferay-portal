@@ -178,7 +178,7 @@ public class ExportImportPerformanceTest {
 			RandomTestUtil.randomString());
 	}
 
-	@Test
+//	@Test
 	public void testExportGroupToLAR() throws Exception {
 		try (Closeable closeable = _startTimer()) {
 			Map<String, Serializable> exportLayoutSettingsMap =
@@ -199,7 +199,7 @@ public class ExportImportPerformanceTest {
 		}
 	}
 
-	@Test
+//	@Test
 	public void testImportGroupFromLAR() throws Exception {
 		Map<String, Serializable> exportLayoutSettingsMap =
 			_exportImportConfigurationSettingsMapFactory.
@@ -245,7 +245,7 @@ public class ExportImportPerformanceTest {
 		}
 	}
 
-	@Test
+//	@Test
 	public void testSiteTemplatePropagation() throws Exception {
 		MergeLayoutPrototypesThreadLocal.clearMergeComplete();
 
@@ -282,7 +282,7 @@ public class ExportImportPerformanceTest {
 		}
 	}
 
-	@Test
+//	@Test
 	public void testStagingPublication() throws Exception {
 		_stagingLocalService.enableLocalStaging(
 			TestPropsValues.getUserId(), _group, false, false, _serviceContext);
