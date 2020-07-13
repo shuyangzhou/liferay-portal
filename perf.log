@@ -1,0 +1,36 @@
+Baseline - cold
+
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 7003ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 49259ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 113943ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 52933ms
+
+
+Baseline - warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 5922ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 46729ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 105080ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 1ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 50770ms
+
+Working on testInitialStagingPublication first.
+
