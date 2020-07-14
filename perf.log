@@ -34,3 +34,67 @@ com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 
 
 Working on testInitialStagingPublication first.
 
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 84532ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 77500ms
+
+
+Full run on XPath removal:
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 6070ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 40464ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 81013ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 42413ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 5174ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 37910ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 76715ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 41834ms
+
+
