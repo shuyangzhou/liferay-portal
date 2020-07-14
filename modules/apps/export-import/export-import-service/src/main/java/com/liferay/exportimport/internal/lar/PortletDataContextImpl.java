@@ -128,11 +128,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
 
+import java.util.function.Predicate;
 import jodd.bean.BeanUtil;
 
 /**
@@ -895,6 +899,19 @@ public class PortletDataContextImpl implements PortletDataContext {
 		XPath xPath = SAXReaderUtil.createXPath(sb.toString());
 
 		Node node = xPath.selectSingleNode(_missingReferencesElement);
+
+		_assertEquals(
+			(Element)node,
+			_searchFirstChildElementWithPredicate(
+				_missingReferencesElement, "missing-reference",
+				childElement ->
+					Objects.equals(
+						childElement.attributeValue("class-name"),
+						ExportImportClassedModelUtil.getClassName(classedModel)
+					) &&
+					Objects.equals(
+						childElement.attributeValue("class-pk"),
+						String.valueOf(classedModel.getPrimaryKeyObj()))));
 
 		return (Element)node;
 	}
@@ -2154,7 +2171,16 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 		XPath xPath = SAXReaderUtil.createXPath(sb.toString());
 
-		return (Element)xPath.selectSingleNode(parentElement);
+		Element element = (Element)xPath.selectSingleNode(parentElement);
+
+		_assertEquals(
+			element,
+			_searchFirstChildElementWithPredicate(
+				parentElement, "staged-model",
+				childElement ->
+					Objects.equals(childElement.attributeValue(attribute), value)));
+
+		return element;
 	}
 
 	protected Element getExportDataGroupElement(String name) {
@@ -2195,11 +2221,76 @@ public class PortletDataContextImpl implements PortletDataContext {
 		Element groupElement = (Element)_importDataRootElement.selectSingleNode(
 			".//" + name);
 
+		_assertEquals(
+			groupElement,
+			_deepSearchForFirstChildElement(_importDataRootElement, name));
+
 		if (groupElement == null) {
 			return SAXReaderUtil.createElement("EMPTY-ELEMENT");
 		}
 
 		return groupElement;
+	}
+
+	private static void _assertEquals(
+		Element expectedElement, Element actualElement) {
+
+		if ((expectedElement == null) && (actualElement == null)) {
+			return;
+		}
+
+		if ((expectedElement == null) && (actualElement != null)) {
+			throw new Error(
+				"Expected : null\nbut got " + actualElement.asXML());
+		}
+
+		if ((expectedElement != null) && (actualElement == null)) {
+			throw new Error(
+				"Expected : " + expectedElement.asXML() + "\nbut got null");
+		}
+
+		String expectedXML = expectedElement.asXML();
+		String actualXML = actualElement.asXML();
+
+		if (!Objects.equals(expectedXML, actualXML)) {
+			throw new Error(
+				"Expected : " + expectedXML + "\nbut got : " + actualXML);
+		}
+	}
+
+	private Element _searchFirstChildElementWithPredicate(
+		Element parentElement, String childElementName, Predicate<Element> childElementPredicate) {
+
+		for (Element childElement : parentElement.elements(
+				childElementName)) {
+
+			if (childElementPredicate.test(childElement)) {
+				return childElement;
+			}
+		}
+
+		return null;
+	}
+
+	private Element _deepSearchForFirstChildElement(
+			Element parentElement, String childElementName) {
+		Queue<Element> queue = new LinkedList<>();
+
+		queue.add(parentElement);
+
+		Element currentElement = null;
+
+		while ((currentElement = queue.poll()) != null) {
+			for (Element childElement : parentElement.elements()) {
+				if (childElementName.equals(childElement.getName())) {
+					return childElement;
+				}
+
+				queue.add(childElement);
+			}
+		}
+
+		return null;
 	}
 
 	protected String getPrimaryKeyString(
@@ -2255,6 +2346,22 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 				referenceDataElement = (Element)xPath.selectSingleNode(
 					groupElement);
+
+				Predicate<Element> childElementPredicate = childElement ->
+					Objects.equals(childElement.attributeValue("uuid"), uuid);
+
+				if (groupId != null) {
+					childElementPredicate = childElementPredicate.and(
+						childElement ->
+							Objects.equals(
+								childElement.attributeValue("group-id"),
+								groupId));
+				}
+
+				_assertEquals(
+					referenceDataElement,
+					_searchFirstChildElementWithPredicate(
+						groupElement, "staged-model", childElementPredicate));
 			}
 
 			if (referenceDataElement == null) {
