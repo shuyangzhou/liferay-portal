@@ -34,3 +34,29 @@ com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 
 
 Working on testInitialStagingPublication first.
 
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 84532ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 77500ms
+
