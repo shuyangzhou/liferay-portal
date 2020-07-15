@@ -127,6 +127,46 @@ public class LayoutSEOEntryStagedModelDataHandler
 		}
 	}
 
+	@Override
+	protected void exportAssetCategories(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void exportAssetTags(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void exportComments(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void exportRatings(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void importAssetCategories(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void importAssetTags(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void importComments(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
+	@Override
+	protected void importRatings(
+		PortletDataContext portletDataContext, LayoutSEOEntry layoutSEOEntry) {
+	}
+
 	@Reference
 	private LayoutSEOEntryLocalService _layoutSEOEntryLocalService;
 

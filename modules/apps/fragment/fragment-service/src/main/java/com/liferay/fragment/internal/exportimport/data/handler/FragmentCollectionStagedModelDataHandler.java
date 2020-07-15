@@ -16,7 +16,6 @@ package com.liferay.fragment.internal.exportimport.data.handler;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
-import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
@@ -45,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = StagedModelDataHandler.class)
 public class FragmentCollectionStagedModelDataHandler
-	extends BaseStagedModelDataHandler<FragmentCollection> {
+	extends LeafNodeBaseStagedModelDataHandler<FragmentCollection> {
 
 	public static final String[] CLASS_NAMES = {
 		FragmentCollection.class.getName()
