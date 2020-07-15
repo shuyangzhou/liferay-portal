@@ -98,3 +98,264 @@ com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation 
 com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 41834ms
 
 
+Full run on jodd removal:
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 6174ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 40394ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 80285ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 44606ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 5275ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 38411ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 77887ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 42841ms
+
+Leaf node NOP out
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 6367ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 41318ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 82082ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 24460ms
+
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 5985ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 41067ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 78636ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 43303ms
+
+ZipWriter
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 2056ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 41130ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 72511ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 1ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 19909ms
+
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1142ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 40808ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 69320ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 38796ms
+
+ZipWriter, clean run
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 2013ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 40284ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 72373ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 38910ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1367ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 38510ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 70476ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 38685ms
+
+
+
+ZipWriter, baseline rerun
+
+cold
+
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 6123ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 39866ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 82717ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 43291ms
+
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 5166ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 39477ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 76363ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 42533ms
+
+
+Jodd + ZipWriter
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1974ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 20196ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 72332ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 3800ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1320ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 37948ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 68388ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 3451ms
+
+
+Baseline for Jodd + ZipWriter
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 6106ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 39866ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 80622ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 5258ms
+
+warm
+
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 5190ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 38310ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 76301ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 1ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 4971ms
+
