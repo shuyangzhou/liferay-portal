@@ -359,3 +359,78 @@ com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublicatio
 com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 1ms
 com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 4971ms
 
+
+XStream cache
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1935ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 40452ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 66580ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 3824ms
+
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1305ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 38235ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 64499ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 3507ms
+
+
+Baseline for XStream cache
+
+cold
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 2011ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 40506ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 72041ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 0ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 3947ms
+
+warm
+
+Properties:
+fragment.entry.links.per.layout=5
+layout.type=content
+layouts.count=10
+log.file=export-import-times.log
+portlets.per.content.layout=5
+portlets.per.portlet.layout=0
+
+Results:
+com.liferay.layout.test.ExportImportPerformanceTest#testExportGroupToLAR used 1311ms
+com.liferay.layout.test.ExportImportPerformanceTest#testImportGroupFromLAR used 38596ms
+com.liferay.layout.test.ExportImportPerformanceTest#testInitialStagingPublication used 69313ms
+com.liferay.layout.test.ExportImportPerformanceTest#testSiteTemplatePropagation used 1ms
+com.liferay.layout.test.ExportImportPerformanceTest#testStagingPublication used 3592ms
+
