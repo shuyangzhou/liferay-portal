@@ -24,6 +24,7 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -208,6 +209,39 @@ public class FileInstallConfigTest {
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
 		Assert.assertEquals("testValue", dictionary.get(testKey));
+	}
+
+	@Test
+	public void testUTF8SpecialCharacters() throws Exception {
+		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(".testUTF8");
+
+		_configurationPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			configurationPid.concat(".config"));
+
+		String special = "üß";
+
+		String testValue = StringBundler.concat(
+			StringPool.QUOTE, special, StringPool.QUOTE);
+
+		byte[] bytes = testValue.getBytes();
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("testKeyUTF");
+		sb.append(StringPool.EQUAL);
+		sb.append(new String(bytes, StandardCharsets.UTF_8));
+		sb.append(StringPool.NEW_LINE);
+		sb.append("testKeyISO");
+		sb.append(StringPool.EQUAL);
+		sb.append(new String(bytes, StandardCharsets.ISO_8859_1));
+
+		_configuration = _createConfiguration(configurationPid, sb.toString());
+
+		Dictionary<String, Object> dictionary = _configuration.getProperties();
+
+		Assert.assertEquals(special, dictionary.get("testKeyUTF"));
+		Assert.assertNotEquals(special, dictionary.get("testKeyISO"));
 	}
 
 	private Configuration _createConfiguration(
