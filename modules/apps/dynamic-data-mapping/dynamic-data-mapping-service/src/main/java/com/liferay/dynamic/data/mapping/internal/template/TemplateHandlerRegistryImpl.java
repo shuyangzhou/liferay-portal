@@ -18,6 +18,8 @@ import com.liferay.dynamic.data.mapping.internal.util.ResourceBundleLoaderProvid
 import com.liferay.dynamic.data.mapping.kernel.DDMTemplateManager;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -41,6 +43,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.language.LanguageResources;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -50,15 +53,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -68,88 +71,78 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 	@Override
 	public long[] getClassNameIds() {
-		return ArrayUtil.toLongArray(_classNameIdTemplateHandlers.keySet());
+		return ArrayUtil.toLongArray(
+			_classNameIdTemplateHandlersServiceTrackerMap.keySet());
 	}
 
 	@Override
 	public TemplateHandler getTemplateHandler(long classNameId) {
-		return _classNameIdTemplateHandlers.get(classNameId);
+		return _classNameIdTemplateHandlersServiceTrackerMap.getService(
+			classNameId);
 	}
 
 	@Override
 	public TemplateHandler getTemplateHandler(String className) {
-		return _classNameTemplateHandlers.get(className);
+		return _classNameTemplateHandlersServiceTrackerMap.getService(
+			className);
 	}
 
 	@Override
 	public List<TemplateHandler> getTemplateHandlers() {
-		return new ArrayList<>(_classNameTemplateHandlers.values());
+		List<TemplateHandler> templateHandlers = new ArrayList<>();
+
+		for (String className :
+				_classNameTemplateHandlersServiceTrackerMap.keySet()) {
+
+			templateHandlers.add(
+				_classNameTemplateHandlersServiceTrackerMap.getService(
+					className));
+		}
+
+		return templateHandlers;
 	}
 
 	@Activate
-	protected synchronized void activate(BundleContext bundleContext) {
+	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		for (Map.Entry<String, TemplateHandler> entry :
-				_classNameTemplateHandlers.entrySet()) {
+		_classNameIdTemplateHandlersServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, TemplateHandler.class, null,
+				(serviceReference, emitter) -> {
+					TemplateHandler templateHandler = bundleContext.getService(
+						serviceReference);
 
-			String className = entry.getKey();
-			TemplateHandler templateHandler = entry.getValue();
+					emitter.emit(
+						_portal.getClassNameId(templateHandler.getClassName()));
 
-			_classNameIdTemplateHandlers.put(
-				_portal.getClassNameId(className), templateHandler);
+					bundleContext.ungetService(serviceReference);
+				});
 
-			if (_serviceRegistrations.containsKey(className)) {
-				continue;
-			}
+		_classNameTemplateHandlersServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, TemplateHandler.class, null,
+				(serviceReference, emitter) -> {
+					TemplateHandler templateHandler = bundleContext.getService(
+						serviceReference);
 
-			registerPortalInstanceLifecycleListener(templateHandler);
-		}
-	}
+					emitter.emit(templateHandler.getClassName());
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected synchronized void addTemplateHandler(
-		TemplateHandler templateHandler) {
-
-		String className = templateHandler.getClassName();
-
-		_classNameTemplateHandlers.put(className, templateHandler);
-
-		if (_bundleContext == null) {
-			return;
-		}
-
-		_classNameIdTemplateHandlers.put(
-			_portal.getClassNameId(className), templateHandler);
-
-		registerPortalInstanceLifecycleListener(templateHandler);
+					bundleContext.ungetService(serviceReference);
+				},
+				new TemplateHandlerServiceTrackerCustomizer());
 	}
 
 	@Deactivate
-	protected synchronized void deactivate() {
-		_classNameIdTemplateHandlers.clear();
-		_classNameTemplateHandlers.clear();
-
-		for (ServiceRegistration<?> serviceRegistration :
-				_serviceRegistrations.values()) {
-
-			serviceRegistration.unregister();
-		}
-
-		_serviceRegistrations.clear();
-
+	protected void deactivate() {
 		_bundleContext = null;
 	}
 
 	protected void registerPortalInstanceLifecycleListener(
-		TemplateHandler templateHandler) {
+		TemplateHandler templateHandler, int serviceRanking) {
 
 		ServiceRegistration<?> serviceRegistration = _serviceRegistrations.get(
-			templateHandler.getClassName());
+			templateHandler);
 
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
@@ -158,33 +151,15 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		PortalInstanceLifecycleListener portalInstanceLifecycleListener =
 			new TemplateHandlerPortalInstanceLifecycleListener(templateHandler);
 
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
+
+		properties.put(Constants.SERVICE_RANKING, serviceRanking);
+
 		serviceRegistration = _bundleContext.registerService(
 			PortalInstanceLifecycleListener.class,
-			portalInstanceLifecycleListener,
-			new HashMapDictionary<String, Object>());
+			portalInstanceLifecycleListener, properties);
 
-		_serviceRegistrations.put(
-			templateHandler.getClassName(), serviceRegistration);
-	}
-
-	protected synchronized void removeTemplateHandler(
-		TemplateHandler templateHandler) {
-
-		String className = templateHandler.getClassName();
-
-		_classNameTemplateHandlers.remove(className);
-
-		if (_portal != null) {
-			_classNameIdTemplateHandlers.remove(
-				_portal.getClassNameId(className));
-		}
-
-		ServiceRegistration<?> serviceRegistration =
-			_serviceRegistrations.remove(className);
-
-		if (serviceRegistration != null) {
-			serviceRegistration.unregister();
-		}
+		_serviceRegistrations.put(templateHandler, serviceRegistration);
 	}
 
 	@Reference(unbind = "-")
@@ -214,18 +189,18 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	protected ResourceBundleLoaderProvider resourceBundleLoaderProvider;
 
 	private BundleContext _bundleContext;
-	private final Map<Long, TemplateHandler> _classNameIdTemplateHandlers =
-		new ConcurrentHashMap<>();
-	private final Map<String, TemplateHandler> _classNameTemplateHandlers =
-		new ConcurrentHashMap<>();
+	private ServiceTrackerMap<Long, TemplateHandler>
+		_classNameIdTemplateHandlersServiceTrackerMap;
+	private ServiceTrackerMap<String, TemplateHandler>
+		_classNameTemplateHandlersServiceTrackerMap;
 
 	@Reference
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 
 	private GroupLocalService _groupLocalService;
 	private Portal _portal;
-	private final Map<String, ServiceRegistration<?>> _serviceRegistrations =
-		new ConcurrentHashMap<>();
+	private final Map<TemplateHandler, ServiceRegistration<?>>
+		_serviceRegistrations = new ConcurrentHashMap<>();
 	private UserLocalService _userLocalService;
 
 	private class TemplateHandlerPortalInstanceLifecycleListener
@@ -365,6 +340,46 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			"com.liferay.portlet.display.template.PortletDisplayTemplate";
 
 		private final TemplateHandler _templateHandler;
+
+	}
+
+	private class TemplateHandlerServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<TemplateHandler, TemplateHandler> {
+
+		@Override
+		public TemplateHandler addingService(
+			ServiceReference<TemplateHandler> serviceReference) {
+
+			TemplateHandler templateHandler = _bundleContext.getService(
+				serviceReference);
+
+			int serviceRanking = GetterUtil.getInteger(
+				serviceReference.getProperty(Constants.SERVICE_RANKING));
+
+			registerPortalInstanceLifecycleListener(
+				templateHandler, serviceRanking);
+
+			return templateHandler;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<TemplateHandler> serviceReference,
+			TemplateHandler templateHandler) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<TemplateHandler> serviceReference,
+			TemplateHandler templateHandler) {
+
+			ServiceRegistration<?> serviceRegistration =
+				_serviceRegistrations.remove(templateHandler);
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+		}
 
 	}
 
