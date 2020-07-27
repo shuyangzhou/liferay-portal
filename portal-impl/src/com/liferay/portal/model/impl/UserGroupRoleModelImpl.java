@@ -125,12 +125,32 @@ public class UserGroupRoleModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROLEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERGROUPROLEID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -352,6 +372,12 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -363,6 +389,12 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -374,6 +406,12 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setUserGroupRoleId(long userGroupRoleId) {
+		_columnBitmask |= _columnBitmasks.get("userGroupRoleId");
+
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
+		}
+
 		_userGroupRoleId = userGroupRoleId;
 	}
 
@@ -385,6 +423,12 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -396,12 +440,10 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -423,8 +465,13 @@ public class UserGroupRoleModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -435,19 +482,22 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -458,19 +508,22 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("roleId");
 
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
-
-			_originalRoleId = _roleId;
+		if (_userGroupRoleCacheModel == _dummyUserGroupRoleCacheModel) {
+			_userGroupRoleCacheModel = (UserGroupRoleCacheModel)toCacheModel();
 		}
 
 		_roleId = roleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		return getOriginalAttributeValue("roleId");
 	}
 
 	public long getColumnBitmask() {
@@ -584,22 +637,9 @@ public class UserGroupRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserGroupRoleModelImpl userGroupRoleModelImpl = this;
+		_columnBitmask = 0;
 
-		userGroupRoleModelImpl._originalUserId = userGroupRoleModelImpl._userId;
-
-		userGroupRoleModelImpl._setOriginalUserId = false;
-
-		userGroupRoleModelImpl._originalGroupId =
-			userGroupRoleModelImpl._groupId;
-
-		userGroupRoleModelImpl._setOriginalGroupId = false;
-
-		userGroupRoleModelImpl._originalRoleId = userGroupRoleModelImpl._roleId;
-
-		userGroupRoleModelImpl._setOriginalRoleId = false;
-
-		userGroupRoleModelImpl._columnBitmask = 0;
+		_userGroupRoleCacheModel = _dummyUserGroupRoleCacheModel;
 	}
 
 	@Override
@@ -694,19 +734,98 @@ public class UserGroupRoleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<UserGroupRoleCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<UserGroupRoleCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<UserGroupRoleCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userGroupRoleId",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.userGroupRoleId);
+
+		columnBitmasks.put("userGroupRoleId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"roleId",
+			userGroupRoleCacheModel -> userGroupRoleCacheModel.roleId);
+
+		columnBitmasks.put("roleId", 64L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<UserGroupRoleCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		UserGroupRoleCacheModel userGroupRoleCacheModel =
+			_userGroupRoleCacheModel;
+
+		if (userGroupRoleCacheModel == null) {
+			userGroupRoleCacheModel = _dummyUserGroupRoleCacheModel;
+		}
+
+		return (T)function.apply(userGroupRoleCacheModel);
+	}
+
+	private static final UserGroupRoleCacheModel _dummyUserGroupRoleCacheModel =
+		new UserGroupRoleCacheModel();
+
+	private UserGroupRoleCacheModel _userGroupRoleCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _userGroupRoleId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _columnBitmask;
 	private UserGroupRole _escapedModel;
 

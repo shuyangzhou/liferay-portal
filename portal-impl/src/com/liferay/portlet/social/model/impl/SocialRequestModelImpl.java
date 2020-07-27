@@ -139,24 +139,74 @@ public class SocialRequestModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RECEIVERUSERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REQUESTID_COLUMN_BITMASK = 512L;
 
 	/**
@@ -419,6 +469,12 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -430,6 +486,12 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -446,17 +508,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -467,7 +534,11 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setRequestId(long requestId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("requestId");
+
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
+		}
 
 		_requestId = requestId;
 	}
@@ -480,19 +551,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -503,19 +577,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -526,12 +603,10 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -553,8 +628,13 @@ public class SocialRequestModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -565,6 +645,12 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setCreateDate(long createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -576,6 +662,12 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setModifiedDate(long modifiedDate) {
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -607,19 +699,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -630,19 +725,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -653,19 +751,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("type");
 
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -681,6 +782,12 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setExtraData(String extraData) {
+		_columnBitmask |= _columnBitmasks.get("extraData");
+
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
+		}
+
 		_extraData = extraData;
 	}
 
@@ -692,12 +799,10 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setReceiverUserId(long receiverUserId) {
-		_columnBitmask |= RECEIVERUSERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("receiverUserId");
 
-		if (!_setOriginalReceiverUserId) {
-			_setOriginalReceiverUserId = true;
-
-			_originalReceiverUserId = _receiverUserId;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_receiverUserId = receiverUserId;
@@ -719,8 +824,13 @@ public class SocialRequestModelImpl
 	public void setReceiverUserUuid(String receiverUserUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalReceiverUserId() {
-		return _originalReceiverUserId;
+		return getOriginalAttributeValue("receiverUserId");
 	}
 
 	@JSON
@@ -731,19 +841,22 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("status");
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
+		if (_socialRequestCacheModel == _dummySocialRequestCacheModel) {
+			_socialRequestCacheModel = (SocialRequestCacheModel)toCacheModel();
 		}
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	public long getColumnBitmask() {
@@ -873,48 +986,9 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialRequestModelImpl socialRequestModelImpl = this;
+		_columnBitmask = 0;
 
-		socialRequestModelImpl._originalUuid = socialRequestModelImpl._uuid;
-
-		socialRequestModelImpl._originalGroupId =
-			socialRequestModelImpl._groupId;
-
-		socialRequestModelImpl._setOriginalGroupId = false;
-
-		socialRequestModelImpl._originalCompanyId =
-			socialRequestModelImpl._companyId;
-
-		socialRequestModelImpl._setOriginalCompanyId = false;
-
-		socialRequestModelImpl._originalUserId = socialRequestModelImpl._userId;
-
-		socialRequestModelImpl._setOriginalUserId = false;
-
-		socialRequestModelImpl._originalClassNameId =
-			socialRequestModelImpl._classNameId;
-
-		socialRequestModelImpl._setOriginalClassNameId = false;
-
-		socialRequestModelImpl._originalClassPK =
-			socialRequestModelImpl._classPK;
-
-		socialRequestModelImpl._setOriginalClassPK = false;
-
-		socialRequestModelImpl._originalType = socialRequestModelImpl._type;
-
-		socialRequestModelImpl._setOriginalType = false;
-
-		socialRequestModelImpl._originalReceiverUserId =
-			socialRequestModelImpl._receiverUserId;
-
-		socialRequestModelImpl._setOriginalReceiverUserId = false;
-
-		socialRequestModelImpl._originalStatus = socialRequestModelImpl._status;
-
-		socialRequestModelImpl._setOriginalStatus = false;
-
-		socialRequestModelImpl._columnBitmask = 0;
+		_socialRequestCacheModel = _dummySocialRequestCacheModel;
 	}
 
 	@Override
@@ -1037,38 +1111,152 @@ public class SocialRequestModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<SocialRequestCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SocialRequestCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<SocialRequestCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			socialRequestCacheModel -> socialRequestCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			socialRequestCacheModel -> socialRequestCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", socialRequestCacheModel -> socialRequestCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"requestId",
+			socialRequestCacheModel -> socialRequestCacheModel.requestId);
+
+		columnBitmasks.put("requestId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			socialRequestCacheModel -> socialRequestCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			socialRequestCacheModel -> socialRequestCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			socialRequestCacheModel -> socialRequestCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			socialRequestCacheModel -> socialRequestCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			socialRequestCacheModel -> socialRequestCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			socialRequestCacheModel -> socialRequestCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			socialRequestCacheModel -> socialRequestCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"type", socialRequestCacheModel -> socialRequestCacheModel.type);
+
+		columnBitmasks.put("type", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"extraData",
+			socialRequestCacheModel -> socialRequestCacheModel.extraData);
+
+		columnBitmasks.put("extraData", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"receiverUserId",
+			socialRequestCacheModel -> socialRequestCacheModel.receiverUserId);
+
+		columnBitmasks.put("receiverUserId", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			socialRequestCacheModel -> socialRequestCacheModel.status);
+
+		columnBitmasks.put("status", 16384L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SocialRequestCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SocialRequestCacheModel socialRequestCacheModel =
+			_socialRequestCacheModel;
+
+		if (socialRequestCacheModel == null) {
+			socialRequestCacheModel = _dummySocialRequestCacheModel;
+		}
+
+		return (T)function.apply(socialRequestCacheModel);
+	}
+
+	private static final SocialRequestCacheModel _dummySocialRequestCacheModel =
+		new SocialRequestCacheModel();
+
+	private SocialRequestCacheModel _socialRequestCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _requestId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _createDate;
 	private long _modifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _extraData;
 	private long _receiverUserId;
-	private long _originalReceiverUserId;
-	private boolean _setOriginalReceiverUserId;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private SocialRequest _escapedModel;
 

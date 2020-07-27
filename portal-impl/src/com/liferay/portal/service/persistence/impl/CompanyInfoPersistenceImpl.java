@@ -410,7 +410,7 @@ public class CompanyInfoPersistenceImpl
 			 _finderPathFetchByCompanyId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				companyInfoModelImpl.getOriginalCompanyId()
+				companyInfoModelImpl.getOriginalAttributeValue("companyId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
@@ -859,7 +859,7 @@ public class CompanyInfoPersistenceImpl
 		_finderPathFetchByCompanyId = new FinderPath(
 			CompanyInfoImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByCompanyId",
 			new String[] {Long.class.getName()},
-			CompanyInfoModelImpl.COMPANYID_COLUMN_BITMASK);
+			CompanyInfoModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

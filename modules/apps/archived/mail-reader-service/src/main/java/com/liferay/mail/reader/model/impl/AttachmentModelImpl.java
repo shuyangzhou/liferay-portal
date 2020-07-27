@@ -104,8 +104,18 @@ public class AttachmentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MESSAGEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ATTACHMENTID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -293,6 +303,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setAttachmentId(long attachmentId) {
+		_columnBitmask |= _columnBitmasks.get("attachmentId");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_attachmentId = attachmentId;
 	}
 
@@ -303,6 +319,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -313,6 +335,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -339,6 +367,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		_columnBitmask |= _columnBitmasks.get("accountId");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_accountId = accountId;
 	}
 
@@ -349,6 +383,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
+		_columnBitmask |= _columnBitmasks.get("folderId");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_folderId = folderId;
 	}
 
@@ -359,19 +399,22 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setMessageId(long messageId) {
-		_columnBitmask |= MESSAGEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("messageId");
 
-		if (!_setOriginalMessageId) {
-			_setOriginalMessageId = true;
-
-			_originalMessageId = _messageId;
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
 		}
 
 		_messageId = messageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalMessageId() {
-		return _originalMessageId;
+		return getOriginalAttributeValue("messageId");
 	}
 
 	@Override
@@ -386,6 +429,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setContentPath(String contentPath) {
+		_columnBitmask |= _columnBitmasks.get("contentPath");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_contentPath = contentPath;
 	}
 
@@ -401,6 +450,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setFileName(String fileName) {
+		_columnBitmask |= _columnBitmasks.get("fileName");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_fileName = fileName;
 	}
 
@@ -411,6 +466,12 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
+		if (_attachmentCacheModel == _dummyAttachmentCacheModel) {
+			_attachmentCacheModel = (AttachmentCacheModel)toCacheModel();
+		}
+
 		_size = size;
 	}
 
@@ -527,13 +588,9 @@ public class AttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AttachmentModelImpl attachmentModelImpl = this;
+		_columnBitmask = 0;
 
-		attachmentModelImpl._originalMessageId = attachmentModelImpl._messageId;
-
-		attachmentModelImpl._setOriginalMessageId = false;
-
-		attachmentModelImpl._columnBitmask = 0;
+		_attachmentCacheModel = _dummyAttachmentCacheModel;
 	}
 
 	@Override
@@ -643,14 +700,104 @@ public class AttachmentModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<AttachmentCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AttachmentCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AttachmentCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"attachmentId",
+			attachmentCacheModel -> attachmentCacheModel.attachmentId);
+
+		columnBitmasks.put("attachmentId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			attachmentCacheModel -> attachmentCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId", attachmentCacheModel -> attachmentCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"accountId",
+			attachmentCacheModel -> attachmentCacheModel.accountId);
+
+		columnBitmasks.put("accountId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"folderId", attachmentCacheModel -> attachmentCacheModel.folderId);
+
+		columnBitmasks.put("folderId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"messageId",
+			attachmentCacheModel -> attachmentCacheModel.messageId);
+
+		columnBitmasks.put("messageId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"contentPath",
+			attachmentCacheModel -> attachmentCacheModel.contentPath);
+
+		columnBitmasks.put("contentPath", 64L);
+
+		cacheModelGetterFunctions.put(
+			"fileName", attachmentCacheModel -> attachmentCacheModel.fileName);
+
+		columnBitmasks.put("fileName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"size", attachmentCacheModel -> attachmentCacheModel.size);
+
+		columnBitmasks.put("size", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AttachmentCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AttachmentCacheModel attachmentCacheModel = _attachmentCacheModel;
+
+		if (attachmentCacheModel == null) {
+			attachmentCacheModel = _dummyAttachmentCacheModel;
+		}
+
+		return (T)function.apply(attachmentCacheModel);
+	}
+
+	private static final AttachmentCacheModel _dummyAttachmentCacheModel =
+		new AttachmentCacheModel();
+
+	private AttachmentCacheModel _attachmentCacheModel;
 	private long _attachmentId;
 	private long _companyId;
 	private long _userId;
 	private long _accountId;
 	private long _folderId;
 	private long _messageId;
-	private long _originalMessageId;
-	private boolean _setOriginalMessageId;
 	private String _contentPath;
 	private String _fileName;
 	private long _size;

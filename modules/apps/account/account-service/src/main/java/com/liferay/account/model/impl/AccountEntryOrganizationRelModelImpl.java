@@ -103,10 +103,25 @@ public class AccountEntryOrganizationRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ORGANIZATIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYORGANIZATIONRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -350,6 +365,15 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_accountEntryOrganizationRelCacheModel ==
+				_dummyAccountEntryOrganizationRelCacheModel) {
+
+			_accountEntryOrganizationRelCacheModel =
+				(AccountEntryOrganizationRelCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -363,6 +387,15 @@ public class AccountEntryOrganizationRelModelImpl
 	public void setAccountEntryOrganizationRelId(
 		long accountEntryOrganizationRelId) {
 
+		_columnBitmask |= _columnBitmasks.get("accountEntryOrganizationRelId");
+
+		if (_accountEntryOrganizationRelCacheModel ==
+				_dummyAccountEntryOrganizationRelCacheModel) {
+
+			_accountEntryOrganizationRelCacheModel =
+				(AccountEntryOrganizationRelCacheModel)toCacheModel();
+		}
+
 		_accountEntryOrganizationRelId = accountEntryOrganizationRelId;
 	}
 
@@ -374,6 +407,15 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_accountEntryOrganizationRelCacheModel ==
+				_dummyAccountEntryOrganizationRelCacheModel) {
+
+			_accountEntryOrganizationRelCacheModel =
+				(AccountEntryOrganizationRelCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -385,19 +427,25 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("accountEntryId");
 
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
+		if (_accountEntryOrganizationRelCacheModel ==
+				_dummyAccountEntryOrganizationRelCacheModel) {
 
-			_originalAccountEntryId = _accountEntryId;
+			_accountEntryOrganizationRelCacheModel =
+				(AccountEntryOrganizationRelCacheModel)toCacheModel();
 		}
 
 		_accountEntryId = accountEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		return getOriginalAttributeValue("accountEntryId");
 	}
 
 	@JSON
@@ -408,19 +456,25 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
-		_columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("organizationId");
 
-		if (!_setOriginalOrganizationId) {
-			_setOriginalOrganizationId = true;
+		if (_accountEntryOrganizationRelCacheModel ==
+				_dummyAccountEntryOrganizationRelCacheModel) {
 
-			_originalOrganizationId = _organizationId;
+			_accountEntryOrganizationRelCacheModel =
+				(AccountEntryOrganizationRelCacheModel)toCacheModel();
 		}
 
 		_organizationId = organizationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOrganizationId() {
-		return _originalOrganizationId;
+		return getOriginalAttributeValue("organizationId");
 	}
 
 	public long getColumnBitmask() {
@@ -538,20 +592,10 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEntryOrganizationRelModelImpl
-			accountEntryOrganizationRelModelImpl = this;
+		_columnBitmask = 0;
 
-		accountEntryOrganizationRelModelImpl._originalAccountEntryId =
-			accountEntryOrganizationRelModelImpl._accountEntryId;
-
-		accountEntryOrganizationRelModelImpl._setOriginalAccountEntryId = false;
-
-		accountEntryOrganizationRelModelImpl._originalOrganizationId =
-			accountEntryOrganizationRelModelImpl._organizationId;
-
-		accountEntryOrganizationRelModelImpl._setOriginalOrganizationId = false;
-
-		accountEntryOrganizationRelModelImpl._columnBitmask = 0;
+		_accountEntryOrganizationRelCacheModel =
+			_dummyAccountEntryOrganizationRelCacheModel;
 	}
 
 	@Override
@@ -652,15 +696,96 @@ public class AccountEntryOrganizationRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AccountEntryOrganizationRelCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AccountEntryOrganizationRelCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<AccountEntryOrganizationRelCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			accountEntryOrganizationRelCacheModel ->
+				accountEntryOrganizationRelCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"accountEntryOrganizationRelId",
+			accountEntryOrganizationRelCacheModel ->
+				accountEntryOrganizationRelCacheModel.
+					accountEntryOrganizationRelId);
+
+		columnBitmasks.put("accountEntryOrganizationRelId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			accountEntryOrganizationRelCacheModel ->
+				accountEntryOrganizationRelCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"accountEntryId",
+			accountEntryOrganizationRelCacheModel ->
+				accountEntryOrganizationRelCacheModel.accountEntryId);
+
+		columnBitmasks.put("accountEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"organizationId",
+			accountEntryOrganizationRelCacheModel ->
+				accountEntryOrganizationRelCacheModel.organizationId);
+
+		columnBitmasks.put("organizationId", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AccountEntryOrganizationRelCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AccountEntryOrganizationRelCacheModel
+			accountEntryOrganizationRelCacheModel =
+				_accountEntryOrganizationRelCacheModel;
+
+		if (accountEntryOrganizationRelCacheModel == null) {
+			accountEntryOrganizationRelCacheModel =
+				_dummyAccountEntryOrganizationRelCacheModel;
+		}
+
+		return (T)function.apply(accountEntryOrganizationRelCacheModel);
+	}
+
+	private static final AccountEntryOrganizationRelCacheModel
+		_dummyAccountEntryOrganizationRelCacheModel =
+			new AccountEntryOrganizationRelCacheModel();
+
+	private AccountEntryOrganizationRelCacheModel
+		_accountEntryOrganizationRelCacheModel;
 	private long _mvccVersion;
 	private long _accountEntryOrganizationRelId;
 	private long _companyId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _organizationId;
-	private long _originalOrganizationId;
-	private boolean _setOriginalOrganizationId;
 	private long _columnBitmask;
 	private AccountEntryOrganizationRel _escapedModel;
 

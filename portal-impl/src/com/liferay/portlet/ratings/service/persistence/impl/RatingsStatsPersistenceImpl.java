@@ -834,8 +834,8 @@ public class RatingsStatsPersistenceImpl
 			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				ratingsStatsModelImpl.getOriginalClassNameId(),
-				ratingsStatsModelImpl.getOriginalClassPK()
+				ratingsStatsModelImpl.getOriginalAttributeValue("classNameId"),
+				ratingsStatsModelImpl.getOriginalAttributeValue("classPK")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
@@ -1056,8 +1056,9 @@ public class RatingsStatsPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ratingsStatsModelImpl.getOriginalClassNameId(),
-					ratingsStatsModelImpl.getOriginalClassPK()
+					ratingsStatsModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					ratingsStatsModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
@@ -1544,14 +1545,14 @@ public class RatingsStatsPersistenceImpl
 			RatingsStatsImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			RatingsStatsModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK);
+			RatingsStatsModelImpl.getColumnBitmask("classNameId") |
+			RatingsStatsModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathFetchByC_C = new FinderPath(
 			RatingsStatsImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			RatingsStatsModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK);
+			RatingsStatsModelImpl.getColumnBitmask("classNameId") |
+			RatingsStatsModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",

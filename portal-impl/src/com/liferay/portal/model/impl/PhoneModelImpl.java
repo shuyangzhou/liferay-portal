@@ -137,18 +137,53 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PRIMARY_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
 
 	/**
@@ -381,6 +416,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -397,17 +438,22 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -418,6 +464,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setPhoneId(long phoneId) {
+		_columnBitmask |= _columnBitmasks.get("phoneId");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
+
 		_phoneId = phoneId;
 	}
 
@@ -429,19 +481,22 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -452,12 +507,10 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -479,8 +532,13 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -496,6 +554,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -507,7 +571,11 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
 
 		_createDate = createDate;
 	}
@@ -525,6 +593,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -557,19 +631,22 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -580,19 +657,22 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -608,6 +688,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setNumber(String number) {
+		_columnBitmask |= _columnBitmasks.get("number");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
+
 		_number = number;
 	}
 
@@ -624,6 +710,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setExtension(String extension) {
+		_columnBitmask |= _columnBitmasks.get("extension");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
+
 		_extension = extension;
 	}
 
@@ -635,6 +727,12 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setTypeId(long typeId) {
+		_columnBitmask |= _columnBitmasks.get("typeId");
+
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
+		}
+
 		_typeId = typeId;
 	}
 
@@ -652,19 +750,22 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void setPrimary(boolean primary) {
-		_columnBitmask |= PRIMARY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("primary");
 
-		if (!_setOriginalPrimary) {
-			_setOriginalPrimary = true;
-
-			_originalPrimary = _primary;
+		if (_phoneCacheModel == _dummyPhoneCacheModel) {
+			_phoneCacheModel = (PhoneCacheModel)toCacheModel();
 		}
 
 		_primary = primary;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalPrimary() {
-		return _originalPrimary;
+		return getOriginalAttributeValue("primary");
 	}
 
 	@Override
@@ -789,33 +890,11 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public void resetOriginalValues() {
-		PhoneModelImpl phoneModelImpl = this;
+		_setModifiedDate = false;
 
-		phoneModelImpl._originalUuid = phoneModelImpl._uuid;
+		_columnBitmask = 0;
 
-		phoneModelImpl._originalCompanyId = phoneModelImpl._companyId;
-
-		phoneModelImpl._setOriginalCompanyId = false;
-
-		phoneModelImpl._originalUserId = phoneModelImpl._userId;
-
-		phoneModelImpl._setOriginalUserId = false;
-
-		phoneModelImpl._setModifiedDate = false;
-
-		phoneModelImpl._originalClassNameId = phoneModelImpl._classNameId;
-
-		phoneModelImpl._setOriginalClassNameId = false;
-
-		phoneModelImpl._originalClassPK = phoneModelImpl._classPK;
-
-		phoneModelImpl._setOriginalClassPK = false;
-
-		phoneModelImpl._originalPrimary = phoneModelImpl._primary;
-
-		phoneModelImpl._setOriginalPrimary = false;
-
-		phoneModelImpl._columnBitmask = 0;
+		_phoneCacheModel = _dummyPhoneCacheModel;
 	}
 
 	@Override
@@ -959,32 +1038,132 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<PhoneCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PhoneCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap<String, Function<PhoneCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", phoneCacheModel -> phoneCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", phoneCacheModel -> phoneCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"phoneId", phoneCacheModel -> phoneCacheModel.phoneId);
+
+		columnBitmasks.put("phoneId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", phoneCacheModel -> phoneCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId", phoneCacheModel -> phoneCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName", phoneCacheModel -> phoneCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", phoneCacheModel -> phoneCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate", phoneCacheModel -> phoneCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId", phoneCacheModel -> phoneCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classPK", phoneCacheModel -> phoneCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 512L);
+
+		cacheModelGetterFunctions.put(
+			"number", phoneCacheModel -> phoneCacheModel.number);
+
+		columnBitmasks.put("number", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"extension", phoneCacheModel -> phoneCacheModel.extension);
+
+		columnBitmasks.put("extension", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"typeId", phoneCacheModel -> phoneCacheModel.typeId);
+
+		columnBitmasks.put("typeId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"primary", phoneCacheModel -> phoneCacheModel.primary);
+
+		columnBitmasks.put("primary", 8192L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PhoneCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PhoneCacheModel phoneCacheModel = _phoneCacheModel;
+
+		if (phoneCacheModel == null) {
+			phoneCacheModel = _dummyPhoneCacheModel;
+		}
+
+		return (T)function.apply(phoneCacheModel);
+	}
+
+	private static final PhoneCacheModel _dummyPhoneCacheModel =
+		new PhoneCacheModel();
+
+	private PhoneCacheModel _phoneCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _phoneId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _number;
 	private String _extension;
 	private long _typeId;
 	private boolean _primary;
-	private boolean _originalPrimary;
-	private boolean _setOriginalPrimary;
 	private long _columnBitmask;
 	private Phone _escapedModel;
 

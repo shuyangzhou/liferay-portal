@@ -1385,7 +1385,9 @@ public class CompanyPersistenceImpl
 		if ((companyModelImpl.getColumnBitmask() &
 			 _finderPathFetchByWebId.getColumnBitmask()) != 0) {
 
-			Object[] args = new Object[] {companyModelImpl.getOriginalWebId()};
+			Object[] args = new Object[] {
+				companyModelImpl.getOriginalAttributeValue("webId")
+			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByWebId, args);
 			FinderCacheUtil.removeResult(_finderPathFetchByWebId, args);
@@ -1401,7 +1403,9 @@ public class CompanyPersistenceImpl
 		if ((companyModelImpl.getColumnBitmask() &
 			 _finderPathFetchByMx.getColumnBitmask()) != 0) {
 
-			Object[] args = new Object[] {companyModelImpl.getOriginalMx()};
+			Object[] args = new Object[] {
+				companyModelImpl.getOriginalAttributeValue("mx")
+			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByMx, args);
 			FinderCacheUtil.removeResult(_finderPathFetchByMx, args);
@@ -1417,7 +1421,9 @@ public class CompanyPersistenceImpl
 		if ((companyModelImpl.getColumnBitmask() &
 			 _finderPathFetchByLogoId.getColumnBitmask()) != 0) {
 
-			Object[] args = new Object[] {companyModelImpl.getOriginalLogoId()};
+			Object[] args = new Object[] {
+				companyModelImpl.getOriginalAttributeValue("logoId")
+			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByLogoId, args);
 			FinderCacheUtil.removeResult(_finderPathFetchByLogoId, args);
@@ -1586,7 +1592,7 @@ public class CompanyPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					companyModelImpl.getOriginalSystem()
+					companyModelImpl.getOriginalAttributeValue("system")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountBySystem, args);
@@ -1885,7 +1891,7 @@ public class CompanyPersistenceImpl
 		_finderPathFetchByWebId = new FinderPath(
 			CompanyImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByWebId",
 			new String[] {String.class.getName()},
-			CompanyModelImpl.WEBID_COLUMN_BITMASK);
+			CompanyModelImpl.getColumnBitmask("webId"));
 
 		_finderPathCountByWebId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1894,7 +1900,7 @@ public class CompanyPersistenceImpl
 		_finderPathFetchByMx = new FinderPath(
 			CompanyImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByMx",
 			new String[] {String.class.getName()},
-			CompanyModelImpl.MX_COLUMN_BITMASK);
+			CompanyModelImpl.getColumnBitmask("mx"));
 
 		_finderPathCountByMx = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMx",
@@ -1903,7 +1909,7 @@ public class CompanyPersistenceImpl
 		_finderPathFetchByLogoId = new FinderPath(
 			CompanyImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByLogoId",
 			new String[] {Long.class.getName()},
-			CompanyModelImpl.LOGOID_COLUMN_BITMASK);
+			CompanyModelImpl.getColumnBitmask("logoId"));
 
 		_finderPathCountByLogoId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1920,7 +1926,7 @@ public class CompanyPersistenceImpl
 		_finderPathWithoutPaginationFindBySystem = new FinderPath(
 			CompanyImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findBySystem", new String[] {Boolean.class.getName()},
-			CompanyModelImpl.SYSTEM_COLUMN_BITMASK);
+			CompanyModelImpl.getColumnBitmask("system"));
 
 		_finderPathCountBySystem = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

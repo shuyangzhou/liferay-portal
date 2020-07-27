@@ -2667,8 +2667,8 @@ public class DDMContentPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				ddmContentModelImpl.getOriginalUuid(),
-				ddmContentModelImpl.getOriginalGroupId()
+				ddmContentModelImpl.getOriginalAttributeValue("uuid"),
+				ddmContentModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2913,7 +2913,7 @@ public class DDMContentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddmContentModelImpl.getOriginalUuid()
+					ddmContentModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2932,8 +2932,8 @@ public class DDMContentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddmContentModelImpl.getOriginalUuid(),
-					ddmContentModelImpl.getOriginalCompanyId()
+					ddmContentModelImpl.getOriginalAttributeValue("uuid"),
+					ddmContentModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2955,7 +2955,7 @@ public class DDMContentPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ddmContentModelImpl.getOriginalGroupId()
+					ddmContentModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -2974,7 +2974,7 @@ public class DDMContentPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ddmContentModelImpl.getOriginalCompanyId()
+					ddmContentModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -3464,7 +3464,7 @@ public class DDMContentPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			DDMContentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			DDMContentModelImpl.UUID_COLUMN_BITMASK);
+			DDMContentModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3473,8 +3473,8 @@ public class DDMContentPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			DDMContentImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DDMContentModelImpl.UUID_COLUMN_BITMASK |
-			DDMContentModelImpl.GROUPID_COLUMN_BITMASK);
+			DDMContentModelImpl.getColumnBitmask("uuid") |
+			DDMContentModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3494,8 +3494,8 @@ public class DDMContentPersistenceImpl
 			DDMContentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DDMContentModelImpl.UUID_COLUMN_BITMASK |
-			DDMContentModelImpl.COMPANYID_COLUMN_BITMASK);
+			DDMContentModelImpl.getColumnBitmask("uuid") |
+			DDMContentModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3513,7 +3513,7 @@ public class DDMContentPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			DDMContentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			DDMContentModelImpl.GROUPID_COLUMN_BITMASK);
+			DDMContentModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3530,7 +3530,7 @@ public class DDMContentPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			DDMContentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			DDMContentModelImpl.COMPANYID_COLUMN_BITMASK);
+			DDMContentModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

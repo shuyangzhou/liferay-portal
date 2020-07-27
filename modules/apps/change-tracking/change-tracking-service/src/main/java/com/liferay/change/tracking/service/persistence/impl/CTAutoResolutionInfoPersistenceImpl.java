@@ -1803,7 +1803,8 @@ public class CTAutoResolutionInfoPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ctAutoResolutionInfoModelImpl.getOriginalCtCollectionId()
+					ctAutoResolutionInfoModelImpl.getOriginalAttributeValue(
+						"ctCollectionId")
 				};
 
 				finderCache.removeResult(
@@ -1826,10 +1827,12 @@ public class CTAutoResolutionInfoPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ctAutoResolutionInfoModelImpl.getOriginalCtCollectionId(),
-					ctAutoResolutionInfoModelImpl.getOriginalModelClassNameId(),
-					ctAutoResolutionInfoModelImpl.
-						getOriginalSourceModelClassPK()
+					ctAutoResolutionInfoModelImpl.getOriginalAttributeValue(
+						"ctCollectionId"),
+					ctAutoResolutionInfoModelImpl.getOriginalAttributeValue(
+						"modelClassNameId"),
+					ctAutoResolutionInfoModelImpl.getOriginalAttributeValue(
+						"sourceModelClassPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_MCNI_SMCPK, args);
@@ -2140,8 +2143,8 @@ public class CTAutoResolutionInfoPersistenceImpl
 			CTAutoResolutionInfoImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCTCollectionId",
 			new String[] {Long.class.getName()},
-			CTAutoResolutionInfoModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.CREATEDATE_COLUMN_BITMASK);
+			CTAutoResolutionInfoModelImpl.getColumnBitmask("ctCollectionId") |
+			CTAutoResolutionInfoModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByCTCollectionId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2162,10 +2165,11 @@ public class CTAutoResolutionInfoPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			CTAutoResolutionInfoModelImpl.CTCOLLECTIONID_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.MODELCLASSNAMEID_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.SOURCEMODELCLASSPK_COLUMN_BITMASK |
-			CTAutoResolutionInfoModelImpl.CREATEDATE_COLUMN_BITMASK);
+			CTAutoResolutionInfoModelImpl.getColumnBitmask("ctCollectionId") |
+			CTAutoResolutionInfoModelImpl.getColumnBitmask("modelClassNameId") |
+			CTAutoResolutionInfoModelImpl.getColumnBitmask(
+				"sourceModelClassPK") |
+			CTAutoResolutionInfoModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByC_MCNI_SMCPK = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

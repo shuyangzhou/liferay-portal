@@ -118,10 +118,25 @@ public class PortletModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -326,6 +341,12 @@ public class PortletModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_portletCacheModel == _dummyPortletCacheModel) {
+			_portletCacheModel = (PortletCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -337,6 +358,12 @@ public class PortletModelImpl
 
 	@Override
 	public void setId(long id) {
+		_columnBitmask |= _columnBitmasks.get("id");
+
+		if (_portletCacheModel == _dummyPortletCacheModel) {
+			_portletCacheModel = (PortletCacheModel)toCacheModel();
+		}
+
 		_id = id;
 	}
 
@@ -348,19 +375,22 @@ public class PortletModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_portletCacheModel == _dummyPortletCacheModel) {
+			_portletCacheModel = (PortletCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -376,17 +406,22 @@ public class PortletModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("portletId");
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+		if (_portletCacheModel == _dummyPortletCacheModel) {
+			_portletCacheModel = (PortletCacheModel)toCacheModel();
 		}
 
 		_portletId = portletId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return getOriginalAttributeValue("portletId");
 	}
 
 	@JSON
@@ -402,6 +437,12 @@ public class PortletModelImpl
 
 	@Override
 	public void setRoles(String roles) {
+		_columnBitmask |= _columnBitmasks.get("roles");
+
+		if (_portletCacheModel == _dummyPortletCacheModel) {
+			_portletCacheModel = (PortletCacheModel)toCacheModel();
+		}
+
 		_roles = roles;
 	}
 
@@ -419,6 +460,12 @@ public class PortletModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		_columnBitmask |= _columnBitmasks.get("active");
+
+		if (_portletCacheModel == _dummyPortletCacheModel) {
+			_portletCacheModel = (PortletCacheModel)toCacheModel();
+		}
+
 		_active = active;
 	}
 
@@ -532,15 +579,9 @@ public class PortletModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortletModelImpl portletModelImpl = this;
+		_columnBitmask = 0;
 
-		portletModelImpl._originalCompanyId = portletModelImpl._companyId;
-
-		portletModelImpl._setOriginalCompanyId = false;
-
-		portletModelImpl._originalPortletId = portletModelImpl._portletId;
-
-		portletModelImpl._columnBitmask = 0;
+		_portletCacheModel = _dummyPortletCacheModel;
 	}
 
 	@Override
@@ -644,13 +685,82 @@ public class PortletModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<PortletCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PortletCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PortletCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", portletCacheModel -> portletCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"id", portletCacheModel -> portletCacheModel.id);
+
+		columnBitmasks.put("id", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", portletCacheModel -> portletCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"portletId", portletCacheModel -> portletCacheModel.portletId);
+
+		columnBitmasks.put("portletId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"roles", portletCacheModel -> portletCacheModel.roles);
+
+		columnBitmasks.put("roles", 16L);
+
+		cacheModelGetterFunctions.put(
+			"active", portletCacheModel -> portletCacheModel.active);
+
+		columnBitmasks.put("active", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PortletCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PortletCacheModel portletCacheModel = _portletCacheModel;
+
+		if (portletCacheModel == null) {
+			portletCacheModel = _dummyPortletCacheModel;
+		}
+
+		return (T)function.apply(portletCacheModel);
+	}
+
+	private static final PortletCacheModel _dummyPortletCacheModel =
+		new PortletCacheModel();
+
+	private PortletCacheModel _portletCacheModel;
 	private long _mvccVersion;
 	private long _id;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _roles;
 	private boolean _active;
 	private long _columnBitmask;

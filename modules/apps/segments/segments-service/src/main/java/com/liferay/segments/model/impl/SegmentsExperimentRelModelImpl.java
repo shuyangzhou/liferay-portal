@@ -117,10 +117,25 @@ public class SegmentsExperimentRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIMENTID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIMENTRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -410,6 +425,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -421,6 +445,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -432,6 +465,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSegmentsExperimentRelId(long segmentsExperimentRelId) {
+		_columnBitmask |= _columnBitmasks.get("segmentsExperimentRelId");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_segmentsExperimentRelId = segmentsExperimentRelId;
 	}
 
@@ -443,6 +485,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_groupId = groupId;
 	}
 
@@ -454,6 +505,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -465,6 +525,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -497,6 +566,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -508,6 +586,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -525,6 +612,15 @@ public class SegmentsExperimentRelModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -536,19 +632,25 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSegmentsExperimentId(long segmentsExperimentId) {
-		_columnBitmask |= SEGMENTSEXPERIMENTID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("segmentsExperimentId");
 
-		if (!_setOriginalSegmentsExperimentId) {
-			_setOriginalSegmentsExperimentId = true;
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
 
-			_originalSegmentsExperimentId = _segmentsExperimentId;
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
 		}
 
 		_segmentsExperimentId = segmentsExperimentId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsExperimentId() {
-		return _originalSegmentsExperimentId;
+		return getOriginalAttributeValue("segmentsExperimentId");
 	}
 
 	@JSON
@@ -559,19 +661,25 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSegmentsExperienceId(long segmentsExperienceId) {
-		_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("segmentsExperienceId");
 
-		if (!_setOriginalSegmentsExperienceId) {
-			_setOriginalSegmentsExperienceId = true;
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
 
-			_originalSegmentsExperienceId = _segmentsExperienceId;
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
 		}
 
 		_segmentsExperienceId = segmentsExperienceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsExperienceId() {
-		return _originalSegmentsExperienceId;
+		return getOriginalAttributeValue("segmentsExperienceId");
 	}
 
 	@JSON
@@ -582,6 +690,15 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSplit(double split) {
+		_columnBitmask |= _columnBitmasks.get("split");
+
+		if (_segmentsExperimentRelCacheModel ==
+				_dummySegmentsExperimentRelCacheModel) {
+
+			_segmentsExperimentRelCacheModel =
+				(SegmentsExperimentRelCacheModel)toCacheModel();
+		}
+
 		_split = split;
 	}
 
@@ -707,21 +824,12 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl = this;
+		_setModifiedDate = false;
 
-		segmentsExperimentRelModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		segmentsExperimentRelModelImpl._originalSegmentsExperimentId =
-			segmentsExperimentRelModelImpl._segmentsExperimentId;
-
-		segmentsExperimentRelModelImpl._setOriginalSegmentsExperimentId = false;
-
-		segmentsExperimentRelModelImpl._originalSegmentsExperienceId =
-			segmentsExperimentRelModelImpl._segmentsExperienceId;
-
-		segmentsExperimentRelModelImpl._setOriginalSegmentsExperienceId = false;
-
-		segmentsExperimentRelModelImpl._columnBitmask = 0;
+		_segmentsExperimentRelCacheModel =
+			_dummySegmentsExperimentRelCacheModel;
 	}
 
 	@Override
@@ -852,6 +960,137 @@ public class SegmentsExperimentRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<SegmentsExperimentRelCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SegmentsExperimentRelCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<SegmentsExperimentRelCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsExperimentRelId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.segmentsExperimentRelId);
+
+		columnBitmasks.put("segmentsExperimentRelId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsExperimentId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.segmentsExperimentId);
+
+		columnBitmasks.put("segmentsExperimentId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsExperienceId",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.segmentsExperienceId);
+
+		columnBitmasks.put("segmentsExperienceId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"split",
+			segmentsExperimentRelCacheModel ->
+				segmentsExperimentRelCacheModel.split);
+
+		columnBitmasks.put("split", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SegmentsExperimentRelCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SegmentsExperimentRelCacheModel segmentsExperimentRelCacheModel =
+			_segmentsExperimentRelCacheModel;
+
+		if (segmentsExperimentRelCacheModel == null) {
+			segmentsExperimentRelCacheModel =
+				_dummySegmentsExperimentRelCacheModel;
+		}
+
+		return (T)function.apply(segmentsExperimentRelCacheModel);
+	}
+
+	private static final SegmentsExperimentRelCacheModel
+		_dummySegmentsExperimentRelCacheModel =
+			new SegmentsExperimentRelCacheModel();
+
+	private SegmentsExperimentRelCacheModel _segmentsExperimentRelCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _segmentsExperimentRelId;
@@ -863,11 +1102,7 @@ public class SegmentsExperimentRelModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _segmentsExperimentId;
-	private long _originalSegmentsExperimentId;
-	private boolean _setOriginalSegmentsExperimentId;
 	private long _segmentsExperienceId;
-	private long _originalSegmentsExperienceId;
-	private boolean _setOriginalSegmentsExperienceId;
 	private double _split;
 	private long _columnBitmask;
 	private SegmentsExperimentRel _escapedModel;

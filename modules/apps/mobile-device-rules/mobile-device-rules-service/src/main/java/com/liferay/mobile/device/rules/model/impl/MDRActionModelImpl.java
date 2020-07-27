@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -132,14 +131,39 @@ public class MDRActionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RULEGROUPINSTANCEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIONID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -411,6 +435,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -427,17 +457,22 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -448,6 +483,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setActionId(long actionId) {
+		_columnBitmask |= _columnBitmasks.get("actionId");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_actionId = actionId;
 	}
 
@@ -459,19 +500,22 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -482,19 +526,22 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -505,6 +552,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -537,6 +590,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -548,6 +607,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -564,6 +629,12 @@ public class MDRActionModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -596,6 +667,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_columnBitmask |= _columnBitmasks.get("classNameId");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_classNameId = classNameId;
 	}
 
@@ -607,6 +684,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_columnBitmask |= _columnBitmasks.get("classPK");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_classPK = classPK;
 	}
 
@@ -618,19 +701,22 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setRuleGroupInstanceId(long ruleGroupInstanceId) {
-		_columnBitmask |= RULEGROUPINSTANCEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("ruleGroupInstanceId");
 
-		if (!_setOriginalRuleGroupInstanceId) {
-			_setOriginalRuleGroupInstanceId = true;
-
-			_originalRuleGroupInstanceId = _ruleGroupInstanceId;
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
 		}
 
 		_ruleGroupInstanceId = ruleGroupInstanceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRuleGroupInstanceId() {
-		return _originalRuleGroupInstanceId;
+		return getOriginalAttributeValue("ruleGroupInstanceId");
 	}
 
 	@JSON
@@ -689,6 +775,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_name = name;
 	}
 
@@ -792,6 +884,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -857,6 +955,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_type = type;
 	}
 
@@ -873,6 +977,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		_columnBitmask |= _columnBitmasks.get("typeSettings");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_typeSettings = typeSettings;
 	}
 
@@ -884,6 +994,12 @@ public class MDRActionModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_mdrActionCacheModel == _dummyMDRActionCacheModel) {
+			_mdrActionCacheModel = (MDRActionCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1103,26 +1219,11 @@ public class MDRActionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MDRActionModelImpl mdrActionModelImpl = this;
+		_setModifiedDate = false;
 
-		mdrActionModelImpl._originalUuid = mdrActionModelImpl._uuid;
+		_columnBitmask = 0;
 
-		mdrActionModelImpl._originalGroupId = mdrActionModelImpl._groupId;
-
-		mdrActionModelImpl._setOriginalGroupId = false;
-
-		mdrActionModelImpl._originalCompanyId = mdrActionModelImpl._companyId;
-
-		mdrActionModelImpl._setOriginalCompanyId = false;
-
-		mdrActionModelImpl._setModifiedDate = false;
-
-		mdrActionModelImpl._originalRuleGroupInstanceId =
-			mdrActionModelImpl._ruleGroupInstanceId;
-
-		mdrActionModelImpl._setOriginalRuleGroupInstanceId = false;
-
-		mdrActionModelImpl._columnBitmask = 0;
+		_mdrActionCacheModel = _dummyMDRActionCacheModel;
 	}
 
 	@Override
@@ -1293,16 +1394,146 @@ public class MDRActionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<MDRActionCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MDRActionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MDRActionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mdrActionCacheModel -> mdrActionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", mdrActionCacheModel -> mdrActionCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"actionId", mdrActionCacheModel -> mdrActionCacheModel.actionId);
+
+		columnBitmasks.put("actionId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", mdrActionCacheModel -> mdrActionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", mdrActionCacheModel -> mdrActionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId", mdrActionCacheModel -> mdrActionCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName", mdrActionCacheModel -> mdrActionCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			mdrActionCacheModel -> mdrActionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			mdrActionCacheModel -> mdrActionCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			mdrActionCacheModel -> mdrActionCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classPK", mdrActionCacheModel -> mdrActionCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"ruleGroupInstanceId",
+			mdrActionCacheModel -> mdrActionCacheModel.ruleGroupInstanceId);
+
+		columnBitmasks.put("ruleGroupInstanceId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"name", mdrActionCacheModel -> mdrActionCacheModel.name);
+
+		columnBitmasks.put("name", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			mdrActionCacheModel -> mdrActionCacheModel.description);
+
+		columnBitmasks.put("description", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"type", mdrActionCacheModel -> mdrActionCacheModel.type);
+
+		columnBitmasks.put("type", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"typeSettings",
+			mdrActionCacheModel -> mdrActionCacheModel.typeSettings);
+
+		columnBitmasks.put("typeSettings", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			mdrActionCacheModel -> mdrActionCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 65536L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MDRActionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MDRActionCacheModel mdrActionCacheModel = _mdrActionCacheModel;
+
+		if (mdrActionCacheModel == null) {
+			mdrActionCacheModel = _dummyMDRActionCacheModel;
+		}
+
+		return (T)function.apply(mdrActionCacheModel);
+	}
+
+	private static final MDRActionCacheModel _dummyMDRActionCacheModel =
+		new MDRActionCacheModel();
+
+	private MDRActionCacheModel _mdrActionCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _actionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1311,8 +1542,6 @@ public class MDRActionModelImpl
 	private long _classNameId;
 	private long _classPK;
 	private long _ruleGroupInstanceId;
-	private long _originalRuleGroupInstanceId;
-	private boolean _setOriginalRuleGroupInstanceId;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _description;

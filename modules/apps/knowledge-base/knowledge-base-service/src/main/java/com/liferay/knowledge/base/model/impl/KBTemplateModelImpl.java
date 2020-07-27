@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -118,12 +117,32 @@ public class KBTemplateModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 8L;
 
 	/**
@@ -373,6 +392,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -389,17 +414,22 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -410,6 +440,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setKbTemplateId(long kbTemplateId) {
+		_columnBitmask |= _columnBitmasks.get("kbTemplateId");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_kbTemplateId = kbTemplateId;
 	}
 
@@ -421,19 +457,22 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -444,19 +483,22 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -467,6 +509,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -499,6 +547,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -510,6 +564,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -527,7 +587,11 @@ public class KBTemplateModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -545,6 +609,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_title = title;
 	}
 
@@ -561,6 +631,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_content = content;
 	}
 
@@ -572,6 +648,12 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_kbTemplateCacheModel == _dummyKBTemplateCacheModel) {
+			_kbTemplateCacheModel = (KBTemplateCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -698,21 +780,11 @@ public class KBTemplateModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KBTemplateModelImpl kbTemplateModelImpl = this;
+		_setModifiedDate = false;
 
-		kbTemplateModelImpl._originalUuid = kbTemplateModelImpl._uuid;
+		_columnBitmask = 0;
 
-		kbTemplateModelImpl._originalGroupId = kbTemplateModelImpl._groupId;
-
-		kbTemplateModelImpl._setOriginalGroupId = false;
-
-		kbTemplateModelImpl._originalCompanyId = kbTemplateModelImpl._companyId;
-
-		kbTemplateModelImpl._setOriginalCompanyId = false;
-
-		kbTemplateModelImpl._setModifiedDate = false;
-
-		kbTemplateModelImpl._columnBitmask = 0;
+		_kbTemplateCacheModel = _dummyKBTemplateCacheModel;
 	}
 
 	@Override
@@ -861,16 +933,119 @@ public class KBTemplateModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<KBTemplateCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<KBTemplateCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<KBTemplateCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			kbTemplateCacheModel -> kbTemplateCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", kbTemplateCacheModel -> kbTemplateCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"kbTemplateId",
+			kbTemplateCacheModel -> kbTemplateCacheModel.kbTemplateId);
+
+		columnBitmasks.put("kbTemplateId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", kbTemplateCacheModel -> kbTemplateCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			kbTemplateCacheModel -> kbTemplateCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId", kbTemplateCacheModel -> kbTemplateCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName", kbTemplateCacheModel -> kbTemplateCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			kbTemplateCacheModel -> kbTemplateCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			kbTemplateCacheModel -> kbTemplateCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"title", kbTemplateCacheModel -> kbTemplateCacheModel.title);
+
+		columnBitmasks.put("title", 512L);
+
+		cacheModelGetterFunctions.put(
+			"content", kbTemplateCacheModel -> kbTemplateCacheModel.content);
+
+		columnBitmasks.put("content", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			kbTemplateCacheModel -> kbTemplateCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<KBTemplateCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		KBTemplateCacheModel kbTemplateCacheModel = _kbTemplateCacheModel;
+
+		if (kbTemplateCacheModel == null) {
+			kbTemplateCacheModel = _dummyKBTemplateCacheModel;
+		}
+
+		return (T)function.apply(kbTemplateCacheModel);
+	}
+
+	private static final KBTemplateCacheModel _dummyKBTemplateCacheModel =
+		new KBTemplateCacheModel();
+
+	private KBTemplateCacheModel _kbTemplateCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _kbTemplateId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

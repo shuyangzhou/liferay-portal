@@ -4249,8 +4249,8 @@ public class SAPEntryPersistenceImpl
 			 _finderPathFetchByC_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				sapEntryModelImpl.getOriginalCompanyId(),
-				sapEntryModelImpl.getOriginalName()
+				sapEntryModelImpl.getOriginalAttributeValue("companyId"),
+				sapEntryModelImpl.getOriginalAttributeValue("name")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_N, args);
@@ -4477,7 +4477,7 @@ public class SAPEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalUuid()
+					sapEntryModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -4496,8 +4496,8 @@ public class SAPEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalUuid(),
-					sapEntryModelImpl.getOriginalCompanyId()
+					sapEntryModelImpl.getOriginalAttributeValue("uuid"),
+					sapEntryModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -4519,7 +4519,7 @@ public class SAPEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalCompanyId()
+					sapEntryModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -4538,8 +4538,9 @@ public class SAPEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sapEntryModelImpl.getOriginalCompanyId(),
-					sapEntryModelImpl.getOriginalDefaultSAPEntry()
+					sapEntryModelImpl.getOriginalAttributeValue("companyId"),
+					sapEntryModelImpl.getOriginalAttributeValue(
+						"defaultSAPEntry")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_D, args);
@@ -4850,7 +4851,7 @@ public class SAPEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			SAPEntryModelImpl.UUID_COLUMN_BITMASK);
+			SAPEntryModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4869,8 +4870,8 @@ public class SAPEntryPersistenceImpl
 			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SAPEntryModelImpl.UUID_COLUMN_BITMASK |
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			SAPEntryModelImpl.getColumnBitmask("uuid") |
+			SAPEntryModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4888,7 +4889,7 @@ public class SAPEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			SAPEntryModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4907,8 +4908,8 @@ public class SAPEntryPersistenceImpl
 			SAPEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_D",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			SAPEntryModelImpl.DEFAULTSAPENTRY_COLUMN_BITMASK);
+			SAPEntryModelImpl.getColumnBitmask("companyId") |
+			SAPEntryModelImpl.getColumnBitmask("defaultSAPEntry"));
 
 		_finderPathCountByC_D = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_D",
@@ -4917,8 +4918,8 @@ public class SAPEntryPersistenceImpl
 		_finderPathFetchByC_N = new FinderPath(
 			SAPEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			SAPEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			SAPEntryModelImpl.NAME_COLUMN_BITMASK);
+			SAPEntryModelImpl.getColumnBitmask("companyId") |
+			SAPEntryModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByC_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",

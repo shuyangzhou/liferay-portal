@@ -3138,8 +3138,8 @@ public class KBFolderPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kbFolderModelImpl.getOriginalUuid(),
-				kbFolderModelImpl.getOriginalGroupId()
+				kbFolderModelImpl.getOriginalAttributeValue("uuid"),
+				kbFolderModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -3161,9 +3161,9 @@ public class KBFolderPersistenceImpl
 			 _finderPathFetchByG_P_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kbFolderModelImpl.getOriginalGroupId(),
-				kbFolderModelImpl.getOriginalParentKBFolderId(),
-				kbFolderModelImpl.getOriginalName()
+				kbFolderModelImpl.getOriginalAttributeValue("groupId"),
+				kbFolderModelImpl.getOriginalAttributeValue("parentKBFolderId"),
+				kbFolderModelImpl.getOriginalAttributeValue("name")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_P_N, args);
@@ -3185,9 +3185,9 @@ public class KBFolderPersistenceImpl
 			 _finderPathFetchByG_P_UT.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kbFolderModelImpl.getOriginalGroupId(),
-				kbFolderModelImpl.getOriginalParentKBFolderId(),
-				kbFolderModelImpl.getOriginalUrlTitle()
+				kbFolderModelImpl.getOriginalAttributeValue("groupId"),
+				kbFolderModelImpl.getOriginalAttributeValue("parentKBFolderId"),
+				kbFolderModelImpl.getOriginalAttributeValue("urlTitle")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_P_UT, args);
@@ -3408,7 +3408,7 @@ public class KBFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbFolderModelImpl.getOriginalUuid()
+					kbFolderModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -3427,8 +3427,8 @@ public class KBFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbFolderModelImpl.getOriginalUuid(),
-					kbFolderModelImpl.getOriginalCompanyId()
+					kbFolderModelImpl.getOriginalAttributeValue("uuid"),
+					kbFolderModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -3450,8 +3450,9 @@ public class KBFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbFolderModelImpl.getOriginalGroupId(),
-					kbFolderModelImpl.getOriginalParentKBFolderId()
+					kbFolderModelImpl.getOriginalAttributeValue("groupId"),
+					kbFolderModelImpl.getOriginalAttributeValue(
+						"parentKBFolderId")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_P, args);
@@ -3762,7 +3763,7 @@ public class KBFolderPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			KBFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			KBFolderModelImpl.UUID_COLUMN_BITMASK);
+			KBFolderModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3771,8 +3772,8 @@ public class KBFolderPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			KBFolderImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KBFolderModelImpl.UUID_COLUMN_BITMASK |
-			KBFolderModelImpl.GROUPID_COLUMN_BITMASK);
+			KBFolderModelImpl.getColumnBitmask("uuid") |
+			KBFolderModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3792,8 +3793,8 @@ public class KBFolderPersistenceImpl
 			KBFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KBFolderModelImpl.UUID_COLUMN_BITMASK |
-			KBFolderModelImpl.COMPANYID_COLUMN_BITMASK);
+			KBFolderModelImpl.getColumnBitmask("uuid") |
+			KBFolderModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3813,8 +3814,8 @@ public class KBFolderPersistenceImpl
 			KBFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_P",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			KBFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			KBFolderModelImpl.PARENTKBFOLDERID_COLUMN_BITMASK);
+			KBFolderModelImpl.getColumnBitmask("groupId") |
+			KBFolderModelImpl.getColumnBitmask("parentKBFolderId"));
 
 		_finderPathCountByG_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P",
@@ -3826,9 +3827,9 @@ public class KBFolderPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			KBFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			KBFolderModelImpl.PARENTKBFOLDERID_COLUMN_BITMASK |
-			KBFolderModelImpl.NAME_COLUMN_BITMASK);
+			KBFolderModelImpl.getColumnBitmask("groupId") |
+			KBFolderModelImpl.getColumnBitmask("parentKBFolderId") |
+			KBFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByG_P_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3844,9 +3845,9 @@ public class KBFolderPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			KBFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			KBFolderModelImpl.PARENTKBFOLDERID_COLUMN_BITMASK |
-			KBFolderModelImpl.URLTITLE_COLUMN_BITMASK);
+			KBFolderModelImpl.getColumnBitmask("groupId") |
+			KBFolderModelImpl.getColumnBitmask("parentKBFolderId") |
+			KBFolderModelImpl.getColumnBitmask("urlTitle"));
 
 		_finderPathCountByG_P_UT = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

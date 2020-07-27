@@ -129,14 +129,39 @@ public class PortletItemModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETITEMID_COLUMN_BITMASK = 16L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -326,6 +351,12 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -336,6 +367,12 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setPortletItemId(long portletItemId) {
+		_columnBitmask |= _columnBitmasks.get("portletItemId");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_portletItemId = portletItemId;
 	}
 
@@ -346,19 +383,22 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -368,6 +408,12 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -378,6 +424,12 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -409,6 +461,12 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -419,6 +477,12 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -435,6 +499,12 @@ public class PortletItemModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -450,17 +520,22 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -475,17 +550,22 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("portletId");
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
 		}
 
 		_portletId = portletId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return getOriginalAttributeValue("portletId");
 	}
 
 	@Override
@@ -515,19 +595,22 @@ public class PortletItemModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
+		if (_portletItemCacheModel == _dummyPortletItemCacheModel) {
+			_portletItemCacheModel = (PortletItemCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	public long getColumnBitmask() {
@@ -645,25 +728,11 @@ public class PortletItemModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortletItemModelImpl portletItemModelImpl = this;
+		_setModifiedDate = false;
 
-		portletItemModelImpl._originalGroupId = portletItemModelImpl._groupId;
+		_columnBitmask = 0;
 
-		portletItemModelImpl._setOriginalGroupId = false;
-
-		portletItemModelImpl._setModifiedDate = false;
-
-		portletItemModelImpl._originalName = portletItemModelImpl._name;
-
-		portletItemModelImpl._originalPortletId =
-			portletItemModelImpl._portletId;
-
-		portletItemModelImpl._originalClassNameId =
-			portletItemModelImpl._classNameId;
-
-		portletItemModelImpl._setOriginalClassNameId = false;
-
-		portletItemModelImpl._columnBitmask = 0;
+		_portletItemCacheModel = _dummyPortletItemCacheModel;
 	}
 
 	@Override
@@ -798,11 +867,114 @@ public class PortletItemModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<PortletItemCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PortletItemCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PortletItemCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			portletItemCacheModel -> portletItemCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"portletItemId",
+			portletItemCacheModel -> portletItemCacheModel.portletItemId);
+
+		columnBitmasks.put("portletItemId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", portletItemCacheModel -> portletItemCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			portletItemCacheModel -> portletItemCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId", portletItemCacheModel -> portletItemCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			portletItemCacheModel -> portletItemCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			portletItemCacheModel -> portletItemCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			portletItemCacheModel -> portletItemCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"name", portletItemCacheModel -> portletItemCacheModel.name);
+
+		columnBitmasks.put("name", 256L);
+
+		cacheModelGetterFunctions.put(
+			"portletId",
+			portletItemCacheModel -> portletItemCacheModel.portletId);
+
+		columnBitmasks.put("portletId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			portletItemCacheModel -> portletItemCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 1024L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PortletItemCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PortletItemCacheModel portletItemCacheModel = _portletItemCacheModel;
+
+		if (portletItemCacheModel == null) {
+			portletItemCacheModel = _dummyPortletItemCacheModel;
+		}
+
+		return (T)function.apply(portletItemCacheModel);
+	}
+
+	private static final PortletItemCacheModel _dummyPortletItemCacheModel =
+		new PortletItemCacheModel();
+
+	private PortletItemCacheModel _portletItemCacheModel;
 	private long _mvccVersion;
 	private long _portletItemId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -810,12 +982,8 @@ public class PortletItemModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _name;
-	private String _originalName;
 	private String _portletId;
-	private String _originalPortletId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _columnBitmask;
 	private PortletItem _escapedModel;
 

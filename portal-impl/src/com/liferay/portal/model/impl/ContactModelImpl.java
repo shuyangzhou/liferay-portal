@@ -161,14 +161,39 @@ public class ContactModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CONTACTID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -475,6 +500,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -486,7 +517,11 @@ public class ContactModelImpl
 
 	@Override
 	public void setContactId(long contactId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("contactId");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
 
 		_contactId = contactId;
 	}
@@ -499,19 +534,22 @@ public class ContactModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -522,6 +560,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -554,6 +598,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -565,6 +615,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -581,6 +637,12 @@ public class ContactModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -613,19 +675,22 @@ public class ContactModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -636,19 +701,22 @@ public class ContactModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -659,19 +727,22 @@ public class ContactModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
-		_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("accountId");
 
-		if (!_setOriginalAccountId) {
-			_setOriginalAccountId = true;
-
-			_originalAccountId = _accountId;
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
 		}
 
 		_accountId = accountId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountId() {
-		return _originalAccountId;
+		return getOriginalAttributeValue("accountId");
 	}
 
 	@JSON
@@ -682,6 +753,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setParentContactId(long parentContactId) {
+		_columnBitmask |= _columnBitmasks.get("parentContactId");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_parentContactId = parentContactId;
 	}
 
@@ -698,6 +775,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
+		_columnBitmask |= _columnBitmasks.get("emailAddress");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_emailAddress = emailAddress;
 	}
 
@@ -714,6 +797,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setFirstName(String firstName) {
+		_columnBitmask |= _columnBitmasks.get("firstName");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_firstName = firstName;
 	}
 
@@ -730,6 +819,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setMiddleName(String middleName) {
+		_columnBitmask |= _columnBitmasks.get("middleName");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_middleName = middleName;
 	}
 
@@ -746,6 +841,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setLastName(String lastName) {
+		_columnBitmask |= _columnBitmasks.get("lastName");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_lastName = lastName;
 	}
 
@@ -757,6 +858,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setPrefixId(long prefixId) {
+		_columnBitmask |= _columnBitmasks.get("prefixId");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_prefixId = prefixId;
 	}
 
@@ -768,6 +875,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setSuffixId(long suffixId) {
+		_columnBitmask |= _columnBitmasks.get("suffixId");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_suffixId = suffixId;
 	}
 
@@ -785,6 +898,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setMale(boolean male) {
+		_columnBitmask |= _columnBitmasks.get("male");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_male = male;
 	}
 
@@ -796,6 +915,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setBirthday(Date birthday) {
+		_columnBitmask |= _columnBitmasks.get("birthday");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_birthday = birthday;
 	}
 
@@ -812,6 +937,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setSmsSn(String smsSn) {
+		_columnBitmask |= _columnBitmasks.get("smsSn");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_smsSn = smsSn;
 	}
 
@@ -828,6 +959,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setFacebookSn(String facebookSn) {
+		_columnBitmask |= _columnBitmasks.get("facebookSn");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_facebookSn = facebookSn;
 	}
 
@@ -844,6 +981,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setJabberSn(String jabberSn) {
+		_columnBitmask |= _columnBitmasks.get("jabberSn");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_jabberSn = jabberSn;
 	}
 
@@ -860,6 +1003,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setSkypeSn(String skypeSn) {
+		_columnBitmask |= _columnBitmasks.get("skypeSn");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_skypeSn = skypeSn;
 	}
 
@@ -876,6 +1025,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setTwitterSn(String twitterSn) {
+		_columnBitmask |= _columnBitmasks.get("twitterSn");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_twitterSn = twitterSn;
 	}
 
@@ -892,6 +1047,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setEmployeeStatusId(String employeeStatusId) {
+		_columnBitmask |= _columnBitmasks.get("employeeStatusId");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_employeeStatusId = employeeStatusId;
 	}
 
@@ -908,6 +1069,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setEmployeeNumber(String employeeNumber) {
+		_columnBitmask |= _columnBitmasks.get("employeeNumber");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_employeeNumber = employeeNumber;
 	}
 
@@ -924,6 +1091,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setJobTitle(String jobTitle) {
+		_columnBitmask |= _columnBitmasks.get("jobTitle");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_jobTitle = jobTitle;
 	}
 
@@ -940,6 +1113,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setJobClass(String jobClass) {
+		_columnBitmask |= _columnBitmasks.get("jobClass");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_jobClass = jobClass;
 	}
 
@@ -956,6 +1135,12 @@ public class ContactModelImpl
 
 	@Override
 	public void setHoursOfOperation(String hoursOfOperation) {
+		_columnBitmask |= _columnBitmasks.get("hoursOfOperation");
+
+		if (_contactCacheModel == _dummyContactCacheModel) {
+			_contactCacheModel = (ContactCacheModel)toCacheModel();
+		}
+
 		_hoursOfOperation = hoursOfOperation;
 	}
 
@@ -1098,27 +1283,11 @@ public class ContactModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ContactModelImpl contactModelImpl = this;
+		_setModifiedDate = false;
 
-		contactModelImpl._originalCompanyId = contactModelImpl._companyId;
+		_columnBitmask = 0;
 
-		contactModelImpl._setOriginalCompanyId = false;
-
-		contactModelImpl._setModifiedDate = false;
-
-		contactModelImpl._originalClassNameId = contactModelImpl._classNameId;
-
-		contactModelImpl._setOriginalClassNameId = false;
-
-		contactModelImpl._originalClassPK = contactModelImpl._classPK;
-
-		contactModelImpl._setOriginalClassPK = false;
-
-		contactModelImpl._originalAccountId = contactModelImpl._accountId;
-
-		contactModelImpl._setOriginalAccountId = false;
-
-		contactModelImpl._columnBitmask = 0;
+		_contactCacheModel = _dummyContactCacheModel;
 	}
 
 	@Override
@@ -1367,25 +1536,210 @@ public class ContactModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<ContactCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ContactCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<ContactCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", contactCacheModel -> contactCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"contactId", contactCacheModel -> contactCacheModel.contactId);
+
+		columnBitmasks.put("contactId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", contactCacheModel -> contactCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", contactCacheModel -> contactCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName", contactCacheModel -> contactCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", contactCacheModel -> contactCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			contactCacheModel -> contactCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId", contactCacheModel -> contactCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"classPK", contactCacheModel -> contactCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 256L);
+
+		cacheModelGetterFunctions.put(
+			"accountId", contactCacheModel -> contactCacheModel.accountId);
+
+		columnBitmasks.put("accountId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"parentContactId",
+			contactCacheModel -> contactCacheModel.parentContactId);
+
+		columnBitmasks.put("parentContactId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"emailAddress",
+			contactCacheModel -> contactCacheModel.emailAddress);
+
+		columnBitmasks.put("emailAddress", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"firstName", contactCacheModel -> contactCacheModel.firstName);
+
+		columnBitmasks.put("firstName", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"middleName", contactCacheModel -> contactCacheModel.middleName);
+
+		columnBitmasks.put("middleName", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"lastName", contactCacheModel -> contactCacheModel.lastName);
+
+		columnBitmasks.put("lastName", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"prefixId", contactCacheModel -> contactCacheModel.prefixId);
+
+		columnBitmasks.put("prefixId", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"suffixId", contactCacheModel -> contactCacheModel.suffixId);
+
+		columnBitmasks.put("suffixId", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"male", contactCacheModel -> contactCacheModel.male);
+
+		columnBitmasks.put("male", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"birthday", contactCacheModel -> contactCacheModel.birthday);
+
+		columnBitmasks.put("birthday", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"smsSn", contactCacheModel -> contactCacheModel.smsSn);
+
+		columnBitmasks.put("smsSn", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"facebookSn", contactCacheModel -> contactCacheModel.facebookSn);
+
+		columnBitmasks.put("facebookSn", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"jabberSn", contactCacheModel -> contactCacheModel.jabberSn);
+
+		columnBitmasks.put("jabberSn", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"skypeSn", contactCacheModel -> contactCacheModel.skypeSn);
+
+		columnBitmasks.put("skypeSn", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"twitterSn", contactCacheModel -> contactCacheModel.twitterSn);
+
+		columnBitmasks.put("twitterSn", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"employeeStatusId",
+			contactCacheModel -> contactCacheModel.employeeStatusId);
+
+		columnBitmasks.put("employeeStatusId", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"employeeNumber",
+			contactCacheModel -> contactCacheModel.employeeNumber);
+
+		columnBitmasks.put("employeeNumber", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"jobTitle", contactCacheModel -> contactCacheModel.jobTitle);
+
+		columnBitmasks.put("jobTitle", 67108864L);
+
+		cacheModelGetterFunctions.put(
+			"jobClass", contactCacheModel -> contactCacheModel.jobClass);
+
+		columnBitmasks.put("jobClass", 134217728L);
+
+		cacheModelGetterFunctions.put(
+			"hoursOfOperation",
+			contactCacheModel -> contactCacheModel.hoursOfOperation);
+
+		columnBitmasks.put("hoursOfOperation", 268435456L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ContactCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ContactCacheModel contactCacheModel = _contactCacheModel;
+
+		if (contactCacheModel == null) {
+			contactCacheModel = _dummyContactCacheModel;
+		}
+
+		return (T)function.apply(contactCacheModel);
+	}
+
+	private static final ContactCacheModel _dummyContactCacheModel =
+		new ContactCacheModel();
+
+	private ContactCacheModel _contactCacheModel;
 	private long _mvccVersion;
 	private long _contactId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _accountId;
-	private long _originalAccountId;
-	private boolean _setOriginalAccountId;
 	private long _parentContactId;
 	private String _emailAddress;
 	private String _firstName;

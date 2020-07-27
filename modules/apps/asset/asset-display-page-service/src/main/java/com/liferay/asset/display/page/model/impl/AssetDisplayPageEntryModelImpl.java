@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -125,18 +124,53 @@ public class AssetDisplayPageEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETDISPLAYPAGEENTRYID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -445,6 +479,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -456,6 +499,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -472,17 +524,25 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -493,6 +553,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setAssetDisplayPageEntryId(long assetDisplayPageEntryId) {
+		_columnBitmask |= _columnBitmasks.get("assetDisplayPageEntryId");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_assetDisplayPageEntryId = assetDisplayPageEntryId;
 	}
 
@@ -504,19 +573,25 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
 
-			_originalGroupId = _groupId;
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -527,19 +602,25 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -550,6 +631,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -582,6 +672,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -593,6 +692,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -609,6 +717,15 @@ public class AssetDisplayPageEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -641,19 +758,25 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
 
-			_originalClassNameId = _classNameId;
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -664,19 +787,25 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
 
-			_originalClassPK = _classPK;
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -687,19 +816,25 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setLayoutPageTemplateEntryId(long layoutPageTemplateEntryId) {
-		_columnBitmask |= LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("layoutPageTemplateEntryId");
 
-		if (!_setOriginalLayoutPageTemplateEntryId) {
-			_setOriginalLayoutPageTemplateEntryId = true;
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
 
-			_originalLayoutPageTemplateEntryId = _layoutPageTemplateEntryId;
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
 		}
 
 		_layoutPageTemplateEntryId = layoutPageTemplateEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutPageTemplateEntryId() {
-		return _originalLayoutPageTemplateEntryId;
+		return getOriginalAttributeValue("layoutPageTemplateEntryId");
 	}
 
 	@JSON
@@ -710,6 +845,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setType(int type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_type = type;
 	}
 
@@ -721,6 +865,15 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setPlid(long plid) {
+		_columnBitmask |= _columnBitmasks.get("plid");
+
+		if (_assetDisplayPageEntryCacheModel ==
+				_dummyAssetDisplayPageEntryCacheModel) {
+
+			_assetDisplayPageEntryCacheModel =
+				(AssetDisplayPageEntryCacheModel)toCacheModel();
+		}
+
 		_plid = plid;
 	}
 
@@ -855,40 +1008,12 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetDisplayPageEntryModelImpl assetDisplayPageEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		assetDisplayPageEntryModelImpl._originalUuid =
-			assetDisplayPageEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		assetDisplayPageEntryModelImpl._originalGroupId =
-			assetDisplayPageEntryModelImpl._groupId;
-
-		assetDisplayPageEntryModelImpl._setOriginalGroupId = false;
-
-		assetDisplayPageEntryModelImpl._originalCompanyId =
-			assetDisplayPageEntryModelImpl._companyId;
-
-		assetDisplayPageEntryModelImpl._setOriginalCompanyId = false;
-
-		assetDisplayPageEntryModelImpl._setModifiedDate = false;
-
-		assetDisplayPageEntryModelImpl._originalClassNameId =
-			assetDisplayPageEntryModelImpl._classNameId;
-
-		assetDisplayPageEntryModelImpl._setOriginalClassNameId = false;
-
-		assetDisplayPageEntryModelImpl._originalClassPK =
-			assetDisplayPageEntryModelImpl._classPK;
-
-		assetDisplayPageEntryModelImpl._setOriginalClassPK = false;
-
-		assetDisplayPageEntryModelImpl._originalLayoutPageTemplateEntryId =
-			assetDisplayPageEntryModelImpl._layoutPageTemplateEntryId;
-
-		assetDisplayPageEntryModelImpl._setOriginalLayoutPageTemplateEntryId =
-			false;
-
-		assetDisplayPageEntryModelImpl._columnBitmask = 0;
+		_assetDisplayPageEntryCacheModel =
+			_dummyAssetDisplayPageEntryCacheModel;
 	}
 
 	@Override
@@ -1030,31 +1155,172 @@ public class AssetDisplayPageEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AssetDisplayPageEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AssetDisplayPageEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<AssetDisplayPageEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"assetDisplayPageEntryId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.assetDisplayPageEntryId);
+
+		columnBitmasks.put("assetDisplayPageEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPageTemplateEntryId",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.layoutPageTemplateEntryId);
+
+		columnBitmasks.put("layoutPageTemplateEntryId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.type);
+
+		columnBitmasks.put("type", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"plid",
+			assetDisplayPageEntryCacheModel ->
+				assetDisplayPageEntryCacheModel.plid);
+
+		columnBitmasks.put("plid", 16384L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AssetDisplayPageEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AssetDisplayPageEntryCacheModel assetDisplayPageEntryCacheModel =
+			_assetDisplayPageEntryCacheModel;
+
+		if (assetDisplayPageEntryCacheModel == null) {
+			assetDisplayPageEntryCacheModel =
+				_dummyAssetDisplayPageEntryCacheModel;
+		}
+
+		return (T)function.apply(assetDisplayPageEntryCacheModel);
+	}
+
+	private static final AssetDisplayPageEntryCacheModel
+		_dummyAssetDisplayPageEntryCacheModel =
+			new AssetDisplayPageEntryCacheModel();
+
+	private AssetDisplayPageEntryCacheModel _assetDisplayPageEntryCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _assetDisplayPageEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _layoutPageTemplateEntryId;
-	private long _originalLayoutPageTemplateEntryId;
-	private boolean _setOriginalLayoutPageTemplateEntryId;
 	private int _type;
 	private long _plid;
 	private long _columnBitmask;

@@ -1555,9 +1555,12 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			 _finderPathFetchByF_S_T.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				syncDLFileVersionDiffModelImpl.getOriginalFileEntryId(),
-				syncDLFileVersionDiffModelImpl.getOriginalSourceFileVersionId(),
-				syncDLFileVersionDiffModelImpl.getOriginalTargetFileVersionId()
+				syncDLFileVersionDiffModelImpl.getOriginalAttributeValue(
+					"fileEntryId"),
+				syncDLFileVersionDiffModelImpl.getOriginalAttributeValue(
+					"sourceFileVersionId"),
+				syncDLFileVersionDiffModelImpl.getOriginalAttributeValue(
+					"targetFileVersionId")
 			};
 
 			finderCache.removeResult(_finderPathCountByF_S_T, args);
@@ -1744,7 +1747,8 @@ public class SyncDLFileVersionDiffPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					syncDLFileVersionDiffModelImpl.getOriginalFileEntryId()
+					syncDLFileVersionDiffModelImpl.getOriginalAttributeValue(
+						"fileEntryId")
 				};
 
 				finderCache.removeResult(_finderPathCountByFileEntryId, args);
@@ -2064,7 +2068,7 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			SyncDLFileVersionDiffImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFileEntryId",
 			new String[] {Long.class.getName()},
-			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK);
+			SyncDLFileVersionDiffModelImpl.getColumnBitmask("fileEntryId"));
 
 		_finderPathCountByFileEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2088,9 +2092,11 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK |
-			SyncDLFileVersionDiffModelImpl.SOURCEFILEVERSIONID_COLUMN_BITMASK |
-			SyncDLFileVersionDiffModelImpl.TARGETFILEVERSIONID_COLUMN_BITMASK);
+			SyncDLFileVersionDiffModelImpl.getColumnBitmask("fileEntryId") |
+			SyncDLFileVersionDiffModelImpl.getColumnBitmask(
+				"sourceFileVersionId") |
+			SyncDLFileVersionDiffModelImpl.getColumnBitmask(
+				"targetFileVersionId"));
 
 		_finderPathCountByF_S_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

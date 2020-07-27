@@ -127,14 +127,39 @@ public class AnnouncementsFlagModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VALUE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
 	/**
@@ -365,6 +390,13 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -376,6 +408,13 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setFlagId(long flagId) {
+		_columnBitmask |= _columnBitmasks.get("flagId");
+
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
+		}
+
 		_flagId = flagId;
 	}
 
@@ -387,19 +426,23 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -410,12 +453,11 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -437,8 +479,13 @@ public class AnnouncementsFlagModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -449,7 +496,12 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
+		}
 
 		_createDate = createDate;
 	}
@@ -462,19 +514,23 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
-		_columnBitmask |= ENTRYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("entryId");
 
-		if (!_setOriginalEntryId) {
-			_setOriginalEntryId = true;
-
-			_originalEntryId = _entryId;
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
 		}
 
 		_entryId = entryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalEntryId() {
-		return _originalEntryId;
+		return getOriginalAttributeValue("entryId");
 	}
 
 	@JSON
@@ -485,19 +541,23 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setValue(int value) {
-		_columnBitmask |= VALUE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("value");
 
-		if (!_setOriginalValue) {
-			_setOriginalValue = true;
-
-			_originalValue = _value;
+		if (_announcementsFlagCacheModel == _dummyAnnouncementsFlagCacheModel) {
+			_announcementsFlagCacheModel =
+				(AnnouncementsFlagCacheModel)toCacheModel();
 		}
 
 		_value = value;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalValue() {
-		return _originalValue;
+		return getOriginalAttributeValue("value");
 	}
 
 	public long getColumnBitmask() {
@@ -625,29 +685,9 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsFlagModelImpl announcementsFlagModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsFlagModelImpl._originalCompanyId =
-			announcementsFlagModelImpl._companyId;
-
-		announcementsFlagModelImpl._setOriginalCompanyId = false;
-
-		announcementsFlagModelImpl._originalUserId =
-			announcementsFlagModelImpl._userId;
-
-		announcementsFlagModelImpl._setOriginalUserId = false;
-
-		announcementsFlagModelImpl._originalEntryId =
-			announcementsFlagModelImpl._entryId;
-
-		announcementsFlagModelImpl._setOriginalEntryId = false;
-
-		announcementsFlagModelImpl._originalValue =
-			announcementsFlagModelImpl._value;
-
-		announcementsFlagModelImpl._setOriginalValue = false;
-
-		announcementsFlagModelImpl._columnBitmask = 0;
+		_announcementsFlagCacheModel = _dummyAnnouncementsFlagCacheModel;
 	}
 
 	@Override
@@ -749,21 +789,102 @@ public class AnnouncementsFlagModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AnnouncementsFlagCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AnnouncementsFlagCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AnnouncementsFlagCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			announcementsFlagCacheModel ->
+				announcementsFlagCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"flagId",
+			announcementsFlagCacheModel -> announcementsFlagCacheModel.flagId);
+
+		columnBitmasks.put("flagId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			announcementsFlagCacheModel ->
+				announcementsFlagCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			announcementsFlagCacheModel -> announcementsFlagCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			announcementsFlagCacheModel ->
+				announcementsFlagCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"entryId",
+			announcementsFlagCacheModel -> announcementsFlagCacheModel.entryId);
+
+		columnBitmasks.put("entryId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"value",
+			announcementsFlagCacheModel -> announcementsFlagCacheModel.value);
+
+		columnBitmasks.put("value", 64L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AnnouncementsFlagCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AnnouncementsFlagCacheModel announcementsFlagCacheModel =
+			_announcementsFlagCacheModel;
+
+		if (announcementsFlagCacheModel == null) {
+			announcementsFlagCacheModel = _dummyAnnouncementsFlagCacheModel;
+		}
+
+		return (T)function.apply(announcementsFlagCacheModel);
+	}
+
+	private static final AnnouncementsFlagCacheModel
+		_dummyAnnouncementsFlagCacheModel = new AnnouncementsFlagCacheModel();
+
+	private AnnouncementsFlagCacheModel _announcementsFlagCacheModel;
 	private long _mvccVersion;
 	private long _flagId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private long _entryId;
-	private long _originalEntryId;
-	private boolean _setOriginalEntryId;
 	private int _value;
-	private int _originalValue;
-	private boolean _setOriginalValue;
 	private long _columnBitmask;
 	private AnnouncementsFlag _escapedModel;
 

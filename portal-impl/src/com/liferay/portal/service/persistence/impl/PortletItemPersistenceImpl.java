@@ -1728,10 +1728,10 @@ public class PortletItemPersistenceImpl
 			 _finderPathFetchByG_N_P_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				portletItemModelImpl.getOriginalGroupId(),
-				portletItemModelImpl.getOriginalName(),
-				portletItemModelImpl.getOriginalPortletId(),
-				portletItemModelImpl.getOriginalClassNameId()
+				portletItemModelImpl.getOriginalAttributeValue("groupId"),
+				portletItemModelImpl.getOriginalAttributeValue("name"),
+				portletItemModelImpl.getOriginalAttributeValue("portletId"),
+				portletItemModelImpl.getOriginalAttributeValue("classNameId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByG_N_P_C, args);
@@ -1943,8 +1943,9 @@ public class PortletItemPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					portletItemModelImpl.getOriginalGroupId(),
-					portletItemModelImpl.getOriginalClassNameId()
+					portletItemModelImpl.getOriginalAttributeValue("groupId"),
+					portletItemModelImpl.getOriginalAttributeValue(
+						"classNameId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_C, args);
@@ -1966,9 +1967,10 @@ public class PortletItemPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					portletItemModelImpl.getOriginalGroupId(),
-					portletItemModelImpl.getOriginalPortletId(),
-					portletItemModelImpl.getOriginalClassNameId()
+					portletItemModelImpl.getOriginalAttributeValue("groupId"),
+					portletItemModelImpl.getOriginalAttributeValue("portletId"),
+					portletItemModelImpl.getOriginalAttributeValue(
+						"classNameId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_P_C, args);
@@ -2277,8 +2279,8 @@ public class PortletItemPersistenceImpl
 			PortletItemImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			PortletItemModelImpl.GROUPID_COLUMN_BITMASK |
-			PortletItemModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+			PortletItemModelImpl.getColumnBitmask("groupId") |
+			PortletItemModelImpl.getColumnBitmask("classNameId"));
 
 		_finderPathCountByG_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
@@ -2300,9 +2302,9 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Long.class.getName()
 			},
-			PortletItemModelImpl.GROUPID_COLUMN_BITMASK |
-			PortletItemModelImpl.PORTLETID_COLUMN_BITMASK |
-			PortletItemModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+			PortletItemModelImpl.getColumnBitmask("groupId") |
+			PortletItemModelImpl.getColumnBitmask("portletId") |
+			PortletItemModelImpl.getColumnBitmask("classNameId"));
 
 		_finderPathCountByG_P_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2318,10 +2320,10 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName(), Long.class.getName()
 			},
-			PortletItemModelImpl.GROUPID_COLUMN_BITMASK |
-			PortletItemModelImpl.NAME_COLUMN_BITMASK |
-			PortletItemModelImpl.PORTLETID_COLUMN_BITMASK |
-			PortletItemModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+			PortletItemModelImpl.getColumnBitmask("groupId") |
+			PortletItemModelImpl.getColumnBitmask("name") |
+			PortletItemModelImpl.getColumnBitmask("portletId") |
+			PortletItemModelImpl.getColumnBitmask("classNameId"));
 
 		_finderPathCountByG_N_P_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

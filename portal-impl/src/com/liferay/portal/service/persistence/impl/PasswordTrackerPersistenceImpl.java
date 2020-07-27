@@ -844,7 +844,7 @@ public class PasswordTrackerPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					passwordTrackerModelImpl.getOriginalUserId()
+					passwordTrackerModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -1153,8 +1153,8 @@ public class PasswordTrackerPersistenceImpl
 			PasswordTrackerImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
-			PasswordTrackerModelImpl.USERID_COLUMN_BITMASK |
-			PasswordTrackerModelImpl.CREATEDATE_COLUMN_BITMASK);
+			PasswordTrackerModelImpl.getColumnBitmask("userId") |
+			PasswordTrackerModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

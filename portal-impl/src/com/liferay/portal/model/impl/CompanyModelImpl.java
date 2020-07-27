@@ -125,14 +125,39 @@ public class CompanyModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LOGOID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MX_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SYSTEM_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WEBID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -353,6 +378,12 @@ public class CompanyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -364,6 +395,12 @@ public class CompanyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -375,6 +412,12 @@ public class CompanyModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		_columnBitmask |= _columnBitmasks.get("accountId");
+
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
+		}
+
 		_accountId = accountId;
 	}
 
@@ -391,17 +434,22 @@ public class CompanyModelImpl
 
 	@Override
 	public void setWebId(String webId) {
-		_columnBitmask |= WEBID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("webId");
 
-		if (_originalWebId == null) {
-			_originalWebId = _webId;
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
 		}
 
 		_webId = webId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalWebId() {
-		return GetterUtil.getString(_originalWebId);
+		return getOriginalAttributeValue("webId");
 	}
 
 	@JSON
@@ -417,17 +465,22 @@ public class CompanyModelImpl
 
 	@Override
 	public void setMx(String mx) {
-		_columnBitmask |= MX_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("mx");
 
-		if (_originalMx == null) {
-			_originalMx = _mx;
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
 		}
 
 		_mx = mx;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalMx() {
-		return GetterUtil.getString(_originalMx);
+		return getOriginalAttributeValue("mx");
 	}
 
 	@JSON
@@ -443,6 +496,12 @@ public class CompanyModelImpl
 
 	@Override
 	public void setHomeURL(String homeURL) {
+		_columnBitmask |= _columnBitmasks.get("homeURL");
+
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
+		}
+
 		_homeURL = homeURL;
 	}
 
@@ -454,19 +513,22 @@ public class CompanyModelImpl
 
 	@Override
 	public void setLogoId(long logoId) {
-		_columnBitmask |= LOGOID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("logoId");
 
-		if (!_setOriginalLogoId) {
-			_setOriginalLogoId = true;
-
-			_originalLogoId = _logoId;
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
 		}
 
 		_logoId = logoId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLogoId() {
-		return _originalLogoId;
+		return getOriginalAttributeValue("logoId");
 	}
 
 	@JSON
@@ -483,19 +545,22 @@ public class CompanyModelImpl
 
 	@Override
 	public void setSystem(boolean system) {
-		_columnBitmask |= SYSTEM_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("system");
 
-		if (!_setOriginalSystem) {
-			_setOriginalSystem = true;
-
-			_originalSystem = _system;
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
 		}
 
 		_system = system;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalSystem() {
-		return _originalSystem;
+		return getOriginalAttributeValue("system");
 	}
 
 	@JSON
@@ -506,6 +571,12 @@ public class CompanyModelImpl
 
 	@Override
 	public void setMaxUsers(int maxUsers) {
+		_columnBitmask |= _columnBitmasks.get("maxUsers");
+
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
+		}
+
 		_maxUsers = maxUsers;
 	}
 
@@ -523,6 +594,12 @@ public class CompanyModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		_columnBitmask |= _columnBitmasks.get("active");
+
+		if (_companyCacheModel == _dummyCompanyCacheModel) {
+			_companyCacheModel = (CompanyCacheModel)toCacheModel();
+		}
+
 		_active = active;
 	}
 
@@ -655,25 +732,13 @@ public class CompanyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CompanyModelImpl companyModelImpl = this;
-
-		companyModelImpl._originalWebId = companyModelImpl._webId;
-
-		companyModelImpl._originalMx = companyModelImpl._mx;
-
-		companyModelImpl._originalLogoId = companyModelImpl._logoId;
-
-		companyModelImpl._setOriginalLogoId = false;
-
-		companyModelImpl._originalSystem = companyModelImpl._system;
-
-		companyModelImpl._setOriginalSystem = false;
-
 		setCompanySecurityBag(null);
 
 		setVirtualHostname(null);
 
-		companyModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
+
+		_companyCacheModel = _dummyCompanyCacheModel;
 	}
 
 	@Override
@@ -795,20 +860,106 @@ public class CompanyModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<CompanyCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<CompanyCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<CompanyCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", companyCacheModel -> companyCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", companyCacheModel -> companyCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"accountId", companyCacheModel -> companyCacheModel.accountId);
+
+		columnBitmasks.put("accountId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"webId", companyCacheModel -> companyCacheModel.webId);
+
+		columnBitmasks.put("webId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"mx", companyCacheModel -> companyCacheModel.mx);
+
+		columnBitmasks.put("mx", 16L);
+
+		cacheModelGetterFunctions.put(
+			"homeURL", companyCacheModel -> companyCacheModel.homeURL);
+
+		columnBitmasks.put("homeURL", 32L);
+
+		cacheModelGetterFunctions.put(
+			"logoId", companyCacheModel -> companyCacheModel.logoId);
+
+		columnBitmasks.put("logoId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"system", companyCacheModel -> companyCacheModel.system);
+
+		columnBitmasks.put("system", 128L);
+
+		cacheModelGetterFunctions.put(
+			"maxUsers", companyCacheModel -> companyCacheModel.maxUsers);
+
+		columnBitmasks.put("maxUsers", 256L);
+
+		cacheModelGetterFunctions.put(
+			"active", companyCacheModel -> companyCacheModel.active);
+
+		columnBitmasks.put("active", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<CompanyCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		CompanyCacheModel companyCacheModel = _companyCacheModel;
+
+		if (companyCacheModel == null) {
+			companyCacheModel = _dummyCompanyCacheModel;
+		}
+
+		return (T)function.apply(companyCacheModel);
+	}
+
+	private static final CompanyCacheModel _dummyCompanyCacheModel =
+		new CompanyCacheModel();
+
+	private CompanyCacheModel _companyCacheModel;
 	private long _mvccVersion;
 	private long _companyId;
 	private long _accountId;
 	private String _webId;
-	private String _originalWebId;
 	private String _mx;
-	private String _originalMx;
 	private String _homeURL;
 	private long _logoId;
-	private long _originalLogoId;
-	private boolean _setOriginalLogoId;
 	private boolean _system;
-	private boolean _originalSystem;
-	private boolean _setOriginalSystem;
 	private int _maxUsers;
 	private boolean _active;
 	private long _columnBitmask;

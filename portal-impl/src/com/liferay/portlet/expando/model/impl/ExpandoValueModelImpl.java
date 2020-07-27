@@ -125,16 +125,46 @@ public class ExpandoValueModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COLUMNID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DATA_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROWID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TABLEID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -369,6 +399,12 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -380,6 +416,12 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -391,6 +433,12 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setValueId(long valueId) {
+		_columnBitmask |= _columnBitmasks.get("valueId");
+
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
+		}
+
 		_valueId = valueId;
 	}
 
@@ -402,6 +450,12 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -413,19 +467,22 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("tableId");
 
-		if (!_setOriginalTableId) {
-			_setOriginalTableId = true;
-
-			_originalTableId = _tableId;
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
 		}
 
 		_tableId = tableId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalTableId() {
-		return _originalTableId;
+		return getOriginalAttributeValue("tableId");
 	}
 
 	@JSON
@@ -436,19 +493,22 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setColumnId(long columnId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("columnId");
 
-		if (!_setOriginalColumnId) {
-			_setOriginalColumnId = true;
-
-			_originalColumnId = _columnId;
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
 		}
 
 		_columnId = columnId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalColumnId() {
-		return _originalColumnId;
+		return getOriginalAttributeValue("columnId");
 	}
 
 	@JSON
@@ -459,19 +519,22 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setRowId(long rowId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("rowId");
 
-		if (!_setOriginalRowId) {
-			_setOriginalRowId = true;
-
-			_originalRowId = _rowId;
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
 		}
 
 		_rowId = rowId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRowId() {
-		return _originalRowId;
+		return getOriginalAttributeValue("rowId");
 	}
 
 	@Override
@@ -502,19 +565,22 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -525,19 +591,22 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -553,17 +622,22 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setData(String data) {
-		_columnBitmask |= DATA_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("data");
 
-		if (_originalData == null) {
-			_originalData = _data;
+		if (_expandoValueCacheModel == _dummyExpandoValueCacheModel) {
+			_expandoValueCacheModel = (ExpandoValueCacheModel)toCacheModel();
 		}
 
 		_data = data;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalData() {
-		return GetterUtil.getString(_originalData);
+		return getOriginalAttributeValue("data");
 	}
 
 	public long getColumnBitmask() {
@@ -701,33 +775,9 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoValueModelImpl expandoValueModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoValueModelImpl._originalTableId = expandoValueModelImpl._tableId;
-
-		expandoValueModelImpl._setOriginalTableId = false;
-
-		expandoValueModelImpl._originalColumnId =
-			expandoValueModelImpl._columnId;
-
-		expandoValueModelImpl._setOriginalColumnId = false;
-
-		expandoValueModelImpl._originalRowId = expandoValueModelImpl._rowId;
-
-		expandoValueModelImpl._setOriginalRowId = false;
-
-		expandoValueModelImpl._originalClassNameId =
-			expandoValueModelImpl._classNameId;
-
-		expandoValueModelImpl._setOriginalClassNameId = false;
-
-		expandoValueModelImpl._originalClassPK = expandoValueModelImpl._classPK;
-
-		expandoValueModelImpl._setOriginalClassPK = false;
-
-		expandoValueModelImpl._originalData = expandoValueModelImpl._data;
-
-		expandoValueModelImpl._columnBitmask = 0;
+		_expandoValueCacheModel = _dummyExpandoValueCacheModel;
 	}
 
 	@Override
@@ -834,27 +884,116 @@ public class ExpandoValueModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<ExpandoValueCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ExpandoValueCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<ExpandoValueCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			expandoValueCacheModel -> expandoValueCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			expandoValueCacheModel -> expandoValueCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"valueId",
+			expandoValueCacheModel -> expandoValueCacheModel.valueId);
+
+		columnBitmasks.put("valueId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			expandoValueCacheModel -> expandoValueCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"tableId",
+			expandoValueCacheModel -> expandoValueCacheModel.tableId);
+
+		columnBitmasks.put("tableId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"columnId",
+			expandoValueCacheModel -> expandoValueCacheModel.columnId);
+
+		columnBitmasks.put("columnId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"rowId", expandoValueCacheModel -> expandoValueCacheModel.rowId);
+
+		columnBitmasks.put("rowId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			expandoValueCacheModel -> expandoValueCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			expandoValueCacheModel -> expandoValueCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 256L);
+
+		cacheModelGetterFunctions.put(
+			"data", expandoValueCacheModel -> expandoValueCacheModel.data);
+
+		columnBitmasks.put("data", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ExpandoValueCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ExpandoValueCacheModel expandoValueCacheModel = _expandoValueCacheModel;
+
+		if (expandoValueCacheModel == null) {
+			expandoValueCacheModel = _dummyExpandoValueCacheModel;
+		}
+
+		return (T)function.apply(expandoValueCacheModel);
+	}
+
+	private static final ExpandoValueCacheModel _dummyExpandoValueCacheModel =
+		new ExpandoValueCacheModel();
+
+	private ExpandoValueCacheModel _expandoValueCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _valueId;
 	private long _companyId;
 	private long _tableId;
-	private long _originalTableId;
-	private boolean _setOriginalTableId;
 	private long _columnId;
-	private long _originalColumnId;
-	private boolean _setOriginalColumnId;
 	private long _rowId;
-	private long _originalRowId;
-	private boolean _setOriginalRowId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _data;
-	private String _originalData;
 	private long _columnBitmask;
 	private ExpandoValue _escapedModel;
 

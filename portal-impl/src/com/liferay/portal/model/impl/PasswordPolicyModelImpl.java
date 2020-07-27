@@ -170,14 +170,39 @@ public class PasswordPolicyModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEFAULTPOLICY_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PASSWORDPOLICYID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -575,6 +600,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -591,17 +623,23 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -612,6 +650,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setPasswordPolicyId(long passwordPolicyId) {
+		_columnBitmask |= _columnBitmasks.get("passwordPolicyId");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_passwordPolicyId = passwordPolicyId;
 	}
 
@@ -623,19 +668,23 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -646,6 +695,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -678,6 +734,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -689,6 +752,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -705,6 +775,13 @@ public class PasswordPolicyModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -723,19 +800,23 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setDefaultPolicy(boolean defaultPolicy) {
-		_columnBitmask |= DEFAULTPOLICY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("defaultPolicy");
 
-		if (!_setOriginalDefaultPolicy) {
-			_setOriginalDefaultPolicy = true;
-
-			_originalDefaultPolicy = _defaultPolicy;
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
 		}
 
 		_defaultPolicy = defaultPolicy;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDefaultPolicy() {
-		return _originalDefaultPolicy;
+		return getOriginalAttributeValue("defaultPolicy");
 	}
 
 	@JSON
@@ -751,17 +832,23 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -777,6 +864,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -794,6 +888,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setChangeable(boolean changeable) {
+		_columnBitmask |= _columnBitmasks.get("changeable");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_changeable = changeable;
 	}
 
@@ -811,6 +912,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setChangeRequired(boolean changeRequired) {
+		_columnBitmask |= _columnBitmasks.get("changeRequired");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_changeRequired = changeRequired;
 	}
 
@@ -822,6 +930,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinAge(long minAge) {
+		_columnBitmask |= _columnBitmasks.get("minAge");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minAge = minAge;
 	}
 
@@ -839,6 +954,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setCheckSyntax(boolean checkSyntax) {
+		_columnBitmask |= _columnBitmasks.get("checkSyntax");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_checkSyntax = checkSyntax;
 	}
 
@@ -856,6 +978,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setAllowDictionaryWords(boolean allowDictionaryWords) {
+		_columnBitmask |= _columnBitmasks.get("allowDictionaryWords");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_allowDictionaryWords = allowDictionaryWords;
 	}
 
@@ -867,6 +996,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinAlphanumeric(int minAlphanumeric) {
+		_columnBitmask |= _columnBitmasks.get("minAlphanumeric");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minAlphanumeric = minAlphanumeric;
 	}
 
@@ -878,6 +1014,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinLength(int minLength) {
+		_columnBitmask |= _columnBitmasks.get("minLength");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minLength = minLength;
 	}
 
@@ -889,6 +1032,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinLowerCase(int minLowerCase) {
+		_columnBitmask |= _columnBitmasks.get("minLowerCase");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minLowerCase = minLowerCase;
 	}
 
@@ -900,6 +1050,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinNumbers(int minNumbers) {
+		_columnBitmask |= _columnBitmasks.get("minNumbers");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minNumbers = minNumbers;
 	}
 
@@ -911,6 +1068,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinSymbols(int minSymbols) {
+		_columnBitmask |= _columnBitmasks.get("minSymbols");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minSymbols = minSymbols;
 	}
 
@@ -922,6 +1086,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinUpperCase(int minUpperCase) {
+		_columnBitmask |= _columnBitmasks.get("minUpperCase");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_minUpperCase = minUpperCase;
 	}
 
@@ -938,6 +1109,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setRegex(String regex) {
+		_columnBitmask |= _columnBitmasks.get("regex");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_regex = regex;
 	}
 
@@ -955,6 +1133,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setHistory(boolean history) {
+		_columnBitmask |= _columnBitmasks.get("history");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_history = history;
 	}
 
@@ -966,6 +1151,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setHistoryCount(int historyCount) {
+		_columnBitmask |= _columnBitmasks.get("historyCount");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_historyCount = historyCount;
 	}
 
@@ -983,6 +1175,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setExpireable(boolean expireable) {
+		_columnBitmask |= _columnBitmasks.get("expireable");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_expireable = expireable;
 	}
 
@@ -994,6 +1193,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMaxAge(long maxAge) {
+		_columnBitmask |= _columnBitmasks.get("maxAge");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_maxAge = maxAge;
 	}
 
@@ -1005,6 +1211,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setWarningTime(long warningTime) {
+		_columnBitmask |= _columnBitmasks.get("warningTime");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_warningTime = warningTime;
 	}
 
@@ -1016,6 +1229,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setGraceLimit(int graceLimit) {
+		_columnBitmask |= _columnBitmasks.get("graceLimit");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_graceLimit = graceLimit;
 	}
 
@@ -1033,6 +1253,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setLockout(boolean lockout) {
+		_columnBitmask |= _columnBitmasks.get("lockout");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_lockout = lockout;
 	}
 
@@ -1044,6 +1271,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMaxFailure(int maxFailure) {
+		_columnBitmask |= _columnBitmasks.get("maxFailure");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_maxFailure = maxFailure;
 	}
 
@@ -1055,6 +1289,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setLockoutDuration(long lockoutDuration) {
+		_columnBitmask |= _columnBitmasks.get("lockoutDuration");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_lockoutDuration = lockoutDuration;
 	}
 
@@ -1072,6 +1313,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setRequireUnlock(boolean requireUnlock) {
+		_columnBitmask |= _columnBitmasks.get("requireUnlock");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_requireUnlock = requireUnlock;
 	}
 
@@ -1083,6 +1331,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setResetFailureCount(long resetFailureCount) {
+		_columnBitmask |= _columnBitmasks.get("resetFailureCount");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_resetFailureCount = resetFailureCount;
 	}
 
@@ -1094,6 +1349,13 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setResetTicketMaxAge(long resetTicketMaxAge) {
+		_columnBitmask |= _columnBitmasks.get("resetTicketMaxAge");
+
+		if (_passwordPolicyCacheModel == _dummyPasswordPolicyCacheModel) {
+			_passwordPolicyCacheModel =
+				(PasswordPolicyCacheModel)toCacheModel();
+		}
+
 		_resetTicketMaxAge = resetTicketMaxAge;
 	}
 
@@ -1242,25 +1504,11 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PasswordPolicyModelImpl passwordPolicyModelImpl = this;
+		_setModifiedDate = false;
 
-		passwordPolicyModelImpl._originalUuid = passwordPolicyModelImpl._uuid;
+		_columnBitmask = 0;
 
-		passwordPolicyModelImpl._originalCompanyId =
-			passwordPolicyModelImpl._companyId;
-
-		passwordPolicyModelImpl._setOriginalCompanyId = false;
-
-		passwordPolicyModelImpl._setModifiedDate = false;
-
-		passwordPolicyModelImpl._originalDefaultPolicy =
-			passwordPolicyModelImpl._defaultPolicy;
-
-		passwordPolicyModelImpl._setOriginalDefaultPolicy = false;
-
-		passwordPolicyModelImpl._originalName = passwordPolicyModelImpl._name;
-
-		passwordPolicyModelImpl._columnBitmask = 0;
+		_passwordPolicyCacheModel = _dummyPasswordPolicyCacheModel;
 	}
 
 	@Override
@@ -1456,23 +1704,275 @@ public class PasswordPolicyModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<PasswordPolicyCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PasswordPolicyCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PasswordPolicyCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", passwordPolicyCacheModel -> passwordPolicyCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"passwordPolicyId",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.passwordPolicyId);
+
+		columnBitmasks.put("passwordPolicyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"defaultPolicy",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.defaultPolicy);
+
+		columnBitmasks.put("defaultPolicy", 256L);
+
+		cacheModelGetterFunctions.put(
+			"name", passwordPolicyCacheModel -> passwordPolicyCacheModel.name);
+
+		columnBitmasks.put("name", 512L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.description);
+
+		columnBitmasks.put("description", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"changeable",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.changeable);
+
+		columnBitmasks.put("changeable", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"changeRequired",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.changeRequired);
+
+		columnBitmasks.put("changeRequired", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"minAge",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.minAge);
+
+		columnBitmasks.put("minAge", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"checkSyntax",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.checkSyntax);
+
+		columnBitmasks.put("checkSyntax", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"allowDictionaryWords",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.allowDictionaryWords);
+
+		columnBitmasks.put("allowDictionaryWords", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"minAlphanumeric",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.minAlphanumeric);
+
+		columnBitmasks.put("minAlphanumeric", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"minLength",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.minLength);
+
+		columnBitmasks.put("minLength", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"minLowerCase",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.minLowerCase);
+
+		columnBitmasks.put("minLowerCase", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"minNumbers",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.minNumbers);
+
+		columnBitmasks.put("minNumbers", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"minSymbols",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.minSymbols);
+
+		columnBitmasks.put("minSymbols", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"minUpperCase",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.minUpperCase);
+
+		columnBitmasks.put("minUpperCase", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"regex",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.regex);
+
+		columnBitmasks.put("regex", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"history",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.history);
+
+		columnBitmasks.put("history", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"historyCount",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.historyCount);
+
+		columnBitmasks.put("historyCount", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"expireable",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.expireable);
+
+		columnBitmasks.put("expireable", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"maxAge",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.maxAge);
+
+		columnBitmasks.put("maxAge", 67108864L);
+
+		cacheModelGetterFunctions.put(
+			"warningTime",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.warningTime);
+
+		columnBitmasks.put("warningTime", 134217728L);
+
+		cacheModelGetterFunctions.put(
+			"graceLimit",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.graceLimit);
+
+		columnBitmasks.put("graceLimit", 268435456L);
+
+		cacheModelGetterFunctions.put(
+			"lockout",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.lockout);
+
+		columnBitmasks.put("lockout", 536870912L);
+
+		cacheModelGetterFunctions.put(
+			"maxFailure",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.maxFailure);
+
+		columnBitmasks.put("maxFailure", 1073741824L);
+
+		cacheModelGetterFunctions.put(
+			"lockoutDuration",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.lockoutDuration);
+
+		columnBitmasks.put("lockoutDuration", 2147483648L);
+
+		cacheModelGetterFunctions.put(
+			"requireUnlock",
+			passwordPolicyCacheModel -> passwordPolicyCacheModel.requireUnlock);
+
+		columnBitmasks.put("requireUnlock", 4294967296L);
+
+		cacheModelGetterFunctions.put(
+			"resetFailureCount",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.resetFailureCount);
+
+		columnBitmasks.put("resetFailureCount", 8589934592L);
+
+		cacheModelGetterFunctions.put(
+			"resetTicketMaxAge",
+			passwordPolicyCacheModel ->
+				passwordPolicyCacheModel.resetTicketMaxAge);
+
+		columnBitmasks.put("resetTicketMaxAge", 17179869184L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PasswordPolicyCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PasswordPolicyCacheModel passwordPolicyCacheModel =
+			_passwordPolicyCacheModel;
+
+		if (passwordPolicyCacheModel == null) {
+			passwordPolicyCacheModel = _dummyPasswordPolicyCacheModel;
+		}
+
+		return (T)function.apply(passwordPolicyCacheModel);
+	}
+
+	private static final PasswordPolicyCacheModel
+		_dummyPasswordPolicyCacheModel = new PasswordPolicyCacheModel();
+
+	private PasswordPolicyCacheModel _passwordPolicyCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _passwordPolicyId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private boolean _defaultPolicy;
-	private boolean _originalDefaultPolicy;
-	private boolean _setOriginalDefaultPolicy;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private boolean _changeable;
 	private boolean _changeRequired;

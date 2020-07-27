@@ -106,10 +106,25 @@ public class SegmentsEntryRoleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROLEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSENTRYROLEID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -323,6 +338,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -333,6 +355,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -343,6 +372,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setSegmentsEntryRoleId(long segmentsEntryRoleId) {
+		_columnBitmask |= _columnBitmasks.get("segmentsEntryRoleId");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_segmentsEntryRoleId = segmentsEntryRoleId;
 	}
 
@@ -353,6 +389,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -363,6 +406,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -394,6 +444,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -404,6 +461,13 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -420,6 +484,13 @@ public class SegmentsEntryRoleModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -430,19 +501,23 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
-		_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("segmentsEntryId");
 
-		if (!_setOriginalSegmentsEntryId) {
-			_setOriginalSegmentsEntryId = true;
-
-			_originalSegmentsEntryId = _segmentsEntryId;
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
 		}
 
 		_segmentsEntryId = segmentsEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsEntryId() {
-		return _originalSegmentsEntryId;
+		return getOriginalAttributeValue("segmentsEntryId");
 	}
 
 	@Override
@@ -452,19 +527,23 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("roleId");
 
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
-
-			_originalRoleId = _roleId;
+		if (_segmentsEntryRoleCacheModel == _dummySegmentsEntryRoleCacheModel) {
+			_segmentsEntryRoleCacheModel =
+				(SegmentsEntryRoleCacheModel)toCacheModel();
 		}
 
 		_roleId = roleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		return getOriginalAttributeValue("roleId");
 	}
 
 	public long getColumnBitmask() {
@@ -582,21 +661,11 @@ public class SegmentsEntryRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsEntryRoleModelImpl segmentsEntryRoleModelImpl = this;
+		_setModifiedDate = false;
 
-		segmentsEntryRoleModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		segmentsEntryRoleModelImpl._originalSegmentsEntryId =
-			segmentsEntryRoleModelImpl._segmentsEntryId;
-
-		segmentsEntryRoleModelImpl._setOriginalSegmentsEntryId = false;
-
-		segmentsEntryRoleModelImpl._originalRoleId =
-			segmentsEntryRoleModelImpl._roleId;
-
-		segmentsEntryRoleModelImpl._setOriginalRoleId = false;
-
-		segmentsEntryRoleModelImpl._columnBitmask = 0;
+		_segmentsEntryRoleCacheModel = _dummySegmentsEntryRoleCacheModel;
 	}
 
 	@Override
@@ -718,6 +787,118 @@ public class SegmentsEntryRoleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<SegmentsEntryRoleCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SegmentsEntryRoleCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<SegmentsEntryRoleCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsEntryRoleId",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.segmentsEntryRoleId);
+
+		columnBitmasks.put("segmentsEntryRoleId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			segmentsEntryRoleCacheModel -> segmentsEntryRoleCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsEntryId",
+			segmentsEntryRoleCacheModel ->
+				segmentsEntryRoleCacheModel.segmentsEntryId);
+
+		columnBitmasks.put("segmentsEntryId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"roleId",
+			segmentsEntryRoleCacheModel -> segmentsEntryRoleCacheModel.roleId);
+
+		columnBitmasks.put("roleId", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SegmentsEntryRoleCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SegmentsEntryRoleCacheModel segmentsEntryRoleCacheModel =
+			_segmentsEntryRoleCacheModel;
+
+		if (segmentsEntryRoleCacheModel == null) {
+			segmentsEntryRoleCacheModel = _dummySegmentsEntryRoleCacheModel;
+		}
+
+		return (T)function.apply(segmentsEntryRoleCacheModel);
+	}
+
+	private static final SegmentsEntryRoleCacheModel
+		_dummySegmentsEntryRoleCacheModel = new SegmentsEntryRoleCacheModel();
+
+	private SegmentsEntryRoleCacheModel _segmentsEntryRoleCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _segmentsEntryRoleId;
@@ -728,11 +909,7 @@ public class SegmentsEntryRoleModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _segmentsEntryId;
-	private long _originalSegmentsEntryId;
-	private boolean _setOriginalSegmentsEntryId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _columnBitmask;
 	private SegmentsEntryRole _escapedModel;
 

@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -131,12 +130,32 @@ public class DDMDataProviderInstanceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DATAPROVIDERINSTANCEID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -443,6 +462,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -454,6 +482,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -470,17 +507,25 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -491,6 +536,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setDataProviderInstanceId(long dataProviderInstanceId) {
+		_columnBitmask |= _columnBitmasks.get("dataProviderInstanceId");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_dataProviderInstanceId = dataProviderInstanceId;
 	}
 
@@ -502,19 +556,25 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
 
-			_originalGroupId = _groupId;
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -525,19 +585,25 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -548,6 +614,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -580,6 +655,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -591,6 +675,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -607,6 +700,15 @@ public class DDMDataProviderInstanceModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -667,6 +769,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_name = name;
 	}
 
@@ -770,6 +881,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -835,6 +955,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setDefinition(String definition) {
+		_columnBitmask |= _columnBitmasks.get("definition");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_definition = definition;
 	}
 
@@ -851,6 +980,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_type = type;
 	}
 
@@ -862,6 +1000,15 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_ddmDataProviderInstanceCacheModel ==
+				_dummyDDMDataProviderInstanceCacheModel) {
+
+			_ddmDataProviderInstanceCacheModel =
+				(DDMDataProviderInstanceCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1082,25 +1229,12 @@ public class DDMDataProviderInstanceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMDataProviderInstanceModelImpl ddmDataProviderInstanceModelImpl =
-			this;
+		_setModifiedDate = false;
 
-		ddmDataProviderInstanceModelImpl._originalUuid =
-			ddmDataProviderInstanceModelImpl._uuid;
+		_columnBitmask = 0;
 
-		ddmDataProviderInstanceModelImpl._originalGroupId =
-			ddmDataProviderInstanceModelImpl._groupId;
-
-		ddmDataProviderInstanceModelImpl._setOriginalGroupId = false;
-
-		ddmDataProviderInstanceModelImpl._originalCompanyId =
-			ddmDataProviderInstanceModelImpl._companyId;
-
-		ddmDataProviderInstanceModelImpl._setOriginalCompanyId = false;
-
-		ddmDataProviderInstanceModelImpl._setModifiedDate = false;
-
-		ddmDataProviderInstanceModelImpl._columnBitmask = 0;
+		_ddmDataProviderInstanceCacheModel =
+			_dummyDDMDataProviderInstanceCacheModel;
 	}
 
 	@Override
@@ -1275,17 +1409,165 @@ public class DDMDataProviderInstanceModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DDMDataProviderInstanceCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DDMDataProviderInstanceCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<DDMDataProviderInstanceCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"dataProviderInstanceId",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.dataProviderInstanceId);
+
+		columnBitmasks.put("dataProviderInstanceId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.name);
+
+		columnBitmasks.put("name", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.description);
+
+		columnBitmasks.put("description", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"definition",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.definition);
+
+		columnBitmasks.put("definition", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.type);
+
+		columnBitmasks.put("type", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			ddmDataProviderInstanceCacheModel ->
+				ddmDataProviderInstanceCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 16384L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DDMDataProviderInstanceCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DDMDataProviderInstanceCacheModel ddmDataProviderInstanceCacheModel =
+			_ddmDataProviderInstanceCacheModel;
+
+		if (ddmDataProviderInstanceCacheModel == null) {
+			ddmDataProviderInstanceCacheModel =
+				_dummyDDMDataProviderInstanceCacheModel;
+		}
+
+		return (T)function.apply(ddmDataProviderInstanceCacheModel);
+	}
+
+	private static final DDMDataProviderInstanceCacheModel
+		_dummyDDMDataProviderInstanceCacheModel =
+			new DDMDataProviderInstanceCacheModel();
+
+	private DDMDataProviderInstanceCacheModel
+		_ddmDataProviderInstanceCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _dataProviderInstanceId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

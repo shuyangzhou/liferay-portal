@@ -133,14 +133,39 @@ public class WorkflowInstanceLinkModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -361,6 +386,15 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -371,6 +405,15 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -381,6 +424,15 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setWorkflowInstanceLinkId(long workflowInstanceLinkId) {
+		_columnBitmask |= _columnBitmasks.get("workflowInstanceLinkId");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
+
 		_workflowInstanceLinkId = workflowInstanceLinkId;
 	}
 
@@ -391,19 +443,25 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
 
-			_originalGroupId = _groupId;
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -413,19 +471,25 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -435,6 +499,15 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -466,6 +539,15 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -476,7 +558,14 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
 
 		_createDate = createDate;
 	}
@@ -493,6 +582,15 @@ public class WorkflowInstanceLinkModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -524,19 +622,25 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
 
-			_originalClassNameId = _classNameId;
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -546,19 +650,25 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
 
-			_originalClassPK = _classPK;
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -568,6 +678,15 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void setWorkflowInstanceId(long workflowInstanceId) {
+		_columnBitmask |= _columnBitmasks.get("workflowInstanceId");
+
+		if (_workflowInstanceLinkCacheModel ==
+				_dummyWorkflowInstanceLinkCacheModel) {
+
+			_workflowInstanceLinkCacheModel =
+				(WorkflowInstanceLinkCacheModel)toCacheModel();
+		}
+
 		_workflowInstanceId = workflowInstanceId;
 	}
 
@@ -692,31 +811,11 @@ public class WorkflowInstanceLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WorkflowInstanceLinkModelImpl workflowInstanceLinkModelImpl = this;
+		_setModifiedDate = false;
 
-		workflowInstanceLinkModelImpl._originalGroupId =
-			workflowInstanceLinkModelImpl._groupId;
+		_columnBitmask = 0;
 
-		workflowInstanceLinkModelImpl._setOriginalGroupId = false;
-
-		workflowInstanceLinkModelImpl._originalCompanyId =
-			workflowInstanceLinkModelImpl._companyId;
-
-		workflowInstanceLinkModelImpl._setOriginalCompanyId = false;
-
-		workflowInstanceLinkModelImpl._setModifiedDate = false;
-
-		workflowInstanceLinkModelImpl._originalClassNameId =
-			workflowInstanceLinkModelImpl._classNameId;
-
-		workflowInstanceLinkModelImpl._setOriginalClassNameId = false;
-
-		workflowInstanceLinkModelImpl._originalClassPK =
-			workflowInstanceLinkModelImpl._classPK;
-
-		workflowInstanceLinkModelImpl._setOriginalClassPK = false;
-
-		workflowInstanceLinkModelImpl._columnBitmask = 0;
+		_workflowInstanceLinkCacheModel = _dummyWorkflowInstanceLinkCacheModel;
 	}
 
 	@Override
@@ -846,26 +945,149 @@ public class WorkflowInstanceLinkModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<WorkflowInstanceLinkCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<WorkflowInstanceLinkCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<WorkflowInstanceLinkCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"workflowInstanceLinkId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.workflowInstanceLinkId);
+
+		columnBitmasks.put("workflowInstanceLinkId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"workflowInstanceId",
+			workflowInstanceLinkCacheModel ->
+				workflowInstanceLinkCacheModel.workflowInstanceId);
+
+		columnBitmasks.put("workflowInstanceId", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<WorkflowInstanceLinkCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		WorkflowInstanceLinkCacheModel workflowInstanceLinkCacheModel =
+			_workflowInstanceLinkCacheModel;
+
+		if (workflowInstanceLinkCacheModel == null) {
+			workflowInstanceLinkCacheModel =
+				_dummyWorkflowInstanceLinkCacheModel;
+		}
+
+		return (T)function.apply(workflowInstanceLinkCacheModel);
+	}
+
+	private static final WorkflowInstanceLinkCacheModel
+		_dummyWorkflowInstanceLinkCacheModel =
+			new WorkflowInstanceLinkCacheModel();
+
+	private WorkflowInstanceLinkCacheModel _workflowInstanceLinkCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _workflowInstanceLinkId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _workflowInstanceId;
 	private long _columnBitmask;
 	private WorkflowInstanceLink _escapedModel;

@@ -3063,8 +3063,10 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				assetListEntrySegmentsEntryRelModelImpl.getOriginalUuid(),
-				assetListEntrySegmentsEntryRelModelImpl.getOriginalGroupId()
+				assetListEntrySegmentsEntryRelModelImpl.
+					getOriginalAttributeValue("uuid"),
+				assetListEntrySegmentsEntryRelModelImpl.
+					getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -3086,9 +3088,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 			Object[] args = new Object[] {
 				assetListEntrySegmentsEntryRelModelImpl.
-					getOriginalAssetListEntryId(),
+					getOriginalAttributeValue("assetListEntryId"),
 				assetListEntrySegmentsEntryRelModelImpl.
-					getOriginalSegmentsEntryId()
+					getOriginalAttributeValue("segmentsEntryId")
 			};
 
 			finderCache.removeResult(_finderPathCountByA_S, args);
@@ -3369,7 +3371,8 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					assetListEntrySegmentsEntryRelModelImpl.getOriginalUuid()
+					assetListEntrySegmentsEntryRelModelImpl.
+						getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -3390,9 +3393,10 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					assetListEntrySegmentsEntryRelModelImpl.getOriginalUuid(),
 					assetListEntrySegmentsEntryRelModelImpl.
-						getOriginalCompanyId()
+						getOriginalAttributeValue("uuid"),
+					assetListEntrySegmentsEntryRelModelImpl.
+						getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -3415,7 +3419,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 				Object[] args = new Object[] {
 					assetListEntrySegmentsEntryRelModelImpl.
-						getOriginalAssetListEntryId()
+						getOriginalAttributeValue("assetListEntryId")
 				};
 
 				finderCache.removeResult(
@@ -3440,7 +3444,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 				Object[] args = new Object[] {
 					assetListEntrySegmentsEntryRelModelImpl.
-						getOriginalSegmentsEntryId()
+						getOriginalAttributeValue("segmentsEntryId")
 				};
 
 				finderCache.removeResult(
@@ -3966,7 +3970,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			AssetListEntrySegmentsEntryRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			AssetListEntrySegmentsEntryRelModelImpl.UUID_COLUMN_BITMASK);
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3976,8 +3980,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			AssetListEntrySegmentsEntryRelImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			AssetListEntrySegmentsEntryRelModelImpl.UUID_COLUMN_BITMASK |
-			AssetListEntrySegmentsEntryRelModelImpl.GROUPID_COLUMN_BITMASK);
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask("uuid") |
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask(
+				"groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3997,8 +4002,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			AssetListEntrySegmentsEntryRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			AssetListEntrySegmentsEntryRelModelImpl.UUID_COLUMN_BITMASK |
-			AssetListEntrySegmentsEntryRelModelImpl.COMPANYID_COLUMN_BITMASK);
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask("uuid") |
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask(
+				"companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4017,8 +4023,8 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			AssetListEntrySegmentsEntryRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAssetListEntryId",
 			new String[] {Long.class.getName()},
-			AssetListEntrySegmentsEntryRelModelImpl.
-				ASSETLISTENTRYID_COLUMN_BITMASK);
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask(
+				"assetListEntryId"));
 
 		_finderPathCountByAssetListEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4036,8 +4042,8 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			AssetListEntrySegmentsEntryRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySegmentsEntryId",
 			new String[] {Long.class.getName()},
-			AssetListEntrySegmentsEntryRelModelImpl.
-				SEGMENTSENTRYID_COLUMN_BITMASK);
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask(
+				"segmentsEntryId"));
 
 		_finderPathCountBySegmentsEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4047,10 +4053,10 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			AssetListEntrySegmentsEntryRelImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByA_S",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			AssetListEntrySegmentsEntryRelModelImpl.
-				ASSETLISTENTRYID_COLUMN_BITMASK |
-			AssetListEntrySegmentsEntryRelModelImpl.
-				SEGMENTSENTRYID_COLUMN_BITMASK);
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask(
+				"assetListEntryId") |
+			AssetListEntrySegmentsEntryRelModelImpl.getColumnBitmask(
+				"segmentsEntryId"));
 
 		_finderPathCountByA_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_S",
