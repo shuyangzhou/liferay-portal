@@ -14,8 +14,6 @@
 
 package com.liferay.portal.file.install.internal.properties;
 
-import static com.liferay.portal.file.install.internal.properties.InterpolationUtil.substVars;
-
 import com.liferay.petra.string.CharPool;
 
 import java.io.IOException;
@@ -25,7 +23,6 @@ import java.io.Writer;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,10 +34,7 @@ import java.util.Set;
  */
 public class TypedProperties extends AbstractMap<String, Object> {
 
-	public static final String ENV_PREFIX = "env:";
-
-	public TypedProperties(SubstitutionCallback callback) {
-		_storage = new Properties(false);
+	public TypedProperties(SubstitutionalCallback callback) {
 		_callback = callback;
 	}
 
@@ -109,12 +103,6 @@ public class TypedProperties extends AbstractMap<String, Object> {
 		_storage.save(writer);
 	}
 
-	public interface SubstitutionCallback {
-
-		public String getValue(String name, String key, String value);
-
-	}
-
 	private static Object _convertFromString(String value) {
 		try {
 			return ConfigurationHandler.read(value);
@@ -130,41 +118,6 @@ public class TypedProperties extends AbstractMap<String, Object> {
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
-		}
-	}
-
-	private static Map<String, Map<String, String>> _prepare(
-		Map<String, TypedProperties> properties) {
-
-		Map<String, Map<String, String>> dynamic = new HashMap<>();
-
-		for (Map.Entry<String, TypedProperties> entry : properties.entrySet()) {
-			String name = entry.getKey();
-
-			TypedProperties typedProperties = entry.getValue();
-
-			dynamic.put(name, new DynamicMap(name, typedProperties._storage));
-		}
-
-		return dynamic;
-	}
-
-	private static void _substitute(
-		Map<String, TypedProperties> properties,
-		Map<String, Map<String, String>> dynamic, SubstitutionCallback callback,
-		boolean finalSubstitution) {
-
-		for (Map<String, String> map : dynamic.values()) {
-			DynamicMap dynamicMap = (DynamicMap)map;
-
-			dynamicMap.init(callback, finalSubstitution);
-		}
-
-		for (Map.Entry<String, TypedProperties> entry : properties.entrySet()) {
-			TypedProperties typedProperties = entry.getValue();
-
-			typedProperties._storage.putAllSubstituted(
-				dynamic.get(entry.getKey()));
 		}
 	}
 
@@ -184,39 +137,39 @@ public class TypedProperties extends AbstractMap<String, Object> {
 		}
 	}
 
-	private void _substitute(final SubstitutionCallback substitutionCallback) {
-		SubstitutionCallback callback = substitutionCallback;
-
-		if (callback == null) {
-			callback = new SubstitutionCallback() {
-
-				@Override
-				public String getValue(String name, String key, String value) {
-					if (value.startsWith(ENV_PREFIX)) {
-						return System.getenv(
-							value.substring(ENV_PREFIX.length()));
-					}
-
-					return System.getProperty(value);
-				}
-
-			};
+	private void _substitute(SubstitutionalCallback substitutionCallback) {
+		if (substitutionCallback == null) {
+			substitutionCallback = _defaultSubstitutionCallback;
 		}
 
-		Map<String, TypedProperties> map = Collections.singletonMap(
-			"root", this);
+		DynamicMap dynamic = new DynamicMap(_storage, substitutionCallback);
 
-		_substitute(map, _prepare(map), callback, true);
+		_storage.putAllSubstituted(dynamic);
 	}
 
-	private final SubstitutionCallback _callback;
-	private final Properties _storage;
+	private static final String _ENV_PREFIX = "env:";
+
+	private final SubstitutionalCallback _callback;
+
+	private final SubstitutionalCallback _defaultSubstitutionCallback =
+		value -> {
+			if (value.startsWith(_ENV_PREFIX)) {
+				return System.getenv(value.substring(_ENV_PREFIX.length()));
+			}
+
+			return System.getProperty(value);
+		};
+
+	private final Properties _storage = new Properties();
 
 	private static class DynamicMap extends AbstractMap<String, String> {
 
-		public DynamicMap(String name, Properties storage) {
-			_name = name;
-			_storage = storage;
+		public DynamicMap(
+			Properties properties,
+			SubstitutionalCallback substitutionCallback) {
+
+			_properties = properties;
+			_substitutionCallback = substitutionCallback;
 		}
 
 		@Override
@@ -225,94 +178,74 @@ public class TypedProperties extends AbstractMap<String, Object> {
 
 				@Override
 				public Iterator<Entry<String, String>> iterator() {
-					Set<String> keys = _storage.keySet();
+					Set<String> keys = _properties.keySet();
 
 					return new ComputedIterator(keys.iterator());
 				}
 
 				@Override
 				public int size() {
-					return _storage.size();
+					return _properties.size();
 				}
 
 			};
 		}
 
-		public void init(
-			SubstitutionCallback callback, boolean finalSubstitution) {
-
-			_callback = callback;
-			_finalSubstitution = finalSubstitution;
-		}
-
 		private String _compute(final String key) {
-			InterpolationUtil.SubstitutionCallback wrapper =
-				new InterpolationUtil.SubstitutionCallback() {
+			return InterpolationUtil.substVars(
+				_properties.get(key), key, _cycles, this,
+				value -> {
+					String string = DynamicMap.this.get(value);
 
-					@Override
-					public String getValue(String value) {
-						String string = DynamicMap.this.get(value);
+					if (string == null) {
+						return _substitutionCallback.getValue(value);
+					}
 
-						if (!_finalSubstitution || (string == null)) {
-							return _callback.getValue(_name, key, value);
-						}
+					if (!_properties.isTyped()) {
+						return string;
+					}
 
-						if (!_storage.isTyped()) {
-							return string;
-						}
+					boolean mult = false;
 
-						boolean mult = false;
+					boolean hasType = false;
 
-						boolean hasType = false;
+					char t = string.charAt(0);
 
-						char t = string.charAt(0);
+					if ((t == CharPool.OPEN_BRACKET) ||
+						(t == CharPool.OPEN_PARENTHESIS)) {
+
+						mult = true;
+					}
+					else {
+						t = string.charAt(1);
 
 						if ((t == CharPool.OPEN_BRACKET) ||
 							(t == CharPool.OPEN_PARENTHESIS)) {
 
 							mult = true;
 						}
-						else {
-							t = string.charAt(1);
 
-							if ((t == CharPool.OPEN_BRACKET) ||
-								(t == CharPool.OPEN_PARENTHESIS)) {
-
-								mult = true;
-							}
-
-							hasType = true;
-						}
-
-						if (mult) {
-							throw new IllegalArgumentException(
-								"Cannot substitute from a collection/array " +
-									"value: " + value);
-						}
-
-						if (hasType) {
-							return (String)_convertFromString(
-								string.substring(1));
-						}
-
-						return (String)_convertFromString(string);
+						hasType = true;
 					}
 
-				};
+					if (mult) {
+						throw new IllegalArgumentException(
+							"Cannot substitute from a collection/array " +
+								"value: " + value);
+					}
 
-			String value = _storage.get(key);
+					if (hasType) {
+						return (String)_convertFromString(string.substring(1));
+					}
 
-			return substVars(
-				value, key, _cycles, this, wrapper, false, _finalSubstitution,
-				_finalSubstitution);
+					return (String)_convertFromString(string);
+				},
+				false);
 		}
 
-		private SubstitutionCallback _callback;
-		private final Map<String, String> _computed = new HashMap<>();
 		private final Map<String, String> _cycles = new HashMap<>();
-		private boolean _finalSubstitution;
-		private final String _name;
-		private final Properties _storage;
+		private final Properties _properties;
+		private final SubstitutionalCallback _substitutionCallback;
 
 		private class ComputedIterator
 			implements Iterator<Entry<String, String>> {
@@ -339,13 +272,7 @@ public class TypedProperties extends AbstractMap<String, Object> {
 
 					@Override
 					public String getValue() {
-						String v = _computed.get(key);
-
-						if (v == null) {
-							v = _compute(key);
-						}
-
-						return v;
+						return _compute(key);
 					}
 
 					@Override
@@ -367,7 +294,7 @@ public class TypedProperties extends AbstractMap<String, Object> {
 
 	}
 
-	private class KeyIterator implements Iterator {
+	private class KeyIterator implements Iterator<Entry<String, Object>> {
 
 		public KeyIterator() {
 			Set<String> entries = _storage.keySet();
