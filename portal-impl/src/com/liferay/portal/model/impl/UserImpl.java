@@ -541,7 +541,7 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public String getOriginalEmailAddress() {
-		return super.getOriginalEmailAddress();
+		return getOriginalAttributeValue("emailAddress");
 	}
 
 	@Override

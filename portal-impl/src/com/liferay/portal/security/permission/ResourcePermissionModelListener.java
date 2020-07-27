@@ -48,9 +48,10 @@ public class ResourcePermissionModelListener
 
 		if ((columnBitmask & _CLEAR_ON_BEFORE_BITMASK) != 0) {
 			PermissionCacheUtil.clearResourcePermissionCache(
-				resourcePermissionModelImpl.getOriginalScope(),
-				resourcePermissionModelImpl.getOriginalName(),
-				resourcePermissionModelImpl.getOriginalPrimKey());
+				resourcePermissionModelImpl.getOriginalAttributeValue("scope"),
+				resourcePermissionModelImpl.getOriginalAttributeValue("name"),
+				resourcePermissionModelImpl.getOriginalAttributeValue(
+					"primKey"));
 		}
 	}
 
