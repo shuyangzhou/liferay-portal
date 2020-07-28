@@ -482,18 +482,18 @@ public class SegmentsEntryRelPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsEntryRel.getSegmentsEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRel, "getOriginalSegmentsEntryId",
-				new Class<?>[0]));
+				existingSegmentsEntryRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "segmentsEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsEntryRel.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRel, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSegmentsEntryRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsEntryRel.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRel, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingSegmentsEntryRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected SegmentsEntryRel addSegmentsEntryRel() throws Exception {

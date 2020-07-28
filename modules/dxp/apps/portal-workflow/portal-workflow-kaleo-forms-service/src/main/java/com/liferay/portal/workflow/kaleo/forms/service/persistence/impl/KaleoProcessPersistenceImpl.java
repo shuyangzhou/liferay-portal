@@ -2690,8 +2690,8 @@ public class KaleoProcessPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kaleoProcessModelImpl.getOriginalUuid(),
-				kaleoProcessModelImpl.getOriginalGroupId()
+				kaleoProcessModelImpl.getOriginalAttributeValue("uuid"),
+				kaleoProcessModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2711,7 +2711,8 @@ public class KaleoProcessPersistenceImpl
 			 _finderPathFetchByDDLRecordSetId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kaleoProcessModelImpl.getOriginalDDLRecordSetId()
+				kaleoProcessModelImpl.getOriginalAttributeValue(
+					"DDLRecordSetId")
 			};
 
 			finderCache.removeResult(_finderPathCountByDDLRecordSetId, args);
@@ -2935,7 +2936,7 @@ public class KaleoProcessPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kaleoProcessModelImpl.getOriginalUuid()
+					kaleoProcessModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2954,8 +2955,8 @@ public class KaleoProcessPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kaleoProcessModelImpl.getOriginalUuid(),
-					kaleoProcessModelImpl.getOriginalCompanyId()
+					kaleoProcessModelImpl.getOriginalAttributeValue("uuid"),
+					kaleoProcessModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2977,7 +2978,7 @@ public class KaleoProcessPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					kaleoProcessModelImpl.getOriginalGroupId()
+					kaleoProcessModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -3286,7 +3287,7 @@ public class KaleoProcessPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			KaleoProcessImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			KaleoProcessModelImpl.UUID_COLUMN_BITMASK);
+			KaleoProcessModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3295,8 +3296,8 @@ public class KaleoProcessPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			KaleoProcessImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KaleoProcessModelImpl.UUID_COLUMN_BITMASK |
-			KaleoProcessModelImpl.GROUPID_COLUMN_BITMASK);
+			KaleoProcessModelImpl.getColumnBitmask("uuid") |
+			KaleoProcessModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3316,8 +3317,8 @@ public class KaleoProcessPersistenceImpl
 			KaleoProcessImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KaleoProcessModelImpl.UUID_COLUMN_BITMASK |
-			KaleoProcessModelImpl.COMPANYID_COLUMN_BITMASK);
+			KaleoProcessModelImpl.getColumnBitmask("uuid") |
+			KaleoProcessModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3335,7 +3336,7 @@ public class KaleoProcessPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			KaleoProcessImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			KaleoProcessModelImpl.GROUPID_COLUMN_BITMASK);
+			KaleoProcessModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3344,7 +3345,7 @@ public class KaleoProcessPersistenceImpl
 		_finderPathFetchByDDLRecordSetId = new FinderPath(
 			KaleoProcessImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByDDLRecordSetId", new String[] {Long.class.getName()},
-			KaleoProcessModelImpl.DDLRECORDSETID_COLUMN_BITMASK);
+			KaleoProcessModelImpl.getColumnBitmask("DDLRecordSetId"));
 
 		_finderPathCountByDDLRecordSetId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

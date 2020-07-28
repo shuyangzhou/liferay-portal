@@ -430,12 +430,14 @@ public class FolderPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingFolder.getAccountId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFolder, "getOriginalAccountId", new Class<?>[0]));
+				existingFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "accountId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingFolder.getFullName(),
 				ReflectionTestUtil.invoke(
-					existingFolder, "getOriginalFullName", new Class<?>[0])));
+					existingFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "fullName")));
 	}
 
 	protected Folder addFolder() throws Exception {

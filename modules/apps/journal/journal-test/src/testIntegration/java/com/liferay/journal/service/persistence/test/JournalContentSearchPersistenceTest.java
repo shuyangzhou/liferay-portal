@@ -546,30 +546,30 @@ public class JournalContentSearchPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingJournalContentSearch.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalContentSearch, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingJournalContentSearch, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingJournalContentSearch.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingJournalContentSearch, "getOriginalPrivateLayout",
-				new Class<?>[0]));
+				existingJournalContentSearch, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalContentSearch.getLayoutId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalContentSearch, "getOriginalLayoutId",
-				new Class<?>[0]));
+				existingJournalContentSearch, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalContentSearch.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingJournalContentSearch, "getOriginalPortletId",
-					new Class<?>[0])));
+					existingJournalContentSearch, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "portletId")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalContentSearch.getArticleId(),
 				ReflectionTestUtil.invoke(
-					existingJournalContentSearch, "getOriginalArticleId",
-					new Class<?>[0])));
+					existingJournalContentSearch, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "articleId")));
 	}
 
 	protected JournalContentSearch addJournalContentSearch() throws Exception {

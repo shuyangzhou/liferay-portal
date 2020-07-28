@@ -479,8 +479,9 @@ public class AppBuilderAppDataRecordLinkPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAppBuilderAppDataRecordLink.getDdlRecordId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppDataRecordLink, "getOriginalDdlRecordId",
-				new Class<?>[0]));
+				existingAppBuilderAppDataRecordLink,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"ddlRecordId"));
 	}
 
 	protected AppBuilderAppDataRecordLink addAppBuilderAppDataRecordLink()

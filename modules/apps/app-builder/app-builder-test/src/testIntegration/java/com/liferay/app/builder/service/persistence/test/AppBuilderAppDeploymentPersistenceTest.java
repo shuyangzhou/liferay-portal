@@ -461,14 +461,15 @@ public class AppBuilderAppDeploymentPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAppBuilderAppDeployment.getAppBuilderAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppDeployment, "getOriginalAppBuilderAppId",
-				new Class<?>[0]));
+				existingAppBuilderAppDeployment, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "appBuilderAppId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAppBuilderAppDeployment.getType(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderAppDeployment, "getOriginalType",
-					new Class<?>[0])));
+					existingAppBuilderAppDeployment,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"type")));
 	}
 
 	protected AppBuilderAppDeployment addAppBuilderAppDeployment()

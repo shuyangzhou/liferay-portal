@@ -585,13 +585,13 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 			Long.valueOf(
 				existingKaleoTimerInstanceToken.getKaleoInstanceTokenId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTimerInstanceToken,
-				"getOriginalKaleoInstanceTokenId", new Class<?>[0]));
+				existingKaleoTimerInstanceToken, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoInstanceTokenId"));
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTimerInstanceToken.getKaleoTimerId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTimerInstanceToken, "getOriginalKaleoTimerId",
-				new Class<?>[0]));
+				existingKaleoTimerInstanceToken, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoTimerId"));
 	}
 
 	protected KaleoTimerInstanceToken addKaleoTimerInstanceToken()

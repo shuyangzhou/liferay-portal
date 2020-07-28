@@ -810,48 +810,51 @@ public class LayoutPageTemplateEntryPersistenceTest {
 			Objects.equals(
 				existingLayoutPageTemplateEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutPageTemplateEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLayoutPageTemplateEntry,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateEntry.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateEntry, "getOriginalPlid",
-				new Class<?>[0]));
+				existingLayoutPageTemplateEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "plid"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayoutPageTemplateEntry.getLayoutPageTemplateEntryKey(),
 				ReflectionTestUtil.invoke(
 					existingLayoutPageTemplateEntry,
-					"getOriginalLayoutPageTemplateEntryKey", new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"layoutPageTemplateEntryKey")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayoutPageTemplateEntry.getName(),
 				ReflectionTestUtil.invoke(
-					existingLayoutPageTemplateEntry, "getOriginalName",
-					new Class<?>[0])));
+					existingLayoutPageTemplateEntry,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"name")));
 		Assert.assertEquals(
 			Integer.valueOf(existingLayoutPageTemplateEntry.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLayoutPageTemplateEntry, "getOriginalType",
-				new Class<?>[0]));
+				existingLayoutPageTemplateEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "type"));
 	}
 
 	protected LayoutPageTemplateEntry addLayoutPageTemplateEntry()

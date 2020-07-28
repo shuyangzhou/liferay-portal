@@ -764,22 +764,25 @@ public class BlogsEntryPersistenceTest {
 			Objects.equals(
 				existingBlogsEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingBlogsEntry, "getOriginalUuid", new Class<?>[0])));
+					existingBlogsEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingBlogsEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingBlogsEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingBlogsEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingBlogsEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingBlogsEntry.getUrlTitle(),
 				ReflectionTestUtil.invoke(
-					existingBlogsEntry, "getOriginalUrlTitle",
-					new Class<?>[0])));
+					existingBlogsEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "urlTitle")));
 	}
 
 	protected BlogsEntry addBlogsEntry() throws Exception {

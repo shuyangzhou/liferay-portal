@@ -493,30 +493,31 @@ public class LVEntryLocalizationVersionPersistenceTest {
 			Long.valueOf(
 				existingLVEntryLocalizationVersion.getLvEntryLocalizationId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryLocalizationVersion,
-				"getOriginalLvEntryLocalizationId", new Class<?>[0]));
+				existingLVEntryLocalizationVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "lvEntryLocalizationId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingLVEntryLocalizationVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryLocalizationVersion, "getOriginalVersion",
-				new Class<?>[0]));
+				existingLVEntryLocalizationVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntryLocalizationVersion.getLvEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryLocalizationVersion, "getOriginalLvEntryId",
-				new Class<?>[0]));
+				existingLVEntryLocalizationVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "lvEntryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLVEntryLocalizationVersion.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryLocalizationVersion, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingLVEntryLocalizationVersion,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"languageId")));
 		Assert.assertEquals(
 			Integer.valueOf(existingLVEntryLocalizationVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryLocalizationVersion, "getOriginalVersion",
-				new Class<?>[0]));
+				existingLVEntryLocalizationVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 	}
 
 	protected LVEntryLocalizationVersion addLVEntryLocalizationVersion()

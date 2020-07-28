@@ -120,12 +120,32 @@ public class MessageModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FOLDERID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REMOTEMESSAGEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SENTDATE_COLUMN_BITMASK = 8L;
 
 	/**
@@ -342,6 +362,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setMessageId(long messageId) {
+		_columnBitmask |= _columnBitmasks.get("messageId");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_messageId = messageId;
 	}
 
@@ -352,19 +378,22 @@ public class MessageModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -374,6 +403,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -405,6 +440,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -415,6 +456,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -431,6 +478,12 @@ public class MessageModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -441,6 +494,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		_columnBitmask |= _columnBitmasks.get("accountId");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_accountId = accountId;
 	}
 
@@ -451,19 +510,22 @@ public class MessageModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("folderId");
 
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
-
-			_originalFolderId = _folderId;
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
 		}
 
 		_folderId = folderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		return getOriginalAttributeValue("folderId");
 	}
 
 	@Override
@@ -478,6 +540,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setSender(String sender) {
+		_columnBitmask |= _columnBitmasks.get("sender");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_sender = sender;
 	}
 
@@ -493,6 +561,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setTo(String to) {
+		_columnBitmask |= _columnBitmasks.get("to");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_to = to;
 	}
 
@@ -508,6 +582,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setCc(String cc) {
+		_columnBitmask |= _columnBitmasks.get("cc");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_cc = cc;
 	}
 
@@ -523,6 +603,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setBcc(String bcc) {
+		_columnBitmask |= _columnBitmasks.get("bcc");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_bcc = bcc;
 	}
 
@@ -533,7 +619,11 @@ public class MessageModelImpl
 
 	@Override
 	public void setSentDate(Date sentDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("sentDate");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
 
 		_sentDate = sentDate;
 	}
@@ -550,6 +640,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setSubject(String subject) {
+		_columnBitmask |= _columnBitmasks.get("subject");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_subject = subject;
 	}
 
@@ -565,6 +661,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setPreview(String preview) {
+		_columnBitmask |= _columnBitmasks.get("preview");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_preview = preview;
 	}
 
@@ -580,6 +682,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setBody(String body) {
+		_columnBitmask |= _columnBitmasks.get("body");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_body = body;
 	}
 
@@ -595,6 +703,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setFlags(String flags) {
+		_columnBitmask |= _columnBitmasks.get("flags");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_flags = flags;
 	}
 
@@ -605,6 +719,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_size = size;
 	}
 
@@ -615,19 +735,22 @@ public class MessageModelImpl
 
 	@Override
 	public void setRemoteMessageId(long remoteMessageId) {
-		_columnBitmask |= REMOTEMESSAGEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("remoteMessageId");
 
-		if (!_setOriginalRemoteMessageId) {
-			_setOriginalRemoteMessageId = true;
-
-			_originalRemoteMessageId = _remoteMessageId;
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
 		}
 
 		_remoteMessageId = remoteMessageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRemoteMessageId() {
-		return _originalRemoteMessageId;
+		return getOriginalAttributeValue("remoteMessageId");
 	}
 
 	@Override
@@ -642,6 +765,12 @@ public class MessageModelImpl
 
 	@Override
 	public void setContentType(String contentType) {
+		_columnBitmask |= _columnBitmasks.get("contentType");
+
+		if (_messageCacheModel == _dummyMessageCacheModel) {
+			_messageCacheModel = (MessageCacheModel)toCacheModel();
+		}
+
 		_contentType = contentType;
 	}
 
@@ -767,24 +896,11 @@ public class MessageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MessageModelImpl messageModelImpl = this;
+		_setModifiedDate = false;
 
-		messageModelImpl._originalCompanyId = messageModelImpl._companyId;
+		_columnBitmask = 0;
 
-		messageModelImpl._setOriginalCompanyId = false;
-
-		messageModelImpl._setModifiedDate = false;
-
-		messageModelImpl._originalFolderId = messageModelImpl._folderId;
-
-		messageModelImpl._setOriginalFolderId = false;
-
-		messageModelImpl._originalRemoteMessageId =
-			messageModelImpl._remoteMessageId;
-
-		messageModelImpl._setOriginalRemoteMessageId = false;
-
-		messageModelImpl._columnBitmask = 0;
+		_messageCacheModel = _dummyMessageCacheModel;
 	}
 
 	@Override
@@ -985,10 +1101,152 @@ public class MessageModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<MessageCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MessageCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MessageCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"messageId", messageCacheModel -> messageCacheModel.messageId);
+
+		columnBitmasks.put("messageId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", messageCacheModel -> messageCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId", messageCacheModel -> messageCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName", messageCacheModel -> messageCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", messageCacheModel -> messageCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			messageCacheModel -> messageCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"accountId", messageCacheModel -> messageCacheModel.accountId);
+
+		columnBitmasks.put("accountId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"folderId", messageCacheModel -> messageCacheModel.folderId);
+
+		columnBitmasks.put("folderId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"sender", messageCacheModel -> messageCacheModel.sender);
+
+		columnBitmasks.put("sender", 256L);
+
+		cacheModelGetterFunctions.put(
+			"to", messageCacheModel -> messageCacheModel.to);
+
+		columnBitmasks.put("to", 512L);
+
+		cacheModelGetterFunctions.put(
+			"cc", messageCacheModel -> messageCacheModel.cc);
+
+		columnBitmasks.put("cc", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"bcc", messageCacheModel -> messageCacheModel.bcc);
+
+		columnBitmasks.put("bcc", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"sentDate", messageCacheModel -> messageCacheModel.sentDate);
+
+		columnBitmasks.put("sentDate", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"subject", messageCacheModel -> messageCacheModel.subject);
+
+		columnBitmasks.put("subject", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"preview", messageCacheModel -> messageCacheModel.preview);
+
+		columnBitmasks.put("preview", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"body", messageCacheModel -> messageCacheModel.body);
+
+		columnBitmasks.put("body", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"flags", messageCacheModel -> messageCacheModel.flags);
+
+		columnBitmasks.put("flags", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"size", messageCacheModel -> messageCacheModel.size);
+
+		columnBitmasks.put("size", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"remoteMessageId",
+			messageCacheModel -> messageCacheModel.remoteMessageId);
+
+		columnBitmasks.put("remoteMessageId", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"contentType", messageCacheModel -> messageCacheModel.contentType);
+
+		columnBitmasks.put("contentType", 524288L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MessageCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MessageCacheModel messageCacheModel = _messageCacheModel;
+
+		if (messageCacheModel == null) {
+			messageCacheModel = _dummyMessageCacheModel;
+		}
+
+		return (T)function.apply(messageCacheModel);
+	}
+
+	private static final MessageCacheModel _dummyMessageCacheModel =
+		new MessageCacheModel();
+
+	private MessageCacheModel _messageCacheModel;
 	private long _messageId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -996,8 +1254,6 @@ public class MessageModelImpl
 	private boolean _setModifiedDate;
 	private long _accountId;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private String _sender;
 	private String _to;
 	private String _cc;
@@ -1009,8 +1265,6 @@ public class MessageModelImpl
 	private String _flags;
 	private long _size;
 	private long _remoteMessageId;
-	private long _originalRemoteMessageId;
-	private boolean _setOriginalRemoteMessageId;
 	private String _contentType;
 	private long _columnBitmask;
 	private Message _escapedModel;

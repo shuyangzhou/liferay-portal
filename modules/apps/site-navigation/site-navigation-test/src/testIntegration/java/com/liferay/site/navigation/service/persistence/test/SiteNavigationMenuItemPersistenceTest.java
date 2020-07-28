@@ -569,13 +569,13 @@ public class SiteNavigationMenuItemPersistenceTest {
 			Objects.equals(
 				existingSiteNavigationMenuItem.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSiteNavigationMenuItem, "getOriginalUuid",
-					new Class<?>[0])));
+					existingSiteNavigationMenuItem, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingSiteNavigationMenuItem.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteNavigationMenuItem, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSiteNavigationMenuItem, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected SiteNavigationMenuItem addSiteNavigationMenuItem()

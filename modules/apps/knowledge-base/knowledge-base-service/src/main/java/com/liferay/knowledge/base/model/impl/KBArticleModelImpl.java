@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -146,30 +145,95 @@ public class KBArticleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KBFOLDERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LATEST_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MAIN_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTRESOURCEPRIMKEY_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RESOURCEPRIMKEY_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SECTIONS_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long URLTITLE_COLUMN_BITMASK = 512L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 1024L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 2048L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4096L;
 
 	/**
@@ -503,6 +567,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -519,17 +589,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -540,6 +615,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setKbArticleId(long kbArticleId) {
+		_columnBitmask |= _columnBitmasks.get("kbArticleId");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_kbArticleId = kbArticleId;
 	}
 
@@ -551,12 +632,10 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
-		_columnBitmask |= RESOURCEPRIMKEY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("resourcePrimKey");
 
-		if (!_setOriginalResourcePrimKey) {
-			_setOriginalResourcePrimKey = true;
-
-			_originalResourcePrimKey = _resourcePrimKey;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_resourcePrimKey = resourcePrimKey;
@@ -567,8 +646,13 @@ public class KBArticleModelImpl
 		return true;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalResourcePrimKey() {
-		return _originalResourcePrimKey;
+		return getOriginalAttributeValue("resourcePrimKey");
 	}
 
 	@JSON
@@ -579,19 +663,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -602,19 +689,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -625,6 +715,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -657,6 +753,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -668,6 +770,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -685,7 +793,11 @@ public class KBArticleModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -698,6 +810,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setRootResourcePrimKey(long rootResourcePrimKey) {
+		_columnBitmask |= _columnBitmasks.get("rootResourcePrimKey");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_rootResourcePrimKey = rootResourcePrimKey;
 	}
 
@@ -709,6 +827,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setParentResourceClassNameId(long parentResourceClassNameId) {
+		_columnBitmask |= _columnBitmasks.get("parentResourceClassNameId");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_parentResourceClassNameId = parentResourceClassNameId;
 	}
 
@@ -720,19 +844,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setParentResourcePrimKey(long parentResourcePrimKey) {
-		_columnBitmask |= PARENTRESOURCEPRIMKEY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("parentResourcePrimKey");
 
-		if (!_setOriginalParentResourcePrimKey) {
-			_setOriginalParentResourcePrimKey = true;
-
-			_originalParentResourcePrimKey = _parentResourcePrimKey;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_parentResourcePrimKey = parentResourcePrimKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentResourcePrimKey() {
-		return _originalParentResourcePrimKey;
+		return getOriginalAttributeValue("parentResourcePrimKey");
 	}
 
 	@JSON
@@ -743,19 +870,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setKbFolderId(long kbFolderId) {
-		_columnBitmask |= KBFOLDERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("kbFolderId");
 
-		if (!_setOriginalKbFolderId) {
-			_setOriginalKbFolderId = true;
-
-			_originalKbFolderId = _kbFolderId;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_kbFolderId = kbFolderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKbFolderId() {
-		return _originalKbFolderId;
+		return getOriginalAttributeValue("kbFolderId");
 	}
 
 	@JSON
@@ -766,19 +896,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setVersion(int version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("version");
 
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalVersion() {
-		return _originalVersion;
+		return getOriginalAttributeValue("version");
 	}
 
 	@JSON
@@ -794,6 +927,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_title = title;
 	}
 
@@ -810,17 +949,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setUrlTitle(String urlTitle) {
-		_columnBitmask |= URLTITLE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("urlTitle");
 
-		if (_originalUrlTitle == null) {
-			_originalUrlTitle = _urlTitle;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_urlTitle = urlTitle;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUrlTitle() {
-		return GetterUtil.getString(_originalUrlTitle);
+		return getOriginalAttributeValue("urlTitle");
 	}
 
 	@JSON
@@ -836,6 +980,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_content = content;
 	}
 
@@ -852,6 +1002,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -863,6 +1019,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setPriority(double priority) {
+		_columnBitmask |= _columnBitmasks.get("priority");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_priority = priority;
 	}
 
@@ -879,17 +1041,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setSections(String sections) {
-		_columnBitmask |= SECTIONS_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("sections");
 
-		if (_originalSections == null) {
-			_originalSections = _sections;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_sections = sections;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalSections() {
-		return GetterUtil.getString(_originalSections);
+		return getOriginalAttributeValue("sections");
 	}
 
 	@JSON
@@ -906,19 +1073,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setLatest(boolean latest) {
-		_columnBitmask |= LATEST_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("latest");
 
-		if (!_setOriginalLatest) {
-			_setOriginalLatest = true;
-
-			_originalLatest = _latest;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_latest = latest;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalLatest() {
-		return _originalLatest;
+		return getOriginalAttributeValue("latest");
 	}
 
 	@JSON
@@ -935,19 +1105,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setMain(boolean main) {
-		_columnBitmask |= MAIN_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("main");
 
-		if (!_setOriginalMain) {
-			_setOriginalMain = true;
-
-			_originalMain = _main;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_main = main;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalMain() {
-		return _originalMain;
+		return getOriginalAttributeValue("main");
 	}
 
 	@JSON
@@ -963,6 +1136,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setSourceURL(String sourceURL) {
+		_columnBitmask |= _columnBitmasks.get("sourceURL");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_sourceURL = sourceURL;
 	}
 
@@ -974,6 +1153,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -985,19 +1170,22 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("status");
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
 		}
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -1008,6 +1196,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1040,6 +1234,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -1051,6 +1251,12 @@ public class KBArticleModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
+		if (_kbArticleCacheModel == _dummyKBArticleCacheModel) {
+			_kbArticleCacheModel = (KBArticleCacheModel)toCacheModel();
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1275,55 +1481,11 @@ public class KBArticleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KBArticleModelImpl kbArticleModelImpl = this;
+		_setModifiedDate = false;
 
-		kbArticleModelImpl._originalUuid = kbArticleModelImpl._uuid;
+		_columnBitmask = 0;
 
-		kbArticleModelImpl._originalResourcePrimKey =
-			kbArticleModelImpl._resourcePrimKey;
-
-		kbArticleModelImpl._setOriginalResourcePrimKey = false;
-
-		kbArticleModelImpl._originalGroupId = kbArticleModelImpl._groupId;
-
-		kbArticleModelImpl._setOriginalGroupId = false;
-
-		kbArticleModelImpl._originalCompanyId = kbArticleModelImpl._companyId;
-
-		kbArticleModelImpl._setOriginalCompanyId = false;
-
-		kbArticleModelImpl._setModifiedDate = false;
-
-		kbArticleModelImpl._originalParentResourcePrimKey =
-			kbArticleModelImpl._parentResourcePrimKey;
-
-		kbArticleModelImpl._setOriginalParentResourcePrimKey = false;
-
-		kbArticleModelImpl._originalKbFolderId = kbArticleModelImpl._kbFolderId;
-
-		kbArticleModelImpl._setOriginalKbFolderId = false;
-
-		kbArticleModelImpl._originalVersion = kbArticleModelImpl._version;
-
-		kbArticleModelImpl._setOriginalVersion = false;
-
-		kbArticleModelImpl._originalUrlTitle = kbArticleModelImpl._urlTitle;
-
-		kbArticleModelImpl._originalSections = kbArticleModelImpl._sections;
-
-		kbArticleModelImpl._originalLatest = kbArticleModelImpl._latest;
-
-		kbArticleModelImpl._setOriginalLatest = false;
-
-		kbArticleModelImpl._originalMain = kbArticleModelImpl._main;
-
-		kbArticleModelImpl._setOriginalMain = false;
-
-		kbArticleModelImpl._originalStatus = kbArticleModelImpl._status;
-
-		kbArticleModelImpl._setOriginalStatus = false;
-
-		kbArticleModelImpl._columnBitmask = 0;
+		_kbArticleCacheModel = _dummyKBArticleCacheModel;
 	}
 
 	@Override
@@ -1544,19 +1706,214 @@ public class KBArticleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<KBArticleCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<KBArticleCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<KBArticleCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			kbArticleCacheModel -> kbArticleCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", kbArticleCacheModel -> kbArticleCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"kbArticleId",
+			kbArticleCacheModel -> kbArticleCacheModel.kbArticleId);
+
+		columnBitmasks.put("kbArticleId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"resourcePrimKey",
+			kbArticleCacheModel -> kbArticleCacheModel.resourcePrimKey);
+
+		columnBitmasks.put("resourcePrimKey", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", kbArticleCacheModel -> kbArticleCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", kbArticleCacheModel -> kbArticleCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", kbArticleCacheModel -> kbArticleCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName", kbArticleCacheModel -> kbArticleCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			kbArticleCacheModel -> kbArticleCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			kbArticleCacheModel -> kbArticleCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"rootResourcePrimKey",
+			kbArticleCacheModel -> kbArticleCacheModel.rootResourcePrimKey);
+
+		columnBitmasks.put("rootResourcePrimKey", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"parentResourceClassNameId",
+			kbArticleCacheModel ->
+				kbArticleCacheModel.parentResourceClassNameId);
+
+		columnBitmasks.put("parentResourceClassNameId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"parentResourcePrimKey",
+			kbArticleCacheModel -> kbArticleCacheModel.parentResourcePrimKey);
+
+		columnBitmasks.put("parentResourcePrimKey", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"kbFolderId",
+			kbArticleCacheModel -> kbArticleCacheModel.kbFolderId);
+
+		columnBitmasks.put("kbFolderId", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"version", kbArticleCacheModel -> kbArticleCacheModel.version);
+
+		columnBitmasks.put("version", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"title", kbArticleCacheModel -> kbArticleCacheModel.title);
+
+		columnBitmasks.put("title", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"urlTitle", kbArticleCacheModel -> kbArticleCacheModel.urlTitle);
+
+		columnBitmasks.put("urlTitle", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"content", kbArticleCacheModel -> kbArticleCacheModel.content);
+
+		columnBitmasks.put("content", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			kbArticleCacheModel -> kbArticleCacheModel.description);
+
+		columnBitmasks.put("description", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"priority", kbArticleCacheModel -> kbArticleCacheModel.priority);
+
+		columnBitmasks.put("priority", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"sections", kbArticleCacheModel -> kbArticleCacheModel.sections);
+
+		columnBitmasks.put("sections", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"latest", kbArticleCacheModel -> kbArticleCacheModel.latest);
+
+		columnBitmasks.put("latest", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"main", kbArticleCacheModel -> kbArticleCacheModel.main);
+
+		columnBitmasks.put("main", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"sourceURL", kbArticleCacheModel -> kbArticleCacheModel.sourceURL);
+
+		columnBitmasks.put("sourceURL", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			kbArticleCacheModel -> kbArticleCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"status", kbArticleCacheModel -> kbArticleCacheModel.status);
+
+		columnBitmasks.put("status", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			kbArticleCacheModel -> kbArticleCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 67108864L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			kbArticleCacheModel -> kbArticleCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 134217728L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			kbArticleCacheModel -> kbArticleCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 268435456L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<KBArticleCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		KBArticleCacheModel kbArticleCacheModel = _kbArticleCacheModel;
+
+		if (kbArticleCacheModel == null) {
+			kbArticleCacheModel = _dummyKBArticleCacheModel;
+		}
+
+		return (T)function.apply(kbArticleCacheModel);
+	}
+
+	private static final KBArticleCacheModel _dummyKBArticleCacheModel =
+		new KBArticleCacheModel();
+
+	private KBArticleCacheModel _kbArticleCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _kbArticleId;
 	private long _resourcePrimKey;
-	private long _originalResourcePrimKey;
-	private boolean _setOriginalResourcePrimKey;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1565,33 +1922,19 @@ public class KBArticleModelImpl
 	private long _rootResourcePrimKey;
 	private long _parentResourceClassNameId;
 	private long _parentResourcePrimKey;
-	private long _originalParentResourcePrimKey;
-	private boolean _setOriginalParentResourcePrimKey;
 	private long _kbFolderId;
-	private long _originalKbFolderId;
-	private boolean _setOriginalKbFolderId;
 	private int _version;
-	private int _originalVersion;
-	private boolean _setOriginalVersion;
 	private String _title;
 	private String _urlTitle;
-	private String _originalUrlTitle;
 	private String _content;
 	private String _description;
 	private double _priority;
 	private String _sections;
-	private String _originalSections;
 	private boolean _latest;
-	private boolean _originalLatest;
-	private boolean _setOriginalLatest;
 	private boolean _main;
-	private boolean _originalMain;
-	private boolean _setOriginalMain;
 	private String _sourceURL;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

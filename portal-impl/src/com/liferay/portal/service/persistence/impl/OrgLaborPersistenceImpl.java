@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -26,20 +27,26 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchOrgLaborException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.OrgLabor;
 import com.liferay.portal.kernel.model.OrgLaborTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.OrgLaborPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.OrgLaborImpl;
 import com.liferay.portal.model.impl.OrgLaborModelImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -638,21 +645,13 @@ public class OrgLaborPersistenceImpl
 	 */
 	@Override
 	public void clearCache(OrgLabor orgLabor) {
-		EntityCacheUtil.removeResult(
-			OrgLaborImpl.class, orgLabor.getPrimaryKey());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeResult(OrgLaborImpl.class, orgLabor);
 	}
 
 	@Override
 	public void clearCache(List<OrgLabor> orgLabors) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (OrgLabor orgLabor : orgLabors) {
-			EntityCacheUtil.removeResult(
-				OrgLaborImpl.class, orgLabor.getPrimaryKey());
+			EntityCacheUtil.removeResult(OrgLaborImpl.class, orgLabor);
 		}
 	}
 
@@ -795,10 +794,8 @@ public class OrgLaborPersistenceImpl
 		try {
 			session = openSession();
 
-			if (orgLabor.isNew()) {
+			if (isNew) {
 				session.save(orgLabor);
-
-				orgLabor.setNew(false);
 			}
 			else {
 				orgLabor = (OrgLabor)session.merge(orgLabor);
@@ -811,48 +808,12 @@ public class OrgLaborPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		EntityCacheUtil.putResult(
+			OrgLaborImpl.class, orgLaborModelImpl, false, true);
 
 		if (isNew) {
-			Object[] args = new Object[] {
-				orgLaborModelImpl.getOrganizationId()
-			};
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountByOrganizationId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByOrganizationId, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			orgLabor.setNew(false);
 		}
-		else {
-			if ((orgLaborModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByOrganizationId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					orgLaborModelImpl.getOriginalOrganizationId()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByOrganizationId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByOrganizationId, args);
-
-				args = new Object[] {orgLaborModelImpl.getOrganizationId()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByOrganizationId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByOrganizationId, args);
-			}
-		}
-
-		EntityCacheUtil.putResult(
-			OrgLaborImpl.class, orgLabor.getPrimaryKey(), orgLabor, false);
 
 		orgLabor.resetOriginalValues();
 
@@ -1112,42 +1073,49 @@ public class OrgLaborPersistenceImpl
 	 * Initializes the org labor persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		Registry registry = RegistryUtil.getRegistry();
+
+		_argumentsResolverServiceRegistration = registry.registerService(
+			ArgumentsResolver.class, new OrgLaborModelArgumentsResolver(),
+			HashMapBuilder.<String, Object>put(
+				"model.class.name", OrgLabor.class.getName()
+			).build());
+
+		_finderPathWithPaginationFindAll = _createFinderPath(
 			OrgLaborImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = _createFinderPath(
 			OrgLaborImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = _createFinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByOrganizationId = new FinderPath(
+		_finderPathWithPaginationFindByOrganizationId = _createFinderPath(
 			OrgLaborImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByOrganizationId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
+			"findByOrganizationId", new String[] {"organizationId"});
 
-		_finderPathWithoutPaginationFindByOrganizationId = new FinderPath(
+		_finderPathWithoutPaginationFindByOrganizationId = _createFinderPath(
 			OrgLaborImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByOrganizationId", new String[] {Long.class.getName()},
-			OrgLaborModelImpl.ORGANIZATIONID_COLUMN_BITMASK |
-			OrgLaborModelImpl.TYPEID_COLUMN_BITMASK);
+			"findByOrganizationId", new String[] {"organizationId"});
 
-		_finderPathCountByOrganizationId = new FinderPath(
+		_finderPathCountByOrganizationId = _createFinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByOrganizationId", new String[] {Long.class.getName()});
+			"countByOrganizationId", new String[] {"organizationId"});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(OrgLaborImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		_argumentsResolverServiceRegistration.unregister();
+
+		for (ServiceRegistration<FinderPath> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static final String _SQL_SELECT_ORGLABOR =
@@ -1172,5 +1140,95 @@ public class OrgLaborPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OrgLaborPersistenceImpl.class);
+
+	private FinderPath _createFinderPath(
+		Class<?> returnClass, String cacheName, String methodName,
+		String[] arttributeNames) {
+
+		FinderPath finderPath = new FinderPath(
+			cacheName, methodName, returnClass, arttributeNames);
+
+		if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			_serviceRegistrations.add(
+				registry.registerService(
+					FinderPath.class, finderPath,
+					HashMapBuilder.<String, Object>put(
+						"cache.name", cacheName
+					).build()));
+		}
+
+		return finderPath;
+	}
+
+	private ServiceRegistration<ArgumentsResolver>
+		_argumentsResolverServiceRegistration;
+	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
+		new HashSet<>();
+
+	private static class OrgLaborModelArgumentsResolver
+		implements ArgumentsResolver {
+
+		@Override
+		public Object[] getArguments(
+			FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
+			boolean original) {
+
+			String[] attributeNames = finderPath.getAttributeNames();
+
+			if ((attributeNames == null) || (attributeNames.length == 0)) {
+				if (baseModel.isNew()) {
+					return FINDER_ARGS_EMPTY;
+				}
+
+				return null;
+			}
+
+			OrgLaborModelImpl orgLaborModelImpl = (OrgLaborModelImpl)baseModel;
+
+			long columnBitmask = orgLaborModelImpl.getColumnBitmask();
+
+			if (!checkColumn || (columnBitmask == 0)) {
+				return _getValue(orgLaborModelImpl, attributeNames, original);
+			}
+
+			long finderPathColumnBitmask = 0;
+
+			for (String attributeName : attributeNames) {
+				finderPathColumnBitmask |= orgLaborModelImpl.getColumnBitmask(
+					attributeName);
+			}
+
+			if ((columnBitmask & finderPathColumnBitmask) != 0) {
+				return _getValue(orgLaborModelImpl, attributeNames, original);
+			}
+
+			return null;
+		}
+
+		private Object[] _getValue(
+			OrgLaborModelImpl orgLaborModelImpl, String[] attributeNames,
+			boolean original) {
+
+			Object[] arguments = new Object[attributeNames.length];
+
+			for (int i = 0; i < arguments.length; i++) {
+				String attributeName = attributeNames[i];
+
+				if (original) {
+					arguments[i] = orgLaborModelImpl.getOriginalAttributeValue(
+						attributeName);
+				}
+				else {
+					arguments[i] = orgLaborModelImpl.getAttributeValue(
+						attributeName);
+				}
+			}
+
+			return arguments;
+		}
+
+	}
 
 }

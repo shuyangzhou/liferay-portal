@@ -515,26 +515,27 @@ public class AppBuilderWorkflowTaskLinkPersistenceTest {
 			Long.valueOf(
 				existingAppBuilderWorkflowTaskLink.getAppBuilderAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderWorkflowTaskLink,
-				"getOriginalAppBuilderAppId", new Class<?>[0]));
+				existingAppBuilderWorkflowTaskLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "appBuilderAppId"));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingAppBuilderWorkflowTaskLink.getAppBuilderAppVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderWorkflowTaskLink,
-				"getOriginalAppBuilderAppVersionId", new Class<?>[0]));
+				existingAppBuilderWorkflowTaskLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "appBuilderAppVersionId"));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingAppBuilderWorkflowTaskLink.getDdmStructureLayoutId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderWorkflowTaskLink,
-				"getOriginalDdmStructureLayoutId", new Class<?>[0]));
+				existingAppBuilderWorkflowTaskLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "ddmStructureLayoutId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAppBuilderWorkflowTaskLink.getWorkflowTaskName(),
 				ReflectionTestUtil.invoke(
 					existingAppBuilderWorkflowTaskLink,
-					"getOriginalWorkflowTaskName", new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"workflowTaskName")));
 	}
 
 	protected AppBuilderWorkflowTaskLink addAppBuilderWorkflowTaskLink()

@@ -458,30 +458,32 @@ public class ModulePersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingModule.getAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingModule, "getOriginalAppId", new Class<?>[0]));
+				existingModule, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "appId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingModule.getContextName(),
 				ReflectionTestUtil.invoke(
-					existingModule, "getOriginalContextName",
-					new Class<?>[0])));
+					existingModule, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "contextName")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingModule.getAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingModule, "getOriginalAppId", new Class<?>[0]));
+				existingModule, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "appId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingModule.getBundleSymbolicName(),
 				ReflectionTestUtil.invoke(
-					existingModule, "getOriginalBundleSymbolicName",
-					new Class<?>[0])));
+					existingModule, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "bundleSymbolicName")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingModule.getBundleVersion(),
 				ReflectionTestUtil.invoke(
-					existingModule, "getOriginalBundleVersion",
-					new Class<?>[0])));
+					existingModule, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "bundleVersion")));
 	}
 
 	protected Module addModule() throws Exception {

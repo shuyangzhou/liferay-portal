@@ -1200,12 +1200,15 @@ public class OAuth2ScopeGrantPersistenceImpl
 			 _finderPathFetchByC_O_A_B_S.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				oAuth2ScopeGrantModelImpl.getOriginalCompanyId(),
-				oAuth2ScopeGrantModelImpl.
-					getOriginalOAuth2ApplicationScopeAliasesId(),
-				oAuth2ScopeGrantModelImpl.getOriginalApplicationName(),
-				oAuth2ScopeGrantModelImpl.getOriginalBundleSymbolicName(),
-				oAuth2ScopeGrantModelImpl.getOriginalScope()
+				oAuth2ScopeGrantModelImpl.getOriginalAttributeValue(
+					"companyId"),
+				oAuth2ScopeGrantModelImpl.getOriginalAttributeValue(
+					"oAuth2ApplicationScopeAliasesId"),
+				oAuth2ScopeGrantModelImpl.getOriginalAttributeValue(
+					"applicationName"),
+				oAuth2ScopeGrantModelImpl.getOriginalAttributeValue(
+					"bundleSymbolicName"),
+				oAuth2ScopeGrantModelImpl.getOriginalAttributeValue("scope")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_O_A_B_S, args);
@@ -1389,8 +1392,8 @@ public class OAuth2ScopeGrantPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					oAuth2ScopeGrantModelImpl.
-						getOriginalOAuth2ApplicationScopeAliasesId()
+					oAuth2ScopeGrantModelImpl.getOriginalAttributeValue(
+						"oAuth2ApplicationScopeAliasesId")
 				};
 
 				finderCache.removeResult(
@@ -2059,8 +2062,8 @@ public class OAuth2ScopeGrantPersistenceImpl
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByOAuth2ApplicationScopeAliasesId",
 				new String[] {Long.class.getName()},
-				OAuth2ScopeGrantModelImpl.
-					OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK);
+				OAuth2ScopeGrantModelImpl.getColumnBitmask(
+					"oAuth2ApplicationScopeAliasesId"));
 
 		_finderPathCountByOAuth2ApplicationScopeAliasesId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2075,12 +2078,12 @@ public class OAuth2ScopeGrantPersistenceImpl
 				String.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			OAuth2ScopeGrantModelImpl.COMPANYID_COLUMN_BITMASK |
-			OAuth2ScopeGrantModelImpl.
-				OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK |
-			OAuth2ScopeGrantModelImpl.APPLICATIONNAME_COLUMN_BITMASK |
-			OAuth2ScopeGrantModelImpl.BUNDLESYMBOLICNAME_COLUMN_BITMASK |
-			OAuth2ScopeGrantModelImpl.SCOPE_COLUMN_BITMASK);
+			OAuth2ScopeGrantModelImpl.getColumnBitmask("companyId") |
+			OAuth2ScopeGrantModelImpl.getColumnBitmask(
+				"oAuth2ApplicationScopeAliasesId") |
+			OAuth2ScopeGrantModelImpl.getColumnBitmask("applicationName") |
+			OAuth2ScopeGrantModelImpl.getColumnBitmask("bundleSymbolicName") |
+			OAuth2ScopeGrantModelImpl.getColumnBitmask("scope"));
 
 		_finderPathCountByC_O_A_B_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

@@ -462,14 +462,14 @@ public class SamlIdpSpSessionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSamlIdpSpSession.getSamlIdpSsoSessionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSamlIdpSpSession, "getOriginalSamlIdpSsoSessionId",
-				new Class<?>[0]));
+				existingSamlIdpSpSession, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "samlIdpSsoSessionId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSamlIdpSpSession.getSamlSpEntityId(),
 				ReflectionTestUtil.invoke(
-					existingSamlIdpSpSession, "getOriginalSamlSpEntityId",
-					new Class<?>[0])));
+					existingSamlIdpSpSession, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "samlSpEntityId")));
 	}
 
 	protected SamlIdpSpSession addSamlIdpSpSession() throws Exception {

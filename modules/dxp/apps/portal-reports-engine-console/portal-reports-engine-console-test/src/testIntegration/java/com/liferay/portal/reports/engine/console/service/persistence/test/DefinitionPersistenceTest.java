@@ -493,11 +493,13 @@ public class DefinitionPersistenceTest {
 			Objects.equals(
 				existingDefinition.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDefinition, "getOriginalUuid", new Class<?>[0])));
+					existingDefinition, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDefinition.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDefinition, "getOriginalGroupId", new Class<?>[0]));
+				existingDefinition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected Definition addDefinition() throws Exception {

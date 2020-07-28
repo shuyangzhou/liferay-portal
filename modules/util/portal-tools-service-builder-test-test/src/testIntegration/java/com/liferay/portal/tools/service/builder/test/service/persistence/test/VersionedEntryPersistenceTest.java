@@ -424,7 +424,8 @@ public class VersionedEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingVersionedEntry.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVersionedEntry, "getOriginalHeadId", new Class<?>[0]));
+				existingVersionedEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "headId"));
 	}
 
 	protected VersionedEntry addVersionedEntry() throws Exception {

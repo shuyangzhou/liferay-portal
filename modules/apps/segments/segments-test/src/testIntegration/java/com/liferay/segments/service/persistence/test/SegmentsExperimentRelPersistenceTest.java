@@ -500,14 +500,14 @@ public class SegmentsExperimentRelPersistenceTest {
 			Long.valueOf(
 				existingSegmentsExperimentRel.getSegmentsExperimentId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperimentRel,
-				"getOriginalSegmentsExperimentId", new Class<?>[0]));
+				existingSegmentsExperimentRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "segmentsExperimentId"));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingSegmentsExperimentRel.getSegmentsExperienceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperimentRel,
-				"getOriginalSegmentsExperienceId", new Class<?>[0]));
+				existingSegmentsExperimentRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "segmentsExperienceId"));
 	}
 
 	protected SegmentsExperimentRel addSegmentsExperimentRel()

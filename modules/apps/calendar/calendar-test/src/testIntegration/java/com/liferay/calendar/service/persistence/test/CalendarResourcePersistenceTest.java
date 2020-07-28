@@ -565,24 +565,24 @@ public class CalendarResourcePersistenceTest {
 			Objects.equals(
 				existingCalendarResource.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingCalendarResource, "getOriginalUuid",
-					new Class<?>[0])));
+					existingCalendarResource, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingCalendarResource.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarResource, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingCalendarResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingCalendarResource.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarResource, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingCalendarResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingCalendarResource.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarResource, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingCalendarResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected CalendarResource addCalendarResource() throws Exception {

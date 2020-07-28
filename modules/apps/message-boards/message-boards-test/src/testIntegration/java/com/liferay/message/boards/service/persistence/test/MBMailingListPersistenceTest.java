@@ -569,22 +569,24 @@ public class MBMailingListPersistenceTest {
 			Objects.equals(
 				existingMBMailingList.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBMailingList, "getOriginalUuid",
-					new Class<?>[0])));
+					existingMBMailingList, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMBMailingList.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalGroupId", new Class<?>[0]));
+				existingMBMailingList, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMBMailingList.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalGroupId", new Class<?>[0]));
+				existingMBMailingList, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMBMailingList.getCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalCategoryId",
-				new Class<?>[0]));
+				existingMBMailingList, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "categoryId"));
 	}
 
 	protected MBMailingList addMBMailingList() throws Exception {

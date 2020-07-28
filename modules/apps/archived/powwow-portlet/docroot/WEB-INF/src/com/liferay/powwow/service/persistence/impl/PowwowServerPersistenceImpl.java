@@ -957,8 +957,9 @@ public class PowwowServerPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					powwowServerModelImpl.getOriginalProviderType(),
-					powwowServerModelImpl.getOriginalActive()
+					powwowServerModelImpl.getOriginalAttributeValue(
+						"providerType"),
+					powwowServerModelImpl.getOriginalAttributeValue("active")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByPT_A, args);
@@ -1268,9 +1269,9 @@ public class PowwowServerPersistenceImpl
 			PowwowServerImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByPT_A",
 			new String[] {String.class.getName(), Boolean.class.getName()},
-			PowwowServerModelImpl.PROVIDERTYPE_COLUMN_BITMASK |
-			PowwowServerModelImpl.ACTIVE_COLUMN_BITMASK |
-			PowwowServerModelImpl.NAME_COLUMN_BITMASK);
+			PowwowServerModelImpl.getColumnBitmask("providerType") |
+			PowwowServerModelImpl.getColumnBitmask("active") |
+			PowwowServerModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByPT_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

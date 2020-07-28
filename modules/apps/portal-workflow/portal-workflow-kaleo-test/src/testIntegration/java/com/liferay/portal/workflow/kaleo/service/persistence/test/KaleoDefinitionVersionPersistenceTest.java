@@ -550,20 +550,20 @@ public class KaleoDefinitionVersionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoDefinitionVersion.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoDefinitionVersion, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingKaleoDefinitionVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoDefinitionVersion.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinitionVersion, "getOriginalName",
-					new Class<?>[0])));
+					existingKaleoDefinitionVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoDefinitionVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinitionVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					existingKaleoDefinitionVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "version")));
 	}
 
 	protected KaleoDefinitionVersion addKaleoDefinitionVersion()

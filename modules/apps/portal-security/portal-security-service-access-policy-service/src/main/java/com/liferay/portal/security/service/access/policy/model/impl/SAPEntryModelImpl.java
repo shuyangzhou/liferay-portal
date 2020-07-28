@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -125,14 +124,39 @@ public class SAPEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEFAULTSAPENTRY_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SAPENTRYID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -384,17 +408,22 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -405,6 +434,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setSapEntryId(long sapEntryId) {
+		_columnBitmask |= _columnBitmasks.get("sapEntryId");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_sapEntryId = sapEntryId;
 	}
 
@@ -416,19 +451,22 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -439,6 +477,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -471,6 +515,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -482,6 +532,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -499,6 +555,12 @@ public class SAPEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -515,6 +577,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setAllowedServiceSignatures(String allowedServiceSignatures) {
+		_columnBitmask |= _columnBitmasks.get("allowedServiceSignatures");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_allowedServiceSignatures = allowedServiceSignatures;
 	}
 
@@ -532,19 +600,22 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setDefaultSAPEntry(boolean defaultSAPEntry) {
-		_columnBitmask |= DEFAULTSAPENTRY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("defaultSAPEntry");
 
-		if (!_setOriginalDefaultSAPEntry) {
-			_setOriginalDefaultSAPEntry = true;
-
-			_originalDefaultSAPEntry = _defaultSAPEntry;
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
 		}
 
 		_defaultSAPEntry = defaultSAPEntry;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDefaultSAPEntry() {
-		return _originalDefaultSAPEntry;
+		return getOriginalAttributeValue("defaultSAPEntry");
 	}
 
 	@JSON
@@ -561,6 +632,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		_columnBitmask |= _columnBitmasks.get("enabled");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_enabled = enabled;
 	}
 
@@ -577,17 +654,22 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -646,6 +728,12 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
+		if (_sapEntryCacheModel == _dummySAPEntryCacheModel) {
+			_sapEntryCacheModel = (SAPEntryCacheModel)toCacheModel();
+		}
+
 		_title = title;
 	}
 
@@ -883,24 +971,11 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SAPEntryModelImpl sapEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		sapEntryModelImpl._originalUuid = sapEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		sapEntryModelImpl._originalCompanyId = sapEntryModelImpl._companyId;
-
-		sapEntryModelImpl._setOriginalCompanyId = false;
-
-		sapEntryModelImpl._setModifiedDate = false;
-
-		sapEntryModelImpl._originalDefaultSAPEntry =
-			sapEntryModelImpl._defaultSAPEntry;
-
-		sapEntryModelImpl._setOriginalDefaultSAPEntry = false;
-
-		sapEntryModelImpl._originalName = sapEntryModelImpl._name;
-
-		sapEntryModelImpl._columnBitmask = 0;
+		_sapEntryCacheModel = _dummySAPEntryCacheModel;
 	}
 
 	@Override
@@ -1052,12 +1127,114 @@ public class SAPEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<SAPEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SAPEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<SAPEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"uuid", sapEntryCacheModel -> sapEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 1L);
+
+		cacheModelGetterFunctions.put(
+			"sapEntryId", sapEntryCacheModel -> sapEntryCacheModel.sapEntryId);
+
+		columnBitmasks.put("sapEntryId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", sapEntryCacheModel -> sapEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", sapEntryCacheModel -> sapEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName", sapEntryCacheModel -> sapEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", sapEntryCacheModel -> sapEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			sapEntryCacheModel -> sapEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"allowedServiceSignatures",
+			sapEntryCacheModel -> sapEntryCacheModel.allowedServiceSignatures);
+
+		columnBitmasks.put("allowedServiceSignatures", 128L);
+
+		cacheModelGetterFunctions.put(
+			"defaultSAPEntry",
+			sapEntryCacheModel -> sapEntryCacheModel.defaultSAPEntry);
+
+		columnBitmasks.put("defaultSAPEntry", 256L);
+
+		cacheModelGetterFunctions.put(
+			"enabled", sapEntryCacheModel -> sapEntryCacheModel.enabled);
+
+		columnBitmasks.put("enabled", 512L);
+
+		cacheModelGetterFunctions.put(
+			"name", sapEntryCacheModel -> sapEntryCacheModel.name);
+
+		columnBitmasks.put("name", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"title", sapEntryCacheModel -> sapEntryCacheModel.title);
+
+		columnBitmasks.put("title", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SAPEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SAPEntryCacheModel sapEntryCacheModel = _sapEntryCacheModel;
+
+		if (sapEntryCacheModel == null) {
+			sapEntryCacheModel = _dummySAPEntryCacheModel;
+		}
+
+		return (T)function.apply(sapEntryCacheModel);
+	}
+
+	private static final SAPEntryCacheModel _dummySAPEntryCacheModel =
+		new SAPEntryCacheModel();
+
+	private SAPEntryCacheModel _sapEntryCacheModel;
 	private String _uuid;
-	private String _originalUuid;
 	private long _sapEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1065,11 +1242,8 @@ public class SAPEntryModelImpl
 	private boolean _setModifiedDate;
 	private String _allowedServiceSignatures;
 	private boolean _defaultSAPEntry;
-	private boolean _originalDefaultSAPEntry;
-	private boolean _setOriginalDefaultSAPEntry;
 	private boolean _enabled;
 	private String _name;
-	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
 	private long _columnBitmask;

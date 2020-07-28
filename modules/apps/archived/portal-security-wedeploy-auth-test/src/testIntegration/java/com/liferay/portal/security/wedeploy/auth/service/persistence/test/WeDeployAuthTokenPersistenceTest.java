@@ -458,29 +458,31 @@ public class WeDeployAuthTokenPersistenceTest {
 			Objects.equals(
 				existingWeDeployAuthToken.getToken(),
 				ReflectionTestUtil.invoke(
-					existingWeDeployAuthToken, "getOriginalToken",
-					new Class<?>[0])));
+					existingWeDeployAuthToken, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "token")));
 		Assert.assertEquals(
 			Integer.valueOf(existingWeDeployAuthToken.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingWeDeployAuthToken, "getOriginalType", new Class<?>[0]));
+				existingWeDeployAuthToken, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "type"));
 
 		Assert.assertTrue(
 			Objects.equals(
 				existingWeDeployAuthToken.getClientId(),
 				ReflectionTestUtil.invoke(
-					existingWeDeployAuthToken, "getOriginalClientId",
-					new Class<?>[0])));
+					existingWeDeployAuthToken, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "clientId")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingWeDeployAuthToken.getToken(),
 				ReflectionTestUtil.invoke(
-					existingWeDeployAuthToken, "getOriginalToken",
-					new Class<?>[0])));
+					existingWeDeployAuthToken, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "token")));
 		Assert.assertEquals(
 			Integer.valueOf(existingWeDeployAuthToken.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingWeDeployAuthToken, "getOriginalType", new Class<?>[0]));
+				existingWeDeployAuthToken, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "type"));
 	}
 
 	protected WeDeployAuthToken addWeDeployAuthToken() throws Exception {

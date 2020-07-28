@@ -558,36 +558,36 @@ public class DDMStructureLayoutPersistenceTest {
 			Objects.equals(
 				existingDDMStructureLayout.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDMStructureLayout, "getOriginalUuid",
-					new Class<?>[0])));
+					existingDDMStructureLayout, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLayout.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLayout, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingDDMStructureLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLayout.getStructureVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLayout, "getOriginalStructureVersionId",
-				new Class<?>[0]));
+				existingDDMStructureLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "structureVersionId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLayout.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLayout, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingDDMStructureLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLayout.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLayout, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingDDMStructureLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDDMStructureLayout.getStructureLayoutKey(),
 				ReflectionTestUtil.invoke(
-					existingDDMStructureLayout, "getOriginalStructureLayoutKey",
-					new Class<?>[0])));
+					existingDDMStructureLayout, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "structureLayoutKey")));
 	}
 
 	protected DDMStructureLayout addDDMStructureLayout() throws Exception {

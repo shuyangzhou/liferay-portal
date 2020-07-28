@@ -999,8 +999,9 @@ public class AccountGroupPersistenceImpl
 			 _finderPathFetchByC_ERC.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				accountGroupModelImpl.getOriginalCompanyId(),
-				accountGroupModelImpl.getOriginalExternalReferenceCode()
+				accountGroupModelImpl.getOriginalAttributeValue("companyId"),
+				accountGroupModelImpl.getOriginalAttributeValue(
+					"externalReferenceCode")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_ERC, args);
@@ -1199,7 +1200,7 @@ public class AccountGroupPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					accountGroupModelImpl.getOriginalCompanyId()
+					accountGroupModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -1503,7 +1504,7 @@ public class AccountGroupPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			AccountGroupImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			AccountGroupModelImpl.COMPANYID_COLUMN_BITMASK);
+			AccountGroupModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1512,8 +1513,8 @@ public class AccountGroupPersistenceImpl
 		_finderPathFetchByC_ERC = new FinderPath(
 			AccountGroupImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			AccountGroupModelImpl.COMPANYID_COLUMN_BITMASK |
-			AccountGroupModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK);
+			AccountGroupModelImpl.getColumnBitmask("companyId") |
+			AccountGroupModelImpl.getColumnBitmask("externalReferenceCode"));
 
 		_finderPathCountByC_ERC = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

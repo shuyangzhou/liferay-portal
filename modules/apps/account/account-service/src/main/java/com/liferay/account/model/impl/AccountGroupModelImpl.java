@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -112,10 +111,25 @@ public class AccountGroupModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTGROUPID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -363,6 +377,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -379,17 +399,22 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("externalReferenceCode");
 
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
 		}
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		return getOriginalAttributeValue("externalReferenceCode");
 	}
 
 	@JSON
@@ -400,6 +425,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setAccountGroupId(long accountGroupId) {
+		_columnBitmask |= _columnBitmasks.get("accountGroupId");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_accountGroupId = accountGroupId;
 	}
 
@@ -411,19 +442,22 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -434,6 +468,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -466,6 +506,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -477,6 +523,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -494,6 +546,12 @@ public class AccountGroupModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -510,6 +568,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_name = name;
 	}
 
@@ -526,6 +590,12 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_accountGroupCacheModel == _dummyAccountGroupCacheModel) {
+			_accountGroupCacheModel = (AccountGroupCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -643,19 +713,11 @@ public class AccountGroupModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountGroupModelImpl accountGroupModelImpl = this;
+		_setModifiedDate = false;
 
-		accountGroupModelImpl._originalExternalReferenceCode =
-			accountGroupModelImpl._externalReferenceCode;
+		_columnBitmask = 0;
 
-		accountGroupModelImpl._originalCompanyId =
-			accountGroupModelImpl._companyId;
-
-		accountGroupModelImpl._setOriginalCompanyId = false;
-
-		accountGroupModelImpl._setModifiedDate = false;
-
-		accountGroupModelImpl._columnBitmask = 0;
+		_accountGroupCacheModel = _dummyAccountGroupCacheModel;
 	}
 
 	@Override
@@ -798,13 +860,111 @@ public class AccountGroupModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<AccountGroupCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AccountGroupCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AccountGroupCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			accountGroupCacheModel -> accountGroupCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"externalReferenceCode",
+			accountGroupCacheModel ->
+				accountGroupCacheModel.externalReferenceCode);
+
+		columnBitmasks.put("externalReferenceCode", 2L);
+
+		cacheModelGetterFunctions.put(
+			"accountGroupId",
+			accountGroupCacheModel -> accountGroupCacheModel.accountGroupId);
+
+		columnBitmasks.put("accountGroupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			accountGroupCacheModel -> accountGroupCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId", accountGroupCacheModel -> accountGroupCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			accountGroupCacheModel -> accountGroupCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			accountGroupCacheModel -> accountGroupCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			accountGroupCacheModel -> accountGroupCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"name", accountGroupCacheModel -> accountGroupCacheModel.name);
+
+		columnBitmasks.put("name", 256L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			accountGroupCacheModel -> accountGroupCacheModel.description);
+
+		columnBitmasks.put("description", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AccountGroupCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AccountGroupCacheModel accountGroupCacheModel = _accountGroupCacheModel;
+
+		if (accountGroupCacheModel == null) {
+			accountGroupCacheModel = _dummyAccountGroupCacheModel;
+		}
+
+		return (T)function.apply(accountGroupCacheModel);
+	}
+
+	private static final AccountGroupCacheModel _dummyAccountGroupCacheModel =
+		new AccountGroupCacheModel();
+
+	private AccountGroupCacheModel _accountGroupCacheModel;
 	private long _mvccVersion;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _accountGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

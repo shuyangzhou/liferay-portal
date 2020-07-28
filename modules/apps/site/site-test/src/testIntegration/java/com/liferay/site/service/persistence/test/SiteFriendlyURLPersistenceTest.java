@@ -512,60 +512,60 @@ public class SiteFriendlyURLPersistenceTest {
 			Objects.equals(
 				existingSiteFriendlyURL.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSiteFriendlyURL, "getOriginalUuid",
-					new Class<?>[0])));
+					existingSiteFriendlyURL, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingSiteFriendlyURL.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteFriendlyURL, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSiteFriendlyURL, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSiteFriendlyURL.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteFriendlyURL, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingSiteFriendlyURL, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSiteFriendlyURL.getFriendlyURL(),
 				ReflectionTestUtil.invoke(
-					existingSiteFriendlyURL, "getOriginalFriendlyURL",
-					new Class<?>[0])));
+					existingSiteFriendlyURL, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "friendlyURL")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSiteFriendlyURL.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteFriendlyURL, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingSiteFriendlyURL, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSiteFriendlyURL.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteFriendlyURL, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSiteFriendlyURL, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSiteFriendlyURL.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingSiteFriendlyURL, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingSiteFriendlyURL, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "languageId")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSiteFriendlyURL.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteFriendlyURL, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingSiteFriendlyURL, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSiteFriendlyURL.getFriendlyURL(),
 				ReflectionTestUtil.invoke(
-					existingSiteFriendlyURL, "getOriginalFriendlyURL",
-					new Class<?>[0])));
+					existingSiteFriendlyURL, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "friendlyURL")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSiteFriendlyURL.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingSiteFriendlyURL, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingSiteFriendlyURL, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "languageId")));
 	}
 
 	protected SiteFriendlyURL addSiteFriendlyURL() throws Exception {

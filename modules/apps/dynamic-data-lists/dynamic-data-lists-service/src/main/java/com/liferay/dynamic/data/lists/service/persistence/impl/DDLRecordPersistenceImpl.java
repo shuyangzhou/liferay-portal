@@ -4280,8 +4280,8 @@ public class DDLRecordPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				ddlRecordModelImpl.getOriginalUuid(),
-				ddlRecordModelImpl.getOriginalGroupId()
+				ddlRecordModelImpl.getOriginalAttributeValue("uuid"),
+				ddlRecordModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -4532,7 +4532,7 @@ public class DDLRecordPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalUuid()
+					ddlRecordModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -4551,8 +4551,8 @@ public class DDLRecordPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalUuid(),
-					ddlRecordModelImpl.getOriginalCompanyId()
+					ddlRecordModelImpl.getOriginalAttributeValue("uuid"),
+					ddlRecordModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -4574,7 +4574,7 @@ public class DDLRecordPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalCompanyId()
+					ddlRecordModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -4593,7 +4593,7 @@ public class DDLRecordPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalRecordSetId()
+					ddlRecordModelImpl.getOriginalAttributeValue("recordSetId")
 				};
 
 				finderCache.removeResult(_finderPathCountByRecordSetId, args);
@@ -4612,8 +4612,8 @@ public class DDLRecordPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalRecordSetId(),
-					ddlRecordModelImpl.getOriginalUserId()
+					ddlRecordModelImpl.getOriginalAttributeValue("recordSetId"),
+					ddlRecordModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				finderCache.removeResult(_finderPathCountByR_U, args);
@@ -4635,8 +4635,9 @@ public class DDLRecordPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalRecordSetId(),
-					ddlRecordModelImpl.getOriginalRecordSetVersion()
+					ddlRecordModelImpl.getOriginalAttributeValue("recordSetId"),
+					ddlRecordModelImpl.getOriginalAttributeValue(
+						"recordSetVersion")
 				};
 
 				finderCache.removeResult(_finderPathCountByR_R, args);
@@ -4658,8 +4659,8 @@ public class DDLRecordPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddlRecordModelImpl.getOriginalClassName(),
-					ddlRecordModelImpl.getOriginalClassPK()
+					ddlRecordModelImpl.getOriginalAttributeValue("className"),
+					ddlRecordModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_C, args);
@@ -4970,7 +4971,7 @@ public class DDLRecordPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			DDLRecordModelImpl.UUID_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4979,8 +4980,8 @@ public class DDLRecordPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			DDLRecordImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DDLRecordModelImpl.UUID_COLUMN_BITMASK |
-			DDLRecordModelImpl.GROUPID_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("uuid") |
+			DDLRecordModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5000,8 +5001,8 @@ public class DDLRecordPersistenceImpl
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DDLRecordModelImpl.UUID_COLUMN_BITMASK |
-			DDLRecordModelImpl.COMPANYID_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("uuid") |
+			DDLRecordModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5019,7 +5020,7 @@ public class DDLRecordPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			DDLRecordModelImpl.COMPANYID_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5036,7 +5037,7 @@ public class DDLRecordPersistenceImpl
 		_finderPathWithoutPaginationFindByRecordSetId = new FinderPath(
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByRecordSetId", new String[] {Long.class.getName()},
-			DDLRecordModelImpl.RECORDSETID_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("recordSetId"));
 
 		_finderPathCountByRecordSetId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5055,8 +5056,8 @@ public class DDLRecordPersistenceImpl
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByR_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			DDLRecordModelImpl.RECORDSETID_COLUMN_BITMASK |
-			DDLRecordModelImpl.USERID_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("recordSetId") |
+			DDLRecordModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByR_U = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_U",
@@ -5075,8 +5076,8 @@ public class DDLRecordPersistenceImpl
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByR_R",
 			new String[] {Long.class.getName(), String.class.getName()},
-			DDLRecordModelImpl.RECORDSETID_COLUMN_BITMASK |
-			DDLRecordModelImpl.RECORDSETVERSION_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("recordSetId") |
+			DDLRecordModelImpl.getColumnBitmask("recordSetVersion"));
 
 		_finderPathCountByR_R = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_R",
@@ -5095,8 +5096,8 @@ public class DDLRecordPersistenceImpl
 			DDLRecordImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DDLRecordModelImpl.CLASSNAME_COLUMN_BITMASK |
-			DDLRecordModelImpl.CLASSPK_COLUMN_BITMASK);
+			DDLRecordModelImpl.getColumnBitmask("className") |
+			DDLRecordModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",

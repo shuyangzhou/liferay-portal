@@ -673,27 +673,31 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceTest {
 				existingWorkflowMetricsSLADefinitionVersion.getUuid(),
 				ReflectionTestUtil.invoke(
 					existingWorkflowMetricsSLADefinitionVersion,
-					"getOriginalUuid", new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"uuid")));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingWorkflowMetricsSLADefinitionVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingWorkflowMetricsSLADefinitionVersion,
-				"getOriginalGroupId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"groupId"));
 
 		Assert.assertTrue(
 			Objects.equals(
 				existingWorkflowMetricsSLADefinitionVersion.getVersion(),
 				ReflectionTestUtil.invoke(
 					existingWorkflowMetricsSLADefinitionVersion,
-					"getOriginalVersion", new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"version")));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingWorkflowMetricsSLADefinitionVersion.
 					getWorkflowMetricsSLADefinitionId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingWorkflowMetricsSLADefinitionVersion,
-				"getOriginalWorkflowMetricsSLADefinitionId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"workflowMetricsSLADefinitionId"));
 	}
 
 	protected WorkflowMetricsSLADefinitionVersion

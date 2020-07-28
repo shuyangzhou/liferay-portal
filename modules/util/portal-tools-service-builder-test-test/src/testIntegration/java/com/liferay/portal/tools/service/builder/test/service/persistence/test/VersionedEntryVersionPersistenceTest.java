@@ -436,13 +436,13 @@ public class VersionedEntryVersionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingVersionedEntryVersion.getVersionedEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVersionedEntryVersion, "getOriginalVersionedEntryId",
-				new Class<?>[0]));
+				existingVersionedEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "versionedEntryId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingVersionedEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingVersionedEntryVersion, "getOriginalVersion",
-				new Class<?>[0]));
+				existingVersionedEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 	}
 
 	protected VersionedEntryVersion addVersionedEntryVersion()

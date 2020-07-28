@@ -455,25 +455,25 @@ public class WikiPageResourcePersistenceTest {
 			Objects.equals(
 				existingWikiPageResource.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingWikiPageResource, "getOriginalUuid",
-					new Class<?>[0])));
+					existingWikiPageResource, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingWikiPageResource.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPageResource, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingWikiPageResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingWikiPageResource.getNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPageResource, "getOriginalNodeId",
-				new Class<?>[0]));
+				existingWikiPageResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "nodeId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingWikiPageResource.getTitle(),
 				ReflectionTestUtil.invoke(
-					existingWikiPageResource, "getOriginalTitle",
-					new Class<?>[0])));
+					existingWikiPageResource, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "title")));
 	}
 
 	protected WikiPageResource addWikiPageResource() throws Exception {

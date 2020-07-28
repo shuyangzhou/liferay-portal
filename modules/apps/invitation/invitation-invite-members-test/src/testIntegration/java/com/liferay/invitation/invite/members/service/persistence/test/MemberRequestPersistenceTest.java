@@ -476,21 +476,24 @@ public class MemberRequestPersistenceTest {
 			Objects.equals(
 				existingMemberRequest.getKey(),
 				ReflectionTestUtil.invoke(
-					existingMemberRequest, "getOriginalKey", new Class<?>[0])));
+					existingMemberRequest, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "key")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMemberRequest.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMemberRequest, "getOriginalGroupId", new Class<?>[0]));
+				existingMemberRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMemberRequest.getReceiverUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMemberRequest, "getOriginalReceiverUserId",
-				new Class<?>[0]));
+				existingMemberRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "receiverUserId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingMemberRequest.getStatus()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingMemberRequest, "getOriginalStatus", new Class<?>[0]));
+				existingMemberRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "status"));
 	}
 
 	protected MemberRequest addMemberRequest() throws Exception {

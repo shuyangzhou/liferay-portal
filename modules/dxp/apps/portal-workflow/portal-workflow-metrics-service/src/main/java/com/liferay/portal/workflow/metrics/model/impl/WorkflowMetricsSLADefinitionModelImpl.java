@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -133,25 +132,75 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PROCESSID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PROCESSVERSION_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WORKFLOWMETRICSSLADEFINITIONID_COLUMN_BITMASK =
 		256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 512L;
 
 	/**
@@ -461,6 +510,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -476,17 +534,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -498,20 +564,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 	public void setWorkflowMetricsSLADefinitionId(
 		long workflowMetricsSLADefinitionId) {
 
-		_columnBitmask |= WORKFLOWMETRICSSLADEFINITIONID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("workflowMetricsSLADefinitionId");
 
-		if (!_setOriginalWorkflowMetricsSLADefinitionId) {
-			_setOriginalWorkflowMetricsSLADefinitionId = true;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
 
-			_originalWorkflowMetricsSLADefinitionId =
-				_workflowMetricsSLADefinitionId;
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_workflowMetricsSLADefinitionId = workflowMetricsSLADefinitionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalWorkflowMetricsSLADefinitionId() {
-		return _originalWorkflowMetricsSLADefinitionId;
+		return getOriginalAttributeValue("workflowMetricsSLADefinitionId");
 	}
 
 	@Override
@@ -521,19 +592,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
 
-			_originalGroupId = _groupId;
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -543,19 +620,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -565,6 +648,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -596,6 +688,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -606,6 +707,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -622,7 +732,14 @@ public class WorkflowMetricsSLADefinitionModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -639,19 +756,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("active");
 
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
 
-			_originalActive = _active;
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	@Override
@@ -666,6 +789,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setCalendarKey(String calendarKey) {
+		_columnBitmask |= _columnBitmasks.get("calendarKey");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_calendarKey = calendarKey;
 	}
 
@@ -681,6 +813,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -691,6 +832,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setDuration(long duration) {
+		_columnBitmask |= _columnBitmasks.get("duration");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_duration = duration;
 	}
 
@@ -706,17 +856,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -731,6 +889,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setPauseNodeKeys(String pauseNodeKeys) {
+		_columnBitmask |= _columnBitmasks.get("pauseNodeKeys");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_pauseNodeKeys = pauseNodeKeys;
 	}
 
@@ -741,19 +908,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setProcessId(long processId) {
-		_columnBitmask |= PROCESSID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("processId");
 
-		if (!_setOriginalProcessId) {
-			_setOriginalProcessId = true;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
 
-			_originalProcessId = _processId;
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_processId = processId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalProcessId() {
-		return _originalProcessId;
+		return getOriginalAttributeValue("processId");
 	}
 
 	@Override
@@ -768,17 +941,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setProcessVersion(String processVersion) {
-		_columnBitmask |= PROCESSVERSION_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("processVersion");
 
-		if (_originalProcessVersion == null) {
-			_originalProcessVersion = _processVersion;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_processVersion = processVersion;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalProcessVersion() {
-		return GetterUtil.getString(_originalProcessVersion);
+		return getOriginalAttributeValue("processVersion");
 	}
 
 	@Override
@@ -793,6 +974,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setStartNodeKeys(String startNodeKeys) {
+		_columnBitmask |= _columnBitmasks.get("startNodeKeys");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_startNodeKeys = startNodeKeys;
 	}
 
@@ -808,6 +998,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setStopNodeKeys(String stopNodeKeys) {
+		_columnBitmask |= _columnBitmasks.get("stopNodeKeys");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_stopNodeKeys = stopNodeKeys;
 	}
 
@@ -823,6 +1022,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setVersion(String version) {
+		_columnBitmask |= _columnBitmasks.get("version");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_version = version;
 	}
 
@@ -833,19 +1041,25 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("status");
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
 
-			_originalStatus = _status;
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
 		}
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@Override
@@ -855,6 +1069,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -886,6 +1109,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -896,6 +1128,15 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
+		if (_workflowMetricsSLADefinitionCacheModel ==
+				_dummyWorkflowMetricsSLADefinitionCacheModel) {
+
+			_workflowMetricsSLADefinitionCacheModel =
+				(WorkflowMetricsSLADefinitionCacheModel)toCacheModel();
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1122,54 +1363,12 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WorkflowMetricsSLADefinitionModelImpl
-			workflowMetricsSLADefinitionModelImpl = this;
+		_setModifiedDate = false;
 
-		workflowMetricsSLADefinitionModelImpl._originalUuid =
-			workflowMetricsSLADefinitionModelImpl._uuid;
+		_columnBitmask = 0;
 
-		workflowMetricsSLADefinitionModelImpl.
-			_originalWorkflowMetricsSLADefinitionId =
-				workflowMetricsSLADefinitionModelImpl.
-					_workflowMetricsSLADefinitionId;
-
-		workflowMetricsSLADefinitionModelImpl.
-			_setOriginalWorkflowMetricsSLADefinitionId = false;
-
-		workflowMetricsSLADefinitionModelImpl._originalGroupId =
-			workflowMetricsSLADefinitionModelImpl._groupId;
-
-		workflowMetricsSLADefinitionModelImpl._setOriginalGroupId = false;
-
-		workflowMetricsSLADefinitionModelImpl._originalCompanyId =
-			workflowMetricsSLADefinitionModelImpl._companyId;
-
-		workflowMetricsSLADefinitionModelImpl._setOriginalCompanyId = false;
-
-		workflowMetricsSLADefinitionModelImpl._setModifiedDate = false;
-
-		workflowMetricsSLADefinitionModelImpl._originalActive =
-			workflowMetricsSLADefinitionModelImpl._active;
-
-		workflowMetricsSLADefinitionModelImpl._setOriginalActive = false;
-
-		workflowMetricsSLADefinitionModelImpl._originalName =
-			workflowMetricsSLADefinitionModelImpl._name;
-
-		workflowMetricsSLADefinitionModelImpl._originalProcessId =
-			workflowMetricsSLADefinitionModelImpl._processId;
-
-		workflowMetricsSLADefinitionModelImpl._setOriginalProcessId = false;
-
-		workflowMetricsSLADefinitionModelImpl._originalProcessVersion =
-			workflowMetricsSLADefinitionModelImpl._processVersion;
-
-		workflowMetricsSLADefinitionModelImpl._originalStatus =
-			workflowMetricsSLADefinitionModelImpl._status;
-
-		workflowMetricsSLADefinitionModelImpl._setOriginalStatus = false;
-
-		workflowMetricsSLADefinitionModelImpl._columnBitmask = 0;
+		_workflowMetricsSLADefinitionCacheModel =
+			_dummyWorkflowMetricsSLADefinitionCacheModel;
 	}
 
 	@Override
@@ -1407,43 +1606,247 @@ public class WorkflowMetricsSLADefinitionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<WorkflowMetricsSLADefinitionCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<WorkflowMetricsSLADefinitionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function
+						 <WorkflowMetricsSLADefinitionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"workflowMetricsSLADefinitionId",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.
+					workflowMetricsSLADefinitionId);
+
+		columnBitmasks.put("workflowMetricsSLADefinitionId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"active",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.active);
+
+		columnBitmasks.put("active", 512L);
+
+		cacheModelGetterFunctions.put(
+			"calendarKey",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.calendarKey);
+
+		columnBitmasks.put("calendarKey", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.description);
+
+		columnBitmasks.put("description", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"duration",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.duration);
+
+		columnBitmasks.put("duration", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.name);
+
+		columnBitmasks.put("name", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"pauseNodeKeys",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.pauseNodeKeys);
+
+		columnBitmasks.put("pauseNodeKeys", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"processId",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.processId);
+
+		columnBitmasks.put("processId", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"processVersion",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.processVersion);
+
+		columnBitmasks.put("processVersion", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"startNodeKeys",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.startNodeKeys);
+
+		columnBitmasks.put("startNodeKeys", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"stopNodeKeys",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.stopNodeKeys);
+
+		columnBitmasks.put("stopNodeKeys", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"version",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.version);
+
+		columnBitmasks.put("version", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.status);
+
+		columnBitmasks.put("status", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			workflowMetricsSLADefinitionCacheModel ->
+				workflowMetricsSLADefinitionCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 8388608L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<WorkflowMetricsSLADefinitionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		WorkflowMetricsSLADefinitionCacheModel
+			workflowMetricsSLADefinitionCacheModel =
+				_workflowMetricsSLADefinitionCacheModel;
+
+		if (workflowMetricsSLADefinitionCacheModel == null) {
+			workflowMetricsSLADefinitionCacheModel =
+				_dummyWorkflowMetricsSLADefinitionCacheModel;
+		}
+
+		return (T)function.apply(workflowMetricsSLADefinitionCacheModel);
+	}
+
+	private static final WorkflowMetricsSLADefinitionCacheModel
+		_dummyWorkflowMetricsSLADefinitionCacheModel =
+			new WorkflowMetricsSLADefinitionCacheModel();
+
+	private WorkflowMetricsSLADefinitionCacheModel
+		_workflowMetricsSLADefinitionCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _workflowMetricsSLADefinitionId;
-	private long _originalWorkflowMetricsSLADefinitionId;
-	private boolean _setOriginalWorkflowMetricsSLADefinitionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private String _calendarKey;
 	private String _description;
 	private long _duration;
 	private String _name;
-	private String _originalName;
 	private String _pauseNodeKeys;
 	private long _processId;
-	private long _originalProcessId;
-	private boolean _setOriginalProcessId;
 	private String _processVersion;
-	private String _originalProcessVersion;
 	private String _startNodeKeys;
 	private String _stopNodeKeys;
 	private String _version;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

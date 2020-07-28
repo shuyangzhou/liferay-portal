@@ -981,7 +981,8 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 			 _finderPathFetchByDDLRecordId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				appBuilderAppDataRecordLinkModelImpl.getOriginalDdlRecordId()
+				appBuilderAppDataRecordLinkModelImpl.getOriginalAttributeValue(
+					"ddlRecordId")
 			};
 
 			finderCache.removeResult(_finderPathCountByDDLRecordId, args);
@@ -1180,7 +1181,7 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 
 				Object[] args = new Object[] {
 					appBuilderAppDataRecordLinkModelImpl.
-						getOriginalAppBuilderAppId()
+						getOriginalAttributeValue("appBuilderAppId")
 				};
 
 				finderCache.removeResult(
@@ -1501,8 +1502,8 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 			AppBuilderAppDataRecordLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAppBuilderAppId",
 			new String[] {Long.class.getName()},
-			AppBuilderAppDataRecordLinkModelImpl.
-				APPBUILDERAPPID_COLUMN_BITMASK);
+			AppBuilderAppDataRecordLinkModelImpl.getColumnBitmask(
+				"appBuilderAppId"));
 
 		_finderPathCountByAppBuilderAppId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1511,7 +1512,8 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 		_finderPathFetchByDDLRecordId = new FinderPath(
 			AppBuilderAppDataRecordLinkImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByDDLRecordId", new String[] {Long.class.getName()},
-			AppBuilderAppDataRecordLinkModelImpl.DDLRECORDID_COLUMN_BITMASK);
+			AppBuilderAppDataRecordLinkModelImpl.getColumnBitmask(
+				"ddlRecordId"));
 
 		_finderPathCountByDDLRecordId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

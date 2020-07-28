@@ -480,29 +480,31 @@ public class CTSContentPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingCTSContent.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTSContent, "getOriginalCompanyId", new Class<?>[0]));
+				existingCTSContent, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingCTSContent.getRepositoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTSContent, "getOriginalRepositoryId",
-				new Class<?>[0]));
+				existingCTSContent, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "repositoryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingCTSContent.getPath(),
 				ReflectionTestUtil.invoke(
-					existingCTSContent, "getOriginalPath", new Class<?>[0])));
+					existingCTSContent, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "path")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingCTSContent.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingCTSContent, "getOriginalVersion",
-					new Class<?>[0])));
+					existingCTSContent, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "version")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingCTSContent.getStoreType(),
 				ReflectionTestUtil.invoke(
-					existingCTSContent, "getOriginalStoreType",
-					new Class<?>[0])));
+					existingCTSContent, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "storeType")));
 	}
 
 	protected CTSContent addCTSContent() throws Exception {

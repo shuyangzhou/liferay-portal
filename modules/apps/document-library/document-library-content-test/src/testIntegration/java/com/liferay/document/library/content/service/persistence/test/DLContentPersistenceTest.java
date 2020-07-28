@@ -472,21 +472,25 @@ public class DLContentPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDLContent.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLContent, "getOriginalCompanyId", new Class<?>[0]));
+				existingDLContent, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDLContent.getRepositoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLContent, "getOriginalRepositoryId", new Class<?>[0]));
+				existingDLContent, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "repositoryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDLContent.getPath(),
 				ReflectionTestUtil.invoke(
-					existingDLContent, "getOriginalPath", new Class<?>[0])));
+					existingDLContent, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "path")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDLContent.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDLContent, "getOriginalVersion", new Class<?>[0])));
+					existingDLContent, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "version")));
 	}
 
 	protected DLContent addDLContent() throws Exception {

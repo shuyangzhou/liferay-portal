@@ -518,14 +518,14 @@ public class DDLRecordVersionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDDLRecordVersion.getRecordId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecordVersion, "getOriginalRecordId",
-				new Class<?>[0]));
+				existingDDLRecordVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "recordId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDDLRecordVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecordVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					existingDDLRecordVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "version")));
 	}
 
 	protected DDLRecordVersion addDDLRecordVersion() throws Exception {

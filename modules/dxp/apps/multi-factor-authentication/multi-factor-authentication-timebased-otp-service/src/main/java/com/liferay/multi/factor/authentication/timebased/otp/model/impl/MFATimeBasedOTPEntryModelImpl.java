@@ -113,8 +113,18 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MFATIMEBASEDOTPENTRYID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -351,6 +361,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -361,6 +380,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setMfaTimeBasedOTPEntryId(long mfaTimeBasedOTPEntryId) {
+		_columnBitmask |= _columnBitmasks.get("mfaTimeBasedOTPEntryId");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_mfaTimeBasedOTPEntryId = mfaTimeBasedOTPEntryId;
 	}
 
@@ -371,6 +399,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -381,12 +418,13 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
 
-			_originalUserId = _userId;
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -408,8 +446,13 @@ public class MFATimeBasedOTPEntryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -424,6 +467,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -434,6 +486,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -450,6 +511,15 @@ public class MFATimeBasedOTPEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -460,6 +530,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setFailedAttempts(int failedAttempts) {
+		_columnBitmask |= _columnBitmasks.get("failedAttempts");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_failedAttempts = failedAttempts;
 	}
 
@@ -470,6 +549,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setLastFailDate(Date lastFailDate) {
+		_columnBitmask |= _columnBitmasks.get("lastFailDate");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_lastFailDate = lastFailDate;
 	}
 
@@ -485,6 +573,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setLastFailIP(String lastFailIP) {
+		_columnBitmask |= _columnBitmasks.get("lastFailIP");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_lastFailIP = lastFailIP;
 	}
 
@@ -495,6 +592,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setLastSuccessDate(Date lastSuccessDate) {
+		_columnBitmask |= _columnBitmasks.get("lastSuccessDate");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_lastSuccessDate = lastSuccessDate;
 	}
 
@@ -510,6 +616,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setLastSuccessIP(String lastSuccessIP) {
+		_columnBitmask |= _columnBitmasks.get("lastSuccessIP");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_lastSuccessIP = lastSuccessIP;
 	}
 
@@ -525,6 +640,15 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void setSharedSecret(String sharedSecret) {
+		_columnBitmask |= _columnBitmasks.get("sharedSecret");
+
+		if (_mfaTimeBasedOTPEntryCacheModel ==
+				_dummyMFATimeBasedOTPEntryCacheModel) {
+
+			_mfaTimeBasedOTPEntryCacheModel =
+				(MFATimeBasedOTPEntryCacheModel)toCacheModel();
+		}
+
 		_sharedSecret = sharedSecret;
 	}
 
@@ -649,16 +773,11 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MFATimeBasedOTPEntryModelImpl mfaTimeBasedOTPEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		mfaTimeBasedOTPEntryModelImpl._originalUserId =
-			mfaTimeBasedOTPEntryModelImpl._userId;
+		_columnBitmask = 0;
 
-		mfaTimeBasedOTPEntryModelImpl._setOriginalUserId = false;
-
-		mfaTimeBasedOTPEntryModelImpl._setModifiedDate = false;
-
-		mfaTimeBasedOTPEntryModelImpl._columnBitmask = 0;
+		_mfaTimeBasedOTPEntryCacheModel = _dummyMFATimeBasedOTPEntryCacheModel;
 	}
 
 	@Override
@@ -823,12 +942,148 @@ public class MFATimeBasedOTPEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<MFATimeBasedOTPEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MFATimeBasedOTPEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<MFATimeBasedOTPEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"mfaTimeBasedOTPEntryId",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.mfaTimeBasedOTPEntryId);
+
+		columnBitmasks.put("mfaTimeBasedOTPEntryId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"failedAttempts",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.failedAttempts);
+
+		columnBitmasks.put("failedAttempts", 128L);
+
+		cacheModelGetterFunctions.put(
+			"lastFailDate",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.lastFailDate);
+
+		columnBitmasks.put("lastFailDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"lastFailIP",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.lastFailIP);
+
+		columnBitmasks.put("lastFailIP", 512L);
+
+		cacheModelGetterFunctions.put(
+			"lastSuccessDate",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.lastSuccessDate);
+
+		columnBitmasks.put("lastSuccessDate", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"lastSuccessIP",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.lastSuccessIP);
+
+		columnBitmasks.put("lastSuccessIP", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"sharedSecret",
+			mfaTimeBasedOTPEntryCacheModel ->
+				mfaTimeBasedOTPEntryCacheModel.sharedSecret);
+
+		columnBitmasks.put("sharedSecret", 4096L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MFATimeBasedOTPEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MFATimeBasedOTPEntryCacheModel mfaTimeBasedOTPEntryCacheModel =
+			_mfaTimeBasedOTPEntryCacheModel;
+
+		if (mfaTimeBasedOTPEntryCacheModel == null) {
+			mfaTimeBasedOTPEntryCacheModel =
+				_dummyMFATimeBasedOTPEntryCacheModel;
+		}
+
+		return (T)function.apply(mfaTimeBasedOTPEntryCacheModel);
+	}
+
+	private static final MFATimeBasedOTPEntryCacheModel
+		_dummyMFATimeBasedOTPEntryCacheModel =
+			new MFATimeBasedOTPEntryCacheModel();
+
+	private MFATimeBasedOTPEntryCacheModel _mfaTimeBasedOTPEntryCacheModel;
 	private long _mvccVersion;
 	private long _mfaTimeBasedOTPEntryId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;

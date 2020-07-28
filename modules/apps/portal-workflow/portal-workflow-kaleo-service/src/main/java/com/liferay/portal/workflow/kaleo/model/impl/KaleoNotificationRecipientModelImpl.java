@@ -126,12 +126,32 @@ public class KaleoNotificationRecipientModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEONOTIFICATIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEONOTIFICATIONRECIPIENTID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -418,6 +438,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -430,7 +459,14 @@ public class KaleoNotificationRecipientModelImpl
 	public void setKaleoNotificationRecipientId(
 		long kaleoNotificationRecipientId) {
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("kaleoNotificationRecipientId");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
 
 		_kaleoNotificationRecipientId = kaleoNotificationRecipientId;
 	}
@@ -442,6 +478,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_groupId = groupId;
 	}
 
@@ -452,19 +497,25 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -474,6 +525,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -505,6 +565,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -515,6 +584,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -531,6 +609,15 @@ public class KaleoNotificationRecipientModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -541,6 +628,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionId");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_kaleoDefinitionId = kaleoDefinitionId;
 	}
 
@@ -551,19 +647,25 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionVersionId");
 
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
 
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
 		}
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		return getOriginalAttributeValue("kaleoDefinitionVersionId");
 	}
 
 	@Override
@@ -573,19 +675,25 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setKaleoNotificationId(long kaleoNotificationId) {
-		_columnBitmask |= KALEONOTIFICATIONID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("kaleoNotificationId");
 
-		if (!_setOriginalKaleoNotificationId) {
-			_setOriginalKaleoNotificationId = true;
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
 
-			_originalKaleoNotificationId = _kaleoNotificationId;
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
 		}
 
 		_kaleoNotificationId = kaleoNotificationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoNotificationId() {
-		return _originalKaleoNotificationId;
+		return getOriginalAttributeValue("kaleoNotificationId");
 	}
 
 	@Override
@@ -600,6 +708,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setRecipientClassName(String recipientClassName) {
+		_columnBitmask |= _columnBitmasks.get("recipientClassName");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_recipientClassName = recipientClassName;
 	}
 
@@ -610,6 +727,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setRecipientClassPK(long recipientClassPK) {
+		_columnBitmask |= _columnBitmasks.get("recipientClassPK");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_recipientClassPK = recipientClassPK;
 	}
 
@@ -620,6 +746,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setRecipientRoleType(int recipientRoleType) {
+		_columnBitmask |= _columnBitmasks.get("recipientRoleType");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_recipientRoleType = recipientRoleType;
 	}
 
@@ -635,6 +770,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setRecipientScript(String recipientScript) {
+		_columnBitmask |= _columnBitmasks.get("recipientScript");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_recipientScript = recipientScript;
 	}
 
@@ -650,6 +794,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setRecipientScriptLanguage(String recipientScriptLanguage) {
+		_columnBitmask |= _columnBitmasks.get("recipientScriptLanguage");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_recipientScriptLanguage = recipientScriptLanguage;
 	}
 
@@ -665,6 +818,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setRecipientScriptContexts(String recipientScriptContexts) {
+		_columnBitmask |= _columnBitmasks.get("recipientScriptContexts");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_recipientScriptContexts = recipientScriptContexts;
 	}
 
@@ -680,6 +842,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setAddress(String address) {
+		_columnBitmask |= _columnBitmasks.get("address");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_address = address;
 	}
 
@@ -695,6 +866,15 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void setNotificationReceptionType(String notificationReceptionType) {
+		_columnBitmask |= _columnBitmasks.get("notificationReceptionType");
+
+		if (_kaleoNotificationRecipientCacheModel ==
+				_dummyKaleoNotificationRecipientCacheModel) {
+
+			_kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)toCacheModel();
+		}
+
 		_notificationReceptionType = notificationReceptionType;
 	}
 
@@ -847,29 +1027,12 @@ public class KaleoNotificationRecipientModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoNotificationRecipientModelImpl
-			kaleoNotificationRecipientModelImpl = this;
+		_setModifiedDate = false;
 
-		kaleoNotificationRecipientModelImpl._originalCompanyId =
-			kaleoNotificationRecipientModelImpl._companyId;
+		_columnBitmask = 0;
 
-		kaleoNotificationRecipientModelImpl._setOriginalCompanyId = false;
-
-		kaleoNotificationRecipientModelImpl._setModifiedDate = false;
-
-		kaleoNotificationRecipientModelImpl._originalKaleoDefinitionVersionId =
-			kaleoNotificationRecipientModelImpl._kaleoDefinitionVersionId;
-
-		kaleoNotificationRecipientModelImpl.
-			_setOriginalKaleoDefinitionVersionId = false;
-
-		kaleoNotificationRecipientModelImpl._originalKaleoNotificationId =
-			kaleoNotificationRecipientModelImpl._kaleoNotificationId;
-
-		kaleoNotificationRecipientModelImpl._setOriginalKaleoNotificationId =
-			false;
-
-		kaleoNotificationRecipientModelImpl._columnBitmask = 0;
+		_kaleoNotificationRecipientCacheModel =
+			_dummyKaleoNotificationRecipientCacheModel;
 	}
 
 	@Override
@@ -1078,12 +1241,193 @@ public class KaleoNotificationRecipientModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<KaleoNotificationRecipientCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<KaleoNotificationRecipientCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<KaleoNotificationRecipientCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoNotificationRecipientId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.
+					kaleoNotificationRecipientId);
+
+		columnBitmasks.put("kaleoNotificationRecipientId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoDefinitionId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.kaleoDefinitionId);
+
+		columnBitmasks.put("kaleoDefinitionId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoDefinitionVersionId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.kaleoDefinitionVersionId);
+
+		columnBitmasks.put("kaleoDefinitionVersionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoNotificationId",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.kaleoNotificationId);
+
+		columnBitmasks.put("kaleoNotificationId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"recipientClassName",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.recipientClassName);
+
+		columnBitmasks.put("recipientClassName", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"recipientClassPK",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.recipientClassPK);
+
+		columnBitmasks.put("recipientClassPK", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"recipientRoleType",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.recipientRoleType);
+
+		columnBitmasks.put("recipientRoleType", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"recipientScript",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.recipientScript);
+
+		columnBitmasks.put("recipientScript", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"recipientScriptLanguage",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.recipientScriptLanguage);
+
+		columnBitmasks.put("recipientScriptLanguage", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"recipientScriptContexts",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.recipientScriptContexts);
+
+		columnBitmasks.put("recipientScriptContexts", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"address",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.address);
+
+		columnBitmasks.put("address", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"notificationReceptionType",
+			kaleoNotificationRecipientCacheModel ->
+				kaleoNotificationRecipientCacheModel.notificationReceptionType);
+
+		columnBitmasks.put("notificationReceptionType", 262144L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<KaleoNotificationRecipientCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		KaleoNotificationRecipientCacheModel
+			kaleoNotificationRecipientCacheModel =
+				_kaleoNotificationRecipientCacheModel;
+
+		if (kaleoNotificationRecipientCacheModel == null) {
+			kaleoNotificationRecipientCacheModel =
+				_dummyKaleoNotificationRecipientCacheModel;
+		}
+
+		return (T)function.apply(kaleoNotificationRecipientCacheModel);
+	}
+
+	private static final KaleoNotificationRecipientCacheModel
+		_dummyKaleoNotificationRecipientCacheModel =
+			new KaleoNotificationRecipientCacheModel();
+
+	private KaleoNotificationRecipientCacheModel
+		_kaleoNotificationRecipientCacheModel;
 	private long _mvccVersion;
 	private long _kaleoNotificationRecipientId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1091,11 +1435,7 @@ public class KaleoNotificationRecipientModelImpl
 	private boolean _setModifiedDate;
 	private long _kaleoDefinitionId;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNotificationId;
-	private long _originalKaleoNotificationId;
-	private boolean _setOriginalKaleoNotificationId;
 	private String _recipientClassName;
 	private long _recipientClassPK;
 	private int _recipientRoleType;

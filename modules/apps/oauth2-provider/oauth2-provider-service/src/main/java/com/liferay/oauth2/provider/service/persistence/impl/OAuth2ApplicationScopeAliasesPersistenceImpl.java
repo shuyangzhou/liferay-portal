@@ -1442,7 +1442,7 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 				Object[] args = new Object[] {
 					oAuth2ApplicationScopeAliasesModelImpl.
-						getOriginalCompanyId()
+						getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByC, args);
@@ -1464,7 +1464,7 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 				Object[] args = new Object[] {
 					oAuth2ApplicationScopeAliasesModelImpl.
-						getOriginalOAuth2ApplicationId()
+						getOriginalAttributeValue("oAuth2ApplicationId")
 				};
 
 				finderCache.removeResult(
@@ -1791,7 +1791,8 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 			OAuth2ApplicationScopeAliasesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC",
 			new String[] {Long.class.getName()},
-			OAuth2ApplicationScopeAliasesModelImpl.COMPANYID_COLUMN_BITMASK);
+			OAuth2ApplicationScopeAliasesModelImpl.getColumnBitmask(
+				"companyId"));
 
 		_finderPathCountByC = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC",
@@ -1809,8 +1810,8 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 			OAuth2ApplicationScopeAliasesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByOAuth2ApplicationId", new String[] {Long.class.getName()},
-			OAuth2ApplicationScopeAliasesModelImpl.
-				OAUTH2APPLICATIONID_COLUMN_BITMASK);
+			OAuth2ApplicationScopeAliasesModelImpl.getColumnBitmask(
+				"oAuth2ApplicationId"));
 
 		_finderPathCountByOAuth2ApplicationId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
