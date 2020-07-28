@@ -2589,9 +2589,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				workflowMetricsSLADefinitionVersionModelImpl.getOriginalUuid(),
 				workflowMetricsSLADefinitionVersionModelImpl.
-					getOriginalGroupId()
+					getOriginalAttributeValue("uuid"),
+				workflowMetricsSLADefinitionVersionModelImpl.
+					getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2614,9 +2615,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 			Object[] args = new Object[] {
 				workflowMetricsSLADefinitionVersionModelImpl.
-					getOriginalVersion(),
+					getOriginalAttributeValue("version"),
 				workflowMetricsSLADefinitionVersionModelImpl.
-					getOriginalWorkflowMetricsSLADefinitionId()
+					getOriginalAttributeValue("workflowMetricsSLADefinitionId")
 			};
 
 			finderCache.removeResult(_finderPathCountByV_WMSLAD, args);
@@ -2880,7 +2881,7 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 				Object[] args = new Object[] {
 					workflowMetricsSLADefinitionVersionModelImpl.
-						getOriginalUuid()
+						getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2903,9 +2904,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 				Object[] args = new Object[] {
 					workflowMetricsSLADefinitionVersionModelImpl.
-						getOriginalUuid(),
+						getOriginalAttributeValue("uuid"),
 					workflowMetricsSLADefinitionVersionModelImpl.
-						getOriginalCompanyId()
+						getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2929,7 +2930,8 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 				Object[] args = new Object[] {
 					workflowMetricsSLADefinitionVersionModelImpl.
-						getOriginalWorkflowMetricsSLADefinitionId()
+						getOriginalAttributeValue(
+							"workflowMetricsSLADefinitionId")
 				};
 
 				finderCache.removeResult(
@@ -3268,9 +3270,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			WorkflowMetricsSLADefinitionVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			WorkflowMetricsSLADefinitionVersionModelImpl.UUID_COLUMN_BITMASK |
-			WorkflowMetricsSLADefinitionVersionModelImpl.
-				MODIFIEDDATE_COLUMN_BITMASK);
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"uuid") |
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"modifiedDate"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3280,9 +3283,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			WorkflowMetricsSLADefinitionVersionImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			WorkflowMetricsSLADefinitionVersionModelImpl.UUID_COLUMN_BITMASK |
-			WorkflowMetricsSLADefinitionVersionModelImpl.
-				GROUPID_COLUMN_BITMASK);
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"uuid") |
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3302,11 +3306,12 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			WorkflowMetricsSLADefinitionVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			WorkflowMetricsSLADefinitionVersionModelImpl.UUID_COLUMN_BITMASK |
-			WorkflowMetricsSLADefinitionVersionModelImpl.
-				COMPANYID_COLUMN_BITMASK |
-			WorkflowMetricsSLADefinitionVersionModelImpl.
-				MODIFIEDDATE_COLUMN_BITMASK);
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"uuid") |
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"companyId") |
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"modifiedDate"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3329,10 +3334,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByWorkflowMetricsSLADefinitionId",
 				new String[] {Long.class.getName()},
-				WorkflowMetricsSLADefinitionVersionModelImpl.
-					WORKFLOWMETRICSSLADEFINITIONID_COLUMN_BITMASK |
-				WorkflowMetricsSLADefinitionVersionModelImpl.
-					MODIFIEDDATE_COLUMN_BITMASK);
+				WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+					"workflowMetricsSLADefinitionId") |
+				WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+					"modifiedDate"));
 
 		_finderPathCountByWorkflowMetricsSLADefinitionId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3343,10 +3348,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			WorkflowMetricsSLADefinitionVersionImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByV_WMSLAD",
 			new String[] {String.class.getName(), Long.class.getName()},
-			WorkflowMetricsSLADefinitionVersionModelImpl.
-				VERSION_COLUMN_BITMASK |
-			WorkflowMetricsSLADefinitionVersionModelImpl.
-				WORKFLOWMETRICSSLADEFINITIONID_COLUMN_BITMASK);
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"version") |
+			WorkflowMetricsSLADefinitionVersionModelImpl.getColumnBitmask(
+				"workflowMetricsSLADefinitionId"));
 
 		_finderPathCountByV_WMSLAD = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

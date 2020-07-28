@@ -577,13 +577,13 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTaskInstanceToken.getKaleoInstanceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskInstanceToken, "getOriginalKaleoInstanceId",
-				new Class<?>[0]));
+				existingKaleoTaskInstanceToken, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoInstanceId"));
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTaskInstanceToken.getKaleoTaskId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskInstanceToken, "getOriginalKaleoTaskId",
-				new Class<?>[0]));
+				existingKaleoTaskInstanceToken, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoTaskId"));
 	}
 
 	protected KaleoTaskInstanceToken addKaleoTaskInstanceToken()

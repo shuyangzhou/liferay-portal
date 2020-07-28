@@ -494,41 +494,47 @@ public class KBFolderPersistenceTest {
 			Objects.equals(
 				existingKBFolder.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingKBFolder, "getOriginalUuid", new Class<?>[0])));
+					existingKBFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingKBFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingKBFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingKBFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingKBFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingKBFolder.getParentKBFolderId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBFolder, "getOriginalParentKBFolderId",
-				new Class<?>[0]));
+				existingKBFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "parentKBFolderId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKBFolder.getName(),
 				ReflectionTestUtil.invoke(
-					existingKBFolder, "getOriginalName", new Class<?>[0])));
+					existingKBFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingKBFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingKBFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingKBFolder.getParentKBFolderId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBFolder, "getOriginalParentKBFolderId",
-				new Class<?>[0]));
+				existingKBFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "parentKBFolderId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKBFolder.getUrlTitle(),
 				ReflectionTestUtil.invoke(
-					existingKBFolder, "getOriginalUrlTitle", new Class<?>[0])));
+					existingKBFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "urlTitle")));
 	}
 
 	protected KBFolder addKBFolder() throws Exception {

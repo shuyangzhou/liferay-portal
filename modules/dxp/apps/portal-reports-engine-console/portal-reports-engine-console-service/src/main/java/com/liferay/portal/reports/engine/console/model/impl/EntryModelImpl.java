@@ -129,6 +129,13 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
@@ -403,6 +410,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEntryId(long entryId) {
+		_columnBitmask |= _columnBitmasks.get("entryId");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_entryId = entryId;
 	}
 
@@ -414,6 +427,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_groupId = groupId;
 	}
 
@@ -425,6 +444,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -436,6 +461,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -468,6 +499,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -479,6 +516,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -496,6 +539,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -507,6 +556,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setDefinitionId(long definitionId) {
+		_columnBitmask |= _columnBitmasks.get("definitionId");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_definitionId = definitionId;
 	}
 
@@ -523,6 +578,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setFormat(String format) {
+		_columnBitmask |= _columnBitmasks.get("format");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_format = format;
 	}
 
@@ -540,6 +601,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setScheduleRequest(boolean scheduleRequest) {
+		_columnBitmask |= _columnBitmasks.get("scheduleRequest");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_scheduleRequest = scheduleRequest;
 	}
 
@@ -551,6 +618,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setStartDate(Date startDate) {
+		_columnBitmask |= _columnBitmasks.get("startDate");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_startDate = startDate;
 	}
 
@@ -562,6 +635,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEndDate(Date endDate) {
+		_columnBitmask |= _columnBitmasks.get("endDate");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_endDate = endDate;
 	}
 
@@ -579,6 +658,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setRepeating(boolean repeating) {
+		_columnBitmask |= _columnBitmasks.get("repeating");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_repeating = repeating;
 	}
 
@@ -595,6 +680,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setRecurrence(String recurrence) {
+		_columnBitmask |= _columnBitmasks.get("recurrence");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_recurrence = recurrence;
 	}
 
@@ -611,6 +702,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEmailNotifications(String emailNotifications) {
+		_columnBitmask |= _columnBitmasks.get("emailNotifications");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_emailNotifications = emailNotifications;
 	}
 
@@ -627,6 +724,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEmailDelivery(String emailDelivery) {
+		_columnBitmask |= _columnBitmasks.get("emailDelivery");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_emailDelivery = emailDelivery;
 	}
 
@@ -643,6 +746,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setPortletId(String portletId) {
+		_columnBitmask |= _columnBitmasks.get("portletId");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_portletId = portletId;
 	}
 
@@ -659,6 +768,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setPageURL(String pageURL) {
+		_columnBitmask |= _columnBitmasks.get("pageURL");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_pageURL = pageURL;
 	}
 
@@ -675,6 +790,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setReportParameters(String reportParameters) {
+		_columnBitmask |= _columnBitmasks.get("reportParameters");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_reportParameters = reportParameters;
 	}
 
@@ -691,6 +812,12 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setErrorMessage(String errorMessage) {
+		_columnBitmask |= _columnBitmasks.get("errorMessage");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_errorMessage = errorMessage;
 	}
 
@@ -707,7 +834,17 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setStatus(String status) {
+		_columnBitmask |= _columnBitmasks.get("status");
+
+		if (_entryCacheModel == _dummyEntryCacheModel) {
+			_entryCacheModel = (EntryCacheModel)toCacheModel();
+		}
+
 		_status = status;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -829,9 +966,11 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void resetOriginalValues() {
-		EntryModelImpl entryModelImpl = this;
+		_setModifiedDate = false;
 
-		entryModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
+
+		_entryCacheModel = _dummyEntryCacheModel;
 	}
 
 	@Override
@@ -1041,6 +1180,155 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<EntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<EntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap<String, Function<EntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"entryId", entryCacheModel -> entryCacheModel.entryId);
+
+		columnBitmasks.put("entryId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", entryCacheModel -> entryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", entryCacheModel -> entryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", entryCacheModel -> entryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName", entryCacheModel -> entryCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", entryCacheModel -> entryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate", entryCacheModel -> entryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"definitionId", entryCacheModel -> entryCacheModel.definitionId);
+
+		columnBitmasks.put("definitionId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"format", entryCacheModel -> entryCacheModel.format);
+
+		columnBitmasks.put("format", 256L);
+
+		cacheModelGetterFunctions.put(
+			"scheduleRequest",
+			entryCacheModel -> entryCacheModel.scheduleRequest);
+
+		columnBitmasks.put("scheduleRequest", 512L);
+
+		cacheModelGetterFunctions.put(
+			"startDate", entryCacheModel -> entryCacheModel.startDate);
+
+		columnBitmasks.put("startDate", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"endDate", entryCacheModel -> entryCacheModel.endDate);
+
+		columnBitmasks.put("endDate", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"repeating", entryCacheModel -> entryCacheModel.repeating);
+
+		columnBitmasks.put("repeating", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"recurrence", entryCacheModel -> entryCacheModel.recurrence);
+
+		columnBitmasks.put("recurrence", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"emailNotifications",
+			entryCacheModel -> entryCacheModel.emailNotifications);
+
+		columnBitmasks.put("emailNotifications", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"emailDelivery", entryCacheModel -> entryCacheModel.emailDelivery);
+
+		columnBitmasks.put("emailDelivery", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"portletId", entryCacheModel -> entryCacheModel.portletId);
+
+		columnBitmasks.put("portletId", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"pageURL", entryCacheModel -> entryCacheModel.pageURL);
+
+		columnBitmasks.put("pageURL", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"reportParameters",
+			entryCacheModel -> entryCacheModel.reportParameters);
+
+		columnBitmasks.put("reportParameters", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"errorMessage", entryCacheModel -> entryCacheModel.errorMessage);
+
+		columnBitmasks.put("errorMessage", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"status", entryCacheModel -> entryCacheModel.status);
+
+		columnBitmasks.put("status", 1048576L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<EntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		EntryCacheModel entryCacheModel = _entryCacheModel;
+
+		if (entryCacheModel == null) {
+			entryCacheModel = _dummyEntryCacheModel;
+		}
+
+		return (T)function.apply(entryCacheModel);
+	}
+
+	private static final EntryCacheModel _dummyEntryCacheModel =
+		new EntryCacheModel();
+
+	private EntryCacheModel _entryCacheModel;
 	private long _entryId;
 	private long _groupId;
 	private long _companyId;
@@ -1063,6 +1351,7 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	private String _reportParameters;
 	private String _errorMessage;
 	private String _status;
+	private long _columnBitmask;
 	private Entry _escapedModel;
 
 }

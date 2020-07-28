@@ -3279,8 +3279,8 @@ public class GadgetPersistenceImpl
 			 _finderPathFetchByC_U.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				gadgetModelImpl.getOriginalCompanyId(),
-				gadgetModelImpl.getOriginalUrl()
+				gadgetModelImpl.getOriginalAttributeValue("companyId"),
+				gadgetModelImpl.getOriginalAttributeValue("url")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByC_U, args);
@@ -3496,7 +3496,7 @@ public class GadgetPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					gadgetModelImpl.getOriginalUuid()
+					gadgetModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -3515,8 +3515,8 @@ public class GadgetPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					gadgetModelImpl.getOriginalUuid(),
-					gadgetModelImpl.getOriginalCompanyId()
+					gadgetModelImpl.getOriginalAttributeValue("uuid"),
+					gadgetModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -3537,7 +3537,7 @@ public class GadgetPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					gadgetModelImpl.getOriginalCompanyId()
+					gadgetModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
@@ -3842,8 +3842,8 @@ public class GadgetPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			GadgetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			GadgetModelImpl.UUID_COLUMN_BITMASK |
-			GadgetModelImpl.NAME_COLUMN_BITMASK);
+			GadgetModelImpl.getColumnBitmask("uuid") |
+			GadgetModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3862,9 +3862,9 @@ public class GadgetPersistenceImpl
 			GadgetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			GadgetModelImpl.UUID_COLUMN_BITMASK |
-			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
-			GadgetModelImpl.NAME_COLUMN_BITMASK);
+			GadgetModelImpl.getColumnBitmask("uuid") |
+			GadgetModelImpl.getColumnBitmask("companyId") |
+			GadgetModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3882,8 +3882,8 @@ public class GadgetPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			GadgetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
-			GadgetModelImpl.NAME_COLUMN_BITMASK);
+			GadgetModelImpl.getColumnBitmask("companyId") |
+			GadgetModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3892,8 +3892,8 @@ public class GadgetPersistenceImpl
 		_finderPathFetchByC_U = new FinderPath(
 			GadgetImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_U",
 			new String[] {Long.class.getName(), String.class.getName()},
-			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
-			GadgetModelImpl.URL_COLUMN_BITMASK);
+			GadgetModelImpl.getColumnBitmask("companyId") |
+			GadgetModelImpl.getColumnBitmask("url"));
 
 		_finderPathCountByC_U = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",

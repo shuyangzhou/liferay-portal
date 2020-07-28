@@ -1482,8 +1482,8 @@ public class ExpandoRowPersistenceImpl
 			 _finderPathFetchByT_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				expandoRowModelImpl.getOriginalTableId(),
-				expandoRowModelImpl.getOriginalClassPK()
+				expandoRowModelImpl.getOriginalAttributeValue("tableId"),
+				expandoRowModelImpl.getOriginalAttributeValue("classPK")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByT_C, args);
@@ -1681,7 +1681,7 @@ public class ExpandoRowPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					expandoRowModelImpl.getOriginalTableId()
+					expandoRowModelImpl.getOriginalAttributeValue("tableId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByTableId, args);
@@ -1700,7 +1700,7 @@ public class ExpandoRowPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					expandoRowModelImpl.getOriginalClassPK()
+					expandoRowModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByClassPK, args);
@@ -2181,7 +2181,7 @@ public class ExpandoRowPersistenceImpl
 		_finderPathWithoutPaginationFindByTableId = new FinderPath(
 			ExpandoRowImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByTableId", new String[] {Long.class.getName()},
-			ExpandoRowModelImpl.TABLEID_COLUMN_BITMASK);
+			ExpandoRowModelImpl.getColumnBitmask("tableId"));
 
 		_finderPathCountByTableId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2198,7 +2198,7 @@ public class ExpandoRowPersistenceImpl
 		_finderPathWithoutPaginationFindByClassPK = new FinderPath(
 			ExpandoRowImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByClassPK", new String[] {Long.class.getName()},
-			ExpandoRowModelImpl.CLASSPK_COLUMN_BITMASK);
+			ExpandoRowModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByClassPK = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2207,8 +2207,8 @@ public class ExpandoRowPersistenceImpl
 		_finderPathFetchByT_C = new FinderPath(
 			ExpandoRowImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByT_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			ExpandoRowModelImpl.TABLEID_COLUMN_BITMASK |
-			ExpandoRowModelImpl.CLASSPK_COLUMN_BITMASK);
+			ExpandoRowModelImpl.getColumnBitmask("tableId") |
+			ExpandoRowModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByT_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_C",

@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -142,30 +141,95 @@ public class WikiPageModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FORMAT_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEAD_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NODEID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTTITLE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REDIRECTTITLE_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RESOURCEPRIMKEY_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TITLE_COLUMN_BITMASK = 512L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 1024L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 2048L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 4096L;
 
 	/**
@@ -470,6 +534,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -486,17 +556,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -507,6 +582,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setPageId(long pageId) {
+		_columnBitmask |= _columnBitmasks.get("pageId");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_pageId = pageId;
 	}
 
@@ -518,12 +599,10 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
-		_columnBitmask |= RESOURCEPRIMKEY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("resourcePrimKey");
 
-		if (!_setOriginalResourcePrimKey) {
-			_setOriginalResourcePrimKey = true;
-
-			_originalResourcePrimKey = _resourcePrimKey;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_resourcePrimKey = resourcePrimKey;
@@ -534,8 +613,13 @@ public class WikiPageModelImpl
 		return true;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalResourcePrimKey() {
-		return _originalResourcePrimKey;
+		return getOriginalAttributeValue("resourcePrimKey");
 	}
 
 	@JSON
@@ -546,19 +630,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -569,19 +656,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -592,12 +682,10 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -619,8 +707,13 @@ public class WikiPageModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -636,6 +729,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -647,6 +746,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -664,6 +769,12 @@ public class WikiPageModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -675,19 +786,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setNodeId(long nodeId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("nodeId");
 
-		if (!_setOriginalNodeId) {
-			_setOriginalNodeId = true;
-
-			_originalNodeId = _nodeId;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_nodeId = nodeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalNodeId() {
-		return _originalNodeId;
+		return getOriginalAttributeValue("nodeId");
 	}
 
 	@JSON
@@ -703,17 +817,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setTitle(String title) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("title");
 
-		if (_originalTitle == null) {
-			_originalTitle = _title;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_title = title;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTitle() {
-		return GetterUtil.getString(_originalTitle);
+		return getOriginalAttributeValue("title");
 	}
 
 	@JSON
@@ -724,19 +843,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setVersion(double version) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("version");
 
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public double getOriginalVersion() {
-		return _originalVersion;
+		return getOriginalAttributeValue("version");
 	}
 
 	@JSON
@@ -753,6 +875,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setMinorEdit(boolean minorEdit) {
+		_columnBitmask |= _columnBitmasks.get("minorEdit");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_minorEdit = minorEdit;
 	}
 
@@ -769,6 +897,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_content = content;
 	}
 
@@ -785,6 +919,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setSummary(String summary) {
+		_columnBitmask |= _columnBitmasks.get("summary");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_summary = summary;
 	}
 
@@ -801,17 +941,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setFormat(String format) {
-		_columnBitmask |= FORMAT_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("format");
 
-		if (_originalFormat == null) {
-			_originalFormat = _format;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_format = format;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFormat() {
-		return GetterUtil.getString(_originalFormat);
+		return getOriginalAttributeValue("format");
 	}
 
 	@JSON
@@ -828,19 +973,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("head");
 
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_head = head;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalHead() {
-		return _originalHead;
+		return getOriginalAttributeValue("head");
 	}
 
 	@JSON
@@ -856,17 +1004,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setParentTitle(String parentTitle) {
-		_columnBitmask |= PARENTTITLE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("parentTitle");
 
-		if (_originalParentTitle == null) {
-			_originalParentTitle = _parentTitle;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_parentTitle = parentTitle;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalParentTitle() {
-		return GetterUtil.getString(_originalParentTitle);
+		return getOriginalAttributeValue("parentTitle");
 	}
 
 	@JSON
@@ -882,17 +1035,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setRedirectTitle(String redirectTitle) {
-		_columnBitmask |= REDIRECTTITLE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("redirectTitle");
 
-		if (_originalRedirectTitle == null) {
-			_originalRedirectTitle = _redirectTitle;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_redirectTitle = redirectTitle;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalRedirectTitle() {
-		return GetterUtil.getString(_originalRedirectTitle);
+		return getOriginalAttributeValue("redirectTitle");
 	}
 
 	@JSON
@@ -903,6 +1061,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -914,19 +1078,22 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("status");
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
 		}
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -937,6 +1104,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -969,6 +1142,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -980,6 +1159,12 @@ public class WikiPageModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
+		if (_wikiPageCacheModel == _dummyWikiPageCacheModel) {
+			_wikiPageCacheModel = (WikiPageCacheModel)toCacheModel();
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1395,55 +1580,11 @@ public class WikiPageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WikiPageModelImpl wikiPageModelImpl = this;
+		_setModifiedDate = false;
 
-		wikiPageModelImpl._originalUuid = wikiPageModelImpl._uuid;
+		_columnBitmask = 0;
 
-		wikiPageModelImpl._originalResourcePrimKey =
-			wikiPageModelImpl._resourcePrimKey;
-
-		wikiPageModelImpl._setOriginalResourcePrimKey = false;
-
-		wikiPageModelImpl._originalGroupId = wikiPageModelImpl._groupId;
-
-		wikiPageModelImpl._setOriginalGroupId = false;
-
-		wikiPageModelImpl._originalCompanyId = wikiPageModelImpl._companyId;
-
-		wikiPageModelImpl._setOriginalCompanyId = false;
-
-		wikiPageModelImpl._originalUserId = wikiPageModelImpl._userId;
-
-		wikiPageModelImpl._setOriginalUserId = false;
-
-		wikiPageModelImpl._setModifiedDate = false;
-
-		wikiPageModelImpl._originalNodeId = wikiPageModelImpl._nodeId;
-
-		wikiPageModelImpl._setOriginalNodeId = false;
-
-		wikiPageModelImpl._originalTitle = wikiPageModelImpl._title;
-
-		wikiPageModelImpl._originalVersion = wikiPageModelImpl._version;
-
-		wikiPageModelImpl._setOriginalVersion = false;
-
-		wikiPageModelImpl._originalFormat = wikiPageModelImpl._format;
-
-		wikiPageModelImpl._originalHead = wikiPageModelImpl._head;
-
-		wikiPageModelImpl._setOriginalHead = false;
-
-		wikiPageModelImpl._originalParentTitle = wikiPageModelImpl._parentTitle;
-
-		wikiPageModelImpl._originalRedirectTitle =
-			wikiPageModelImpl._redirectTitle;
-
-		wikiPageModelImpl._originalStatus = wikiPageModelImpl._status;
-
-		wikiPageModelImpl._setOriginalStatus = false;
-
-		wikiPageModelImpl._columnBitmask = 0;
+		_wikiPageCacheModel = _dummyWikiPageCacheModel;
 	}
 
 	@Override
@@ -1655,50 +1796,204 @@ public class WikiPageModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<WikiPageCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<WikiPageCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WikiPageCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			wikiPageCacheModel -> wikiPageCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", wikiPageCacheModel -> wikiPageCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"pageId", wikiPageCacheModel -> wikiPageCacheModel.pageId);
+
+		columnBitmasks.put("pageId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"resourcePrimKey",
+			wikiPageCacheModel -> wikiPageCacheModel.resourcePrimKey);
+
+		columnBitmasks.put("resourcePrimKey", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", wikiPageCacheModel -> wikiPageCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", wikiPageCacheModel -> wikiPageCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", wikiPageCacheModel -> wikiPageCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName", wikiPageCacheModel -> wikiPageCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", wikiPageCacheModel -> wikiPageCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			wikiPageCacheModel -> wikiPageCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"nodeId", wikiPageCacheModel -> wikiPageCacheModel.nodeId);
+
+		columnBitmasks.put("nodeId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"title", wikiPageCacheModel -> wikiPageCacheModel.title);
+
+		columnBitmasks.put("title", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"version", wikiPageCacheModel -> wikiPageCacheModel.version);
+
+		columnBitmasks.put("version", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"minorEdit", wikiPageCacheModel -> wikiPageCacheModel.minorEdit);
+
+		columnBitmasks.put("minorEdit", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"content", wikiPageCacheModel -> wikiPageCacheModel.content);
+
+		columnBitmasks.put("content", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"summary", wikiPageCacheModel -> wikiPageCacheModel.summary);
+
+		columnBitmasks.put("summary", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"format", wikiPageCacheModel -> wikiPageCacheModel.format);
+
+		columnBitmasks.put("format", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"head", wikiPageCacheModel -> wikiPageCacheModel.head);
+
+		columnBitmasks.put("head", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"parentTitle",
+			wikiPageCacheModel -> wikiPageCacheModel.parentTitle);
+
+		columnBitmasks.put("parentTitle", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"redirectTitle",
+			wikiPageCacheModel -> wikiPageCacheModel.redirectTitle);
+
+		columnBitmasks.put("redirectTitle", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			wikiPageCacheModel -> wikiPageCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"status", wikiPageCacheModel -> wikiPageCacheModel.status);
+
+		columnBitmasks.put("status", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			wikiPageCacheModel -> wikiPageCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			wikiPageCacheModel -> wikiPageCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate", wikiPageCacheModel -> wikiPageCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 16777216L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<WikiPageCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		WikiPageCacheModel wikiPageCacheModel = _wikiPageCacheModel;
+
+		if (wikiPageCacheModel == null) {
+			wikiPageCacheModel = _dummyWikiPageCacheModel;
+		}
+
+		return (T)function.apply(wikiPageCacheModel);
+	}
+
+	private static final WikiPageCacheModel _dummyWikiPageCacheModel =
+		new WikiPageCacheModel();
+
+	private WikiPageCacheModel _wikiPageCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _pageId;
 	private long _resourcePrimKey;
-	private long _originalResourcePrimKey;
-	private boolean _setOriginalResourcePrimKey;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _nodeId;
-	private long _originalNodeId;
-	private boolean _setOriginalNodeId;
 	private String _title;
-	private String _originalTitle;
 	private double _version;
-	private double _originalVersion;
-	private boolean _setOriginalVersion;
 	private boolean _minorEdit;
 	private String _content;
 	private String _summary;
 	private String _format;
-	private String _originalFormat;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private String _parentTitle;
-	private String _originalParentTitle;
 	private String _redirectTitle;
-	private String _originalRedirectTitle;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

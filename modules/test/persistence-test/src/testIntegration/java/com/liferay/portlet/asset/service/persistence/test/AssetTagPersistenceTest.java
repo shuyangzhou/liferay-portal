@@ -509,21 +509,25 @@ public class AssetTagPersistenceTest {
 			Objects.equals(
 				existingAssetTag.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetTag, "getOriginalUuid", new Class<?>[0])));
+					existingAssetTag, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetTag.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetTag, "getOriginalGroupId", new Class<?>[0]));
+				existingAssetTag, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingAssetTag.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetTag, "getOriginalGroupId", new Class<?>[0]));
+				existingAssetTag, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAssetTag.getName(),
 				ReflectionTestUtil.invoke(
-					existingAssetTag, "getOriginalName", new Class<?>[0])));
+					existingAssetTag, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected AssetTag addAssetTag() throws Exception {

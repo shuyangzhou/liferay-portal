@@ -631,41 +631,42 @@ public class AssetCategoryPersistenceTest {
 			Objects.equals(
 				existingAssetCategory.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetCategory, "getOriginalUuid",
-					new Class<?>[0])));
+					existingAssetCategory, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetCategory.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetCategory, "getOriginalGroupId", new Class<?>[0]));
+				existingAssetCategory, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingAssetCategory.getParentCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetCategory, "getOriginalParentCategoryId",
-				new Class<?>[0]));
+				existingAssetCategory, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "parentCategoryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAssetCategory.getName(),
 				ReflectionTestUtil.invoke(
-					existingAssetCategory, "getOriginalName",
-					new Class<?>[0])));
+					existingAssetCategory, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetCategory.getVocabularyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetCategory, "getOriginalVocabularyId",
-				new Class<?>[0]));
+				existingAssetCategory, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "vocabularyId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingAssetCategory.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetCategory, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingAssetCategory, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAssetCategory.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingAssetCategory, "getOriginalExternalReferenceCode",
-					new Class<?>[0])));
+					existingAssetCategory, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "externalReferenceCode")));
 	}
 
 	protected AssetCategory addAssetCategory() throws Exception {

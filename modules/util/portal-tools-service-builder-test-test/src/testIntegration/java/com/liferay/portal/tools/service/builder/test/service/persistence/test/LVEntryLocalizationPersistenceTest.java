@@ -435,20 +435,20 @@ public class LVEntryLocalizationPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntryLocalization.getLvEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryLocalization, "getOriginalLvEntryId",
-				new Class<?>[0]));
+				existingLVEntryLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "lvEntryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLVEntryLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryLocalization, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingLVEntryLocalization, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "languageId")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntryLocalization.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryLocalization, "getOriginalHeadId",
-				new Class<?>[0]));
+				existingLVEntryLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "headId"));
 	}
 
 	protected LVEntryLocalization addLVEntryLocalization() throws Exception {

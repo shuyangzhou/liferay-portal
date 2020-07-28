@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -116,18 +115,53 @@ public class MBDiscussionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long THREADID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DISCUSSIONID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -342,6 +376,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -352,6 +392,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -367,17 +413,22 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -387,6 +438,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setDiscussionId(long discussionId) {
+		_columnBitmask |= _columnBitmasks.get("discussionId");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_discussionId = discussionId;
 	}
 
@@ -397,19 +454,22 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -419,19 +479,22 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -441,6 +504,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -472,6 +541,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -482,6 +557,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -497,6 +578,12 @@ public class MBDiscussionModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -528,19 +615,22 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -550,19 +640,22 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
 		}
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -572,19 +665,22 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setThreadId(long threadId) {
-		_columnBitmask |= THREADID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("threadId");
 
-		if (!_setOriginalThreadId) {
-			_setOriginalThreadId = true;
-
-			_originalThreadId = _threadId;
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
 		}
 
 		_threadId = threadId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalThreadId() {
-		return _originalThreadId;
+		return getOriginalAttributeValue("threadId");
 	}
 
 	@Override
@@ -594,6 +690,12 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_mbDiscussionCacheModel == _dummyMBDiscussionCacheModel) {
+			_mbDiscussionCacheModel = (MBDiscussionCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -722,36 +824,11 @@ public class MBDiscussionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBDiscussionModelImpl mbDiscussionModelImpl = this;
+		_setModifiedDate = false;
 
-		mbDiscussionModelImpl._originalUuid = mbDiscussionModelImpl._uuid;
+		_columnBitmask = 0;
 
-		mbDiscussionModelImpl._originalGroupId = mbDiscussionModelImpl._groupId;
-
-		mbDiscussionModelImpl._setOriginalGroupId = false;
-
-		mbDiscussionModelImpl._originalCompanyId =
-			mbDiscussionModelImpl._companyId;
-
-		mbDiscussionModelImpl._setOriginalCompanyId = false;
-
-		mbDiscussionModelImpl._setModifiedDate = false;
-
-		mbDiscussionModelImpl._originalClassNameId =
-			mbDiscussionModelImpl._classNameId;
-
-		mbDiscussionModelImpl._setOriginalClassNameId = false;
-
-		mbDiscussionModelImpl._originalClassPK = mbDiscussionModelImpl._classPK;
-
-		mbDiscussionModelImpl._setOriginalClassPK = false;
-
-		mbDiscussionModelImpl._originalThreadId =
-			mbDiscussionModelImpl._threadId;
-
-		mbDiscussionModelImpl._setOriginalThreadId = false;
-
-		mbDiscussionModelImpl._columnBitmask = 0;
+		_mbDiscussionCacheModel = _dummyMBDiscussionCacheModel;
 	}
 
 	@Override
@@ -893,31 +970,144 @@ public class MBDiscussionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<MBDiscussionCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MBDiscussionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MBDiscussionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", mbDiscussionCacheModel -> mbDiscussionCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"discussionId",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.discussionId);
+
+		columnBitmasks.put("discussionId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", mbDiscussionCacheModel -> mbDiscussionCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"threadId",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.threadId);
+
+		columnBitmasks.put("threadId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			mbDiscussionCacheModel -> mbDiscussionCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 8192L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MBDiscussionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MBDiscussionCacheModel mbDiscussionCacheModel = _mbDiscussionCacheModel;
+
+		if (mbDiscussionCacheModel == null) {
+			mbDiscussionCacheModel = _dummyMBDiscussionCacheModel;
+		}
+
+		return (T)function.apply(mbDiscussionCacheModel);
+	}
+
+	private static final MBDiscussionCacheModel _dummyMBDiscussionCacheModel =
+		new MBDiscussionCacheModel();
+
+	private MBDiscussionCacheModel _mbDiscussionCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _discussionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _threadId;
-	private long _originalThreadId;
-	private boolean _setOriginalThreadId;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private MBDiscussion _escapedModel;

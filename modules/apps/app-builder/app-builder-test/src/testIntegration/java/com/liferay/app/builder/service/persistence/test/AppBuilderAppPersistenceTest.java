@@ -557,12 +557,13 @@ public class AppBuilderAppPersistenceTest {
 			Objects.equals(
 				existingAppBuilderApp.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderApp, "getOriginalUuid",
-					new Class<?>[0])));
+					existingAppBuilderApp, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingAppBuilderApp.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderApp, "getOriginalGroupId", new Class<?>[0]));
+				existingAppBuilderApp, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected AppBuilderApp addAppBuilderApp() throws Exception {

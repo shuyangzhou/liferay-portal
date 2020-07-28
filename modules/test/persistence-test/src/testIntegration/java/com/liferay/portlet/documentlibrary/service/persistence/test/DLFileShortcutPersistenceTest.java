@@ -560,12 +560,13 @@ public class DLFileShortcutPersistenceTest {
 			Objects.equals(
 				existingDLFileShortcut.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDLFileShortcut, "getOriginalUuid",
-					new Class<?>[0])));
+					existingDLFileShortcut, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDLFileShortcut.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileShortcut, "getOriginalGroupId", new Class<?>[0]));
+				existingDLFileShortcut, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected DLFileShortcut addDLFileShortcut() throws Exception {

@@ -2659,8 +2659,8 @@ public class LockPersistenceImpl
 			 _finderPathFetchByC_K.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				lockModelImpl.getOriginalClassName(),
-				lockModelImpl.getOriginalKey()
+				lockModelImpl.getOriginalAttributeValue("className"),
+				lockModelImpl.getOriginalAttributeValue("key")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_K, args);
@@ -2851,7 +2851,9 @@ public class LockPersistenceImpl
 				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
 					 0) {
 
-				Object[] args = new Object[] {lockModelImpl.getOriginalUuid()};
+				Object[] args = new Object[] {
+					lockModelImpl.getOriginalAttributeValue("uuid")
+				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
 				finderCache.removeResult(
@@ -2869,8 +2871,8 @@ public class LockPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					lockModelImpl.getOriginalUuid(),
-					lockModelImpl.getOriginalCompanyId()
+					lockModelImpl.getOriginalAttributeValue("uuid"),
+					lockModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2891,7 +2893,7 @@ public class LockPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					lockModelImpl.getOriginalClassName()
+					lockModelImpl.getOriginalAttributeValue("className")
 				};
 
 				finderCache.removeResult(_finderPathCountByClassName, args);
@@ -3197,7 +3199,7 @@ public class LockPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			LockImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			LockModelImpl.UUID_COLUMN_BITMASK);
+			LockModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3216,8 +3218,8 @@ public class LockPersistenceImpl
 			LockImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			LockModelImpl.UUID_COLUMN_BITMASK |
-			LockModelImpl.COMPANYID_COLUMN_BITMASK);
+			LockModelImpl.getColumnBitmask("uuid") |
+			LockModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3235,7 +3237,7 @@ public class LockPersistenceImpl
 		_finderPathWithoutPaginationFindByClassName = new FinderPath(
 			LockImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByClassName", new String[] {String.class.getName()},
-			LockModelImpl.CLASSNAME_COLUMN_BITMASK);
+			LockModelImpl.getColumnBitmask("className"));
 
 		_finderPathCountByClassName = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3256,8 +3258,8 @@ public class LockPersistenceImpl
 		_finderPathFetchByC_K = new FinderPath(
 			LockImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_K",
 			new String[] {String.class.getName(), String.class.getName()},
-			LockModelImpl.CLASSNAME_COLUMN_BITMASK |
-			LockModelImpl.KEY_COLUMN_BITMASK);
+			LockModelImpl.getColumnBitmask("className") |
+			LockModelImpl.getColumnBitmask("key"));
 
 		_finderPathCountByC_K = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_K",

@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -131,18 +130,53 @@ public class DDMStructureLayoutModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STRUCTURELAYOUTKEY_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STRUCTUREVERSIONID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STRUCTURELAYOUTID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -449,6 +483,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -460,6 +503,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -476,17 +528,25 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -497,6 +557,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setStructureLayoutId(long structureLayoutId) {
+		_columnBitmask |= _columnBitmasks.get("structureLayoutId");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_structureLayoutId = structureLayoutId;
 	}
 
@@ -508,19 +577,25 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
 
-			_originalGroupId = _groupId;
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -531,19 +606,25 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -554,6 +635,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -586,6 +676,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -597,6 +696,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -613,6 +721,15 @@ public class DDMStructureLayoutModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -645,19 +762,25 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
 
-			_originalClassNameId = _classNameId;
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
 		}
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -673,17 +796,25 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setStructureLayoutKey(String structureLayoutKey) {
-		_columnBitmask |= STRUCTURELAYOUTKEY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("structureLayoutKey");
 
-		if (_originalStructureLayoutKey == null) {
-			_originalStructureLayoutKey = _structureLayoutKey;
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
 		}
 
 		_structureLayoutKey = structureLayoutKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalStructureLayoutKey() {
-		return GetterUtil.getString(_originalStructureLayoutKey);
+		return getOriginalAttributeValue("structureLayoutKey");
 	}
 
 	@JSON
@@ -694,19 +825,25 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setStructureVersionId(long structureVersionId) {
-		_columnBitmask |= STRUCTUREVERSIONID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("structureVersionId");
 
-		if (!_setOriginalStructureVersionId) {
-			_setOriginalStructureVersionId = true;
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
 
-			_originalStructureVersionId = _structureVersionId;
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
 		}
 
 		_structureVersionId = structureVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalStructureVersionId() {
-		return _originalStructureVersionId;
+		return getOriginalAttributeValue("structureVersionId");
 	}
 
 	@JSON
@@ -765,6 +902,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_name = name;
 	}
 
@@ -868,6 +1014,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -933,6 +1088,15 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void setDefinition(String definition) {
+		_columnBitmask |= _columnBitmasks.get("definition");
+
+		if (_ddmStructureLayoutCacheModel ==
+				_dummyDDMStructureLayoutCacheModel) {
+
+			_ddmStructureLayoutCacheModel =
+				(DDMStructureLayoutCacheModel)toCacheModel();
+		}
+
 		_definition = definition;
 	}
 
@@ -1163,39 +1327,13 @@ public class DDMStructureLayoutModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMStructureLayoutModelImpl ddmStructureLayoutModelImpl = this;
-
-		ddmStructureLayoutModelImpl._originalUuid =
-			ddmStructureLayoutModelImpl._uuid;
-
-		ddmStructureLayoutModelImpl._originalGroupId =
-			ddmStructureLayoutModelImpl._groupId;
-
-		ddmStructureLayoutModelImpl._setOriginalGroupId = false;
-
-		ddmStructureLayoutModelImpl._originalCompanyId =
-			ddmStructureLayoutModelImpl._companyId;
-
-		ddmStructureLayoutModelImpl._setOriginalCompanyId = false;
-
-		ddmStructureLayoutModelImpl._setModifiedDate = false;
-
-		ddmStructureLayoutModelImpl._originalClassNameId =
-			ddmStructureLayoutModelImpl._classNameId;
-
-		ddmStructureLayoutModelImpl._setOriginalClassNameId = false;
-
-		ddmStructureLayoutModelImpl._originalStructureLayoutKey =
-			ddmStructureLayoutModelImpl._structureLayoutKey;
-
-		ddmStructureLayoutModelImpl._originalStructureVersionId =
-			ddmStructureLayoutModelImpl._structureVersionId;
-
-		ddmStructureLayoutModelImpl._setOriginalStructureVersionId = false;
+		_setModifiedDate = false;
 
 		setDDMFormLayout(null);
 
-		ddmStructureLayoutModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
+
+		_ddmStructureLayoutCacheModel = _dummyDDMStructureLayoutCacheModel;
 	}
 
 	@Override
@@ -1365,30 +1503,174 @@ public class DDMStructureLayoutModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DDMStructureLayoutCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DDMStructureLayoutCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DDMStructureLayoutCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			ddmStructureLayoutCacheModel -> ddmStructureLayoutCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"structureLayoutId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.structureLayoutId);
+
+		columnBitmasks.put("structureLayoutId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"structureLayoutKey",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.structureLayoutKey);
+
+		columnBitmasks.put("structureLayoutKey", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"structureVersionId",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.structureVersionId);
+
+		columnBitmasks.put("structureVersionId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			ddmStructureLayoutCacheModel -> ddmStructureLayoutCacheModel.name);
+
+		columnBitmasks.put("name", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.description);
+
+		columnBitmasks.put("description", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"definition",
+			ddmStructureLayoutCacheModel ->
+				ddmStructureLayoutCacheModel.definition);
+
+		columnBitmasks.put("definition", 32768L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DDMStructureLayoutCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DDMStructureLayoutCacheModel ddmStructureLayoutCacheModel =
+			_ddmStructureLayoutCacheModel;
+
+		if (ddmStructureLayoutCacheModel == null) {
+			ddmStructureLayoutCacheModel = _dummyDDMStructureLayoutCacheModel;
+		}
+
+		return (T)function.apply(ddmStructureLayoutCacheModel);
+	}
+
+	private static final DDMStructureLayoutCacheModel
+		_dummyDDMStructureLayoutCacheModel = new DDMStructureLayoutCacheModel();
+
+	private DDMStructureLayoutCacheModel _ddmStructureLayoutCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _structureLayoutId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private String _structureLayoutKey;
-	private String _originalStructureLayoutKey;
 	private long _structureVersionId;
-	private long _originalStructureVersionId;
-	private boolean _setOriginalStructureVersionId;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _description;

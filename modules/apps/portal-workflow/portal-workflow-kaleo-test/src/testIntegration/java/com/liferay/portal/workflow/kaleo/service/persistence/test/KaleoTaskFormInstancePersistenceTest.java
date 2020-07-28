@@ -568,8 +568,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTaskFormInstance.getKaleoTaskFormId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskFormInstance, "getOriginalKaleoTaskFormId",
-				new Class<?>[0]));
+				existingKaleoTaskFormInstance, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoTaskFormId"));
 	}
 
 	protected KaleoTaskFormInstance addKaleoTaskFormInstance()

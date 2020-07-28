@@ -487,34 +487,34 @@ public class SocialActivityLimitPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityLimit.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityLimit, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSocialActivityLimit, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityLimit.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityLimit, "getOriginalUserId",
-				new Class<?>[0]));
+				existingSocialActivityLimit, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityLimit.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityLimit, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSocialActivityLimit, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityLimit.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityLimit, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingSocialActivityLimit, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialActivityLimit.getActivityType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivityLimit, "getOriginalActivityType",
-				new Class<?>[0]));
+				existingSocialActivityLimit, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "activityType"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSocialActivityLimit.getActivityCounterName(),
 				ReflectionTestUtil.invoke(
-					existingSocialActivityLimit,
-					"getOriginalActivityCounterName", new Class<?>[0])));
+					existingSocialActivityLimit, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "activityCounterName")));
 	}
 
 	protected SocialActivityLimit addSocialActivityLimit() throws Exception {

@@ -489,14 +489,14 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAssetEntryAssetCategoryRel.getAssetEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryAssetCategoryRel, "getOriginalAssetEntryId",
-				new Class<?>[0]));
+				existingAssetEntryAssetCategoryRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "assetEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingAssetEntryAssetCategoryRel.getAssetCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryAssetCategoryRel,
-				"getOriginalAssetCategoryId", new Class<?>[0]));
+				existingAssetEntryAssetCategoryRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "assetCategoryId"));
 	}
 
 	protected AssetEntryAssetCategoryRel addAssetEntryAssetCategoryRel()

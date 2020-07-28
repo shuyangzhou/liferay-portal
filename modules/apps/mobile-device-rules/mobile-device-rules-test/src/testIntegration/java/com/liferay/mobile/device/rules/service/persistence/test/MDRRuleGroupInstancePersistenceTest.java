@@ -565,29 +565,29 @@ public class MDRRuleGroupInstancePersistenceTest {
 			Objects.equals(
 				existingMDRRuleGroupInstance.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMDRRuleGroupInstance, "getOriginalUuid",
-					new Class<?>[0])));
+					existingMDRRuleGroupInstance, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMDRRuleGroupInstance.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRuleGroupInstance, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingMDRRuleGroupInstance, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMDRRuleGroupInstance.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRuleGroupInstance, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingMDRRuleGroupInstance, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMDRRuleGroupInstance.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRuleGroupInstance, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingMDRRuleGroupInstance, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertEquals(
 			Long.valueOf(existingMDRRuleGroupInstance.getRuleGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRuleGroupInstance, "getOriginalRuleGroupId",
-				new Class<?>[0]));
+				existingMDRRuleGroupInstance, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "ruleGroupId"));
 	}
 
 	protected MDRRuleGroupInstance addMDRRuleGroupInstance() throws Exception {

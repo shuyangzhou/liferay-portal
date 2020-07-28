@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.redirect.model.RedirectEntry;
@@ -121,16 +120,46 @@ public class RedirectEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DESTINATIONURL_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SOURCEURL_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REDIRECTENTRYID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -402,6 +431,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -418,17 +453,22 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -439,6 +479,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setRedirectEntryId(long redirectEntryId) {
+		_columnBitmask |= _columnBitmasks.get("redirectEntryId");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_redirectEntryId = redirectEntryId;
 	}
 
@@ -450,19 +496,22 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -473,19 +522,22 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -496,6 +548,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -528,6 +586,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -539,6 +603,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -556,6 +626,12 @@ public class RedirectEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -572,17 +648,22 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setDestinationURL(String destinationURL) {
-		_columnBitmask |= DESTINATIONURL_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("destinationURL");
 
-		if (_originalDestinationURL == null) {
-			_originalDestinationURL = _destinationURL;
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
 		}
 
 		_destinationURL = destinationURL;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalDestinationURL() {
-		return GetterUtil.getString(_originalDestinationURL);
+		return getOriginalAttributeValue("destinationURL");
 	}
 
 	@JSON
@@ -593,6 +674,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		_columnBitmask |= _columnBitmasks.get("expirationDate");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_expirationDate = expirationDate;
 	}
 
@@ -604,6 +691,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setLastOccurrenceDate(Date lastOccurrenceDate) {
+		_columnBitmask |= _columnBitmasks.get("lastOccurrenceDate");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_lastOccurrenceDate = lastOccurrenceDate;
 	}
 
@@ -621,6 +714,12 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setPermanent(boolean permanent) {
+		_columnBitmask |= _columnBitmasks.get("permanent");
+
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
+		}
+
 		_permanent = permanent;
 	}
 
@@ -637,17 +736,22 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void setSourceURL(String sourceURL) {
-		_columnBitmask |= SOURCEURL_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("sourceURL");
 
-		if (_originalSourceURL == null) {
-			_originalSourceURL = _sourceURL;
+		if (_redirectEntryCacheModel == _dummyRedirectEntryCacheModel) {
+			_redirectEntryCacheModel = (RedirectEntryCacheModel)toCacheModel();
 		}
 
 		_sourceURL = sourceURL;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalSourceURL() {
-		return GetterUtil.getString(_originalSourceURL);
+		return getOriginalAttributeValue("sourceURL");
 	}
 
 	@Override
@@ -774,29 +878,11 @@ public class RedirectEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RedirectEntryModelImpl redirectEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		redirectEntryModelImpl._originalUuid = redirectEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		redirectEntryModelImpl._originalGroupId =
-			redirectEntryModelImpl._groupId;
-
-		redirectEntryModelImpl._setOriginalGroupId = false;
-
-		redirectEntryModelImpl._originalCompanyId =
-			redirectEntryModelImpl._companyId;
-
-		redirectEntryModelImpl._setOriginalCompanyId = false;
-
-		redirectEntryModelImpl._setModifiedDate = false;
-
-		redirectEntryModelImpl._originalDestinationURL =
-			redirectEntryModelImpl._destinationURL;
-
-		redirectEntryModelImpl._originalSourceURL =
-			redirectEntryModelImpl._sourceURL;
-
-		redirectEntryModelImpl._columnBitmask = 0;
+		_redirectEntryCacheModel = _dummyRedirectEntryCacheModel;
 	}
 
 	@Override
@@ -958,28 +1044,148 @@ public class RedirectEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<RedirectEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<RedirectEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<RedirectEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			redirectEntryCacheModel -> redirectEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", redirectEntryCacheModel -> redirectEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"redirectEntryId",
+			redirectEntryCacheModel -> redirectEntryCacheModel.redirectEntryId);
+
+		columnBitmasks.put("redirectEntryId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			redirectEntryCacheModel -> redirectEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			redirectEntryCacheModel -> redirectEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			redirectEntryCacheModel -> redirectEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			redirectEntryCacheModel -> redirectEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			redirectEntryCacheModel -> redirectEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			redirectEntryCacheModel -> redirectEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"destinationURL",
+			redirectEntryCacheModel -> redirectEntryCacheModel.destinationURL);
+
+		columnBitmasks.put("destinationURL", 512L);
+
+		cacheModelGetterFunctions.put(
+			"expirationDate",
+			redirectEntryCacheModel -> redirectEntryCacheModel.expirationDate);
+
+		columnBitmasks.put("expirationDate", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"lastOccurrenceDate",
+			redirectEntryCacheModel ->
+				redirectEntryCacheModel.lastOccurrenceDate);
+
+		columnBitmasks.put("lastOccurrenceDate", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"permanent",
+			redirectEntryCacheModel -> redirectEntryCacheModel.permanent);
+
+		columnBitmasks.put("permanent", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"sourceURL",
+			redirectEntryCacheModel -> redirectEntryCacheModel.sourceURL);
+
+		columnBitmasks.put("sourceURL", 8192L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<RedirectEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		RedirectEntryCacheModel redirectEntryCacheModel =
+			_redirectEntryCacheModel;
+
+		if (redirectEntryCacheModel == null) {
+			redirectEntryCacheModel = _dummyRedirectEntryCacheModel;
+		}
+
+		return (T)function.apply(redirectEntryCacheModel);
+	}
+
+	private static final RedirectEntryCacheModel _dummyRedirectEntryCacheModel =
+		new RedirectEntryCacheModel();
+
+	private RedirectEntryCacheModel _redirectEntryCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _redirectEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _destinationURL;
-	private String _originalDestinationURL;
 	private Date _expirationDate;
 	private Date _lastOccurrenceDate;
 	private boolean _permanent;
 	private String _sourceURL;
-	private String _originalSourceURL;
 	private long _columnBitmask;
 	private RedirectEntry _escapedModel;
 

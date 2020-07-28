@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -138,12 +137,32 @@ public class JournalFeedModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FEEDID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -471,6 +490,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -482,6 +507,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -498,17 +529,22 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -519,6 +555,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setId(long id) {
+		_columnBitmask |= _columnBitmasks.get("id");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_id = id;
 	}
 
@@ -530,19 +572,22 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -553,19 +598,22 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -576,6 +624,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -608,6 +662,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -619,6 +679,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -636,6 +702,12 @@ public class JournalFeedModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -652,17 +724,22 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setFeedId(String feedId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("feedId");
 
-		if (_originalFeedId == null) {
-			_originalFeedId = _feedId;
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
 		}
 
 		_feedId = feedId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFeedId() {
-		return GetterUtil.getString(_originalFeedId);
+		return getOriginalAttributeValue("feedId");
 	}
 
 	@JSON
@@ -678,6 +755,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_name = name;
 	}
 
@@ -694,6 +777,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -710,6 +799,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setDDMStructureKey(String DDMStructureKey) {
+		_columnBitmask |= _columnBitmasks.get("DDMStructureKey");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_DDMStructureKey = DDMStructureKey;
 	}
 
@@ -726,6 +821,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setDDMTemplateKey(String DDMTemplateKey) {
+		_columnBitmask |= _columnBitmasks.get("DDMTemplateKey");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_DDMTemplateKey = DDMTemplateKey;
 	}
 
@@ -742,6 +843,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setDDMRendererTemplateKey(String DDMRendererTemplateKey) {
+		_columnBitmask |= _columnBitmasks.get("DDMRendererTemplateKey");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_DDMRendererTemplateKey = DDMRendererTemplateKey;
 	}
 
@@ -753,6 +860,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setDelta(int delta) {
+		_columnBitmask |= _columnBitmasks.get("delta");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_delta = delta;
 	}
 
@@ -769,6 +882,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setOrderByCol(String orderByCol) {
+		_columnBitmask |= _columnBitmasks.get("orderByCol");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_orderByCol = orderByCol;
 	}
 
@@ -785,6 +904,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setOrderByType(String orderByType) {
+		_columnBitmask |= _columnBitmasks.get("orderByType");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_orderByType = orderByType;
 	}
 
@@ -801,6 +926,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setTargetLayoutFriendlyUrl(String targetLayoutFriendlyUrl) {
+		_columnBitmask |= _columnBitmasks.get("targetLayoutFriendlyUrl");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_targetLayoutFriendlyUrl = targetLayoutFriendlyUrl;
 	}
 
@@ -817,6 +948,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setTargetPortletId(String targetPortletId) {
+		_columnBitmask |= _columnBitmasks.get("targetPortletId");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_targetPortletId = targetPortletId;
 	}
 
@@ -833,6 +970,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setContentField(String contentField) {
+		_columnBitmask |= _columnBitmasks.get("contentField");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_contentField = contentField;
 	}
 
@@ -849,6 +992,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setFeedFormat(String feedFormat) {
+		_columnBitmask |= _columnBitmasks.get("feedFormat");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_feedFormat = feedFormat;
 	}
 
@@ -860,6 +1009,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setFeedVersion(double feedVersion) {
+		_columnBitmask |= _columnBitmasks.get("feedVersion");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_feedVersion = feedVersion;
 	}
 
@@ -871,6 +1026,12 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_journalFeedCacheModel == _dummyJournalFeedCacheModel) {
+			_journalFeedCacheModel = (JournalFeedCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1008,24 +1169,11 @@ public class JournalFeedModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalFeedModelImpl journalFeedModelImpl = this;
+		_setModifiedDate = false;
 
-		journalFeedModelImpl._originalUuid = journalFeedModelImpl._uuid;
+		_columnBitmask = 0;
 
-		journalFeedModelImpl._originalGroupId = journalFeedModelImpl._groupId;
-
-		journalFeedModelImpl._setOriginalGroupId = false;
-
-		journalFeedModelImpl._originalCompanyId =
-			journalFeedModelImpl._companyId;
-
-		journalFeedModelImpl._setOriginalCompanyId = false;
-
-		journalFeedModelImpl._setModifiedDate = false;
-
-		journalFeedModelImpl._originalFeedId = journalFeedModelImpl._feedId;
-
-		journalFeedModelImpl._columnBitmask = 0;
+		_journalFeedCacheModel = _dummyJournalFeedCacheModel;
 	}
 
 	@Override
@@ -1269,24 +1417,205 @@ public class JournalFeedModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<JournalFeedCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<JournalFeedCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<JournalFeedCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			journalFeedCacheModel -> journalFeedCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			journalFeedCacheModel -> journalFeedCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", journalFeedCacheModel -> journalFeedCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"id", journalFeedCacheModel -> journalFeedCacheModel.id);
+
+		columnBitmasks.put("id", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", journalFeedCacheModel -> journalFeedCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			journalFeedCacheModel -> journalFeedCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", journalFeedCacheModel -> journalFeedCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			journalFeedCacheModel -> journalFeedCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			journalFeedCacheModel -> journalFeedCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			journalFeedCacheModel -> journalFeedCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"feedId", journalFeedCacheModel -> journalFeedCacheModel.feedId);
+
+		columnBitmasks.put("feedId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"name", journalFeedCacheModel -> journalFeedCacheModel.name);
+
+		columnBitmasks.put("name", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			journalFeedCacheModel -> journalFeedCacheModel.description);
+
+		columnBitmasks.put("description", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"DDMStructureKey",
+			journalFeedCacheModel -> journalFeedCacheModel.DDMStructureKey);
+
+		columnBitmasks.put("DDMStructureKey", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"DDMTemplateKey",
+			journalFeedCacheModel -> journalFeedCacheModel.DDMTemplateKey);
+
+		columnBitmasks.put("DDMTemplateKey", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"DDMRendererTemplateKey",
+			journalFeedCacheModel ->
+				journalFeedCacheModel.DDMRendererTemplateKey);
+
+		columnBitmasks.put("DDMRendererTemplateKey", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"delta", journalFeedCacheModel -> journalFeedCacheModel.delta);
+
+		columnBitmasks.put("delta", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"orderByCol",
+			journalFeedCacheModel -> journalFeedCacheModel.orderByCol);
+
+		columnBitmasks.put("orderByCol", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"orderByType",
+			journalFeedCacheModel -> journalFeedCacheModel.orderByType);
+
+		columnBitmasks.put("orderByType", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"targetLayoutFriendlyUrl",
+			journalFeedCacheModel ->
+				journalFeedCacheModel.targetLayoutFriendlyUrl);
+
+		columnBitmasks.put("targetLayoutFriendlyUrl", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"targetPortletId",
+			journalFeedCacheModel -> journalFeedCacheModel.targetPortletId);
+
+		columnBitmasks.put("targetPortletId", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"contentField",
+			journalFeedCacheModel -> journalFeedCacheModel.contentField);
+
+		columnBitmasks.put("contentField", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"feedFormat",
+			journalFeedCacheModel -> journalFeedCacheModel.feedFormat);
+
+		columnBitmasks.put("feedFormat", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"feedVersion",
+			journalFeedCacheModel -> journalFeedCacheModel.feedVersion);
+
+		columnBitmasks.put("feedVersion", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			journalFeedCacheModel -> journalFeedCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 16777216L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<JournalFeedCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		JournalFeedCacheModel journalFeedCacheModel = _journalFeedCacheModel;
+
+		if (journalFeedCacheModel == null) {
+			journalFeedCacheModel = _dummyJournalFeedCacheModel;
+		}
+
+		return (T)function.apply(journalFeedCacheModel);
+	}
+
+	private static final JournalFeedCacheModel _dummyJournalFeedCacheModel =
+		new JournalFeedCacheModel();
+
+	private JournalFeedCacheModel _journalFeedCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _id;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _feedId;
-	private String _originalFeedId;
 	private String _name;
 	private String _description;
 	private String _DDMStructureKey;

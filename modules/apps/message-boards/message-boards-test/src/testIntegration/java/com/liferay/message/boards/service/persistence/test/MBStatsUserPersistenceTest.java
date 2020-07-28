@@ -447,11 +447,13 @@ public class MBStatsUserPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingMBStatsUser.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBStatsUser, "getOriginalGroupId", new Class<?>[0]));
+				existingMBStatsUser, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMBStatsUser.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBStatsUser, "getOriginalUserId", new Class<?>[0]));
+				existingMBStatsUser, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 	}
 
 	protected MBStatsUser addMBStatsUser() throws Exception {

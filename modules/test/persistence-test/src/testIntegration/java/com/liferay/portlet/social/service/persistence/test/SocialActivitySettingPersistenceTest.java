@@ -502,24 +502,24 @@ public class SocialActivitySettingPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivitySetting.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivitySetting, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSocialActivitySetting, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivitySetting.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivitySetting, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSocialActivitySetting, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialActivitySetting.getActivityType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivitySetting, "getOriginalActivityType",
-				new Class<?>[0]));
+				existingSocialActivitySetting, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "activityType"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSocialActivitySetting.getName(),
 				ReflectionTestUtil.invoke(
-					existingSocialActivitySetting, "getOriginalName",
-					new Class<?>[0])));
+					existingSocialActivitySetting, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected SocialActivitySetting addSocialActivitySetting()

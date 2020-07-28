@@ -970,8 +970,8 @@ public class FolderPersistenceImpl
 			 _finderPathFetchByA_F.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				folderModelImpl.getOriginalAccountId(),
-				folderModelImpl.getOriginalFullName()
+				folderModelImpl.getOriginalAttributeValue("accountId"),
+				folderModelImpl.getOriginalAttributeValue("fullName")
 			};
 
 			finderCache.removeResult(_finderPathCountByA_F, args);
@@ -1162,7 +1162,7 @@ public class FolderPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					folderModelImpl.getOriginalAccountId()
+					folderModelImpl.getOriginalAttributeValue("accountId")
 				};
 
 				finderCache.removeResult(_finderPathCountByAccountId, args);
@@ -1463,8 +1463,8 @@ public class FolderPersistenceImpl
 		_finderPathWithoutPaginationFindByAccountId = new FinderPath(
 			FolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByAccountId", new String[] {Long.class.getName()},
-			FolderModelImpl.ACCOUNTID_COLUMN_BITMASK |
-			FolderModelImpl.FULLNAME_COLUMN_BITMASK);
+			FolderModelImpl.getColumnBitmask("accountId") |
+			FolderModelImpl.getColumnBitmask("fullName"));
 
 		_finderPathCountByAccountId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1473,8 +1473,8 @@ public class FolderPersistenceImpl
 		_finderPathFetchByA_F = new FinderPath(
 			FolderImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByA_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			FolderModelImpl.ACCOUNTID_COLUMN_BITMASK |
-			FolderModelImpl.FULLNAME_COLUMN_BITMASK);
+			FolderModelImpl.getColumnBitmask("accountId") |
+			FolderModelImpl.getColumnBitmask("fullName"));
 
 		_finderPathCountByA_F = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_F",

@@ -124,18 +124,53 @@ public class LVEntryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEAD_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEADID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UNIQUEGROUPKEY_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LVENTRYID_COLUMN_BITMASK = 64L;
 
 	public static final String MAPPING_TABLE_BIGDECIMALENTRIES_LVENTRIES_NAME =
@@ -463,31 +498,6 @@ public class LVEntryModelImpl
 		return lvEntryLocalization.getContent();
 	}
 
-	public boolean getHead() {
-		return _head;
-	}
-
-	@Override
-	public boolean isHead() {
-		return _head;
-	}
-
-	public boolean getOriginalHead() {
-		return _originalHead;
-	}
-
-	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
-
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
-		}
-
-		_head = head;
-	}
-
 	@Override
 	public void populateVersionModel(LVEntryVersion lvEntryVersion) {
 		lvEntryVersion.setUuid(getUuid());
@@ -504,6 +514,12 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -519,17 +535,22 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -539,12 +560,10 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setHeadId(long headId) {
-		_columnBitmask |= HEADID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("headId");
 
-		if (!_setOriginalHeadId) {
-			_setOriginalHeadId = true;
-
-			_originalHeadId = _headId;
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
 		}
 
 		if (headId >= 0) {
@@ -557,8 +576,41 @@ public class LVEntryModelImpl
 		_headId = headId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalHeadId() {
-		return _originalHeadId;
+		return getOriginalAttributeValue("headId");
+	}
+
+	public boolean getHead() {
+		return _head;
+	}
+
+	@Override
+	public boolean isHead() {
+		return _head;
+	}
+
+	public void setHead(boolean head) {
+		_columnBitmask |= _columnBitmasks.get("head");
+
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
+		}
+
+		_head = head;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalHead() {
+		return getOriginalAttributeValue("head");
 	}
 
 	@Override
@@ -573,6 +625,12 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_columnBitmask |= _columnBitmasks.get("defaultLanguageId");
+
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
+		}
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -583,6 +641,12 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setLvEntryId(long lvEntryId) {
+		_columnBitmask |= _columnBitmasks.get("lvEntryId");
+
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
+		}
+
 		_lvEntryId = lvEntryId;
 	}
 
@@ -593,19 +657,22 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -615,19 +682,22 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -642,17 +712,22 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setUniqueGroupKey(String uniqueGroupKey) {
-		_columnBitmask |= UNIQUEGROUPKEY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uniqueGroupKey");
 
-		if (_originalUniqueGroupKey == null) {
-			_originalUniqueGroupKey = _uniqueGroupKey;
+		if (_lvEntryCacheModel == _dummyLVEntryCacheModel) {
+			_lvEntryCacheModel = (LVEntryCacheModel)toCacheModel();
 		}
 
 		_uniqueGroupKey = uniqueGroupKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUniqueGroupKey() {
-		return GetterUtil.getString(_originalUniqueGroupKey);
+		return getOriginalAttributeValue("uniqueGroupKey");
 	}
 
 	public long getColumnBitmask() {
@@ -767,30 +842,9 @@ public class LVEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LVEntryModelImpl lvEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		lvEntryModelImpl._originalUuid = lvEntryModelImpl._uuid;
-
-		lvEntryModelImpl._originalHeadId = lvEntryModelImpl._headId;
-
-		lvEntryModelImpl._setOriginalHeadId = false;
-
-		lvEntryModelImpl._originalHead = lvEntryModelImpl._head;
-
-		lvEntryModelImpl._setOriginalHead = false;
-
-		lvEntryModelImpl._originalCompanyId = lvEntryModelImpl._companyId;
-
-		lvEntryModelImpl._setOriginalCompanyId = false;
-
-		lvEntryModelImpl._originalGroupId = lvEntryModelImpl._groupId;
-
-		lvEntryModelImpl._setOriginalGroupId = false;
-
-		lvEntryModelImpl._originalUniqueGroupKey =
-			lvEntryModelImpl._uniqueGroupKey;
-
-		lvEntryModelImpl._columnBitmask = 0;
+		_lvEntryCacheModel = _dummyLVEntryCacheModel;
 	}
 
 	@Override
@@ -906,25 +960,104 @@ public class LVEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<LVEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LVEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<LVEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", lvEntryCacheModel -> lvEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", lvEntryCacheModel -> lvEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"headId", lvEntryCacheModel -> lvEntryCacheModel.headId);
+
+		columnBitmasks.put("headId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"head", lvEntryCacheModel -> lvEntryCacheModel.head);
+
+		columnBitmasks.put("head", 8L);
+
+		cacheModelGetterFunctions.put(
+			"defaultLanguageId",
+			lvEntryCacheModel -> lvEntryCacheModel.defaultLanguageId);
+
+		columnBitmasks.put("defaultLanguageId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"lvEntryId", lvEntryCacheModel -> lvEntryCacheModel.lvEntryId);
+
+		columnBitmasks.put("lvEntryId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", lvEntryCacheModel -> lvEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", lvEntryCacheModel -> lvEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"uniqueGroupKey",
+			lvEntryCacheModel -> lvEntryCacheModel.uniqueGroupKey);
+
+		columnBitmasks.put("uniqueGroupKey", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LVEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LVEntryCacheModel lvEntryCacheModel = _lvEntryCacheModel;
+
+		if (lvEntryCacheModel == null) {
+			lvEntryCacheModel = _dummyLVEntryCacheModel;
+		}
+
+		return (T)function.apply(lvEntryCacheModel);
+	}
+
+	private static final LVEntryCacheModel _dummyLVEntryCacheModel =
+		new LVEntryCacheModel();
+
+	private LVEntryCacheModel _lvEntryCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _headId;
-	private long _originalHeadId;
-	private boolean _setOriginalHeadId;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private String _defaultLanguageId;
 	private long _lvEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private String _uniqueGroupKey;
-	private String _originalUniqueGroupKey;
 	private long _columnBitmask;
 	private LVEntry _escapedModel;
 

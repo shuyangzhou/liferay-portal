@@ -536,27 +536,29 @@ public class LayoutSEOEntryPersistenceTest {
 			Objects.equals(
 				existingLayoutSEOEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutSEOEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLayoutSEOEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutSEOEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutSEOEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingLayoutSEOEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutSEOEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutSEOEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingLayoutSEOEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayoutSEOEntry.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayoutSEOEntry, "getOriginalPrivateLayout",
-				new Class<?>[0]));
+				existingLayoutSEOEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutSEOEntry.getLayoutId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutSEOEntry, "getOriginalLayoutId",
-				new Class<?>[0]));
+				existingLayoutSEOEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutId"));
 	}
 
 	protected LayoutSEOEntry addLayoutSEOEntry() throws Exception {

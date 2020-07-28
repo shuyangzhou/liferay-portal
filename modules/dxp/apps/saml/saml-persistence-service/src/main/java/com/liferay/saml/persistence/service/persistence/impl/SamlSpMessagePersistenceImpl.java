@@ -1070,8 +1070,10 @@ public class SamlSpMessagePersistenceImpl
 			 _finderPathFetchBySIEI_SIRK.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				samlSpMessageModelImpl.getOriginalSamlIdpEntityId(),
-				samlSpMessageModelImpl.getOriginalSamlIdpResponseKey()
+				samlSpMessageModelImpl.getOriginalAttributeValue(
+					"samlIdpEntityId"),
+				samlSpMessageModelImpl.getOriginalAttributeValue(
+					"samlIdpResponseKey")
 			};
 
 			finderCache.removeResult(_finderPathCountBySIEI_SIRK, args);
@@ -1530,8 +1532,8 @@ public class SamlSpMessagePersistenceImpl
 			SamlSpMessageImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchBySIEI_SIRK",
 			new String[] {String.class.getName(), String.class.getName()},
-			SamlSpMessageModelImpl.SAMLIDPENTITYID_COLUMN_BITMASK |
-			SamlSpMessageModelImpl.SAMLIDPRESPONSEKEY_COLUMN_BITMASK);
+			SamlSpMessageModelImpl.getColumnBitmask("samlIdpEntityId") |
+			SamlSpMessageModelImpl.getColumnBitmask("samlIdpResponseKey"));
 
 		_finderPathCountBySIEI_SIRK = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

@@ -502,42 +502,47 @@ public class LVEntryVersionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntryVersion.getLvEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryVersion, "getOriginalLvEntryId",
-				new Class<?>[0]));
+				existingLVEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "lvEntryId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingLVEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryVersion, "getOriginalVersion", new Class<?>[0]));
+				existingLVEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertTrue(
 			Objects.equals(
 				existingLVEntryVersion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryVersion, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLVEntryVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntryVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryVersion, "getOriginalGroupId", new Class<?>[0]));
+				existingLVEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingLVEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryVersion, "getOriginalVersion", new Class<?>[0]));
+				existingLVEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntryVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryVersion, "getOriginalGroupId", new Class<?>[0]));
+				existingLVEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLVEntryVersion.getUniqueGroupKey(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryVersion, "getOriginalUniqueGroupKey",
-					new Class<?>[0])));
+					existingLVEntryVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uniqueGroupKey")));
 		Assert.assertEquals(
 			Integer.valueOf(existingLVEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryVersion, "getOriginalVersion", new Class<?>[0]));
+				existingLVEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 	}
 
 	protected LVEntryVersion addLVEntryVersion() throws Exception {

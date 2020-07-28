@@ -521,25 +521,25 @@ public class KaleoTransitionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTransition.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTransition, "getOriginalKaleoNodeId",
-				new Class<?>[0]));
+				existingKaleoTransition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoNodeId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoTransition.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoTransition, "getOriginalName",
-					new Class<?>[0])));
+					existingKaleoTransition, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTransition.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTransition, "getOriginalKaleoNodeId",
-				new Class<?>[0]));
+				existingKaleoTransition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoNodeId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingKaleoTransition.getDefaultTransition()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingKaleoTransition, "getOriginalDefaultTransition",
-				new Class<?>[0]));
+				existingKaleoTransition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "defaultTransition"));
 	}
 
 	protected KaleoTransition addKaleoTransition() throws Exception {

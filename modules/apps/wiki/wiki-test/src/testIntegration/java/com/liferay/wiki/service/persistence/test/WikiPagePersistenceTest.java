@@ -816,39 +816,46 @@ public class WikiPagePersistenceTest {
 			Objects.equals(
 				existingWikiPage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingWikiPage, "getOriginalUuid", new Class<?>[0])));
+					existingWikiPage, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingWikiPage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalGroupId", new Class<?>[0]));
+				existingWikiPage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingWikiPage.getResourcePrimKey()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalResourcePrimKey",
-				new Class<?>[0]));
+				existingWikiPage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "resourcePrimKey"));
 		Assert.assertEquals(
 			Long.valueOf(existingWikiPage.getNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalNodeId", new Class<?>[0]));
+				existingWikiPage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "nodeId"));
 		AssertUtils.assertEquals(
 			existingWikiPage.getVersion(),
 			ReflectionTestUtil.<Double>invoke(
-				existingWikiPage, "getOriginalVersion", new Class<?>[0]));
+				existingWikiPage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingWikiPage.getNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalNodeId", new Class<?>[0]));
+				existingWikiPage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "nodeId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingWikiPage.getTitle(),
 				ReflectionTestUtil.invoke(
-					existingWikiPage, "getOriginalTitle", new Class<?>[0])));
+					existingWikiPage, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "title")));
 		AssertUtils.assertEquals(
 			existingWikiPage.getVersion(),
 			ReflectionTestUtil.<Double>invoke(
-				existingWikiPage, "getOriginalVersion", new Class<?>[0]));
+				existingWikiPage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 	}
 
 	protected WikiPage addWikiPage() throws Exception {

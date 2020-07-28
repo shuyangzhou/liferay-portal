@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -100,12 +99,32 @@ public class DepotAppCustomizationModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEPOTENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ENABLED_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEPOTAPPCUSTOMIZATIONID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -302,6 +321,15 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_depotAppCustomizationCacheModel ==
+				_dummyDepotAppCustomizationCacheModel) {
+
+			_depotAppCustomizationCacheModel =
+				(DepotAppCustomizationCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -312,6 +340,15 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setDepotAppCustomizationId(long depotAppCustomizationId) {
+		_columnBitmask |= _columnBitmasks.get("depotAppCustomizationId");
+
+		if (_depotAppCustomizationCacheModel ==
+				_dummyDepotAppCustomizationCacheModel) {
+
+			_depotAppCustomizationCacheModel =
+				(DepotAppCustomizationCacheModel)toCacheModel();
+		}
+
 		_depotAppCustomizationId = depotAppCustomizationId;
 	}
 
@@ -322,6 +359,15 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_depotAppCustomizationCacheModel ==
+				_dummyDepotAppCustomizationCacheModel) {
+
+			_depotAppCustomizationCacheModel =
+				(DepotAppCustomizationCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -332,19 +378,25 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setDepotEntryId(long depotEntryId) {
-		_columnBitmask |= DEPOTENTRYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("depotEntryId");
 
-		if (!_setOriginalDepotEntryId) {
-			_setOriginalDepotEntryId = true;
+		if (_depotAppCustomizationCacheModel ==
+				_dummyDepotAppCustomizationCacheModel) {
 
-			_originalDepotEntryId = _depotEntryId;
+			_depotAppCustomizationCacheModel =
+				(DepotAppCustomizationCacheModel)toCacheModel();
 		}
 
 		_depotEntryId = depotEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDepotEntryId() {
-		return _originalDepotEntryId;
+		return getOriginalAttributeValue("depotEntryId");
 	}
 
 	@Override
@@ -359,19 +411,25 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		_columnBitmask |= ENABLED_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("enabled");
 
-		if (!_setOriginalEnabled) {
-			_setOriginalEnabled = true;
+		if (_depotAppCustomizationCacheModel ==
+				_dummyDepotAppCustomizationCacheModel) {
 
-			_originalEnabled = _enabled;
+			_depotAppCustomizationCacheModel =
+				(DepotAppCustomizationCacheModel)toCacheModel();
 		}
 
 		_enabled = enabled;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalEnabled() {
-		return _originalEnabled;
+		return getOriginalAttributeValue("enabled");
 	}
 
 	@Override
@@ -386,17 +444,25 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("portletId");
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+		if (_depotAppCustomizationCacheModel ==
+				_dummyDepotAppCustomizationCacheModel) {
+
+			_depotAppCustomizationCacheModel =
+				(DepotAppCustomizationCacheModel)toCacheModel();
 		}
 
 		_portletId = portletId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return getOriginalAttributeValue("portletId");
 	}
 
 	public long getColumnBitmask() {
@@ -513,22 +579,10 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DepotAppCustomizationModelImpl depotAppCustomizationModelImpl = this;
+		_columnBitmask = 0;
 
-		depotAppCustomizationModelImpl._originalDepotEntryId =
-			depotAppCustomizationModelImpl._depotEntryId;
-
-		depotAppCustomizationModelImpl._setOriginalDepotEntryId = false;
-
-		depotAppCustomizationModelImpl._originalEnabled =
-			depotAppCustomizationModelImpl._enabled;
-
-		depotAppCustomizationModelImpl._setOriginalEnabled = false;
-
-		depotAppCustomizationModelImpl._originalPortletId =
-			depotAppCustomizationModelImpl._portletId;
-
-		depotAppCustomizationModelImpl._columnBitmask = 0;
+		_depotAppCustomizationCacheModel =
+			_dummyDepotAppCustomizationCacheModel;
 	}
 
 	@Override
@@ -630,17 +684,101 @@ public class DepotAppCustomizationModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DepotAppCustomizationCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DepotAppCustomizationCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<DepotAppCustomizationCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			depotAppCustomizationCacheModel ->
+				depotAppCustomizationCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"depotAppCustomizationId",
+			depotAppCustomizationCacheModel ->
+				depotAppCustomizationCacheModel.depotAppCustomizationId);
+
+		columnBitmasks.put("depotAppCustomizationId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			depotAppCustomizationCacheModel ->
+				depotAppCustomizationCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"depotEntryId",
+			depotAppCustomizationCacheModel ->
+				depotAppCustomizationCacheModel.depotEntryId);
+
+		columnBitmasks.put("depotEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"enabled",
+			depotAppCustomizationCacheModel ->
+				depotAppCustomizationCacheModel.enabled);
+
+		columnBitmasks.put("enabled", 16L);
+
+		cacheModelGetterFunctions.put(
+			"portletId",
+			depotAppCustomizationCacheModel ->
+				depotAppCustomizationCacheModel.portletId);
+
+		columnBitmasks.put("portletId", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DepotAppCustomizationCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DepotAppCustomizationCacheModel depotAppCustomizationCacheModel =
+			_depotAppCustomizationCacheModel;
+
+		if (depotAppCustomizationCacheModel == null) {
+			depotAppCustomizationCacheModel =
+				_dummyDepotAppCustomizationCacheModel;
+		}
+
+		return (T)function.apply(depotAppCustomizationCacheModel);
+	}
+
+	private static final DepotAppCustomizationCacheModel
+		_dummyDepotAppCustomizationCacheModel =
+			new DepotAppCustomizationCacheModel();
+
+	private DepotAppCustomizationCacheModel _depotAppCustomizationCacheModel;
 	private long _mvccVersion;
 	private long _depotAppCustomizationId;
 	private long _companyId;
 	private long _depotEntryId;
-	private long _originalDepotEntryId;
-	private boolean _setOriginalDepotEntryId;
 	private boolean _enabled;
-	private boolean _originalEnabled;
-	private boolean _setOriginalEnabled;
 	private String _portletId;
-	private String _originalPortletId;
 	private long _columnBitmask;
 	private DepotAppCustomization _escapedModel;
 

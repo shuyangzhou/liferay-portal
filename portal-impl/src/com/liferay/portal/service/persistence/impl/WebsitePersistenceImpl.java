@@ -4252,7 +4252,7 @@ public class WebsitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalUuid()
+					websiteModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -4271,8 +4271,8 @@ public class WebsitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalUuid(),
-					websiteModelImpl.getOriginalCompanyId()
+					websiteModelImpl.getOriginalAttributeValue("uuid"),
+					websiteModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -4293,7 +4293,7 @@ public class WebsitePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId()
+					websiteModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
@@ -4312,7 +4312,7 @@ public class WebsitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalUserId()
+					websiteModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -4331,8 +4331,8 @@ public class WebsitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId(),
-					websiteModelImpl.getOriginalClassNameId()
+					websiteModelImpl.getOriginalAttributeValue("companyId"),
+					websiteModelImpl.getOriginalAttributeValue("classNameId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
@@ -4354,9 +4354,9 @@ public class WebsitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId(),
-					websiteModelImpl.getOriginalClassNameId(),
-					websiteModelImpl.getOriginalClassPK()
+					websiteModelImpl.getOriginalAttributeValue("companyId"),
+					websiteModelImpl.getOriginalAttributeValue("classNameId"),
+					websiteModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
@@ -4379,10 +4379,10 @@ public class WebsitePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId(),
-					websiteModelImpl.getOriginalClassNameId(),
-					websiteModelImpl.getOriginalClassPK(),
-					websiteModelImpl.getOriginalPrimary()
+					websiteModelImpl.getOriginalAttributeValue("companyId"),
+					websiteModelImpl.getOriginalAttributeValue("classNameId"),
+					websiteModelImpl.getOriginalAttributeValue("classPK"),
+					websiteModelImpl.getOriginalAttributeValue("primary")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_P, args);
@@ -4690,8 +4690,8 @@ public class WebsitePersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			WebsiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			WebsiteModelImpl.UUID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("uuid") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4710,9 +4710,9 @@ public class WebsitePersistenceImpl
 			WebsiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			WebsiteModelImpl.UUID_COLUMN_BITMASK |
-			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("uuid") |
+			WebsiteModelImpl.getColumnBitmask("companyId") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4730,8 +4730,8 @@ public class WebsitePersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			WebsiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("companyId") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4748,8 +4748,8 @@ public class WebsitePersistenceImpl
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			WebsiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUserId", new String[] {Long.class.getName()},
-			WebsiteModelImpl.USERID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("userId") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4768,9 +4768,9 @@ public class WebsitePersistenceImpl
 			WebsiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("companyId") |
+			WebsiteModelImpl.getColumnBitmask("classNameId") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
@@ -4791,10 +4791,10 @@ public class WebsitePersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			WebsiteModelImpl.CLASSPK_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("companyId") |
+			WebsiteModelImpl.getColumnBitmask("classNameId") |
+			WebsiteModelImpl.getColumnBitmask("classPK") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByC_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4820,11 +4820,11 @@ public class WebsitePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Boolean.class.getName()
 			},
-			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			WebsiteModelImpl.CLASSPK_COLUMN_BITMASK |
-			WebsiteModelImpl.PRIMARY_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.getColumnBitmask("companyId") |
+			WebsiteModelImpl.getColumnBitmask("classNameId") |
+			WebsiteModelImpl.getColumnBitmask("classPK") |
+			WebsiteModelImpl.getColumnBitmask("primary") |
+			WebsiteModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByC_C_C_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

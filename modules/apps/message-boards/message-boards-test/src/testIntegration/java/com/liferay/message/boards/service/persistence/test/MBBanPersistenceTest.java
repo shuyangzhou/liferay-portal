@@ -474,20 +474,24 @@ public class MBBanPersistenceTest {
 			Objects.equals(
 				existingMBBan.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBBan, "getOriginalUuid", new Class<?>[0])));
+					existingMBBan, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMBBan.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBBan, "getOriginalGroupId", new Class<?>[0]));
+				existingMBBan, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMBBan.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBBan, "getOriginalGroupId", new Class<?>[0]));
+				existingMBBan, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMBBan.getBanUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBBan, "getOriginalBanUserId", new Class<?>[0]));
+				existingMBBan, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "banUserId"));
 	}
 
 	protected MBBan addMBBan() throws Exception {

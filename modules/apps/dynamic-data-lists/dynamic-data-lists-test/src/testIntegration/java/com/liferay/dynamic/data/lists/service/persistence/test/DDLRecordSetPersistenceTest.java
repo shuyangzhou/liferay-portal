@@ -549,22 +549,25 @@ public class DDLRecordSetPersistenceTest {
 			Objects.equals(
 				existingDDLRecordSet.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecordSet, "getOriginalUuid", new Class<?>[0])));
+					existingDDLRecordSet, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDDLRecordSet.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecordSet, "getOriginalGroupId", new Class<?>[0]));
+				existingDDLRecordSet, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingDDLRecordSet.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecordSet, "getOriginalGroupId", new Class<?>[0]));
+				existingDDLRecordSet, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDDLRecordSet.getRecordSetKey(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecordSet, "getOriginalRecordSetKey",
-					new Class<?>[0])));
+					existingDDLRecordSet, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "recordSetKey")));
 	}
 
 	protected DDLRecordSet addDDLRecordSet() throws Exception {

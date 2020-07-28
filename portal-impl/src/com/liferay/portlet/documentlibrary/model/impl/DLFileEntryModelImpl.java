@@ -170,34 +170,109 @@ public class DLFileEntryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CUSTOM1IMAGEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CUSTOM2IMAGEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILEENTRYTYPEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILENAME_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FOLDERID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LARGEIMAGEID_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MIMETYPE_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 512L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REPOSITORYID_COLUMN_BITMASK = 1024L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SMALLIMAGEID_COLUMN_BITMASK = 2048L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TITLE_COLUMN_BITMASK = 4096L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 8192L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16384L;
 
 	/**
@@ -545,6 +620,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -556,6 +637,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -572,17 +659,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -593,6 +685,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("fileEntryId");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_fileEntryId = fileEntryId;
 	}
 
@@ -604,19 +702,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -627,19 +728,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -650,12 +754,10 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -677,8 +779,13 @@ public class DLFileEntryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -694,6 +801,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -705,6 +818,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -721,6 +840,12 @@ public class DLFileEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -753,6 +878,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_columnBitmask |= _columnBitmasks.get("classNameId");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_classNameId = classNameId;
 	}
 
@@ -764,6 +895,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_columnBitmask |= _columnBitmasks.get("classPK");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_classPK = classPK;
 	}
 
@@ -775,19 +912,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("repositoryId");
 
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
-
-			_originalRepositoryId = _repositoryId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_repositoryId = repositoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		return getOriginalAttributeValue("repositoryId");
 	}
 
 	@JSON
@@ -798,19 +938,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("folderId");
 
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
-
-			_originalFolderId = _folderId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_folderId = folderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		return getOriginalAttributeValue("folderId");
 	}
 
 	@JSON
@@ -826,6 +969,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
+		_columnBitmask |= _columnBitmasks.get("treePath");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_treePath = treePath;
 	}
 
@@ -842,17 +991,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -868,17 +1022,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFileName(String fileName) {
-		_columnBitmask |= FILENAME_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("fileName");
 
-		if (_originalFileName == null) {
-			_originalFileName = _fileName;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_fileName = fileName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFileName() {
-		return GetterUtil.getString(_originalFileName);
+		return getOriginalAttributeValue("fileName");
 	}
 
 	@JSON
@@ -894,6 +1053,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setExtension(String extension) {
+		_columnBitmask |= _columnBitmasks.get("extension");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_extension = extension;
 	}
 
@@ -910,17 +1075,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setMimeType(String mimeType) {
-		_columnBitmask |= MIMETYPE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("mimeType");
 
-		if (_originalMimeType == null) {
-			_originalMimeType = _mimeType;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_mimeType = mimeType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalMimeType() {
-		return GetterUtil.getString(_originalMimeType);
+		return getOriginalAttributeValue("mimeType");
 	}
 
 	@JSON
@@ -936,17 +1106,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
-		_columnBitmask |= TITLE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("title");
 
-		if (_originalTitle == null) {
-			_originalTitle = _title;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_title = title;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTitle() {
-		return GetterUtil.getString(_originalTitle);
+		return getOriginalAttributeValue("title");
 	}
 
 	@JSON
@@ -962,6 +1137,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -978,6 +1159,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setExtraSettings(String extraSettings) {
+		_columnBitmask |= _columnBitmasks.get("extraSettings");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_extraSettings = extraSettings;
 	}
 
@@ -989,19 +1176,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFileEntryTypeId(long fileEntryTypeId) {
-		_columnBitmask |= FILEENTRYTYPEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("fileEntryTypeId");
 
-		if (!_setOriginalFileEntryTypeId) {
-			_setOriginalFileEntryTypeId = true;
-
-			_originalFileEntryTypeId = _fileEntryTypeId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_fileEntryTypeId = fileEntryTypeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFileEntryTypeId() {
-		return _originalFileEntryTypeId;
+		return getOriginalAttributeValue("fileEntryTypeId");
 	}
 
 	@JSON
@@ -1017,6 +1207,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setVersion(String version) {
+		_columnBitmask |= _columnBitmasks.get("version");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_version = version;
 	}
 
@@ -1028,6 +1224,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_size = size;
 	}
 
@@ -1039,19 +1241,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setSmallImageId(long smallImageId) {
-		_columnBitmask |= SMALLIMAGEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("smallImageId");
 
-		if (!_setOriginalSmallImageId) {
-			_setOriginalSmallImageId = true;
-
-			_originalSmallImageId = _smallImageId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_smallImageId = smallImageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSmallImageId() {
-		return _originalSmallImageId;
+		return getOriginalAttributeValue("smallImageId");
 	}
 
 	@JSON
@@ -1062,19 +1267,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setLargeImageId(long largeImageId) {
-		_columnBitmask |= LARGEIMAGEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("largeImageId");
 
-		if (!_setOriginalLargeImageId) {
-			_setOriginalLargeImageId = true;
-
-			_originalLargeImageId = _largeImageId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_largeImageId = largeImageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLargeImageId() {
-		return _originalLargeImageId;
+		return getOriginalAttributeValue("largeImageId");
 	}
 
 	@JSON
@@ -1085,19 +1293,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCustom1ImageId(long custom1ImageId) {
-		_columnBitmask |= CUSTOM1IMAGEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("custom1ImageId");
 
-		if (!_setOriginalCustom1ImageId) {
-			_setOriginalCustom1ImageId = true;
-
-			_originalCustom1ImageId = _custom1ImageId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_custom1ImageId = custom1ImageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCustom1ImageId() {
-		return _originalCustom1ImageId;
+		return getOriginalAttributeValue("custom1ImageId");
 	}
 
 	@JSON
@@ -1108,19 +1319,22 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCustom2ImageId(long custom2ImageId) {
-		_columnBitmask |= CUSTOM2IMAGEID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("custom2ImageId");
 
-		if (!_setOriginalCustom2ImageId) {
-			_setOriginalCustom2ImageId = true;
-
-			_originalCustom2ImageId = _custom2ImageId;
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
 		}
 
 		_custom2ImageId = custom2ImageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCustom2ImageId() {
-		return _originalCustom2ImageId;
+		return getOriginalAttributeValue("custom2ImageId");
 	}
 
 	@JSON
@@ -1137,6 +1351,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setManualCheckInRequired(boolean manualCheckInRequired) {
+		_columnBitmask |= _columnBitmasks.get("manualCheckInRequired");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_manualCheckInRequired = manualCheckInRequired;
 	}
 
@@ -1148,6 +1368,12 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_dlFileEntryCacheModel == _dummyDLFileEntryCacheModel) {
+			_dlFileEntryCacheModel = (DLFileEntryCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1455,68 +1681,11 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileEntryModelImpl dlFileEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		dlFileEntryModelImpl._originalUuid = dlFileEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		dlFileEntryModelImpl._originalGroupId = dlFileEntryModelImpl._groupId;
-
-		dlFileEntryModelImpl._setOriginalGroupId = false;
-
-		dlFileEntryModelImpl._originalCompanyId =
-			dlFileEntryModelImpl._companyId;
-
-		dlFileEntryModelImpl._setOriginalCompanyId = false;
-
-		dlFileEntryModelImpl._originalUserId = dlFileEntryModelImpl._userId;
-
-		dlFileEntryModelImpl._setOriginalUserId = false;
-
-		dlFileEntryModelImpl._setModifiedDate = false;
-
-		dlFileEntryModelImpl._originalRepositoryId =
-			dlFileEntryModelImpl._repositoryId;
-
-		dlFileEntryModelImpl._setOriginalRepositoryId = false;
-
-		dlFileEntryModelImpl._originalFolderId = dlFileEntryModelImpl._folderId;
-
-		dlFileEntryModelImpl._setOriginalFolderId = false;
-
-		dlFileEntryModelImpl._originalName = dlFileEntryModelImpl._name;
-
-		dlFileEntryModelImpl._originalFileName = dlFileEntryModelImpl._fileName;
-
-		dlFileEntryModelImpl._originalMimeType = dlFileEntryModelImpl._mimeType;
-
-		dlFileEntryModelImpl._originalTitle = dlFileEntryModelImpl._title;
-
-		dlFileEntryModelImpl._originalFileEntryTypeId =
-			dlFileEntryModelImpl._fileEntryTypeId;
-
-		dlFileEntryModelImpl._setOriginalFileEntryTypeId = false;
-
-		dlFileEntryModelImpl._originalSmallImageId =
-			dlFileEntryModelImpl._smallImageId;
-
-		dlFileEntryModelImpl._setOriginalSmallImageId = false;
-
-		dlFileEntryModelImpl._originalLargeImageId =
-			dlFileEntryModelImpl._largeImageId;
-
-		dlFileEntryModelImpl._setOriginalLargeImageId = false;
-
-		dlFileEntryModelImpl._originalCustom1ImageId =
-			dlFileEntryModelImpl._custom1ImageId;
-
-		dlFileEntryModelImpl._setOriginalCustom1ImageId = false;
-
-		dlFileEntryModelImpl._originalCustom2ImageId =
-			dlFileEntryModelImpl._custom2ImageId;
-
-		dlFileEntryModelImpl._setOriginalCustom2ImageId = false;
-
-		dlFileEntryModelImpl._columnBitmask = 0;
+		_dlFileEntryCacheModel = _dummyDLFileEntryCacheModel;
 	}
 
 	@Override
@@ -1746,20 +1915,234 @@ public class DLFileEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<DLFileEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DLFileEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DLFileEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", dlFileEntryCacheModel -> dlFileEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"fileEntryId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.fileEntryId);
+
+		columnBitmasks.put("fileEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", dlFileEntryCacheModel -> dlFileEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", dlFileEntryCacheModel -> dlFileEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"classPK", dlFileEntryCacheModel -> dlFileEntryCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"repositoryId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.repositoryId);
+
+		columnBitmasks.put("repositoryId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"folderId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.folderId);
+
+		columnBitmasks.put("folderId", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"treePath",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.treePath);
+
+		columnBitmasks.put("treePath", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"name", dlFileEntryCacheModel -> dlFileEntryCacheModel.name);
+
+		columnBitmasks.put("name", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"fileName",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.fileName);
+
+		columnBitmasks.put("fileName", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"extension",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.extension);
+
+		columnBitmasks.put("extension", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"mimeType",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.mimeType);
+
+		columnBitmasks.put("mimeType", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"title", dlFileEntryCacheModel -> dlFileEntryCacheModel.title);
+
+		columnBitmasks.put("title", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.description);
+
+		columnBitmasks.put("description", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"extraSettings",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.extraSettings);
+
+		columnBitmasks.put("extraSettings", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"fileEntryTypeId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.fileEntryTypeId);
+
+		columnBitmasks.put("fileEntryTypeId", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"version", dlFileEntryCacheModel -> dlFileEntryCacheModel.version);
+
+		columnBitmasks.put("version", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"size", dlFileEntryCacheModel -> dlFileEntryCacheModel.size);
+
+		columnBitmasks.put("size", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"smallImageId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.smallImageId);
+
+		columnBitmasks.put("smallImageId", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"largeImageId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.largeImageId);
+
+		columnBitmasks.put("largeImageId", 67108864L);
+
+		cacheModelGetterFunctions.put(
+			"custom1ImageId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.custom1ImageId);
+
+		columnBitmasks.put("custom1ImageId", 134217728L);
+
+		cacheModelGetterFunctions.put(
+			"custom2ImageId",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.custom2ImageId);
+
+		columnBitmasks.put("custom2ImageId", 268435456L);
+
+		cacheModelGetterFunctions.put(
+			"manualCheckInRequired",
+			dlFileEntryCacheModel ->
+				dlFileEntryCacheModel.manualCheckInRequired);
+
+		columnBitmasks.put("manualCheckInRequired", 536870912L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			dlFileEntryCacheModel -> dlFileEntryCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 1073741824L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DLFileEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DLFileEntryCacheModel dlFileEntryCacheModel = _dlFileEntryCacheModel;
+
+		if (dlFileEntryCacheModel == null) {
+			dlFileEntryCacheModel = _dummyDLFileEntryCacheModel;
+		}
+
+		return (T)function.apply(dlFileEntryCacheModel);
+	}
+
+	private static final DLFileEntryCacheModel _dummyDLFileEntryCacheModel =
+		new DLFileEntryCacheModel();
+
+	private DLFileEntryCacheModel _dlFileEntryCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fileEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
@@ -1767,40 +2150,22 @@ public class DLFileEntryModelImpl
 	private long _classNameId;
 	private long _classPK;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private String _treePath;
 	private String _name;
-	private String _originalName;
 	private String _fileName;
-	private String _originalFileName;
 	private String _extension;
 	private String _mimeType;
-	private String _originalMimeType;
 	private String _title;
-	private String _originalTitle;
 	private String _description;
 	private String _extraSettings;
 	private long _fileEntryTypeId;
-	private long _originalFileEntryTypeId;
-	private boolean _setOriginalFileEntryTypeId;
 	private String _version;
 	private long _size;
 	private long _smallImageId;
-	private long _originalSmallImageId;
-	private boolean _setOriginalSmallImageId;
 	private long _largeImageId;
-	private long _originalLargeImageId;
-	private boolean _setOriginalLargeImageId;
 	private long _custom1ImageId;
-	private long _originalCustom1ImageId;
-	private boolean _setOriginalCustom1ImageId;
 	private long _custom2ImageId;
-	private long _originalCustom2ImageId;
-	private boolean _setOriginalCustom2ImageId;
 	private boolean _manualCheckInRequired;
 	private Date _lastPublishDate;
 	private long _columnBitmask;

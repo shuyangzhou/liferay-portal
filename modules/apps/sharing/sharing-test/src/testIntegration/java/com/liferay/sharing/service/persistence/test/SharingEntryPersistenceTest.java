@@ -538,25 +538,29 @@ public class SharingEntryPersistenceTest {
 			Objects.equals(
 				existingSharingEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSharingEntry, "getOriginalUuid", new Class<?>[0])));
+					existingSharingEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingSharingEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSharingEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingSharingEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSharingEntry.getToUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSharingEntry, "getOriginalToUserId", new Class<?>[0]));
+				existingSharingEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "toUserId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSharingEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSharingEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSharingEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSharingEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSharingEntry, "getOriginalClassPK", new Class<?>[0]));
+				existingSharingEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected SharingEntry addSharingEntry() throws Exception {

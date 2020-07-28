@@ -150,14 +150,39 @@ public class AssetVocabularyModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -444,6 +469,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -455,6 +487,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -471,17 +510,23 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -497,17 +542,23 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("externalReferenceCode");
 
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
 		}
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		return getOriginalAttributeValue("externalReferenceCode");
 	}
 
 	@JSON
@@ -518,6 +569,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setVocabularyId(long vocabularyId) {
+		_columnBitmask |= _columnBitmasks.get("vocabularyId");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_vocabularyId = vocabularyId;
 	}
 
@@ -529,19 +587,23 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -552,19 +614,23 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -575,6 +641,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -607,6 +680,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -618,6 +698,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -635,6 +722,13 @@ public class AssetVocabularyModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -651,17 +745,23 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -720,6 +820,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_title = title;
 	}
 
@@ -825,6 +932,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_description = description;
 	}
 
@@ -890,6 +1004,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		_columnBitmask |= _columnBitmasks.get("settings");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_settings = settings;
 	}
 
@@ -907,6 +1028,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setSystem(boolean system) {
+		_columnBitmask |= _columnBitmasks.get("system");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_system = system;
 	}
 
@@ -918,6 +1046,13 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
+		if (_assetVocabularyCacheModel == _dummyAssetVocabularyCacheModel) {
+			_assetVocabularyCacheModel =
+				(AssetVocabularyCacheModel)toCacheModel();
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1135,28 +1270,11 @@ public class AssetVocabularyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetVocabularyModelImpl assetVocabularyModelImpl = this;
+		_setModifiedDate = false;
 
-		assetVocabularyModelImpl._originalUuid = assetVocabularyModelImpl._uuid;
+		_columnBitmask = 0;
 
-		assetVocabularyModelImpl._originalExternalReferenceCode =
-			assetVocabularyModelImpl._externalReferenceCode;
-
-		assetVocabularyModelImpl._originalGroupId =
-			assetVocabularyModelImpl._groupId;
-
-		assetVocabularyModelImpl._setOriginalGroupId = false;
-
-		assetVocabularyModelImpl._originalCompanyId =
-			assetVocabularyModelImpl._companyId;
-
-		assetVocabularyModelImpl._setOriginalCompanyId = false;
-
-		assetVocabularyModelImpl._setModifiedDate = false;
-
-		assetVocabularyModelImpl._originalName = assetVocabularyModelImpl._name;
-
-		assetVocabularyModelImpl._columnBitmask = 0;
+		_assetVocabularyCacheModel = _dummyAssetVocabularyCacheModel;
 	}
 
 	@Override
@@ -1339,26 +1457,170 @@ public class AssetVocabularyModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AssetVocabularyCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AssetVocabularyCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AssetVocabularyCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			assetVocabularyCacheModel ->
+				assetVocabularyCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"externalReferenceCode",
+			assetVocabularyCacheModel ->
+				assetVocabularyCacheModel.externalReferenceCode);
+
+		columnBitmasks.put("externalReferenceCode", 8L);
+
+		cacheModelGetterFunctions.put(
+			"vocabularyId",
+			assetVocabularyCacheModel ->
+				assetVocabularyCacheModel.vocabularyId);
+
+		columnBitmasks.put("vocabularyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.userId);
+
+		columnBitmasks.put("userId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.userName);
+
+		columnBitmasks.put("userName", 256L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			assetVocabularyCacheModel ->
+				assetVocabularyCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.name);
+
+		columnBitmasks.put("name", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"title",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.title);
+
+		columnBitmasks.put("title", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.description);
+
+		columnBitmasks.put("description", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"settings",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.settings);
+
+		columnBitmasks.put("settings", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"system",
+			assetVocabularyCacheModel -> assetVocabularyCacheModel.system);
+
+		columnBitmasks.put("system", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			assetVocabularyCacheModel ->
+				assetVocabularyCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 65536L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AssetVocabularyCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AssetVocabularyCacheModel assetVocabularyCacheModel =
+			_assetVocabularyCacheModel;
+
+		if (assetVocabularyCacheModel == null) {
+			assetVocabularyCacheModel = _dummyAssetVocabularyCacheModel;
+		}
+
+		return (T)function.apply(assetVocabularyCacheModel);
+	}
+
+	private static final AssetVocabularyCacheModel
+		_dummyAssetVocabularyCacheModel = new AssetVocabularyCacheModel();
+
+	private AssetVocabularyCacheModel _assetVocabularyCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _vocabularyId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _name;
-	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
 	private String _description;

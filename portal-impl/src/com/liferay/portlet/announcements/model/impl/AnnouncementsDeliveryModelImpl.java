@@ -128,12 +128,32 @@ public class AnnouncementsDeliveryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DELIVERYID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -379,6 +399,15 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
+
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -390,6 +419,15 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setDeliveryId(long deliveryId) {
+		_columnBitmask |= _columnBitmasks.get("deliveryId");
+
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
+
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
+		}
+
 		_deliveryId = deliveryId;
 	}
 
@@ -401,19 +439,25 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -424,12 +468,13 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("userId");
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
 
-			_originalUserId = _userId;
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
 		}
 
 		_userId = userId;
@@ -451,8 +496,13 @@ public class AnnouncementsDeliveryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -468,17 +518,25 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("type");
 
-		if (_originalType == null) {
-			_originalType = _type;
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
+
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
 		}
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -495,6 +553,15 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setEmail(boolean email) {
+		_columnBitmask |= _columnBitmasks.get("email");
+
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
+
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
+		}
+
 		_email = email;
 	}
 
@@ -512,6 +579,15 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setSms(boolean sms) {
+		_columnBitmask |= _columnBitmasks.get("sms");
+
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
+
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
+		}
+
 		_sms = sms;
 	}
 
@@ -529,6 +605,15 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setWebsite(boolean website) {
+		_columnBitmask |= _columnBitmasks.get("website");
+
+		if (_announcementsDeliveryCacheModel ==
+				_dummyAnnouncementsDeliveryCacheModel) {
+
+			_announcementsDeliveryCacheModel =
+				(AnnouncementsDeliveryCacheModel)toCacheModel();
+		}
+
 		_website = website;
 	}
 
@@ -647,22 +732,10 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsDeliveryModelImpl announcementsDeliveryModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsDeliveryModelImpl._originalCompanyId =
-			announcementsDeliveryModelImpl._companyId;
-
-		announcementsDeliveryModelImpl._setOriginalCompanyId = false;
-
-		announcementsDeliveryModelImpl._originalUserId =
-			announcementsDeliveryModelImpl._userId;
-
-		announcementsDeliveryModelImpl._setOriginalUserId = false;
-
-		announcementsDeliveryModelImpl._originalType =
-			announcementsDeliveryModelImpl._type;
-
-		announcementsDeliveryModelImpl._columnBitmask = 0;
+		_announcementsDeliveryCacheModel =
+			_dummyAnnouncementsDeliveryCacheModel;
 	}
 
 	@Override
@@ -767,16 +840,114 @@ public class AnnouncementsDeliveryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AnnouncementsDeliveryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AnnouncementsDeliveryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<AnnouncementsDeliveryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"deliveryId",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.deliveryId);
+
+		columnBitmasks.put("deliveryId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.type);
+
+		columnBitmasks.put("type", 16L);
+
+		cacheModelGetterFunctions.put(
+			"email",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.email);
+
+		columnBitmasks.put("email", 32L);
+
+		cacheModelGetterFunctions.put(
+			"sms",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.sms);
+
+		columnBitmasks.put("sms", 64L);
+
+		cacheModelGetterFunctions.put(
+			"website",
+			announcementsDeliveryCacheModel ->
+				announcementsDeliveryCacheModel.website);
+
+		columnBitmasks.put("website", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AnnouncementsDeliveryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AnnouncementsDeliveryCacheModel announcementsDeliveryCacheModel =
+			_announcementsDeliveryCacheModel;
+
+		if (announcementsDeliveryCacheModel == null) {
+			announcementsDeliveryCacheModel =
+				_dummyAnnouncementsDeliveryCacheModel;
+		}
+
+		return (T)function.apply(announcementsDeliveryCacheModel);
+	}
+
+	private static final AnnouncementsDeliveryCacheModel
+		_dummyAnnouncementsDeliveryCacheModel =
+			new AnnouncementsDeliveryCacheModel();
+
+	private AnnouncementsDeliveryCacheModel _announcementsDeliveryCacheModel;
 	private long _mvccVersion;
 	private long _deliveryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _type;
-	private String _originalType;
 	private boolean _email;
 	private boolean _sms;
 	private boolean _website;

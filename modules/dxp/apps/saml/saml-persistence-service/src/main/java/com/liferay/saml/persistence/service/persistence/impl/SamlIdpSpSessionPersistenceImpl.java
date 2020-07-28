@@ -1562,8 +1562,10 @@ public class SamlIdpSpSessionPersistenceImpl
 			 _finderPathFetchBySISSI_SSEI.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				samlIdpSpSessionModelImpl.getOriginalSamlIdpSsoSessionId(),
-				samlIdpSpSessionModelImpl.getOriginalSamlSpEntityId()
+				samlIdpSpSessionModelImpl.getOriginalAttributeValue(
+					"samlIdpSsoSessionId"),
+				samlIdpSpSessionModelImpl.getOriginalAttributeValue(
+					"samlSpEntityId")
 			};
 
 			finderCache.removeResult(_finderPathCountBySISSI_SSEI, args);
@@ -1768,7 +1770,8 @@ public class SamlIdpSpSessionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					samlIdpSpSessionModelImpl.getOriginalSamlIdpSsoSessionId()
+					samlIdpSpSessionModelImpl.getOriginalAttributeValue(
+						"samlIdpSsoSessionId")
 				};
 
 				finderCache.removeResult(
@@ -2094,7 +2097,7 @@ public class SamlIdpSpSessionPersistenceImpl
 			SamlIdpSpSessionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findBySamlIdpSsoSessionId", new String[] {Long.class.getName()},
-			SamlIdpSpSessionModelImpl.SAMLIDPSSOSESSIONID_COLUMN_BITMASK);
+			SamlIdpSpSessionModelImpl.getColumnBitmask("samlIdpSsoSessionId"));
 
 		_finderPathCountBySamlIdpSsoSessionId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2104,8 +2107,8 @@ public class SamlIdpSpSessionPersistenceImpl
 			SamlIdpSpSessionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchBySISSI_SSEI",
 			new String[] {Long.class.getName(), String.class.getName()},
-			SamlIdpSpSessionModelImpl.SAMLIDPSSOSESSIONID_COLUMN_BITMASK |
-			SamlIdpSpSessionModelImpl.SAMLSPENTITYID_COLUMN_BITMASK);
+			SamlIdpSpSessionModelImpl.getColumnBitmask("samlIdpSsoSessionId") |
+			SamlIdpSpSessionModelImpl.getColumnBitmask("samlSpEntityId"));
 
 		_finderPathCountBySISSI_SSEI = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

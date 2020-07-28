@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.style.book.model.StyleBookEntry;
 import com.liferay.style.book.model.StyleBookEntryModel;
@@ -122,18 +121,53 @@ public class StyleBookEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEFAULTSTYLEBOOKENTRY_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEAD_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEADID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STYLEBOOKENTRYKEY_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
 
 	/**
@@ -398,31 +432,6 @@ public class StyleBookEntryModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
-	public boolean getHead() {
-		return _head;
-	}
-
-	@Override
-	public boolean isHead() {
-		return _head;
-	}
-
-	public boolean getOriginalHead() {
-		return _originalHead;
-	}
-
-	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
-
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
-		}
-
-		_head = head;
-	}
-
 	@Override
 	public void populateVersionModel(
 		StyleBookEntryVersion styleBookEntryVersion) {
@@ -449,6 +458,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -460,12 +476,11 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setHeadId(long headId) {
-		_columnBitmask |= HEADID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("headId");
 
-		if (!_setOriginalHeadId) {
-			_setOriginalHeadId = true;
-
-			_originalHeadId = _headId;
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
 		}
 
 		if (headId >= 0) {
@@ -478,8 +493,43 @@ public class StyleBookEntryModelImpl
 		_headId = headId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalHeadId() {
-		return _originalHeadId;
+		return getOriginalAttributeValue("headId");
+	}
+
+	@JSON(include = false)
+	public boolean getHead() {
+		return _head;
+	}
+
+	@Override
+	public boolean isHead() {
+		return _head;
+	}
+
+	public void setHead(boolean head) {
+		_columnBitmask |= _columnBitmasks.get("head");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
+		_head = head;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalHead() {
+		return getOriginalAttributeValue("head");
 	}
 
 	@JSON
@@ -490,6 +540,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setStyleBookEntryId(long styleBookEntryId) {
+		_columnBitmask |= _columnBitmasks.get("styleBookEntryId");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_styleBookEntryId = styleBookEntryId;
 	}
 
@@ -501,19 +558,23 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -524,6 +585,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_companyId = companyId;
 	}
 
@@ -535,6 +603,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -567,6 +642,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -578,7 +660,12 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
 
 		_createDate = createDate;
 	}
@@ -597,19 +684,23 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setDefaultStyleBookEntry(boolean defaultStyleBookEntry) {
-		_columnBitmask |= DEFAULTSTYLEBOOKENTRY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("defaultStyleBookEntry");
 
-		if (!_setOriginalDefaultStyleBookEntry) {
-			_setOriginalDefaultStyleBookEntry = true;
-
-			_originalDefaultStyleBookEntry = _defaultStyleBookEntry;
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
 		}
 
 		_defaultStyleBookEntry = defaultStyleBookEntry;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDefaultStyleBookEntry() {
-		return _originalDefaultStyleBookEntry;
+		return getOriginalAttributeValue("defaultStyleBookEntry");
 	}
 
 	@JSON
@@ -625,6 +716,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setFrontendTokensValues(String frontendTokensValues) {
+		_columnBitmask |= _columnBitmasks.get("frontendTokensValues");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_frontendTokensValues = frontendTokensValues;
 	}
 
@@ -641,17 +739,23 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("name");
 
-		if (_originalName == null) {
-			_originalName = _name;
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
 		}
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -662,6 +766,13 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setPreviewFileEntryId(long previewFileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("previewFileEntryId");
+
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
+		}
+
 		_previewFileEntryId = previewFileEntryId;
 	}
 
@@ -678,17 +789,23 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void setStyleBookEntryKey(String styleBookEntryKey) {
-		_columnBitmask |= STYLEBOOKENTRYKEY_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("styleBookEntryKey");
 
-		if (_originalStyleBookEntryKey == null) {
-			_originalStyleBookEntryKey = _styleBookEntryKey;
+		if (_styleBookEntryCacheModel == _dummyStyleBookEntryCacheModel) {
+			_styleBookEntryCacheModel =
+				(StyleBookEntryCacheModel)toCacheModel();
 		}
 
 		_styleBookEntryKey = styleBookEntryKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalStyleBookEntryKey() {
-		return GetterUtil.getString(_originalStyleBookEntryKey);
+		return getOriginalAttributeValue("styleBookEntryKey");
 	}
 
 	public long getColumnBitmask() {
@@ -809,33 +926,9 @@ public class StyleBookEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		StyleBookEntryModelImpl styleBookEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		styleBookEntryModelImpl._originalHeadId =
-			styleBookEntryModelImpl._headId;
-
-		styleBookEntryModelImpl._setOriginalHeadId = false;
-
-		styleBookEntryModelImpl._originalHead = styleBookEntryModelImpl._head;
-
-		styleBookEntryModelImpl._setOriginalHead = false;
-
-		styleBookEntryModelImpl._originalGroupId =
-			styleBookEntryModelImpl._groupId;
-
-		styleBookEntryModelImpl._setOriginalGroupId = false;
-
-		styleBookEntryModelImpl._originalDefaultStyleBookEntry =
-			styleBookEntryModelImpl._defaultStyleBookEntry;
-
-		styleBookEntryModelImpl._setOriginalDefaultStyleBookEntry = false;
-
-		styleBookEntryModelImpl._originalName = styleBookEntryModelImpl._name;
-
-		styleBookEntryModelImpl._originalStyleBookEntryKey =
-			styleBookEntryModelImpl._styleBookEntryKey;
-
-		styleBookEntryModelImpl._columnBitmask = 0;
+		_styleBookEntryCacheModel = _dummyStyleBookEntryCacheModel;
 	}
 
 	@Override
@@ -980,30 +1073,150 @@ public class StyleBookEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<StyleBookEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<StyleBookEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<StyleBookEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"headId",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.headId);
+
+		columnBitmasks.put("headId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"head", styleBookEntryCacheModel -> styleBookEntryCacheModel.head);
+
+		columnBitmasks.put("head", 4L);
+
+		cacheModelGetterFunctions.put(
+			"styleBookEntryId",
+			styleBookEntryCacheModel ->
+				styleBookEntryCacheModel.styleBookEntryId);
+
+		columnBitmasks.put("styleBookEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			styleBookEntryCacheModel -> styleBookEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"defaultStyleBookEntry",
+			styleBookEntryCacheModel ->
+				styleBookEntryCacheModel.defaultStyleBookEntry);
+
+		columnBitmasks.put("defaultStyleBookEntry", 512L);
+
+		cacheModelGetterFunctions.put(
+			"frontendTokensValues",
+			styleBookEntryCacheModel ->
+				styleBookEntryCacheModel.frontendTokensValues);
+
+		columnBitmasks.put("frontendTokensValues", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"name", styleBookEntryCacheModel -> styleBookEntryCacheModel.name);
+
+		columnBitmasks.put("name", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"previewFileEntryId",
+			styleBookEntryCacheModel ->
+				styleBookEntryCacheModel.previewFileEntryId);
+
+		columnBitmasks.put("previewFileEntryId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"styleBookEntryKey",
+			styleBookEntryCacheModel ->
+				styleBookEntryCacheModel.styleBookEntryKey);
+
+		columnBitmasks.put("styleBookEntryKey", 8192L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<StyleBookEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		StyleBookEntryCacheModel styleBookEntryCacheModel =
+			_styleBookEntryCacheModel;
+
+		if (styleBookEntryCacheModel == null) {
+			styleBookEntryCacheModel = _dummyStyleBookEntryCacheModel;
+		}
+
+		return (T)function.apply(styleBookEntryCacheModel);
+	}
+
+	private static final StyleBookEntryCacheModel
+		_dummyStyleBookEntryCacheModel = new StyleBookEntryCacheModel();
+
+	private StyleBookEntryCacheModel _styleBookEntryCacheModel;
 	private long _mvccVersion;
 	private long _headId;
-	private long _originalHeadId;
-	private boolean _setOriginalHeadId;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private long _styleBookEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private boolean _defaultStyleBookEntry;
-	private boolean _originalDefaultStyleBookEntry;
-	private boolean _setOriginalDefaultStyleBookEntry;
 	private String _frontendTokensValues;
 	private String _name;
-	private String _originalName;
 	private long _previewFileEntryId;
 	private String _styleBookEntryKey;
-	private String _originalStyleBookEntryKey;
 	private long _columnBitmask;
 	private StyleBookEntry _escapedModel;
 

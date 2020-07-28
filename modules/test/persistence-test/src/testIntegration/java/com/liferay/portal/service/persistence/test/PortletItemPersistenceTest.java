@@ -457,23 +457,25 @@ public class PortletItemPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingPortletItem.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortletItem, "getOriginalGroupId", new Class<?>[0]));
+				existingPortletItem, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingPortletItem.getName(),
 				ReflectionTestUtil.invoke(
-					existingPortletItem, "getOriginalName", new Class<?>[0])));
+					existingPortletItem, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingPortletItem.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingPortletItem, "getOriginalPortletId",
-					new Class<?>[0])));
+					existingPortletItem, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "portletId")));
 		Assert.assertEquals(
 			Long.valueOf(existingPortletItem.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortletItem, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingPortletItem, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 	}
 
 	protected PortletItem addPortletItem() throws Exception {

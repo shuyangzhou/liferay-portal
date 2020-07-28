@@ -1900,8 +1900,8 @@ public class TranslationEntryPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				translationEntryModelImpl.getOriginalUuid(),
-				translationEntryModelImpl.getOriginalGroupId()
+				translationEntryModelImpl.getOriginalAttributeValue("uuid"),
+				translationEntryModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -1923,9 +1923,11 @@ public class TranslationEntryPersistenceImpl
 			 _finderPathFetchByC_C_L.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				translationEntryModelImpl.getOriginalClassNameId(),
-				translationEntryModelImpl.getOriginalClassPK(),
-				translationEntryModelImpl.getOriginalLanguageId()
+				translationEntryModelImpl.getOriginalAttributeValue(
+					"classNameId"),
+				translationEntryModelImpl.getOriginalAttributeValue("classPK"),
+				translationEntryModelImpl.getOriginalAttributeValue(
+					"languageId")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_C_L, args);
@@ -2146,7 +2148,7 @@ public class TranslationEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					translationEntryModelImpl.getOriginalUuid()
+					translationEntryModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2165,8 +2167,9 @@ public class TranslationEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					translationEntryModelImpl.getOriginalUuid(),
-					translationEntryModelImpl.getOriginalCompanyId()
+					translationEntryModelImpl.getOriginalAttributeValue("uuid"),
+					translationEntryModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2482,7 +2485,7 @@ public class TranslationEntryPersistenceImpl
 			TranslationEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			TranslationEntryModelImpl.UUID_COLUMN_BITMASK);
+			TranslationEntryModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2492,8 +2495,8 @@ public class TranslationEntryPersistenceImpl
 			TranslationEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			TranslationEntryModelImpl.UUID_COLUMN_BITMASK |
-			TranslationEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			TranslationEntryModelImpl.getColumnBitmask("uuid") |
+			TranslationEntryModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2513,8 +2516,8 @@ public class TranslationEntryPersistenceImpl
 			TranslationEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			TranslationEntryModelImpl.UUID_COLUMN_BITMASK |
-			TranslationEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			TranslationEntryModelImpl.getColumnBitmask("uuid") |
+			TranslationEntryModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2528,9 +2531,9 @@ public class TranslationEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			TranslationEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			TranslationEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			TranslationEntryModelImpl.LANGUAGEID_COLUMN_BITMASK);
+			TranslationEntryModelImpl.getColumnBitmask("classNameId") |
+			TranslationEntryModelImpl.getColumnBitmask("classPK") |
+			TranslationEntryModelImpl.getColumnBitmask("languageId"));
 
 		_finderPathCountByC_C_L = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

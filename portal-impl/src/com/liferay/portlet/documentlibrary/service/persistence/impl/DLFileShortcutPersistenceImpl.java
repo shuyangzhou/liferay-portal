@@ -6289,8 +6289,8 @@ public class DLFileShortcutPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				dlFileShortcutModelImpl.getOriginalUuid(),
-				dlFileShortcutModelImpl.getOriginalGroupId()
+				dlFileShortcutModelImpl.getOriginalAttributeValue("uuid"),
+				dlFileShortcutModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
@@ -6573,7 +6573,7 @@ public class DLFileShortcutPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalUuid()
+					dlFileShortcutModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -6592,8 +6592,9 @@ public class DLFileShortcutPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalUuid(),
-					dlFileShortcutModelImpl.getOriginalCompanyId()
+					dlFileShortcutModelImpl.getOriginalAttributeValue("uuid"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -6615,7 +6616,8 @@ public class DLFileShortcutPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalCompanyId()
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
@@ -6634,7 +6636,8 @@ public class DLFileShortcutPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalToFileEntryId()
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"toFileEntryId")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -6657,8 +6660,10 @@ public class DLFileShortcutPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalGroupId(),
-					dlFileShortcutModelImpl.getOriginalFolderId()
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"folderId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_F, args);
@@ -6680,9 +6685,11 @@ public class DLFileShortcutPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalGroupId(),
-					dlFileShortcutModelImpl.getOriginalFolderId(),
-					dlFileShortcutModelImpl.getOriginalActive()
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"folderId"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue("active")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_F_A, args);
@@ -6705,10 +6712,12 @@ public class DLFileShortcutPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					dlFileShortcutModelImpl.getOriginalGroupId(),
-					dlFileShortcutModelImpl.getOriginalFolderId(),
-					dlFileShortcutModelImpl.getOriginalActive(),
-					dlFileShortcutModelImpl.getOriginalStatus()
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue(
+						"folderId"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue("active"),
+					dlFileShortcutModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_F_A_S, args);
@@ -7212,7 +7221,7 @@ public class DLFileShortcutPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			DLFileShortcutImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			DLFileShortcutModelImpl.UUID_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7221,8 +7230,8 @@ public class DLFileShortcutPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			DLFileShortcutImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DLFileShortcutModelImpl.UUID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.GROUPID_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("uuid") |
+			DLFileShortcutModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7242,8 +7251,8 @@ public class DLFileShortcutPersistenceImpl
 			DLFileShortcutImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			DLFileShortcutModelImpl.UUID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.COMPANYID_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("uuid") |
+			DLFileShortcutModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7261,7 +7270,7 @@ public class DLFileShortcutPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			DLFileShortcutImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			DLFileShortcutModelImpl.COMPANYID_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7278,7 +7287,7 @@ public class DLFileShortcutPersistenceImpl
 		_finderPathWithoutPaginationFindByToFileEntryId = new FinderPath(
 			DLFileShortcutImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByToFileEntryId", new String[] {Long.class.getName()},
-			DLFileShortcutModelImpl.TOFILEENTRYID_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("toFileEntryId"));
 
 		_finderPathCountByToFileEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7297,8 +7306,8 @@ public class DLFileShortcutPersistenceImpl
 			DLFileShortcutImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_F",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			DLFileShortcutModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.FOLDERID_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("groupId") |
+			DLFileShortcutModelImpl.getColumnBitmask("folderId"));
 
 		_finderPathCountByG_F = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_F",
@@ -7333,9 +7342,9 @@ public class DLFileShortcutPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			DLFileShortcutModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.ACTIVE_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("groupId") |
+			DLFileShortcutModelImpl.getColumnBitmask("folderId") |
+			DLFileShortcutModelImpl.getColumnBitmask("active"));
 
 		_finderPathCountByG_F_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7362,10 +7371,10 @@ public class DLFileShortcutPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName(), Integer.class.getName()
 			},
-			DLFileShortcutModelImpl.GROUPID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.FOLDERID_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.ACTIVE_COLUMN_BITMASK |
-			DLFileShortcutModelImpl.STATUS_COLUMN_BITMASK);
+			DLFileShortcutModelImpl.getColumnBitmask("groupId") |
+			DLFileShortcutModelImpl.getColumnBitmask("folderId") |
+			DLFileShortcutModelImpl.getColumnBitmask("active") |
+			DLFileShortcutModelImpl.getColumnBitmask("status"));
 
 		_finderPathCountByG_F_A_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

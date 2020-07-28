@@ -7651,8 +7651,8 @@ public class JournalFolderPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				journalFolderModelImpl.getOriginalUuid(),
-				journalFolderModelImpl.getOriginalGroupId()
+				journalFolderModelImpl.getOriginalAttributeValue("uuid"),
+				journalFolderModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -7673,8 +7673,8 @@ public class JournalFolderPersistenceImpl
 			 _finderPathFetchByG_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				journalFolderModelImpl.getOriginalGroupId(),
-				journalFolderModelImpl.getOriginalName()
+				journalFolderModelImpl.getOriginalAttributeValue("groupId"),
+				journalFolderModelImpl.getOriginalAttributeValue("name")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_N, args);
@@ -7696,9 +7696,10 @@ public class JournalFolderPersistenceImpl
 			 _finderPathFetchByG_P_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				journalFolderModelImpl.getOriginalGroupId(),
-				journalFolderModelImpl.getOriginalParentFolderId(),
-				journalFolderModelImpl.getOriginalName()
+				journalFolderModelImpl.getOriginalAttributeValue("groupId"),
+				journalFolderModelImpl.getOriginalAttributeValue(
+					"parentFolderId"),
+				journalFolderModelImpl.getOriginalAttributeValue("name")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_P_N, args);
@@ -7965,7 +7966,7 @@ public class JournalFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					journalFolderModelImpl.getOriginalUuid()
+					journalFolderModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -7984,8 +7985,9 @@ public class JournalFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					journalFolderModelImpl.getOriginalUuid(),
-					journalFolderModelImpl.getOriginalCompanyId()
+					journalFolderModelImpl.getOriginalAttributeValue("uuid"),
+					journalFolderModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -8007,7 +8009,7 @@ public class JournalFolderPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					journalFolderModelImpl.getOriginalGroupId()
+					journalFolderModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -8026,7 +8028,8 @@ public class JournalFolderPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					journalFolderModelImpl.getOriginalCompanyId()
+					journalFolderModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -8045,8 +8048,9 @@ public class JournalFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					journalFolderModelImpl.getOriginalGroupId(),
-					journalFolderModelImpl.getOriginalParentFolderId()
+					journalFolderModelImpl.getOriginalAttributeValue("groupId"),
+					journalFolderModelImpl.getOriginalAttributeValue(
+						"parentFolderId")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_P, args);
@@ -8068,9 +8072,10 @@ public class JournalFolderPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					journalFolderModelImpl.getOriginalGroupId(),
-					journalFolderModelImpl.getOriginalParentFolderId(),
-					journalFolderModelImpl.getOriginalStatus()
+					journalFolderModelImpl.getOriginalAttributeValue("groupId"),
+					journalFolderModelImpl.getOriginalAttributeValue(
+						"parentFolderId"),
+					journalFolderModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_P_S, args);
@@ -8577,9 +8582,9 @@ public class JournalFolderPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			JournalFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			JournalFolderModelImpl.UUID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("uuid") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8588,8 +8593,8 @@ public class JournalFolderPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			JournalFolderImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			JournalFolderModelImpl.UUID_COLUMN_BITMASK |
-			JournalFolderModelImpl.GROUPID_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("uuid") |
+			JournalFolderModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8609,10 +8614,10 @@ public class JournalFolderPersistenceImpl
 			JournalFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			JournalFolderModelImpl.UUID_COLUMN_BITMASK |
-			JournalFolderModelImpl.COMPANYID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("uuid") |
+			JournalFolderModelImpl.getColumnBitmask("companyId") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8630,9 +8635,9 @@ public class JournalFolderPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			JournalFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			JournalFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("groupId") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8649,9 +8654,9 @@ public class JournalFolderPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			JournalFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			JournalFolderModelImpl.COMPANYID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("companyId") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8670,9 +8675,9 @@ public class JournalFolderPersistenceImpl
 			JournalFolderImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_P",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			JournalFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("groupId") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByG_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P",
@@ -8681,8 +8686,8 @@ public class JournalFolderPersistenceImpl
 		_finderPathFetchByG_N = new FinderPath(
 			JournalFolderImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByG_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			JournalFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("groupId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByG_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
@@ -8707,9 +8712,9 @@ public class JournalFolderPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			JournalFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("groupId") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByG_P_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8735,10 +8740,10 @@ public class JournalFolderPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			JournalFolderModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalFolderModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			JournalFolderModelImpl.STATUS_COLUMN_BITMASK |
-			JournalFolderModelImpl.NAME_COLUMN_BITMASK);
+			JournalFolderModelImpl.getColumnBitmask("groupId") |
+			JournalFolderModelImpl.getColumnBitmask("parentFolderId") |
+			JournalFolderModelImpl.getColumnBitmask("status") |
+			JournalFolderModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByG_P_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

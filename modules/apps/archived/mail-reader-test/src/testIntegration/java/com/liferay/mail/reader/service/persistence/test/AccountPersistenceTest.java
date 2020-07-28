@@ -503,12 +503,14 @@ public class AccountPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAccount.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccount, "getOriginalUserId", new Class<?>[0]));
+				existingAccount, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAccount.getAddress(),
 				ReflectionTestUtil.invoke(
-					existingAccount, "getOriginalAddress", new Class<?>[0])));
+					existingAccount, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "address")));
 	}
 
 	protected Account addAccount() throws Exception {

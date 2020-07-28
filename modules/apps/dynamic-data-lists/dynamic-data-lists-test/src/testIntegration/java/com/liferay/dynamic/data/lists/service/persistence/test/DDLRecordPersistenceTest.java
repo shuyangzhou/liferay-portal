@@ -531,11 +531,13 @@ public class DDLRecordPersistenceTest {
 			Objects.equals(
 				existingDDLRecord.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecord, "getOriginalUuid", new Class<?>[0])));
+					existingDDLRecord, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDDLRecord.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecord, "getOriginalGroupId", new Class<?>[0]));
+				existingDDLRecord, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected DDLRecord addDDLRecord() throws Exception {

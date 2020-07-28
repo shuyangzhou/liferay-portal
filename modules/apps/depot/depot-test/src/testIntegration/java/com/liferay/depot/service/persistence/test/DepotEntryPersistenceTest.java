@@ -455,16 +455,19 @@ public class DepotEntryPersistenceTest {
 			Objects.equals(
 				existingDepotEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDepotEntry, "getOriginalUuid", new Class<?>[0])));
+					existingDepotEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDepotEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingDepotEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingDepotEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingDepotEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected DepotEntry addDepotEntry() throws Exception {

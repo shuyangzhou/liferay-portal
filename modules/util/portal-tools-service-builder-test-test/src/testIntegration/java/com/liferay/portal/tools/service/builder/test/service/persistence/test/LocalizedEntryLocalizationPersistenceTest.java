@@ -450,14 +450,15 @@ public class LocalizedEntryLocalizationPersistenceTest {
 			Long.valueOf(
 				existingLocalizedEntryLocalization.getLocalizedEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLocalizedEntryLocalization,
-				"getOriginalLocalizedEntryId", new Class<?>[0]));
+				existingLocalizedEntryLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "localizedEntryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLocalizedEntryLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingLocalizedEntryLocalization, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingLocalizedEntryLocalization,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"languageId")));
 	}
 
 	protected LocalizedEntryLocalization addLocalizedEntryLocalization()

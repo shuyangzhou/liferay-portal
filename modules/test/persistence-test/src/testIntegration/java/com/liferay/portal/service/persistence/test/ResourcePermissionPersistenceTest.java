@@ -567,30 +567,30 @@ public class ResourcePermissionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingResourcePermission.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingResourcePermission, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingResourcePermission, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingResourcePermission.getName(),
 				ReflectionTestUtil.invoke(
-					existingResourcePermission, "getOriginalName",
-					new Class<?>[0])));
+					existingResourcePermission, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertEquals(
 			Integer.valueOf(existingResourcePermission.getScope()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingResourcePermission, "getOriginalScope",
-				new Class<?>[0]));
+				existingResourcePermission, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "scope"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingResourcePermission.getPrimKey(),
 				ReflectionTestUtil.invoke(
-					existingResourcePermission, "getOriginalPrimKey",
-					new Class<?>[0])));
+					existingResourcePermission, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "primKey")));
 		Assert.assertEquals(
 			Long.valueOf(existingResourcePermission.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingResourcePermission, "getOriginalRoleId",
-				new Class<?>[0]));
+				existingResourcePermission, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "roleId"));
 	}
 
 	protected ResourcePermission addResourcePermission() throws Exception {

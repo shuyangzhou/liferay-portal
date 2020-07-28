@@ -589,39 +589,42 @@ public class JournalFolderPersistenceTest {
 			Objects.equals(
 				existingJournalFolder.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingJournalFolder, "getOriginalUuid",
-					new Class<?>[0])));
+					existingJournalFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalFolder.getName(),
 				ReflectionTestUtil.invoke(
-					existingJournalFolder, "getOriginalName",
-					new Class<?>[0])));
+					existingJournalFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalFolder.getParentFolderId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFolder, "getOriginalParentFolderId",
-				new Class<?>[0]));
+				existingJournalFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "parentFolderId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalFolder.getName(),
 				ReflectionTestUtil.invoke(
-					existingJournalFolder, "getOriginalName",
-					new Class<?>[0])));
+					existingJournalFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected JournalFolder addJournalFolder() throws Exception {

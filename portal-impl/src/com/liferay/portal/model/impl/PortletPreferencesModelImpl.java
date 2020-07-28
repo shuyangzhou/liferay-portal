@@ -126,16 +126,46 @@ public class PortletPreferencesModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OWNERID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OWNERTYPE_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PLID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETPREFERENCESID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -385,6 +415,15 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
+
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -396,6 +435,15 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
+
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -407,6 +455,15 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPortletPreferencesId(long portletPreferencesId) {
+		_columnBitmask |= _columnBitmasks.get("portletPreferencesId");
+
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
+
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
+		}
+
 		_portletPreferencesId = portletPreferencesId;
 	}
 
@@ -418,19 +475,25 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
 
-			_originalCompanyId = _companyId;
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -441,19 +504,25 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setOwnerId(long ownerId) {
-		_columnBitmask |= OWNERID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("ownerId");
 
-		if (!_setOriginalOwnerId) {
-			_setOriginalOwnerId = true;
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
 
-			_originalOwnerId = _ownerId;
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
 		}
 
 		_ownerId = ownerId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOwnerId() {
-		return _originalOwnerId;
+		return getOriginalAttributeValue("ownerId");
 	}
 
 	@JSON
@@ -464,19 +533,25 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("ownerType");
 
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
 
-			_originalOwnerType = _ownerType;
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
 		}
 
 		_ownerType = ownerType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		return getOriginalAttributeValue("ownerType");
 	}
 
 	@JSON
@@ -487,19 +562,25 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPlid(long plid) {
-		_columnBitmask |= PLID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("plid");
 
-		if (!_setOriginalPlid) {
-			_setOriginalPlid = true;
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
 
-			_originalPlid = _plid;
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
 		}
 
 		_plid = plid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalPlid() {
-		return _originalPlid;
+		return getOriginalAttributeValue("plid");
 	}
 
 	@JSON
@@ -515,17 +596,25 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("portletId");
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
+
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
 		}
 
 		_portletId = portletId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return getOriginalAttributeValue("portletId");
 	}
 
 	@JSON
@@ -541,6 +630,15 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPreferences(String preferences) {
+		_columnBitmask |= _columnBitmasks.get("preferences");
+
+		if (_portletPreferencesCacheModel ==
+				_dummyPortletPreferencesCacheModel) {
+
+			_portletPreferencesCacheModel =
+				(PortletPreferencesCacheModel)toCacheModel();
+		}
+
 		_preferences = preferences;
 	}
 
@@ -660,32 +758,9 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortletPreferencesModelImpl portletPreferencesModelImpl = this;
+		_columnBitmask = 0;
 
-		portletPreferencesModelImpl._originalCompanyId =
-			portletPreferencesModelImpl._companyId;
-
-		portletPreferencesModelImpl._setOriginalCompanyId = false;
-
-		portletPreferencesModelImpl._originalOwnerId =
-			portletPreferencesModelImpl._ownerId;
-
-		portletPreferencesModelImpl._setOriginalOwnerId = false;
-
-		portletPreferencesModelImpl._originalOwnerType =
-			portletPreferencesModelImpl._ownerType;
-
-		portletPreferencesModelImpl._setOriginalOwnerType = false;
-
-		portletPreferencesModelImpl._originalPlid =
-			portletPreferencesModelImpl._plid;
-
-		portletPreferencesModelImpl._setOriginalPlid = false;
-
-		portletPreferencesModelImpl._originalPortletId =
-			portletPreferencesModelImpl._portletId;
-
-		portletPreferencesModelImpl._columnBitmask = 0;
+		_portletPreferencesCacheModel = _dummyPortletPreferencesCacheModel;
 	}
 
 	@Override
@@ -797,23 +872,120 @@ public class PortletPreferencesModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<PortletPreferencesCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PortletPreferencesCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PortletPreferencesCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"portletPreferencesId",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.portletPreferencesId);
+
+		columnBitmasks.put("portletPreferencesId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"ownerId",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.ownerId);
+
+		columnBitmasks.put("ownerId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"ownerType",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.ownerType);
+
+		columnBitmasks.put("ownerType", 32L);
+
+		cacheModelGetterFunctions.put(
+			"plid",
+			portletPreferencesCacheModel -> portletPreferencesCacheModel.plid);
+
+		columnBitmasks.put("plid", 64L);
+
+		cacheModelGetterFunctions.put(
+			"portletId",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.portletId);
+
+		columnBitmasks.put("portletId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"preferences",
+			portletPreferencesCacheModel ->
+				portletPreferencesCacheModel.preferences);
+
+		columnBitmasks.put("preferences", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PortletPreferencesCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PortletPreferencesCacheModel portletPreferencesCacheModel =
+			_portletPreferencesCacheModel;
+
+		if (portletPreferencesCacheModel == null) {
+			portletPreferencesCacheModel = _dummyPortletPreferencesCacheModel;
+		}
+
+		return (T)function.apply(portletPreferencesCacheModel);
+	}
+
+	private static final PortletPreferencesCacheModel
+		_dummyPortletPreferencesCacheModel = new PortletPreferencesCacheModel();
+
+	private PortletPreferencesCacheModel _portletPreferencesCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _portletPreferencesId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _ownerId;
-	private long _originalOwnerId;
-	private boolean _setOriginalOwnerId;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private long _plid;
-	private long _originalPlid;
-	private boolean _setOriginalPlid;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _preferences;
 	private long _columnBitmask;
 	private PortletPreferences _escapedModel;

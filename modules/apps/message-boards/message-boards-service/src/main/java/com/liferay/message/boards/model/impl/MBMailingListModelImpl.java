@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -136,16 +135,46 @@ public class MBMailingListModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CATEGORYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MAILINGLISTID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -434,6 +463,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -444,6 +479,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -459,17 +500,22 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
 		}
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -479,6 +525,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setMailingListId(long mailingListId) {
+		_columnBitmask |= _columnBitmasks.get("mailingListId");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_mailingListId = mailingListId;
 	}
 
@@ -489,19 +541,22 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
 		}
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -511,19 +566,22 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
 		}
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -533,6 +591,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_userId = userId;
 	}
 
@@ -564,6 +628,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_userName = userName;
 	}
 
@@ -574,6 +644,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_createDate = createDate;
 	}
 
@@ -590,6 +666,12 @@ public class MBMailingListModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -600,19 +682,22 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
-		_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("categoryId");
 
-		if (!_setOriginalCategoryId) {
-			_setOriginalCategoryId = true;
-
-			_originalCategoryId = _categoryId;
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
 		}
 
 		_categoryId = categoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCategoryId() {
-		return _originalCategoryId;
+		return getOriginalAttributeValue("categoryId");
 	}
 
 	@Override
@@ -627,6 +712,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
+		_columnBitmask |= _columnBitmasks.get("emailAddress");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_emailAddress = emailAddress;
 	}
 
@@ -642,6 +733,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInProtocol(String inProtocol) {
+		_columnBitmask |= _columnBitmasks.get("inProtocol");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inProtocol = inProtocol;
 	}
 
@@ -657,6 +754,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInServerName(String inServerName) {
+		_columnBitmask |= _columnBitmasks.get("inServerName");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inServerName = inServerName;
 	}
 
@@ -667,6 +770,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInServerPort(int inServerPort) {
+		_columnBitmask |= _columnBitmasks.get("inServerPort");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inServerPort = inServerPort;
 	}
 
@@ -682,6 +791,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInUseSSL(boolean inUseSSL) {
+		_columnBitmask |= _columnBitmasks.get("inUseSSL");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inUseSSL = inUseSSL;
 	}
 
@@ -697,6 +812,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInUserName(String inUserName) {
+		_columnBitmask |= _columnBitmasks.get("inUserName");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inUserName = inUserName;
 	}
 
@@ -712,6 +833,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInPassword(String inPassword) {
+		_columnBitmask |= _columnBitmasks.get("inPassword");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inPassword = inPassword;
 	}
 
@@ -722,6 +849,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setInReadInterval(int inReadInterval) {
+		_columnBitmask |= _columnBitmasks.get("inReadInterval");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_inReadInterval = inReadInterval;
 	}
 
@@ -737,6 +870,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutEmailAddress(String outEmailAddress) {
+		_columnBitmask |= _columnBitmasks.get("outEmailAddress");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outEmailAddress = outEmailAddress;
 	}
 
@@ -752,6 +891,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutCustom(boolean outCustom) {
+		_columnBitmask |= _columnBitmasks.get("outCustom");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outCustom = outCustom;
 	}
 
@@ -767,6 +912,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutServerName(String outServerName) {
+		_columnBitmask |= _columnBitmasks.get("outServerName");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outServerName = outServerName;
 	}
 
@@ -777,6 +928,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutServerPort(int outServerPort) {
+		_columnBitmask |= _columnBitmasks.get("outServerPort");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outServerPort = outServerPort;
 	}
 
@@ -792,6 +949,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutUseSSL(boolean outUseSSL) {
+		_columnBitmask |= _columnBitmasks.get("outUseSSL");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outUseSSL = outUseSSL;
 	}
 
@@ -807,6 +970,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutUserName(String outUserName) {
+		_columnBitmask |= _columnBitmasks.get("outUserName");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outUserName = outUserName;
 	}
 
@@ -822,6 +991,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setOutPassword(String outPassword) {
+		_columnBitmask |= _columnBitmasks.get("outPassword");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_outPassword = outPassword;
 	}
 
@@ -837,6 +1012,12 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setAllowAnonymous(boolean allowAnonymous) {
+		_columnBitmask |= _columnBitmasks.get("allowAnonymous");
+
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
+		}
+
 		_allowAnonymous = allowAnonymous;
 	}
 
@@ -852,19 +1033,22 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		_columnBitmask |= _columnBitmasks.get("active");
 
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
+		if (_mbMailingListCacheModel == _dummyMBMailingListCacheModel) {
+			_mbMailingListCacheModel = (MBMailingListCacheModel)toCacheModel();
 		}
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	@Override
@@ -1005,32 +1189,11 @@ public class MBMailingListModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBMailingListModelImpl mbMailingListModelImpl = this;
+		_setModifiedDate = false;
 
-		mbMailingListModelImpl._originalUuid = mbMailingListModelImpl._uuid;
+		_columnBitmask = 0;
 
-		mbMailingListModelImpl._originalGroupId =
-			mbMailingListModelImpl._groupId;
-
-		mbMailingListModelImpl._setOriginalGroupId = false;
-
-		mbMailingListModelImpl._originalCompanyId =
-			mbMailingListModelImpl._companyId;
-
-		mbMailingListModelImpl._setOriginalCompanyId = false;
-
-		mbMailingListModelImpl._setModifiedDate = false;
-
-		mbMailingListModelImpl._originalCategoryId =
-			mbMailingListModelImpl._categoryId;
-
-		mbMailingListModelImpl._setOriginalCategoryId = false;
-
-		mbMailingListModelImpl._originalActive = mbMailingListModelImpl._active;
-
-		mbMailingListModelImpl._setOriginalActive = false;
-
-		mbMailingListModelImpl._columnBitmask = 0;
+		_mbMailingListCacheModel = _dummyMBMailingListCacheModel;
 	}
 
 	@Override
@@ -1247,25 +1410,228 @@ public class MBMailingListModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<MBMailingListCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MBMailingListCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MBMailingListCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mbMailingListCacheModel -> mbMailingListCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			mbMailingListCacheModel -> mbMailingListCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", mbMailingListCacheModel -> mbMailingListCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"mailingListId",
+			mbMailingListCacheModel -> mbMailingListCacheModel.mailingListId);
+
+		columnBitmasks.put("mailingListId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			mbMailingListCacheModel -> mbMailingListCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			mbMailingListCacheModel -> mbMailingListCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			mbMailingListCacheModel -> mbMailingListCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			mbMailingListCacheModel -> mbMailingListCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			mbMailingListCacheModel -> mbMailingListCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			mbMailingListCacheModel -> mbMailingListCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"categoryId",
+			mbMailingListCacheModel -> mbMailingListCacheModel.categoryId);
+
+		columnBitmasks.put("categoryId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"emailAddress",
+			mbMailingListCacheModel -> mbMailingListCacheModel.emailAddress);
+
+		columnBitmasks.put("emailAddress", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"inProtocol",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inProtocol);
+
+		columnBitmasks.put("inProtocol", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"inServerName",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inServerName);
+
+		columnBitmasks.put("inServerName", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"inServerPort",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inServerPort);
+
+		columnBitmasks.put("inServerPort", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"inUseSSL",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inUseSSL);
+
+		columnBitmasks.put("inUseSSL", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"inUserName",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inUserName);
+
+		columnBitmasks.put("inUserName", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"inPassword",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inPassword);
+
+		columnBitmasks.put("inPassword", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"inReadInterval",
+			mbMailingListCacheModel -> mbMailingListCacheModel.inReadInterval);
+
+		columnBitmasks.put("inReadInterval", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"outEmailAddress",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outEmailAddress);
+
+		columnBitmasks.put("outEmailAddress", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"outCustom",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outCustom);
+
+		columnBitmasks.put("outCustom", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"outServerName",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outServerName);
+
+		columnBitmasks.put("outServerName", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"outServerPort",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outServerPort);
+
+		columnBitmasks.put("outServerPort", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"outUseSSL",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outUseSSL);
+
+		columnBitmasks.put("outUseSSL", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"outUserName",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outUserName);
+
+		columnBitmasks.put("outUserName", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"outPassword",
+			mbMailingListCacheModel -> mbMailingListCacheModel.outPassword);
+
+		columnBitmasks.put("outPassword", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"allowAnonymous",
+			mbMailingListCacheModel -> mbMailingListCacheModel.allowAnonymous);
+
+		columnBitmasks.put("allowAnonymous", 67108864L);
+
+		cacheModelGetterFunctions.put(
+			"active",
+			mbMailingListCacheModel -> mbMailingListCacheModel.active);
+
+		columnBitmasks.put("active", 134217728L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MBMailingListCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MBMailingListCacheModel mbMailingListCacheModel =
+			_mbMailingListCacheModel;
+
+		if (mbMailingListCacheModel == null) {
+			mbMailingListCacheModel = _dummyMBMailingListCacheModel;
+		}
+
+		return (T)function.apply(mbMailingListCacheModel);
+	}
+
+	private static final MBMailingListCacheModel _dummyMBMailingListCacheModel =
+		new MBMailingListCacheModel();
+
+	private MBMailingListCacheModel _mbMailingListCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _mailingListId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _categoryId;
-	private long _originalCategoryId;
-	private boolean _setOriginalCategoryId;
 	private String _emailAddress;
 	private String _inProtocol;
 	private String _inServerName;
@@ -1283,8 +1649,6 @@ public class MBMailingListModelImpl
 	private String _outPassword;
 	private boolean _allowAnonymous;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private MBMailingList _escapedModel;
 

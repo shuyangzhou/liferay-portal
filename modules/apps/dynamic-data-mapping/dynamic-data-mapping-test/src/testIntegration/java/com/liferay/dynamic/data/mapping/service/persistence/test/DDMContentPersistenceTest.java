@@ -478,11 +478,13 @@ public class DDMContentPersistenceTest {
 			Objects.equals(
 				existingDDMContent.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDMContent, "getOriginalUuid", new Class<?>[0])));
+					existingDDMContent, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDDMContent.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMContent, "getOriginalGroupId", new Class<?>[0]));
+				existingDDMContent, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected DDMContent addDDMContent() throws Exception {

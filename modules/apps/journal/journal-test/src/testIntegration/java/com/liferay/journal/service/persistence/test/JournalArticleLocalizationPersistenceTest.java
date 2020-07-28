@@ -475,54 +475,58 @@ public class JournalArticleLocalizationPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleLocalization.getArticlePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalArticlePK",
-				new Class<?>[0]));
+				existingJournalArticleLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "articlePK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticleLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingJournalArticleLocalization,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"languageId")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleLocalization.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingJournalArticleLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleLocalization.getArticlePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalArticlePK",
-				new Class<?>[0]));
+				existingJournalArticleLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "articlePK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticleLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingJournalArticleLocalization,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"languageId")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleLocalization.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingJournalArticleLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleLocalization.getArticlePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalArticlePK",
-				new Class<?>[0]));
+				existingJournalArticleLocalization, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "articlePK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticleLocalization.getTitle(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalTitle",
-					new Class<?>[0])));
+					existingJournalArticleLocalization,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"title")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticleLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingJournalArticleLocalization,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"languageId")));
 	}
 
 	protected JournalArticleLocalization addJournalArticleLocalization()

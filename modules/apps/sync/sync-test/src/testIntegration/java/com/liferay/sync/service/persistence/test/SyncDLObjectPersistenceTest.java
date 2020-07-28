@@ -630,11 +630,13 @@ public class SyncDLObjectPersistenceTest {
 			Objects.equals(
 				existingSyncDLObject.getType(),
 				ReflectionTestUtil.invoke(
-					existingSyncDLObject, "getOriginalType", new Class<?>[0])));
+					existingSyncDLObject, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "type")));
 		Assert.assertEquals(
 			Long.valueOf(existingSyncDLObject.getTypePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSyncDLObject, "getOriginalTypePK", new Class<?>[0]));
+				existingSyncDLObject, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "typePK"));
 	}
 
 	protected SyncDLObject addSyncDLObject() throws Exception {

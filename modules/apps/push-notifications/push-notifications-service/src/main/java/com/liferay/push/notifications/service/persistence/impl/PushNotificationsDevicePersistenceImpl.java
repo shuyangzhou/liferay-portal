@@ -1359,7 +1359,8 @@ public class PushNotificationsDevicePersistenceImpl
 			 _finderPathFetchByToken.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				pushNotificationsDeviceModelImpl.getOriginalToken()
+				pushNotificationsDeviceModelImpl.getOriginalAttributeValue(
+					"token")
 			};
 
 			finderCache.removeResult(_finderPathCountByToken, args);
@@ -1548,8 +1549,10 @@ public class PushNotificationsDevicePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					pushNotificationsDeviceModelImpl.getOriginalUserId(),
-					pushNotificationsDeviceModelImpl.getOriginalPlatform()
+					pushNotificationsDeviceModelImpl.getOriginalAttributeValue(
+						"userId"),
+					pushNotificationsDeviceModelImpl.getOriginalAttributeValue(
+						"platform")
 				};
 
 				finderCache.removeResult(_finderPathCountByU_P, args);
@@ -1858,7 +1861,7 @@ public class PushNotificationsDevicePersistenceImpl
 		_finderPathFetchByToken = new FinderPath(
 			PushNotificationsDeviceImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByToken", new String[] {String.class.getName()},
-			PushNotificationsDeviceModelImpl.TOKEN_COLUMN_BITMASK);
+			PushNotificationsDeviceModelImpl.getColumnBitmask("token"));
 
 		_finderPathCountByToken = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1877,8 +1880,8 @@ public class PushNotificationsDevicePersistenceImpl
 			PushNotificationsDeviceImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_P",
 			new String[] {Long.class.getName(), String.class.getName()},
-			PushNotificationsDeviceModelImpl.USERID_COLUMN_BITMASK |
-			PushNotificationsDeviceModelImpl.PLATFORM_COLUMN_BITMASK);
+			PushNotificationsDeviceModelImpl.getColumnBitmask("userId") |
+			PushNotificationsDeviceModelImpl.getColumnBitmask("platform"));
 
 		_finderPathCountByU_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_P",

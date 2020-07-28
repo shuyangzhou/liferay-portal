@@ -2106,9 +2106,11 @@ public class DDMStructureLinkPersistenceImpl
 			 _finderPathFetchByC_C_S.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				ddmStructureLinkModelImpl.getOriginalClassNameId(),
-				ddmStructureLinkModelImpl.getOriginalClassPK(),
-				ddmStructureLinkModelImpl.getOriginalStructureId()
+				ddmStructureLinkModelImpl.getOriginalAttributeValue(
+					"classNameId"),
+				ddmStructureLinkModelImpl.getOriginalAttributeValue("classPK"),
+				ddmStructureLinkModelImpl.getOriginalAttributeValue(
+					"structureId")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_C_S, args);
@@ -2323,7 +2325,8 @@ public class DDMStructureLinkPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ddmStructureLinkModelImpl.getOriginalClassNameId()
+					ddmStructureLinkModelImpl.getOriginalAttributeValue(
+						"classNameId")
 				};
 
 				finderCache.removeResult(_finderPathCountByClassNameId, args);
@@ -2344,7 +2347,8 @@ public class DDMStructureLinkPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					ddmStructureLinkModelImpl.getOriginalStructureId()
+					ddmStructureLinkModelImpl.getOriginalAttributeValue(
+						"structureId")
 				};
 
 				finderCache.removeResult(_finderPathCountByStructureId, args);
@@ -2365,8 +2369,10 @@ public class DDMStructureLinkPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					ddmStructureLinkModelImpl.getOriginalClassNameId(),
-					ddmStructureLinkModelImpl.getOriginalClassPK()
+					ddmStructureLinkModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					ddmStructureLinkModelImpl.getOriginalAttributeValue(
+						"classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_C, args);
@@ -2856,7 +2862,7 @@ public class DDMStructureLinkPersistenceImpl
 			DDMStructureLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByClassNameId",
 			new String[] {Long.class.getName()},
-			DDMStructureLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+			DDMStructureLinkModelImpl.getColumnBitmask("classNameId"));
 
 		_finderPathCountByClassNameId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2874,7 +2880,7 @@ public class DDMStructureLinkPersistenceImpl
 			DDMStructureLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStructureId",
 			new String[] {Long.class.getName()},
-			DDMStructureLinkModelImpl.STRUCTUREID_COLUMN_BITMASK);
+			DDMStructureLinkModelImpl.getColumnBitmask("structureId"));
 
 		_finderPathCountByStructureId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2893,8 +2899,8 @@ public class DDMStructureLinkPersistenceImpl
 			DDMStructureLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			DDMStructureLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			DDMStructureLinkModelImpl.CLASSPK_COLUMN_BITMASK);
+			DDMStructureLinkModelImpl.getColumnBitmask("classNameId") |
+			DDMStructureLinkModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
@@ -2906,9 +2912,9 @@ public class DDMStructureLinkPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			DDMStructureLinkModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			DDMStructureLinkModelImpl.CLASSPK_COLUMN_BITMASK |
-			DDMStructureLinkModelImpl.STRUCTUREID_COLUMN_BITMASK);
+			DDMStructureLinkModelImpl.getColumnBitmask("classNameId") |
+			DDMStructureLinkModelImpl.getColumnBitmask("classPK") |
+			DDMStructureLinkModelImpl.getColumnBitmask("structureId"));
 
 		_finderPathCountByC_C_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

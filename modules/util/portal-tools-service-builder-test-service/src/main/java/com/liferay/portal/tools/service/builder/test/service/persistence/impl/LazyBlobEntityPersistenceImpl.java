@@ -1005,8 +1005,8 @@ public class LazyBlobEntityPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				lazyBlobEntityModelImpl.getOriginalUuid(),
-				lazyBlobEntityModelImpl.getOriginalGroupId()
+				lazyBlobEntityModelImpl.getOriginalAttributeValue("uuid"),
+				lazyBlobEntityModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -1194,7 +1194,7 @@ public class LazyBlobEntityPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					lazyBlobEntityModelImpl.getOriginalUuid()
+					lazyBlobEntityModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -1503,7 +1503,7 @@ public class LazyBlobEntityPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			LazyBlobEntityImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			LazyBlobEntityModelImpl.UUID_COLUMN_BITMASK);
+			LazyBlobEntityModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1512,8 +1512,8 @@ public class LazyBlobEntityPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			LazyBlobEntityImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			LazyBlobEntityModelImpl.UUID_COLUMN_BITMASK |
-			LazyBlobEntityModelImpl.GROUPID_COLUMN_BITMASK);
+			LazyBlobEntityModelImpl.getColumnBitmask("uuid") |
+			LazyBlobEntityModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

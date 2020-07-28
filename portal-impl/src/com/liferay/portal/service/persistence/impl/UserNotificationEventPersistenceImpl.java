@@ -11904,7 +11904,8 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUuid()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -11923,8 +11924,10 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUuid(),
-					userNotificationEventModelImpl.getOriginalCompanyId()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"uuid"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -11946,7 +11949,8 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -11967,7 +11971,8 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalType()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"type")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByType, args);
@@ -11986,8 +11991,10 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_DT, args);
@@ -12009,8 +12016,10 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDelivered()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_D, args);
@@ -12032,8 +12041,10 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_A, args);
@@ -12055,9 +12066,12 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalDelivered()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_DT_D, args);
@@ -12080,9 +12094,12 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_DT_A, args);
@@ -12105,9 +12122,12 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalActionRequired()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"actionRequired")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_D_AR, args);
@@ -12130,9 +12150,12 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_D_A, args);
@@ -12155,9 +12178,12 @@ public class UserNotificationEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalActionRequired(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"actionRequired"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_AR_A, args);
@@ -12180,10 +12206,14 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalType(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalDelivered()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"type"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_T_DT_D, args);
@@ -12207,10 +12237,14 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalActionRequired()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"actionRequired")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_DT_D_AR, args);
@@ -12234,10 +12268,14 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_DT_D_A, args);
@@ -12261,10 +12299,14 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalActionRequired(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"actionRequired"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_DT_AR_A, args);
@@ -12288,10 +12330,14 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalActionRequired(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"actionRequired"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_D_AR_A, args);
@@ -12315,11 +12361,16 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalType(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"type"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -12346,11 +12397,16 @@ public class UserNotificationEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					userNotificationEventModelImpl.getOriginalUserId(),
-					userNotificationEventModelImpl.getOriginalDeliveryType(),
-					userNotificationEventModelImpl.getOriginalDelivered(),
-					userNotificationEventModelImpl.getOriginalActionRequired(),
-					userNotificationEventModelImpl.getOriginalArchived()
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"userId"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"deliveryType"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"delivered"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"actionRequired"),
+					userNotificationEventModelImpl.getOriginalAttributeValue(
+						"archived")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -12672,8 +12728,8 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			UserNotificationEventModelImpl.UUID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("uuid") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12692,9 +12748,9 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			UserNotificationEventModelImpl.UUID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("uuid") |
+			UserNotificationEventModelImpl.getColumnBitmask("companyId") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12713,8 +12769,8 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12732,8 +12788,8 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByType",
 			new String[] {String.class.getName()},
-			UserNotificationEventModelImpl.TYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("type") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByType = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12752,9 +12808,9 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_DT",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12774,9 +12830,9 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_D",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_D = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_D",
@@ -12795,9 +12851,9 @@ public class UserNotificationEventPersistenceImpl
 			UserNotificationEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_A",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_A",
@@ -12819,10 +12875,10 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT_D = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12848,10 +12904,10 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12877,10 +12933,10 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ACTIONREQUIRED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("actionRequired") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_D_AR = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12906,10 +12962,10 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_D_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12935,10 +12991,10 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ACTIONREQUIRED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("actionRequired") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_AR_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12965,11 +13021,11 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("type") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_T_DT_D = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -12996,11 +13052,11 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Boolean.class.getName(), Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ACTIONREQUIRED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("actionRequired") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT_D_AR = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -13027,11 +13083,11 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Boolean.class.getName(), Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT_D_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -13058,11 +13114,11 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Boolean.class.getName(), Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ACTIONREQUIRED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("actionRequired") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT_AR_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -13089,11 +13145,11 @@ public class UserNotificationEventPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName(), Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ACTIONREQUIRED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("actionRequired") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_D_AR_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -13121,12 +13177,12 @@ public class UserNotificationEventPersistenceImpl
 				Integer.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("type") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_T_DT_D_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -13155,12 +13211,12 @@ public class UserNotificationEventPersistenceImpl
 				Boolean.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			UserNotificationEventModelImpl.USERID_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERYTYPE_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.DELIVERED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ACTIONREQUIRED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.ARCHIVED_COLUMN_BITMASK |
-			UserNotificationEventModelImpl.TIMESTAMP_COLUMN_BITMASK);
+			UserNotificationEventModelImpl.getColumnBitmask("userId") |
+			UserNotificationEventModelImpl.getColumnBitmask("deliveryType") |
+			UserNotificationEventModelImpl.getColumnBitmask("delivered") |
+			UserNotificationEventModelImpl.getColumnBitmask("actionRequired") |
+			UserNotificationEventModelImpl.getColumnBitmask("archived") |
+			UserNotificationEventModelImpl.getColumnBitmask("timestamp"));
 
 		_finderPathCountByU_DT_D_AR_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

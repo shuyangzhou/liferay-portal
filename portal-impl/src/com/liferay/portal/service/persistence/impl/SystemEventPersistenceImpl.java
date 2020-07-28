@@ -2702,7 +2702,7 @@ public class SystemEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId()
+					systemEventModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
@@ -2721,8 +2721,9 @@ public class SystemEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId(),
-					systemEventModelImpl.getOriginalSystemEventSetKey()
+					systemEventModelImpl.getOriginalAttributeValue("groupId"),
+					systemEventModelImpl.getOriginalAttributeValue(
+						"systemEventSetKey")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
@@ -2744,9 +2745,10 @@ public class SystemEventPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId(),
-					systemEventModelImpl.getOriginalClassNameId(),
-					systemEventModelImpl.getOriginalClassPK()
+					systemEventModelImpl.getOriginalAttributeValue("groupId"),
+					systemEventModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					systemEventModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_C_C, args);
@@ -2769,10 +2771,11 @@ public class SystemEventPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId(),
-					systemEventModelImpl.getOriginalClassNameId(),
-					systemEventModelImpl.getOriginalClassPK(),
-					systemEventModelImpl.getOriginalType()
+					systemEventModelImpl.getOriginalAttributeValue("groupId"),
+					systemEventModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					systemEventModelImpl.getOriginalAttributeValue("classPK"),
+					systemEventModelImpl.getOriginalAttributeValue("type")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_C_C_T, args);
@@ -3264,8 +3267,8 @@ public class SystemEventPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			SystemEventImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.getColumnBitmask("groupId") |
+			SystemEventModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3284,9 +3287,9 @@ public class SystemEventPersistenceImpl
 			SystemEventImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_S",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
-			SystemEventModelImpl.SYSTEMEVENTSETKEY_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.getColumnBitmask("groupId") |
+			SystemEventModelImpl.getColumnBitmask("systemEventSetKey") |
+			SystemEventModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
@@ -3307,10 +3310,10 @@ public class SystemEventPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
-			SystemEventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SystemEventModelImpl.CLASSPK_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.getColumnBitmask("groupId") |
+			SystemEventModelImpl.getColumnBitmask("classNameId") |
+			SystemEventModelImpl.getColumnBitmask("classPK") |
+			SystemEventModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3336,11 +3339,11 @@ public class SystemEventPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
-			SystemEventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SystemEventModelImpl.CLASSPK_COLUMN_BITMASK |
-			SystemEventModelImpl.TYPE_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.getColumnBitmask("groupId") |
+			SystemEventModelImpl.getColumnBitmask("classNameId") |
+			SystemEventModelImpl.getColumnBitmask("classPK") |
+			SystemEventModelImpl.getColumnBitmask("type") |
+			SystemEventModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_C_C_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

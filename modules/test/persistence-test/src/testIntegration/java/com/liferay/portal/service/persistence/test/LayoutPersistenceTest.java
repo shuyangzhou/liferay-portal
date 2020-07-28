@@ -770,81 +770,97 @@ public class LayoutPersistenceTest {
 			Objects.equals(
 				existingLayout.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayout, "getOriginalUuid", new Class<?>[0])));
+					existingLayout, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalGroupId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayout.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayout, "getOriginalPrivateLayout", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getIconImageId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalIconImageId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "iconImageId"));
 
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayout.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayout, "getOriginalPrivateLayout", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getIconImageId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalIconImageId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "iconImageId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalClassNameId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalClassPK", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalGroupId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayout.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayout, "getOriginalPrivateLayout", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getLayoutId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalLayoutId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalGroupId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayout.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayout, "getOriginalPrivateLayout", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayout.getFriendlyURL(),
 				ReflectionTestUtil.invoke(
-					existingLayout, "getOriginalFriendlyURL",
-					new Class<?>[0])));
+					existingLayout, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "friendlyURL")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayout.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayout, "getOriginalGroupId", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayout.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayout, "getOriginalPrivateLayout", new Class<?>[0]));
+				existingLayout, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "privateLayout"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayout.getSourcePrototypeLayoutUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayout, "getOriginalSourcePrototypeLayoutUuid",
-					new Class<?>[0])));
+					existingLayout, "getOriginalAttributeValue",
+					new Class<?>[] {String.class},
+					"sourcePrototypeLayoutUuid")));
 	}
 
 	protected Layout addLayout() throws Exception {

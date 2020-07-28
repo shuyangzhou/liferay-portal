@@ -473,8 +473,8 @@ public class DDMFormInstanceReportPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDDMFormInstanceReport.getFormInstanceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMFormInstanceReport, "getOriginalFormInstanceId",
-				new Class<?>[0]));
+				existingDDMFormInstanceReport, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "formInstanceId"));
 	}
 
 	protected DDMFormInstanceReport addDDMFormInstanceReport()

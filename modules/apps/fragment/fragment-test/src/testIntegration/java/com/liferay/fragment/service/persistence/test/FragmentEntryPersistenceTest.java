@@ -751,28 +751,31 @@ public class FragmentEntryPersistenceTest {
 			Objects.equals(
 				existingFragmentEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingFragmentEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingFragmentEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingFragmentEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingFragmentEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingFragmentEntry.getFragmentEntryKey(),
 				ReflectionTestUtil.invoke(
-					existingFragmentEntry, "getOriginalFragmentEntryKey",
-					new Class<?>[0])));
+					existingFragmentEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "fragmentEntryKey")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntry.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntry, "getOriginalHeadId", new Class<?>[0]));
+				existingFragmentEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "headId"));
 	}
 
 	protected FragmentEntry addFragmentEntry() throws Exception {

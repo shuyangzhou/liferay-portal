@@ -552,29 +552,29 @@ public class AssetDisplayPageEntryPersistenceTest {
 			Objects.equals(
 				existingAssetDisplayPageEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetDisplayPageEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingAssetDisplayPageEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetDisplayPageEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetDisplayPageEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingAssetDisplayPageEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingAssetDisplayPageEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetDisplayPageEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingAssetDisplayPageEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetDisplayPageEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetDisplayPageEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingAssetDisplayPageEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetDisplayPageEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetDisplayPageEntry, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingAssetDisplayPageEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected AssetDisplayPageEntry addAssetDisplayPageEntry()

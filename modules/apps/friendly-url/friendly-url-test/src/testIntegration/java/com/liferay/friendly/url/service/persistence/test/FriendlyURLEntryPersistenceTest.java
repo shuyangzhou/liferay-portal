@@ -480,13 +480,13 @@ public class FriendlyURLEntryPersistenceTest {
 			Objects.equals(
 				existingFriendlyURLEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingFriendlyURLEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingFriendlyURLEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingFriendlyURLEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFriendlyURLEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingFriendlyURLEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected FriendlyURLEntry addFriendlyURLEntry() throws Exception {

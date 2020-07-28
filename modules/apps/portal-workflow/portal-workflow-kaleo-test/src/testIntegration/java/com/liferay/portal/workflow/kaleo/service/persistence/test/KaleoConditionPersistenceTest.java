@@ -478,8 +478,8 @@ public class KaleoConditionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoCondition.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoCondition, "getOriginalKaleoNodeId",
-				new Class<?>[0]));
+				existingKaleoCondition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoNodeId"));
 	}
 
 	protected KaleoCondition addKaleoCondition() throws Exception {

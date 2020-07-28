@@ -465,18 +465,18 @@ public class RecentLayoutBranchPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingRecentLayoutBranch.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutBranch, "getOriginalUserId",
-				new Class<?>[0]));
+				existingRecentLayoutBranch, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertEquals(
 			Long.valueOf(existingRecentLayoutBranch.getLayoutSetBranchId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutBranch, "getOriginalLayoutSetBranchId",
-				new Class<?>[0]));
+				existingRecentLayoutBranch, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutSetBranchId"));
 		Assert.assertEquals(
 			Long.valueOf(existingRecentLayoutBranch.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutBranch, "getOriginalPlid",
-				new Class<?>[0]));
+				existingRecentLayoutBranch, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "plid"));
 	}
 
 	protected RecentLayoutBranch addRecentLayoutBranch() throws Exception {
