@@ -1023,11 +1023,27 @@ public class ${entity.name}PersistenceTest {
 				<#list entityColumns as entityColumn>
 					<#if entityColumn.isInterfaceColumn()>
 						<#if stringUtil.equals(entityColumn.type, "double")>
-							AssertUtils.assertEquals(existing${entity.name}.get${entityColumn.methodName}(), ReflectionTestUtil.<Double>invoke(existing${entity.name}, "getOriginal${entityColumn.methodName}", new Class<?>[0]));
+							AssertUtils.assertEquals(existing${entity.name}.get${entityColumn.methodName}(), ReflectionTestUtil.<Double>invoke(existing${entity.name},
+								<#if serviceBuilder.isVersionGTE_7_3_0()>
+									"getOriginalAttributeValue", new Class<?>[]{String.class}, "${entityColumn.name}"));
+								<#else>
+									"getOriginal${entityColumn.methodName}", new Class<?>[0]));
+								</#if>
+
 						<#elseif entityColumn.isPrimitiveType()>
-							Assert.assertEquals(${serviceBuilder.getPrimitiveObj(entityColumn.type)}.valueOf(existing${entity.name}.get${entityColumn.methodName}()), ReflectionTestUtil.<${serviceBuilder.getPrimitiveObj(entityColumn.type)}>invoke(existing${entity.name}, "getOriginal${entityColumn.methodName}", new Class<?>[0]));
+							Assert.assertEquals(${serviceBuilder.getPrimitiveObj(entityColumn.type)}.valueOf(existing${entity.name}.get${entityColumn.methodName}()), ReflectionTestUtil.<${serviceBuilder.getPrimitiveObj(entityColumn.type)}>invoke(existing${entity.name},
+							<#if serviceBuilder.isVersionGTE_7_3_0()>
+								"getOriginalAttributeValue", new Class<?>[]{String.class}, "${entityColumn.name}"));
+							<#else>
+								"getOriginal${entityColumn.methodName}", new Class<?>[0]));
+							</#if>
 						<#else>
-							Assert.assertTrue(Objects.equals(existing${entity.name}.get${entityColumn.methodName}(), ReflectionTestUtil.invoke(existing${entity.name}, "getOriginal${entityColumn.methodName}", new Class<?>[0])));
+							Assert.assertTrue(Objects.equals(existing${entity.name}.get${entityColumn.methodName}(), ReflectionTestUtil.invoke(existing${entity.name},
+								<#if serviceBuilder.isVersionGTE_7_3_0()>
+									"getOriginalAttributeValue", new Class<?>[]{String.class}, "${entityColumn.name}")));
+								<#else>
+									"getOriginal${entityColumn.methodName}", new Class<?>[0])));
+								</#if>
 						</#if>
 					</#if>
 				</#list>
