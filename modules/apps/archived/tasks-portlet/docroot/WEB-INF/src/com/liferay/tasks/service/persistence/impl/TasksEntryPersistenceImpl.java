@@ -10240,7 +10240,7 @@ public class TasksEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalGroupId()
+					tasksEntryModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
@@ -10259,7 +10259,7 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalUserId()
+					tasksEntryModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -10278,7 +10278,8 @@ public class TasksEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalAssigneeUserId()
+					tasksEntryModelImpl.getOriginalAttributeValue(
+						"assigneeUserId")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -10299,7 +10300,8 @@ public class TasksEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalResolverUserId()
+					tasksEntryModelImpl.getOriginalAttributeValue(
+						"resolverUserId")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -10320,8 +10322,8 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalGroupId(),
-					tasksEntryModelImpl.getOriginalUserId()
+					tasksEntryModelImpl.getOriginalAttributeValue("groupId"),
+					tasksEntryModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_U, args);
@@ -10343,8 +10345,9 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalGroupId(),
-					tasksEntryModelImpl.getOriginalAssigneeUserId()
+					tasksEntryModelImpl.getOriginalAttributeValue("groupId"),
+					tasksEntryModelImpl.getOriginalAttributeValue(
+						"assigneeUserId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_A, args);
@@ -10366,8 +10369,9 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalGroupId(),
-					tasksEntryModelImpl.getOriginalResolverUserId()
+					tasksEntryModelImpl.getOriginalAttributeValue("groupId"),
+					tasksEntryModelImpl.getOriginalAttributeValue(
+						"resolverUserId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_R, args);
@@ -10389,8 +10393,8 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalUserId(),
-					tasksEntryModelImpl.getOriginalStatus()
+					tasksEntryModelImpl.getOriginalAttributeValue("userId"),
+					tasksEntryModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_S, args);
@@ -10412,8 +10416,9 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalAssigneeUserId(),
-					tasksEntryModelImpl.getOriginalStatus()
+					tasksEntryModelImpl.getOriginalAttributeValue(
+						"assigneeUserId"),
+					tasksEntryModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByA_S, args);
@@ -10435,9 +10440,9 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalGroupId(),
-					tasksEntryModelImpl.getOriginalUserId(),
-					tasksEntryModelImpl.getOriginalStatus()
+					tasksEntryModelImpl.getOriginalAttributeValue("groupId"),
+					tasksEntryModelImpl.getOriginalAttributeValue("userId"),
+					tasksEntryModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
@@ -10460,9 +10465,10 @@ public class TasksEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					tasksEntryModelImpl.getOriginalGroupId(),
-					tasksEntryModelImpl.getOriginalAssigneeUserId(),
-					tasksEntryModelImpl.getOriginalStatus()
+					tasksEntryModelImpl.getOriginalAttributeValue("groupId"),
+					tasksEntryModelImpl.getOriginalAttributeValue(
+						"assigneeUserId"),
+					tasksEntryModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByG_A_S, args);
@@ -10766,10 +10772,10 @@ public class TasksEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			TasksEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("groupId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10786,10 +10792,10 @@ public class TasksEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUserId", new String[] {Long.class.getName()},
-			TasksEntryModelImpl.USERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("userId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10806,10 +10812,10 @@ public class TasksEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByAssigneeUserId = new FinderPath(
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByAssigneeUserId", new String[] {Long.class.getName()},
-			TasksEntryModelImpl.ASSIGNEEUSERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("assigneeUserId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByAssigneeUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10826,10 +10832,10 @@ public class TasksEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByResolverUserId = new FinderPath(
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByResolverUserId", new String[] {Long.class.getName()},
-			TasksEntryModelImpl.RESOLVERUSERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("resolverUserId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByResolverUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10848,11 +10854,11 @@ public class TasksEntryPersistenceImpl
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			TasksEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			TasksEntryModelImpl.USERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("groupId") |
+			TasksEntryModelImpl.getColumnBitmask("userId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_U = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U",
@@ -10871,11 +10877,11 @@ public class TasksEntryPersistenceImpl
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			TasksEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			TasksEntryModelImpl.ASSIGNEEUSERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("groupId") |
+			TasksEntryModelImpl.getColumnBitmask("assigneeUserId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_A",
@@ -10894,11 +10900,11 @@ public class TasksEntryPersistenceImpl
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_R",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			TasksEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			TasksEntryModelImpl.RESOLVERUSERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("groupId") |
+			TasksEntryModelImpl.getColumnBitmask("resolverUserId") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_R = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_R",
@@ -10917,11 +10923,11 @@ public class TasksEntryPersistenceImpl
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByU_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			TasksEntryModelImpl.USERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.STATUS_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("userId") |
+			TasksEntryModelImpl.getColumnBitmask("status") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByU_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_S",
@@ -10944,11 +10950,11 @@ public class TasksEntryPersistenceImpl
 			TasksEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByA_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			TasksEntryModelImpl.ASSIGNEEUSERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.STATUS_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("assigneeUserId") |
+			TasksEntryModelImpl.getColumnBitmask("status") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByA_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_S",
@@ -10974,12 +10980,12 @@ public class TasksEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			TasksEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			TasksEntryModelImpl.USERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.STATUS_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("groupId") |
+			TasksEntryModelImpl.getColumnBitmask("userId") |
+			TasksEntryModelImpl.getColumnBitmask("status") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_U_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -11012,12 +11018,12 @@ public class TasksEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			TasksEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			TasksEntryModelImpl.ASSIGNEEUSERID_COLUMN_BITMASK |
-			TasksEntryModelImpl.STATUS_COLUMN_BITMASK |
-			TasksEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			TasksEntryModelImpl.DUEDATE_COLUMN_BITMASK |
-			TasksEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			TasksEntryModelImpl.getColumnBitmask("groupId") |
+			TasksEntryModelImpl.getColumnBitmask("assigneeUserId") |
+			TasksEntryModelImpl.getColumnBitmask("status") |
+			TasksEntryModelImpl.getColumnBitmask("priority") |
+			TasksEntryModelImpl.getColumnBitmask("dueDate") |
+			TasksEntryModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_A_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

@@ -120,8 +120,18 @@ public class PasswordTrackerModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 2L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -296,6 +306,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -306,6 +318,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setPasswordTrackerId(long passwordTrackerId) {
+		_columnBitmask |= _columnBitmasks.get("passwordTrackerId");
+
 		_passwordTrackerId = passwordTrackerId;
 	}
 
@@ -316,6 +330,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -326,13 +342,7 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -353,8 +363,13 @@ public class PasswordTrackerModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -364,7 +379,7 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -381,6 +396,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setPassword(String password) {
+		_columnBitmask |= _columnBitmasks.get("password");
+
 		_password = password;
 	}
 
@@ -511,14 +528,9 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PasswordTrackerModelImpl passwordTrackerModelImpl = this;
+		_columnBitmask = 0;
 
-		passwordTrackerModelImpl._originalUserId =
-			passwordTrackerModelImpl._userId;
-
-		passwordTrackerModelImpl._setOriginalUserId = false;
-
-		passwordTrackerModelImpl._columnBitmask = 0;
+		_passwordTrackerCacheModel = (PasswordTrackerCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -624,12 +636,91 @@ public class PasswordTrackerModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<PasswordTrackerCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PasswordTrackerCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PasswordTrackerCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			passwordTrackerCacheModel -> passwordTrackerCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"passwordTrackerId",
+			passwordTrackerCacheModel ->
+				passwordTrackerCacheModel.passwordTrackerId);
+
+		columnBitmasks.put("passwordTrackerId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			passwordTrackerCacheModel -> passwordTrackerCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			passwordTrackerCacheModel -> passwordTrackerCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			passwordTrackerCacheModel -> passwordTrackerCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"password",
+			passwordTrackerCacheModel -> passwordTrackerCacheModel.password);
+
+		columnBitmasks.put("password", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PasswordTrackerCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PasswordTrackerCacheModel passwordTrackerCacheModel =
+			_passwordTrackerCacheModel;
+
+		if (passwordTrackerCacheModel == null) {
+			passwordTrackerCacheModel = _dummyPasswordTrackerCacheModel;
+		}
+
+		return (T)function.apply(passwordTrackerCacheModel);
+	}
+
+	private static final PasswordTrackerCacheModel
+		_dummyPasswordTrackerCacheModel = new PasswordTrackerCacheModel();
+
+	private PasswordTrackerCacheModel _passwordTrackerCacheModel;
 	private long _mvccVersion;
 	private long _passwordTrackerId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private String _password;
 	private long _columnBitmask;

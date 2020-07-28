@@ -147,18 +147,53 @@ public class OrganizationModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ORGANIZATIONID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTORGANIZATIONID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TREEPATH_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -477,6 +512,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -488,6 +525,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -504,17 +543,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -530,17 +570,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
-
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
-		}
+		_columnBitmask |= _columnBitmasks.get("externalReferenceCode");
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		return getOriginalAttributeValue("externalReferenceCode");
 	}
 
 	@JSON
@@ -551,19 +592,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
-		_columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalOrganizationId) {
-			_setOriginalOrganizationId = true;
-
-			_originalOrganizationId = _organizationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("organizationId");
 
 		_organizationId = organizationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOrganizationId() {
-		return _originalOrganizationId;
+		return getOriginalAttributeValue("organizationId");
 	}
 
 	@JSON
@@ -574,19 +614,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -597,6 +636,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -629,6 +670,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -640,6 +683,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -657,6 +702,8 @@ public class OrganizationModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -668,19 +715,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setParentOrganizationId(long parentOrganizationId) {
-		_columnBitmask |= PARENTORGANIZATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentOrganizationId) {
-			_setOriginalParentOrganizationId = true;
-
-			_originalParentOrganizationId = _parentOrganizationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentOrganizationId");
 
 		_parentOrganizationId = parentOrganizationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentOrganizationId() {
-		return _originalParentOrganizationId;
+		return getOriginalAttributeValue("parentOrganizationId");
 	}
 
 	@JSON
@@ -696,17 +742,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
-		_columnBitmask |= TREEPATH_COLUMN_BITMASK;
-
-		if (_originalTreePath == null) {
-			_originalTreePath = _treePath;
-		}
+		_columnBitmask |= _columnBitmasks.get("treePath");
 
 		_treePath = treePath;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTreePath() {
-		return GetterUtil.getString(_originalTreePath);
+		return getOriginalAttributeValue("treePath");
 	}
 
 	@JSON
@@ -722,17 +769,18 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -748,6 +796,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
 		_type = type;
 	}
 
@@ -765,6 +815,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setRecursable(boolean recursable) {
+		_columnBitmask |= _columnBitmasks.get("recursable");
+
 		_recursable = recursable;
 	}
 
@@ -776,6 +828,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setRegionId(long regionId) {
+		_columnBitmask |= _columnBitmasks.get("regionId");
+
 		_regionId = regionId;
 	}
 
@@ -787,6 +841,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCountryId(long countryId) {
+		_columnBitmask |= _columnBitmasks.get("countryId");
+
 		_countryId = countryId;
 	}
 
@@ -798,6 +854,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
+		_columnBitmask |= _columnBitmasks.get("statusId");
+
 		_statusId = statusId;
 	}
 
@@ -814,6 +872,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setComments(String comments) {
+		_columnBitmask |= _columnBitmasks.get("comments");
+
 		_comments = comments;
 	}
 
@@ -825,6 +885,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setLogoId(long logoId) {
+		_columnBitmask |= _columnBitmasks.get("logoId");
+
 		_logoId = logoId;
 	}
 
@@ -956,36 +1018,11 @@ public class OrganizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OrganizationModelImpl organizationModelImpl = this;
+		_setModifiedDate = false;
 
-		organizationModelImpl._originalUuid = organizationModelImpl._uuid;
+		_columnBitmask = 0;
 
-		organizationModelImpl._originalExternalReferenceCode =
-			organizationModelImpl._externalReferenceCode;
-
-		organizationModelImpl._originalOrganizationId =
-			organizationModelImpl._organizationId;
-
-		organizationModelImpl._setOriginalOrganizationId = false;
-
-		organizationModelImpl._originalCompanyId =
-			organizationModelImpl._companyId;
-
-		organizationModelImpl._setOriginalCompanyId = false;
-
-		organizationModelImpl._setModifiedDate = false;
-
-		organizationModelImpl._originalParentOrganizationId =
-			organizationModelImpl._parentOrganizationId;
-
-		organizationModelImpl._setOriginalParentOrganizationId = false;
-
-		organizationModelImpl._originalTreePath =
-			organizationModelImpl._treePath;
-
-		organizationModelImpl._originalName = organizationModelImpl._name;
-
-		organizationModelImpl._columnBitmask = 0;
+		_organizationCacheModel = (OrganizationCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1166,30 +1203,179 @@ public class OrganizationModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<OrganizationCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<OrganizationCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<OrganizationCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			organizationCacheModel -> organizationCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			organizationCacheModel -> organizationCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", organizationCacheModel -> organizationCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"externalReferenceCode",
+			organizationCacheModel ->
+				organizationCacheModel.externalReferenceCode);
+
+		columnBitmasks.put("externalReferenceCode", 8L);
+
+		cacheModelGetterFunctions.put(
+			"organizationId",
+			organizationCacheModel -> organizationCacheModel.organizationId);
+
+		columnBitmasks.put("organizationId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			organizationCacheModel -> organizationCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", organizationCacheModel -> organizationCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			organizationCacheModel -> organizationCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			organizationCacheModel -> organizationCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			organizationCacheModel -> organizationCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"parentOrganizationId",
+			organizationCacheModel ->
+				organizationCacheModel.parentOrganizationId);
+
+		columnBitmasks.put("parentOrganizationId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"treePath",
+			organizationCacheModel -> organizationCacheModel.treePath);
+
+		columnBitmasks.put("treePath", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"name", organizationCacheModel -> organizationCacheModel.name);
+
+		columnBitmasks.put("name", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"type", organizationCacheModel -> organizationCacheModel.type);
+
+		columnBitmasks.put("type", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"recursable",
+			organizationCacheModel -> organizationCacheModel.recursable);
+
+		columnBitmasks.put("recursable", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"regionId",
+			organizationCacheModel -> organizationCacheModel.regionId);
+
+		columnBitmasks.put("regionId", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"countryId",
+			organizationCacheModel -> organizationCacheModel.countryId);
+
+		columnBitmasks.put("countryId", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"statusId",
+			organizationCacheModel -> organizationCacheModel.statusId);
+
+		columnBitmasks.put("statusId", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"comments",
+			organizationCacheModel -> organizationCacheModel.comments);
+
+		columnBitmasks.put("comments", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"logoId", organizationCacheModel -> organizationCacheModel.logoId);
+
+		columnBitmasks.put("logoId", 524288L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<OrganizationCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		OrganizationCacheModel organizationCacheModel = _organizationCacheModel;
+
+		if (organizationCacheModel == null) {
+			organizationCacheModel = _dummyOrganizationCacheModel;
+		}
+
+		return (T)function.apply(organizationCacheModel);
+	}
+
+	private static final OrganizationCacheModel _dummyOrganizationCacheModel =
+		new OrganizationCacheModel();
+
+	private OrganizationCacheModel _organizationCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _organizationId;
-	private long _originalOrganizationId;
-	private boolean _setOriginalOrganizationId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _parentOrganizationId;
-	private long _originalParentOrganizationId;
-	private boolean _setOriginalParentOrganizationId;
 	private String _treePath;
-	private String _originalTreePath;
 	private String _name;
-	private String _originalName;
 	private String _type;
 	private boolean _recursable;
 	private long _regionId;

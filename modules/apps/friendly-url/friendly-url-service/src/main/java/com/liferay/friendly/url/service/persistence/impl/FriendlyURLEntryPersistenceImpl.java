@@ -2263,8 +2263,8 @@ public class FriendlyURLEntryPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				friendlyURLEntryModelImpl.getOriginalUuid(),
-				friendlyURLEntryModelImpl.getOriginalGroupId()
+				friendlyURLEntryModelImpl.getOriginalAttributeValue("uuid"),
+				friendlyURLEntryModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2516,7 +2516,7 @@ public class FriendlyURLEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					friendlyURLEntryModelImpl.getOriginalUuid()
+					friendlyURLEntryModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2535,8 +2535,9 @@ public class FriendlyURLEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					friendlyURLEntryModelImpl.getOriginalUuid(),
-					friendlyURLEntryModelImpl.getOriginalCompanyId()
+					friendlyURLEntryModelImpl.getOriginalAttributeValue("uuid"),
+					friendlyURLEntryModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2558,9 +2559,12 @@ public class FriendlyURLEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					friendlyURLEntryModelImpl.getOriginalGroupId(),
-					friendlyURLEntryModelImpl.getOriginalClassNameId(),
-					friendlyURLEntryModelImpl.getOriginalClassPK()
+					friendlyURLEntryModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					friendlyURLEntryModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					friendlyURLEntryModelImpl.getOriginalAttributeValue(
+						"classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_C_C, args);
@@ -3059,7 +3063,7 @@ public class FriendlyURLEntryPersistenceImpl
 			FriendlyURLEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			FriendlyURLEntryModelImpl.UUID_COLUMN_BITMASK);
+			FriendlyURLEntryModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3069,8 +3073,8 @@ public class FriendlyURLEntryPersistenceImpl
 			FriendlyURLEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			FriendlyURLEntryModelImpl.UUID_COLUMN_BITMASK |
-			FriendlyURLEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			FriendlyURLEntryModelImpl.getColumnBitmask("uuid") |
+			FriendlyURLEntryModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3090,8 +3094,8 @@ public class FriendlyURLEntryPersistenceImpl
 			FriendlyURLEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			FriendlyURLEntryModelImpl.UUID_COLUMN_BITMASK |
-			FriendlyURLEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			FriendlyURLEntryModelImpl.getColumnBitmask("uuid") |
+			FriendlyURLEntryModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3113,9 +3117,9 @@ public class FriendlyURLEntryPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			FriendlyURLEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			FriendlyURLEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FriendlyURLEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+			FriendlyURLEntryModelImpl.getColumnBitmask("groupId") |
+			FriendlyURLEntryModelImpl.getColumnBitmask("classNameId") |
+			FriendlyURLEntryModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByG_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

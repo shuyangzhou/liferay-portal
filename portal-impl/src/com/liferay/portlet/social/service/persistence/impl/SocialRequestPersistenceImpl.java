@@ -6553,8 +6553,8 @@ public class SocialRequestPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				socialRequestModelImpl.getOriginalUuid(),
-				socialRequestModelImpl.getOriginalGroupId()
+				socialRequestModelImpl.getOriginalAttributeValue("uuid"),
+				socialRequestModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
@@ -6578,11 +6578,12 @@ public class SocialRequestPersistenceImpl
 			 _finderPathFetchByU_C_C_T_R.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				socialRequestModelImpl.getOriginalUserId(),
-				socialRequestModelImpl.getOriginalClassNameId(),
-				socialRequestModelImpl.getOriginalClassPK(),
-				socialRequestModelImpl.getOriginalType(),
-				socialRequestModelImpl.getOriginalReceiverUserId()
+				socialRequestModelImpl.getOriginalAttributeValue("userId"),
+				socialRequestModelImpl.getOriginalAttributeValue("classNameId"),
+				socialRequestModelImpl.getOriginalAttributeValue("classPK"),
+				socialRequestModelImpl.getOriginalAttributeValue("type"),
+				socialRequestModelImpl.getOriginalAttributeValue(
+					"receiverUserId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByU_C_C_T_R, args);
@@ -6865,7 +6866,7 @@ public class SocialRequestPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalUuid()
+					socialRequestModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -6884,8 +6885,9 @@ public class SocialRequestPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalUuid(),
-					socialRequestModelImpl.getOriginalCompanyId()
+					socialRequestModelImpl.getOriginalAttributeValue("uuid"),
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -6907,7 +6909,8 @@ public class SocialRequestPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalCompanyId()
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
@@ -6926,7 +6929,7 @@ public class SocialRequestPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalUserId()
+					socialRequestModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -6945,7 +6948,8 @@ public class SocialRequestPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalReceiverUserId()
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"receiverUserId")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -6968,8 +6972,8 @@ public class SocialRequestPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalUserId(),
-					socialRequestModelImpl.getOriginalStatus()
+					socialRequestModelImpl.getOriginalAttributeValue("userId"),
+					socialRequestModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_S, args);
@@ -6991,8 +6995,9 @@ public class SocialRequestPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalClassNameId(),
-					socialRequestModelImpl.getOriginalClassPK()
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					socialRequestModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
@@ -7014,8 +7019,9 @@ public class SocialRequestPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalReceiverUserId(),
-					socialRequestModelImpl.getOriginalStatus()
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"receiverUserId"),
+					socialRequestModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByR_S, args);
@@ -7037,11 +7043,12 @@ public class SocialRequestPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalUserId(),
-					socialRequestModelImpl.getOriginalClassNameId(),
-					socialRequestModelImpl.getOriginalClassPK(),
-					socialRequestModelImpl.getOriginalType(),
-					socialRequestModelImpl.getOriginalStatus()
+					socialRequestModelImpl.getOriginalAttributeValue("userId"),
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					socialRequestModelImpl.getOriginalAttributeValue("classPK"),
+					socialRequestModelImpl.getOriginalAttributeValue("type"),
+					socialRequestModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByU_C_C_T_S, args);
@@ -7066,11 +7073,13 @@ public class SocialRequestPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					socialRequestModelImpl.getOriginalClassNameId(),
-					socialRequestModelImpl.getOriginalClassPK(),
-					socialRequestModelImpl.getOriginalType(),
-					socialRequestModelImpl.getOriginalReceiverUserId(),
-					socialRequestModelImpl.getOriginalStatus()
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					socialRequestModelImpl.getOriginalAttributeValue("classPK"),
+					socialRequestModelImpl.getOriginalAttributeValue("type"),
+					socialRequestModelImpl.getOriginalAttributeValue(
+						"receiverUserId"),
+					socialRequestModelImpl.getOriginalAttributeValue("status")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C_T_R_S, args);
@@ -7575,7 +7584,7 @@ public class SocialRequestPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			SocialRequestModelImpl.UUID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7584,8 +7593,8 @@ public class SocialRequestPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			SocialRequestImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SocialRequestModelImpl.UUID_COLUMN_BITMASK |
-			SocialRequestModelImpl.GROUPID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("uuid") |
+			SocialRequestModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7605,8 +7614,8 @@ public class SocialRequestPersistenceImpl
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SocialRequestModelImpl.UUID_COLUMN_BITMASK |
-			SocialRequestModelImpl.COMPANYID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("uuid") |
+			SocialRequestModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7624,7 +7633,7 @@ public class SocialRequestPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			SocialRequestModelImpl.COMPANYID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7641,7 +7650,7 @@ public class SocialRequestPersistenceImpl
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUserId", new String[] {Long.class.getName()},
-			SocialRequestModelImpl.USERID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7658,7 +7667,7 @@ public class SocialRequestPersistenceImpl
 		_finderPathWithoutPaginationFindByReceiverUserId = new FinderPath(
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByReceiverUserId", new String[] {Long.class.getName()},
-			SocialRequestModelImpl.RECEIVERUSERID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("receiverUserId"));
 
 		_finderPathCountByReceiverUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7677,8 +7686,8 @@ public class SocialRequestPersistenceImpl
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByU_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			SocialRequestModelImpl.USERID_COLUMN_BITMASK |
-			SocialRequestModelImpl.STATUS_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("userId") |
+			SocialRequestModelImpl.getColumnBitmask("status"));
 
 		_finderPathCountByU_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_S",
@@ -7697,8 +7706,8 @@ public class SocialRequestPersistenceImpl
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			SocialRequestModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SocialRequestModelImpl.CLASSPK_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("classNameId") |
+			SocialRequestModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
@@ -7717,8 +7726,8 @@ public class SocialRequestPersistenceImpl
 			SocialRequestImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			SocialRequestModelImpl.RECEIVERUSERID_COLUMN_BITMASK |
-			SocialRequestModelImpl.STATUS_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("receiverUserId") |
+			SocialRequestModelImpl.getColumnBitmask("status"));
 
 		_finderPathCountByR_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_S",
@@ -7732,11 +7741,11 @@ public class SocialRequestPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Long.class.getName()
 			},
-			SocialRequestModelImpl.USERID_COLUMN_BITMASK |
-			SocialRequestModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SocialRequestModelImpl.CLASSPK_COLUMN_BITMASK |
-			SocialRequestModelImpl.TYPE_COLUMN_BITMASK |
-			SocialRequestModelImpl.RECEIVERUSERID_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("userId") |
+			SocialRequestModelImpl.getColumnBitmask("classNameId") |
+			SocialRequestModelImpl.getColumnBitmask("classPK") |
+			SocialRequestModelImpl.getColumnBitmask("type") |
+			SocialRequestModelImpl.getColumnBitmask("receiverUserId"));
 
 		_finderPathCountByU_C_C_T_R = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7765,11 +7774,11 @@ public class SocialRequestPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName()
 			},
-			SocialRequestModelImpl.USERID_COLUMN_BITMASK |
-			SocialRequestModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SocialRequestModelImpl.CLASSPK_COLUMN_BITMASK |
-			SocialRequestModelImpl.TYPE_COLUMN_BITMASK |
-			SocialRequestModelImpl.STATUS_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("userId") |
+			SocialRequestModelImpl.getColumnBitmask("classNameId") |
+			SocialRequestModelImpl.getColumnBitmask("classPK") |
+			SocialRequestModelImpl.getColumnBitmask("type") |
+			SocialRequestModelImpl.getColumnBitmask("status"));
 
 		_finderPathCountByU_C_C_T_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7798,11 +7807,11 @@ public class SocialRequestPersistenceImpl
 				Integer.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			SocialRequestModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SocialRequestModelImpl.CLASSPK_COLUMN_BITMASK |
-			SocialRequestModelImpl.TYPE_COLUMN_BITMASK |
-			SocialRequestModelImpl.RECEIVERUSERID_COLUMN_BITMASK |
-			SocialRequestModelImpl.STATUS_COLUMN_BITMASK);
+			SocialRequestModelImpl.getColumnBitmask("classNameId") |
+			SocialRequestModelImpl.getColumnBitmask("classPK") |
+			SocialRequestModelImpl.getColumnBitmask("type") |
+			SocialRequestModelImpl.getColumnBitmask("receiverUserId") |
+			SocialRequestModelImpl.getColumnBitmask("status"));
 
 		_finderPathCountByC_C_T_R_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

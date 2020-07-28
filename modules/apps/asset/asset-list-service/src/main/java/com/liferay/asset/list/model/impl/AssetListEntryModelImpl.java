@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -123,22 +122,67 @@ public class AssetListEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETENTRYSUBTYPE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETENTRYTYPE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETLISTENTRYKEY_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TITLE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETLISTENTRYID_COLUMN_BITMASK = 256L;
 
 	/**
@@ -429,6 +473,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -440,6 +486,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -456,17 +504,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -477,6 +526,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setAssetListEntryId(long assetListEntryId) {
+		_columnBitmask |= _columnBitmasks.get("assetListEntryId");
+
 		_assetListEntryId = assetListEntryId;
 	}
 
@@ -488,19 +539,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -511,19 +561,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -534,6 +583,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -566,6 +617,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -577,6 +630,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -594,6 +649,8 @@ public class AssetListEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -610,17 +667,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setAssetListEntryKey(String assetListEntryKey) {
-		_columnBitmask |= ASSETLISTENTRYKEY_COLUMN_BITMASK;
-
-		if (_originalAssetListEntryKey == null) {
-			_originalAssetListEntryKey = _assetListEntryKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("assetListEntryKey");
 
 		_assetListEntryKey = assetListEntryKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalAssetListEntryKey() {
-		return GetterUtil.getString(_originalAssetListEntryKey);
+		return getOriginalAttributeValue("assetListEntryKey");
 	}
 
 	@JSON
@@ -636,17 +694,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
-		_columnBitmask |= TITLE_COLUMN_BITMASK;
-
-		if (_originalTitle == null) {
-			_originalTitle = _title;
-		}
+		_columnBitmask |= _columnBitmasks.get("title");
 
 		_title = title;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTitle() {
-		return GetterUtil.getString(_originalTitle);
+		return getOriginalAttributeValue("title");
 	}
 
 	@JSON
@@ -657,19 +716,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -685,17 +743,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setAssetEntrySubtype(String assetEntrySubtype) {
-		_columnBitmask |= ASSETENTRYSUBTYPE_COLUMN_BITMASK;
-
-		if (_originalAssetEntrySubtype == null) {
-			_originalAssetEntrySubtype = _assetEntrySubtype;
-		}
+		_columnBitmask |= _columnBitmasks.get("assetEntrySubtype");
 
 		_assetEntrySubtype = assetEntrySubtype;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalAssetEntrySubtype() {
-		return GetterUtil.getString(_originalAssetEntrySubtype);
+		return getOriginalAttributeValue("assetEntrySubtype");
 	}
 
 	@JSON
@@ -711,17 +770,18 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setAssetEntryType(String assetEntryType) {
-		_columnBitmask |= ASSETENTRYTYPE_COLUMN_BITMASK;
-
-		if (_originalAssetEntryType == null) {
-			_originalAssetEntryType = _assetEntryType;
-		}
+		_columnBitmask |= _columnBitmasks.get("assetEntryType");
 
 		_assetEntryType = assetEntryType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalAssetEntryType() {
-		return GetterUtil.getString(_originalAssetEntryType);
+		return getOriginalAttributeValue("assetEntryType");
 	}
 
 	@JSON
@@ -732,6 +792,8 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -861,38 +923,11 @@ public class AssetListEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetListEntryModelImpl assetListEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		assetListEntryModelImpl._originalUuid = assetListEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		assetListEntryModelImpl._originalGroupId =
-			assetListEntryModelImpl._groupId;
-
-		assetListEntryModelImpl._setOriginalGroupId = false;
-
-		assetListEntryModelImpl._originalCompanyId =
-			assetListEntryModelImpl._companyId;
-
-		assetListEntryModelImpl._setOriginalCompanyId = false;
-
-		assetListEntryModelImpl._setModifiedDate = false;
-
-		assetListEntryModelImpl._originalAssetListEntryKey =
-			assetListEntryModelImpl._assetListEntryKey;
-
-		assetListEntryModelImpl._originalTitle = assetListEntryModelImpl._title;
-
-		assetListEntryModelImpl._originalType = assetListEntryModelImpl._type;
-
-		assetListEntryModelImpl._setOriginalType = false;
-
-		assetListEntryModelImpl._originalAssetEntrySubtype =
-			assetListEntryModelImpl._assetEntrySubtype;
-
-		assetListEntryModelImpl._originalAssetEntryType =
-			assetListEntryModelImpl._assetEntryType;
-
-		assetListEntryModelImpl._columnBitmask = 0;
+		_assetListEntryCacheModel = (AssetListEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1063,33 +1098,165 @@ public class AssetListEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<AssetListEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AssetListEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AssetListEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			assetListEntryCacheModel -> assetListEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			assetListEntryCacheModel ->
+				assetListEntryCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", assetListEntryCacheModel -> assetListEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"assetListEntryId",
+			assetListEntryCacheModel ->
+				assetListEntryCacheModel.assetListEntryId);
+
+		columnBitmasks.put("assetListEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			assetListEntryCacheModel -> assetListEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			assetListEntryCacheModel -> assetListEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			assetListEntryCacheModel -> assetListEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			assetListEntryCacheModel -> assetListEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			assetListEntryCacheModel -> assetListEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			assetListEntryCacheModel -> assetListEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"assetListEntryKey",
+			assetListEntryCacheModel ->
+				assetListEntryCacheModel.assetListEntryKey);
+
+		columnBitmasks.put("assetListEntryKey", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"title",
+			assetListEntryCacheModel -> assetListEntryCacheModel.title);
+
+		columnBitmasks.put("title", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"type", assetListEntryCacheModel -> assetListEntryCacheModel.type);
+
+		columnBitmasks.put("type", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"assetEntrySubtype",
+			assetListEntryCacheModel ->
+				assetListEntryCacheModel.assetEntrySubtype);
+
+		columnBitmasks.put("assetEntrySubtype", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"assetEntryType",
+			assetListEntryCacheModel ->
+				assetListEntryCacheModel.assetEntryType);
+
+		columnBitmasks.put("assetEntryType", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			assetListEntryCacheModel ->
+				assetListEntryCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 32768L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AssetListEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AssetListEntryCacheModel assetListEntryCacheModel =
+			_assetListEntryCacheModel;
+
+		if (assetListEntryCacheModel == null) {
+			assetListEntryCacheModel = _dummyAssetListEntryCacheModel;
+		}
+
+		return (T)function.apply(assetListEntryCacheModel);
+	}
+
+	private static final AssetListEntryCacheModel
+		_dummyAssetListEntryCacheModel = new AssetListEntryCacheModel();
+
+	private AssetListEntryCacheModel _assetListEntryCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _assetListEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _assetListEntryKey;
-	private String _originalAssetListEntryKey;
 	private String _title;
-	private String _originalTitle;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _assetEntrySubtype;
-	private String _originalAssetEntrySubtype;
 	private String _assetEntryType;
-	private String _originalAssetEntryType;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private AssetListEntry _escapedModel;

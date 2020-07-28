@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -134,12 +133,32 @@ public class DDMFormInstanceVersionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FORMINSTANCEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FORMINSTANCEVERSIONID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -469,6 +488,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -480,6 +501,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -491,6 +514,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setFormInstanceVersionId(long formInstanceVersionId) {
+		_columnBitmask |= _columnBitmasks.get("formInstanceVersionId");
+
 		_formInstanceVersionId = formInstanceVersionId;
 	}
 
@@ -502,6 +527,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -513,6 +540,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -524,6 +553,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -556,6 +587,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -567,6 +600,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -578,19 +613,18 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setFormInstanceId(long formInstanceId) {
-		_columnBitmask |= FORMINSTANCEID_COLUMN_BITMASK;
-
-		if (!_setOriginalFormInstanceId) {
-			_setOriginalFormInstanceId = true;
-
-			_originalFormInstanceId = _formInstanceId;
-		}
+		_columnBitmask |= _columnBitmasks.get("formInstanceId");
 
 		_formInstanceId = formInstanceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFormInstanceId() {
-		return _originalFormInstanceId;
+		return getOriginalAttributeValue("formInstanceId");
 	}
 
 	@JSON
@@ -601,6 +635,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setStructureVersionId(long structureVersionId) {
+		_columnBitmask |= _columnBitmasks.get("structureVersionId");
+
 		_structureVersionId = structureVersionId;
 	}
 
@@ -660,6 +696,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -763,6 +801,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -828,6 +868,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		_columnBitmask |= _columnBitmasks.get("settings");
+
 		_settings = settings;
 	}
 
@@ -844,17 +886,18 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return getOriginalAttributeValue("version");
 	}
 
 	@JSON
@@ -865,19 +908,18 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -888,6 +930,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -920,6 +964,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -931,6 +977,8 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1229,22 +1277,10 @@ public class DDMFormInstanceVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMFormInstanceVersionModelImpl ddmFormInstanceVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		ddmFormInstanceVersionModelImpl._originalFormInstanceId =
-			ddmFormInstanceVersionModelImpl._formInstanceId;
-
-		ddmFormInstanceVersionModelImpl._setOriginalFormInstanceId = false;
-
-		ddmFormInstanceVersionModelImpl._originalVersion =
-			ddmFormInstanceVersionModelImpl._version;
-
-		ddmFormInstanceVersionModelImpl._originalStatus =
-			ddmFormInstanceVersionModelImpl._status;
-
-		ddmFormInstanceVersionModelImpl._setOriginalStatus = false;
-
-		ddmFormInstanceVersionModelImpl._columnBitmask = 0;
+		_ddmFormInstanceVersionCacheModel =
+			(DDMFormInstanceVersionCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1417,6 +1453,179 @@ public class DDMFormInstanceVersionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DDMFormInstanceVersionCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DDMFormInstanceVersionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<DDMFormInstanceVersionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"formInstanceVersionId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.formInstanceVersionId);
+
+		columnBitmasks.put("formInstanceVersionId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"formInstanceId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.formInstanceId);
+
+		columnBitmasks.put("formInstanceId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"structureVersionId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.structureVersionId);
+
+		columnBitmasks.put("structureVersionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.name);
+
+		columnBitmasks.put("name", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.description);
+
+		columnBitmasks.put("description", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"settings",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.settings);
+
+		columnBitmasks.put("settings", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"version",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.version);
+
+		columnBitmasks.put("version", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.status);
+
+		columnBitmasks.put("status", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			ddmFormInstanceVersionCacheModel ->
+				ddmFormInstanceVersionCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 131072L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DDMFormInstanceVersionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DDMFormInstanceVersionCacheModel ddmFormInstanceVersionCacheModel =
+			_ddmFormInstanceVersionCacheModel;
+
+		if (ddmFormInstanceVersionCacheModel == null) {
+			ddmFormInstanceVersionCacheModel =
+				_dummyDDMFormInstanceVersionCacheModel;
+		}
+
+		return (T)function.apply(ddmFormInstanceVersionCacheModel);
+	}
+
+	private static final DDMFormInstanceVersionCacheModel
+		_dummyDDMFormInstanceVersionCacheModel =
+			new DDMFormInstanceVersionCacheModel();
+
+	private DDMFormInstanceVersionCacheModel _ddmFormInstanceVersionCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _formInstanceVersionId;
@@ -1426,8 +1635,6 @@ public class DDMFormInstanceVersionModelImpl
 	private String _userName;
 	private Date _createDate;
 	private long _formInstanceId;
-	private long _originalFormInstanceId;
-	private boolean _setOriginalFormInstanceId;
 	private long _structureVersionId;
 	private String _name;
 	private String _nameCurrentLanguageId;
@@ -1435,10 +1642,7 @@ public class DDMFormInstanceVersionModelImpl
 	private String _descriptionCurrentLanguageId;
 	private String _settings;
 	private String _version;
-	private String _originalVersion;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

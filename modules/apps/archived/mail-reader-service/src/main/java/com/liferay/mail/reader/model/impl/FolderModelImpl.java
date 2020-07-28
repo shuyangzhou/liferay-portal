@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -106,8 +105,18 @@ public class FolderModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FULLNAME_COLUMN_BITMASK = 2L;
 
 	/**
@@ -289,6 +298,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
+		_columnBitmask |= _columnBitmasks.get("folderId");
+
 		_folderId = folderId;
 	}
 
@@ -299,6 +310,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -309,6 +322,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -340,6 +355,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -350,6 +367,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -366,6 +385,8 @@ public class FolderModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -376,19 +397,18 @@ public class FolderModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
-		_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountId) {
-			_setOriginalAccountId = true;
-
-			_originalAccountId = _accountId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountId");
 
 		_accountId = accountId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountId() {
-		return _originalAccountId;
+		return getOriginalAttributeValue("accountId");
 	}
 
 	@Override
@@ -403,17 +423,18 @@ public class FolderModelImpl
 
 	@Override
 	public void setFullName(String fullName) {
-		_columnBitmask = -1L;
-
-		if (_originalFullName == null) {
-			_originalFullName = _fullName;
-		}
+		_columnBitmask |= _columnBitmasks.get("fullName");
 
 		_fullName = fullName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFullName() {
-		return GetterUtil.getString(_originalFullName);
+		return getOriginalAttributeValue("fullName");
 	}
 
 	@Override
@@ -428,6 +449,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setDisplayName(String displayName) {
+		_columnBitmask |= _columnBitmasks.get("displayName");
+
 		_displayName = displayName;
 	}
 
@@ -438,6 +461,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setRemoteMessageCount(int remoteMessageCount) {
+		_columnBitmask |= _columnBitmasks.get("remoteMessageCount");
+
 		_remoteMessageCount = remoteMessageCount;
 	}
 
@@ -553,17 +578,11 @@ public class FolderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FolderModelImpl folderModelImpl = this;
+		_setModifiedDate = false;
 
-		folderModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		folderModelImpl._originalAccountId = folderModelImpl._accountId;
-
-		folderModelImpl._setOriginalAccountId = false;
-
-		folderModelImpl._originalFullName = folderModelImpl._fullName;
-
-		folderModelImpl._columnBitmask = 0;
+		_folderCacheModel = (FolderCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -693,6 +712,98 @@ public class FolderModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<FolderCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<FolderCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap<String, Function<FolderCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"folderId", folderCacheModel -> folderCacheModel.folderId);
+
+		columnBitmasks.put("folderId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", folderCacheModel -> folderCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId", folderCacheModel -> folderCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName", folderCacheModel -> folderCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", folderCacheModel -> folderCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate", folderCacheModel -> folderCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"accountId", folderCacheModel -> folderCacheModel.accountId);
+
+		columnBitmasks.put("accountId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"fullName", folderCacheModel -> folderCacheModel.fullName);
+
+		columnBitmasks.put("fullName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"displayName", folderCacheModel -> folderCacheModel.displayName);
+
+		columnBitmasks.put("displayName", 256L);
+
+		cacheModelGetterFunctions.put(
+			"remoteMessageCount",
+			folderCacheModel -> folderCacheModel.remoteMessageCount);
+
+		columnBitmasks.put("remoteMessageCount", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<FolderCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		FolderCacheModel folderCacheModel = _folderCacheModel;
+
+		if (folderCacheModel == null) {
+			folderCacheModel = _dummyFolderCacheModel;
+		}
+
+		return (T)function.apply(folderCacheModel);
+	}
+
+	private static final FolderCacheModel _dummyFolderCacheModel =
+		new FolderCacheModel();
+
+	private FolderCacheModel _folderCacheModel;
 	private long _folderId;
 	private long _companyId;
 	private long _userId;
@@ -701,10 +812,7 @@ public class FolderModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _accountId;
-	private long _originalAccountId;
-	private boolean _setOriginalAccountId;
 	private String _fullName;
-	private String _originalFullName;
 	private String _displayName;
 	private int _remoteMessageCount;
 	private long _columnBitmask;

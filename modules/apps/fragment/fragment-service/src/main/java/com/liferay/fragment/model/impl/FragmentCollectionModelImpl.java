@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -120,14 +119,39 @@ public class FragmentCollectionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FRAGMENTCOLLECTIONKEY_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -415,6 +439,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -431,17 +457,18 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -452,6 +479,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setFragmentCollectionId(long fragmentCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("fragmentCollectionId");
+
 		_fragmentCollectionId = fragmentCollectionId;
 	}
 
@@ -463,19 +492,18 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -486,19 +514,18 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -509,6 +536,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -541,6 +570,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -552,6 +583,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -569,6 +602,8 @@ public class FragmentCollectionModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -585,17 +620,18 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setFragmentCollectionKey(String fragmentCollectionKey) {
-		_columnBitmask |= FRAGMENTCOLLECTIONKEY_COLUMN_BITMASK;
-
-		if (_originalFragmentCollectionKey == null) {
-			_originalFragmentCollectionKey = _fragmentCollectionKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("fragmentCollectionKey");
 
 		_fragmentCollectionKey = fragmentCollectionKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFragmentCollectionKey() {
-		return GetterUtil.getString(_originalFragmentCollectionKey);
+		return getOriginalAttributeValue("fragmentCollectionKey");
 	}
 
 	@JSON
@@ -611,17 +647,18 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -637,6 +674,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -648,6 +687,8 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -776,30 +817,12 @@ public class FragmentCollectionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FragmentCollectionModelImpl fragmentCollectionModelImpl = this;
+		_setModifiedDate = false;
 
-		fragmentCollectionModelImpl._originalUuid =
-			fragmentCollectionModelImpl._uuid;
+		_columnBitmask = 0;
 
-		fragmentCollectionModelImpl._originalGroupId =
-			fragmentCollectionModelImpl._groupId;
-
-		fragmentCollectionModelImpl._setOriginalGroupId = false;
-
-		fragmentCollectionModelImpl._originalCompanyId =
-			fragmentCollectionModelImpl._companyId;
-
-		fragmentCollectionModelImpl._setOriginalCompanyId = false;
-
-		fragmentCollectionModelImpl._setModifiedDate = false;
-
-		fragmentCollectionModelImpl._originalFragmentCollectionKey =
-			fragmentCollectionModelImpl._fragmentCollectionKey;
-
-		fragmentCollectionModelImpl._originalName =
-			fragmentCollectionModelImpl._name;
-
-		fragmentCollectionModelImpl._columnBitmask = 0;
+		_fragmentCollectionCacheModel =
+			(FragmentCollectionCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -963,25 +986,151 @@ public class FragmentCollectionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<FragmentCollectionCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<FragmentCollectionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<FragmentCollectionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			fragmentCollectionCacheModel -> fragmentCollectionCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"fragmentCollectionId",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.fragmentCollectionId);
+
+		columnBitmasks.put("fragmentCollectionId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"fragmentCollectionKey",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.fragmentCollectionKey);
+
+		columnBitmasks.put("fragmentCollectionKey", 512L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			fragmentCollectionCacheModel -> fragmentCollectionCacheModel.name);
+
+		columnBitmasks.put("name", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.description);
+
+		columnBitmasks.put("description", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			fragmentCollectionCacheModel ->
+				fragmentCollectionCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 4096L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<FragmentCollectionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		FragmentCollectionCacheModel fragmentCollectionCacheModel =
+			_fragmentCollectionCacheModel;
+
+		if (fragmentCollectionCacheModel == null) {
+			fragmentCollectionCacheModel = _dummyFragmentCollectionCacheModel;
+		}
+
+		return (T)function.apply(fragmentCollectionCacheModel);
+	}
+
+	private static final FragmentCollectionCacheModel
+		_dummyFragmentCollectionCacheModel = new FragmentCollectionCacheModel();
+
+	private FragmentCollectionCacheModel _fragmentCollectionCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fragmentCollectionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _fragmentCollectionKey;
-	private String _originalFragmentCollectionKey;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private Date _lastPublishDate;
 	private long _columnBitmask;

@@ -490,20 +490,24 @@ public class MBThreadFlagPersistenceTest {
 			Objects.equals(
 				existingMBThreadFlag.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBThreadFlag, "getOriginalUuid", new Class<?>[0])));
+					existingMBThreadFlag, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMBThreadFlag.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThreadFlag, "getOriginalGroupId", new Class<?>[0]));
+				existingMBThreadFlag, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMBThreadFlag.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThreadFlag, "getOriginalUserId", new Class<?>[0]));
+				existingMBThreadFlag, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMBThreadFlag.getThreadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThreadFlag, "getOriginalThreadId", new Class<?>[0]));
+				existingMBThreadFlag, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "threadId"));
 	}
 
 	protected MBThreadFlag addMBThreadFlag() throws Exception {

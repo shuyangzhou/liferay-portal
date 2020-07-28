@@ -438,12 +438,13 @@ public class CTPreferencesPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingCTPreferences.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTPreferences, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingCTPreferences, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingCTPreferences.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTPreferences, "getOriginalUserId", new Class<?>[0]));
+				existingCTPreferences, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 	}
 
 	protected CTPreferences addCTPreferences() throws Exception {

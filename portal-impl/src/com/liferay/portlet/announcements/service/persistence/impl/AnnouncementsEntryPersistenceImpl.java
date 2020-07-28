@@ -8290,7 +8290,8 @@ public class AnnouncementsEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUuid()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -8309,8 +8310,10 @@ public class AnnouncementsEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUuid(),
-					announcementsEntryModelImpl.getOriginalCompanyId()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"uuid"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -8332,7 +8335,8 @@ public class AnnouncementsEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
@@ -8353,7 +8357,8 @@ public class AnnouncementsEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUserId()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -8372,8 +8377,10 @@ public class AnnouncementsEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
@@ -8395,9 +8402,12 @@ public class AnnouncementsEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId(),
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"companyId"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classPK")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
@@ -8420,9 +8430,12 @@ public class AnnouncementsEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK(),
-					announcementsEntryModelImpl.getOriginalAlert()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classPK"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"alert")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
@@ -8445,10 +8458,14 @@ public class AnnouncementsEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId(),
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK(),
-					announcementsEntryModelImpl.getOriginalAlert()
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"companyId"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"classPK"),
+					announcementsEntryModelImpl.getOriginalAttributeValue(
+						"alert")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
@@ -8763,9 +8780,9 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("uuid") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8784,10 +8801,10 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("uuid") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("companyId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8806,9 +8823,9 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("companyId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8826,9 +8843,9 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
-			AnnouncementsEntryModelImpl.USERID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("userId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8847,10 +8864,10 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("classNameId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("classPK") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
@@ -8871,11 +8888,11 @@ public class AnnouncementsEntryPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("companyId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("classNameId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("classPK") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8900,11 +8917,11 @@ public class AnnouncementsEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("classNameId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("classPK") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("alert") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_C_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -8931,12 +8948,12 @@ public class AnnouncementsEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Boolean.class.getName()
 			},
-			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.getColumnBitmask("companyId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("classNameId") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("classPK") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("alert") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("priority") |
+			AnnouncementsEntryModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_C_C_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

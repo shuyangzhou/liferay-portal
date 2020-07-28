@@ -1880,8 +1880,8 @@ public class ExpandoColumnPersistenceImpl
 			 _finderPathFetchByT_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				expandoColumnModelImpl.getOriginalTableId(),
-				expandoColumnModelImpl.getOriginalName()
+				expandoColumnModelImpl.getOriginalAttributeValue("tableId"),
+				expandoColumnModelImpl.getOriginalAttributeValue("name")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByT_N, args);
@@ -2084,7 +2084,7 @@ public class ExpandoColumnPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					expandoColumnModelImpl.getOriginalTableId()
+					expandoColumnModelImpl.getOriginalAttributeValue("tableId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByTableId, args);
@@ -2103,8 +2103,8 @@ public class ExpandoColumnPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					expandoColumnModelImpl.getOriginalTableId(),
-					expandoColumnModelImpl.getOriginalName()
+					expandoColumnModelImpl.getOriginalAttributeValue("tableId"),
+					expandoColumnModelImpl.getOriginalAttributeValue("name")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByT_N, args);
@@ -2595,8 +2595,8 @@ public class ExpandoColumnPersistenceImpl
 		_finderPathWithoutPaginationFindByTableId = new FinderPath(
 			ExpandoColumnImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByTableId", new String[] {Long.class.getName()},
-			ExpandoColumnModelImpl.TABLEID_COLUMN_BITMASK |
-			ExpandoColumnModelImpl.NAME_COLUMN_BITMASK);
+			ExpandoColumnModelImpl.getColumnBitmask("tableId") |
+			ExpandoColumnModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByTableId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2615,14 +2615,14 @@ public class ExpandoColumnPersistenceImpl
 			ExpandoColumnImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByT_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			ExpandoColumnModelImpl.TABLEID_COLUMN_BITMASK |
-			ExpandoColumnModelImpl.NAME_COLUMN_BITMASK);
+			ExpandoColumnModelImpl.getColumnBitmask("tableId") |
+			ExpandoColumnModelImpl.getColumnBitmask("name"));
 
 		_finderPathFetchByT_N = new FinderPath(
 			ExpandoColumnImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByT_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			ExpandoColumnModelImpl.TABLEID_COLUMN_BITMASK |
-			ExpandoColumnModelImpl.NAME_COLUMN_BITMASK);
+			ExpandoColumnModelImpl.getColumnBitmask("tableId") |
+			ExpandoColumnModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByT_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_N",

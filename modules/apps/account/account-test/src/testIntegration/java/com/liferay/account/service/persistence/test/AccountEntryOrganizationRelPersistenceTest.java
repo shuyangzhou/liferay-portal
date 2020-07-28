@@ -484,13 +484,15 @@ public class AccountEntryOrganizationRelPersistenceTest {
 				existingAccountEntryOrganizationRel.getAccountEntryId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingAccountEntryOrganizationRel,
-				"getOriginalAccountEntryId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"accountEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingAccountEntryOrganizationRel.getOrganizationId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingAccountEntryOrganizationRel,
-				"getOriginalOrganizationId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"organizationId"));
 	}
 
 	protected AccountEntryOrganizationRel addAccountEntryOrganizationRel()

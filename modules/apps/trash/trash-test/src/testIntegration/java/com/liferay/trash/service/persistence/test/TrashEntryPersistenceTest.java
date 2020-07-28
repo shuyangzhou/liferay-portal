@@ -471,11 +471,13 @@ public class TrashEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingTrashEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTrashEntry, "getOriginalClassNameId", new Class<?>[0]));
+				existingTrashEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingTrashEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTrashEntry, "getOriginalClassPK", new Class<?>[0]));
+				existingTrashEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected TrashEntry addTrashEntry() throws Exception {

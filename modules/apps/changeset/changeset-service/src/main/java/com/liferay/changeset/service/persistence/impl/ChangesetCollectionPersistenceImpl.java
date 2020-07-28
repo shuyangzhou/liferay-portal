@@ -2612,8 +2612,9 @@ public class ChangesetCollectionPersistenceImpl
 			 _finderPathFetchByG_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				changesetCollectionModelImpl.getOriginalGroupId(),
-				changesetCollectionModelImpl.getOriginalName()
+				changesetCollectionModelImpl.getOriginalAttributeValue(
+					"groupId"),
+				changesetCollectionModelImpl.getOriginalAttributeValue("name")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_N, args);
@@ -2846,7 +2847,8 @@ public class ChangesetCollectionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					changesetCollectionModelImpl.getOriginalGroupId()
+					changesetCollectionModelImpl.getOriginalAttributeValue(
+						"groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -2865,7 +2867,8 @@ public class ChangesetCollectionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					changesetCollectionModelImpl.getOriginalCompanyId()
+					changesetCollectionModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -2886,8 +2889,10 @@ public class ChangesetCollectionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					changesetCollectionModelImpl.getOriginalGroupId(),
-					changesetCollectionModelImpl.getOriginalUserId()
+					changesetCollectionModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					changesetCollectionModelImpl.getOriginalAttributeValue(
+						"userId")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_U, args);
@@ -2909,8 +2914,10 @@ public class ChangesetCollectionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					changesetCollectionModelImpl.getOriginalCompanyId(),
-					changesetCollectionModelImpl.getOriginalName()
+					changesetCollectionModelImpl.getOriginalAttributeValue(
+						"companyId"),
+					changesetCollectionModelImpl.getOriginalAttributeValue(
+						"name")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_N, args);
@@ -3222,7 +3229,7 @@ public class ChangesetCollectionPersistenceImpl
 			ChangesetCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			ChangesetCollectionModelImpl.GROUPID_COLUMN_BITMASK);
+			ChangesetCollectionModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3240,7 +3247,7 @@ public class ChangesetCollectionPersistenceImpl
 			ChangesetCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
-			ChangesetCollectionModelImpl.COMPANYID_COLUMN_BITMASK);
+			ChangesetCollectionModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3259,8 +3266,8 @@ public class ChangesetCollectionPersistenceImpl
 			ChangesetCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			ChangesetCollectionModelImpl.GROUPID_COLUMN_BITMASK |
-			ChangesetCollectionModelImpl.USERID_COLUMN_BITMASK);
+			ChangesetCollectionModelImpl.getColumnBitmask("groupId") |
+			ChangesetCollectionModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByG_U = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U",
@@ -3270,8 +3277,8 @@ public class ChangesetCollectionPersistenceImpl
 			ChangesetCollectionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByG_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			ChangesetCollectionModelImpl.GROUPID_COLUMN_BITMASK |
-			ChangesetCollectionModelImpl.NAME_COLUMN_BITMASK);
+			ChangesetCollectionModelImpl.getColumnBitmask("groupId") |
+			ChangesetCollectionModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByG_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
@@ -3290,8 +3297,8 @@ public class ChangesetCollectionPersistenceImpl
 			ChangesetCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			ChangesetCollectionModelImpl.COMPANYID_COLUMN_BITMASK |
-			ChangesetCollectionModelImpl.NAME_COLUMN_BITMASK);
+			ChangesetCollectionModelImpl.getColumnBitmask("companyId") |
+			ChangesetCollectionModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByC_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",

@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -141,31 +140,96 @@ public class LayoutPageTemplateEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSTYPEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEFAULTTEMPLATE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPAGETEMPLATECOLLECTIONID_COLUMN_BITMASK =
 		32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPAGETEMPLATEENTRYKEY_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPROTOTYPEID_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PLID_COLUMN_BITMASK = 512L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 1024L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 2048L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 4096L;
 
 	/**
@@ -540,6 +604,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -556,17 +622,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -577,6 +644,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setLayoutPageTemplateEntryId(long layoutPageTemplateEntryId) {
+		_columnBitmask |= _columnBitmasks.get("layoutPageTemplateEntryId");
+
 		_layoutPageTemplateEntryId = layoutPageTemplateEntryId;
 	}
 
@@ -588,19 +657,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -611,19 +679,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -634,6 +701,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -666,6 +735,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -677,6 +748,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -694,6 +767,8 @@ public class LayoutPageTemplateEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -707,20 +782,18 @@ public class LayoutPageTemplateEntryModelImpl
 	public void setLayoutPageTemplateCollectionId(
 		long layoutPageTemplateCollectionId) {
 
-		_columnBitmask |= LAYOUTPAGETEMPLATECOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutPageTemplateCollectionId) {
-			_setOriginalLayoutPageTemplateCollectionId = true;
-
-			_originalLayoutPageTemplateCollectionId =
-				_layoutPageTemplateCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutPageTemplateCollectionId");
 
 		_layoutPageTemplateCollectionId = layoutPageTemplateCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutPageTemplateCollectionId() {
-		return _originalLayoutPageTemplateCollectionId;
+		return getOriginalAttributeValue("layoutPageTemplateCollectionId");
 	}
 
 	@JSON
@@ -738,17 +811,18 @@ public class LayoutPageTemplateEntryModelImpl
 	public void setLayoutPageTemplateEntryKey(
 		String layoutPageTemplateEntryKey) {
 
-		_columnBitmask |= LAYOUTPAGETEMPLATEENTRYKEY_COLUMN_BITMASK;
-
-		if (_originalLayoutPageTemplateEntryKey == null) {
-			_originalLayoutPageTemplateEntryKey = _layoutPageTemplateEntryKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutPageTemplateEntryKey");
 
 		_layoutPageTemplateEntryKey = layoutPageTemplateEntryKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLayoutPageTemplateEntryKey() {
-		return GetterUtil.getString(_originalLayoutPageTemplateEntryKey);
+		return getOriginalAttributeValue("layoutPageTemplateEntryKey");
 	}
 
 	@Override
@@ -779,19 +853,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -802,19 +875,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setClassTypeId(long classTypeId) {
-		_columnBitmask |= CLASSTYPEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassTypeId) {
-			_setOriginalClassTypeId = true;
-
-			_originalClassTypeId = _classTypeId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classTypeId");
 
 		_classTypeId = classTypeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassTypeId() {
-		return _originalClassTypeId;
+		return getOriginalAttributeValue("classTypeId");
 	}
 
 	@JSON
@@ -830,17 +902,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -851,19 +924,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -874,6 +946,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setPreviewFileEntryId(long previewFileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("previewFileEntryId");
+
 		_previewFileEntryId = previewFileEntryId;
 	}
 
@@ -891,19 +965,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setDefaultTemplate(boolean defaultTemplate) {
-		_columnBitmask |= DEFAULTTEMPLATE_COLUMN_BITMASK;
-
-		if (!_setOriginalDefaultTemplate) {
-			_setOriginalDefaultTemplate = true;
-
-			_originalDefaultTemplate = _defaultTemplate;
-		}
+		_columnBitmask |= _columnBitmasks.get("defaultTemplate");
 
 		_defaultTemplate = defaultTemplate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDefaultTemplate() {
-		return _originalDefaultTemplate;
+		return getOriginalAttributeValue("defaultTemplate");
 	}
 
 	@JSON
@@ -914,19 +987,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setLayoutPrototypeId(long layoutPrototypeId) {
-		_columnBitmask |= LAYOUTPROTOTYPEID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutPrototypeId) {
-			_setOriginalLayoutPrototypeId = true;
-
-			_originalLayoutPrototypeId = _layoutPrototypeId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutPrototypeId");
 
 		_layoutPrototypeId = layoutPrototypeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutPrototypeId() {
-		return _originalLayoutPrototypeId;
+		return getOriginalAttributeValue("layoutPrototypeId");
 	}
 
 	@JSON
@@ -937,19 +1009,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setPlid(long plid) {
-		_columnBitmask |= PLID_COLUMN_BITMASK;
-
-		if (!_setOriginalPlid) {
-			_setOriginalPlid = true;
-
-			_originalPlid = _plid;
-		}
+		_columnBitmask |= _columnBitmasks.get("plid");
 
 		_plid = plid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalPlid() {
-		return _originalPlid;
+		return getOriginalAttributeValue("plid");
 	}
 
 	@JSON
@@ -960,6 +1031,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -971,19 +1044,18 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -994,6 +1066,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1026,6 +1100,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -1037,6 +1113,8 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1261,74 +1339,12 @@ public class LayoutPageTemplateEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutPageTemplateEntryModelImpl layoutPageTemplateEntryModelImpl =
-			this;
+		_setModifiedDate = false;
 
-		layoutPageTemplateEntryModelImpl._originalUuid =
-			layoutPageTemplateEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		layoutPageTemplateEntryModelImpl._originalGroupId =
-			layoutPageTemplateEntryModelImpl._groupId;
-
-		layoutPageTemplateEntryModelImpl._setOriginalGroupId = false;
-
-		layoutPageTemplateEntryModelImpl._originalCompanyId =
-			layoutPageTemplateEntryModelImpl._companyId;
-
-		layoutPageTemplateEntryModelImpl._setOriginalCompanyId = false;
-
-		layoutPageTemplateEntryModelImpl._setModifiedDate = false;
-
-		layoutPageTemplateEntryModelImpl.
-			_originalLayoutPageTemplateCollectionId =
-				layoutPageTemplateEntryModelImpl.
-					_layoutPageTemplateCollectionId;
-
-		layoutPageTemplateEntryModelImpl.
-			_setOriginalLayoutPageTemplateCollectionId = false;
-
-		layoutPageTemplateEntryModelImpl._originalLayoutPageTemplateEntryKey =
-			layoutPageTemplateEntryModelImpl._layoutPageTemplateEntryKey;
-
-		layoutPageTemplateEntryModelImpl._originalClassNameId =
-			layoutPageTemplateEntryModelImpl._classNameId;
-
-		layoutPageTemplateEntryModelImpl._setOriginalClassNameId = false;
-
-		layoutPageTemplateEntryModelImpl._originalClassTypeId =
-			layoutPageTemplateEntryModelImpl._classTypeId;
-
-		layoutPageTemplateEntryModelImpl._setOriginalClassTypeId = false;
-
-		layoutPageTemplateEntryModelImpl._originalName =
-			layoutPageTemplateEntryModelImpl._name;
-
-		layoutPageTemplateEntryModelImpl._originalType =
-			layoutPageTemplateEntryModelImpl._type;
-
-		layoutPageTemplateEntryModelImpl._setOriginalType = false;
-
-		layoutPageTemplateEntryModelImpl._originalDefaultTemplate =
-			layoutPageTemplateEntryModelImpl._defaultTemplate;
-
-		layoutPageTemplateEntryModelImpl._setOriginalDefaultTemplate = false;
-
-		layoutPageTemplateEntryModelImpl._originalLayoutPrototypeId =
-			layoutPageTemplateEntryModelImpl._layoutPrototypeId;
-
-		layoutPageTemplateEntryModelImpl._setOriginalLayoutPrototypeId = false;
-
-		layoutPageTemplateEntryModelImpl._originalPlid =
-			layoutPageTemplateEntryModelImpl._plid;
-
-		layoutPageTemplateEntryModelImpl._setOriginalPlid = false;
-
-		layoutPageTemplateEntryModelImpl._originalStatus =
-			layoutPageTemplateEntryModelImpl._status;
-
-		layoutPageTemplateEntryModelImpl._setOriginalStatus = false;
-
-		layoutPageTemplateEntryModelImpl._columnBitmask = 0;
+		_layoutPageTemplateEntryCacheModel =
+			(LayoutPageTemplateEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1531,51 +1547,245 @@ public class LayoutPageTemplateEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<LayoutPageTemplateEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LayoutPageTemplateEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<LayoutPageTemplateEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPageTemplateEntryId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.layoutPageTemplateEntryId);
+
+		columnBitmasks.put("layoutPageTemplateEntryId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPageTemplateCollectionId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.
+					layoutPageTemplateCollectionId);
+
+		columnBitmasks.put("layoutPageTemplateCollectionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPageTemplateEntryKey",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.layoutPageTemplateEntryKey);
+
+		columnBitmasks.put("layoutPageTemplateEntryKey", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"classTypeId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.classTypeId);
+
+		columnBitmasks.put("classTypeId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.name);
+
+		columnBitmasks.put("name", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.type);
+
+		columnBitmasks.put("type", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"previewFileEntryId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.previewFileEntryId);
+
+		columnBitmasks.put("previewFileEntryId", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"defaultTemplate",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.defaultTemplate);
+
+		columnBitmasks.put("defaultTemplate", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPrototypeId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.layoutPrototypeId);
+
+		columnBitmasks.put("layoutPrototypeId", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"plid",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.plid);
+
+		columnBitmasks.put("plid", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.status);
+
+		columnBitmasks.put("status", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			layoutPageTemplateEntryCacheModel ->
+				layoutPageTemplateEntryCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 8388608L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LayoutPageTemplateEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LayoutPageTemplateEntryCacheModel layoutPageTemplateEntryCacheModel =
+			_layoutPageTemplateEntryCacheModel;
+
+		if (layoutPageTemplateEntryCacheModel == null) {
+			layoutPageTemplateEntryCacheModel =
+				_dummyLayoutPageTemplateEntryCacheModel;
+		}
+
+		return (T)function.apply(layoutPageTemplateEntryCacheModel);
+	}
+
+	private static final LayoutPageTemplateEntryCacheModel
+		_dummyLayoutPageTemplateEntryCacheModel =
+			new LayoutPageTemplateEntryCacheModel();
+
+	private LayoutPageTemplateEntryCacheModel
+		_layoutPageTemplateEntryCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutPageTemplateEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _layoutPageTemplateCollectionId;
-	private long _originalLayoutPageTemplateCollectionId;
-	private boolean _setOriginalLayoutPageTemplateCollectionId;
 	private String _layoutPageTemplateEntryKey;
-	private String _originalLayoutPageTemplateEntryKey;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classTypeId;
-	private long _originalClassTypeId;
-	private boolean _setOriginalClassTypeId;
 	private String _name;
-	private String _originalName;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private long _previewFileEntryId;
 	private boolean _defaultTemplate;
-	private boolean _originalDefaultTemplate;
-	private boolean _setOriginalDefaultTemplate;
 	private long _layoutPrototypeId;
-	private long _originalLayoutPrototypeId;
-	private boolean _setOriginalLayoutPrototypeId;
 	private long _plid;
-	private long _originalPlid;
-	private boolean _setOriginalPlid;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

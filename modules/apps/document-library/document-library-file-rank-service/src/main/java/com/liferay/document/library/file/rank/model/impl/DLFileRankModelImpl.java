@@ -104,16 +104,46 @@ public class DLFileRankModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILEENTRYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
 
 	/**
@@ -296,6 +326,8 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -306,6 +338,8 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setFileRankId(long fileRankId) {
+		_columnBitmask |= _columnBitmasks.get("fileRankId");
+
 		_fileRankId = fileRankId;
 	}
 
@@ -316,19 +350,18 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -338,19 +371,18 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -360,13 +392,7 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -387,8 +413,13 @@ public class DLFileRankModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -398,7 +429,7 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -410,19 +441,18 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
-		_columnBitmask |= FILEENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalFileEntryId) {
-			_setOriginalFileEntryId = true;
-
-			_originalFileEntryId = _fileEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("fileEntryId");
 
 		_fileEntryId = fileEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFileEntryId() {
-		return _originalFileEntryId;
+		return getOriginalAttributeValue("fileEntryId");
 	}
 
 	@Override
@@ -437,19 +467,18 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	public long getColumnBitmask() {
@@ -564,30 +593,9 @@ public class DLFileRankModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileRankModelImpl dlFileRankModelImpl = this;
+		_columnBitmask = 0;
 
-		dlFileRankModelImpl._originalGroupId = dlFileRankModelImpl._groupId;
-
-		dlFileRankModelImpl._setOriginalGroupId = false;
-
-		dlFileRankModelImpl._originalCompanyId = dlFileRankModelImpl._companyId;
-
-		dlFileRankModelImpl._setOriginalCompanyId = false;
-
-		dlFileRankModelImpl._originalUserId = dlFileRankModelImpl._userId;
-
-		dlFileRankModelImpl._setOriginalUserId = false;
-
-		dlFileRankModelImpl._originalFileEntryId =
-			dlFileRankModelImpl._fileEntryId;
-
-		dlFileRankModelImpl._setOriginalFileEntryId = false;
-
-		dlFileRankModelImpl._originalActive = dlFileRankModelImpl._active;
-
-		dlFileRankModelImpl._setOriginalActive = false;
-
-		dlFileRankModelImpl._columnBitmask = 0;
+		_dlFileRankCacheModel = (DLFileRankCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -690,24 +698,101 @@ public class DLFileRankModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<DLFileRankCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DLFileRankCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DLFileRankCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			dlFileRankCacheModel -> dlFileRankCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"fileRankId",
+			dlFileRankCacheModel -> dlFileRankCacheModel.fileRankId);
+
+		columnBitmasks.put("fileRankId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", dlFileRankCacheModel -> dlFileRankCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			dlFileRankCacheModel -> dlFileRankCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId", dlFileRankCacheModel -> dlFileRankCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			dlFileRankCacheModel -> dlFileRankCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"fileEntryId",
+			dlFileRankCacheModel -> dlFileRankCacheModel.fileEntryId);
+
+		columnBitmasks.put("fileEntryId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"active", dlFileRankCacheModel -> dlFileRankCacheModel.active);
+
+		columnBitmasks.put("active", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DLFileRankCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DLFileRankCacheModel dlFileRankCacheModel = _dlFileRankCacheModel;
+
+		if (dlFileRankCacheModel == null) {
+			dlFileRankCacheModel = _dummyDLFileRankCacheModel;
+		}
+
+		return (T)function.apply(dlFileRankCacheModel);
+	}
+
+	private static final DLFileRankCacheModel _dummyDLFileRankCacheModel =
+		new DLFileRankCacheModel();
+
+	private DLFileRankCacheModel _dlFileRankCacheModel;
 	private long _mvccVersion;
 	private long _fileRankId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private long _fileEntryId;
-	private long _originalFileEntryId;
-	private boolean _setOriginalFileEntryId;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private DLFileRank _escapedModel;
 

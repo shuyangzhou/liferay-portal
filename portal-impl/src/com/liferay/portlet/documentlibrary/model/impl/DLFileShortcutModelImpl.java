@@ -152,20 +152,60 @@ public class DLFileShortcutModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FOLDERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOFILEENTRYID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILESHORTCUTID_COLUMN_BITMASK = 128L;
 
 	/**
@@ -467,6 +507,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -478,6 +520,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -494,17 +538,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -515,6 +560,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setFileShortcutId(long fileShortcutId) {
+		_columnBitmask |= _columnBitmasks.get("fileShortcutId");
+
 		_fileShortcutId = fileShortcutId;
 	}
 
@@ -526,19 +573,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -549,19 +595,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -572,6 +617,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -604,6 +651,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -615,6 +664,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -632,6 +683,8 @@ public class DLFileShortcutModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -643,6 +696,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
+		_columnBitmask |= _columnBitmasks.get("repositoryId");
+
 		_repositoryId = repositoryId;
 	}
 
@@ -654,19 +709,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
-
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
-
-			_originalFolderId = _folderId;
-		}
+		_columnBitmask |= _columnBitmasks.get("folderId");
 
 		_folderId = folderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		return getOriginalAttributeValue("folderId");
 	}
 
 	@JSON
@@ -677,19 +731,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setToFileEntryId(long toFileEntryId) {
-		_columnBitmask |= TOFILEENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalToFileEntryId) {
-			_setOriginalToFileEntryId = true;
-
-			_originalToFileEntryId = _toFileEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("toFileEntryId");
 
 		_toFileEntryId = toFileEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalToFileEntryId() {
-		return _originalToFileEntryId;
+		return getOriginalAttributeValue("toFileEntryId");
 	}
 
 	@JSON
@@ -705,6 +758,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
+		_columnBitmask |= _columnBitmasks.get("treePath");
+
 		_treePath = treePath;
 	}
 
@@ -722,19 +777,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	@JSON
@@ -745,6 +799,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -756,19 +812,18 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -779,6 +834,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -811,6 +868,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -822,6 +881,8 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1180,43 +1241,11 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileShortcutModelImpl dlFileShortcutModelImpl = this;
+		_setModifiedDate = false;
 
-		dlFileShortcutModelImpl._originalUuid = dlFileShortcutModelImpl._uuid;
+		_columnBitmask = 0;
 
-		dlFileShortcutModelImpl._originalGroupId =
-			dlFileShortcutModelImpl._groupId;
-
-		dlFileShortcutModelImpl._setOriginalGroupId = false;
-
-		dlFileShortcutModelImpl._originalCompanyId =
-			dlFileShortcutModelImpl._companyId;
-
-		dlFileShortcutModelImpl._setOriginalCompanyId = false;
-
-		dlFileShortcutModelImpl._setModifiedDate = false;
-
-		dlFileShortcutModelImpl._originalFolderId =
-			dlFileShortcutModelImpl._folderId;
-
-		dlFileShortcutModelImpl._setOriginalFolderId = false;
-
-		dlFileShortcutModelImpl._originalToFileEntryId =
-			dlFileShortcutModelImpl._toFileEntryId;
-
-		dlFileShortcutModelImpl._setOriginalToFileEntryId = false;
-
-		dlFileShortcutModelImpl._originalActive =
-			dlFileShortcutModelImpl._active;
-
-		dlFileShortcutModelImpl._setOriginalActive = false;
-
-		dlFileShortcutModelImpl._originalStatus =
-			dlFileShortcutModelImpl._status;
-
-		dlFileShortcutModelImpl._setOriginalStatus = false;
-
-		dlFileShortcutModelImpl._columnBitmask = 0;
+		_dlFileShortcutCacheModel = (DLFileShortcutCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1390,17 +1419,179 @@ public class DLFileShortcutModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<DLFileShortcutCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DLFileShortcutCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DLFileShortcutCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			dlFileShortcutCacheModel ->
+				dlFileShortcutCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", dlFileShortcutCacheModel -> dlFileShortcutCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"fileShortcutId",
+			dlFileShortcutCacheModel ->
+				dlFileShortcutCacheModel.fileShortcutId);
+
+		columnBitmasks.put("fileShortcutId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"repositoryId",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.repositoryId);
+
+		columnBitmasks.put("repositoryId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"folderId",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.folderId);
+
+		columnBitmasks.put("folderId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"toFileEntryId",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.toFileEntryId);
+
+		columnBitmasks.put("toFileEntryId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"treePath",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.treePath);
+
+		columnBitmasks.put("treePath", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"active",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.active);
+
+		columnBitmasks.put("active", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			dlFileShortcutCacheModel ->
+				dlFileShortcutCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.status);
+
+		columnBitmasks.put("status", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			dlFileShortcutCacheModel ->
+				dlFileShortcutCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			dlFileShortcutCacheModel ->
+				dlFileShortcutCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			dlFileShortcutCacheModel -> dlFileShortcutCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 524288L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DLFileShortcutCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DLFileShortcutCacheModel dlFileShortcutCacheModel =
+			_dlFileShortcutCacheModel;
+
+		if (dlFileShortcutCacheModel == null) {
+			dlFileShortcutCacheModel = _dummyDLFileShortcutCacheModel;
+		}
+
+		return (T)function.apply(dlFileShortcutCacheModel);
+	}
+
+	private static final DLFileShortcutCacheModel
+		_dummyDLFileShortcutCacheModel = new DLFileShortcutCacheModel();
+
+	private DLFileShortcutCacheModel _dlFileShortcutCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fileShortcutId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1408,19 +1599,11 @@ public class DLFileShortcutModelImpl
 	private boolean _setModifiedDate;
 	private long _repositoryId;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private long _toFileEntryId;
-	private long _originalToFileEntryId;
-	private boolean _setOriginalToFileEntryId;
 	private String _treePath;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

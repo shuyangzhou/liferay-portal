@@ -148,14 +148,39 @@ public class ExportImportConfigurationModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
 	/**
@@ -464,6 +489,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -477,6 +504,8 @@ public class ExportImportConfigurationModelImpl
 	public void setExportImportConfigurationId(
 		long exportImportConfigurationId) {
 
+		_columnBitmask |= _columnBitmasks.get("exportImportConfigurationId");
+
 		_exportImportConfigurationId = exportImportConfigurationId;
 	}
 
@@ -488,19 +517,18 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -511,19 +539,18 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -534,6 +561,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -566,6 +595,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -577,7 +608,7 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -596,6 +627,8 @@ public class ExportImportConfigurationModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -612,6 +645,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -628,6 +663,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -639,19 +676,18 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -667,6 +703,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		_columnBitmask |= _columnBitmasks.get("settings");
+
 		_settings = settings;
 	}
 
@@ -678,19 +716,18 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -701,6 +738,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -733,6 +772,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -744,6 +785,8 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1096,32 +1139,12 @@ public class ExportImportConfigurationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExportImportConfigurationModelImpl exportImportConfigurationModelImpl =
-			this;
+		_setModifiedDate = false;
 
-		exportImportConfigurationModelImpl._originalGroupId =
-			exportImportConfigurationModelImpl._groupId;
+		_columnBitmask = 0;
 
-		exportImportConfigurationModelImpl._setOriginalGroupId = false;
-
-		exportImportConfigurationModelImpl._originalCompanyId =
-			exportImportConfigurationModelImpl._companyId;
-
-		exportImportConfigurationModelImpl._setOriginalCompanyId = false;
-
-		exportImportConfigurationModelImpl._setModifiedDate = false;
-
-		exportImportConfigurationModelImpl._originalType =
-			exportImportConfigurationModelImpl._type;
-
-		exportImportConfigurationModelImpl._setOriginalType = false;
-
-		exportImportConfigurationModelImpl._originalStatus =
-			exportImportConfigurationModelImpl._status;
-
-		exportImportConfigurationModelImpl._setOriginalStatus = false;
-
-		exportImportConfigurationModelImpl._columnBitmask = 0;
+		_exportImportConfigurationCacheModel =
+			(ExportImportConfigurationCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1297,14 +1320,172 @@ public class ExportImportConfigurationModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<ExportImportConfigurationCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ExportImportConfigurationCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<ExportImportConfigurationCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"exportImportConfigurationId",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.
+					exportImportConfigurationId);
+
+		columnBitmasks.put("exportImportConfigurationId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.name);
+
+		columnBitmasks.put("name", 256L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.description);
+
+		columnBitmasks.put("description", 512L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.type);
+
+		columnBitmasks.put("type", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"settings",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.settings);
+
+		columnBitmasks.put("settings", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.status);
+
+		columnBitmasks.put("status", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			exportImportConfigurationCacheModel ->
+				exportImportConfigurationCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 32768L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ExportImportConfigurationCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ExportImportConfigurationCacheModel
+			exportImportConfigurationCacheModel =
+				_exportImportConfigurationCacheModel;
+
+		if (exportImportConfigurationCacheModel == null) {
+			exportImportConfigurationCacheModel =
+				_dummyExportImportConfigurationCacheModel;
+		}
+
+		return (T)function.apply(exportImportConfigurationCacheModel);
+	}
+
+	private static final ExportImportConfigurationCacheModel
+		_dummyExportImportConfigurationCacheModel =
+			new ExportImportConfigurationCacheModel();
+
+	private ExportImportConfigurationCacheModel
+		_exportImportConfigurationCacheModel;
 	private long _mvccVersion;
 	private long _exportImportConfigurationId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1313,12 +1494,8 @@ public class ExportImportConfigurationModelImpl
 	private String _name;
 	private String _description;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _settings;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

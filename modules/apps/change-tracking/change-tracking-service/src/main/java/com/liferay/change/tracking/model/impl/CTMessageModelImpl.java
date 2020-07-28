@@ -95,8 +95,18 @@ public class CTMessageModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTMESSAGEID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -271,6 +281,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -281,6 +293,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCtMessageId(long ctMessageId) {
+		_columnBitmask |= _columnBitmasks.get("ctMessageId");
+
 		_ctMessageId = ctMessageId;
 	}
 
@@ -291,6 +305,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -301,19 +317,18 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
-
-			_originalCtCollectionId = _ctCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
 
 		_ctCollectionId = ctCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		return getOriginalAttributeValue("ctCollectionId");
 	}
 
 	@Override
@@ -328,6 +343,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setMessageContent(String messageContent) {
+		_columnBitmask |= _columnBitmasks.get("messageContent");
+
 		_messageContent = messageContent;
 	}
 
@@ -440,14 +457,9 @@ public class CTMessageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTMessageModelImpl ctMessageModelImpl = this;
+		_columnBitmask = 0;
 
-		ctMessageModelImpl._originalCtCollectionId =
-			ctMessageModelImpl._ctCollectionId;
-
-		ctMessageModelImpl._setOriginalCtCollectionId = false;
-
-		ctMessageModelImpl._columnBitmask = 0;
+		_ctMessageCacheModel = (CTMessageCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -543,12 +555,81 @@ public class CTMessageModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<CTMessageCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<CTMessageCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<CTMessageCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ctMessageCacheModel -> ctMessageCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctMessageId",
+			ctMessageCacheModel -> ctMessageCacheModel.ctMessageId);
+
+		columnBitmasks.put("ctMessageId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", ctMessageCacheModel -> ctMessageCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ctMessageCacheModel -> ctMessageCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"messageContent",
+			ctMessageCacheModel -> ctMessageCacheModel.messageContent);
+
+		columnBitmasks.put("messageContent", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<CTMessageCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		CTMessageCacheModel ctMessageCacheModel = _ctMessageCacheModel;
+
+		if (ctMessageCacheModel == null) {
+			ctMessageCacheModel = _dummyCTMessageCacheModel;
+		}
+
+		return (T)function.apply(ctMessageCacheModel);
+	}
+
+	private static final CTMessageCacheModel _dummyCTMessageCacheModel =
+		new CTMessageCacheModel();
+
+	private CTMessageCacheModel _ctMessageCacheModel;
 	private long _mvccVersion;
 	private long _ctMessageId;
 	private long _companyId;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private String _messageContent;
 	private long _columnBitmask;
 	private CTMessage _escapedModel;

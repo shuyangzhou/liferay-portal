@@ -542,42 +542,51 @@ public class RolePersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalCompanyId", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingRole.getName(),
 				ReflectionTestUtil.invoke(
-					existingRole, "getOriginalName", new Class<?>[0])));
+					existingRole, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalCompanyId", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalClassNameId", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalClassPK", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalCompanyId", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalClassNameId", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingRole.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRole, "getOriginalClassPK", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertEquals(
 			Integer.valueOf(existingRole.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingRole, "getOriginalType", new Class<?>[0]));
+				existingRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "type"));
 	}
 
 	protected Role addRole() throws Exception {

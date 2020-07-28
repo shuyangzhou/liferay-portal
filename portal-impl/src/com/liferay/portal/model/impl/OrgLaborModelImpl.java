@@ -140,8 +140,18 @@ public class OrgLaborModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ORGANIZATIONID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPEID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -402,6 +412,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -413,6 +425,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setOrgLaborId(long orgLaborId) {
+		_columnBitmask |= _columnBitmasks.get("orgLaborId");
+
 		_orgLaborId = orgLaborId;
 	}
 
@@ -424,6 +438,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -435,19 +451,18 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalOrganizationId) {
-			_setOriginalOrganizationId = true;
-
-			_originalOrganizationId = _organizationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("organizationId");
 
 		_organizationId = organizationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOrganizationId() {
-		return _originalOrganizationId;
+		return getOriginalAttributeValue("organizationId");
 	}
 
 	@JSON
@@ -458,7 +473,7 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setTypeId(long typeId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("typeId");
 
 		_typeId = typeId;
 	}
@@ -471,6 +486,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSunOpen(int sunOpen) {
+		_columnBitmask |= _columnBitmasks.get("sunOpen");
+
 		_sunOpen = sunOpen;
 	}
 
@@ -482,6 +499,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSunClose(int sunClose) {
+		_columnBitmask |= _columnBitmasks.get("sunClose");
+
 		_sunClose = sunClose;
 	}
 
@@ -493,6 +512,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setMonOpen(int monOpen) {
+		_columnBitmask |= _columnBitmasks.get("monOpen");
+
 		_monOpen = monOpen;
 	}
 
@@ -504,6 +525,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setMonClose(int monClose) {
+		_columnBitmask |= _columnBitmasks.get("monClose");
+
 		_monClose = monClose;
 	}
 
@@ -515,6 +538,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setTueOpen(int tueOpen) {
+		_columnBitmask |= _columnBitmasks.get("tueOpen");
+
 		_tueOpen = tueOpen;
 	}
 
@@ -526,6 +551,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setTueClose(int tueClose) {
+		_columnBitmask |= _columnBitmasks.get("tueClose");
+
 		_tueClose = tueClose;
 	}
 
@@ -537,6 +564,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setWedOpen(int wedOpen) {
+		_columnBitmask |= _columnBitmasks.get("wedOpen");
+
 		_wedOpen = wedOpen;
 	}
 
@@ -548,6 +577,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setWedClose(int wedClose) {
+		_columnBitmask |= _columnBitmasks.get("wedClose");
+
 		_wedClose = wedClose;
 	}
 
@@ -559,6 +590,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setThuOpen(int thuOpen) {
+		_columnBitmask |= _columnBitmasks.get("thuOpen");
+
 		_thuOpen = thuOpen;
 	}
 
@@ -570,6 +603,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setThuClose(int thuClose) {
+		_columnBitmask |= _columnBitmasks.get("thuClose");
+
 		_thuClose = thuClose;
 	}
 
@@ -581,6 +616,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setFriOpen(int friOpen) {
+		_columnBitmask |= _columnBitmasks.get("friOpen");
+
 		_friOpen = friOpen;
 	}
 
@@ -592,6 +629,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setFriClose(int friClose) {
+		_columnBitmask |= _columnBitmasks.get("friClose");
+
 		_friClose = friClose;
 	}
 
@@ -603,6 +642,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSatOpen(int satOpen) {
+		_columnBitmask |= _columnBitmasks.get("satOpen");
+
 		_satOpen = satOpen;
 	}
 
@@ -614,6 +655,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSatClose(int satClose) {
+		_columnBitmask |= _columnBitmasks.get("satClose");
+
 		_satClose = satClose;
 	}
 
@@ -760,14 +803,9 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OrgLaborModelImpl orgLaborModelImpl = this;
+		_columnBitmask = 0;
 
-		orgLaborModelImpl._originalOrganizationId =
-			orgLaborModelImpl._organizationId;
-
-		orgLaborModelImpl._setOriginalOrganizationId = false;
-
-		orgLaborModelImpl._columnBitmask = 0;
+		_orgLaborCacheModel = (OrgLaborCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -885,12 +923,149 @@ public class OrgLaborModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<OrgLaborCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<OrgLaborCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<OrgLaborCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			orgLaborCacheModel -> orgLaborCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"orgLaborId", orgLaborCacheModel -> orgLaborCacheModel.orgLaborId);
+
+		columnBitmasks.put("orgLaborId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", orgLaborCacheModel -> orgLaborCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"organizationId",
+			orgLaborCacheModel -> orgLaborCacheModel.organizationId);
+
+		columnBitmasks.put("organizationId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"typeId", orgLaborCacheModel -> orgLaborCacheModel.typeId);
+
+		columnBitmasks.put("typeId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"sunOpen", orgLaborCacheModel -> orgLaborCacheModel.sunOpen);
+
+		columnBitmasks.put("sunOpen", 32L);
+
+		cacheModelGetterFunctions.put(
+			"sunClose", orgLaborCacheModel -> orgLaborCacheModel.sunClose);
+
+		columnBitmasks.put("sunClose", 64L);
+
+		cacheModelGetterFunctions.put(
+			"monOpen", orgLaborCacheModel -> orgLaborCacheModel.monOpen);
+
+		columnBitmasks.put("monOpen", 128L);
+
+		cacheModelGetterFunctions.put(
+			"monClose", orgLaborCacheModel -> orgLaborCacheModel.monClose);
+
+		columnBitmasks.put("monClose", 256L);
+
+		cacheModelGetterFunctions.put(
+			"tueOpen", orgLaborCacheModel -> orgLaborCacheModel.tueOpen);
+
+		columnBitmasks.put("tueOpen", 512L);
+
+		cacheModelGetterFunctions.put(
+			"tueClose", orgLaborCacheModel -> orgLaborCacheModel.tueClose);
+
+		columnBitmasks.put("tueClose", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"wedOpen", orgLaborCacheModel -> orgLaborCacheModel.wedOpen);
+
+		columnBitmasks.put("wedOpen", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"wedClose", orgLaborCacheModel -> orgLaborCacheModel.wedClose);
+
+		columnBitmasks.put("wedClose", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"thuOpen", orgLaborCacheModel -> orgLaborCacheModel.thuOpen);
+
+		columnBitmasks.put("thuOpen", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"thuClose", orgLaborCacheModel -> orgLaborCacheModel.thuClose);
+
+		columnBitmasks.put("thuClose", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"friOpen", orgLaborCacheModel -> orgLaborCacheModel.friOpen);
+
+		columnBitmasks.put("friOpen", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"friClose", orgLaborCacheModel -> orgLaborCacheModel.friClose);
+
+		columnBitmasks.put("friClose", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"satOpen", orgLaborCacheModel -> orgLaborCacheModel.satOpen);
+
+		columnBitmasks.put("satOpen", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"satClose", orgLaborCacheModel -> orgLaborCacheModel.satClose);
+
+		columnBitmasks.put("satClose", 262144L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<OrgLaborCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		OrgLaborCacheModel orgLaborCacheModel = _orgLaborCacheModel;
+
+		if (orgLaborCacheModel == null) {
+			orgLaborCacheModel = _dummyOrgLaborCacheModel;
+		}
+
+		return (T)function.apply(orgLaborCacheModel);
+	}
+
+	private static final OrgLaborCacheModel _dummyOrgLaborCacheModel =
+		new OrgLaborCacheModel();
+
+	private OrgLaborCacheModel _orgLaborCacheModel;
 	private long _mvccVersion;
 	private long _orgLaborId;
 	private long _companyId;
 	private long _organizationId;
-	private long _originalOrganizationId;
-	private boolean _setOriginalOrganizationId;
 	private long _typeId;
 	private int _sunOpen;
 	private int _sunClose;

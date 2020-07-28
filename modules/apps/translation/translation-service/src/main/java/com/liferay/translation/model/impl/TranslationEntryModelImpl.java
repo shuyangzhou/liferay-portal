@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -121,18 +120,53 @@ public class TranslationEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LANGUAGEID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TRANSLATIONENTRYID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -416,6 +450,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -432,17 +468,18 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -453,6 +490,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setTranslationEntryId(long translationEntryId) {
+		_columnBitmask |= _columnBitmasks.get("translationEntryId");
+
 		_translationEntryId = translationEntryId;
 	}
 
@@ -464,19 +503,18 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -487,19 +525,18 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -510,6 +547,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -542,6 +581,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -553,6 +594,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -569,6 +612,8 @@ public class TranslationEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -601,19 +646,18 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -624,19 +668,18 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -652,6 +695,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
 		_content = content;
 	}
 
@@ -668,6 +713,8 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setContentType(String contentType) {
+		_columnBitmask |= _columnBitmasks.get("contentType");
+
 		_contentType = contentType;
 	}
 
@@ -684,17 +731,18 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
-
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("languageId");
 
 		_languageId = languageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		return getOriginalAttributeValue("languageId");
 	}
 
 	@Override
@@ -822,37 +870,12 @@ public class TranslationEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TranslationEntryModelImpl translationEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		translationEntryModelImpl._originalUuid =
-			translationEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		translationEntryModelImpl._originalGroupId =
-			translationEntryModelImpl._groupId;
-
-		translationEntryModelImpl._setOriginalGroupId = false;
-
-		translationEntryModelImpl._originalCompanyId =
-			translationEntryModelImpl._companyId;
-
-		translationEntryModelImpl._setOriginalCompanyId = false;
-
-		translationEntryModelImpl._setModifiedDate = false;
-
-		translationEntryModelImpl._originalClassNameId =
-			translationEntryModelImpl._classNameId;
-
-		translationEntryModelImpl._setOriginalClassNameId = false;
-
-		translationEntryModelImpl._originalClassPK =
-			translationEntryModelImpl._classPK;
-
-		translationEntryModelImpl._setOriginalClassPK = false;
-
-		translationEntryModelImpl._originalLanguageId =
-			translationEntryModelImpl._languageId;
-
-		translationEntryModelImpl._columnBitmask = 0;
+		_translationEntryCacheModel =
+			(TranslationEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1005,31 +1028,156 @@ public class TranslationEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<TranslationEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<TranslationEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<TranslationEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			translationEntryCacheModel -> translationEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"translationEntryId",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.translationEntryId);
+
+		columnBitmasks.put("translationEntryId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			translationEntryCacheModel -> translationEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			translationEntryCacheModel -> translationEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			translationEntryCacheModel -> translationEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			translationEntryCacheModel -> translationEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			translationEntryCacheModel -> translationEntryCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"content",
+			translationEntryCacheModel -> translationEntryCacheModel.content);
+
+		columnBitmasks.put("content", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"contentType",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.contentType);
+
+		columnBitmasks.put("contentType", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"languageId",
+			translationEntryCacheModel ->
+				translationEntryCacheModel.languageId);
+
+		columnBitmasks.put("languageId", 8192L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<TranslationEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		TranslationEntryCacheModel translationEntryCacheModel =
+			_translationEntryCacheModel;
+
+		if (translationEntryCacheModel == null) {
+			translationEntryCacheModel = _dummyTranslationEntryCacheModel;
+		}
+
+		return (T)function.apply(translationEntryCacheModel);
+	}
+
+	private static final TranslationEntryCacheModel
+		_dummyTranslationEntryCacheModel = new TranslationEntryCacheModel();
+
+	private TranslationEntryCacheModel _translationEntryCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _translationEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _content;
 	private String _contentType;
 	private String _languageId;
-	private String _originalLanguageId;
 	private long _columnBitmask;
 	private TranslationEntry _escapedModel;
 

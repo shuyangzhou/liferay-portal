@@ -136,18 +136,53 @@ public class WorkflowDefinitionLinkModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPEPK_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WORKFLOWDEFINITIONNAME_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK = 64L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -384,6 +419,8 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -394,6 +431,8 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -404,6 +443,8 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setWorkflowDefinitionLinkId(long workflowDefinitionLinkId) {
+		_columnBitmask |= _columnBitmasks.get("workflowDefinitionLinkId");
+
 		_workflowDefinitionLinkId = workflowDefinitionLinkId;
 	}
 
@@ -414,19 +455,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -436,19 +476,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -458,6 +497,8 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -489,6 +530,8 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -499,6 +542,8 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -514,6 +559,8 @@ public class WorkflowDefinitionLinkModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -545,19 +592,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -567,19 +613,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -589,19 +634,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setTypePK(long typePK) {
-		_columnBitmask |= TYPEPK_COLUMN_BITMASK;
-
-		if (!_setOriginalTypePK) {
-			_setOriginalTypePK = true;
-
-			_originalTypePK = _typePK;
-		}
+		_columnBitmask |= _columnBitmasks.get("typePK");
 
 		_typePK = typePK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalTypePK() {
-		return _originalTypePK;
+		return getOriginalAttributeValue("typePK");
 	}
 
 	@Override
@@ -616,17 +660,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setWorkflowDefinitionName(String workflowDefinitionName) {
-		_columnBitmask = -1L;
-
-		if (_originalWorkflowDefinitionName == null) {
-			_originalWorkflowDefinitionName = _workflowDefinitionName;
-		}
+		_columnBitmask |= _columnBitmasks.get("workflowDefinitionName");
 
 		_workflowDefinitionName = workflowDefinitionName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalWorkflowDefinitionName() {
-		return GetterUtil.getString(_originalWorkflowDefinitionName);
+		return getOriginalAttributeValue("workflowDefinitionName");
 	}
 
 	@Override
@@ -636,19 +681,18 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setWorkflowDefinitionVersion(int workflowDefinitionVersion) {
-		_columnBitmask |= WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK;
-
-		if (!_setOriginalWorkflowDefinitionVersion) {
-			_setOriginalWorkflowDefinitionVersion = true;
-
-			_originalWorkflowDefinitionVersion = _workflowDefinitionVersion;
-		}
+		_columnBitmask |= _columnBitmasks.get("workflowDefinitionVersion");
 
 		_workflowDefinitionVersion = workflowDefinitionVersion;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalWorkflowDefinitionVersion() {
-		return _originalWorkflowDefinitionVersion;
+		return getOriginalAttributeValue("workflowDefinitionVersion");
 	}
 
 	public long getColumnBitmask() {
@@ -774,45 +818,12 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WorkflowDefinitionLinkModelImpl workflowDefinitionLinkModelImpl = this;
+		_setModifiedDate = false;
 
-		workflowDefinitionLinkModelImpl._originalGroupId =
-			workflowDefinitionLinkModelImpl._groupId;
+		_columnBitmask = 0;
 
-		workflowDefinitionLinkModelImpl._setOriginalGroupId = false;
-
-		workflowDefinitionLinkModelImpl._originalCompanyId =
-			workflowDefinitionLinkModelImpl._companyId;
-
-		workflowDefinitionLinkModelImpl._setOriginalCompanyId = false;
-
-		workflowDefinitionLinkModelImpl._setModifiedDate = false;
-
-		workflowDefinitionLinkModelImpl._originalClassNameId =
-			workflowDefinitionLinkModelImpl._classNameId;
-
-		workflowDefinitionLinkModelImpl._setOriginalClassNameId = false;
-
-		workflowDefinitionLinkModelImpl._originalClassPK =
-			workflowDefinitionLinkModelImpl._classPK;
-
-		workflowDefinitionLinkModelImpl._setOriginalClassPK = false;
-
-		workflowDefinitionLinkModelImpl._originalTypePK =
-			workflowDefinitionLinkModelImpl._typePK;
-
-		workflowDefinitionLinkModelImpl._setOriginalTypePK = false;
-
-		workflowDefinitionLinkModelImpl._originalWorkflowDefinitionName =
-			workflowDefinitionLinkModelImpl._workflowDefinitionName;
-
-		workflowDefinitionLinkModelImpl._originalWorkflowDefinitionVersion =
-			workflowDefinitionLinkModelImpl._workflowDefinitionVersion;
-
-		workflowDefinitionLinkModelImpl._setOriginalWorkflowDefinitionVersion =
-			false;
-
-		workflowDefinitionLinkModelImpl._columnBitmask = 0;
+		_workflowDefinitionLinkCacheModel =
+			(WorkflowDefinitionLinkCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -956,34 +967,166 @@ public class WorkflowDefinitionLinkModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<WorkflowDefinitionLinkCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<WorkflowDefinitionLinkCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<WorkflowDefinitionLinkCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"workflowDefinitionLinkId",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.workflowDefinitionLinkId);
+
+		columnBitmasks.put("workflowDefinitionLinkId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"typePK",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.typePK);
+
+		columnBitmasks.put("typePK", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"workflowDefinitionName",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.workflowDefinitionName);
+
+		columnBitmasks.put("workflowDefinitionName", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"workflowDefinitionVersion",
+			workflowDefinitionLinkCacheModel ->
+				workflowDefinitionLinkCacheModel.workflowDefinitionVersion);
+
+		columnBitmasks.put("workflowDefinitionVersion", 8192L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<WorkflowDefinitionLinkCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		WorkflowDefinitionLinkCacheModel workflowDefinitionLinkCacheModel =
+			_workflowDefinitionLinkCacheModel;
+
+		if (workflowDefinitionLinkCacheModel == null) {
+			workflowDefinitionLinkCacheModel =
+				_dummyWorkflowDefinitionLinkCacheModel;
+		}
+
+		return (T)function.apply(workflowDefinitionLinkCacheModel);
+	}
+
+	private static final WorkflowDefinitionLinkCacheModel
+		_dummyWorkflowDefinitionLinkCacheModel =
+			new WorkflowDefinitionLinkCacheModel();
+
+	private WorkflowDefinitionLinkCacheModel _workflowDefinitionLinkCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _workflowDefinitionLinkId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _typePK;
-	private long _originalTypePK;
-	private boolean _setOriginalTypePK;
 	private String _workflowDefinitionName;
-	private String _originalWorkflowDefinitionName;
 	private int _workflowDefinitionVersion;
-	private int _originalWorkflowDefinitionVersion;
-	private boolean _setOriginalWorkflowDefinitionVersion;
 	private long _columnBitmask;
 	private WorkflowDefinitionLink _escapedModel;
 

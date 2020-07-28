@@ -102,10 +102,25 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OAUTH2APPLICATIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK =
 		4L;
 
@@ -310,6 +325,9 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 	public void setOAuth2ApplicationScopeAliasesId(
 		long oAuth2ApplicationScopeAliasesId) {
 
+		_columnBitmask |= _columnBitmasks.get(
+			"oAuth2ApplicationScopeAliasesId");
+
 		_oAuth2ApplicationScopeAliasesId = oAuth2ApplicationScopeAliasesId;
 	}
 
@@ -320,19 +338,18 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -342,6 +359,8 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -373,6 +392,8 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -383,6 +404,8 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -393,19 +416,18 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setOAuth2ApplicationId(long oAuth2ApplicationId) {
-		_columnBitmask |= OAUTH2APPLICATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalOAuth2ApplicationId) {
-			_setOriginalOAuth2ApplicationId = true;
-
-			_originalOAuth2ApplicationId = _oAuth2ApplicationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("oAuth2ApplicationId");
 
 		_oAuth2ApplicationId = oAuth2ApplicationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOAuth2ApplicationId() {
-		return _originalOAuth2ApplicationId;
+		return getOriginalAttributeValue("oAuth2ApplicationId");
 	}
 
 	public long getColumnBitmask() {
@@ -525,21 +547,10 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuth2ApplicationScopeAliasesModelImpl
-			oAuth2ApplicationScopeAliasesModelImpl = this;
+		_columnBitmask = 0;
 
-		oAuth2ApplicationScopeAliasesModelImpl._originalCompanyId =
-			oAuth2ApplicationScopeAliasesModelImpl._companyId;
-
-		oAuth2ApplicationScopeAliasesModelImpl._setOriginalCompanyId = false;
-
-		oAuth2ApplicationScopeAliasesModelImpl._originalOAuth2ApplicationId =
-			oAuth2ApplicationScopeAliasesModelImpl._oAuth2ApplicationId;
-
-		oAuth2ApplicationScopeAliasesModelImpl._setOriginalOAuth2ApplicationId =
-			false;
-
-		oAuth2ApplicationScopeAliasesModelImpl._columnBitmask = 0;
+		_oAuth2ApplicationScopeAliasesCacheModel =
+			(OAuth2ApplicationScopeAliasesCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -656,16 +667,105 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<OAuth2ApplicationScopeAliasesCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<OAuth2ApplicationScopeAliasesCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function
+						 <OAuth2ApplicationScopeAliasesCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"oAuth2ApplicationScopeAliasesId",
+			oAuth2ApplicationScopeAliasesCacheModel ->
+				oAuth2ApplicationScopeAliasesCacheModel.
+					oAuth2ApplicationScopeAliasesId);
+
+		columnBitmasks.put("oAuth2ApplicationScopeAliasesId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			oAuth2ApplicationScopeAliasesCacheModel ->
+				oAuth2ApplicationScopeAliasesCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			oAuth2ApplicationScopeAliasesCacheModel ->
+				oAuth2ApplicationScopeAliasesCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			oAuth2ApplicationScopeAliasesCacheModel ->
+				oAuth2ApplicationScopeAliasesCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			oAuth2ApplicationScopeAliasesCacheModel ->
+				oAuth2ApplicationScopeAliasesCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"oAuth2ApplicationId",
+			oAuth2ApplicationScopeAliasesCacheModel ->
+				oAuth2ApplicationScopeAliasesCacheModel.oAuth2ApplicationId);
+
+		columnBitmasks.put("oAuth2ApplicationId", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<OAuth2ApplicationScopeAliasesCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		OAuth2ApplicationScopeAliasesCacheModel
+			oAuth2ApplicationScopeAliasesCacheModel =
+				_oAuth2ApplicationScopeAliasesCacheModel;
+
+		if (oAuth2ApplicationScopeAliasesCacheModel == null) {
+			oAuth2ApplicationScopeAliasesCacheModel =
+				_dummyOAuth2ApplicationScopeAliasesCacheModel;
+		}
+
+		return (T)function.apply(oAuth2ApplicationScopeAliasesCacheModel);
+	}
+
+	private static final OAuth2ApplicationScopeAliasesCacheModel
+		_dummyOAuth2ApplicationScopeAliasesCacheModel =
+			new OAuth2ApplicationScopeAliasesCacheModel();
+
+	private OAuth2ApplicationScopeAliasesCacheModel
+		_oAuth2ApplicationScopeAliasesCacheModel;
 	private long _oAuth2ApplicationScopeAliasesId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private long _oAuth2ApplicationId;
-	private long _originalOAuth2ApplicationId;
-	private boolean _setOriginalOAuth2ApplicationId;
 	private long _columnBitmask;
 	private OAuth2ApplicationScopeAliases _escapedModel;
 

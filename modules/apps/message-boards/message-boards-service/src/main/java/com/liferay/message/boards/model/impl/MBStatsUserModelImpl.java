@@ -103,10 +103,25 @@ public class MBStatsUserModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MESSAGECOUNT_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -296,6 +311,8 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -306,6 +323,8 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -316,6 +335,8 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setStatsUserId(long statsUserId) {
+		_columnBitmask |= _columnBitmasks.get("statsUserId");
+
 		_statsUserId = statsUserId;
 	}
 
@@ -342,19 +363,18 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -364,6 +384,8 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -374,13 +396,7 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -401,8 +417,13 @@ public class MBStatsUserModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -412,19 +433,18 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setMessageCount(int messageCount) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalMessageCount) {
-			_setOriginalMessageCount = true;
-
-			_originalMessageCount = _messageCount;
-		}
+		_columnBitmask |= _columnBitmasks.get("messageCount");
 
 		_messageCount = messageCount;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalMessageCount() {
-		return _originalMessageCount;
+		return getOriginalAttributeValue("messageCount");
 	}
 
 	@Override
@@ -434,6 +454,8 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPostDate");
+
 		_lastPostDate = lastPostDate;
 	}
 
@@ -557,22 +579,9 @@ public class MBStatsUserModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBStatsUserModelImpl mbStatsUserModelImpl = this;
+		_columnBitmask = 0;
 
-		mbStatsUserModelImpl._originalGroupId = mbStatsUserModelImpl._groupId;
-
-		mbStatsUserModelImpl._setOriginalGroupId = false;
-
-		mbStatsUserModelImpl._originalUserId = mbStatsUserModelImpl._userId;
-
-		mbStatsUserModelImpl._setOriginalUserId = false;
-
-		mbStatsUserModelImpl._originalMessageCount =
-			mbStatsUserModelImpl._messageCount;
-
-		mbStatsUserModelImpl._setOriginalMessageCount = false;
-
-		mbStatsUserModelImpl._columnBitmask = 0;
+		_mbStatsUserCacheModel = (MBStatsUserCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -676,19 +685,101 @@ public class MBStatsUserModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<MBStatsUserCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MBStatsUserCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MBStatsUserCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mbStatsUserCacheModel -> mbStatsUserCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			mbStatsUserCacheModel -> mbStatsUserCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"statsUserId",
+			mbStatsUserCacheModel -> mbStatsUserCacheModel.statsUserId);
+
+		columnBitmasks.put("statsUserId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", mbStatsUserCacheModel -> mbStatsUserCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			mbStatsUserCacheModel -> mbStatsUserCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId", mbStatsUserCacheModel -> mbStatsUserCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"messageCount",
+			mbStatsUserCacheModel -> mbStatsUserCacheModel.messageCount);
+
+		columnBitmasks.put("messageCount", 64L);
+
+		cacheModelGetterFunctions.put(
+			"lastPostDate",
+			mbStatsUserCacheModel -> mbStatsUserCacheModel.lastPostDate);
+
+		columnBitmasks.put("lastPostDate", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MBStatsUserCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MBStatsUserCacheModel mbStatsUserCacheModel = _mbStatsUserCacheModel;
+
+		if (mbStatsUserCacheModel == null) {
+			mbStatsUserCacheModel = _dummyMBStatsUserCacheModel;
+		}
+
+		return (T)function.apply(mbStatsUserCacheModel);
+	}
+
+	private static final MBStatsUserCacheModel _dummyMBStatsUserCacheModel =
+		new MBStatsUserCacheModel();
+
+	private MBStatsUserCacheModel _mbStatsUserCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _statsUserId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private int _messageCount;
-	private int _originalMessageCount;
-	private boolean _setOriginalMessageCount;
 	private Date _lastPostDate;
 	private long _columnBitmask;
 	private MBStatsUser _escapedModel;

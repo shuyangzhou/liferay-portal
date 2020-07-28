@@ -108,10 +108,25 @@ public class CTProcessModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 4L;
 
 	/**
@@ -338,6 +353,8 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -349,6 +366,8 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setCtProcessId(long ctProcessId) {
+		_columnBitmask |= _columnBitmasks.get("ctProcessId");
+
 		_ctProcessId = ctProcessId;
 	}
 
@@ -360,19 +379,18 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -383,6 +401,8 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -410,7 +430,7 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -423,19 +443,18 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
-
-			_originalCtCollectionId = _ctCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
 
 		_ctCollectionId = ctCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		return getOriginalAttributeValue("ctCollectionId");
 	}
 
 	@JSON
@@ -446,6 +465,8 @@ public class CTProcessModelImpl
 
 	@Override
 	public void setBackgroundTaskId(long backgroundTaskId) {
+		_columnBitmask |= _columnBitmasks.get("backgroundTaskId");
+
 		_backgroundTaskId = backgroundTaskId;
 	}
 
@@ -560,18 +581,9 @@ public class CTProcessModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTProcessModelImpl ctProcessModelImpl = this;
+		_columnBitmask = 0;
 
-		ctProcessModelImpl._originalCompanyId = ctProcessModelImpl._companyId;
-
-		ctProcessModelImpl._setOriginalCompanyId = false;
-
-		ctProcessModelImpl._originalCtCollectionId =
-			ctProcessModelImpl._ctCollectionId;
-
-		ctProcessModelImpl._setOriginalCtCollectionId = false;
-
-		ctProcessModelImpl._columnBitmask = 0;
+		_ctProcessCacheModel = (CTProcessCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -672,16 +684,94 @@ public class CTProcessModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<CTProcessCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<CTProcessCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<CTProcessCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ctProcessCacheModel -> ctProcessCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctProcessId",
+			ctProcessCacheModel -> ctProcessCacheModel.ctProcessId);
+
+		columnBitmasks.put("ctProcessId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", ctProcessCacheModel -> ctProcessCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", ctProcessCacheModel -> ctProcessCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ctProcessCacheModel -> ctProcessCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ctProcessCacheModel -> ctProcessCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"backgroundTaskId",
+			ctProcessCacheModel -> ctProcessCacheModel.backgroundTaskId);
+
+		columnBitmasks.put("backgroundTaskId", 64L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<CTProcessCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		CTProcessCacheModel ctProcessCacheModel = _ctProcessCacheModel;
+
+		if (ctProcessCacheModel == null) {
+			ctProcessCacheModel = _dummyCTProcessCacheModel;
+		}
+
+		return (T)function.apply(ctProcessCacheModel);
+	}
+
+	private static final CTProcessCacheModel _dummyCTProcessCacheModel =
+		new CTProcessCacheModel();
+
+	private CTProcessCacheModel _ctProcessCacheModel;
 	private long _mvccVersion;
 	private long _ctProcessId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private Date _createDate;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private long _backgroundTaskId;
 	private long _columnBitmask;
 	private CTProcess _escapedModel;

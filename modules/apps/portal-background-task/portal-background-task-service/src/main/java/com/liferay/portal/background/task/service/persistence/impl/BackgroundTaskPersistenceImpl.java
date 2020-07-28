@@ -9039,7 +9039,7 @@ public class BackgroundTaskPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId()
+					backgroundTaskModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -9058,7 +9058,8 @@ public class BackgroundTaskPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalCompanyId()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -9077,7 +9078,8 @@ public class BackgroundTaskPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalCompleted()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"completed")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompleted, args);
@@ -9096,7 +9098,7 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalStatus()
+					backgroundTaskModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByStatus, args);
@@ -9115,8 +9117,10 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId(),
-					backgroundTaskModelImpl.getOriginalTaskExecutorClassName()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"taskExecutorClassName")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_T, args);
@@ -9138,8 +9142,9 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId(),
-					backgroundTaskModelImpl.getOriginalStatus()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					backgroundTaskModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_S, args);
@@ -9161,8 +9166,9 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalTaskExecutorClassName(),
-					backgroundTaskModelImpl.getOriginalStatus()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"taskExecutorClassName"),
+					backgroundTaskModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByT_S, args);
@@ -9184,9 +9190,11 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId(),
-					backgroundTaskModelImpl.getOriginalName(),
-					backgroundTaskModelImpl.getOriginalTaskExecutorClassName()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					backgroundTaskModelImpl.getOriginalAttributeValue("name"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"taskExecutorClassName")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_N_T, args);
@@ -9209,9 +9217,12 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId(),
-					backgroundTaskModelImpl.getOriginalTaskExecutorClassName(),
-					backgroundTaskModelImpl.getOriginalCompleted()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"taskExecutorClassName"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"completed")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_T_C, args);
@@ -9234,9 +9245,11 @@ public class BackgroundTaskPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId(),
-					backgroundTaskModelImpl.getOriginalTaskExecutorClassName(),
-					backgroundTaskModelImpl.getOriginalStatus()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"taskExecutorClassName"),
+					backgroundTaskModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_T_S, args);
@@ -9259,10 +9272,13 @@ public class BackgroundTaskPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					backgroundTaskModelImpl.getOriginalGroupId(),
-					backgroundTaskModelImpl.getOriginalName(),
-					backgroundTaskModelImpl.getOriginalTaskExecutorClassName(),
-					backgroundTaskModelImpl.getOriginalCompleted()
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					backgroundTaskModelImpl.getOriginalAttributeValue("name"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"taskExecutorClassName"),
+					backgroundTaskModelImpl.getOriginalAttributeValue(
+						"completed")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_N_T_C, args);
@@ -9569,8 +9585,8 @@ public class BackgroundTaskPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9587,8 +9603,8 @@ public class BackgroundTaskPersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			BackgroundTaskModelImpl.COMPANYID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("companyId") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9605,8 +9621,8 @@ public class BackgroundTaskPersistenceImpl
 		_finderPathWithoutPaginationFindByCompleted = new FinderPath(
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompleted", new String[] {Boolean.class.getName()},
-			BackgroundTaskModelImpl.COMPLETED_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("completed") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByCompleted = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9623,8 +9639,8 @@ public class BackgroundTaskPersistenceImpl
 		_finderPathWithoutPaginationFindByStatus = new FinderPath(
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByStatus", new String[] {Integer.class.getName()},
-			BackgroundTaskModelImpl.STATUS_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("status") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByStatus = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9643,9 +9659,9 @@ public class BackgroundTaskPersistenceImpl
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.TASKEXECUTORCLASSNAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("taskExecutorClassName") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T",
@@ -9668,9 +9684,9 @@ public class BackgroundTaskPersistenceImpl
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.STATUS_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("status") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
@@ -9689,9 +9705,9 @@ public class BackgroundTaskPersistenceImpl
 			BackgroundTaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByT_S",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			BackgroundTaskModelImpl.TASKEXECUTORCLASSNAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.STATUS_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("taskExecutorClassName") |
+			BackgroundTaskModelImpl.getColumnBitmask("status") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByT_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_S",
@@ -9717,10 +9733,10 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.NAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.TASKEXECUTORCLASSNAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("name") |
+			BackgroundTaskModelImpl.getColumnBitmask("taskExecutorClassName") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_N_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9753,10 +9769,10 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
 			},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.TASKEXECUTORCLASSNAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.COMPLETED_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("taskExecutorClassName") |
+			BackgroundTaskModelImpl.getColumnBitmask("completed") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_T_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9789,10 +9805,10 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.TASKEXECUTORCLASSNAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.STATUS_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("taskExecutorClassName") |
+			BackgroundTaskModelImpl.getColumnBitmask("status") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_T_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -9826,11 +9842,11 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName(), Boolean.class.getName()
 			},
-			BackgroundTaskModelImpl.GROUPID_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.NAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.TASKEXECUTORCLASSNAME_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.COMPLETED_COLUMN_BITMASK |
-			BackgroundTaskModelImpl.CREATEDATE_COLUMN_BITMASK);
+			BackgroundTaskModelImpl.getColumnBitmask("groupId") |
+			BackgroundTaskModelImpl.getColumnBitmask("name") |
+			BackgroundTaskModelImpl.getColumnBitmask("taskExecutorClassName") |
+			BackgroundTaskModelImpl.getColumnBitmask("completed") |
+			BackgroundTaskModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByG_N_T_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

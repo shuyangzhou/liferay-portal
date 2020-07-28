@@ -115,8 +115,18 @@ public class ServiceComponentModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long BUILDNAMESPACE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long BUILDNUMBER_COLUMN_BITMASK = 2L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -296,6 +306,8 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -306,6 +318,8 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setServiceComponentId(long serviceComponentId) {
+		_columnBitmask |= _columnBitmasks.get("serviceComponentId");
+
 		_serviceComponentId = serviceComponentId;
 	}
 
@@ -321,17 +335,18 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setBuildNamespace(String buildNamespace) {
-		_columnBitmask = -1L;
-
-		if (_originalBuildNamespace == null) {
-			_originalBuildNamespace = _buildNamespace;
-		}
+		_columnBitmask |= _columnBitmasks.get("buildNamespace");
 
 		_buildNamespace = buildNamespace;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalBuildNamespace() {
-		return GetterUtil.getString(_originalBuildNamespace);
+		return getOriginalAttributeValue("buildNamespace");
 	}
 
 	@Override
@@ -341,19 +356,18 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setBuildNumber(long buildNumber) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalBuildNumber) {
-			_setOriginalBuildNumber = true;
-
-			_originalBuildNumber = _buildNumber;
-		}
+		_columnBitmask |= _columnBitmasks.get("buildNumber");
 
 		_buildNumber = buildNumber;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalBuildNumber() {
-		return _originalBuildNumber;
+		return getOriginalAttributeValue("buildNumber");
 	}
 
 	@Override
@@ -363,6 +377,8 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setBuildDate(long buildDate) {
+		_columnBitmask |= _columnBitmasks.get("buildDate");
+
 		_buildDate = buildDate;
 	}
 
@@ -378,6 +394,8 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setData(String data) {
+		_columnBitmask |= _columnBitmasks.get("data");
+
 		_data = data;
 	}
 
@@ -508,17 +526,10 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ServiceComponentModelImpl serviceComponentModelImpl = this;
+		_columnBitmask = 0;
 
-		serviceComponentModelImpl._originalBuildNamespace =
-			serviceComponentModelImpl._buildNamespace;
-
-		serviceComponentModelImpl._originalBuildNumber =
-			serviceComponentModelImpl._buildNumber;
-
-		serviceComponentModelImpl._setOriginalBuildNumber = false;
-
-		serviceComponentModelImpl._columnBitmask = 0;
+		_serviceComponentCacheModel =
+			(ServiceComponentCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -623,13 +634,94 @@ public class ServiceComponentModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<ServiceComponentCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ServiceComponentCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<ServiceComponentCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			serviceComponentCacheModel ->
+				serviceComponentCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"serviceComponentId",
+			serviceComponentCacheModel ->
+				serviceComponentCacheModel.serviceComponentId);
+
+		columnBitmasks.put("serviceComponentId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"buildNamespace",
+			serviceComponentCacheModel ->
+				serviceComponentCacheModel.buildNamespace);
+
+		columnBitmasks.put("buildNamespace", 4L);
+
+		cacheModelGetterFunctions.put(
+			"buildNumber",
+			serviceComponentCacheModel ->
+				serviceComponentCacheModel.buildNumber);
+
+		columnBitmasks.put("buildNumber", 8L);
+
+		cacheModelGetterFunctions.put(
+			"buildDate",
+			serviceComponentCacheModel -> serviceComponentCacheModel.buildDate);
+
+		columnBitmasks.put("buildDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"data",
+			serviceComponentCacheModel -> serviceComponentCacheModel.data);
+
+		columnBitmasks.put("data", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ServiceComponentCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ServiceComponentCacheModel serviceComponentCacheModel =
+			_serviceComponentCacheModel;
+
+		if (serviceComponentCacheModel == null) {
+			serviceComponentCacheModel = _dummyServiceComponentCacheModel;
+		}
+
+		return (T)function.apply(serviceComponentCacheModel);
+	}
+
+	private static final ServiceComponentCacheModel
+		_dummyServiceComponentCacheModel = new ServiceComponentCacheModel();
+
+	private ServiceComponentCacheModel _serviceComponentCacheModel;
 	private long _mvccVersion;
 	private long _serviceComponentId;
 	private String _buildNamespace;
-	private String _originalBuildNamespace;
 	private long _buildNumber;
-	private long _originalBuildNumber;
-	private boolean _setOriginalBuildNumber;
 	private long _buildDate;
 	private String _data;
 	private long _columnBitmask;

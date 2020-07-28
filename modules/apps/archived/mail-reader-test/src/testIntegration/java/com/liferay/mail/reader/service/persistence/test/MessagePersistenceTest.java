@@ -475,12 +475,13 @@ public class MessagePersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingMessage.getFolderId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMessage, "getOriginalFolderId", new Class<?>[0]));
+				existingMessage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "folderId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMessage.getRemoteMessageId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMessage, "getOriginalRemoteMessageId",
-				new Class<?>[0]));
+				existingMessage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "remoteMessageId"));
 	}
 
 	protected Message addMessage() throws Exception {

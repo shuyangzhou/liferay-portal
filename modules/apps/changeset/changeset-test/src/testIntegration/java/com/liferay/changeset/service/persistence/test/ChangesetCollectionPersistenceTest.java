@@ -489,14 +489,14 @@ public class ChangesetCollectionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingChangesetCollection.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingChangesetCollection, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingChangesetCollection, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingChangesetCollection.getName(),
 				ReflectionTestUtil.invoke(
-					existingChangesetCollection, "getOriginalName",
-					new Class<?>[0])));
+					existingChangesetCollection, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected ChangesetCollection addChangesetCollection() throws Exception {

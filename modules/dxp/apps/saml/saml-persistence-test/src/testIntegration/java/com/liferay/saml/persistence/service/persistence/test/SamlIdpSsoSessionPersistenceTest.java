@@ -445,8 +445,8 @@ public class SamlIdpSsoSessionPersistenceTest {
 			Objects.equals(
 				existingSamlIdpSsoSession.getSamlIdpSsoSessionKey(),
 				ReflectionTestUtil.invoke(
-					existingSamlIdpSsoSession,
-					"getOriginalSamlIdpSsoSessionKey", new Class<?>[0])));
+					existingSamlIdpSsoSession, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "samlIdpSsoSessionKey")));
 	}
 
 	protected SamlIdpSsoSession addSamlIdpSsoSession() throws Exception {

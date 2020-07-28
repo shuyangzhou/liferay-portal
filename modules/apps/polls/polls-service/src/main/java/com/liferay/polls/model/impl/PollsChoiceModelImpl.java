@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -126,14 +125,39 @@ public class PollsChoiceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long QUESTIONID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -392,6 +416,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -408,17 +434,18 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -429,6 +456,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setChoiceId(long choiceId) {
+		_columnBitmask |= _columnBitmasks.get("choiceId");
+
 		_choiceId = choiceId;
 	}
 
@@ -440,19 +469,18 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -463,19 +491,18 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -486,6 +513,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -518,6 +547,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -529,6 +560,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -546,6 +579,8 @@ public class PollsChoiceModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -557,19 +592,18 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setQuestionId(long questionId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalQuestionId) {
-			_setOriginalQuestionId = true;
-
-			_originalQuestionId = _questionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("questionId");
 
 		_questionId = questionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalQuestionId() {
-		return _originalQuestionId;
+		return getOriginalAttributeValue("questionId");
 	}
 
 	@JSON
@@ -585,17 +619,18 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -654,6 +689,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -714,6 +751,8 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -920,29 +959,11 @@ public class PollsChoiceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PollsChoiceModelImpl pollsChoiceModelImpl = this;
+		_setModifiedDate = false;
 
-		pollsChoiceModelImpl._originalUuid = pollsChoiceModelImpl._uuid;
+		_columnBitmask = 0;
 
-		pollsChoiceModelImpl._originalGroupId = pollsChoiceModelImpl._groupId;
-
-		pollsChoiceModelImpl._setOriginalGroupId = false;
-
-		pollsChoiceModelImpl._originalCompanyId =
-			pollsChoiceModelImpl._companyId;
-
-		pollsChoiceModelImpl._setOriginalCompanyId = false;
-
-		pollsChoiceModelImpl._setModifiedDate = false;
-
-		pollsChoiceModelImpl._originalQuestionId =
-			pollsChoiceModelImpl._questionId;
-
-		pollsChoiceModelImpl._setOriginalQuestionId = false;
-
-		pollsChoiceModelImpl._originalName = pollsChoiceModelImpl._name;
-
-		pollsChoiceModelImpl._columnBitmask = 0;
+		_pollsChoiceCacheModel = (PollsChoiceCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1094,26 +1115,134 @@ public class PollsChoiceModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<PollsChoiceCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PollsChoiceCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PollsChoiceCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", pollsChoiceCacheModel -> pollsChoiceCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"choiceId",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.choiceId);
+
+		columnBitmasks.put("choiceId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", pollsChoiceCacheModel -> pollsChoiceCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId", pollsChoiceCacheModel -> pollsChoiceCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"questionId",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.questionId);
+
+		columnBitmasks.put("questionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"name", pollsChoiceCacheModel -> pollsChoiceCacheModel.name);
+
+		columnBitmasks.put("name", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.description);
+
+		columnBitmasks.put("description", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			pollsChoiceCacheModel -> pollsChoiceCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 4096L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PollsChoiceCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PollsChoiceCacheModel pollsChoiceCacheModel = _pollsChoiceCacheModel;
+
+		if (pollsChoiceCacheModel == null) {
+			pollsChoiceCacheModel = _dummyPollsChoiceCacheModel;
+		}
+
+		return (T)function.apply(pollsChoiceCacheModel);
+	}
+
+	private static final PollsChoiceCacheModel _dummyPollsChoiceCacheModel =
+		new PollsChoiceCacheModel();
+
+	private PollsChoiceCacheModel _pollsChoiceCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _choiceId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _questionId;
-	private long _originalQuestionId;
-	private boolean _setOriginalQuestionId;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private Date _lastPublishDate;

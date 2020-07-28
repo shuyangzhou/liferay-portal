@@ -155,34 +155,109 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FRIENDLYURL_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPKEY_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long INHERITCONTENT_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LIVEGROUPID_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 512L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTGROUPID_COLUMN_BITMASK = 1024L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SITE_COLUMN_BITMASK = 2048L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TREEPATH_COLUMN_BITMASK = 4096L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 8192L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16384L;
 
 	/**
@@ -527,6 +602,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -538,6 +615,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -554,17 +633,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -575,19 +655,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -598,19 +677,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -621,6 +699,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCreatorUserId(long creatorUserId) {
+		_columnBitmask |= _columnBitmasks.get("creatorUserId");
+
 		_creatorUserId = creatorUserId;
 	}
 
@@ -668,19 +748,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -691,19 +770,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -714,19 +792,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setParentGroupId(long parentGroupId) {
-		_columnBitmask |= PARENTGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentGroupId) {
-			_setOriginalParentGroupId = true;
-
-			_originalParentGroupId = _parentGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentGroupId");
 
 		_parentGroupId = parentGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentGroupId() {
-		return _originalParentGroupId;
+		return getOriginalAttributeValue("parentGroupId");
 	}
 
 	@JSON
@@ -737,19 +814,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setLiveGroupId(long liveGroupId) {
-		_columnBitmask |= LIVEGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalLiveGroupId) {
-			_setOriginalLiveGroupId = true;
-
-			_originalLiveGroupId = _liveGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("liveGroupId");
 
 		_liveGroupId = liveGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLiveGroupId() {
-		return _originalLiveGroupId;
+		return getOriginalAttributeValue("liveGroupId");
 	}
 
 	@JSON
@@ -765,17 +841,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setTreePath(String treePath) {
-		_columnBitmask |= TREEPATH_COLUMN_BITMASK;
-
-		if (_originalTreePath == null) {
-			_originalTreePath = _treePath;
-		}
+		_columnBitmask |= _columnBitmasks.get("treePath");
 
 		_treePath = treePath;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTreePath() {
-		return GetterUtil.getString(_originalTreePath);
+		return getOriginalAttributeValue("treePath");
 	}
 
 	@JSON
@@ -791,17 +868,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setGroupKey(String groupKey) {
-		_columnBitmask |= GROUPKEY_COLUMN_BITMASK;
-
-		if (_originalGroupKey == null) {
-			_originalGroupKey = _groupKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupKey");
 
 		_groupKey = groupKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalGroupKey() {
-		return GetterUtil.getString(_originalGroupKey);
+		return getOriginalAttributeValue("groupKey");
 	}
 
 	@JSON
@@ -860,11 +938,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
@@ -913,8 +987,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -973,6 +1052,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -1033,19 +1114,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -1061,6 +1141,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		_columnBitmask |= _columnBitmasks.get("typeSettings");
+
 		_typeSettings = typeSettings;
 	}
 
@@ -1078,6 +1160,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setManualMembership(boolean manualMembership) {
+		_columnBitmask |= _columnBitmasks.get("manualMembership");
+
 		_manualMembership = manualMembership;
 	}
 
@@ -1089,6 +1173,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setMembershipRestriction(int membershipRestriction) {
+		_columnBitmask |= _columnBitmasks.get("membershipRestriction");
+
 		_membershipRestriction = membershipRestriction;
 	}
 
@@ -1105,17 +1191,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setFriendlyURL(String friendlyURL) {
-		_columnBitmask |= FRIENDLYURL_COLUMN_BITMASK;
-
-		if (_originalFriendlyURL == null) {
-			_originalFriendlyURL = _friendlyURL;
-		}
+		_columnBitmask |= _columnBitmasks.get("friendlyURL");
 
 		_friendlyURL = friendlyURL;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFriendlyURL() {
-		return GetterUtil.getString(_originalFriendlyURL);
+		return getOriginalAttributeValue("friendlyURL");
 	}
 
 	@JSON
@@ -1132,19 +1219,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setSite(boolean site) {
-		_columnBitmask |= SITE_COLUMN_BITMASK;
-
-		if (!_setOriginalSite) {
-			_setOriginalSite = true;
-
-			_originalSite = _site;
-		}
+		_columnBitmask |= _columnBitmasks.get("site");
 
 		_site = site;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalSite() {
-		return _originalSite;
+		return getOriginalAttributeValue("site");
 	}
 
 	@JSON
@@ -1155,6 +1241,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setRemoteStagingGroupCount(int remoteStagingGroupCount) {
+		_columnBitmask |= _columnBitmasks.get("remoteStagingGroupCount");
+
 		_remoteStagingGroupCount = remoteStagingGroupCount;
 	}
 
@@ -1172,19 +1260,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setInheritContent(boolean inheritContent) {
-		_columnBitmask |= INHERITCONTENT_COLUMN_BITMASK;
-
-		if (!_setOriginalInheritContent) {
-			_setOriginalInheritContent = true;
-
-			_originalInheritContent = _inheritContent;
-		}
+		_columnBitmask |= _columnBitmasks.get("inheritContent");
 
 		_inheritContent = inheritContent;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalInheritContent() {
-		return _originalInheritContent;
+		return getOriginalAttributeValue("inheritContent");
 	}
 
 	@JSON
@@ -1201,19 +1288,18 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	public long getColumnBitmask() {
@@ -1429,59 +1515,9 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void resetOriginalValues() {
-		GroupModelImpl groupModelImpl = this;
+		_columnBitmask = 0;
 
-		groupModelImpl._originalUuid = groupModelImpl._uuid;
-
-		groupModelImpl._originalGroupId = groupModelImpl._groupId;
-
-		groupModelImpl._setOriginalGroupId = false;
-
-		groupModelImpl._originalCompanyId = groupModelImpl._companyId;
-
-		groupModelImpl._setOriginalCompanyId = false;
-
-		groupModelImpl._originalClassNameId = groupModelImpl._classNameId;
-
-		groupModelImpl._setOriginalClassNameId = false;
-
-		groupModelImpl._originalClassPK = groupModelImpl._classPK;
-
-		groupModelImpl._setOriginalClassPK = false;
-
-		groupModelImpl._originalParentGroupId = groupModelImpl._parentGroupId;
-
-		groupModelImpl._setOriginalParentGroupId = false;
-
-		groupModelImpl._originalLiveGroupId = groupModelImpl._liveGroupId;
-
-		groupModelImpl._setOriginalLiveGroupId = false;
-
-		groupModelImpl._originalTreePath = groupModelImpl._treePath;
-
-		groupModelImpl._originalGroupKey = groupModelImpl._groupKey;
-
-		groupModelImpl._originalName = groupModelImpl._name;
-
-		groupModelImpl._originalType = groupModelImpl._type;
-
-		groupModelImpl._setOriginalType = false;
-
-		groupModelImpl._originalFriendlyURL = groupModelImpl._friendlyURL;
-
-		groupModelImpl._originalSite = groupModelImpl._site;
-
-		groupModelImpl._setOriginalSite = false;
-
-		groupModelImpl._originalInheritContent = groupModelImpl._inheritContent;
-
-		groupModelImpl._setOriginalInheritContent = false;
-
-		groupModelImpl._originalActive = groupModelImpl._active;
-
-		groupModelImpl._setOriginalActive = false;
-
-		groupModelImpl._columnBitmask = 0;
+		_groupCacheModel = (GroupCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1647,56 +1683,192 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<GroupCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<GroupCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap<String, Function<GroupCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", groupCacheModel -> groupCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			groupCacheModel -> groupCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", groupCacheModel -> groupCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", groupCacheModel -> groupCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", groupCacheModel -> groupCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"creatorUserId", groupCacheModel -> groupCacheModel.creatorUserId);
+
+		columnBitmasks.put("creatorUserId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId", groupCacheModel -> groupCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"classPK", groupCacheModel -> groupCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 128L);
+
+		cacheModelGetterFunctions.put(
+			"parentGroupId", groupCacheModel -> groupCacheModel.parentGroupId);
+
+		columnBitmasks.put("parentGroupId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"liveGroupId", groupCacheModel -> groupCacheModel.liveGroupId);
+
+		columnBitmasks.put("liveGroupId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"treePath", groupCacheModel -> groupCacheModel.treePath);
+
+		columnBitmasks.put("treePath", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"groupKey", groupCacheModel -> groupCacheModel.groupKey);
+
+		columnBitmasks.put("groupKey", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"name", groupCacheModel -> groupCacheModel.name);
+
+		columnBitmasks.put("name", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"description", groupCacheModel -> groupCacheModel.description);
+
+		columnBitmasks.put("description", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"type", groupCacheModel -> groupCacheModel.type);
+
+		columnBitmasks.put("type", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"typeSettings", groupCacheModel -> groupCacheModel.typeSettings);
+
+		columnBitmasks.put("typeSettings", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"manualMembership",
+			groupCacheModel -> groupCacheModel.manualMembership);
+
+		columnBitmasks.put("manualMembership", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"membershipRestriction",
+			groupCacheModel -> groupCacheModel.membershipRestriction);
+
+		columnBitmasks.put("membershipRestriction", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"friendlyURL", groupCacheModel -> groupCacheModel.friendlyURL);
+
+		columnBitmasks.put("friendlyURL", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"site", groupCacheModel -> groupCacheModel.site);
+
+		columnBitmasks.put("site", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"remoteStagingGroupCount",
+			groupCacheModel -> groupCacheModel.remoteStagingGroupCount);
+
+		columnBitmasks.put("remoteStagingGroupCount", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"inheritContent",
+			groupCacheModel -> groupCacheModel.inheritContent);
+
+		columnBitmasks.put("inheritContent", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"active", groupCacheModel -> groupCacheModel.active);
+
+		columnBitmasks.put("active", 4194304L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<GroupCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		GroupCacheModel groupCacheModel = _groupCacheModel;
+
+		if (groupCacheModel == null) {
+			groupCacheModel = _dummyGroupCacheModel;
+		}
+
+		return (T)function.apply(groupCacheModel);
+	}
+
+	private static final GroupCacheModel _dummyGroupCacheModel =
+		new GroupCacheModel();
+
+	private GroupCacheModel _groupCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _creatorUserId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _parentGroupId;
-	private long _originalParentGroupId;
-	private boolean _setOriginalParentGroupId;
 	private long _liveGroupId;
-	private long _originalLiveGroupId;
-	private boolean _setOriginalLiveGroupId;
 	private String _treePath;
-	private String _originalTreePath;
 	private String _groupKey;
-	private String _originalGroupKey;
 	private String _name;
 	private String _nameCurrentLanguageId;
-	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _typeSettings;
 	private boolean _manualMembership;
 	private int _membershipRestriction;
 	private String _friendlyURL;
-	private String _originalFriendlyURL;
 	private boolean _site;
-	private boolean _originalSite;
-	private boolean _setOriginalSite;
 	private int _remoteStagingGroupCount;
 	private boolean _inheritContent;
-	private boolean _originalInheritContent;
-	private boolean _setOriginalInheritContent;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private Group _escapedModel;
 

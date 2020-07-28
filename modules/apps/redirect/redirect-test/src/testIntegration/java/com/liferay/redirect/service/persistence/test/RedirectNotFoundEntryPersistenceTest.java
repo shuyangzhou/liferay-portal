@@ -487,14 +487,14 @@ public class RedirectNotFoundEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingRedirectNotFoundEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRedirectNotFoundEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingRedirectNotFoundEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingRedirectNotFoundEntry.getUrl(),
 				ReflectionTestUtil.invoke(
-					existingRedirectNotFoundEntry, "getOriginalUrl",
-					new Class<?>[0])));
+					existingRedirectNotFoundEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "url")));
 	}
 
 	protected RedirectNotFoundEntry addRedirectNotFoundEntry()

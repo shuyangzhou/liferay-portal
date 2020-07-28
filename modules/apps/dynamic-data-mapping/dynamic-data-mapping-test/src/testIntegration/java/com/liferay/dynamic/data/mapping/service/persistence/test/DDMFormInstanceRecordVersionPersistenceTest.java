@@ -586,13 +586,15 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 				existingDDMFormInstanceRecordVersion.getFormInstanceRecordId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingDDMFormInstanceRecordVersion,
-				"getOriginalFormInstanceRecordId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"formInstanceRecordId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDDMFormInstanceRecordVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDDMFormInstanceRecordVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					existingDDMFormInstanceRecordVersion,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"version")));
 	}
 
 	protected DDMFormInstanceRecordVersion addDDMFormInstanceRecordVersion()

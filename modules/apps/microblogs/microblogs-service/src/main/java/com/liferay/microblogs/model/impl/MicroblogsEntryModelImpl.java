@@ -116,20 +116,60 @@ public class MicroblogsEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATORCLASSNAMEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATORCLASSPK_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTMICROBLOGSENTRYID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SOCIALRELATIONTYPE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 128L;
 
 	/**
@@ -402,6 +442,8 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setMicroblogsEntryId(long microblogsEntryId) {
+		_columnBitmask |= _columnBitmasks.get("microblogsEntryId");
+
 		_microblogsEntryId = microblogsEntryId;
 	}
 
@@ -413,19 +455,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -436,13 +477,7 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -463,8 +498,13 @@ public class MicroblogsEntryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -480,6 +520,8 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -491,17 +533,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
-		if (_originalCreateDate == null) {
-			_originalCreateDate = _createDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public Date getOriginalCreateDate() {
-		return _originalCreateDate;
+		return getOriginalAttributeValue("createDate");
 	}
 
 	@JSON
@@ -518,6 +561,8 @@ public class MicroblogsEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -529,19 +574,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCreatorClassNameId(long creatorClassNameId) {
-		_columnBitmask |= CREATORCLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalCreatorClassNameId) {
-			_setOriginalCreatorClassNameId = true;
-
-			_originalCreatorClassNameId = _creatorClassNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("creatorClassNameId");
 
 		_creatorClassNameId = creatorClassNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCreatorClassNameId() {
-		return _originalCreatorClassNameId;
+		return getOriginalAttributeValue("creatorClassNameId");
 	}
 
 	@JSON
@@ -552,19 +596,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCreatorClassPK(long creatorClassPK) {
-		_columnBitmask |= CREATORCLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalCreatorClassPK) {
-			_setOriginalCreatorClassPK = true;
-
-			_originalCreatorClassPK = _creatorClassPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("creatorClassPK");
 
 		_creatorClassPK = creatorClassPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCreatorClassPK() {
-		return _originalCreatorClassPK;
+		return getOriginalAttributeValue("creatorClassPK");
 	}
 
 	@JSON
@@ -580,6 +623,8 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
 		_content = content;
 	}
 
@@ -591,19 +636,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -614,19 +658,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setParentMicroblogsEntryId(long parentMicroblogsEntryId) {
-		_columnBitmask |= PARENTMICROBLOGSENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentMicroblogsEntryId) {
-			_setOriginalParentMicroblogsEntryId = true;
-
-			_originalParentMicroblogsEntryId = _parentMicroblogsEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentMicroblogsEntryId");
 
 		_parentMicroblogsEntryId = parentMicroblogsEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentMicroblogsEntryId() {
-		return _originalParentMicroblogsEntryId;
+		return getOriginalAttributeValue("parentMicroblogsEntryId");
 	}
 
 	@JSON
@@ -637,19 +680,18 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setSocialRelationType(int socialRelationType) {
-		_columnBitmask |= SOCIALRELATIONTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalSocialRelationType) {
-			_setOriginalSocialRelationType = true;
-
-			_originalSocialRelationType = _socialRelationType;
-		}
+		_columnBitmask |= _columnBitmasks.get("socialRelationType");
 
 		_socialRelationType = socialRelationType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalSocialRelationType() {
-		return _originalSocialRelationType;
+		return getOriginalAttributeValue("socialRelationType");
 	}
 
 	public long getColumnBitmask() {
@@ -770,48 +812,11 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MicroblogsEntryModelImpl microblogsEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		microblogsEntryModelImpl._originalCompanyId =
-			microblogsEntryModelImpl._companyId;
+		_columnBitmask = 0;
 
-		microblogsEntryModelImpl._setOriginalCompanyId = false;
-
-		microblogsEntryModelImpl._originalUserId =
-			microblogsEntryModelImpl._userId;
-
-		microblogsEntryModelImpl._setOriginalUserId = false;
-
-		microblogsEntryModelImpl._originalCreateDate =
-			microblogsEntryModelImpl._createDate;
-
-		microblogsEntryModelImpl._setModifiedDate = false;
-
-		microblogsEntryModelImpl._originalCreatorClassNameId =
-			microblogsEntryModelImpl._creatorClassNameId;
-
-		microblogsEntryModelImpl._setOriginalCreatorClassNameId = false;
-
-		microblogsEntryModelImpl._originalCreatorClassPK =
-			microblogsEntryModelImpl._creatorClassPK;
-
-		microblogsEntryModelImpl._setOriginalCreatorClassPK = false;
-
-		microblogsEntryModelImpl._originalType = microblogsEntryModelImpl._type;
-
-		microblogsEntryModelImpl._setOriginalType = false;
-
-		microblogsEntryModelImpl._originalParentMicroblogsEntryId =
-			microblogsEntryModelImpl._parentMicroblogsEntryId;
-
-		microblogsEntryModelImpl._setOriginalParentMicroblogsEntryId = false;
-
-		microblogsEntryModelImpl._originalSocialRelationType =
-			microblogsEntryModelImpl._socialRelationType;
-
-		microblogsEntryModelImpl._setOriginalSocialRelationType = false;
-
-		microblogsEntryModelImpl._columnBitmask = 0;
+		_microblogsEntryCacheModel = (MicroblogsEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -943,34 +948,141 @@ public class MicroblogsEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<MicroblogsEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MicroblogsEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MicroblogsEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"microblogsEntryId",
+			microblogsEntryCacheModel ->
+				microblogsEntryCacheModel.microblogsEntryId);
+
+		columnBitmasks.put("microblogsEntryId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			microblogsEntryCacheModel -> microblogsEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			microblogsEntryCacheModel -> microblogsEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			microblogsEntryCacheModel -> microblogsEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			microblogsEntryCacheModel -> microblogsEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			microblogsEntryCacheModel ->
+				microblogsEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"creatorClassNameId",
+			microblogsEntryCacheModel ->
+				microblogsEntryCacheModel.creatorClassNameId);
+
+		columnBitmasks.put("creatorClassNameId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"creatorClassPK",
+			microblogsEntryCacheModel ->
+				microblogsEntryCacheModel.creatorClassPK);
+
+		columnBitmasks.put("creatorClassPK", 128L);
+
+		cacheModelGetterFunctions.put(
+			"content",
+			microblogsEntryCacheModel -> microblogsEntryCacheModel.content);
+
+		columnBitmasks.put("content", 256L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			microblogsEntryCacheModel -> microblogsEntryCacheModel.type);
+
+		columnBitmasks.put("type", 512L);
+
+		cacheModelGetterFunctions.put(
+			"parentMicroblogsEntryId",
+			microblogsEntryCacheModel ->
+				microblogsEntryCacheModel.parentMicroblogsEntryId);
+
+		columnBitmasks.put("parentMicroblogsEntryId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"socialRelationType",
+			microblogsEntryCacheModel ->
+				microblogsEntryCacheModel.socialRelationType);
+
+		columnBitmasks.put("socialRelationType", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MicroblogsEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MicroblogsEntryCacheModel microblogsEntryCacheModel =
+			_microblogsEntryCacheModel;
+
+		if (microblogsEntryCacheModel == null) {
+			microblogsEntryCacheModel = _dummyMicroblogsEntryCacheModel;
+		}
+
+		return (T)function.apply(microblogsEntryCacheModel);
+	}
+
+	private static final MicroblogsEntryCacheModel
+		_dummyMicroblogsEntryCacheModel = new MicroblogsEntryCacheModel();
+
+	private MicroblogsEntryCacheModel _microblogsEntryCacheModel;
 	private long _microblogsEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
-	private Date _originalCreateDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _creatorClassNameId;
-	private long _originalCreatorClassNameId;
-	private boolean _setOriginalCreatorClassNameId;
 	private long _creatorClassPK;
-	private long _originalCreatorClassPK;
-	private boolean _setOriginalCreatorClassPK;
 	private String _content;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private long _parentMicroblogsEntryId;
-	private long _originalParentMicroblogsEntryId;
-	private boolean _setOriginalParentMicroblogsEntryId;
 	private int _socialRelationType;
-	private int _originalSocialRelationType;
-	private boolean _setOriginalSocialRelationType;
 	private long _columnBitmask;
 	private MicroblogsEntry _escapedModel;
 

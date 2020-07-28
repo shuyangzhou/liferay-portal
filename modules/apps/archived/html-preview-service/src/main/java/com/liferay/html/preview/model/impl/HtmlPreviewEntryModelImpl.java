@@ -108,12 +108,32 @@ public class HtmlPreviewEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HTMLPREVIEWENTRYID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -322,6 +342,8 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setHtmlPreviewEntryId(long htmlPreviewEntryId) {
+		_columnBitmask |= _columnBitmasks.get("htmlPreviewEntryId");
+
 		_htmlPreviewEntryId = htmlPreviewEntryId;
 	}
 
@@ -332,19 +354,18 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -354,6 +375,8 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -364,6 +387,8 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -395,6 +420,8 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -405,6 +432,8 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -420,6 +449,8 @@ public class HtmlPreviewEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -451,19 +482,18 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -473,19 +503,18 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -495,6 +524,8 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("fileEntryId");
+
 		_fileEntryId = fileEntryId;
 	}
 
@@ -612,26 +643,12 @@ public class HtmlPreviewEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		HtmlPreviewEntryModelImpl htmlPreviewEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		htmlPreviewEntryModelImpl._originalGroupId =
-			htmlPreviewEntryModelImpl._groupId;
+		_columnBitmask = 0;
 
-		htmlPreviewEntryModelImpl._setOriginalGroupId = false;
-
-		htmlPreviewEntryModelImpl._setModifiedDate = false;
-
-		htmlPreviewEntryModelImpl._originalClassNameId =
-			htmlPreviewEntryModelImpl._classNameId;
-
-		htmlPreviewEntryModelImpl._setOriginalClassNameId = false;
-
-		htmlPreviewEntryModelImpl._originalClassPK =
-			htmlPreviewEntryModelImpl._classPK;
-
-		htmlPreviewEntryModelImpl._setOriginalClassPK = false;
-
-		htmlPreviewEntryModelImpl._columnBitmask = 0;
+		_htmlPreviewEntryCacheModel =
+			(HtmlPreviewEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -752,10 +769,117 @@ public class HtmlPreviewEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<HtmlPreviewEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<HtmlPreviewEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<HtmlPreviewEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"htmlPreviewEntryId",
+			htmlPreviewEntryCacheModel ->
+				htmlPreviewEntryCacheModel.htmlPreviewEntryId);
+
+		columnBitmasks.put("htmlPreviewEntryId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			htmlPreviewEntryCacheModel -> htmlPreviewEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			htmlPreviewEntryCacheModel -> htmlPreviewEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			htmlPreviewEntryCacheModel -> htmlPreviewEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			htmlPreviewEntryCacheModel -> htmlPreviewEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			htmlPreviewEntryCacheModel ->
+				htmlPreviewEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			htmlPreviewEntryCacheModel ->
+				htmlPreviewEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			htmlPreviewEntryCacheModel ->
+				htmlPreviewEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			htmlPreviewEntryCacheModel -> htmlPreviewEntryCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 256L);
+
+		cacheModelGetterFunctions.put(
+			"fileEntryId",
+			htmlPreviewEntryCacheModel ->
+				htmlPreviewEntryCacheModel.fileEntryId);
+
+		columnBitmasks.put("fileEntryId", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<HtmlPreviewEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		HtmlPreviewEntryCacheModel htmlPreviewEntryCacheModel =
+			_htmlPreviewEntryCacheModel;
+
+		if (htmlPreviewEntryCacheModel == null) {
+			htmlPreviewEntryCacheModel = _dummyHtmlPreviewEntryCacheModel;
+		}
+
+		return (T)function.apply(htmlPreviewEntryCacheModel);
+	}
+
+	private static final HtmlPreviewEntryCacheModel
+		_dummyHtmlPreviewEntryCacheModel = new HtmlPreviewEntryCacheModel();
+
+	private HtmlPreviewEntryCacheModel _htmlPreviewEntryCacheModel;
 	private long _htmlPreviewEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -763,11 +887,7 @@ public class HtmlPreviewEntryModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _fileEntryId;
 	private long _columnBitmask;
 	private HtmlPreviewEntry _escapedModel;

@@ -538,66 +538,66 @@ public class SocialActivityCounterPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityCounter.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityCounter, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityCounter.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityCounter, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityCounter.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityCounter, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSocialActivityCounter.getName(),
 				ReflectionTestUtil.invoke(
-					existingSocialActivityCounter, "getOriginalName",
-					new Class<?>[0])));
+					existingSocialActivityCounter, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialActivityCounter.getOwnerType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivityCounter, "getOriginalOwnerType",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "ownerType"));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialActivityCounter.getStartPeriod()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivityCounter, "getOriginalStartPeriod",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "startPeriod"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityCounter.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityCounter, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityCounter.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityCounter, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialActivityCounter.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityCounter, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSocialActivityCounter.getName(),
 				ReflectionTestUtil.invoke(
-					existingSocialActivityCounter, "getOriginalName",
-					new Class<?>[0])));
+					existingSocialActivityCounter, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialActivityCounter.getOwnerType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivityCounter, "getOriginalOwnerType",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "ownerType"));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialActivityCounter.getEndPeriod()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivityCounter, "getOriginalEndPeriod",
-				new Class<?>[0]));
+				existingSocialActivityCounter, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "endPeriod"));
 	}
 
 	protected SocialActivityCounter addSocialActivityCounter()

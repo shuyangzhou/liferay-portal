@@ -1974,8 +1974,10 @@ public class RecentLayoutSetBranchPersistenceImpl
 			 _finderPathFetchByU_L.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				recentLayoutSetBranchModelImpl.getOriginalUserId(),
-				recentLayoutSetBranchModelImpl.getOriginalLayoutSetId()
+				recentLayoutSetBranchModelImpl.getOriginalAttributeValue(
+					"userId"),
+				recentLayoutSetBranchModelImpl.getOriginalAttributeValue(
+					"layoutSetId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByU_L, args);
@@ -2178,7 +2180,8 @@ public class RecentLayoutSetBranchPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					recentLayoutSetBranchModelImpl.getOriginalGroupId()
+					recentLayoutSetBranchModelImpl.getOriginalAttributeValue(
+						"groupId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
@@ -2199,7 +2202,8 @@ public class RecentLayoutSetBranchPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					recentLayoutSetBranchModelImpl.getOriginalUserId()
+					recentLayoutSetBranchModelImpl.getOriginalAttributeValue(
+						"userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -2220,8 +2224,8 @@ public class RecentLayoutSetBranchPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					recentLayoutSetBranchModelImpl.
-						getOriginalLayoutSetBranchId()
+					recentLayoutSetBranchModelImpl.getOriginalAttributeValue(
+						"layoutSetBranchId")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -2537,7 +2541,7 @@ public class RecentLayoutSetBranchPersistenceImpl
 			RecentLayoutSetBranchImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			RecentLayoutSetBranchModelImpl.GROUPID_COLUMN_BITMASK);
+			RecentLayoutSetBranchModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2555,7 +2559,7 @@ public class RecentLayoutSetBranchPersistenceImpl
 			RecentLayoutSetBranchImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
-			RecentLayoutSetBranchModelImpl.USERID_COLUMN_BITMASK);
+			RecentLayoutSetBranchModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2573,7 +2577,8 @@ public class RecentLayoutSetBranchPersistenceImpl
 			RecentLayoutSetBranchImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByLayoutSetBranchId", new String[] {Long.class.getName()},
-			RecentLayoutSetBranchModelImpl.LAYOUTSETBRANCHID_COLUMN_BITMASK);
+			RecentLayoutSetBranchModelImpl.getColumnBitmask(
+				"layoutSetBranchId"));
 
 		_finderPathCountByLayoutSetBranchId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2583,8 +2588,8 @@ public class RecentLayoutSetBranchPersistenceImpl
 			RecentLayoutSetBranchImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByU_L",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			RecentLayoutSetBranchModelImpl.USERID_COLUMN_BITMASK |
-			RecentLayoutSetBranchModelImpl.LAYOUTSETID_COLUMN_BITMASK);
+			RecentLayoutSetBranchModelImpl.getColumnBitmask("userId") |
+			RecentLayoutSetBranchModelImpl.getColumnBitmask("layoutSetId"));
 
 		_finderPathCountByU_L = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_L",

@@ -2426,8 +2426,8 @@ public class LayoutSetPersistenceImpl
 			 _finderPathFetchByG_P.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				layoutSetModelImpl.getOriginalGroupId(),
-				layoutSetModelImpl.getOriginalPrivateLayout()
+				layoutSetModelImpl.getOriginalAttributeValue("groupId"),
+				layoutSetModelImpl.getOriginalAttributeValue("privateLayout")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByG_P, args);
@@ -2448,8 +2448,8 @@ public class LayoutSetPersistenceImpl
 			 _finderPathFetchByP_L.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				layoutSetModelImpl.getOriginalPrivateLayout(),
-				layoutSetModelImpl.getOriginalLogoId()
+				layoutSetModelImpl.getOriginalAttributeValue("privateLayout"),
+				layoutSetModelImpl.getOriginalAttributeValue("logoId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByP_L, args);
@@ -2681,7 +2681,7 @@ public class LayoutSetPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					layoutSetModelImpl.getOriginalGroupId()
+					layoutSetModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
@@ -2700,7 +2700,8 @@ public class LayoutSetPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					layoutSetModelImpl.getOriginalLayoutSetPrototypeUuid()
+					layoutSetModelImpl.getOriginalAttributeValue(
+						"layoutSetPrototypeUuid")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -2725,8 +2726,9 @@ public class LayoutSetPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					layoutSetModelImpl.getOriginalCompanyId(),
-					layoutSetModelImpl.getOriginalLayoutSetPrototypeUuid()
+					layoutSetModelImpl.getOriginalAttributeValue("companyId"),
+					layoutSetModelImpl.getOriginalAttributeValue(
+						"layoutSetPrototypeUuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByC_L, args);
@@ -3218,7 +3220,7 @@ public class LayoutSetPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			LayoutSetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			LayoutSetModelImpl.GROUPID_COLUMN_BITMASK);
+			LayoutSetModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3237,7 +3239,7 @@ public class LayoutSetPersistenceImpl
 				LayoutSetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByLayoutSetPrototypeUuid",
 				new String[] {String.class.getName()},
-				LayoutSetModelImpl.LAYOUTSETPROTOTYPEUUID_COLUMN_BITMASK);
+				LayoutSetModelImpl.getColumnBitmask("layoutSetPrototypeUuid"));
 
 		_finderPathCountByLayoutSetPrototypeUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3247,8 +3249,8 @@ public class LayoutSetPersistenceImpl
 		_finderPathFetchByG_P = new FinderPath(
 			LayoutSetImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByG_P",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			LayoutSetModelImpl.GROUPID_COLUMN_BITMASK |
-			LayoutSetModelImpl.PRIVATELAYOUT_COLUMN_BITMASK);
+			LayoutSetModelImpl.getColumnBitmask("groupId") |
+			LayoutSetModelImpl.getColumnBitmask("privateLayout"));
 
 		_finderPathCountByG_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P",
@@ -3267,8 +3269,8 @@ public class LayoutSetPersistenceImpl
 			LayoutSetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_L",
 			new String[] {Long.class.getName(), String.class.getName()},
-			LayoutSetModelImpl.COMPANYID_COLUMN_BITMASK |
-			LayoutSetModelImpl.LAYOUTSETPROTOTYPEUUID_COLUMN_BITMASK);
+			LayoutSetModelImpl.getColumnBitmask("companyId") |
+			LayoutSetModelImpl.getColumnBitmask("layoutSetPrototypeUuid"));
 
 		_finderPathCountByC_L = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L",
@@ -3277,8 +3279,8 @@ public class LayoutSetPersistenceImpl
 		_finderPathFetchByP_L = new FinderPath(
 			LayoutSetImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByP_L",
 			new String[] {Boolean.class.getName(), Long.class.getName()},
-			LayoutSetModelImpl.PRIVATELAYOUT_COLUMN_BITMASK |
-			LayoutSetModelImpl.LOGOID_COLUMN_BITMASK);
+			LayoutSetModelImpl.getColumnBitmask("privateLayout") |
+			LayoutSetModelImpl.getColumnBitmask("logoId"));
 
 		_finderPathCountByP_L = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByP_L",

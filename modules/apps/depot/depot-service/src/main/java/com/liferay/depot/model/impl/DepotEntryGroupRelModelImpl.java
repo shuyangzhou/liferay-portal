@@ -104,14 +104,39 @@ public class DepotEntryGroupRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMSTRUCTURESAVAILABLE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEPOTENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEARCHABLE_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOGROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEPOTENTRYGROUPRELID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -361,6 +386,8 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -372,6 +399,8 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setDepotEntryGroupRelId(long depotEntryGroupRelId) {
+		_columnBitmask |= _columnBitmasks.get("depotEntryGroupRelId");
+
 		_depotEntryGroupRelId = depotEntryGroupRelId;
 	}
 
@@ -383,6 +412,8 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -400,19 +431,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setDdmStructuresAvailable(boolean ddmStructuresAvailable) {
-		_columnBitmask |= DDMSTRUCTURESAVAILABLE_COLUMN_BITMASK;
-
-		if (!_setOriginalDdmStructuresAvailable) {
-			_setOriginalDdmStructuresAvailable = true;
-
-			_originalDdmStructuresAvailable = _ddmStructuresAvailable;
-		}
+		_columnBitmask |= _columnBitmasks.get("ddmStructuresAvailable");
 
 		_ddmStructuresAvailable = ddmStructuresAvailable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDdmStructuresAvailable() {
-		return _originalDdmStructuresAvailable;
+		return getOriginalAttributeValue("ddmStructuresAvailable");
 	}
 
 	@JSON
@@ -423,19 +453,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setDepotEntryId(long depotEntryId) {
-		_columnBitmask |= DEPOTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalDepotEntryId) {
-			_setOriginalDepotEntryId = true;
-
-			_originalDepotEntryId = _depotEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("depotEntryId");
 
 		_depotEntryId = depotEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDepotEntryId() {
-		return _originalDepotEntryId;
+		return getOriginalAttributeValue("depotEntryId");
 	}
 
 	@JSON
@@ -452,19 +481,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setSearchable(boolean searchable) {
-		_columnBitmask |= SEARCHABLE_COLUMN_BITMASK;
-
-		if (!_setOriginalSearchable) {
-			_setOriginalSearchable = true;
-
-			_originalSearchable = _searchable;
-		}
+		_columnBitmask |= _columnBitmasks.get("searchable");
 
 		_searchable = searchable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalSearchable() {
-		return _originalSearchable;
+		return getOriginalAttributeValue("searchable");
 	}
 
 	@JSON
@@ -475,19 +503,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setToGroupId(long toGroupId) {
-		_columnBitmask |= TOGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalToGroupId) {
-			_setOriginalToGroupId = true;
-
-			_originalToGroupId = _toGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("toGroupId");
 
 		_toGroupId = toGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalToGroupId() {
-		return _originalToGroupId;
+		return getOriginalAttributeValue("toGroupId");
 	}
 
 	public long getColumnBitmask() {
@@ -605,29 +632,10 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DepotEntryGroupRelModelImpl depotEntryGroupRelModelImpl = this;
+		_columnBitmask = 0;
 
-		depotEntryGroupRelModelImpl._originalDdmStructuresAvailable =
-			depotEntryGroupRelModelImpl._ddmStructuresAvailable;
-
-		depotEntryGroupRelModelImpl._setOriginalDdmStructuresAvailable = false;
-
-		depotEntryGroupRelModelImpl._originalDepotEntryId =
-			depotEntryGroupRelModelImpl._depotEntryId;
-
-		depotEntryGroupRelModelImpl._setOriginalDepotEntryId = false;
-
-		depotEntryGroupRelModelImpl._originalSearchable =
-			depotEntryGroupRelModelImpl._searchable;
-
-		depotEntryGroupRelModelImpl._setOriginalSearchable = false;
-
-		depotEntryGroupRelModelImpl._originalToGroupId =
-			depotEntryGroupRelModelImpl._toGroupId;
-
-		depotEntryGroupRelModelImpl._setOriginalToGroupId = false;
-
-		depotEntryGroupRelModelImpl._columnBitmask = 0;
+		_depotEntryGroupRelCacheModel =
+			(DepotEntryGroupRelCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -724,21 +732,106 @@ public class DepotEntryGroupRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DepotEntryGroupRelCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DepotEntryGroupRelCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DepotEntryGroupRelCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"depotEntryGroupRelId",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.depotEntryGroupRelId);
+
+		columnBitmasks.put("depotEntryGroupRelId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"ddmStructuresAvailable",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.ddmStructuresAvailable);
+
+		columnBitmasks.put("ddmStructuresAvailable", 8L);
+
+		cacheModelGetterFunctions.put(
+			"depotEntryId",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.depotEntryId);
+
+		columnBitmasks.put("depotEntryId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"searchable",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.searchable);
+
+		columnBitmasks.put("searchable", 32L);
+
+		cacheModelGetterFunctions.put(
+			"toGroupId",
+			depotEntryGroupRelCacheModel ->
+				depotEntryGroupRelCacheModel.toGroupId);
+
+		columnBitmasks.put("toGroupId", 64L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DepotEntryGroupRelCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DepotEntryGroupRelCacheModel depotEntryGroupRelCacheModel =
+			_depotEntryGroupRelCacheModel;
+
+		if (depotEntryGroupRelCacheModel == null) {
+			depotEntryGroupRelCacheModel = _dummyDepotEntryGroupRelCacheModel;
+		}
+
+		return (T)function.apply(depotEntryGroupRelCacheModel);
+	}
+
+	private static final DepotEntryGroupRelCacheModel
+		_dummyDepotEntryGroupRelCacheModel = new DepotEntryGroupRelCacheModel();
+
+	private DepotEntryGroupRelCacheModel _depotEntryGroupRelCacheModel;
 	private long _mvccVersion;
 	private long _depotEntryGroupRelId;
 	private long _companyId;
 	private boolean _ddmStructuresAvailable;
-	private boolean _originalDdmStructuresAvailable;
-	private boolean _setOriginalDdmStructuresAvailable;
 	private long _depotEntryId;
-	private long _originalDepotEntryId;
-	private boolean _setOriginalDepotEntryId;
 	private boolean _searchable;
-	private boolean _originalSearchable;
-	private boolean _setOriginalSearchable;
 	private long _toGroupId;
-	private long _originalToGroupId;
-	private boolean _setOriginalToGroupId;
 	private long _columnBitmask;
 	private DepotEntryGroupRel _escapedModel;
 

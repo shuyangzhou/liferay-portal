@@ -98,12 +98,32 @@ public class DLFileVersionPreviewModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILEENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILEVERSIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PREVIEWSTATUS_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DLFILEVERSIONPREVIEWID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -299,7 +319,7 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setDlFileVersionPreviewId(long dlFileVersionPreviewId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("dlFileVersionPreviewId");
 
 		_dlFileVersionPreviewId = dlFileVersionPreviewId;
 	}
@@ -311,6 +331,8 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -321,6 +343,8 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -331,19 +355,18 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
-		_columnBitmask |= FILEENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalFileEntryId) {
-			_setOriginalFileEntryId = true;
-
-			_originalFileEntryId = _fileEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("fileEntryId");
 
 		_fileEntryId = fileEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFileEntryId() {
-		return _originalFileEntryId;
+		return getOriginalAttributeValue("fileEntryId");
 	}
 
 	@Override
@@ -353,19 +376,18 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setFileVersionId(long fileVersionId) {
-		_columnBitmask |= FILEVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalFileVersionId) {
-			_setOriginalFileVersionId = true;
-
-			_originalFileVersionId = _fileVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("fileVersionId");
 
 		_fileVersionId = fileVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFileVersionId() {
-		return _originalFileVersionId;
+		return getOriginalAttributeValue("fileVersionId");
 	}
 
 	@Override
@@ -375,19 +397,18 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setPreviewStatus(int previewStatus) {
-		_columnBitmask |= PREVIEWSTATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalPreviewStatus) {
-			_setOriginalPreviewStatus = true;
-
-			_originalPreviewStatus = _previewStatus;
-		}
+		_columnBitmask |= _columnBitmasks.get("previewStatus");
 
 		_previewStatus = previewStatus;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalPreviewStatus() {
-		return _originalPreviewStatus;
+		return getOriginalAttributeValue("previewStatus");
 	}
 
 	public long getColumnBitmask() {
@@ -516,24 +537,10 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileVersionPreviewModelImpl dlFileVersionPreviewModelImpl = this;
+		_columnBitmask = 0;
 
-		dlFileVersionPreviewModelImpl._originalFileEntryId =
-			dlFileVersionPreviewModelImpl._fileEntryId;
-
-		dlFileVersionPreviewModelImpl._setOriginalFileEntryId = false;
-
-		dlFileVersionPreviewModelImpl._originalFileVersionId =
-			dlFileVersionPreviewModelImpl._fileVersionId;
-
-		dlFileVersionPreviewModelImpl._setOriginalFileVersionId = false;
-
-		dlFileVersionPreviewModelImpl._originalPreviewStatus =
-			dlFileVersionPreviewModelImpl._previewStatus;
-
-		dlFileVersionPreviewModelImpl._setOriginalPreviewStatus = false;
-
-		dlFileVersionPreviewModelImpl._columnBitmask = 0;
+		_dlFileVersionPreviewCacheModel =
+			(DLFileVersionPreviewCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -629,18 +636,101 @@ public class DLFileVersionPreviewModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DLFileVersionPreviewCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DLFileVersionPreviewCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<DLFileVersionPreviewCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"dlFileVersionPreviewId",
+			dlFileVersionPreviewCacheModel ->
+				dlFileVersionPreviewCacheModel.dlFileVersionPreviewId);
+
+		columnBitmasks.put("dlFileVersionPreviewId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			dlFileVersionPreviewCacheModel ->
+				dlFileVersionPreviewCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			dlFileVersionPreviewCacheModel ->
+				dlFileVersionPreviewCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"fileEntryId",
+			dlFileVersionPreviewCacheModel ->
+				dlFileVersionPreviewCacheModel.fileEntryId);
+
+		columnBitmasks.put("fileEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"fileVersionId",
+			dlFileVersionPreviewCacheModel ->
+				dlFileVersionPreviewCacheModel.fileVersionId);
+
+		columnBitmasks.put("fileVersionId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"previewStatus",
+			dlFileVersionPreviewCacheModel ->
+				dlFileVersionPreviewCacheModel.previewStatus);
+
+		columnBitmasks.put("previewStatus", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DLFileVersionPreviewCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DLFileVersionPreviewCacheModel dlFileVersionPreviewCacheModel =
+			_dlFileVersionPreviewCacheModel;
+
+		if (dlFileVersionPreviewCacheModel == null) {
+			dlFileVersionPreviewCacheModel =
+				_dummyDLFileVersionPreviewCacheModel;
+		}
+
+		return (T)function.apply(dlFileVersionPreviewCacheModel);
+	}
+
+	private static final DLFileVersionPreviewCacheModel
+		_dummyDLFileVersionPreviewCacheModel =
+			new DLFileVersionPreviewCacheModel();
+
+	private DLFileVersionPreviewCacheModel _dlFileVersionPreviewCacheModel;
 	private long _dlFileVersionPreviewId;
 	private long _groupId;
 	private long _companyId;
 	private long _fileEntryId;
-	private long _originalFileEntryId;
-	private boolean _setOriginalFileEntryId;
 	private long _fileVersionId;
-	private long _originalFileVersionId;
-	private boolean _setOriginalFileVersionId;
 	private int _previewStatus;
-	private int _originalPreviewStatus;
-	private boolean _setOriginalPreviewStatus;
 	private long _columnBitmask;
 	private DLFileVersionPreview _escapedModel;
 

@@ -450,18 +450,18 @@ public class DDMStructureLinkPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLink.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLink, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingDDMStructureLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLink.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLink, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingDDMStructureLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertEquals(
 			Long.valueOf(existingDDMStructureLink.getStructureId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLink, "getOriginalStructureId",
-				new Class<?>[0]));
+				existingDDMStructureLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "structureId"));
 	}
 
 	protected DDMStructureLink addDDMStructureLink() throws Exception {

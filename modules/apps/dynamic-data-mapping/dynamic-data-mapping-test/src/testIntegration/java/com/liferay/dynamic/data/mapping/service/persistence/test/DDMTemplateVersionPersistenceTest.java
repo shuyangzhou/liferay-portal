@@ -524,14 +524,14 @@ public class DDMTemplateVersionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDDMTemplateVersion.getTemplateId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMTemplateVersion, "getOriginalTemplateId",
-				new Class<?>[0]));
+				existingDDMTemplateVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "templateId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDDMTemplateVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDDMTemplateVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					existingDDMTemplateVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "version")));
 	}
 
 	protected DDMTemplateVersion addDDMTemplateVersion() throws Exception {

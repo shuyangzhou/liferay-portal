@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -104,16 +103,46 @@ public class DDMStorageLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STRUCTUREID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STRUCTUREVERSIONID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STORAGELINKID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -312,6 +341,8 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -322,6 +353,8 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -337,17 +370,18 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -357,6 +391,8 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setStorageLinkId(long storageLinkId) {
+		_columnBitmask |= _columnBitmasks.get("storageLinkId");
+
 		_storageLinkId = storageLinkId;
 	}
 
@@ -367,19 +403,18 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -409,6 +444,8 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_columnBitmask |= _columnBitmasks.get("classNameId");
+
 		_classNameId = classNameId;
 	}
 
@@ -419,19 +456,18 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -441,19 +477,18 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setStructureId(long structureId) {
-		_columnBitmask |= STRUCTUREID_COLUMN_BITMASK;
-
-		if (!_setOriginalStructureId) {
-			_setOriginalStructureId = true;
-
-			_originalStructureId = _structureId;
-		}
+		_columnBitmask |= _columnBitmasks.get("structureId");
 
 		_structureId = structureId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalStructureId() {
-		return _originalStructureId;
+		return getOriginalAttributeValue("structureId");
 	}
 
 	@Override
@@ -463,19 +498,18 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void setStructureVersionId(long structureVersionId) {
-		_columnBitmask |= STRUCTUREVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalStructureVersionId) {
-			_setOriginalStructureVersionId = true;
-
-			_originalStructureVersionId = _structureVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("structureVersionId");
 
 		_structureVersionId = structureVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalStructureVersionId() {
-		return _originalStructureVersionId;
+		return getOriginalAttributeValue("structureVersionId");
 	}
 
 	public long getColumnBitmask() {
@@ -591,31 +625,9 @@ public class DDMStorageLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMStorageLinkModelImpl ddmStorageLinkModelImpl = this;
+		_columnBitmask = 0;
 
-		ddmStorageLinkModelImpl._originalUuid = ddmStorageLinkModelImpl._uuid;
-
-		ddmStorageLinkModelImpl._originalCompanyId =
-			ddmStorageLinkModelImpl._companyId;
-
-		ddmStorageLinkModelImpl._setOriginalCompanyId = false;
-
-		ddmStorageLinkModelImpl._originalClassPK =
-			ddmStorageLinkModelImpl._classPK;
-
-		ddmStorageLinkModelImpl._setOriginalClassPK = false;
-
-		ddmStorageLinkModelImpl._originalStructureId =
-			ddmStorageLinkModelImpl._structureId;
-
-		ddmStorageLinkModelImpl._setOriginalStructureId = false;
-
-		ddmStorageLinkModelImpl._originalStructureVersionId =
-			ddmStorageLinkModelImpl._structureVersionId;
-
-		ddmStorageLinkModelImpl._setOriginalStructureVersionId = false;
-
-		ddmStorageLinkModelImpl._columnBitmask = 0;
+		_ddmStorageLinkCacheModel = (DDMStorageLinkCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -720,24 +732,113 @@ public class DDMStorageLinkModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<DDMStorageLinkCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DDMStorageLinkCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DDMStorageLinkCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ddmStorageLinkCacheModel ->
+				ddmStorageLinkCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"storageLinkId",
+			ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.storageLinkId);
+
+		columnBitmasks.put("storageLinkId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 64L);
+
+		cacheModelGetterFunctions.put(
+			"structureId",
+			ddmStorageLinkCacheModel -> ddmStorageLinkCacheModel.structureId);
+
+		columnBitmasks.put("structureId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"structureVersionId",
+			ddmStorageLinkCacheModel ->
+				ddmStorageLinkCacheModel.structureVersionId);
+
+		columnBitmasks.put("structureVersionId", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DDMStorageLinkCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DDMStorageLinkCacheModel ddmStorageLinkCacheModel =
+			_ddmStorageLinkCacheModel;
+
+		if (ddmStorageLinkCacheModel == null) {
+			ddmStorageLinkCacheModel = _dummyDDMStorageLinkCacheModel;
+		}
+
+		return (T)function.apply(ddmStorageLinkCacheModel);
+	}
+
+	private static final DDMStorageLinkCacheModel
+		_dummyDDMStorageLinkCacheModel = new DDMStorageLinkCacheModel();
+
+	private DDMStorageLinkCacheModel _ddmStorageLinkCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _storageLinkId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _classNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _structureId;
-	private long _originalStructureId;
-	private boolean _setOriginalStructureId;
 	private long _structureVersionId;
-	private long _originalStructureVersionId;
-	private boolean _setOriginalStructureVersionId;
 	private long _columnBitmask;
 	private DDMStorageLink _escapedModel;
 

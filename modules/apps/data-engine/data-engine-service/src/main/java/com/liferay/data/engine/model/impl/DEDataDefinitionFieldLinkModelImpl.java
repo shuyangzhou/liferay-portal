@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -111,20 +110,60 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMSTRUCTUREID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FIELDNAME_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEDATADEFINITIONFIELDLINKID_COLUMN_BITMASK = 128L;
 
 	/**
@@ -358,17 +397,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -380,6 +420,8 @@ public class DEDataDefinitionFieldLinkModelImpl
 	public void setDeDataDefinitionFieldLinkId(
 		long deDataDefinitionFieldLinkId) {
 
+		_columnBitmask |= _columnBitmasks.get("deDataDefinitionFieldLinkId");
+
 		_deDataDefinitionFieldLinkId = deDataDefinitionFieldLinkId;
 	}
 
@@ -390,19 +432,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -412,19 +453,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -434,6 +474,8 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -449,6 +491,8 @@ public class DEDataDefinitionFieldLinkModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -480,19 +524,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -502,19 +545,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -524,19 +566,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setDdmStructureId(long ddmStructureId) {
-		_columnBitmask |= DDMSTRUCTUREID_COLUMN_BITMASK;
-
-		if (!_setOriginalDdmStructureId) {
-			_setOriginalDdmStructureId = true;
-
-			_originalDdmStructureId = _ddmStructureId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ddmStructureId");
 
 		_ddmStructureId = ddmStructureId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDdmStructureId() {
-		return _originalDdmStructureId;
+		return getOriginalAttributeValue("ddmStructureId");
 	}
 
 	@Override
@@ -551,17 +592,18 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setFieldName(String fieldName) {
-		_columnBitmask |= FIELDNAME_COLUMN_BITMASK;
-
-		if (_originalFieldName == null) {
-			_originalFieldName = _fieldName;
-		}
+		_columnBitmask |= _columnBitmasks.get("fieldName");
 
 		_fieldName = fieldName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFieldName() {
-		return GetterUtil.getString(_originalFieldName);
+		return getOriginalAttributeValue("fieldName");
 	}
 
 	@Override
@@ -571,6 +613,8 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -701,43 +745,12 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DEDataDefinitionFieldLinkModelImpl deDataDefinitionFieldLinkModelImpl =
-			this;
+		_setModifiedDate = false;
 
-		deDataDefinitionFieldLinkModelImpl._originalUuid =
-			deDataDefinitionFieldLinkModelImpl._uuid;
+		_columnBitmask = 0;
 
-		deDataDefinitionFieldLinkModelImpl._originalGroupId =
-			deDataDefinitionFieldLinkModelImpl._groupId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalGroupId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalCompanyId =
-			deDataDefinitionFieldLinkModelImpl._companyId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalCompanyId = false;
-
-		deDataDefinitionFieldLinkModelImpl._setModifiedDate = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalClassNameId =
-			deDataDefinitionFieldLinkModelImpl._classNameId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalClassNameId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalClassPK =
-			deDataDefinitionFieldLinkModelImpl._classPK;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalClassPK = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalDdmStructureId =
-			deDataDefinitionFieldLinkModelImpl._ddmStructureId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalDdmStructureId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalFieldName =
-			deDataDefinitionFieldLinkModelImpl._fieldName;
-
-		deDataDefinitionFieldLinkModelImpl._columnBitmask = 0;
+		_deDataDefinitionFieldLinkCacheModel =
+			(DEDataDefinitionFieldLinkCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -884,29 +897,144 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<DEDataDefinitionFieldLinkCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DEDataDefinitionFieldLinkCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<DEDataDefinitionFieldLinkCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 1L);
+
+		cacheModelGetterFunctions.put(
+			"deDataDefinitionFieldLinkId",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.
+					deDataDefinitionFieldLinkId);
+
+		columnBitmasks.put("deDataDefinitionFieldLinkId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 128L);
+
+		cacheModelGetterFunctions.put(
+			"ddmStructureId",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.ddmStructureId);
+
+		columnBitmasks.put("ddmStructureId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"fieldName",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.fieldName);
+
+		columnBitmasks.put("fieldName", 512L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			deDataDefinitionFieldLinkCacheModel ->
+				deDataDefinitionFieldLinkCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 1024L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DEDataDefinitionFieldLinkCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DEDataDefinitionFieldLinkCacheModel
+			deDataDefinitionFieldLinkCacheModel =
+				_deDataDefinitionFieldLinkCacheModel;
+
+		if (deDataDefinitionFieldLinkCacheModel == null) {
+			deDataDefinitionFieldLinkCacheModel =
+				_dummyDEDataDefinitionFieldLinkCacheModel;
+		}
+
+		return (T)function.apply(deDataDefinitionFieldLinkCacheModel);
+	}
+
+	private static final DEDataDefinitionFieldLinkCacheModel
+		_dummyDEDataDefinitionFieldLinkCacheModel =
+			new DEDataDefinitionFieldLinkCacheModel();
+
+	private DEDataDefinitionFieldLinkCacheModel
+		_deDataDefinitionFieldLinkCacheModel;
 	private String _uuid;
-	private String _originalUuid;
 	private long _deDataDefinitionFieldLinkId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _ddmStructureId;
-	private long _originalDdmStructureId;
-	private boolean _setOriginalDdmStructureId;
 	private String _fieldName;
-	private String _originalFieldName;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private DEDataDefinitionFieldLink _escapedModel;

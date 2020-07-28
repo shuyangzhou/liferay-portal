@@ -117,8 +117,18 @@ public class BrowserTrackerModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long BROWSERTRACKERID_COLUMN_BITMASK = 2L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -287,6 +297,8 @@ public class BrowserTrackerModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -297,6 +309,8 @@ public class BrowserTrackerModelImpl
 
 	@Override
 	public void setBrowserTrackerId(long browserTrackerId) {
+		_columnBitmask |= _columnBitmasks.get("browserTrackerId");
+
 		_browserTrackerId = browserTrackerId;
 	}
 
@@ -307,6 +321,8 @@ public class BrowserTrackerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -317,13 +333,7 @@ public class BrowserTrackerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -344,8 +354,13 @@ public class BrowserTrackerModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -355,6 +370,8 @@ public class BrowserTrackerModelImpl
 
 	@Override
 	public void setBrowserKey(long browserKey) {
+		_columnBitmask |= _columnBitmasks.get("browserKey");
+
 		_browserKey = browserKey;
 	}
 
@@ -467,14 +484,9 @@ public class BrowserTrackerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BrowserTrackerModelImpl browserTrackerModelImpl = this;
+		_columnBitmask = 0;
 
-		browserTrackerModelImpl._originalUserId =
-			browserTrackerModelImpl._userId;
-
-		browserTrackerModelImpl._setOriginalUserId = false;
-
-		browserTrackerModelImpl._columnBitmask = 0;
+		_browserTrackerCacheModel = (BrowserTrackerCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -565,12 +577,84 @@ public class BrowserTrackerModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<BrowserTrackerCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<BrowserTrackerCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<BrowserTrackerCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			browserTrackerCacheModel -> browserTrackerCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"browserTrackerId",
+			browserTrackerCacheModel ->
+				browserTrackerCacheModel.browserTrackerId);
+
+		columnBitmasks.put("browserTrackerId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			browserTrackerCacheModel -> browserTrackerCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			browserTrackerCacheModel -> browserTrackerCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"browserKey",
+			browserTrackerCacheModel -> browserTrackerCacheModel.browserKey);
+
+		columnBitmasks.put("browserKey", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<BrowserTrackerCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		BrowserTrackerCacheModel browserTrackerCacheModel =
+			_browserTrackerCacheModel;
+
+		if (browserTrackerCacheModel == null) {
+			browserTrackerCacheModel = _dummyBrowserTrackerCacheModel;
+		}
+
+		return (T)function.apply(browserTrackerCacheModel);
+	}
+
+	private static final BrowserTrackerCacheModel
+		_dummyBrowserTrackerCacheModel = new BrowserTrackerCacheModel();
+
+	private BrowserTrackerCacheModel _browserTrackerCacheModel;
 	private long _mvccVersion;
 	private long _browserTrackerId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _browserKey;
 	private long _columnBitmask;
 	private BrowserTracker _escapedModel;

@@ -113,6 +113,11 @@ public class BigDecimalEntryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long BIGDECIMALVALUE_COLUMN_BITMASK = 1L;
 
 	public static final String MAPPING_TABLE_BIGDECIMALENTRIES_LVENTRIES_NAME =
@@ -296,6 +301,8 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void setBigDecimalEntryId(long bigDecimalEntryId) {
+		_columnBitmask |= _columnBitmasks.get("bigDecimalEntryId");
+
 		_bigDecimalEntryId = bigDecimalEntryId;
 	}
 
@@ -306,6 +313,8 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -316,17 +325,18 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void setBigDecimalValue(BigDecimal bigDecimalValue) {
-		_columnBitmask = -1L;
-
-		if (_originalBigDecimalValue == null) {
-			_originalBigDecimalValue = _bigDecimalValue;
-		}
+		_columnBitmask |= _columnBitmasks.get("bigDecimalValue");
 
 		_bigDecimalValue = bigDecimalValue;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public BigDecimal getOriginalBigDecimalValue() {
-		return _originalBigDecimalValue;
+		return getOriginalAttributeValue("bigDecimalValue");
 	}
 
 	public long getColumnBitmask() {
@@ -435,12 +445,9 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BigDecimalEntryModelImpl bigDecimalEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		bigDecimalEntryModelImpl._originalBigDecimalValue =
-			bigDecimalEntryModelImpl._bigDecimalValue;
-
-		bigDecimalEntryModelImpl._columnBitmask = 0;
+		_bigDecimalEntryCacheModel = (BigDecimalEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -527,10 +534,73 @@ public class BigDecimalEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<BigDecimalEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<BigDecimalEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<BigDecimalEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"bigDecimalEntryId",
+			bigDecimalEntryCacheModel ->
+				bigDecimalEntryCacheModel.bigDecimalEntryId);
+
+		columnBitmasks.put("bigDecimalEntryId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			bigDecimalEntryCacheModel -> bigDecimalEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"bigDecimalValue",
+			bigDecimalEntryCacheModel ->
+				bigDecimalEntryCacheModel.bigDecimalValue);
+
+		columnBitmasks.put("bigDecimalValue", 4L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<BigDecimalEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		BigDecimalEntryCacheModel bigDecimalEntryCacheModel =
+			_bigDecimalEntryCacheModel;
+
+		if (bigDecimalEntryCacheModel == null) {
+			bigDecimalEntryCacheModel = _dummyBigDecimalEntryCacheModel;
+		}
+
+		return (T)function.apply(bigDecimalEntryCacheModel);
+	}
+
+	private static final BigDecimalEntryCacheModel
+		_dummyBigDecimalEntryCacheModel = new BigDecimalEntryCacheModel();
+
+	private BigDecimalEntryCacheModel _bigDecimalEntryCacheModel;
 	private long _bigDecimalEntryId;
 	private long _companyId;
 	private BigDecimal _bigDecimalValue;
-	private BigDecimal _originalBigDecimalValue;
 	private long _columnBitmask;
 	private BigDecimalEntry _escapedModel;
 

@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.sync.model.SyncDLObject;
 import com.liferay.sync.model.SyncDLObjectModel;
@@ -140,20 +139,60 @@ public class SyncDLObjectModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long EVENT_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDTIME_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTFOLDERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REPOSITORYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TREEPATH_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPEPK_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 128L;
 
 	/**
@@ -495,6 +534,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setSyncDLObjectId(long syncDLObjectId) {
+		_columnBitmask |= _columnBitmasks.get("syncDLObjectId");
+
 		_syncDLObjectId = syncDLObjectId;
 	}
 
@@ -506,6 +547,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -517,6 +560,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -549,6 +594,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -560,6 +607,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setCreateTime(long createTime) {
+		_columnBitmask |= _columnBitmasks.get("createTime");
+
 		_createTime = createTime;
 	}
 
@@ -571,19 +620,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setModifiedTime(long modifiedTime) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalModifiedTime) {
-			_setOriginalModifiedTime = true;
-
-			_originalModifiedTime = _modifiedTime;
-		}
+		_columnBitmask |= _columnBitmasks.get("modifiedTime");
 
 		_modifiedTime = modifiedTime;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalModifiedTime() {
-		return _originalModifiedTime;
+		return getOriginalAttributeValue("modifiedTime");
 	}
 
 	@JSON
@@ -594,19 +642,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
-
-			_originalRepositoryId = _repositoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("repositoryId");
 
 		_repositoryId = repositoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		return getOriginalAttributeValue("repositoryId");
 	}
 
 	@JSON
@@ -617,19 +664,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setParentFolderId(long parentFolderId) {
-		_columnBitmask |= PARENTFOLDERID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentFolderId) {
-			_setOriginalParentFolderId = true;
-
-			_originalParentFolderId = _parentFolderId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentFolderId");
 
 		_parentFolderId = parentFolderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentFolderId() {
-		return _originalParentFolderId;
+		return getOriginalAttributeValue("parentFolderId");
 	}
 
 	@JSON(include = false)
@@ -645,17 +691,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
-		_columnBitmask |= TREEPATH_COLUMN_BITMASK;
-
-		if (_originalTreePath == null) {
-			_originalTreePath = _treePath;
-		}
+		_columnBitmask |= _columnBitmasks.get("treePath");
 
 		_treePath = treePath;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTreePath() {
-		return GetterUtil.getString(_originalTreePath);
+		return getOriginalAttributeValue("treePath");
 	}
 
 	@JSON
@@ -671,6 +718,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -687,6 +736,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setExtension(String extension) {
+		_columnBitmask |= _columnBitmasks.get("extension");
+
 		_extension = extension;
 	}
 
@@ -703,6 +754,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setMimeType(String mimeType) {
+		_columnBitmask |= _columnBitmasks.get("mimeType");
+
 		_mimeType = mimeType;
 	}
 
@@ -719,6 +772,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -735,6 +790,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setChangeLog(String changeLog) {
+		_columnBitmask |= _columnBitmasks.get("changeLog");
+
 		_changeLog = changeLog;
 	}
 
@@ -751,6 +808,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setExtraSettings(String extraSettings) {
+		_columnBitmask |= _columnBitmasks.get("extraSettings");
+
 		_extraSettings = extraSettings;
 	}
 
@@ -767,17 +826,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return getOriginalAttributeValue("version");
 	}
 
 	@JSON
@@ -788,6 +848,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setVersionId(long versionId) {
+		_columnBitmask |= _columnBitmasks.get("versionId");
+
 		_versionId = versionId;
 	}
 
@@ -799,6 +861,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
 		_size = size;
 	}
 
@@ -815,6 +879,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setChecksum(String checksum) {
+		_columnBitmask |= _columnBitmasks.get("checksum");
+
 		_checksum = checksum;
 	}
 
@@ -831,17 +897,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setEvent(String event) {
-		_columnBitmask |= EVENT_COLUMN_BITMASK;
-
-		if (_originalEvent == null) {
-			_originalEvent = _event;
-		}
+		_columnBitmask |= _columnBitmasks.get("event");
 
 		_event = event;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalEvent() {
-		return GetterUtil.getString(_originalEvent);
+		return getOriginalAttributeValue("event");
 	}
 
 	@JSON
@@ -857,6 +924,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setLanTokenKey(String lanTokenKey) {
+		_columnBitmask |= _columnBitmasks.get("lanTokenKey");
+
 		_lanTokenKey = lanTokenKey;
 	}
 
@@ -868,6 +937,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setLastPermissionChangeDate(Date lastPermissionChangeDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPermissionChangeDate");
+
 		_lastPermissionChangeDate = lastPermissionChangeDate;
 	}
 
@@ -879,6 +950,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setLockExpirationDate(Date lockExpirationDate) {
+		_columnBitmask |= _columnBitmasks.get("lockExpirationDate");
+
 		_lockExpirationDate = lockExpirationDate;
 	}
 
@@ -890,6 +963,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setLockUserId(long lockUserId) {
+		_columnBitmask |= _columnBitmasks.get("lockUserId");
+
 		_lockUserId = lockUserId;
 	}
 
@@ -922,6 +997,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setLockUserName(String lockUserName) {
+		_columnBitmask |= _columnBitmasks.get("lockUserName");
+
 		_lockUserName = lockUserName;
 	}
 
@@ -938,17 +1015,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (_originalType == null) {
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -959,19 +1037,18 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setTypePK(long typePK) {
-		_columnBitmask |= TYPEPK_COLUMN_BITMASK;
-
-		if (!_setOriginalTypePK) {
-			_setOriginalTypePK = true;
-
-			_originalTypePK = _typePK;
-		}
+		_columnBitmask |= _columnBitmasks.get("typePK");
 
 		_typePK = typePK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalTypePK() {
-		return _originalTypePK;
+		return getOriginalAttributeValue("typePK");
 	}
 
 	@JSON
@@ -987,6 +1064,8 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setTypeUuid(String typeUuid) {
+		_columnBitmask |= _columnBitmasks.get("typeUuid");
+
 		_typeUuid = typeUuid;
 	}
 
@@ -1143,37 +1222,9 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SyncDLObjectModelImpl syncDLObjectModelImpl = this;
+		_columnBitmask = 0;
 
-		syncDLObjectModelImpl._originalModifiedTime =
-			syncDLObjectModelImpl._modifiedTime;
-
-		syncDLObjectModelImpl._setOriginalModifiedTime = false;
-
-		syncDLObjectModelImpl._originalRepositoryId =
-			syncDLObjectModelImpl._repositoryId;
-
-		syncDLObjectModelImpl._setOriginalRepositoryId = false;
-
-		syncDLObjectModelImpl._originalParentFolderId =
-			syncDLObjectModelImpl._parentFolderId;
-
-		syncDLObjectModelImpl._setOriginalParentFolderId = false;
-
-		syncDLObjectModelImpl._originalTreePath =
-			syncDLObjectModelImpl._treePath;
-
-		syncDLObjectModelImpl._originalVersion = syncDLObjectModelImpl._version;
-
-		syncDLObjectModelImpl._originalEvent = syncDLObjectModelImpl._event;
-
-		syncDLObjectModelImpl._originalType = syncDLObjectModelImpl._type;
-
-		syncDLObjectModelImpl._originalTypePK = syncDLObjectModelImpl._typePK;
-
-		syncDLObjectModelImpl._setOriginalTypePK = false;
-
-		syncDLObjectModelImpl._columnBitmask = 0;
+		_syncDLObjectCacheModel = (SyncDLObjectCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1416,22 +1467,221 @@ public class SyncDLObjectModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<SyncDLObjectCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SyncDLObjectCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<SyncDLObjectCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"syncDLObjectId",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.syncDLObjectId);
+
+		columnBitmasks.put("syncDLObjectId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId", syncDLObjectCacheModel -> syncDLObjectCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createTime",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.createTime);
+
+		columnBitmasks.put("createTime", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedTime",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.modifiedTime);
+
+		columnBitmasks.put("modifiedTime", 32L);
+
+		cacheModelGetterFunctions.put(
+			"repositoryId",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.repositoryId);
+
+		columnBitmasks.put("repositoryId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"parentFolderId",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.parentFolderId);
+
+		columnBitmasks.put("parentFolderId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"treePath",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.treePath);
+
+		columnBitmasks.put("treePath", 256L);
+
+		cacheModelGetterFunctions.put(
+			"name", syncDLObjectCacheModel -> syncDLObjectCacheModel.name);
+
+		columnBitmasks.put("name", 512L);
+
+		cacheModelGetterFunctions.put(
+			"extension",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.extension);
+
+		columnBitmasks.put("extension", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"mimeType",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.mimeType);
+
+		columnBitmasks.put("mimeType", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.description);
+
+		columnBitmasks.put("description", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"changeLog",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.changeLog);
+
+		columnBitmasks.put("changeLog", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"extraSettings",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.extraSettings);
+
+		columnBitmasks.put("extraSettings", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"version",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.version);
+
+		columnBitmasks.put("version", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"versionId",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.versionId);
+
+		columnBitmasks.put("versionId", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"size", syncDLObjectCacheModel -> syncDLObjectCacheModel.size);
+
+		columnBitmasks.put("size", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"checksum",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.checksum);
+
+		columnBitmasks.put("checksum", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"event", syncDLObjectCacheModel -> syncDLObjectCacheModel.event);
+
+		columnBitmasks.put("event", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"lanTokenKey",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.lanTokenKey);
+
+		columnBitmasks.put("lanTokenKey", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"lastPermissionChangeDate",
+			syncDLObjectCacheModel ->
+				syncDLObjectCacheModel.lastPermissionChangeDate);
+
+		columnBitmasks.put("lastPermissionChangeDate", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"lockExpirationDate",
+			syncDLObjectCacheModel ->
+				syncDLObjectCacheModel.lockExpirationDate);
+
+		columnBitmasks.put("lockExpirationDate", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"lockUserId",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.lockUserId);
+
+		columnBitmasks.put("lockUserId", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"lockUserName",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.lockUserName);
+
+		columnBitmasks.put("lockUserName", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"type", syncDLObjectCacheModel -> syncDLObjectCacheModel.type);
+
+		columnBitmasks.put("type", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"typePK", syncDLObjectCacheModel -> syncDLObjectCacheModel.typePK);
+
+		columnBitmasks.put("typePK", 67108864L);
+
+		cacheModelGetterFunctions.put(
+			"typeUuid",
+			syncDLObjectCacheModel -> syncDLObjectCacheModel.typeUuid);
+
+		columnBitmasks.put("typeUuid", 134217728L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SyncDLObjectCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SyncDLObjectCacheModel syncDLObjectCacheModel = _syncDLObjectCacheModel;
+
+		if (syncDLObjectCacheModel == null) {
+			syncDLObjectCacheModel = _dummySyncDLObjectCacheModel;
+		}
+
+		return (T)function.apply(syncDLObjectCacheModel);
+	}
+
+	private static final SyncDLObjectCacheModel _dummySyncDLObjectCacheModel =
+		new SyncDLObjectCacheModel();
+
+	private SyncDLObjectCacheModel _syncDLObjectCacheModel;
 	private long _syncDLObjectId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private long _createTime;
 	private long _modifiedTime;
-	private long _originalModifiedTime;
-	private boolean _setOriginalModifiedTime;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private long _parentFolderId;
-	private long _originalParentFolderId;
-	private boolean _setOriginalParentFolderId;
 	private String _treePath;
-	private String _originalTreePath;
 	private String _name;
 	private String _extension;
 	private String _mimeType;
@@ -1439,22 +1689,17 @@ public class SyncDLObjectModelImpl
 	private String _changeLog;
 	private String _extraSettings;
 	private String _version;
-	private String _originalVersion;
 	private long _versionId;
 	private long _size;
 	private String _checksum;
 	private String _event;
-	private String _originalEvent;
 	private String _lanTokenKey;
 	private Date _lastPermissionChangeDate;
 	private Date _lockExpirationDate;
 	private long _lockUserId;
 	private String _lockUserName;
 	private String _type;
-	private String _originalType;
 	private long _typePK;
-	private long _originalTypePK;
-	private boolean _setOriginalTypePK;
 	private String _typeUuid;
 	private long _columnBitmask;
 	private SyncDLObject _escapedModel;

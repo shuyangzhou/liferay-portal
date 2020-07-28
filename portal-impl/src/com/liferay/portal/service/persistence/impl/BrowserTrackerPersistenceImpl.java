@@ -403,7 +403,7 @@ public class BrowserTrackerPersistenceImpl
 			 _finderPathFetchByUserId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				browserTrackerModelImpl.getOriginalUserId()
+				browserTrackerModelImpl.getOriginalAttributeValue("userId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -850,7 +850,7 @@ public class BrowserTrackerPersistenceImpl
 		_finderPathFetchByUserId = new FinderPath(
 			BrowserTrackerImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUserId",
 			new String[] {Long.class.getName()},
-			BrowserTrackerModelImpl.USERID_COLUMN_BITMASK);
+			BrowserTrackerModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

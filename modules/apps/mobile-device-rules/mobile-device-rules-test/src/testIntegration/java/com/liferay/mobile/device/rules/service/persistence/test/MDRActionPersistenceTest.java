@@ -486,11 +486,13 @@ public class MDRActionPersistenceTest {
 			Objects.equals(
 				existingMDRAction.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMDRAction, "getOriginalUuid", new Class<?>[0])));
+					existingMDRAction, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMDRAction.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRAction, "getOriginalGroupId", new Class<?>[0]));
+				existingMDRAction, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected MDRAction addMDRAction() throws Exception {

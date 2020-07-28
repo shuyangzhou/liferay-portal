@@ -122,8 +122,18 @@ public class OAuthConsumerModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GADGETKEY_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SERVICENAME_COLUMN_BITMASK = 2L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -311,6 +321,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setOAuthConsumerId(long oAuthConsumerId) {
+		_columnBitmask |= _columnBitmasks.get("oAuthConsumerId");
+
 		_oAuthConsumerId = oAuthConsumerId;
 	}
 
@@ -321,6 +333,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -331,6 +345,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -347,6 +363,8 @@ public class OAuthConsumerModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -362,17 +380,18 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setGadgetKey(String gadgetKey) {
-		_columnBitmask |= GADGETKEY_COLUMN_BITMASK;
-
-		if (_originalGadgetKey == null) {
-			_originalGadgetKey = _gadgetKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("gadgetKey");
 
 		_gadgetKey = gadgetKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalGadgetKey() {
-		return GetterUtil.getString(_originalGadgetKey);
+		return getOriginalAttributeValue("gadgetKey");
 	}
 
 	@Override
@@ -387,17 +406,18 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setServiceName(String serviceName) {
-		_columnBitmask = -1L;
-
-		if (_originalServiceName == null) {
-			_originalServiceName = _serviceName;
-		}
+		_columnBitmask |= _columnBitmasks.get("serviceName");
 
 		_serviceName = serviceName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalServiceName() {
-		return GetterUtil.getString(_originalServiceName);
+		return getOriginalAttributeValue("serviceName");
 	}
 
 	@Override
@@ -412,6 +432,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setConsumerKey(String consumerKey) {
+		_columnBitmask |= _columnBitmasks.get("consumerKey");
+
 		_consumerKey = consumerKey;
 	}
 
@@ -427,6 +449,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setConsumerSecret(String consumerSecret) {
+		_columnBitmask |= _columnBitmasks.get("consumerSecret");
+
 		_consumerSecret = consumerSecret;
 	}
 
@@ -442,6 +466,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setKeyType(String keyType) {
+		_columnBitmask |= _columnBitmasks.get("keyType");
+
 		_keyType = keyType;
 	}
 
@@ -556,17 +582,11 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuthConsumerModelImpl oAuthConsumerModelImpl = this;
+		_setModifiedDate = false;
 
-		oAuthConsumerModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		oAuthConsumerModelImpl._originalGadgetKey =
-			oAuthConsumerModelImpl._gadgetKey;
-
-		oAuthConsumerModelImpl._originalServiceName =
-			oAuthConsumerModelImpl._serviceName;
-
-		oAuthConsumerModelImpl._columnBitmask = 0;
+		_oAuthConsumerCacheModel = (OAuthConsumerCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -709,15 +729,110 @@ public class OAuthConsumerModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<OAuthConsumerCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<OAuthConsumerCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<OAuthConsumerCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"oAuthConsumerId",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.oAuthConsumerId);
+
+		columnBitmasks.put("oAuthConsumerId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 4L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 8L);
+
+		cacheModelGetterFunctions.put(
+			"gadgetKey",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.gadgetKey);
+
+		columnBitmasks.put("gadgetKey", 16L);
+
+		cacheModelGetterFunctions.put(
+			"serviceName",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.serviceName);
+
+		columnBitmasks.put("serviceName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"consumerKey",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.consumerKey);
+
+		columnBitmasks.put("consumerKey", 64L);
+
+		cacheModelGetterFunctions.put(
+			"consumerSecret",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.consumerSecret);
+
+		columnBitmasks.put("consumerSecret", 128L);
+
+		cacheModelGetterFunctions.put(
+			"keyType",
+			oAuthConsumerCacheModel -> oAuthConsumerCacheModel.keyType);
+
+		columnBitmasks.put("keyType", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<OAuthConsumerCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		OAuthConsumerCacheModel oAuthConsumerCacheModel =
+			_oAuthConsumerCacheModel;
+
+		if (oAuthConsumerCacheModel == null) {
+			oAuthConsumerCacheModel = _dummyOAuthConsumerCacheModel;
+		}
+
+		return (T)function.apply(oAuthConsumerCacheModel);
+	}
+
+	private static final OAuthConsumerCacheModel _dummyOAuthConsumerCacheModel =
+		new OAuthConsumerCacheModel();
+
+	private OAuthConsumerCacheModel _oAuthConsumerCacheModel;
 	private long _oAuthConsumerId;
 	private long _companyId;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _gadgetKey;
-	private String _originalGadgetKey;
 	private String _serviceName;
-	private String _originalServiceName;
 	private String _consumerKey;
 	private String _consumerSecret;
 	private String _keyType;

@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -123,18 +122,53 @@ public class BackgroundTaskModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPLETED_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TASKEXECUTORCLASSNAME_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
 
 	/**
@@ -425,6 +459,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -436,6 +472,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setBackgroundTaskId(long backgroundTaskId) {
+		_columnBitmask |= _columnBitmasks.get("backgroundTaskId");
+
 		_backgroundTaskId = backgroundTaskId;
 	}
 
@@ -447,19 +485,18 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -470,19 +507,18 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -493,6 +529,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -525,6 +563,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -536,7 +576,7 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -555,6 +595,8 @@ public class BackgroundTaskModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -571,17 +613,18 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -597,6 +640,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setServletContextNames(String servletContextNames) {
+		_columnBitmask |= _columnBitmasks.get("servletContextNames");
+
 		_servletContextNames = servletContextNames;
 	}
 
@@ -613,17 +658,18 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setTaskExecutorClassName(String taskExecutorClassName) {
-		_columnBitmask |= TASKEXECUTORCLASSNAME_COLUMN_BITMASK;
-
-		if (_originalTaskExecutorClassName == null) {
-			_originalTaskExecutorClassName = _taskExecutorClassName;
-		}
+		_columnBitmask |= _columnBitmasks.get("taskExecutorClassName");
 
 		_taskExecutorClassName = taskExecutorClassName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTaskExecutorClassName() {
-		return GetterUtil.getString(_originalTaskExecutorClassName);
+		return getOriginalAttributeValue("taskExecutorClassName");
 	}
 
 	@JSON
@@ -634,6 +680,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setTaskContextMap(Map<String, Serializable> taskContextMap) {
+		_columnBitmask |= _columnBitmasks.get("taskContextMap");
+
 		_taskContextMap = taskContextMap;
 	}
 
@@ -651,19 +699,18 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setCompleted(boolean completed) {
-		_columnBitmask |= COMPLETED_COLUMN_BITMASK;
-
-		if (!_setOriginalCompleted) {
-			_setOriginalCompleted = true;
-
-			_originalCompleted = _completed;
-		}
+		_columnBitmask |= _columnBitmasks.get("completed");
 
 		_completed = completed;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalCompleted() {
-		return _originalCompleted;
+		return getOriginalAttributeValue("completed");
 	}
 
 	@JSON
@@ -674,6 +721,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setCompletionDate(Date completionDate) {
+		_columnBitmask |= _columnBitmasks.get("completionDate");
+
 		_completionDate = completionDate;
 	}
 
@@ -685,19 +734,18 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -713,6 +761,8 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void setStatusMessage(String statusMessage) {
+		_columnBitmask |= _columnBitmasks.get("statusMessage");
+
 		_statusMessage = statusMessage;
 	}
 
@@ -835,36 +885,11 @@ public class BackgroundTaskModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BackgroundTaskModelImpl backgroundTaskModelImpl = this;
+		_setModifiedDate = false;
 
-		backgroundTaskModelImpl._originalGroupId =
-			backgroundTaskModelImpl._groupId;
+		_columnBitmask = 0;
 
-		backgroundTaskModelImpl._setOriginalGroupId = false;
-
-		backgroundTaskModelImpl._originalCompanyId =
-			backgroundTaskModelImpl._companyId;
-
-		backgroundTaskModelImpl._setOriginalCompanyId = false;
-
-		backgroundTaskModelImpl._setModifiedDate = false;
-
-		backgroundTaskModelImpl._originalName = backgroundTaskModelImpl._name;
-
-		backgroundTaskModelImpl._originalTaskExecutorClassName =
-			backgroundTaskModelImpl._taskExecutorClassName;
-
-		backgroundTaskModelImpl._originalCompleted =
-			backgroundTaskModelImpl._completed;
-
-		backgroundTaskModelImpl._setOriginalCompleted = false;
-
-		backgroundTaskModelImpl._originalStatus =
-			backgroundTaskModelImpl._status;
-
-		backgroundTaskModelImpl._setOriginalStatus = false;
-
-		backgroundTaskModelImpl._columnBitmask = 0;
+		_backgroundTaskCacheModel = (BackgroundTaskCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1035,32 +1060,165 @@ public class BackgroundTaskModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<BackgroundTaskCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<BackgroundTaskCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<BackgroundTaskCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"backgroundTaskId",
+			backgroundTaskCacheModel ->
+				backgroundTaskCacheModel.backgroundTaskId);
+
+		columnBitmasks.put("backgroundTaskId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"name", backgroundTaskCacheModel -> backgroundTaskCacheModel.name);
+
+		columnBitmasks.put("name", 256L);
+
+		cacheModelGetterFunctions.put(
+			"servletContextNames",
+			backgroundTaskCacheModel ->
+				backgroundTaskCacheModel.servletContextNames);
+
+		columnBitmasks.put("servletContextNames", 512L);
+
+		cacheModelGetterFunctions.put(
+			"taskExecutorClassName",
+			backgroundTaskCacheModel ->
+				backgroundTaskCacheModel.taskExecutorClassName);
+
+		columnBitmasks.put("taskExecutorClassName", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"taskContextMap",
+			backgroundTaskCacheModel ->
+				backgroundTaskCacheModel.taskContextMap);
+
+		columnBitmasks.put("taskContextMap", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"completed",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.completed);
+
+		columnBitmasks.put("completed", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"completionDate",
+			backgroundTaskCacheModel ->
+				backgroundTaskCacheModel.completionDate);
+
+		columnBitmasks.put("completionDate", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.status);
+
+		columnBitmasks.put("status", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"statusMessage",
+			backgroundTaskCacheModel -> backgroundTaskCacheModel.statusMessage);
+
+		columnBitmasks.put("statusMessage", 32768L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<BackgroundTaskCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		BackgroundTaskCacheModel backgroundTaskCacheModel =
+			_backgroundTaskCacheModel;
+
+		if (backgroundTaskCacheModel == null) {
+			backgroundTaskCacheModel = _dummyBackgroundTaskCacheModel;
+		}
+
+		return (T)function.apply(backgroundTaskCacheModel);
+	}
+
+	private static final BackgroundTaskCacheModel
+		_dummyBackgroundTaskCacheModel = new BackgroundTaskCacheModel();
+
+	private BackgroundTaskCacheModel _backgroundTaskCacheModel;
 	private long _mvccVersion;
 	private long _backgroundTaskId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _name;
-	private String _originalName;
 	private String _servletContextNames;
 	private String _taskExecutorClassName;
-	private String _originalTaskExecutorClassName;
 	private Map<String, Serializable> _taskContextMap;
 	private boolean _completed;
-	private boolean _originalCompleted;
-	private boolean _setOriginalCompleted;
 	private Date _completionDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private String _statusMessage;
 	private long _columnBitmask;
 	private BackgroundTask _escapedModel;

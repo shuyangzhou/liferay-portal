@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthTokenModel;
@@ -107,12 +106,32 @@ public class WeDeployAuthTokenModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLIENTID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOKEN_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WEDEPLOYAUTHTOKENID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -318,6 +337,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setWeDeployAuthTokenId(long weDeployAuthTokenId) {
+		_columnBitmask |= _columnBitmasks.get("weDeployAuthTokenId");
+
 		_weDeployAuthTokenId = weDeployAuthTokenId;
 	}
 
@@ -328,6 +349,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -338,6 +361,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -369,6 +394,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -379,6 +406,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -395,6 +424,8 @@ public class WeDeployAuthTokenModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -410,17 +441,18 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setClientId(String clientId) {
-		_columnBitmask |= CLIENTID_COLUMN_BITMASK;
-
-		if (_originalClientId == null) {
-			_originalClientId = _clientId;
-		}
+		_columnBitmask |= _columnBitmasks.get("clientId");
 
 		_clientId = clientId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalClientId() {
-		return GetterUtil.getString(_originalClientId);
+		return getOriginalAttributeValue("clientId");
 	}
 
 	@Override
@@ -435,17 +467,18 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setToken(String token) {
-		_columnBitmask |= TOKEN_COLUMN_BITMASK;
-
-		if (_originalToken == null) {
-			_originalToken = _token;
-		}
+		_columnBitmask |= _columnBitmasks.get("token");
 
 		_token = token;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalToken() {
-		return GetterUtil.getString(_originalToken);
+		return getOriginalAttributeValue("token");
 	}
 
 	@Override
@@ -455,19 +488,18 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	public long getColumnBitmask() {
@@ -584,22 +616,12 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl = this;
+		_setModifiedDate = false;
 
-		weDeployAuthTokenModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		weDeployAuthTokenModelImpl._originalClientId =
-			weDeployAuthTokenModelImpl._clientId;
-
-		weDeployAuthTokenModelImpl._originalToken =
-			weDeployAuthTokenModelImpl._token;
-
-		weDeployAuthTokenModelImpl._originalType =
-			weDeployAuthTokenModelImpl._type;
-
-		weDeployAuthTokenModelImpl._setOriginalType = false;
-
-		weDeployAuthTokenModelImpl._columnBitmask = 0;
+		_weDeployAuthTokenCacheModel =
+			(WeDeployAuthTokenCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -731,6 +753,110 @@ public class WeDeployAuthTokenModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<WeDeployAuthTokenCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<WeDeployAuthTokenCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WeDeployAuthTokenCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"weDeployAuthTokenId",
+			weDeployAuthTokenCacheModel ->
+				weDeployAuthTokenCacheModel.weDeployAuthTokenId);
+
+		columnBitmasks.put("weDeployAuthTokenId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			weDeployAuthTokenCacheModel ->
+				weDeployAuthTokenCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			weDeployAuthTokenCacheModel -> weDeployAuthTokenCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			weDeployAuthTokenCacheModel ->
+				weDeployAuthTokenCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			weDeployAuthTokenCacheModel ->
+				weDeployAuthTokenCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			weDeployAuthTokenCacheModel ->
+				weDeployAuthTokenCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"clientId",
+			weDeployAuthTokenCacheModel ->
+				weDeployAuthTokenCacheModel.clientId);
+
+		columnBitmasks.put("clientId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"token",
+			weDeployAuthTokenCacheModel -> weDeployAuthTokenCacheModel.token);
+
+		columnBitmasks.put("token", 128L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			weDeployAuthTokenCacheModel -> weDeployAuthTokenCacheModel.type);
+
+		columnBitmasks.put("type", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<WeDeployAuthTokenCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		WeDeployAuthTokenCacheModel weDeployAuthTokenCacheModel =
+			_weDeployAuthTokenCacheModel;
+
+		if (weDeployAuthTokenCacheModel == null) {
+			weDeployAuthTokenCacheModel = _dummyWeDeployAuthTokenCacheModel;
+		}
+
+		return (T)function.apply(weDeployAuthTokenCacheModel);
+	}
+
+	private static final WeDeployAuthTokenCacheModel
+		_dummyWeDeployAuthTokenCacheModel = new WeDeployAuthTokenCacheModel();
+
+	private WeDeployAuthTokenCacheModel _weDeployAuthTokenCacheModel;
 	private long _weDeployAuthTokenId;
 	private long _companyId;
 	private long _userId;
@@ -739,12 +865,8 @@ public class WeDeployAuthTokenModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _clientId;
-	private String _originalClientId;
 	private String _token;
-	private String _originalToken;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private long _columnBitmask;
 	private WeDeployAuthToken _escapedModel;
 

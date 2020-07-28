@@ -492,17 +492,19 @@ public class KaleoProcessPersistenceTest {
 			Objects.equals(
 				existingKaleoProcess.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingKaleoProcess, "getOriginalUuid", new Class<?>[0])));
+					existingKaleoProcess, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoProcess.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoProcess, "getOriginalGroupId", new Class<?>[0]));
+				existingKaleoProcess, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoProcess.getDDLRecordSetId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoProcess, "getOriginalDDLRecordSetId",
-				new Class<?>[0]));
+				existingKaleoProcess, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "DDLRecordSetId"));
 	}
 
 	protected KaleoProcess addKaleoProcess() throws Exception {

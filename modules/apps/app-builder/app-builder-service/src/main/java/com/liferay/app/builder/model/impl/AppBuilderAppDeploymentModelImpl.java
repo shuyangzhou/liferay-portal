@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -98,10 +97,25 @@ public class AppBuilderAppDeploymentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long APPBUILDERAPPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long APPBUILDERAPPDEPLOYMENTID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -292,6 +306,8 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setAppBuilderAppDeploymentId(long appBuilderAppDeploymentId) {
+		_columnBitmask |= _columnBitmasks.get("appBuilderAppDeploymentId");
+
 		_appBuilderAppDeploymentId = appBuilderAppDeploymentId;
 	}
 
@@ -302,6 +318,8 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -312,19 +330,18 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setAppBuilderAppId(long appBuilderAppId) {
-		_columnBitmask |= APPBUILDERAPPID_COLUMN_BITMASK;
-
-		if (!_setOriginalAppBuilderAppId) {
-			_setOriginalAppBuilderAppId = true;
-
-			_originalAppBuilderAppId = _appBuilderAppId;
-		}
+		_columnBitmask |= _columnBitmasks.get("appBuilderAppId");
 
 		_appBuilderAppId = appBuilderAppId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAppBuilderAppId() {
-		return _originalAppBuilderAppId;
+		return getOriginalAttributeValue("appBuilderAppId");
 	}
 
 	@Override
@@ -339,6 +356,8 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		_columnBitmask |= _columnBitmasks.get("settings");
+
 		_settings = settings;
 	}
 
@@ -354,17 +373,18 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (_originalType == null) {
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		return getOriginalAttributeValue("type");
 	}
 
 	public long getColumnBitmask() {
@@ -480,18 +500,10 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AppBuilderAppDeploymentModelImpl appBuilderAppDeploymentModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		appBuilderAppDeploymentModelImpl._originalAppBuilderAppId =
-			appBuilderAppDeploymentModelImpl._appBuilderAppId;
-
-		appBuilderAppDeploymentModelImpl._setOriginalAppBuilderAppId = false;
-
-		appBuilderAppDeploymentModelImpl._originalType =
-			appBuilderAppDeploymentModelImpl._type;
-
-		appBuilderAppDeploymentModelImpl._columnBitmask = 0;
+		_appBuilderAppDeploymentCacheModel =
+			(AppBuilderAppDeploymentCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -600,14 +612,94 @@ public class AppBuilderAppDeploymentModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AppBuilderAppDeploymentCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AppBuilderAppDeploymentCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<AppBuilderAppDeploymentCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"appBuilderAppDeploymentId",
+			appBuilderAppDeploymentCacheModel ->
+				appBuilderAppDeploymentCacheModel.appBuilderAppDeploymentId);
+
+		columnBitmasks.put("appBuilderAppDeploymentId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			appBuilderAppDeploymentCacheModel ->
+				appBuilderAppDeploymentCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"appBuilderAppId",
+			appBuilderAppDeploymentCacheModel ->
+				appBuilderAppDeploymentCacheModel.appBuilderAppId);
+
+		columnBitmasks.put("appBuilderAppId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"settings",
+			appBuilderAppDeploymentCacheModel ->
+				appBuilderAppDeploymentCacheModel.settings);
+
+		columnBitmasks.put("settings", 8L);
+
+		cacheModelGetterFunctions.put(
+			"type",
+			appBuilderAppDeploymentCacheModel ->
+				appBuilderAppDeploymentCacheModel.type);
+
+		columnBitmasks.put("type", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AppBuilderAppDeploymentCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AppBuilderAppDeploymentCacheModel appBuilderAppDeploymentCacheModel =
+			_appBuilderAppDeploymentCacheModel;
+
+		if (appBuilderAppDeploymentCacheModel == null) {
+			appBuilderAppDeploymentCacheModel =
+				_dummyAppBuilderAppDeploymentCacheModel;
+		}
+
+		return (T)function.apply(appBuilderAppDeploymentCacheModel);
+	}
+
+	private static final AppBuilderAppDeploymentCacheModel
+		_dummyAppBuilderAppDeploymentCacheModel =
+			new AppBuilderAppDeploymentCacheModel();
+
+	private AppBuilderAppDeploymentCacheModel
+		_appBuilderAppDeploymentCacheModel;
 	private long _appBuilderAppDeploymentId;
 	private long _companyId;
 	private long _appBuilderAppId;
-	private long _originalAppBuilderAppId;
-	private boolean _setOriginalAppBuilderAppId;
 	private String _settings;
 	private String _type;
-	private String _originalType;
 	private long _columnBitmask;
 	private AppBuilderAppDeployment _escapedModel;
 

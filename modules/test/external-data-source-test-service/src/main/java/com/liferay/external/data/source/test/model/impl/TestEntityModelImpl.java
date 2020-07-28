@@ -105,7 +105,14 @@ public class TestEntityModelImpl
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = true;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long ID_COLUMN_BITMASK = 1L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.external.data.source.test.service.util.ServiceProps.get(
@@ -254,6 +261,8 @@ public class TestEntityModelImpl
 
 	@Override
 	public void setId(long id) {
+		_columnBitmask |= _columnBitmasks.get("id");
+
 		_id = id;
 	}
 
@@ -269,7 +278,13 @@ public class TestEntityModelImpl
 
 	@Override
 	public void setData(String data) {
+		_columnBitmask |= _columnBitmasks.get("data");
+
 		_data = data;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -374,6 +389,9 @@ public class TestEntityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_testEntityCacheModel = (TestEntityCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -463,8 +481,61 @@ public class TestEntityModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<TestEntityCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<TestEntityCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<TestEntityCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"id", testEntityCacheModel -> testEntityCacheModel.id);
+
+		columnBitmasks.put("id", 1L);
+
+		cacheModelGetterFunctions.put(
+			"data", testEntityCacheModel -> testEntityCacheModel.data);
+
+		columnBitmasks.put("data", 2L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<TestEntityCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		TestEntityCacheModel testEntityCacheModel = _testEntityCacheModel;
+
+		if (testEntityCacheModel == null) {
+			testEntityCacheModel = _dummyTestEntityCacheModel;
+		}
+
+		return (T)function.apply(testEntityCacheModel);
+	}
+
+	private static final TestEntityCacheModel _dummyTestEntityCacheModel =
+		new TestEntityCacheModel();
+
+	private TestEntityCacheModel _testEntityCacheModel;
 	private long _id;
 	private String _data;
+	private long _columnBitmask;
 	private TestEntity _escapedModel;
 
 }

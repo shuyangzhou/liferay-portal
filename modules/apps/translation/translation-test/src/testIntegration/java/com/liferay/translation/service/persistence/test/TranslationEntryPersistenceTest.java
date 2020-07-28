@@ -497,30 +497,30 @@ public class TranslationEntryPersistenceTest {
 			Objects.equals(
 				existingTranslationEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingTranslationEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingTranslationEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingTranslationEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTranslationEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingTranslationEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingTranslationEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTranslationEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingTranslationEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingTranslationEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTranslationEntry, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingTranslationEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingTranslationEntry.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingTranslationEntry, "getOriginalLanguageId",
-					new Class<?>[0])));
+					existingTranslationEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "languageId")));
 	}
 
 	protected TranslationEntry addTranslationEntry() throws Exception {

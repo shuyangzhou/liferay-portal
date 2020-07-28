@@ -2573,7 +2573,7 @@ public class SyncDevicePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDeviceModelImpl.getOriginalUuid()
+					syncDeviceModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2592,8 +2592,8 @@ public class SyncDevicePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDeviceModelImpl.getOriginalUuid(),
-					syncDeviceModelImpl.getOriginalCompanyId()
+					syncDeviceModelImpl.getOriginalAttributeValue("uuid"),
+					syncDeviceModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2615,7 +2615,7 @@ public class SyncDevicePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDeviceModelImpl.getOriginalUserId()
+					syncDeviceModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUserId, args);
@@ -2921,7 +2921,7 @@ public class SyncDevicePersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			SyncDeviceImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			SyncDeviceModelImpl.UUID_COLUMN_BITMASK);
+			SyncDeviceModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2940,8 +2940,8 @@ public class SyncDevicePersistenceImpl
 			SyncDeviceImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SyncDeviceModelImpl.UUID_COLUMN_BITMASK |
-			SyncDeviceModelImpl.COMPANYID_COLUMN_BITMASK);
+			SyncDeviceModelImpl.getColumnBitmask("uuid") |
+			SyncDeviceModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2959,7 +2959,7 @@ public class SyncDevicePersistenceImpl
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			SyncDeviceImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUserId", new String[] {Long.class.getName()},
-			SyncDeviceModelImpl.USERID_COLUMN_BITMASK);
+			SyncDeviceModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

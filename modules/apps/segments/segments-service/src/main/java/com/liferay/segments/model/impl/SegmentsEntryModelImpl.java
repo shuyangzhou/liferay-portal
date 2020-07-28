@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -134,20 +133,60 @@ public class SegmentsEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSENTRYKEY_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SOURCE_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
 
 	/**
@@ -437,6 +476,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -448,6 +489,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -464,17 +507,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -485,6 +529,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
+		_columnBitmask |= _columnBitmasks.get("segmentsEntryId");
+
 		_segmentsEntryId = segmentsEntryId;
 	}
 
@@ -496,19 +542,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -519,19 +564,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -542,6 +586,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -574,6 +620,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -585,6 +633,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -602,7 +652,7 @@ public class SegmentsEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -620,17 +670,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setSegmentsEntryKey(String segmentsEntryKey) {
-		_columnBitmask |= SEGMENTSENTRYKEY_COLUMN_BITMASK;
-
-		if (_originalSegmentsEntryKey == null) {
-			_originalSegmentsEntryKey = _segmentsEntryKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("segmentsEntryKey");
 
 		_segmentsEntryKey = segmentsEntryKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalSegmentsEntryKey() {
-		return GetterUtil.getString(_originalSegmentsEntryKey);
+		return getOriginalAttributeValue("segmentsEntryKey");
 	}
 
 	@JSON
@@ -689,6 +740,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -792,6 +845,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -858,19 +913,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	@JSON
@@ -886,6 +940,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCriteria(String criteria) {
+		_columnBitmask |= _columnBitmasks.get("criteria");
+
 		_criteria = criteria;
 	}
 
@@ -902,17 +958,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setSource(String source) {
-		_columnBitmask |= SOURCE_COLUMN_BITMASK;
-
-		if (_originalSource == null) {
-			_originalSource = _source;
-		}
+		_columnBitmask |= _columnBitmasks.get("source");
 
 		_source = source;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalSource() {
-		return GetterUtil.getString(_originalSource);
+		return getOriginalAttributeValue("source");
 	}
 
 	@JSON
@@ -928,17 +985,18 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (_originalType == null) {
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -949,6 +1007,8 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1169,34 +1229,11 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsEntryModelImpl segmentsEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		segmentsEntryModelImpl._originalUuid = segmentsEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		segmentsEntryModelImpl._originalGroupId =
-			segmentsEntryModelImpl._groupId;
-
-		segmentsEntryModelImpl._setOriginalGroupId = false;
-
-		segmentsEntryModelImpl._originalCompanyId =
-			segmentsEntryModelImpl._companyId;
-
-		segmentsEntryModelImpl._setOriginalCompanyId = false;
-
-		segmentsEntryModelImpl._setModifiedDate = false;
-
-		segmentsEntryModelImpl._originalSegmentsEntryKey =
-			segmentsEntryModelImpl._segmentsEntryKey;
-
-		segmentsEntryModelImpl._originalActive = segmentsEntryModelImpl._active;
-
-		segmentsEntryModelImpl._setOriginalActive = false;
-
-		segmentsEntryModelImpl._originalSource = segmentsEntryModelImpl._source;
-
-		segmentsEntryModelImpl._originalType = segmentsEntryModelImpl._type;
-
-		segmentsEntryModelImpl._columnBitmask = 0;
+		_segmentsEntryCacheModel = (SegmentsEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1382,36 +1419,175 @@ public class SegmentsEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<SegmentsEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SegmentsEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<SegmentsEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", segmentsEntryCacheModel -> segmentsEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsEntryId",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.segmentsEntryId);
+
+		columnBitmasks.put("segmentsEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsEntryKey",
+			segmentsEntryCacheModel ->
+				segmentsEntryCacheModel.segmentsEntryKey);
+
+		columnBitmasks.put("segmentsEntryKey", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"name", segmentsEntryCacheModel -> segmentsEntryCacheModel.name);
+
+		columnBitmasks.put("name", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.description);
+
+		columnBitmasks.put("description", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"active",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.active);
+
+		columnBitmasks.put("active", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"criteria",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.criteria);
+
+		columnBitmasks.put("criteria", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"source",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.source);
+
+		columnBitmasks.put("source", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"type", segmentsEntryCacheModel -> segmentsEntryCacheModel.type);
+
+		columnBitmasks.put("type", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			segmentsEntryCacheModel -> segmentsEntryCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 131072L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SegmentsEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SegmentsEntryCacheModel segmentsEntryCacheModel =
+			_segmentsEntryCacheModel;
+
+		if (segmentsEntryCacheModel == null) {
+			segmentsEntryCacheModel = _dummySegmentsEntryCacheModel;
+		}
+
+		return (T)function.apply(segmentsEntryCacheModel);
+	}
+
+	private static final SegmentsEntryCacheModel _dummySegmentsEntryCacheModel =
+		new SegmentsEntryCacheModel();
+
+	private SegmentsEntryCacheModel _segmentsEntryCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _segmentsEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _segmentsEntryKey;
-	private String _originalSegmentsEntryKey;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private String _criteria;
 	private String _source;
-	private String _originalSource;
 	private String _type;
-	private String _originalType;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private SegmentsEntry _escapedModel;

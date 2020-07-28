@@ -100,12 +100,32 @@ public class AccountRoleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROLEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTROLEID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -326,6 +346,8 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -337,6 +359,8 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setAccountRoleId(long accountRoleId) {
+		_columnBitmask |= _columnBitmasks.get("accountRoleId");
+
 		_accountRoleId = accountRoleId;
 	}
 
@@ -348,19 +372,18 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -371,19 +394,18 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
-
-			_originalAccountEntryId = _accountEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountEntryId");
 
 		_accountEntryId = accountEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		return getOriginalAttributeValue("accountEntryId");
 	}
 
 	@JSON
@@ -394,19 +416,18 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
-
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
-
-			_originalRoleId = _roleId;
-		}
+		_columnBitmask |= _columnBitmasks.get("roleId");
 
 		_roleId = roleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		return getOriginalAttributeValue("roleId");
 	}
 
 	public long getColumnBitmask() {
@@ -518,23 +539,9 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountRoleModelImpl accountRoleModelImpl = this;
+		_columnBitmask = 0;
 
-		accountRoleModelImpl._originalCompanyId =
-			accountRoleModelImpl._companyId;
-
-		accountRoleModelImpl._setOriginalCompanyId = false;
-
-		accountRoleModelImpl._originalAccountEntryId =
-			accountRoleModelImpl._accountEntryId;
-
-		accountRoleModelImpl._setOriginalAccountEntryId = false;
-
-		accountRoleModelImpl._originalRoleId = accountRoleModelImpl._roleId;
-
-		accountRoleModelImpl._setOriginalRoleId = false;
-
-		accountRoleModelImpl._columnBitmask = 0;
+		_accountRoleCacheModel = (AccountRoleCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -625,17 +632,82 @@ public class AccountRoleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<AccountRoleCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AccountRoleCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AccountRoleCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			accountRoleCacheModel -> accountRoleCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"accountRoleId",
+			accountRoleCacheModel -> accountRoleCacheModel.accountRoleId);
+
+		columnBitmasks.put("accountRoleId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			accountRoleCacheModel -> accountRoleCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"accountEntryId",
+			accountRoleCacheModel -> accountRoleCacheModel.accountEntryId);
+
+		columnBitmasks.put("accountEntryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"roleId", accountRoleCacheModel -> accountRoleCacheModel.roleId);
+
+		columnBitmasks.put("roleId", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AccountRoleCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AccountRoleCacheModel accountRoleCacheModel = _accountRoleCacheModel;
+
+		if (accountRoleCacheModel == null) {
+			accountRoleCacheModel = _dummyAccountRoleCacheModel;
+		}
+
+		return (T)function.apply(accountRoleCacheModel);
+	}
+
+	private static final AccountRoleCacheModel _dummyAccountRoleCacheModel =
+		new AccountRoleCacheModel();
+
+	private AccountRoleCacheModel _accountRoleCacheModel;
 	private long _mvccVersion;
 	private long _accountRoleId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _columnBitmask;
 	private AccountRole _escapedModel;
 

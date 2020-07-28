@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -117,18 +116,53 @@ public class PollsVoteModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CHOICEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long QUESTIONID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VOTEID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -379,6 +413,8 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -395,17 +431,18 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -416,6 +453,8 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setVoteId(long voteId) {
+		_columnBitmask |= _columnBitmasks.get("voteId");
+
 		_voteId = voteId;
 	}
 
@@ -427,19 +466,18 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -450,19 +488,18 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -473,13 +510,7 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -500,8 +531,13 @@ public class PollsVoteModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -517,6 +553,8 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -528,6 +566,8 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -545,6 +585,8 @@ public class PollsVoteModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -556,19 +598,18 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setQuestionId(long questionId) {
-		_columnBitmask |= QUESTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalQuestionId) {
-			_setOriginalQuestionId = true;
-
-			_originalQuestionId = _questionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("questionId");
 
 		_questionId = questionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalQuestionId() {
-		return _originalQuestionId;
+		return getOriginalAttributeValue("questionId");
 	}
 
 	@JSON
@@ -579,19 +620,18 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setChoiceId(long choiceId) {
-		_columnBitmask |= CHOICEID_COLUMN_BITMASK;
-
-		if (!_setOriginalChoiceId) {
-			_setOriginalChoiceId = true;
-
-			_originalChoiceId = _choiceId;
-		}
+		_columnBitmask |= _columnBitmasks.get("choiceId");
 
 		_choiceId = choiceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalChoiceId() {
-		return _originalChoiceId;
+		return getOriginalAttributeValue("choiceId");
 	}
 
 	@JSON
@@ -602,6 +642,8 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -613,6 +655,8 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void setVoteDate(Date voteDate) {
+		_columnBitmask |= _columnBitmasks.get("voteDate");
+
 		_voteDate = voteDate;
 	}
 
@@ -739,33 +783,11 @@ public class PollsVoteModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PollsVoteModelImpl pollsVoteModelImpl = this;
+		_setModifiedDate = false;
 
-		pollsVoteModelImpl._originalUuid = pollsVoteModelImpl._uuid;
+		_columnBitmask = 0;
 
-		pollsVoteModelImpl._originalGroupId = pollsVoteModelImpl._groupId;
-
-		pollsVoteModelImpl._setOriginalGroupId = false;
-
-		pollsVoteModelImpl._originalCompanyId = pollsVoteModelImpl._companyId;
-
-		pollsVoteModelImpl._setOriginalCompanyId = false;
-
-		pollsVoteModelImpl._originalUserId = pollsVoteModelImpl._userId;
-
-		pollsVoteModelImpl._setOriginalUserId = false;
-
-		pollsVoteModelImpl._setModifiedDate = false;
-
-		pollsVoteModelImpl._originalQuestionId = pollsVoteModelImpl._questionId;
-
-		pollsVoteModelImpl._setOriginalQuestionId = false;
-
-		pollsVoteModelImpl._originalChoiceId = pollsVoteModelImpl._choiceId;
-
-		pollsVoteModelImpl._setOriginalChoiceId = false;
-
-		pollsVoteModelImpl._columnBitmask = 0;
+		_pollsVoteCacheModel = (PollsVoteCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -911,29 +933,130 @@ public class PollsVoteModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<PollsVoteCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<PollsVoteCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<PollsVoteCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			pollsVoteCacheModel -> pollsVoteCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", pollsVoteCacheModel -> pollsVoteCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"voteId", pollsVoteCacheModel -> pollsVoteCacheModel.voteId);
+
+		columnBitmasks.put("voteId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", pollsVoteCacheModel -> pollsVoteCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", pollsVoteCacheModel -> pollsVoteCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId", pollsVoteCacheModel -> pollsVoteCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName", pollsVoteCacheModel -> pollsVoteCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			pollsVoteCacheModel -> pollsVoteCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			pollsVoteCacheModel -> pollsVoteCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"questionId",
+			pollsVoteCacheModel -> pollsVoteCacheModel.questionId);
+
+		columnBitmasks.put("questionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"choiceId", pollsVoteCacheModel -> pollsVoteCacheModel.choiceId);
+
+		columnBitmasks.put("choiceId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			pollsVoteCacheModel -> pollsVoteCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"voteDate", pollsVoteCacheModel -> pollsVoteCacheModel.voteDate);
+
+		columnBitmasks.put("voteDate", 4096L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<PollsVoteCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		PollsVoteCacheModel pollsVoteCacheModel = _pollsVoteCacheModel;
+
+		if (pollsVoteCacheModel == null) {
+			pollsVoteCacheModel = _dummyPollsVoteCacheModel;
+		}
+
+		return (T)function.apply(pollsVoteCacheModel);
+	}
+
+	private static final PollsVoteCacheModel _dummyPollsVoteCacheModel =
+		new PollsVoteCacheModel();
+
+	private PollsVoteCacheModel _pollsVoteCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _voteId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _questionId;
-	private long _originalQuestionId;
-	private boolean _setOriginalQuestionId;
 	private long _choiceId;
-	private long _originalChoiceId;
-	private boolean _setOriginalChoiceId;
 	private Date _lastPublishDate;
 	private Date _voteDate;
 	private long _columnBitmask;

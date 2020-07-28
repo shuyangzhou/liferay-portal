@@ -111,7 +111,14 @@ public class LocalizedEntryModelImpl
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = true;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long LOCALIZEDENTRYID_COLUMN_BITMASK = 1L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -425,6 +432,8 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_columnBitmask |= _columnBitmasks.get("defaultLanguageId");
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -435,7 +444,13 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setLocalizedEntryId(long localizedEntryId) {
+		_columnBitmask |= _columnBitmasks.get("localizedEntryId");
+
 		_localizedEntryId = localizedEntryId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -540,6 +555,9 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_localizedEntryCacheModel = (LocalizedEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -630,8 +648,66 @@ public class LocalizedEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<LocalizedEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LocalizedEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<LocalizedEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"defaultLanguageId",
+			localizedEntryCacheModel ->
+				localizedEntryCacheModel.defaultLanguageId);
+
+		columnBitmasks.put("defaultLanguageId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"localizedEntryId",
+			localizedEntryCacheModel ->
+				localizedEntryCacheModel.localizedEntryId);
+
+		columnBitmasks.put("localizedEntryId", 2L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LocalizedEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LocalizedEntryCacheModel localizedEntryCacheModel =
+			_localizedEntryCacheModel;
+
+		if (localizedEntryCacheModel == null) {
+			localizedEntryCacheModel = _dummyLocalizedEntryCacheModel;
+		}
+
+		return (T)function.apply(localizedEntryCacheModel);
+	}
+
+	private static final LocalizedEntryCacheModel
+		_dummyLocalizedEntryCacheModel = new LocalizedEntryCacheModel();
+
+	private LocalizedEntryCacheModel _localizedEntryCacheModel;
 	private String _defaultLanguageId;
 	private long _localizedEntryId;
+	private long _columnBitmask;
 	private LocalizedEntry _escapedModel;
 
 }

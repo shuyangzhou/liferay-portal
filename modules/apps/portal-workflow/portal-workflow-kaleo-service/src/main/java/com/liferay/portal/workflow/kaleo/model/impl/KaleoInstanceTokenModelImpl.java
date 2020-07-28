@@ -122,16 +122,46 @@ public class KaleoInstanceTokenModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPLETIONDATE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEOINSTANCEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTKALEOINSTANCETOKENID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEOINSTANCETOKENID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -398,6 +428,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -408,7 +440,7 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setKaleoInstanceTokenId(long kaleoInstanceTokenId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("kaleoInstanceTokenId");
 
 		_kaleoInstanceTokenId = kaleoInstanceTokenId;
 	}
@@ -420,6 +452,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -430,19 +464,18 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -452,6 +485,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -483,6 +518,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -493,6 +530,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -509,6 +548,8 @@ public class KaleoInstanceTokenModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -519,6 +560,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionId");
+
 		_kaleoDefinitionId = kaleoDefinitionId;
 	}
 
@@ -529,19 +572,18 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
-
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionVersionId");
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		return getOriginalAttributeValue("kaleoDefinitionVersionId");
 	}
 
 	@Override
@@ -551,19 +593,18 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setKaleoInstanceId(long kaleoInstanceId) {
-		_columnBitmask |= KALEOINSTANCEID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoInstanceId) {
-			_setOriginalKaleoInstanceId = true;
-
-			_originalKaleoInstanceId = _kaleoInstanceId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoInstanceId");
 
 		_kaleoInstanceId = kaleoInstanceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoInstanceId() {
-		return _originalKaleoInstanceId;
+		return getOriginalAttributeValue("kaleoInstanceId");
 	}
 
 	@Override
@@ -573,19 +614,18 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setParentKaleoInstanceTokenId(long parentKaleoInstanceTokenId) {
-		_columnBitmask |= PARENTKALEOINSTANCETOKENID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentKaleoInstanceTokenId) {
-			_setOriginalParentKaleoInstanceTokenId = true;
-
-			_originalParentKaleoInstanceTokenId = _parentKaleoInstanceTokenId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentKaleoInstanceTokenId");
 
 		_parentKaleoInstanceTokenId = parentKaleoInstanceTokenId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentKaleoInstanceTokenId() {
-		return _originalParentKaleoInstanceTokenId;
+		return getOriginalAttributeValue("parentKaleoInstanceTokenId");
 	}
 
 	@Override
@@ -595,6 +635,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setCurrentKaleoNodeId(long currentKaleoNodeId) {
+		_columnBitmask |= _columnBitmasks.get("currentKaleoNodeId");
+
 		_currentKaleoNodeId = currentKaleoNodeId;
 	}
 
@@ -610,6 +652,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setCurrentKaleoNodeName(String currentKaleoNodeName) {
+		_columnBitmask |= _columnBitmasks.get("currentKaleoNodeName");
+
 		_currentKaleoNodeName = currentKaleoNodeName;
 	}
 
@@ -625,6 +669,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setClassName(String className) {
+		_columnBitmask |= _columnBitmasks.get("className");
+
 		_className = className;
 	}
 
@@ -635,6 +681,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_columnBitmask |= _columnBitmasks.get("classPK");
+
 		_classPK = classPK;
 	}
 
@@ -650,6 +698,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setCompleted(boolean completed) {
+		_columnBitmask |= _columnBitmasks.get("completed");
+
 		_completed = completed;
 	}
 
@@ -660,17 +710,18 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setCompletionDate(Date completionDate) {
-		_columnBitmask |= COMPLETIONDATE_COLUMN_BITMASK;
-
-		if (_originalCompletionDate == null) {
-			_originalCompletionDate = _completionDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("completionDate");
 
 		_completionDate = completionDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public Date getOriginalCompletionDate() {
-		return _originalCompletionDate;
+		return getOriginalAttributeValue("completionDate");
 	}
 
 	public long getColumnBitmask() {
@@ -811,36 +862,12 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoInstanceTokenModelImpl kaleoInstanceTokenModelImpl = this;
+		_setModifiedDate = false;
 
-		kaleoInstanceTokenModelImpl._originalCompanyId =
-			kaleoInstanceTokenModelImpl._companyId;
+		_columnBitmask = 0;
 
-		kaleoInstanceTokenModelImpl._setOriginalCompanyId = false;
-
-		kaleoInstanceTokenModelImpl._setModifiedDate = false;
-
-		kaleoInstanceTokenModelImpl._originalKaleoDefinitionVersionId =
-			kaleoInstanceTokenModelImpl._kaleoDefinitionVersionId;
-
-		kaleoInstanceTokenModelImpl._setOriginalKaleoDefinitionVersionId =
-			false;
-
-		kaleoInstanceTokenModelImpl._originalKaleoInstanceId =
-			kaleoInstanceTokenModelImpl._kaleoInstanceId;
-
-		kaleoInstanceTokenModelImpl._setOriginalKaleoInstanceId = false;
-
-		kaleoInstanceTokenModelImpl._originalParentKaleoInstanceTokenId =
-			kaleoInstanceTokenModelImpl._parentKaleoInstanceTokenId;
-
-		kaleoInstanceTokenModelImpl._setOriginalParentKaleoInstanceTokenId =
-			false;
-
-		kaleoInstanceTokenModelImpl._originalCompletionDate =
-			kaleoInstanceTokenModelImpl._completionDate;
-
-		kaleoInstanceTokenModelImpl._columnBitmask = 0;
+		_kaleoInstanceTokenCacheModel =
+			(KaleoInstanceTokenCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1005,12 +1032,180 @@ public class KaleoInstanceTokenModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<KaleoInstanceTokenCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<KaleoInstanceTokenCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<KaleoInstanceTokenCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoInstanceTokenId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.kaleoInstanceTokenId);
+
+		columnBitmasks.put("kaleoInstanceTokenId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoDefinitionId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.kaleoDefinitionId);
+
+		columnBitmasks.put("kaleoDefinitionId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoDefinitionVersionId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.kaleoDefinitionVersionId);
+
+		columnBitmasks.put("kaleoDefinitionVersionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoInstanceId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.kaleoInstanceId);
+
+		columnBitmasks.put("kaleoInstanceId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"parentKaleoInstanceTokenId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.parentKaleoInstanceTokenId);
+
+		columnBitmasks.put("parentKaleoInstanceTokenId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"currentKaleoNodeId",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.currentKaleoNodeId);
+
+		columnBitmasks.put("currentKaleoNodeId", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"currentKaleoNodeName",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.currentKaleoNodeName);
+
+		columnBitmasks.put("currentKaleoNodeName", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"className",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.className);
+
+		columnBitmasks.put("className", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"completed",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.completed);
+
+		columnBitmasks.put("completed", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"completionDate",
+			kaleoInstanceTokenCacheModel ->
+				kaleoInstanceTokenCacheModel.completionDate);
+
+		columnBitmasks.put("completionDate", 131072L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<KaleoInstanceTokenCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		KaleoInstanceTokenCacheModel kaleoInstanceTokenCacheModel =
+			_kaleoInstanceTokenCacheModel;
+
+		if (kaleoInstanceTokenCacheModel == null) {
+			kaleoInstanceTokenCacheModel = _dummyKaleoInstanceTokenCacheModel;
+		}
+
+		return (T)function.apply(kaleoInstanceTokenCacheModel);
+	}
+
+	private static final KaleoInstanceTokenCacheModel
+		_dummyKaleoInstanceTokenCacheModel = new KaleoInstanceTokenCacheModel();
+
+	private KaleoInstanceTokenCacheModel _kaleoInstanceTokenCacheModel;
 	private long _mvccVersion;
 	private long _kaleoInstanceTokenId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1018,21 +1213,14 @@ public class KaleoInstanceTokenModelImpl
 	private boolean _setModifiedDate;
 	private long _kaleoDefinitionId;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoInstanceId;
-	private long _originalKaleoInstanceId;
-	private boolean _setOriginalKaleoInstanceId;
 	private long _parentKaleoInstanceTokenId;
-	private long _originalParentKaleoInstanceTokenId;
-	private boolean _setOriginalParentKaleoInstanceTokenId;
 	private long _currentKaleoNodeId;
 	private String _currentKaleoNodeName;
 	private String _className;
 	private long _classPK;
 	private boolean _completed;
 	private Date _completionDate;
-	private Date _originalCompletionDate;
 	private long _columnBitmask;
 	private KaleoInstanceToken _escapedModel;
 

@@ -142,12 +142,32 @@ public class LayoutPrototypeModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPROTOTYPEID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -403,6 +423,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -419,17 +441,18 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -440,6 +463,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setLayoutPrototypeId(long layoutPrototypeId) {
+		_columnBitmask |= _columnBitmasks.get("layoutPrototypeId");
+
 		_layoutPrototypeId = layoutPrototypeId;
 	}
 
@@ -451,19 +476,18 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -474,6 +498,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -506,6 +532,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -517,6 +545,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -533,6 +563,8 @@ public class LayoutPrototypeModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -593,6 +625,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -696,6 +730,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -761,6 +797,8 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		_columnBitmask |= _columnBitmasks.get("settings");
+
 		_settings = settings;
 	}
 
@@ -778,19 +816,18 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	@Override
@@ -1003,23 +1040,11 @@ public class LayoutPrototypeModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutPrototypeModelImpl layoutPrototypeModelImpl = this;
+		_setModifiedDate = false;
 
-		layoutPrototypeModelImpl._originalUuid = layoutPrototypeModelImpl._uuid;
+		_columnBitmask = 0;
 
-		layoutPrototypeModelImpl._originalCompanyId =
-			layoutPrototypeModelImpl._companyId;
-
-		layoutPrototypeModelImpl._setOriginalCompanyId = false;
-
-		layoutPrototypeModelImpl._setModifiedDate = false;
-
-		layoutPrototypeModelImpl._originalActive =
-			layoutPrototypeModelImpl._active;
-
-		layoutPrototypeModelImpl._setOriginalActive = false;
-
-		layoutPrototypeModelImpl._columnBitmask = 0;
+		_layoutPrototypeCacheModel = (LayoutPrototypeCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1168,13 +1193,128 @@ public class LayoutPrototypeModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<LayoutPrototypeCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LayoutPrototypeCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<LayoutPrototypeCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPrototypeId",
+			layoutPrototypeCacheModel ->
+				layoutPrototypeCacheModel.layoutPrototypeId);
+
+		columnBitmasks.put("layoutPrototypeId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			layoutPrototypeCacheModel ->
+				layoutPrototypeCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.name);
+
+		columnBitmasks.put("name", 256L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.description);
+
+		columnBitmasks.put("description", 512L);
+
+		cacheModelGetterFunctions.put(
+			"settings",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.settings);
+
+		columnBitmasks.put("settings", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"active",
+			layoutPrototypeCacheModel -> layoutPrototypeCacheModel.active);
+
+		columnBitmasks.put("active", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LayoutPrototypeCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LayoutPrototypeCacheModel layoutPrototypeCacheModel =
+			_layoutPrototypeCacheModel;
+
+		if (layoutPrototypeCacheModel == null) {
+			layoutPrototypeCacheModel = _dummyLayoutPrototypeCacheModel;
+		}
+
+		return (T)function.apply(layoutPrototypeCacheModel);
+	}
+
+	private static final LayoutPrototypeCacheModel
+		_dummyLayoutPrototypeCacheModel = new LayoutPrototypeCacheModel();
+
+	private LayoutPrototypeCacheModel _layoutPrototypeCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutPrototypeId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1186,8 +1326,6 @@ public class LayoutPrototypeModelImpl
 	private String _descriptionCurrentLanguageId;
 	private String _settings;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private LayoutPrototype _escapedModel;
 

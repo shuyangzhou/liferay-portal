@@ -2095,8 +2095,8 @@ public class MDRActionPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				mdrActionModelImpl.getOriginalUuid(),
-				mdrActionModelImpl.getOriginalGroupId()
+				mdrActionModelImpl.getOriginalAttributeValue("uuid"),
+				mdrActionModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2315,7 +2315,7 @@ public class MDRActionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					mdrActionModelImpl.getOriginalUuid()
+					mdrActionModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2334,8 +2334,8 @@ public class MDRActionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					mdrActionModelImpl.getOriginalUuid(),
-					mdrActionModelImpl.getOriginalCompanyId()
+					mdrActionModelImpl.getOriginalAttributeValue("uuid"),
+					mdrActionModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2357,7 +2357,8 @@ public class MDRActionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					mdrActionModelImpl.getOriginalRuleGroupInstanceId()
+					mdrActionModelImpl.getOriginalAttributeValue(
+						"ruleGroupInstanceId")
 				};
 
 				finderCache.removeResult(
@@ -2671,7 +2672,7 @@ public class MDRActionPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			MDRActionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			MDRActionModelImpl.UUID_COLUMN_BITMASK);
+			MDRActionModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2680,8 +2681,8 @@ public class MDRActionPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			MDRActionImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			MDRActionModelImpl.UUID_COLUMN_BITMASK |
-			MDRActionModelImpl.GROUPID_COLUMN_BITMASK);
+			MDRActionModelImpl.getColumnBitmask("uuid") |
+			MDRActionModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2701,8 +2702,8 @@ public class MDRActionPersistenceImpl
 			MDRActionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			MDRActionModelImpl.UUID_COLUMN_BITMASK |
-			MDRActionModelImpl.COMPANYID_COLUMN_BITMASK);
+			MDRActionModelImpl.getColumnBitmask("uuid") |
+			MDRActionModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2720,7 +2721,7 @@ public class MDRActionPersistenceImpl
 		_finderPathWithoutPaginationFindByRuleGroupInstanceId = new FinderPath(
 			MDRActionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByRuleGroupInstanceId", new String[] {Long.class.getName()},
-			MDRActionModelImpl.RULEGROUPINSTANCEID_COLUMN_BITMASK);
+			MDRActionModelImpl.getColumnBitmask("ruleGroupInstanceId"));
 
 		_finderPathCountByRuleGroupInstanceId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

@@ -586,39 +586,44 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 			Objects.equals(
 				existingLayoutPageTemplateCollection.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutPageTemplateCollection, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLayoutPageTemplateCollection,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateCollection.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateCollection, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateCollection,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateCollection.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateCollection, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateCollection,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayoutPageTemplateCollection.
 					getLayoutPageTemplateCollectionKey(),
 				ReflectionTestUtil.invoke(
 					existingLayoutPageTemplateCollection,
-					"getOriginalLayoutPageTemplateCollectionKey",
-					new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"layoutPageTemplateCollectionKey")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateCollection.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateCollection, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateCollection,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayoutPageTemplateCollection.getName(),
 				ReflectionTestUtil.invoke(
-					existingLayoutPageTemplateCollection, "getOriginalName",
-					new Class<?>[0])));
+					existingLayoutPageTemplateCollection,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"name")));
 	}
 
 	protected LayoutPageTemplateCollection addLayoutPageTemplateCollection()

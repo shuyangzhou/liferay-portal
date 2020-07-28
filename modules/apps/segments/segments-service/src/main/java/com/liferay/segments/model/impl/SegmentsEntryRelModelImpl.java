@@ -116,14 +116,39 @@ public class SegmentsEntryRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSENTRYRELID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -397,6 +422,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -408,6 +435,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -419,6 +448,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setSegmentsEntryRelId(long segmentsEntryRelId) {
+		_columnBitmask |= _columnBitmasks.get("segmentsEntryRelId");
+
 		_segmentsEntryRelId = segmentsEntryRelId;
 	}
 
@@ -430,19 +461,18 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -453,6 +483,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -464,6 +496,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -496,6 +530,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -507,6 +543,8 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -524,6 +562,8 @@ public class SegmentsEntryRelModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -535,19 +575,18 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
-		_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalSegmentsEntryId) {
-			_setOriginalSegmentsEntryId = true;
-
-			_originalSegmentsEntryId = _segmentsEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("segmentsEntryId");
 
 		_segmentsEntryId = segmentsEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsEntryId() {
-		return _originalSegmentsEntryId;
+		return getOriginalAttributeValue("segmentsEntryId");
 	}
 
 	@Override
@@ -578,19 +617,18 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -601,19 +639,18 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	public long getColumnBitmask() {
@@ -732,31 +769,12 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsEntryRelModelImpl segmentsEntryRelModelImpl = this;
+		_setModifiedDate = false;
 
-		segmentsEntryRelModelImpl._originalGroupId =
-			segmentsEntryRelModelImpl._groupId;
+		_columnBitmask = 0;
 
-		segmentsEntryRelModelImpl._setOriginalGroupId = false;
-
-		segmentsEntryRelModelImpl._setModifiedDate = false;
-
-		segmentsEntryRelModelImpl._originalSegmentsEntryId =
-			segmentsEntryRelModelImpl._segmentsEntryId;
-
-		segmentsEntryRelModelImpl._setOriginalSegmentsEntryId = false;
-
-		segmentsEntryRelModelImpl._originalClassNameId =
-			segmentsEntryRelModelImpl._classNameId;
-
-		segmentsEntryRelModelImpl._setOriginalClassNameId = false;
-
-		segmentsEntryRelModelImpl._originalClassPK =
-			segmentsEntryRelModelImpl._classPK;
-
-		segmentsEntryRelModelImpl._setOriginalClassPK = false;
-
-		segmentsEntryRelModelImpl._columnBitmask = 0;
+		_segmentsEntryRelCacheModel =
+			(SegmentsEntryRelCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -881,12 +899,133 @@ public class SegmentsEntryRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<SegmentsEntryRelCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SegmentsEntryRelCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<SegmentsEntryRelCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsEntryRelId",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.segmentsEntryRelId);
+
+		columnBitmasks.put("segmentsEntryRelId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			segmentsEntryRelCacheModel -> segmentsEntryRelCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			segmentsEntryRelCacheModel -> segmentsEntryRelCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			segmentsEntryRelCacheModel -> segmentsEntryRelCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			segmentsEntryRelCacheModel -> segmentsEntryRelCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsEntryId",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.segmentsEntryId);
+
+		columnBitmasks.put("segmentsEntryId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			segmentsEntryRelCacheModel ->
+				segmentsEntryRelCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			segmentsEntryRelCacheModel -> segmentsEntryRelCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SegmentsEntryRelCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SegmentsEntryRelCacheModel segmentsEntryRelCacheModel =
+			_segmentsEntryRelCacheModel;
+
+		if (segmentsEntryRelCacheModel == null) {
+			segmentsEntryRelCacheModel = _dummySegmentsEntryRelCacheModel;
+		}
+
+		return (T)function.apply(segmentsEntryRelCacheModel);
+	}
+
+	private static final SegmentsEntryRelCacheModel
+		_dummySegmentsEntryRelCacheModel = new SegmentsEntryRelCacheModel();
+
+	private SegmentsEntryRelCacheModel _segmentsEntryRelCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _segmentsEntryRelId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -894,14 +1033,8 @@ public class SegmentsEntryRelModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _segmentsEntryId;
-	private long _originalSegmentsEntryId;
-	private boolean _setOriginalSegmentsEntryId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _columnBitmask;
 	private SegmentsEntryRel _escapedModel;
 

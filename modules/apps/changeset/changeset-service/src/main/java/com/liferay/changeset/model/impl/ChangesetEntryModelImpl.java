@@ -109,16 +109,46 @@ public class ChangesetEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CHANGESETCOLLECTIONID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CHANGESETENTRYID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -320,6 +350,8 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setChangesetEntryId(long changesetEntryId) {
+		_columnBitmask |= _columnBitmasks.get("changesetEntryId");
+
 		_changesetEntryId = changesetEntryId;
 	}
 
@@ -330,19 +362,18 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -352,19 +383,18 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -374,6 +404,8 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -405,6 +437,8 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -415,6 +449,8 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -431,6 +467,8 @@ public class ChangesetEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -441,19 +479,18 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setChangesetCollectionId(long changesetCollectionId) {
-		_columnBitmask |= CHANGESETCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalChangesetCollectionId) {
-			_setOriginalChangesetCollectionId = true;
-
-			_originalChangesetCollectionId = _changesetCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("changesetCollectionId");
 
 		_changesetCollectionId = changesetCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalChangesetCollectionId() {
-		return _originalChangesetCollectionId;
+		return getOriginalAttributeValue("changesetCollectionId");
 	}
 
 	@Override
@@ -483,19 +520,18 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -505,19 +541,18 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	public long getColumnBitmask() {
@@ -634,36 +669,11 @@ public class ChangesetEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ChangesetEntryModelImpl changesetEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		changesetEntryModelImpl._originalGroupId =
-			changesetEntryModelImpl._groupId;
+		_columnBitmask = 0;
 
-		changesetEntryModelImpl._setOriginalGroupId = false;
-
-		changesetEntryModelImpl._originalCompanyId =
-			changesetEntryModelImpl._companyId;
-
-		changesetEntryModelImpl._setOriginalCompanyId = false;
-
-		changesetEntryModelImpl._setModifiedDate = false;
-
-		changesetEntryModelImpl._originalChangesetCollectionId =
-			changesetEntryModelImpl._changesetCollectionId;
-
-		changesetEntryModelImpl._setOriginalChangesetCollectionId = false;
-
-		changesetEntryModelImpl._originalClassNameId =
-			changesetEntryModelImpl._classNameId;
-
-		changesetEntryModelImpl._setOriginalClassNameId = false;
-
-		changesetEntryModelImpl._originalClassPK =
-			changesetEntryModelImpl._classPK;
-
-		changesetEntryModelImpl._setOriginalClassPK = false;
-
-		changesetEntryModelImpl._columnBitmask = 0;
+		_changesetEntryCacheModel = (ChangesetEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -785,27 +795,122 @@ public class ChangesetEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<ChangesetEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ChangesetEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<ChangesetEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"changesetEntryId",
+			changesetEntryCacheModel ->
+				changesetEntryCacheModel.changesetEntryId);
+
+		columnBitmasks.put("changesetEntryId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			changesetEntryCacheModel -> changesetEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			changesetEntryCacheModel -> changesetEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			changesetEntryCacheModel -> changesetEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			changesetEntryCacheModel -> changesetEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			changesetEntryCacheModel -> changesetEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			changesetEntryCacheModel -> changesetEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"changesetCollectionId",
+			changesetEntryCacheModel ->
+				changesetEntryCacheModel.changesetCollectionId);
+
+		columnBitmasks.put("changesetCollectionId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			changesetEntryCacheModel -> changesetEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			changesetEntryCacheModel -> changesetEntryCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ChangesetEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ChangesetEntryCacheModel changesetEntryCacheModel =
+			_changesetEntryCacheModel;
+
+		if (changesetEntryCacheModel == null) {
+			changesetEntryCacheModel = _dummyChangesetEntryCacheModel;
+		}
+
+		return (T)function.apply(changesetEntryCacheModel);
+	}
+
+	private static final ChangesetEntryCacheModel
+		_dummyChangesetEntryCacheModel = new ChangesetEntryCacheModel();
+
+	private ChangesetEntryCacheModel _changesetEntryCacheModel;
 	private long _changesetEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _changesetCollectionId;
-	private long _originalChangesetCollectionId;
-	private boolean _setOriginalChangesetCollectionId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _columnBitmask;
 	private ChangesetEntry _escapedModel;
 

@@ -122,10 +122,25 @@ public class LazyBlobEntityModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAZYBLOBENTITYID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -344,17 +359,18 @@ public class LazyBlobEntityModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -365,6 +381,8 @@ public class LazyBlobEntityModelImpl
 
 	@Override
 	public void setLazyBlobEntityId(long lazyBlobEntityId) {
+		_columnBitmask |= _columnBitmasks.get("lazyBlobEntityId");
+
 		_lazyBlobEntityId = lazyBlobEntityId;
 	}
 
@@ -376,19 +394,18 @@ public class LazyBlobEntityModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -415,6 +432,8 @@ public class LazyBlobEntityModelImpl
 
 	@Override
 	public void setBlob1(Blob blob1) {
+		_columnBitmask |= _columnBitmasks.get("blob1");
+
 		if (_blob1BlobModel == null) {
 			_blob1BlobModel = new LazyBlobEntityBlob1BlobModel(
 				getPrimaryKey(), blob1);
@@ -448,6 +467,8 @@ public class LazyBlobEntityModelImpl
 
 	@Override
 	public void setBlob2(Blob blob2) {
+		_columnBitmask |= _columnBitmasks.get("blob2");
+
 		if (_blob2BlobModel == null) {
 			_blob2BlobModel = new LazyBlobEntityBlob2BlobModel(
 				getPrimaryKey(), blob2);
@@ -564,20 +585,13 @@ public class LazyBlobEntityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LazyBlobEntityModelImpl lazyBlobEntityModelImpl = this;
+		_blob1BlobModel = null;
 
-		lazyBlobEntityModelImpl._originalUuid = lazyBlobEntityModelImpl._uuid;
+		_blob2BlobModel = null;
 
-		lazyBlobEntityModelImpl._originalGroupId =
-			lazyBlobEntityModelImpl._groupId;
+		_columnBitmask = 0;
 
-		lazyBlobEntityModelImpl._setOriginalGroupId = false;
-
-		lazyBlobEntityModelImpl._blob1BlobModel = null;
-
-		lazyBlobEntityModelImpl._blob2BlobModel = null;
-
-		lazyBlobEntityModelImpl._columnBitmask = 0;
+		_lazyBlobEntityCacheModel = (LazyBlobEntityCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -648,12 +662,74 @@ public class LazyBlobEntityModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<LazyBlobEntityCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LazyBlobEntityCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<LazyBlobEntityCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"uuid", lazyBlobEntityCacheModel -> lazyBlobEntityCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 1L);
+
+		cacheModelGetterFunctions.put(
+			"lazyBlobEntityId",
+			lazyBlobEntityCacheModel ->
+				lazyBlobEntityCacheModel.lazyBlobEntityId);
+
+		columnBitmasks.put("lazyBlobEntityId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			lazyBlobEntityCacheModel -> lazyBlobEntityCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("blob1", 8L);
+
+		columnBitmasks.put("blob2", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LazyBlobEntityCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LazyBlobEntityCacheModel lazyBlobEntityCacheModel =
+			_lazyBlobEntityCacheModel;
+
+		if (lazyBlobEntityCacheModel == null) {
+			lazyBlobEntityCacheModel = _dummyLazyBlobEntityCacheModel;
+		}
+
+		return (T)function.apply(lazyBlobEntityCacheModel);
+	}
+
+	private static final LazyBlobEntityCacheModel
+		_dummyLazyBlobEntityCacheModel = new LazyBlobEntityCacheModel();
+
+	private LazyBlobEntityCacheModel _lazyBlobEntityCacheModel;
 	private String _uuid;
-	private String _originalUuid;
 	private long _lazyBlobEntityId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private LazyBlobEntityBlob1BlobModel _blob1BlobModel;
 	private LazyBlobEntityBlob2BlobModel _blob2BlobModel;
 	private long _columnBitmask;

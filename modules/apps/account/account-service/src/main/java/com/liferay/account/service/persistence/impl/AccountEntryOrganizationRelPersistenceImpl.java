@@ -1530,9 +1530,10 @@ public class AccountEntryOrganizationRelPersistenceImpl
 			 _finderPathFetchByA_O.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				accountEntryOrganizationRelModelImpl.
-					getOriginalAccountEntryId(),
-				accountEntryOrganizationRelModelImpl.getOriginalOrganizationId()
+				accountEntryOrganizationRelModelImpl.getOriginalAttributeValue(
+					"accountEntryId"),
+				accountEntryOrganizationRelModelImpl.getOriginalAttributeValue(
+					"organizationId")
 			};
 
 			finderCache.removeResult(_finderPathCountByA_O, args);
@@ -1739,7 +1740,7 @@ public class AccountEntryOrganizationRelPersistenceImpl
 
 				Object[] args = new Object[] {
 					accountEntryOrganizationRelModelImpl.
-						getOriginalAccountEntryId()
+						getOriginalAttributeValue("accountEntryId")
 				};
 
 				finderCache.removeResult(
@@ -1763,7 +1764,7 @@ public class AccountEntryOrganizationRelPersistenceImpl
 
 				Object[] args = new Object[] {
 					accountEntryOrganizationRelModelImpl.
-						getOriginalOrganizationId()
+						getOriginalAttributeValue("organizationId")
 				};
 
 				finderCache.removeResult(
@@ -2084,7 +2085,8 @@ public class AccountEntryOrganizationRelPersistenceImpl
 			AccountEntryOrganizationRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
 			new String[] {Long.class.getName()},
-			AccountEntryOrganizationRelModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK);
+			AccountEntryOrganizationRelModelImpl.getColumnBitmask(
+				"accountEntryId"));
 
 		_finderPathCountByAccountEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2102,7 +2104,8 @@ public class AccountEntryOrganizationRelPersistenceImpl
 			AccountEntryOrganizationRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByOrganizationId",
 			new String[] {Long.class.getName()},
-			AccountEntryOrganizationRelModelImpl.ORGANIZATIONID_COLUMN_BITMASK);
+			AccountEntryOrganizationRelModelImpl.getColumnBitmask(
+				"organizationId"));
 
 		_finderPathCountByOrganizationId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2112,8 +2115,10 @@ public class AccountEntryOrganizationRelPersistenceImpl
 			AccountEntryOrganizationRelImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByA_O",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			AccountEntryOrganizationRelModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
-			AccountEntryOrganizationRelModelImpl.ORGANIZATIONID_COLUMN_BITMASK);
+			AccountEntryOrganizationRelModelImpl.getColumnBitmask(
+				"accountEntryId") |
+			AccountEntryOrganizationRelModelImpl.getColumnBitmask(
+				"organizationId"));
 
 		_finderPathCountByA_O = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_O",

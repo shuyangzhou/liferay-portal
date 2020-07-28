@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry;
 import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntryModel;
@@ -108,10 +107,25 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CONFIGURATIONPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SHAREPOINTOAUTH2TOKENENTRYID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -332,6 +346,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 	public void setSharepointOAuth2TokenEntryId(
 		long sharepointOAuth2TokenEntryId) {
 
+		_columnBitmask |= _columnBitmasks.get("sharepointOAuth2TokenEntryId");
+
 		_sharepointOAuth2TokenEntryId = sharepointOAuth2TokenEntryId;
 	}
 
@@ -342,6 +358,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -352,13 +370,7 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -379,8 +391,13 @@ public class SharepointOAuth2TokenEntryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -395,6 +412,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -405,6 +424,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -420,6 +441,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setAccessToken(String accessToken) {
+		_columnBitmask |= _columnBitmasks.get("accessToken");
+
 		_accessToken = accessToken;
 	}
 
@@ -435,17 +458,18 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setConfigurationPid(String configurationPid) {
-		_columnBitmask |= CONFIGURATIONPID_COLUMN_BITMASK;
-
-		if (_originalConfigurationPid == null) {
-			_originalConfigurationPid = _configurationPid;
-		}
+		_columnBitmask |= _columnBitmasks.get("configurationPid");
 
 		_configurationPid = configurationPid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalConfigurationPid() {
-		return GetterUtil.getString(_originalConfigurationPid);
+		return getOriginalAttributeValue("configurationPid");
 	}
 
 	@Override
@@ -455,6 +479,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		_columnBitmask |= _columnBitmasks.get("expirationDate");
+
 		_expirationDate = expirationDate;
 	}
 
@@ -470,6 +496,8 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void setRefreshToken(String refreshToken) {
+		_columnBitmask |= _columnBitmasks.get("refreshToken");
+
 		_refreshToken = refreshToken;
 	}
 
@@ -593,18 +621,10 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SharepointOAuth2TokenEntryModelImpl
-			sharepointOAuth2TokenEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		sharepointOAuth2TokenEntryModelImpl._originalUserId =
-			sharepointOAuth2TokenEntryModelImpl._userId;
-
-		sharepointOAuth2TokenEntryModelImpl._setOriginalUserId = false;
-
-		sharepointOAuth2TokenEntryModelImpl._originalConfigurationPid =
-			sharepointOAuth2TokenEntryModelImpl._configurationPid;
-
-		sharepointOAuth2TokenEntryModelImpl._columnBitmask = 0;
+		_sharepointOAuth2TokenEntryCacheModel =
+			(SharepointOAuth2TokenEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -754,16 +774,126 @@ public class SharepointOAuth2TokenEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<SharepointOAuth2TokenEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SharepointOAuth2TokenEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<SharepointOAuth2TokenEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"sharepointOAuth2TokenEntryId",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.
+					sharepointOAuth2TokenEntryId);
+
+		columnBitmasks.put("sharepointOAuth2TokenEntryId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"accessToken",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.accessToken);
+
+		columnBitmasks.put("accessToken", 32L);
+
+		cacheModelGetterFunctions.put(
+			"configurationPid",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.configurationPid);
+
+		columnBitmasks.put("configurationPid", 64L);
+
+		cacheModelGetterFunctions.put(
+			"expirationDate",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.expirationDate);
+
+		columnBitmasks.put("expirationDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"refreshToken",
+			sharepointOAuth2TokenEntryCacheModel ->
+				sharepointOAuth2TokenEntryCacheModel.refreshToken);
+
+		columnBitmasks.put("refreshToken", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SharepointOAuth2TokenEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SharepointOAuth2TokenEntryCacheModel
+			sharepointOAuth2TokenEntryCacheModel =
+				_sharepointOAuth2TokenEntryCacheModel;
+
+		if (sharepointOAuth2TokenEntryCacheModel == null) {
+			sharepointOAuth2TokenEntryCacheModel =
+				_dummySharepointOAuth2TokenEntryCacheModel;
+		}
+
+		return (T)function.apply(sharepointOAuth2TokenEntryCacheModel);
+	}
+
+	private static final SharepointOAuth2TokenEntryCacheModel
+		_dummySharepointOAuth2TokenEntryCacheModel =
+			new SharepointOAuth2TokenEntryCacheModel();
+
+	private SharepointOAuth2TokenEntryCacheModel
+		_sharepointOAuth2TokenEntryCacheModel;
 	private long _sharepointOAuth2TokenEntryId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private String _accessToken;
 	private String _configurationPid;
-	private String _originalConfigurationPid;
 	private Date _expirationDate;
 	private String _refreshToken;
 	private long _columnBitmask;

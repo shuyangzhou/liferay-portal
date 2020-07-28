@@ -133,12 +133,32 @@ public class MembershipRequestModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUSID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 8L;
 
 	/**
@@ -400,6 +420,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -411,6 +433,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setMembershipRequestId(long membershipRequestId) {
+		_columnBitmask |= _columnBitmasks.get("membershipRequestId");
+
 		_membershipRequestId = membershipRequestId;
 	}
 
@@ -422,19 +446,18 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -445,6 +468,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -456,13 +481,7 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -483,8 +502,13 @@ public class MembershipRequestModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -495,7 +519,7 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -513,6 +537,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setComments(String comments) {
+		_columnBitmask |= _columnBitmasks.get("comments");
+
 		_comments = comments;
 	}
 
@@ -529,6 +555,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setReplyComments(String replyComments) {
+		_columnBitmask |= _columnBitmasks.get("replyComments");
+
 		_replyComments = replyComments;
 	}
 
@@ -540,6 +568,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setReplyDate(Date replyDate) {
+		_columnBitmask |= _columnBitmasks.get("replyDate");
+
 		_replyDate = replyDate;
 	}
 
@@ -551,6 +581,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setReplierUserId(long replierUserId) {
+		_columnBitmask |= _columnBitmasks.get("replierUserId");
+
 		_replierUserId = replierUserId;
 	}
 
@@ -578,19 +610,18 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
-		_columnBitmask |= STATUSID_COLUMN_BITMASK;
-
-		if (!_setOriginalStatusId) {
-			_setOriginalStatusId = true;
-
-			_originalStatusId = _statusId;
-		}
+		_columnBitmask |= _columnBitmasks.get("statusId");
 
 		_statusId = statusId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalStatusId() {
-		return _originalStatusId;
+		return getOriginalAttributeValue("statusId");
 	}
 
 	public long getColumnBitmask() {
@@ -710,24 +741,10 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MembershipRequestModelImpl membershipRequestModelImpl = this;
+		_columnBitmask = 0;
 
-		membershipRequestModelImpl._originalGroupId =
-			membershipRequestModelImpl._groupId;
-
-		membershipRequestModelImpl._setOriginalGroupId = false;
-
-		membershipRequestModelImpl._originalUserId =
-			membershipRequestModelImpl._userId;
-
-		membershipRequestModelImpl._setOriginalUserId = false;
-
-		membershipRequestModelImpl._originalStatusId =
-			membershipRequestModelImpl._statusId;
-
-		membershipRequestModelImpl._setOriginalStatusId = false;
-
-		membershipRequestModelImpl._columnBitmask = 0;
+		_membershipRequestCacheModel =
+			(MembershipRequestCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -857,23 +874,136 @@ public class MembershipRequestModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<MembershipRequestCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MembershipRequestCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MembershipRequestCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"membershipRequestId",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.membershipRequestId);
+
+		columnBitmasks.put("membershipRequestId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			membershipRequestCacheModel -> membershipRequestCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			membershipRequestCacheModel -> membershipRequestCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"comments",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.comments);
+
+		columnBitmasks.put("comments", 64L);
+
+		cacheModelGetterFunctions.put(
+			"replyComments",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.replyComments);
+
+		columnBitmasks.put("replyComments", 128L);
+
+		cacheModelGetterFunctions.put(
+			"replyDate",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.replyDate);
+
+		columnBitmasks.put("replyDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"replierUserId",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.replierUserId);
+
+		columnBitmasks.put("replierUserId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"statusId",
+			membershipRequestCacheModel ->
+				membershipRequestCacheModel.statusId);
+
+		columnBitmasks.put("statusId", 1024L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MembershipRequestCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MembershipRequestCacheModel membershipRequestCacheModel =
+			_membershipRequestCacheModel;
+
+		if (membershipRequestCacheModel == null) {
+			membershipRequestCacheModel = _dummyMembershipRequestCacheModel;
+		}
+
+		return (T)function.apply(membershipRequestCacheModel);
+	}
+
+	private static final MembershipRequestCacheModel
+		_dummyMembershipRequestCacheModel = new MembershipRequestCacheModel();
+
+	private MembershipRequestCacheModel _membershipRequestCacheModel;
 	private long _mvccVersion;
 	private long _membershipRequestId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private String _comments;
 	private String _replyComments;
 	private Date _replyDate;
 	private long _replierUserId;
 	private long _statusId;
-	private long _originalStatusId;
-	private boolean _setOriginalStatusId;
 	private long _columnBitmask;
 	private MembershipRequest _escapedModel;
 

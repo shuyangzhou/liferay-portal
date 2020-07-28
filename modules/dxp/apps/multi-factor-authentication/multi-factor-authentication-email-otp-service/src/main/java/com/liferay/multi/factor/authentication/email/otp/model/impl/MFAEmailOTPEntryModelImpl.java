@@ -109,8 +109,18 @@ public class MFAEmailOTPEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MFAEMAILOTPENTRYID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -335,6 +345,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -345,6 +357,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setMfaEmailOTPEntryId(long mfaEmailOTPEntryId) {
+		_columnBitmask |= _columnBitmasks.get("mfaEmailOTPEntryId");
+
 		_mfaEmailOTPEntryId = mfaEmailOTPEntryId;
 	}
 
@@ -355,6 +369,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -365,13 +381,7 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -392,8 +402,13 @@ public class MFAEmailOTPEntryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -408,6 +423,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -418,6 +435,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -434,6 +453,8 @@ public class MFAEmailOTPEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -444,6 +465,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setFailedAttempts(int failedAttempts) {
+		_columnBitmask |= _columnBitmasks.get("failedAttempts");
+
 		_failedAttempts = failedAttempts;
 	}
 
@@ -454,6 +477,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setLastFailDate(Date lastFailDate) {
+		_columnBitmask |= _columnBitmasks.get("lastFailDate");
+
 		_lastFailDate = lastFailDate;
 	}
 
@@ -469,6 +494,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setLastFailIP(String lastFailIP) {
+		_columnBitmask |= _columnBitmasks.get("lastFailIP");
+
 		_lastFailIP = lastFailIP;
 	}
 
@@ -479,6 +506,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setLastSuccessDate(Date lastSuccessDate) {
+		_columnBitmask |= _columnBitmasks.get("lastSuccessDate");
+
 		_lastSuccessDate = lastSuccessDate;
 	}
 
@@ -494,6 +523,8 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void setLastSuccessIP(String lastSuccessIP) {
+		_columnBitmask |= _columnBitmasks.get("lastSuccessIP");
+
 		_lastSuccessIP = lastSuccessIP;
 	}
 
@@ -613,16 +644,12 @@ public class MFAEmailOTPEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MFAEmailOTPEntryModelImpl mfaEmailOTPEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		mfaEmailOTPEntryModelImpl._originalUserId =
-			mfaEmailOTPEntryModelImpl._userId;
+		_columnBitmask = 0;
 
-		mfaEmailOTPEntryModelImpl._setOriginalUserId = false;
-
-		mfaEmailOTPEntryModelImpl._setModifiedDate = false;
-
-		mfaEmailOTPEntryModelImpl._columnBitmask = 0;
+		_mfaEmailOTPEntryCacheModel =
+			(MFAEmailOTPEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -774,12 +801,135 @@ public class MFAEmailOTPEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<MFAEmailOTPEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MFAEmailOTPEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MFAEmailOTPEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"mfaEmailOTPEntryId",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.mfaEmailOTPEntryId);
+
+		columnBitmasks.put("mfaEmailOTPEntryId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			mfaEmailOTPEntryCacheModel -> mfaEmailOTPEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			mfaEmailOTPEntryCacheModel -> mfaEmailOTPEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			mfaEmailOTPEntryCacheModel -> mfaEmailOTPEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"failedAttempts",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.failedAttempts);
+
+		columnBitmasks.put("failedAttempts", 128L);
+
+		cacheModelGetterFunctions.put(
+			"lastFailDate",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.lastFailDate);
+
+		columnBitmasks.put("lastFailDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"lastFailIP",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.lastFailIP);
+
+		columnBitmasks.put("lastFailIP", 512L);
+
+		cacheModelGetterFunctions.put(
+			"lastSuccessDate",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.lastSuccessDate);
+
+		columnBitmasks.put("lastSuccessDate", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"lastSuccessIP",
+			mfaEmailOTPEntryCacheModel ->
+				mfaEmailOTPEntryCacheModel.lastSuccessIP);
+
+		columnBitmasks.put("lastSuccessIP", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MFAEmailOTPEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MFAEmailOTPEntryCacheModel mfaEmailOTPEntryCacheModel =
+			_mfaEmailOTPEntryCacheModel;
+
+		if (mfaEmailOTPEntryCacheModel == null) {
+			mfaEmailOTPEntryCacheModel = _dummyMFAEmailOTPEntryCacheModel;
+		}
+
+		return (T)function.apply(mfaEmailOTPEntryCacheModel);
+	}
+
+	private static final MFAEmailOTPEntryCacheModel
+		_dummyMFAEmailOTPEntryCacheModel = new MFAEmailOTPEntryCacheModel();
+
+	private MFAEmailOTPEntryCacheModel _mfaEmailOTPEntryCacheModel;
 	private long _mvccVersion;
 	private long _mfaEmailOTPEntryId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;

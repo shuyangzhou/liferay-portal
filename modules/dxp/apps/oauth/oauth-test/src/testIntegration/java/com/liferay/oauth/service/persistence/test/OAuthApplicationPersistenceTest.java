@@ -508,8 +508,8 @@ public class OAuthApplicationPersistenceTest {
 			Objects.equals(
 				existingOAuthApplication.getConsumerKey(),
 				ReflectionTestUtil.invoke(
-					existingOAuthApplication, "getOriginalConsumerKey",
-					new Class<?>[0])));
+					existingOAuthApplication, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "consumerKey")));
 	}
 
 	protected OAuthApplication addOAuthApplication() throws Exception {

@@ -126,10 +126,25 @@ public class RatingsStatsModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATSID_COLUMN_BITMASK = 4L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -324,6 +339,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -334,6 +351,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -344,6 +363,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setStatsId(long statsId) {
+		_columnBitmask |= _columnBitmasks.get("statsId");
+
 		_statsId = statsId;
 	}
 
@@ -354,6 +375,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -364,6 +387,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -379,6 +404,8 @@ public class RatingsStatsModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -410,19 +437,18 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -432,19 +458,18 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -454,6 +479,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setTotalEntries(int totalEntries) {
+		_columnBitmask |= _columnBitmasks.get("totalEntries");
+
 		_totalEntries = totalEntries;
 	}
 
@@ -464,6 +491,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setTotalScore(double totalScore) {
+		_columnBitmask |= _columnBitmasks.get("totalScore");
+
 		_totalScore = totalScore;
 	}
 
@@ -474,6 +503,8 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setAverageScore(double averageScore) {
+		_columnBitmask |= _columnBitmasks.get("averageScore");
+
 		_averageScore = averageScore;
 	}
 
@@ -592,20 +623,11 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RatingsStatsModelImpl ratingsStatsModelImpl = this;
+		_setModifiedDate = false;
 
-		ratingsStatsModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		ratingsStatsModelImpl._originalClassNameId =
-			ratingsStatsModelImpl._classNameId;
-
-		ratingsStatsModelImpl._setOriginalClassNameId = false;
-
-		ratingsStatsModelImpl._originalClassPK = ratingsStatsModelImpl._classPK;
-
-		ratingsStatsModelImpl._setOriginalClassPK = false;
-
-		ratingsStatsModelImpl._columnBitmask = 0;
+		_ratingsStatsCacheModel = (RatingsStatsCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -722,6 +744,114 @@ public class RatingsStatsModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<RatingsStatsCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<RatingsStatsCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<RatingsStatsCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"statsId",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.statsId);
+
+		columnBitmasks.put("statsId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 128L);
+
+		cacheModelGetterFunctions.put(
+			"totalEntries",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.totalEntries);
+
+		columnBitmasks.put("totalEntries", 256L);
+
+		cacheModelGetterFunctions.put(
+			"totalScore",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.totalScore);
+
+		columnBitmasks.put("totalScore", 512L);
+
+		cacheModelGetterFunctions.put(
+			"averageScore",
+			ratingsStatsCacheModel -> ratingsStatsCacheModel.averageScore);
+
+		columnBitmasks.put("averageScore", 1024L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<RatingsStatsCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		RatingsStatsCacheModel ratingsStatsCacheModel = _ratingsStatsCacheModel;
+
+		if (ratingsStatsCacheModel == null) {
+			ratingsStatsCacheModel = _dummyRatingsStatsCacheModel;
+		}
+
+		return (T)function.apply(ratingsStatsCacheModel);
+	}
+
+	private static final RatingsStatsCacheModel _dummyRatingsStatsCacheModel =
+		new RatingsStatsCacheModel();
+
+	private RatingsStatsCacheModel _ratingsStatsCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _statsId;
@@ -730,11 +860,7 @@ public class RatingsStatsModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private int _totalEntries;
 	private double _totalScore;
 	private double _averageScore;

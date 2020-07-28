@@ -473,12 +473,14 @@ public class SAPEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSAPEntry.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSAPEntry, "getOriginalCompanyId", new Class<?>[0]));
+				existingSAPEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSAPEntry.getName(),
 				ReflectionTestUtil.invoke(
-					existingSAPEntry, "getOriginalName", new Class<?>[0])));
+					existingSAPEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected SAPEntry addSAPEntry() throws Exception {

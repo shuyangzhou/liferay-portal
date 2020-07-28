@@ -421,13 +421,13 @@ public class PortalPreferencesPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingPortalPreferences.getOwnerId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortalPreferences, "getOriginalOwnerId",
-				new Class<?>[0]));
+				existingPortalPreferences, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "ownerId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingPortalPreferences.getOwnerType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingPortalPreferences, "getOriginalOwnerType",
-				new Class<?>[0]));
+				existingPortalPreferences, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "ownerType"));
 	}
 
 	protected PortalPreferences addPortalPreferences() throws Exception {

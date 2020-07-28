@@ -505,47 +505,48 @@ public class KaleoDefinitionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoDefinition.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoDefinition, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingKaleoDefinition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoDefinition.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinition, "getOriginalName",
-					new Class<?>[0])));
+					existingKaleoDefinition, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoDefinition.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoDefinition, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingKaleoDefinition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoDefinition.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinition, "getOriginalName",
-					new Class<?>[0])));
+					existingKaleoDefinition, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertEquals(
 			Integer.valueOf(existingKaleoDefinition.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingKaleoDefinition, "getOriginalVersion",
-				new Class<?>[0]));
+				existingKaleoDefinition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoDefinition.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoDefinition, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingKaleoDefinition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoDefinition.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinition, "getOriginalName",
-					new Class<?>[0])));
+					existingKaleoDefinition, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertEquals(
 			Boolean.valueOf(existingKaleoDefinition.getActive()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingKaleoDefinition, "getOriginalActive", new Class<?>[0]));
+				existingKaleoDefinition, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "active"));
 	}
 
 	protected KaleoDefinition addKaleoDefinition() throws Exception {

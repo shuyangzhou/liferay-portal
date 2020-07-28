@@ -117,10 +117,25 @@ public class DispatchLogModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DISPATCHTRIGGERID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
 
 	/**
@@ -378,6 +393,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -389,6 +406,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setDispatchLogId(long dispatchLogId) {
+		_columnBitmask |= _columnBitmasks.get("dispatchLogId");
+
 		_dispatchLogId = dispatchLogId;
 	}
 
@@ -400,6 +419,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -411,6 +432,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -443,6 +466,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -454,6 +479,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -471,7 +498,7 @@ public class DispatchLogModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -484,19 +511,18 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setDispatchTriggerId(long dispatchTriggerId) {
-		_columnBitmask |= DISPATCHTRIGGERID_COLUMN_BITMASK;
-
-		if (!_setOriginalDispatchTriggerId) {
-			_setOriginalDispatchTriggerId = true;
-
-			_originalDispatchTriggerId = _dispatchTriggerId;
-		}
+		_columnBitmask |= _columnBitmasks.get("dispatchTriggerId");
 
 		_dispatchTriggerId = dispatchTriggerId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDispatchTriggerId() {
-		return _originalDispatchTriggerId;
+		return getOriginalAttributeValue("dispatchTriggerId");
 	}
 
 	@JSON
@@ -507,6 +533,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setEndDate(Date endDate) {
+		_columnBitmask |= _columnBitmasks.get("endDate");
+
 		_endDate = endDate;
 	}
 
@@ -523,6 +551,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setError(String error) {
+		_columnBitmask |= _columnBitmasks.get("error");
+
 		_error = error;
 	}
 
@@ -539,6 +569,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setOutput(String output) {
+		_columnBitmask |= _columnBitmasks.get("output");
+
 		_output = output;
 	}
 
@@ -550,6 +582,8 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setStartDate(Date startDate) {
+		_columnBitmask |= _columnBitmasks.get("startDate");
+
 		_startDate = startDate;
 	}
 
@@ -561,19 +595,18 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	public long getColumnBitmask() {
@@ -694,20 +727,11 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DispatchLogModelImpl dispatchLogModelImpl = this;
+		_setModifiedDate = false;
 
-		dispatchLogModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		dispatchLogModelImpl._originalDispatchTriggerId =
-			dispatchLogModelImpl._dispatchTriggerId;
-
-		dispatchLogModelImpl._setOriginalDispatchTriggerId = false;
-
-		dispatchLogModelImpl._originalStatus = dispatchLogModelImpl._status;
-
-		dispatchLogModelImpl._setOriginalStatus = false;
-
-		dispatchLogModelImpl._columnBitmask = 0;
+		_dispatchLogCacheModel = (DispatchLogCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -860,6 +884,121 @@ public class DispatchLogModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<DispatchLogCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<DispatchLogCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<DispatchLogCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			dispatchLogCacheModel -> dispatchLogCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"dispatchLogId",
+			dispatchLogCacheModel -> dispatchLogCacheModel.dispatchLogId);
+
+		columnBitmasks.put("dispatchLogId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			dispatchLogCacheModel -> dispatchLogCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", dispatchLogCacheModel -> dispatchLogCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			dispatchLogCacheModel -> dispatchLogCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			dispatchLogCacheModel -> dispatchLogCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			dispatchLogCacheModel -> dispatchLogCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"dispatchTriggerId",
+			dispatchLogCacheModel -> dispatchLogCacheModel.dispatchTriggerId);
+
+		columnBitmasks.put("dispatchTriggerId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"endDate", dispatchLogCacheModel -> dispatchLogCacheModel.endDate);
+
+		columnBitmasks.put("endDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"error", dispatchLogCacheModel -> dispatchLogCacheModel.error);
+
+		columnBitmasks.put("error", 512L);
+
+		cacheModelGetterFunctions.put(
+			"output", dispatchLogCacheModel -> dispatchLogCacheModel.output);
+
+		columnBitmasks.put("output", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"startDate",
+			dispatchLogCacheModel -> dispatchLogCacheModel.startDate);
+
+		columnBitmasks.put("startDate", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"status", dispatchLogCacheModel -> dispatchLogCacheModel.status);
+
+		columnBitmasks.put("status", 4096L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<DispatchLogCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		DispatchLogCacheModel dispatchLogCacheModel = _dispatchLogCacheModel;
+
+		if (dispatchLogCacheModel == null) {
+			dispatchLogCacheModel = _dummyDispatchLogCacheModel;
+		}
+
+		return (T)function.apply(dispatchLogCacheModel);
+	}
+
+	private static final DispatchLogCacheModel _dummyDispatchLogCacheModel =
+		new DispatchLogCacheModel();
+
+	private DispatchLogCacheModel _dispatchLogCacheModel;
 	private long _mvccVersion;
 	private long _dispatchLogId;
 	private long _companyId;
@@ -869,15 +1008,11 @@ public class DispatchLogModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _dispatchTriggerId;
-	private long _originalDispatchTriggerId;
-	private boolean _setOriginalDispatchTriggerId;
 	private Date _endDate;
 	private String _error;
 	private String _output;
 	private Date _startDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private DispatchLog _escapedModel;
 

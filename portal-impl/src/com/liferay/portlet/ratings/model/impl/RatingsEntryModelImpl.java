@@ -136,18 +136,53 @@ public class RatingsEntryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SCORE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ENTRYID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -392,6 +427,8 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -403,6 +440,8 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -419,17 +458,18 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -440,6 +480,8 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
+		_columnBitmask |= _columnBitmasks.get("entryId");
+
 		_entryId = entryId;
 	}
 
@@ -451,19 +493,18 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -474,13 +515,7 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -501,8 +536,13 @@ public class RatingsEntryModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@JSON
@@ -518,6 +558,8 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -529,6 +571,8 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -545,6 +589,8 @@ public class RatingsEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -577,19 +623,18 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -600,19 +645,18 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@JSON
@@ -623,19 +667,18 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void setScore(double score) {
-		_columnBitmask |= SCORE_COLUMN_BITMASK;
-
-		if (!_setOriginalScore) {
-			_setOriginalScore = true;
-
-			_originalScore = _score;
-		}
+		_columnBitmask |= _columnBitmasks.get("score");
 
 		_score = score;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public double getOriginalScore() {
-		return _originalScore;
+		return getOriginalAttributeValue("score");
 	}
 
 	@Override
@@ -761,35 +804,11 @@ public class RatingsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RatingsEntryModelImpl ratingsEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		ratingsEntryModelImpl._originalUuid = ratingsEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		ratingsEntryModelImpl._originalCompanyId =
-			ratingsEntryModelImpl._companyId;
-
-		ratingsEntryModelImpl._setOriginalCompanyId = false;
-
-		ratingsEntryModelImpl._originalUserId = ratingsEntryModelImpl._userId;
-
-		ratingsEntryModelImpl._setOriginalUserId = false;
-
-		ratingsEntryModelImpl._setModifiedDate = false;
-
-		ratingsEntryModelImpl._originalClassNameId =
-			ratingsEntryModelImpl._classNameId;
-
-		ratingsEntryModelImpl._setOriginalClassNameId = false;
-
-		ratingsEntryModelImpl._originalClassPK = ratingsEntryModelImpl._classPK;
-
-		ratingsEntryModelImpl._setOriginalClassPK = false;
-
-		ratingsEntryModelImpl._originalScore = ratingsEntryModelImpl._score;
-
-		ratingsEntryModelImpl._setOriginalScore = false;
-
-		ratingsEntryModelImpl._columnBitmask = 0;
+		_ratingsEntryCacheModel = (RatingsEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -920,30 +939,130 @@ public class RatingsEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<RatingsEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<RatingsEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<RatingsEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", ratingsEntryCacheModel -> ratingsEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"entryId",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.entryId);
+
+		columnBitmasks.put("entryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId", ratingsEntryCacheModel -> ratingsEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			ratingsEntryCacheModel -> ratingsEntryCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"score", ratingsEntryCacheModel -> ratingsEntryCacheModel.score);
+
+		columnBitmasks.put("score", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<RatingsEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		RatingsEntryCacheModel ratingsEntryCacheModel = _ratingsEntryCacheModel;
+
+		if (ratingsEntryCacheModel == null) {
+			ratingsEntryCacheModel = _dummyRatingsEntryCacheModel;
+		}
+
+		return (T)function.apply(ratingsEntryCacheModel);
+	}
+
+	private static final RatingsEntryCacheModel _dummyRatingsEntryCacheModel =
+		new RatingsEntryCacheModel();
+
+	private RatingsEntryCacheModel _ratingsEntryCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _entryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private double _score;
-	private double _originalScore;
-	private boolean _setOriginalScore;
 	private long _columnBitmask;
 	private RatingsEntry _escapedModel;
 

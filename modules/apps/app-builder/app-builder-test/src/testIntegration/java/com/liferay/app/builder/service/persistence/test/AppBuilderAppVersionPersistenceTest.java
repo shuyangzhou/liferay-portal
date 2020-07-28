@@ -543,25 +543,25 @@ public class AppBuilderAppVersionPersistenceTest {
 			Objects.equals(
 				existingAppBuilderAppVersion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderAppVersion, "getOriginalUuid",
-					new Class<?>[0])));
+					existingAppBuilderAppVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingAppBuilderAppVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppVersion, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingAppBuilderAppVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingAppBuilderAppVersion.getAppBuilderAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppVersion, "getOriginalAppBuilderAppId",
-				new Class<?>[0]));
+				existingAppBuilderAppVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "appBuilderAppId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAppBuilderAppVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderAppVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					existingAppBuilderAppVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "version")));
 	}
 
 	protected AppBuilderAppVersion addAppBuilderAppVersion() throws Exception {

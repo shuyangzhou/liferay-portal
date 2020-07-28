@@ -123,16 +123,46 @@ public class RecentLayoutRevisionModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTREVISIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTSETBRANCHID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PLID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RECENTLAYOUTREVISIONID_COLUMN_BITMASK = 32L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -328,6 +358,8 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -338,6 +370,8 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setRecentLayoutRevisionId(long recentLayoutRevisionId) {
+		_columnBitmask |= _columnBitmasks.get("recentLayoutRevisionId");
+
 		_recentLayoutRevisionId = recentLayoutRevisionId;
 	}
 
@@ -348,19 +382,18 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -370,6 +403,8 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -380,13 +415,7 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -407,8 +436,13 @@ public class RecentLayoutRevisionModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -418,19 +452,18 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setLayoutRevisionId(long layoutRevisionId) {
-		_columnBitmask |= LAYOUTREVISIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutRevisionId) {
-			_setOriginalLayoutRevisionId = true;
-
-			_originalLayoutRevisionId = _layoutRevisionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutRevisionId");
 
 		_layoutRevisionId = layoutRevisionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutRevisionId() {
-		return _originalLayoutRevisionId;
+		return getOriginalAttributeValue("layoutRevisionId");
 	}
 
 	@Override
@@ -440,19 +473,18 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
-		_columnBitmask |= LAYOUTSETBRANCHID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutSetBranchId) {
-			_setOriginalLayoutSetBranchId = true;
-
-			_originalLayoutSetBranchId = _layoutSetBranchId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutSetBranchId");
 
 		_layoutSetBranchId = layoutSetBranchId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutSetBranchId() {
-		return _originalLayoutSetBranchId;
+		return getOriginalAttributeValue("layoutSetBranchId");
 	}
 
 	@Override
@@ -462,19 +494,18 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void setPlid(long plid) {
-		_columnBitmask |= PLID_COLUMN_BITMASK;
-
-		if (!_setOriginalPlid) {
-			_setOriginalPlid = true;
-
-			_originalPlid = _plid;
-		}
+		_columnBitmask |= _columnBitmasks.get("plid");
 
 		_plid = plid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalPlid() {
-		return _originalPlid;
+		return getOriginalAttributeValue("plid");
 	}
 
 	public long getColumnBitmask() {
@@ -593,34 +624,10 @@ public class RecentLayoutRevisionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RecentLayoutRevisionModelImpl recentLayoutRevisionModelImpl = this;
+		_columnBitmask = 0;
 
-		recentLayoutRevisionModelImpl._originalGroupId =
-			recentLayoutRevisionModelImpl._groupId;
-
-		recentLayoutRevisionModelImpl._setOriginalGroupId = false;
-
-		recentLayoutRevisionModelImpl._originalUserId =
-			recentLayoutRevisionModelImpl._userId;
-
-		recentLayoutRevisionModelImpl._setOriginalUserId = false;
-
-		recentLayoutRevisionModelImpl._originalLayoutRevisionId =
-			recentLayoutRevisionModelImpl._layoutRevisionId;
-
-		recentLayoutRevisionModelImpl._setOriginalLayoutRevisionId = false;
-
-		recentLayoutRevisionModelImpl._originalLayoutSetBranchId =
-			recentLayoutRevisionModelImpl._layoutSetBranchId;
-
-		recentLayoutRevisionModelImpl._setOriginalLayoutSetBranchId = false;
-
-		recentLayoutRevisionModelImpl._originalPlid =
-			recentLayoutRevisionModelImpl._plid;
-
-		recentLayoutRevisionModelImpl._setOriginalPlid = false;
-
-		recentLayoutRevisionModelImpl._columnBitmask = 0;
+		_recentLayoutRevisionCacheModel =
+			(RecentLayoutRevisionCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -721,24 +728,117 @@ public class RecentLayoutRevisionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<RecentLayoutRevisionCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<RecentLayoutRevisionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<RecentLayoutRevisionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"recentLayoutRevisionId",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.recentLayoutRevisionId);
+
+		columnBitmasks.put("recentLayoutRevisionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"layoutRevisionId",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.layoutRevisionId);
+
+		columnBitmasks.put("layoutRevisionId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"layoutSetBranchId",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.layoutSetBranchId);
+
+		columnBitmasks.put("layoutSetBranchId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"plid",
+			recentLayoutRevisionCacheModel ->
+				recentLayoutRevisionCacheModel.plid);
+
+		columnBitmasks.put("plid", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<RecentLayoutRevisionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		RecentLayoutRevisionCacheModel recentLayoutRevisionCacheModel =
+			_recentLayoutRevisionCacheModel;
+
+		if (recentLayoutRevisionCacheModel == null) {
+			recentLayoutRevisionCacheModel =
+				_dummyRecentLayoutRevisionCacheModel;
+		}
+
+		return (T)function.apply(recentLayoutRevisionCacheModel);
+	}
+
+	private static final RecentLayoutRevisionCacheModel
+		_dummyRecentLayoutRevisionCacheModel =
+			new RecentLayoutRevisionCacheModel();
+
+	private RecentLayoutRevisionCacheModel _recentLayoutRevisionCacheModel;
 	private long _mvccVersion;
 	private long _recentLayoutRevisionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _layoutRevisionId;
-	private long _originalLayoutRevisionId;
-	private boolean _setOriginalLayoutRevisionId;
 	private long _layoutSetBranchId;
-	private long _originalLayoutSetBranchId;
-	private boolean _setOriginalLayoutSetBranchId;
 	private long _plid;
-	private long _originalPlid;
-	private boolean _setOriginalPlid;
 	private long _columnBitmask;
 	private RecentLayoutRevision _escapedModel;
 

@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.redirect.model.RedirectNotFoundEntry;
 import com.liferay.redirect.model.RedirectNotFoundEntryModel;
@@ -110,10 +109,25 @@ public class RedirectNotFoundEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long URL_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REDIRECTNOTFOUNDENTRYID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -333,6 +347,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -343,6 +359,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setRedirectNotFoundEntryId(long redirectNotFoundEntryId) {
+		_columnBitmask |= _columnBitmasks.get("redirectNotFoundEntryId");
+
 		_redirectNotFoundEntryId = redirectNotFoundEntryId;
 	}
 
@@ -353,19 +371,18 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -375,6 +392,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -385,6 +404,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -416,6 +437,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -426,6 +449,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -442,6 +467,8 @@ public class RedirectNotFoundEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -457,6 +484,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setIgnored(boolean ignored) {
+		_columnBitmask |= _columnBitmasks.get("ignored");
+
 		_ignored = ignored;
 	}
 
@@ -472,17 +501,18 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setUrl(String url) {
-		_columnBitmask |= URL_COLUMN_BITMASK;
-
-		if (_originalUrl == null) {
-			_originalUrl = _url;
-		}
+		_columnBitmask |= _columnBitmasks.get("url");
 
 		_url = url;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUrl() {
-		return GetterUtil.getString(_originalUrl);
+		return getOriginalAttributeValue("url");
 	}
 
 	public long getColumnBitmask() {
@@ -603,19 +633,12 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		redirectNotFoundEntryModelImpl._originalGroupId =
-			redirectNotFoundEntryModelImpl._groupId;
+		_columnBitmask = 0;
 
-		redirectNotFoundEntryModelImpl._setOriginalGroupId = false;
-
-		redirectNotFoundEntryModelImpl._setModifiedDate = false;
-
-		redirectNotFoundEntryModelImpl._originalUrl =
-			redirectNotFoundEntryModelImpl._url;
-
-		redirectNotFoundEntryModelImpl._columnBitmask = 0;
+		_redirectNotFoundEntryCacheModel =
+			(RedirectNotFoundEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -746,11 +769,126 @@ public class RedirectNotFoundEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<RedirectNotFoundEntryCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<RedirectNotFoundEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<RedirectNotFoundEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"redirectNotFoundEntryId",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.redirectNotFoundEntryId);
+
+		columnBitmasks.put("redirectNotFoundEntryId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"ignored",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.ignored);
+
+		columnBitmasks.put("ignored", 256L);
+
+		cacheModelGetterFunctions.put(
+			"url",
+			redirectNotFoundEntryCacheModel ->
+				redirectNotFoundEntryCacheModel.url);
+
+		columnBitmasks.put("url", 512L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<RedirectNotFoundEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		RedirectNotFoundEntryCacheModel redirectNotFoundEntryCacheModel =
+			_redirectNotFoundEntryCacheModel;
+
+		if (redirectNotFoundEntryCacheModel == null) {
+			redirectNotFoundEntryCacheModel =
+				_dummyRedirectNotFoundEntryCacheModel;
+		}
+
+		return (T)function.apply(redirectNotFoundEntryCacheModel);
+	}
+
+	private static final RedirectNotFoundEntryCacheModel
+		_dummyRedirectNotFoundEntryCacheModel =
+			new RedirectNotFoundEntryCacheModel();
+
+	private RedirectNotFoundEntryCacheModel _redirectNotFoundEntryCacheModel;
 	private long _mvccVersion;
 	private long _redirectNotFoundEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -759,7 +897,6 @@ public class RedirectNotFoundEntryModelImpl
 	private boolean _setModifiedDate;
 	private boolean _ignored;
 	private String _url;
-	private String _originalUrl;
 	private long _columnBitmask;
 	private RedirectNotFoundEntry _escapedModel;
 

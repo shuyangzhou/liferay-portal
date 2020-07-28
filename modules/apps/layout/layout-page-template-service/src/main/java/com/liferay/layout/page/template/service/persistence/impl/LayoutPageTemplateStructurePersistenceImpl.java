@@ -2431,8 +2431,10 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				layoutPageTemplateStructureModelImpl.getOriginalUuid(),
-				layoutPageTemplateStructureModelImpl.getOriginalGroupId()
+				layoutPageTemplateStructureModelImpl.getOriginalAttributeValue(
+					"uuid"),
+				layoutPageTemplateStructureModelImpl.getOriginalAttributeValue(
+					"groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2454,9 +2456,12 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			 _finderPathFetchByG_C_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				layoutPageTemplateStructureModelImpl.getOriginalGroupId(),
-				layoutPageTemplateStructureModelImpl.getOriginalClassNameId(),
-				layoutPageTemplateStructureModelImpl.getOriginalClassPK()
+				layoutPageTemplateStructureModelImpl.getOriginalAttributeValue(
+					"groupId"),
+				layoutPageTemplateStructureModelImpl.getOriginalAttributeValue(
+					"classNameId"),
+				layoutPageTemplateStructureModelImpl.getOriginalAttributeValue(
+					"classPK")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_C_C, args);
@@ -2706,7 +2711,8 @@ public class LayoutPageTemplateStructurePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					layoutPageTemplateStructureModelImpl.getOriginalUuid()
+					layoutPageTemplateStructureModelImpl.
+						getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2727,8 +2733,10 @@ public class LayoutPageTemplateStructurePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					layoutPageTemplateStructureModelImpl.getOriginalUuid(),
-					layoutPageTemplateStructureModelImpl.getOriginalCompanyId()
+					layoutPageTemplateStructureModelImpl.
+						getOriginalAttributeValue("uuid"),
+					layoutPageTemplateStructureModelImpl.
+						getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2750,7 +2758,8 @@ public class LayoutPageTemplateStructurePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					layoutPageTemplateStructureModelImpl.getOriginalGroupId()
+					layoutPageTemplateStructureModelImpl.
+						getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -3074,7 +3083,7 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			LayoutPageTemplateStructureImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			LayoutPageTemplateStructureModelImpl.UUID_COLUMN_BITMASK);
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3084,8 +3093,8 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			LayoutPageTemplateStructureImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			LayoutPageTemplateStructureModelImpl.UUID_COLUMN_BITMASK |
-			LayoutPageTemplateStructureModelImpl.GROUPID_COLUMN_BITMASK);
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("uuid") |
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3105,8 +3114,8 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			LayoutPageTemplateStructureImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			LayoutPageTemplateStructureModelImpl.UUID_COLUMN_BITMASK |
-			LayoutPageTemplateStructureModelImpl.COMPANYID_COLUMN_BITMASK);
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("uuid") |
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3125,7 +3134,7 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			LayoutPageTemplateStructureImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			LayoutPageTemplateStructureModelImpl.GROUPID_COLUMN_BITMASK);
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3137,9 +3146,10 @@ public class LayoutPageTemplateStructurePersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			LayoutPageTemplateStructureModelImpl.GROUPID_COLUMN_BITMASK |
-			LayoutPageTemplateStructureModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			LayoutPageTemplateStructureModelImpl.CLASSPK_COLUMN_BITMASK);
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("groupId") |
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask(
+				"classNameId") |
+			LayoutPageTemplateStructureModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByG_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

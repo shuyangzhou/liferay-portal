@@ -481,11 +481,13 @@ public class BlogsStatsUserPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingBlogsStatsUser.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsStatsUser, "getOriginalGroupId", new Class<?>[0]));
+				existingBlogsStatsUser, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingBlogsStatsUser.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsStatsUser, "getOriginalUserId", new Class<?>[0]));
+				existingBlogsStatsUser, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 	}
 
 	protected BlogsStatsUser addBlogsStatsUser() throws Exception {

@@ -524,27 +524,31 @@ public class LVEntryPersistenceTest {
 			Objects.equals(
 				existingLVEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLVEntry, "getOriginalUuid", new Class<?>[0])));
+					existingLVEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingLVEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingLVEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLVEntry.getUniqueGroupKey(),
 				ReflectionTestUtil.invoke(
-					existingLVEntry, "getOriginalUniqueGroupKey",
-					new Class<?>[0])));
+					existingLVEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uniqueGroupKey")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLVEntry.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntry, "getOriginalHeadId", new Class<?>[0]));
+				existingLVEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "headId"));
 	}
 
 	protected LVEntry addLVEntry() throws Exception {

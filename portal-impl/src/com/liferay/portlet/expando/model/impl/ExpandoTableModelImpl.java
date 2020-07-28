@@ -116,12 +116,32 @@ public class ExpandoTableModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TABLEID_COLUMN_BITMASK = 8L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -293,6 +313,8 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -304,6 +326,8 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -315,6 +339,8 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
+		_columnBitmask |= _columnBitmasks.get("tableId");
+
 		_tableId = tableId;
 	}
 
@@ -326,19 +352,18 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -369,19 +394,18 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@JSON
@@ -397,17 +421,18 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	public long getColumnBitmask() {
@@ -507,21 +532,9 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoTableModelImpl expandoTableModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoTableModelImpl._originalCompanyId =
-			expandoTableModelImpl._companyId;
-
-		expandoTableModelImpl._setOriginalCompanyId = false;
-
-		expandoTableModelImpl._originalClassNameId =
-			expandoTableModelImpl._classNameId;
-
-		expandoTableModelImpl._setOriginalClassNameId = false;
-
-		expandoTableModelImpl._originalName = expandoTableModelImpl._name;
-
-		expandoTableModelImpl._columnBitmask = 0;
+		_expandoTableCacheModel = (ExpandoTableCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -620,17 +633,89 @@ public class ExpandoTableModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<ExpandoTableCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ExpandoTableCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<ExpandoTableCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			expandoTableCacheModel -> expandoTableCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			expandoTableCacheModel -> expandoTableCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"tableId",
+			expandoTableCacheModel -> expandoTableCacheModel.tableId);
+
+		columnBitmasks.put("tableId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			expandoTableCacheModel -> expandoTableCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			expandoTableCacheModel -> expandoTableCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"name", expandoTableCacheModel -> expandoTableCacheModel.name);
+
+		columnBitmasks.put("name", 32L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ExpandoTableCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ExpandoTableCacheModel expandoTableCacheModel = _expandoTableCacheModel;
+
+		if (expandoTableCacheModel == null) {
+			expandoTableCacheModel = _dummyExpandoTableCacheModel;
+		}
+
+		return (T)function.apply(expandoTableCacheModel);
+	}
+
+	private static final ExpandoTableCacheModel _dummyExpandoTableCacheModel =
+		new ExpandoTableCacheModel();
+
+	private ExpandoTableCacheModel _expandoTableCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _tableId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private String _name;
-	private String _originalName;
 	private long _columnBitmask;
 	private ExpandoTable _escapedModel;
 

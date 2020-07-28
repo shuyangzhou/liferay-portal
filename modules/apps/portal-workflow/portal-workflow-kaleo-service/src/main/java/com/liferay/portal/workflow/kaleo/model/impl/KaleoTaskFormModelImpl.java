@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskForm;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskFormModel;
@@ -126,16 +125,46 @@ public class KaleoTaskFormModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FORMUUID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEONODEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEOTASKID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PRIORITY_COLUMN_BITMASK = 32L;
 
 	/**
@@ -394,6 +423,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -404,6 +435,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setKaleoTaskFormId(long kaleoTaskFormId) {
+		_columnBitmask |= _columnBitmasks.get("kaleoTaskFormId");
+
 		_kaleoTaskFormId = kaleoTaskFormId;
 	}
 
@@ -414,6 +447,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -424,19 +459,18 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -446,6 +480,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -477,6 +513,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -487,6 +525,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -503,6 +543,8 @@ public class KaleoTaskFormModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -513,6 +555,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionId");
+
 		_kaleoDefinitionId = kaleoDefinitionId;
 	}
 
@@ -523,19 +567,18 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
-
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionVersionId");
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		return getOriginalAttributeValue("kaleoDefinitionVersionId");
 	}
 
 	@Override
@@ -545,19 +588,18 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
-		_columnBitmask |= KALEONODEID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoNodeId) {
-			_setOriginalKaleoNodeId = true;
-
-			_originalKaleoNodeId = _kaleoNodeId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoNodeId");
 
 		_kaleoNodeId = kaleoNodeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoNodeId() {
-		return _originalKaleoNodeId;
+		return getOriginalAttributeValue("kaleoNodeId");
 	}
 
 	@Override
@@ -567,19 +609,18 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setKaleoTaskId(long kaleoTaskId) {
-		_columnBitmask |= KALEOTASKID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoTaskId) {
-			_setOriginalKaleoTaskId = true;
-
-			_originalKaleoTaskId = _kaleoTaskId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoTaskId");
 
 		_kaleoTaskId = kaleoTaskId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoTaskId() {
-		return _originalKaleoTaskId;
+		return getOriginalAttributeValue("kaleoTaskId");
 	}
 
 	@Override
@@ -594,6 +635,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setKaleoTaskName(String kaleoTaskName) {
+		_columnBitmask |= _columnBitmasks.get("kaleoTaskName");
+
 		_kaleoTaskName = kaleoTaskName;
 	}
 
@@ -609,6 +652,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -624,6 +669,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -634,6 +681,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setFormCompanyId(long formCompanyId) {
+		_columnBitmask |= _columnBitmasks.get("formCompanyId");
+
 		_formCompanyId = formCompanyId;
 	}
 
@@ -649,6 +698,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setFormDefinition(String formDefinition) {
+		_columnBitmask |= _columnBitmasks.get("formDefinition");
+
 		_formDefinition = formDefinition;
 	}
 
@@ -659,6 +710,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setFormGroupId(long formGroupId) {
+		_columnBitmask |= _columnBitmasks.get("formGroupId");
+
 		_formGroupId = formGroupId;
 	}
 
@@ -669,6 +722,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setFormId(long formId) {
+		_columnBitmask |= _columnBitmasks.get("formId");
+
 		_formId = formId;
 	}
 
@@ -684,17 +739,18 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setFormUuid(String formUuid) {
-		_columnBitmask |= FORMUUID_COLUMN_BITMASK;
-
-		if (_originalFormUuid == null) {
-			_originalFormUuid = _formUuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("formUuid");
 
 		_formUuid = formUuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFormUuid() {
-		return GetterUtil.getString(_originalFormUuid);
+		return getOriginalAttributeValue("formUuid");
 	}
 
 	@Override
@@ -709,6 +765,8 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setMetadata(String metadata) {
+		_columnBitmask |= _columnBitmasks.get("metadata");
+
 		_metadata = metadata;
 	}
 
@@ -719,7 +777,7 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void setPriority(int priority) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("priority");
 
 		_priority = priority;
 	}
@@ -857,34 +915,11 @@ public class KaleoTaskFormModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoTaskFormModelImpl kaleoTaskFormModelImpl = this;
+		_setModifiedDate = false;
 
-		kaleoTaskFormModelImpl._originalCompanyId =
-			kaleoTaskFormModelImpl._companyId;
+		_columnBitmask = 0;
 
-		kaleoTaskFormModelImpl._setOriginalCompanyId = false;
-
-		kaleoTaskFormModelImpl._setModifiedDate = false;
-
-		kaleoTaskFormModelImpl._originalKaleoDefinitionVersionId =
-			kaleoTaskFormModelImpl._kaleoDefinitionVersionId;
-
-		kaleoTaskFormModelImpl._setOriginalKaleoDefinitionVersionId = false;
-
-		kaleoTaskFormModelImpl._originalKaleoNodeId =
-			kaleoTaskFormModelImpl._kaleoNodeId;
-
-		kaleoTaskFormModelImpl._setOriginalKaleoNodeId = false;
-
-		kaleoTaskFormModelImpl._originalKaleoTaskId =
-			kaleoTaskFormModelImpl._kaleoTaskId;
-
-		kaleoTaskFormModelImpl._setOriginalKaleoTaskId = false;
-
-		kaleoTaskFormModelImpl._originalFormUuid =
-			kaleoTaskFormModelImpl._formUuid;
-
-		kaleoTaskFormModelImpl._columnBitmask = 0;
+		_kaleoTaskFormCacheModel = (KaleoTaskFormCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1066,12 +1101,186 @@ public class KaleoTaskFormModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<KaleoTaskFormCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<KaleoTaskFormCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<KaleoTaskFormCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoTaskFormId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.kaleoTaskFormId);
+
+		columnBitmasks.put("kaleoTaskFormId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.userId);
+
+		columnBitmasks.put("userId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.userName);
+
+		columnBitmasks.put("userName", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoDefinitionId",
+			kaleoTaskFormCacheModel ->
+				kaleoTaskFormCacheModel.kaleoDefinitionId);
+
+		columnBitmasks.put("kaleoDefinitionId", 256L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoDefinitionVersionId",
+			kaleoTaskFormCacheModel ->
+				kaleoTaskFormCacheModel.kaleoDefinitionVersionId);
+
+		columnBitmasks.put("kaleoDefinitionVersionId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoNodeId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.kaleoNodeId);
+
+		columnBitmasks.put("kaleoNodeId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoTaskId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.kaleoTaskId);
+
+		columnBitmasks.put("kaleoTaskId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"kaleoTaskName",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.kaleoTaskName);
+
+		columnBitmasks.put("kaleoTaskName", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"name", kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.name);
+
+		columnBitmasks.put("name", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.description);
+
+		columnBitmasks.put("description", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"formCompanyId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.formCompanyId);
+
+		columnBitmasks.put("formCompanyId", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"formDefinition",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.formDefinition);
+
+		columnBitmasks.put("formDefinition", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"formGroupId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.formGroupId);
+
+		columnBitmasks.put("formGroupId", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"formId",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.formId);
+
+		columnBitmasks.put("formId", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"formUuid",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.formUuid);
+
+		columnBitmasks.put("formUuid", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"metadata",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.metadata);
+
+		columnBitmasks.put("metadata", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"priority",
+			kaleoTaskFormCacheModel -> kaleoTaskFormCacheModel.priority);
+
+		columnBitmasks.put("priority", 2097152L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<KaleoTaskFormCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		KaleoTaskFormCacheModel kaleoTaskFormCacheModel =
+			_kaleoTaskFormCacheModel;
+
+		if (kaleoTaskFormCacheModel == null) {
+			kaleoTaskFormCacheModel = _dummyKaleoTaskFormCacheModel;
+		}
+
+		return (T)function.apply(kaleoTaskFormCacheModel);
+	}
+
+	private static final KaleoTaskFormCacheModel _dummyKaleoTaskFormCacheModel =
+		new KaleoTaskFormCacheModel();
+
+	private KaleoTaskFormCacheModel _kaleoTaskFormCacheModel;
 	private long _mvccVersion;
 	private long _kaleoTaskFormId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1079,14 +1288,8 @@ public class KaleoTaskFormModelImpl
 	private boolean _setModifiedDate;
 	private long _kaleoDefinitionId;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
-	private long _originalKaleoNodeId;
-	private boolean _setOriginalKaleoNodeId;
 	private long _kaleoTaskId;
-	private long _originalKaleoTaskId;
-	private boolean _setOriginalKaleoTaskId;
 	private String _kaleoTaskName;
 	private String _name;
 	private String _description;
@@ -1095,7 +1298,6 @@ public class KaleoTaskFormModelImpl
 	private long _formGroupId;
 	private long _formId;
 	private String _formUuid;
-	private String _originalFormUuid;
 	private String _metadata;
 	private int _priority;
 	private long _columnBitmask;

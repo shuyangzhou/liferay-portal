@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -142,24 +141,74 @@ public class FragmentEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FRAGMENTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FRAGMENTENTRYKEY_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEAD_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEADID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 512L;
 
 	/**
@@ -485,31 +534,6 @@ public class FragmentEntryModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
-	public boolean getHead() {
-		return _head;
-	}
-
-	@Override
-	public boolean isHead() {
-		return _head;
-	}
-
-	public boolean getOriginalHead() {
-		return _originalHead;
-	}
-
-	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
-
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
-		}
-
-		_head = head;
-	}
-
 	@Override
 	public void populateVersionModel(
 		FragmentEntryVersion fragmentEntryVersion) {
@@ -547,6 +571,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -563,17 +589,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -584,13 +611,7 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setHeadId(long headId) {
-		_columnBitmask |= HEADID_COLUMN_BITMASK;
-
-		if (!_setOriginalHeadId) {
-			_setOriginalHeadId = true;
-
-			_originalHeadId = _headId;
-		}
+		_columnBitmask |= _columnBitmasks.get("headId");
 
 		if (headId >= 0) {
 			setHead(false);
@@ -602,8 +623,38 @@ public class FragmentEntryModelImpl
 		_headId = headId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalHeadId() {
-		return _originalHeadId;
+		return getOriginalAttributeValue("headId");
+	}
+
+	@JSON(include = false)
+	public boolean getHead() {
+		return _head;
+	}
+
+	@Override
+	public boolean isHead() {
+		return _head;
+	}
+
+	public void setHead(boolean head) {
+		_columnBitmask |= _columnBitmasks.get("head");
+
+		_head = head;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalHead() {
+		return getOriginalAttributeValue("head");
 	}
 
 	@JSON
@@ -614,6 +665,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setFragmentEntryId(long fragmentEntryId) {
+		_columnBitmask |= _columnBitmasks.get("fragmentEntryId");
+
 		_fragmentEntryId = fragmentEntryId;
 	}
 
@@ -625,19 +678,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -648,19 +700,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -671,6 +722,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -703,6 +756,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -714,6 +769,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -731,6 +788,8 @@ public class FragmentEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -742,19 +801,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setFragmentCollectionId(long fragmentCollectionId) {
-		_columnBitmask |= FRAGMENTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalFragmentCollectionId) {
-			_setOriginalFragmentCollectionId = true;
-
-			_originalFragmentCollectionId = _fragmentCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("fragmentCollectionId");
 
 		_fragmentCollectionId = fragmentCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFragmentCollectionId() {
-		return _originalFragmentCollectionId;
+		return getOriginalAttributeValue("fragmentCollectionId");
 	}
 
 	@JSON
@@ -770,17 +828,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setFragmentEntryKey(String fragmentEntryKey) {
-		_columnBitmask |= FRAGMENTENTRYKEY_COLUMN_BITMASK;
-
-		if (_originalFragmentEntryKey == null) {
-			_originalFragmentEntryKey = _fragmentEntryKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("fragmentEntryKey");
 
 		_fragmentEntryKey = fragmentEntryKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFragmentEntryKey() {
-		return GetterUtil.getString(_originalFragmentEntryKey);
+		return getOriginalAttributeValue("fragmentEntryKey");
 	}
 
 	@JSON
@@ -796,17 +855,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -822,6 +882,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setCss(String css) {
+		_columnBitmask |= _columnBitmasks.get("css");
+
 		_css = css;
 	}
 
@@ -838,6 +900,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setHtml(String html) {
+		_columnBitmask |= _columnBitmasks.get("html");
+
 		_html = html;
 	}
 
@@ -854,6 +918,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setJs(String js) {
+		_columnBitmask |= _columnBitmasks.get("js");
+
 		_js = js;
 	}
 
@@ -871,6 +937,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setCacheable(boolean cacheable) {
+		_columnBitmask |= _columnBitmasks.get("cacheable");
+
 		_cacheable = cacheable;
 	}
 
@@ -887,6 +955,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setConfiguration(String configuration) {
+		_columnBitmask |= _columnBitmasks.get("configuration");
+
 		_configuration = configuration;
 	}
 
@@ -898,6 +968,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setPreviewFileEntryId(long previewFileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("previewFileEntryId");
+
 		_previewFileEntryId = previewFileEntryId;
 	}
 
@@ -915,6 +987,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setReadOnly(boolean readOnly) {
+		_columnBitmask |= _columnBitmasks.get("readOnly");
+
 		_readOnly = readOnly;
 	}
 
@@ -926,19 +1000,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return getOriginalAttributeValue("type");
 	}
 
 	@JSON
@@ -949,6 +1022,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -960,19 +1035,18 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -983,6 +1057,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1015,6 +1091,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -1026,6 +1104,8 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1243,49 +1323,11 @@ public class FragmentEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FragmentEntryModelImpl fragmentEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		fragmentEntryModelImpl._originalUuid = fragmentEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		fragmentEntryModelImpl._originalHeadId = fragmentEntryModelImpl._headId;
-
-		fragmentEntryModelImpl._setOriginalHeadId = false;
-
-		fragmentEntryModelImpl._originalHead = fragmentEntryModelImpl._head;
-
-		fragmentEntryModelImpl._setOriginalHead = false;
-
-		fragmentEntryModelImpl._originalGroupId =
-			fragmentEntryModelImpl._groupId;
-
-		fragmentEntryModelImpl._setOriginalGroupId = false;
-
-		fragmentEntryModelImpl._originalCompanyId =
-			fragmentEntryModelImpl._companyId;
-
-		fragmentEntryModelImpl._setOriginalCompanyId = false;
-
-		fragmentEntryModelImpl._setModifiedDate = false;
-
-		fragmentEntryModelImpl._originalFragmentCollectionId =
-			fragmentEntryModelImpl._fragmentCollectionId;
-
-		fragmentEntryModelImpl._setOriginalFragmentCollectionId = false;
-
-		fragmentEntryModelImpl._originalFragmentEntryKey =
-			fragmentEntryModelImpl._fragmentEntryKey;
-
-		fragmentEntryModelImpl._originalName = fragmentEntryModelImpl._name;
-
-		fragmentEntryModelImpl._originalType = fragmentEntryModelImpl._type;
-
-		fragmentEntryModelImpl._setOriginalType = false;
-
-		fragmentEntryModelImpl._originalStatus = fragmentEntryModelImpl._status;
-
-		fragmentEntryModelImpl._setOriginalStatus = false;
-
-		fragmentEntryModelImpl._columnBitmask = 0;
+		_fragmentEntryCacheModel = (FragmentEntryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1503,34 +1545,223 @@ public class FragmentEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<FragmentEntryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<FragmentEntryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<FragmentEntryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", fragmentEntryCacheModel -> fragmentEntryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"headId",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.headId);
+
+		columnBitmasks.put("headId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"head", fragmentEntryCacheModel -> fragmentEntryCacheModel.head);
+
+		columnBitmasks.put("head", 8L);
+
+		cacheModelGetterFunctions.put(
+			"fragmentEntryId",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.fragmentEntryId);
+
+		columnBitmasks.put("fragmentEntryId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.userId);
+
+		columnBitmasks.put("userId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.userName);
+
+		columnBitmasks.put("userName", 256L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"fragmentCollectionId",
+			fragmentEntryCacheModel ->
+				fragmentEntryCacheModel.fragmentCollectionId);
+
+		columnBitmasks.put("fragmentCollectionId", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"fragmentEntryKey",
+			fragmentEntryCacheModel ->
+				fragmentEntryCacheModel.fragmentEntryKey);
+
+		columnBitmasks.put("fragmentEntryKey", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"name", fragmentEntryCacheModel -> fragmentEntryCacheModel.name);
+
+		columnBitmasks.put("name", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"css", fragmentEntryCacheModel -> fragmentEntryCacheModel.css);
+
+		columnBitmasks.put("css", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"html", fragmentEntryCacheModel -> fragmentEntryCacheModel.html);
+
+		columnBitmasks.put("html", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"js", fragmentEntryCacheModel -> fragmentEntryCacheModel.js);
+
+		columnBitmasks.put("js", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"cacheable",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.cacheable);
+
+		columnBitmasks.put("cacheable", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"configuration",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.configuration);
+
+		columnBitmasks.put("configuration", 262144L);
+
+		cacheModelGetterFunctions.put(
+			"previewFileEntryId",
+			fragmentEntryCacheModel ->
+				fragmentEntryCacheModel.previewFileEntryId);
+
+		columnBitmasks.put("previewFileEntryId", 524288L);
+
+		cacheModelGetterFunctions.put(
+			"readOnly",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.readOnly);
+
+		columnBitmasks.put("readOnly", 1048576L);
+
+		cacheModelGetterFunctions.put(
+			"type", fragmentEntryCacheModel -> fragmentEntryCacheModel.type);
+
+		columnBitmasks.put("type", 2097152L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 4194304L);
+
+		cacheModelGetterFunctions.put(
+			"status",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.status);
+
+		columnBitmasks.put("status", 8388608L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 16777216L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			fragmentEntryCacheModel ->
+				fragmentEntryCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 33554432L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			fragmentEntryCacheModel -> fragmentEntryCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 67108864L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<FragmentEntryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		FragmentEntryCacheModel fragmentEntryCacheModel =
+			_fragmentEntryCacheModel;
+
+		if (fragmentEntryCacheModel == null) {
+			fragmentEntryCacheModel = _dummyFragmentEntryCacheModel;
+		}
+
+		return (T)function.apply(fragmentEntryCacheModel);
+	}
+
+	private static final FragmentEntryCacheModel _dummyFragmentEntryCacheModel =
+		new FragmentEntryCacheModel();
+
+	private FragmentEntryCacheModel _fragmentEntryCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _headId;
-	private long _originalHeadId;
-	private boolean _setOriginalHeadId;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private long _fragmentEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _fragmentCollectionId;
-	private long _originalFragmentCollectionId;
-	private boolean _setOriginalFragmentCollectionId;
 	private String _fragmentEntryKey;
-	private String _originalFragmentEntryKey;
 	private String _name;
-	private String _originalName;
 	private String _css;
 	private String _html;
 	private String _js;
@@ -1539,12 +1770,8 @@ public class FragmentEntryModelImpl
 	private long _previewFileEntryId;
 	private boolean _readOnly;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

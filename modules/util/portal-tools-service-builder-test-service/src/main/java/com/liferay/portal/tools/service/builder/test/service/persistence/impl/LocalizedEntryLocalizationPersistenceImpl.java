@@ -1030,9 +1030,10 @@ public class LocalizedEntryLocalizationPersistenceImpl
 				 getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				localizedEntryLocalizationModelImpl.
-					getOriginalLocalizedEntryId(),
-				localizedEntryLocalizationModelImpl.getOriginalLanguageId()
+				localizedEntryLocalizationModelImpl.getOriginalAttributeValue(
+					"localizedEntryId"),
+				localizedEntryLocalizationModelImpl.getOriginalAttributeValue(
+					"languageId")
 			};
 
 			finderCache.removeResult(
@@ -1227,7 +1228,7 @@ public class LocalizedEntryLocalizationPersistenceImpl
 
 				Object[] args = new Object[] {
 					localizedEntryLocalizationModelImpl.
-						getOriginalLocalizedEntryId()
+						getOriginalAttributeValue("localizedEntryId")
 				};
 
 				finderCache.removeResult(
@@ -1547,8 +1548,8 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			LocalizedEntryLocalizationImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByLocalizedEntryId",
 			new String[] {Long.class.getName()},
-			LocalizedEntryLocalizationModelImpl.
-				LOCALIZEDENTRYID_COLUMN_BITMASK);
+			LocalizedEntryLocalizationModelImpl.getColumnBitmask(
+				"localizedEntryId"));
 
 		_finderPathCountByLocalizedEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1558,9 +1559,9 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			LocalizedEntryLocalizationImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByLocalizedEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			LocalizedEntryLocalizationModelImpl.
-				LOCALIZEDENTRYID_COLUMN_BITMASK |
-			LocalizedEntryLocalizationModelImpl.LANGUAGEID_COLUMN_BITMASK);
+			LocalizedEntryLocalizationModelImpl.getColumnBitmask(
+				"localizedEntryId") |
+			LocalizedEntryLocalizationModelImpl.getColumnBitmask("languageId"));
 
 		_finderPathCountByLocalizedEntryId_LanguageId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

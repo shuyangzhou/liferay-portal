@@ -101,12 +101,32 @@ public class StatusModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ONLINE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUSID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -282,6 +302,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
+		_columnBitmask |= _columnBitmasks.get("statusId");
+
 		_statusId = statusId;
 	}
 
@@ -292,13 +314,7 @@ public class StatusModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -319,8 +335,13 @@ public class StatusModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -330,19 +351,18 @@ public class StatusModelImpl
 
 	@Override
 	public void setModifiedDate(long modifiedDate) {
-		_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
-
-		if (!_setOriginalModifiedDate) {
-			_setOriginalModifiedDate = true;
-
-			_originalModifiedDate = _modifiedDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalModifiedDate() {
-		return _originalModifiedDate;
+		return getOriginalAttributeValue("modifiedDate");
 	}
 
 	@Override
@@ -357,19 +377,18 @@ public class StatusModelImpl
 
 	@Override
 	public void setOnline(boolean online) {
-		_columnBitmask |= ONLINE_COLUMN_BITMASK;
-
-		if (!_setOriginalOnline) {
-			_setOriginalOnline = true;
-
-			_originalOnline = _online;
-		}
+		_columnBitmask |= _columnBitmasks.get("online");
 
 		_online = online;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalOnline() {
-		return _originalOnline;
+		return getOriginalAttributeValue("online");
 	}
 
 	@Override
@@ -384,6 +403,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setAwake(boolean awake) {
+		_columnBitmask |= _columnBitmasks.get("awake");
+
 		_awake = awake;
 	}
 
@@ -399,6 +420,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setActivePanelIds(String activePanelIds) {
+		_columnBitmask |= _columnBitmasks.get("activePanelIds");
+
 		_activePanelIds = activePanelIds;
 	}
 
@@ -414,6 +437,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		_columnBitmask |= _columnBitmasks.get("message");
+
 		_message = message;
 	}
 
@@ -429,6 +454,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setPlaySound(boolean playSound) {
+		_columnBitmask |= _columnBitmasks.get("playSound");
+
 		_playSound = playSound;
 	}
 
@@ -544,21 +571,9 @@ public class StatusModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		StatusModelImpl statusModelImpl = this;
+		_columnBitmask = 0;
 
-		statusModelImpl._originalUserId = statusModelImpl._userId;
-
-		statusModelImpl._setOriginalUserId = false;
-
-		statusModelImpl._originalModifiedDate = statusModelImpl._modifiedDate;
-
-		statusModelImpl._setOriginalModifiedDate = false;
-
-		statusModelImpl._originalOnline = statusModelImpl._online;
-
-		statusModelImpl._setOriginalOnline = false;
-
-		statusModelImpl._columnBitmask = 0;
+		_statusCacheModel = (StatusCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -664,16 +679,92 @@ public class StatusModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<StatusCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<StatusCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap<String, Function<StatusCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"statusId", statusCacheModel -> statusCacheModel.statusId);
+
+		columnBitmasks.put("statusId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"userId", statusCacheModel -> statusCacheModel.userId);
+
+		columnBitmasks.put("userId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate", statusCacheModel -> statusCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 4L);
+
+		cacheModelGetterFunctions.put(
+			"online", statusCacheModel -> statusCacheModel.online);
+
+		columnBitmasks.put("online", 8L);
+
+		cacheModelGetterFunctions.put(
+			"awake", statusCacheModel -> statusCacheModel.awake);
+
+		columnBitmasks.put("awake", 16L);
+
+		cacheModelGetterFunctions.put(
+			"activePanelIds",
+			statusCacheModel -> statusCacheModel.activePanelIds);
+
+		columnBitmasks.put("activePanelIds", 32L);
+
+		cacheModelGetterFunctions.put(
+			"message", statusCacheModel -> statusCacheModel.message);
+
+		columnBitmasks.put("message", 64L);
+
+		cacheModelGetterFunctions.put(
+			"playSound", statusCacheModel -> statusCacheModel.playSound);
+
+		columnBitmasks.put("playSound", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<StatusCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		StatusCacheModel statusCacheModel = _statusCacheModel;
+
+		if (statusCacheModel == null) {
+			statusCacheModel = _dummyStatusCacheModel;
+		}
+
+		return (T)function.apply(statusCacheModel);
+	}
+
+	private static final StatusCacheModel _dummyStatusCacheModel =
+		new StatusCacheModel();
+
+	private StatusCacheModel _statusCacheModel;
 	private long _statusId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _modifiedDate;
-	private long _originalModifiedDate;
-	private boolean _setOriginalModifiedDate;
 	private boolean _online;
-	private boolean _originalOnline;
-	private boolean _setOriginalOnline;
 	private boolean _awake;
 	private String _activePanelIds;
 	private String _message;

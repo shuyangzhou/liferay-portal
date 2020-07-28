@@ -114,10 +114,25 @@ public class CTCollectionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 4L;
 
 	/**
@@ -369,6 +384,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -380,6 +397,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -391,19 +410,18 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -414,6 +432,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -441,7 +461,7 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -460,6 +480,8 @@ public class CTCollectionModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -476,6 +498,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -492,6 +516,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -503,19 +529,18 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -526,6 +551,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -553,6 +580,8 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -670,20 +699,11 @@ public class CTCollectionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTCollectionModelImpl ctCollectionModelImpl = this;
+		_setModifiedDate = false;
 
-		ctCollectionModelImpl._originalCompanyId =
-			ctCollectionModelImpl._companyId;
+		_columnBitmask = 0;
 
-		ctCollectionModelImpl._setOriginalCompanyId = false;
-
-		ctCollectionModelImpl._setModifiedDate = false;
-
-		ctCollectionModelImpl._originalStatus = ctCollectionModelImpl._status;
-
-		ctCollectionModelImpl._setOriginalStatus = false;
-
-		ctCollectionModelImpl._columnBitmask = 0;
+		_ctCollectionCacheModel = (CTCollectionCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -819,11 +839,114 @@ public class CTCollectionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<CTCollectionCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<CTCollectionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<CTCollectionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			ctCollectionCacheModel -> ctCollectionCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			ctCollectionCacheModel -> ctCollectionCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			ctCollectionCacheModel -> ctCollectionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", ctCollectionCacheModel -> ctCollectionCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			ctCollectionCacheModel -> ctCollectionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 16L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			ctCollectionCacheModel -> ctCollectionCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"name", ctCollectionCacheModel -> ctCollectionCacheModel.name);
+
+		columnBitmasks.put("name", 64L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			ctCollectionCacheModel -> ctCollectionCacheModel.description);
+
+		columnBitmasks.put("description", 128L);
+
+		cacheModelGetterFunctions.put(
+			"status", ctCollectionCacheModel -> ctCollectionCacheModel.status);
+
+		columnBitmasks.put("status", 256L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			ctCollectionCacheModel -> ctCollectionCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			ctCollectionCacheModel -> ctCollectionCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 1024L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<CTCollectionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		CTCollectionCacheModel ctCollectionCacheModel = _ctCollectionCacheModel;
+
+		if (ctCollectionCacheModel == null) {
+			ctCollectionCacheModel = _dummyCTCollectionCacheModel;
+		}
+
+		return (T)function.apply(ctCollectionCacheModel);
+	}
+
+	private static final CTCollectionCacheModel _dummyCTCollectionCacheModel =
+		new CTCollectionCacheModel();
+
+	private CTCollectionCacheModel _ctCollectionCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private Date _createDate;
 	private Date _modifiedDate;
@@ -831,8 +954,6 @@ public class CTCollectionModelImpl
 	private String _name;
 	private String _description;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private Date _statusDate;
 	private long _columnBitmask;

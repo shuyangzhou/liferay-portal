@@ -443,23 +443,24 @@ public class VirtualHostPersistenceTest {
 			Objects.equals(
 				existingVirtualHost.getHostname(),
 				ReflectionTestUtil.invoke(
-					existingVirtualHost, "getOriginalHostname",
-					new Class<?>[0])));
+					existingVirtualHost, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "hostname")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingVirtualHost.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVirtualHost, "getOriginalCompanyId", new Class<?>[0]));
+				existingVirtualHost, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingVirtualHost.getLayoutSetId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVirtualHost, "getOriginalLayoutSetId",
-				new Class<?>[0]));
+				existingVirtualHost, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutSetId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingVirtualHost.getDefaultVirtualHost()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingVirtualHost, "getOriginalDefaultVirtualHost",
-				new Class<?>[0]));
+				existingVirtualHost, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "defaultVirtualHost"));
 	}
 
 	protected VirtualHost addVirtualHost() throws Exception {

@@ -102,10 +102,25 @@ public class FriendlyURLEntryMappingModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FRIENDLYURLENTRYMAPPINGID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -310,6 +325,8 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -320,6 +337,8 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -330,6 +349,8 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setFriendlyURLEntryMappingId(long friendlyURLEntryMappingId) {
+		_columnBitmask |= _columnBitmasks.get("friendlyURLEntryMappingId");
+
 		_friendlyURLEntryMappingId = friendlyURLEntryMappingId;
 	}
 
@@ -340,6 +361,8 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -370,19 +393,18 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return getOriginalAttributeValue("classNameId");
 	}
 
 	@Override
@@ -392,19 +414,18 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return getOriginalAttributeValue("classPK");
 	}
 
 	@Override
@@ -414,6 +435,8 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setFriendlyURLEntryId(long friendlyURLEntryId) {
+		_columnBitmask |= _columnBitmasks.get("friendlyURLEntryId");
+
 		_friendlyURLEntryId = friendlyURLEntryId;
 	}
 
@@ -533,20 +556,10 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FriendlyURLEntryMappingModelImpl friendlyURLEntryMappingModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		friendlyURLEntryMappingModelImpl._originalClassNameId =
-			friendlyURLEntryMappingModelImpl._classNameId;
-
-		friendlyURLEntryMappingModelImpl._setOriginalClassNameId = false;
-
-		friendlyURLEntryMappingModelImpl._originalClassPK =
-			friendlyURLEntryMappingModelImpl._classPK;
-
-		friendlyURLEntryMappingModelImpl._setOriginalClassPK = false;
-
-		friendlyURLEntryMappingModelImpl._columnBitmask = 0;
+		_friendlyURLEntryMappingCacheModel =
+			(FriendlyURLEntryMappingCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -647,16 +660,109 @@ public class FriendlyURLEntryMappingModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<FriendlyURLEntryMappingCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<FriendlyURLEntryMappingCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<FriendlyURLEntryMappingCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"friendlyURLEntryMappingId",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.friendlyURLEntryMappingId);
+
+		columnBitmasks.put("friendlyURLEntryMappingId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"classNameId",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.classNameId);
+
+		columnBitmasks.put("classNameId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"classPK",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.classPK);
+
+		columnBitmasks.put("classPK", 32L);
+
+		cacheModelGetterFunctions.put(
+			"friendlyURLEntryId",
+			friendlyURLEntryMappingCacheModel ->
+				friendlyURLEntryMappingCacheModel.friendlyURLEntryId);
+
+		columnBitmasks.put("friendlyURLEntryId", 64L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<FriendlyURLEntryMappingCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		FriendlyURLEntryMappingCacheModel friendlyURLEntryMappingCacheModel =
+			_friendlyURLEntryMappingCacheModel;
+
+		if (friendlyURLEntryMappingCacheModel == null) {
+			friendlyURLEntryMappingCacheModel =
+				_dummyFriendlyURLEntryMappingCacheModel;
+		}
+
+		return (T)function.apply(friendlyURLEntryMappingCacheModel);
+	}
+
+	private static final FriendlyURLEntryMappingCacheModel
+		_dummyFriendlyURLEntryMappingCacheModel =
+			new FriendlyURLEntryMappingCacheModel();
+
+	private FriendlyURLEntryMappingCacheModel
+		_friendlyURLEntryMappingCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _friendlyURLEntryMappingId;
 	private long _companyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _friendlyURLEntryId;
 	private long _columnBitmask;
 	private FriendlyURLEntryMapping _escapedModel;

@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -115,16 +114,46 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTPAGETEMPLATESTRUCTURERELID_COLUMN_BITMASK =
 		32L;
 
@@ -367,6 +396,8 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -382,17 +413,18 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -404,6 +436,9 @@ public class LayoutPageTemplateStructureRelModelImpl
 	public void setLayoutPageTemplateStructureRelId(
 		long layoutPageTemplateStructureRelId) {
 
+		_columnBitmask |= _columnBitmasks.get(
+			"layoutPageTemplateStructureRelId");
+
 		_layoutPageTemplateStructureRelId = layoutPageTemplateStructureRelId;
 	}
 
@@ -414,19 +449,18 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -436,19 +470,18 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -458,6 +491,8 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -489,6 +524,8 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -499,6 +536,8 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -515,6 +554,8 @@ public class LayoutPageTemplateStructureRelModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -527,20 +568,18 @@ public class LayoutPageTemplateStructureRelModelImpl
 	public void setLayoutPageTemplateStructureId(
 		long layoutPageTemplateStructureId) {
 
-		_columnBitmask |= LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutPageTemplateStructureId) {
-			_setOriginalLayoutPageTemplateStructureId = true;
-
-			_originalLayoutPageTemplateStructureId =
-				_layoutPageTemplateStructureId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutPageTemplateStructureId");
 
 		_layoutPageTemplateStructureId = layoutPageTemplateStructureId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutPageTemplateStructureId() {
-		return _originalLayoutPageTemplateStructureId;
+		return getOriginalAttributeValue("layoutPageTemplateStructureId");
 	}
 
 	@Override
@@ -550,19 +589,18 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setSegmentsExperienceId(long segmentsExperienceId) {
-		_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
-
-		if (!_setOriginalSegmentsExperienceId) {
-			_setOriginalSegmentsExperienceId = true;
-
-			_originalSegmentsExperienceId = _segmentsExperienceId;
-		}
+		_columnBitmask |= _columnBitmasks.get("segmentsExperienceId");
 
 		_segmentsExperienceId = segmentsExperienceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsExperienceId() {
-		return _originalSegmentsExperienceId;
+		return getOriginalAttributeValue("segmentsExperienceId");
 	}
 
 	@Override
@@ -577,6 +615,8 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setData(String data) {
+		_columnBitmask |= _columnBitmasks.get("data");
+
 		_data = data;
 	}
 
@@ -711,39 +751,12 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutPageTemplateStructureRelModelImpl
-			layoutPageTemplateStructureRelModelImpl = this;
+		_setModifiedDate = false;
 
-		layoutPageTemplateStructureRelModelImpl._originalUuid =
-			layoutPageTemplateStructureRelModelImpl._uuid;
+		_columnBitmask = 0;
 
-		layoutPageTemplateStructureRelModelImpl._originalGroupId =
-			layoutPageTemplateStructureRelModelImpl._groupId;
-
-		layoutPageTemplateStructureRelModelImpl._setOriginalGroupId = false;
-
-		layoutPageTemplateStructureRelModelImpl._originalCompanyId =
-			layoutPageTemplateStructureRelModelImpl._companyId;
-
-		layoutPageTemplateStructureRelModelImpl._setOriginalCompanyId = false;
-
-		layoutPageTemplateStructureRelModelImpl._setModifiedDate = false;
-
-		layoutPageTemplateStructureRelModelImpl.
-			_originalLayoutPageTemplateStructureId =
-				layoutPageTemplateStructureRelModelImpl.
-					_layoutPageTemplateStructureId;
-
-		layoutPageTemplateStructureRelModelImpl.
-			_setOriginalLayoutPageTemplateStructureId = false;
-
-		layoutPageTemplateStructureRelModelImpl._originalSegmentsExperienceId =
-			layoutPageTemplateStructureRelModelImpl._segmentsExperienceId;
-
-		layoutPageTemplateStructureRelModelImpl.
-			_setOriginalSegmentsExperienceId = false;
-
-		layoutPageTemplateStructureRelModelImpl._columnBitmask = 0;
+		_layoutPageTemplateStructureRelCacheModel =
+			(LayoutPageTemplateStructureRelCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -895,27 +908,154 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<LayoutPageTemplateStructureRelCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LayoutPageTemplateStructureRelCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function
+						 <LayoutPageTemplateStructureRelCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPageTemplateStructureRelId",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.
+					layoutPageTemplateStructureRelId);
+
+		columnBitmasks.put("layoutPageTemplateStructureRelId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"layoutPageTemplateStructureId",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.
+					layoutPageTemplateStructureId);
+
+		columnBitmasks.put("layoutPageTemplateStructureId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"segmentsExperienceId",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.segmentsExperienceId);
+
+		columnBitmasks.put("segmentsExperienceId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"data",
+			layoutPageTemplateStructureRelCacheModel ->
+				layoutPageTemplateStructureRelCacheModel.data);
+
+		columnBitmasks.put("data", 2048L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LayoutPageTemplateStructureRelCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LayoutPageTemplateStructureRelCacheModel
+			layoutPageTemplateStructureRelCacheModel =
+				_layoutPageTemplateStructureRelCacheModel;
+
+		if (layoutPageTemplateStructureRelCacheModel == null) {
+			layoutPageTemplateStructureRelCacheModel =
+				_dummyLayoutPageTemplateStructureRelCacheModel;
+		}
+
+		return (T)function.apply(layoutPageTemplateStructureRelCacheModel);
+	}
+
+	private static final LayoutPageTemplateStructureRelCacheModel
+		_dummyLayoutPageTemplateStructureRelCacheModel =
+			new LayoutPageTemplateStructureRelCacheModel();
+
+	private LayoutPageTemplateStructureRelCacheModel
+		_layoutPageTemplateStructureRelCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutPageTemplateStructureRelId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _layoutPageTemplateStructureId;
-	private long _originalLayoutPageTemplateStructureId;
-	private boolean _setOriginalLayoutPageTemplateStructureId;
 	private long _segmentsExperienceId;
-	private long _originalSegmentsExperienceId;
-	private boolean _setOriginalSegmentsExperienceId;
 	private String _data;
 	private long _columnBitmask;
 	private LayoutPageTemplateStructureRel _escapedModel;

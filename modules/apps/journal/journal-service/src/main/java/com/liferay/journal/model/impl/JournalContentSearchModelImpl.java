@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -104,18 +103,53 @@ public class JournalContentSearchModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ARTICLEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTLETID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CONTENTSEARCHID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -328,6 +362,8 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -338,6 +374,8 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -348,6 +386,8 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setContentSearchId(long contentSearchId) {
+		_columnBitmask |= _columnBitmasks.get("contentSearchId");
+
 		_contentSearchId = contentSearchId;
 	}
 
@@ -358,19 +398,18 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -380,19 +419,18 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -407,19 +445,18 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
-
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
-
-			_originalPrivateLayout = _privateLayout;
-		}
+		_columnBitmask |= _columnBitmasks.get("privateLayout");
 
 		_privateLayout = privateLayout;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		return getOriginalAttributeValue("privateLayout");
 	}
 
 	@Override
@@ -429,19 +466,18 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setLayoutId(long layoutId) {
-		_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutId) {
-			_setOriginalLayoutId = true;
-
-			_originalLayoutId = _layoutId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutId");
 
 		_layoutId = layoutId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutId() {
-		return _originalLayoutId;
+		return getOriginalAttributeValue("layoutId");
 	}
 
 	@Override
@@ -456,17 +492,18 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
-
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
-		}
+		_columnBitmask |= _columnBitmasks.get("portletId");
 
 		_portletId = portletId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return getOriginalAttributeValue("portletId");
 	}
 
 	@Override
@@ -481,17 +518,18 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setArticleId(String articleId) {
-		_columnBitmask |= ARTICLEID_COLUMN_BITMASK;
-
-		if (_originalArticleId == null) {
-			_originalArticleId = _articleId;
-		}
+		_columnBitmask |= _columnBitmasks.get("articleId");
 
 		_articleId = articleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalArticleId() {
-		return GetterUtil.getString(_originalArticleId);
+		return getOriginalAttributeValue("articleId");
 	}
 
 	public long getColumnBitmask() {
@@ -610,35 +648,10 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalContentSearchModelImpl journalContentSearchModelImpl = this;
+		_columnBitmask = 0;
 
-		journalContentSearchModelImpl._originalGroupId =
-			journalContentSearchModelImpl._groupId;
-
-		journalContentSearchModelImpl._setOriginalGroupId = false;
-
-		journalContentSearchModelImpl._originalCompanyId =
-			journalContentSearchModelImpl._companyId;
-
-		journalContentSearchModelImpl._setOriginalCompanyId = false;
-
-		journalContentSearchModelImpl._originalPrivateLayout =
-			journalContentSearchModelImpl._privateLayout;
-
-		journalContentSearchModelImpl._setOriginalPrivateLayout = false;
-
-		journalContentSearchModelImpl._originalLayoutId =
-			journalContentSearchModelImpl._layoutId;
-
-		journalContentSearchModelImpl._setOriginalLayoutId = false;
-
-		journalContentSearchModelImpl._originalPortletId =
-			journalContentSearchModelImpl._portletId;
-
-		journalContentSearchModelImpl._originalArticleId =
-			journalContentSearchModelImpl._articleId;
-
-		journalContentSearchModelImpl._columnBitmask = 0;
+		_journalContentSearchCacheModel =
+			(JournalContentSearchCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -751,25 +764,125 @@ public class JournalContentSearchModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<JournalContentSearchCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<JournalContentSearchCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<JournalContentSearchCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"contentSearchId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.contentSearchId);
+
+		columnBitmasks.put("contentSearchId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"privateLayout",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.privateLayout);
+
+		columnBitmasks.put("privateLayout", 32L);
+
+		cacheModelGetterFunctions.put(
+			"layoutId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.layoutId);
+
+		columnBitmasks.put("layoutId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"portletId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.portletId);
+
+		columnBitmasks.put("portletId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"articleId",
+			journalContentSearchCacheModel ->
+				journalContentSearchCacheModel.articleId);
+
+		columnBitmasks.put("articleId", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<JournalContentSearchCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		JournalContentSearchCacheModel journalContentSearchCacheModel =
+			_journalContentSearchCacheModel;
+
+		if (journalContentSearchCacheModel == null) {
+			journalContentSearchCacheModel =
+				_dummyJournalContentSearchCacheModel;
+		}
+
+		return (T)function.apply(journalContentSearchCacheModel);
+	}
+
+	private static final JournalContentSearchCacheModel
+		_dummyJournalContentSearchCacheModel =
+			new JournalContentSearchCacheModel();
+
+	private JournalContentSearchCacheModel _journalContentSearchCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _contentSearchId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private long _layoutId;
-	private long _originalLayoutId;
-	private boolean _setOriginalLayoutId;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _articleId;
-	private String _originalArticleId;
 	private long _columnBitmask;
 	private JournalContentSearch _escapedModel;
 

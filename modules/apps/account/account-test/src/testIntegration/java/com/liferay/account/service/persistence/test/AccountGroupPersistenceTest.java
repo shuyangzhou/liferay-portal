@@ -448,13 +448,14 @@ public class AccountGroupPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAccountGroup.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountGroup, "getOriginalCompanyId", new Class<?>[0]));
+				existingAccountGroup, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAccountGroup.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingAccountGroup, "getOriginalExternalReferenceCode",
-					new Class<?>[0])));
+					existingAccountGroup, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "externalReferenceCode")));
 	}
 
 	protected AccountGroup addAccountGroup() throws Exception {

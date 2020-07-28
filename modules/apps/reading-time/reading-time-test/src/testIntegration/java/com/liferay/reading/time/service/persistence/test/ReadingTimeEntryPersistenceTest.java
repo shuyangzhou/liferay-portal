@@ -470,29 +470,29 @@ public class ReadingTimeEntryPersistenceTest {
 			Objects.equals(
 				existingReadingTimeEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingReadingTimeEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingReadingTimeEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingReadingTimeEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingReadingTimeEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingReadingTimeEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingReadingTimeEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingReadingTimeEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingReadingTimeEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingReadingTimeEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingReadingTimeEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingReadingTimeEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingReadingTimeEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingReadingTimeEntry, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingReadingTimeEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected ReadingTimeEntry addReadingTimeEntry() throws Exception {

@@ -139,7 +139,14 @@ public class AccountModelImpl
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = true;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -391,6 +398,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -402,6 +411,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		_columnBitmask |= _columnBitmasks.get("accountId");
+
 		_accountId = accountId;
 	}
 
@@ -413,6 +424,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -424,6 +437,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -456,6 +471,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -467,6 +484,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -484,6 +503,8 @@ public class AccountModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -495,6 +516,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setParentAccountId(long parentAccountId) {
+		_columnBitmask |= _columnBitmasks.get("parentAccountId");
+
 		_parentAccountId = parentAccountId;
 	}
 
@@ -511,6 +534,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -527,6 +552,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setLegalName(String legalName) {
+		_columnBitmask |= _columnBitmasks.get("legalName");
+
 		_legalName = legalName;
 	}
 
@@ -543,6 +570,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setLegalId(String legalId) {
+		_columnBitmask |= _columnBitmasks.get("legalId");
+
 		_legalId = legalId;
 	}
 
@@ -559,6 +588,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setLegalType(String legalType) {
+		_columnBitmask |= _columnBitmasks.get("legalType");
+
 		_legalType = legalType;
 	}
 
@@ -575,6 +606,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setSicCode(String sicCode) {
+		_columnBitmask |= _columnBitmasks.get("sicCode");
+
 		_sicCode = sicCode;
 	}
 
@@ -591,6 +624,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setTickerSymbol(String tickerSymbol) {
+		_columnBitmask |= _columnBitmasks.get("tickerSymbol");
+
 		_tickerSymbol = tickerSymbol;
 	}
 
@@ -607,6 +642,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setIndustry(String industry) {
+		_columnBitmask |= _columnBitmasks.get("industry");
+
 		_industry = industry;
 	}
 
@@ -623,6 +660,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
 		_type = type;
 	}
 
@@ -639,7 +678,13 @@ public class AccountModelImpl
 
 	@Override
 	public void setSize(String size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
 		_size = size;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -759,9 +804,11 @@ public class AccountModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountModelImpl accountModelImpl = this;
+		_setModifiedDate = false;
 
-		accountModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
+
+		_accountCacheModel = (AccountCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -949,6 +996,136 @@ public class AccountModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<AccountCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AccountCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<AccountCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", accountCacheModel -> accountCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"accountId", accountCacheModel -> accountCacheModel.accountId);
+
+		columnBitmasks.put("accountId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId", accountCacheModel -> accountCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId", accountCacheModel -> accountCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName", accountCacheModel -> accountCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate", accountCacheModel -> accountCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			accountCacheModel -> accountCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"parentAccountId",
+			accountCacheModel -> accountCacheModel.parentAccountId);
+
+		columnBitmasks.put("parentAccountId", 128L);
+
+		cacheModelGetterFunctions.put(
+			"name", accountCacheModel -> accountCacheModel.name);
+
+		columnBitmasks.put("name", 256L);
+
+		cacheModelGetterFunctions.put(
+			"legalName", accountCacheModel -> accountCacheModel.legalName);
+
+		columnBitmasks.put("legalName", 512L);
+
+		cacheModelGetterFunctions.put(
+			"legalId", accountCacheModel -> accountCacheModel.legalId);
+
+		columnBitmasks.put("legalId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"legalType", accountCacheModel -> accountCacheModel.legalType);
+
+		columnBitmasks.put("legalType", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"sicCode", accountCacheModel -> accountCacheModel.sicCode);
+
+		columnBitmasks.put("sicCode", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"tickerSymbol",
+			accountCacheModel -> accountCacheModel.tickerSymbol);
+
+		columnBitmasks.put("tickerSymbol", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"industry", accountCacheModel -> accountCacheModel.industry);
+
+		columnBitmasks.put("industry", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"type", accountCacheModel -> accountCacheModel.type);
+
+		columnBitmasks.put("type", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"size", accountCacheModel -> accountCacheModel.size);
+
+		columnBitmasks.put("size", 65536L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AccountCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AccountCacheModel accountCacheModel = _accountCacheModel;
+
+		if (accountCacheModel == null) {
+			accountCacheModel = _dummyAccountCacheModel;
+		}
+
+		return (T)function.apply(accountCacheModel);
+	}
+
+	private static final AccountCacheModel _dummyAccountCacheModel =
+		new AccountCacheModel();
+
+	private AccountCacheModel _accountCacheModel;
 	private long _mvccVersion;
 	private long _accountId;
 	private long _companyId;
@@ -967,6 +1144,7 @@ public class AccountModelImpl
 	private String _industry;
 	private String _type;
 	private String _size;
+	private long _columnBitmask;
 	private Account _escapedModel;
 
 }

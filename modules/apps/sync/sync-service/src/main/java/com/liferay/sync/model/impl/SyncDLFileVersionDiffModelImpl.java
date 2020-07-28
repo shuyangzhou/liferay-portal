@@ -103,14 +103,39 @@ public class SyncDLFileVersionDiffModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long EXPIRATIONDATE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILEENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SOURCEFILEVERSIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TARGETFILEVERSIONID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SYNCDLFILEVERSIONDIFFID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -320,6 +345,8 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setSyncDLFileVersionDiffId(long syncDLFileVersionDiffId) {
+		_columnBitmask |= _columnBitmasks.get("syncDLFileVersionDiffId");
+
 		_syncDLFileVersionDiffId = syncDLFileVersionDiffId;
 	}
 
@@ -330,6 +357,8 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -340,19 +369,18 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
-		_columnBitmask |= FILEENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalFileEntryId) {
-			_setOriginalFileEntryId = true;
-
-			_originalFileEntryId = _fileEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("fileEntryId");
 
 		_fileEntryId = fileEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFileEntryId() {
-		return _originalFileEntryId;
+		return getOriginalAttributeValue("fileEntryId");
 	}
 
 	@Override
@@ -362,19 +390,18 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setSourceFileVersionId(long sourceFileVersionId) {
-		_columnBitmask |= SOURCEFILEVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalSourceFileVersionId) {
-			_setOriginalSourceFileVersionId = true;
-
-			_originalSourceFileVersionId = _sourceFileVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("sourceFileVersionId");
 
 		_sourceFileVersionId = sourceFileVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSourceFileVersionId() {
-		return _originalSourceFileVersionId;
+		return getOriginalAttributeValue("sourceFileVersionId");
 	}
 
 	@Override
@@ -384,19 +411,18 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setTargetFileVersionId(long targetFileVersionId) {
-		_columnBitmask |= TARGETFILEVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalTargetFileVersionId) {
-			_setOriginalTargetFileVersionId = true;
-
-			_originalTargetFileVersionId = _targetFileVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("targetFileVersionId");
 
 		_targetFileVersionId = targetFileVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalTargetFileVersionId() {
-		return _originalTargetFileVersionId;
+		return getOriginalAttributeValue("targetFileVersionId");
 	}
 
 	@Override
@@ -406,6 +432,8 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setDataFileEntryId(long dataFileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("dataFileEntryId");
+
 		_dataFileEntryId = dataFileEntryId;
 	}
 
@@ -416,6 +444,8 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
 		_size = size;
 	}
 
@@ -426,17 +456,18 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
-		_columnBitmask |= EXPIRATIONDATE_COLUMN_BITMASK;
-
-		if (_originalExpirationDate == null) {
-			_originalExpirationDate = _expirationDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("expirationDate");
 
 		_expirationDate = expirationDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public Date getOriginalExpirationDate() {
-		return _originalExpirationDate;
+		return getOriginalAttributeValue("expirationDate");
 	}
 
 	public long getColumnBitmask() {
@@ -557,27 +588,10 @@ public class SyncDLFileVersionDiffModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl = this;
+		_columnBitmask = 0;
 
-		syncDLFileVersionDiffModelImpl._originalFileEntryId =
-			syncDLFileVersionDiffModelImpl._fileEntryId;
-
-		syncDLFileVersionDiffModelImpl._setOriginalFileEntryId = false;
-
-		syncDLFileVersionDiffModelImpl._originalSourceFileVersionId =
-			syncDLFileVersionDiffModelImpl._sourceFileVersionId;
-
-		syncDLFileVersionDiffModelImpl._setOriginalSourceFileVersionId = false;
-
-		syncDLFileVersionDiffModelImpl._originalTargetFileVersionId =
-			syncDLFileVersionDiffModelImpl._targetFileVersionId;
-
-		syncDLFileVersionDiffModelImpl._setOriginalTargetFileVersionId = false;
-
-		syncDLFileVersionDiffModelImpl._originalExpirationDate =
-			syncDLFileVersionDiffModelImpl._expirationDate;
-
-		syncDLFileVersionDiffModelImpl._columnBitmask = 0;
+		_syncDLFileVersionDiffCacheModel =
+			(SyncDLFileVersionDiffCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -687,21 +701,117 @@ public class SyncDLFileVersionDiffModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<SyncDLFileVersionDiffCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SyncDLFileVersionDiffCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<SyncDLFileVersionDiffCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"syncDLFileVersionDiffId",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.syncDLFileVersionDiffId);
+
+		columnBitmasks.put("syncDLFileVersionDiffId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"fileEntryId",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.fileEntryId);
+
+		columnBitmasks.put("fileEntryId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"sourceFileVersionId",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.sourceFileVersionId);
+
+		columnBitmasks.put("sourceFileVersionId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"targetFileVersionId",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.targetFileVersionId);
+
+		columnBitmasks.put("targetFileVersionId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"dataFileEntryId",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.dataFileEntryId);
+
+		columnBitmasks.put("dataFileEntryId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"size",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.size);
+
+		columnBitmasks.put("size", 64L);
+
+		cacheModelGetterFunctions.put(
+			"expirationDate",
+			syncDLFileVersionDiffCacheModel ->
+				syncDLFileVersionDiffCacheModel.expirationDate);
+
+		columnBitmasks.put("expirationDate", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SyncDLFileVersionDiffCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SyncDLFileVersionDiffCacheModel syncDLFileVersionDiffCacheModel =
+			_syncDLFileVersionDiffCacheModel;
+
+		if (syncDLFileVersionDiffCacheModel == null) {
+			syncDLFileVersionDiffCacheModel =
+				_dummySyncDLFileVersionDiffCacheModel;
+		}
+
+		return (T)function.apply(syncDLFileVersionDiffCacheModel);
+	}
+
+	private static final SyncDLFileVersionDiffCacheModel
+		_dummySyncDLFileVersionDiffCacheModel =
+			new SyncDLFileVersionDiffCacheModel();
+
+	private SyncDLFileVersionDiffCacheModel _syncDLFileVersionDiffCacheModel;
 	private long _syncDLFileVersionDiffId;
 	private long _companyId;
 	private long _fileEntryId;
-	private long _originalFileEntryId;
-	private boolean _setOriginalFileEntryId;
 	private long _sourceFileVersionId;
-	private long _originalSourceFileVersionId;
-	private boolean _setOriginalSourceFileVersionId;
 	private long _targetFileVersionId;
-	private long _originalTargetFileVersionId;
-	private boolean _setOriginalTargetFileVersionId;
 	private long _dataFileEntryId;
 	private long _size;
 	private Date _expirationDate;
-	private Date _originalExpirationDate;
 	private long _columnBitmask;
 	private SyncDLFileVersionDiff _escapedModel;
 

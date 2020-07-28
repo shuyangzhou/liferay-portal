@@ -1672,7 +1672,7 @@ public class AccountRolePersistenceImpl
 			 _finderPathFetchByRoleId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				accountRoleModelImpl.getOriginalRoleId()
+				accountRoleModelImpl.getOriginalAttributeValue("roleId")
 			};
 
 			finderCache.removeResult(_finderPathCountByRoleId, args);
@@ -1850,7 +1850,7 @@ public class AccountRolePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					accountRoleModelImpl.getOriginalCompanyId()
+					accountRoleModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -1869,7 +1869,8 @@ public class AccountRolePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					accountRoleModelImpl.getOriginalAccountEntryId()
+					accountRoleModelImpl.getOriginalAttributeValue(
+						"accountEntryId")
 				};
 
 				finderCache.removeResult(
@@ -2175,7 +2176,7 @@ public class AccountRolePersistenceImpl
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			AccountRoleImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCompanyId", new String[] {Long.class.getName()},
-			AccountRoleModelImpl.COMPANYID_COLUMN_BITMASK);
+			AccountRoleModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2192,7 +2193,7 @@ public class AccountRolePersistenceImpl
 		_finderPathWithoutPaginationFindByAccountEntryId = new FinderPath(
 			AccountRoleImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByAccountEntryId", new String[] {Long.class.getName()},
-			AccountRoleModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK);
+			AccountRoleModelImpl.getColumnBitmask("accountEntryId"));
 
 		_finderPathCountByAccountEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2205,7 +2206,7 @@ public class AccountRolePersistenceImpl
 		_finderPathFetchByRoleId = new FinderPath(
 			AccountRoleImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByRoleId",
 			new String[] {Long.class.getName()},
-			AccountRoleModelImpl.ROLEID_COLUMN_BITMASK);
+			AccountRoleModelImpl.getColumnBitmask("roleId"));
 
 		_finderPathCountByRoleId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

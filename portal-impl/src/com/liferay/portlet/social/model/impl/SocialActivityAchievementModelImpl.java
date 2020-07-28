@@ -125,14 +125,39 @@ public class SocialActivityAchievementModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FIRSTINGROUP_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVITYACHIEVEMENTID_COLUMN_BITMASK = 16L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -339,6 +364,8 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -349,6 +376,8 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -359,6 +388,8 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setActivityAchievementId(long activityAchievementId) {
+		_columnBitmask |= _columnBitmasks.get("activityAchievementId");
+
 		_activityAchievementId = activityAchievementId;
 	}
 
@@ -369,19 +400,18 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -391,6 +421,8 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -401,13 +433,7 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -428,8 +454,13 @@ public class SocialActivityAchievementModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -439,6 +470,8 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setCreateDate(long createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -454,17 +487,18 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -479,19 +513,18 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void setFirstInGroup(boolean firstInGroup) {
-		_columnBitmask |= FIRSTINGROUP_COLUMN_BITMASK;
-
-		if (!_setOriginalFirstInGroup) {
-			_setOriginalFirstInGroup = true;
-
-			_originalFirstInGroup = _firstInGroup;
-		}
+		_columnBitmask |= _columnBitmasks.get("firstInGroup");
 
 		_firstInGroup = firstInGroup;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalFirstInGroup() {
-		return _originalFirstInGroup;
+		return getOriginalAttributeValue("firstInGroup");
 	}
 
 	public long getColumnBitmask() {
@@ -611,28 +644,10 @@ public class SocialActivityAchievementModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialActivityAchievementModelImpl socialActivityAchievementModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		socialActivityAchievementModelImpl._originalGroupId =
-			socialActivityAchievementModelImpl._groupId;
-
-		socialActivityAchievementModelImpl._setOriginalGroupId = false;
-
-		socialActivityAchievementModelImpl._originalUserId =
-			socialActivityAchievementModelImpl._userId;
-
-		socialActivityAchievementModelImpl._setOriginalUserId = false;
-
-		socialActivityAchievementModelImpl._originalName =
-			socialActivityAchievementModelImpl._name;
-
-		socialActivityAchievementModelImpl._originalFirstInGroup =
-			socialActivityAchievementModelImpl._firstInGroup;
-
-		socialActivityAchievementModelImpl._setOriginalFirstInGroup = false;
-
-		socialActivityAchievementModelImpl._columnBitmask = 0;
+		_socialActivityAchievementCacheModel =
+			(SocialActivityAchievementCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -744,22 +759,127 @@ public class SocialActivityAchievementModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<SocialActivityAchievementCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<SocialActivityAchievementCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<SocialActivityAchievementCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"activityAchievementId",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.activityAchievementId);
+
+		columnBitmasks.put("activityAchievementId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.name);
+
+		columnBitmasks.put("name", 128L);
+
+		cacheModelGetterFunctions.put(
+			"firstInGroup",
+			socialActivityAchievementCacheModel ->
+				socialActivityAchievementCacheModel.firstInGroup);
+
+		columnBitmasks.put("firstInGroup", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<SocialActivityAchievementCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		SocialActivityAchievementCacheModel
+			socialActivityAchievementCacheModel =
+				_socialActivityAchievementCacheModel;
+
+		if (socialActivityAchievementCacheModel == null) {
+			socialActivityAchievementCacheModel =
+				_dummySocialActivityAchievementCacheModel;
+		}
+
+		return (T)function.apply(socialActivityAchievementCacheModel);
+	}
+
+	private static final SocialActivityAchievementCacheModel
+		_dummySocialActivityAchievementCacheModel =
+			new SocialActivityAchievementCacheModel();
+
+	private SocialActivityAchievementCacheModel
+		_socialActivityAchievementCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _activityAchievementId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _createDate;
 	private String _name;
-	private String _originalName;
 	private boolean _firstInGroup;
-	private boolean _originalFirstInGroup;
-	private boolean _setOriginalFirstInGroup;
 	private long _columnBitmask;
 	private SocialActivityAchievement _escapedModel;
 

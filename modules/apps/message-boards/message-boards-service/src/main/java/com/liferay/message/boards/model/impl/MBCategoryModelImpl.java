@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -133,18 +132,53 @@ public class MBCategoryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CATEGORYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTCATEGORYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 64L;
 
 	/**
@@ -433,6 +467,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -444,6 +480,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -460,17 +498,18 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -481,19 +520,18 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
-		_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCategoryId) {
-			_setOriginalCategoryId = true;
-
-			_originalCategoryId = _categoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("categoryId");
 
 		_categoryId = categoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCategoryId() {
-		return _originalCategoryId;
+		return getOriginalAttributeValue("categoryId");
 	}
 
 	@JSON
@@ -504,19 +542,18 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -527,19 +564,18 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -550,6 +586,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -582,6 +620,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -593,6 +633,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -610,6 +652,8 @@ public class MBCategoryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -621,19 +665,18 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setParentCategoryId(long parentCategoryId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalParentCategoryId) {
-			_setOriginalParentCategoryId = true;
-
-			_originalParentCategoryId = _parentCategoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentCategoryId");
 
 		_parentCategoryId = parentCategoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentCategoryId() {
-		return _originalParentCategoryId;
+		return getOriginalAttributeValue("parentCategoryId");
 	}
 
 	@JSON
@@ -649,7 +692,7 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
@@ -667,6 +710,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -683,6 +728,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setDisplayStyle(String displayStyle) {
+		_columnBitmask |= _columnBitmasks.get("displayStyle");
+
 		_displayStyle = displayStyle;
 	}
 
@@ -694,6 +741,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -705,19 +754,18 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return getOriginalAttributeValue("status");
 	}
 
 	@JSON
@@ -728,6 +776,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -760,6 +810,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -771,6 +823,8 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1165,35 +1219,11 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBCategoryModelImpl mbCategoryModelImpl = this;
+		_setModifiedDate = false;
 
-		mbCategoryModelImpl._originalUuid = mbCategoryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		mbCategoryModelImpl._originalCategoryId =
-			mbCategoryModelImpl._categoryId;
-
-		mbCategoryModelImpl._setOriginalCategoryId = false;
-
-		mbCategoryModelImpl._originalGroupId = mbCategoryModelImpl._groupId;
-
-		mbCategoryModelImpl._setOriginalGroupId = false;
-
-		mbCategoryModelImpl._originalCompanyId = mbCategoryModelImpl._companyId;
-
-		mbCategoryModelImpl._setOriginalCompanyId = false;
-
-		mbCategoryModelImpl._setModifiedDate = false;
-
-		mbCategoryModelImpl._originalParentCategoryId =
-			mbCategoryModelImpl._parentCategoryId;
-
-		mbCategoryModelImpl._setOriginalParentCategoryId = false;
-
-		mbCategoryModelImpl._originalStatus = mbCategoryModelImpl._status;
-
-		mbCategoryModelImpl._setOriginalStatus = false;
-
-		mbCategoryModelImpl._columnBitmask = 0;
+		_mbCategoryCacheModel = (MBCategoryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1375,34 +1405,173 @@ public class MBCategoryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<MBCategoryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<MBCategoryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<MBCategoryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			mbCategoryCacheModel -> mbCategoryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"ctCollectionId",
+			mbCategoryCacheModel -> mbCategoryCacheModel.ctCollectionId);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"uuid", mbCategoryCacheModel -> mbCategoryCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 4L);
+
+		cacheModelGetterFunctions.put(
+			"categoryId",
+			mbCategoryCacheModel -> mbCategoryCacheModel.categoryId);
+
+		columnBitmasks.put("categoryId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"groupId", mbCategoryCacheModel -> mbCategoryCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			mbCategoryCacheModel -> mbCategoryCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userId", mbCategoryCacheModel -> mbCategoryCacheModel.userId);
+
+		columnBitmasks.put("userId", 64L);
+
+		cacheModelGetterFunctions.put(
+			"userName", mbCategoryCacheModel -> mbCategoryCacheModel.userName);
+
+		columnBitmasks.put("userName", 128L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			mbCategoryCacheModel -> mbCategoryCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			mbCategoryCacheModel -> mbCategoryCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		cacheModelGetterFunctions.put(
+			"parentCategoryId",
+			mbCategoryCacheModel -> mbCategoryCacheModel.parentCategoryId);
+
+		columnBitmasks.put("parentCategoryId", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"name", mbCategoryCacheModel -> mbCategoryCacheModel.name);
+
+		columnBitmasks.put("name", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			mbCategoryCacheModel -> mbCategoryCacheModel.description);
+
+		columnBitmasks.put("description", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"displayStyle",
+			mbCategoryCacheModel -> mbCategoryCacheModel.displayStyle);
+
+		columnBitmasks.put("displayStyle", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			mbCategoryCacheModel -> mbCategoryCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"status", mbCategoryCacheModel -> mbCategoryCacheModel.status);
+
+		columnBitmasks.put("status", 32768L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserId",
+			mbCategoryCacheModel -> mbCategoryCacheModel.statusByUserId);
+
+		columnBitmasks.put("statusByUserId", 65536L);
+
+		cacheModelGetterFunctions.put(
+			"statusByUserName",
+			mbCategoryCacheModel -> mbCategoryCacheModel.statusByUserName);
+
+		columnBitmasks.put("statusByUserName", 131072L);
+
+		cacheModelGetterFunctions.put(
+			"statusDate",
+			mbCategoryCacheModel -> mbCategoryCacheModel.statusDate);
+
+		columnBitmasks.put("statusDate", 262144L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<MBCategoryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		MBCategoryCacheModel mbCategoryCacheModel = _mbCategoryCacheModel;
+
+		if (mbCategoryCacheModel == null) {
+			mbCategoryCacheModel = _dummyMBCategoryCacheModel;
+		}
+
+		return (T)function.apply(mbCategoryCacheModel);
+	}
+
+	private static final MBCategoryCacheModel _dummyMBCategoryCacheModel =
+		new MBCategoryCacheModel();
+
+	private MBCategoryCacheModel _mbCategoryCacheModel;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _categoryId;
-	private long _originalCategoryId;
-	private boolean _setOriginalCategoryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _parentCategoryId;
-	private long _originalParentCategoryId;
-	private boolean _setOriginalParentCategoryId;
 	private String _name;
 	private String _description;
 	private String _displayStyle;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

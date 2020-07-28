@@ -3441,8 +3441,9 @@ public class AppBuilderAppVersionPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				appBuilderAppVersionModelImpl.getOriginalUuid(),
-				appBuilderAppVersionModelImpl.getOriginalGroupId()
+				appBuilderAppVersionModelImpl.getOriginalAttributeValue("uuid"),
+				appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+					"groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -3463,8 +3464,10 @@ public class AppBuilderAppVersionPersistenceImpl
 			 _finderPathFetchByA_V.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				appBuilderAppVersionModelImpl.getOriginalAppBuilderAppId(),
-				appBuilderAppVersionModelImpl.getOriginalVersion()
+				appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+					"appBuilderAppId"),
+				appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+					"version")
 			};
 
 			finderCache.removeResult(_finderPathCountByA_V, args);
@@ -3713,7 +3716,8 @@ public class AppBuilderAppVersionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					appBuilderAppVersionModelImpl.getOriginalUuid()
+					appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+						"uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -3732,8 +3736,10 @@ public class AppBuilderAppVersionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					appBuilderAppVersionModelImpl.getOriginalUuid(),
-					appBuilderAppVersionModelImpl.getOriginalCompanyId()
+					appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+						"uuid"),
+					appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -3755,7 +3761,8 @@ public class AppBuilderAppVersionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					appBuilderAppVersionModelImpl.getOriginalGroupId()
+					appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+						"groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -3776,7 +3783,8 @@ public class AppBuilderAppVersionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					appBuilderAppVersionModelImpl.getOriginalCompanyId()
+					appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -3797,7 +3805,8 @@ public class AppBuilderAppVersionPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					appBuilderAppVersionModelImpl.getOriginalAppBuilderAppId()
+					appBuilderAppVersionModelImpl.getOriginalAttributeValue(
+						"appBuilderAppId")
 				};
 
 				finderCache.removeResult(
@@ -4116,8 +4125,8 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			AppBuilderAppVersionModelImpl.UUID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("uuid") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4127,8 +4136,8 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			AppBuilderAppVersionModelImpl.UUID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.GROUPID_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("uuid") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4148,9 +4157,9 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			AppBuilderAppVersionModelImpl.UUID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.COMPANYID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("uuid") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("companyId") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4169,8 +4178,8 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			AppBuilderAppVersionModelImpl.GROUPID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("groupId") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4188,8 +4197,8 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
-			AppBuilderAppVersionModelImpl.COMPANYID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("companyId") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4207,8 +4216,8 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAppBuilderAppId",
 			new String[] {Long.class.getName()},
-			AppBuilderAppVersionModelImpl.APPBUILDERAPPID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("appBuilderAppId") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("createDate"));
 
 		_finderPathCountByAppBuilderAppId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -4218,8 +4227,8 @@ public class AppBuilderAppVersionPersistenceImpl
 			AppBuilderAppVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByA_V",
 			new String[] {Long.class.getName(), String.class.getName()},
-			AppBuilderAppVersionModelImpl.APPBUILDERAPPID_COLUMN_BITMASK |
-			AppBuilderAppVersionModelImpl.VERSION_COLUMN_BITMASK);
+			AppBuilderAppVersionModelImpl.getColumnBitmask("appBuilderAppId") |
+			AppBuilderAppVersionModelImpl.getColumnBitmask("version"));
 
 		_finderPathCountByA_V = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_V",

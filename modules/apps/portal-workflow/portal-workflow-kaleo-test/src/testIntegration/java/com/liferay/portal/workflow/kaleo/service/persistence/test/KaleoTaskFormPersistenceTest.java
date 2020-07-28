@@ -533,14 +533,14 @@ public class KaleoTaskFormPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingKaleoTaskForm.getKaleoTaskId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskForm, "getOriginalKaleoTaskId",
-				new Class<?>[0]));
+				existingKaleoTaskForm, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "kaleoTaskId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingKaleoTaskForm.getFormUuid(),
 				ReflectionTestUtil.invoke(
-					existingKaleoTaskForm, "getOriginalFormUuid",
-					new Class<?>[0])));
+					existingKaleoTaskForm, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "formUuid")));
 	}
 
 	protected KaleoTaskForm addKaleoTaskForm() throws Exception {

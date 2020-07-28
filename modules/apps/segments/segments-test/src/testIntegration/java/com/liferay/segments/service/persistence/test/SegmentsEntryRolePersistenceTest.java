@@ -464,13 +464,13 @@ public class SegmentsEntryRolePersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsEntryRole.getSegmentsEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRole, "getOriginalSegmentsEntryId",
-				new Class<?>[0]));
+				existingSegmentsEntryRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "segmentsEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsEntryRole.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRole, "getOriginalRoleId",
-				new Class<?>[0]));
+				existingSegmentsEntryRole, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "roleId"));
 	}
 
 	protected SegmentsEntryRole addSegmentsEntryRole() throws Exception {

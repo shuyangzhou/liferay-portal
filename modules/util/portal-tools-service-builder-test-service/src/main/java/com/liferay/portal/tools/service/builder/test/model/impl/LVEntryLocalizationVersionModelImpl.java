@@ -122,12 +122,32 @@ public class LVEntryLocalizationVersionModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LANGUAGEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LVENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LVENTRYLOCALIZATIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 8L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -366,6 +386,8 @@ public class LVEntryLocalizationVersionModelImpl
 	public void setLvEntryLocalizationVersionId(
 		long lvEntryLocalizationVersionId) {
 
+		_columnBitmask |= _columnBitmasks.get("lvEntryLocalizationVersionId");
+
 		_lvEntryLocalizationVersionId = lvEntryLocalizationVersionId;
 	}
 
@@ -376,19 +398,18 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setVersion(int version) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalVersion() {
-		return _originalVersion;
+		return getOriginalAttributeValue("version");
 	}
 
 	@Override
@@ -398,19 +419,18 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setLvEntryLocalizationId(long lvEntryLocalizationId) {
-		_columnBitmask |= LVENTRYLOCALIZATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalLvEntryLocalizationId) {
-			_setOriginalLvEntryLocalizationId = true;
-
-			_originalLvEntryLocalizationId = _lvEntryLocalizationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("lvEntryLocalizationId");
 
 		_lvEntryLocalizationId = lvEntryLocalizationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLvEntryLocalizationId() {
-		return _originalLvEntryLocalizationId;
+		return getOriginalAttributeValue("lvEntryLocalizationId");
 	}
 
 	@Override
@@ -420,6 +440,8 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -430,19 +452,18 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setLvEntryId(long lvEntryId) {
-		_columnBitmask |= LVENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalLvEntryId) {
-			_setOriginalLvEntryId = true;
-
-			_originalLvEntryId = _lvEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("lvEntryId");
 
 		_lvEntryId = lvEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLvEntryId() {
-		return _originalLvEntryId;
+		return getOriginalAttributeValue("lvEntryId");
 	}
 
 	@Override
@@ -457,17 +478,18 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
-
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("languageId");
 
 		_languageId = languageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		return getOriginalAttributeValue("languageId");
 	}
 
 	@Override
@@ -482,6 +504,8 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
 		_title = title;
 	}
 
@@ -497,6 +521,8 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
 		_content = content;
 	}
 
@@ -627,29 +653,10 @@ public class LVEntryLocalizationVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LVEntryLocalizationVersionModelImpl
-			lvEntryLocalizationVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		lvEntryLocalizationVersionModelImpl._originalVersion =
-			lvEntryLocalizationVersionModelImpl._version;
-
-		lvEntryLocalizationVersionModelImpl._setOriginalVersion = false;
-
-		lvEntryLocalizationVersionModelImpl._originalLvEntryLocalizationId =
-			lvEntryLocalizationVersionModelImpl._lvEntryLocalizationId;
-
-		lvEntryLocalizationVersionModelImpl._setOriginalLvEntryLocalizationId =
-			false;
-
-		lvEntryLocalizationVersionModelImpl._originalLvEntryId =
-			lvEntryLocalizationVersionModelImpl._lvEntryId;
-
-		lvEntryLocalizationVersionModelImpl._setOriginalLvEntryId = false;
-
-		lvEntryLocalizationVersionModelImpl._originalLanguageId =
-			lvEntryLocalizationVersionModelImpl._languageId;
-
-		lvEntryLocalizationVersionModelImpl._columnBitmask = 0;
+		_lvEntryLocalizationVersionCacheModel =
+			(LVEntryLocalizationVersionCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -773,19 +780,118 @@ public class LVEntryLocalizationVersionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<LVEntryLocalizationVersionCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<LVEntryLocalizationVersionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<LVEntryLocalizationVersionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"lvEntryLocalizationVersionId",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.
+					lvEntryLocalizationVersionId);
+
+		columnBitmasks.put("lvEntryLocalizationVersionId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"version",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.version);
+
+		columnBitmasks.put("version", 2L);
+
+		cacheModelGetterFunctions.put(
+			"lvEntryLocalizationId",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.lvEntryLocalizationId);
+
+		columnBitmasks.put("lvEntryLocalizationId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"lvEntryId",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.lvEntryId);
+
+		columnBitmasks.put("lvEntryId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"languageId",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.languageId);
+
+		columnBitmasks.put("languageId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"title",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.title);
+
+		columnBitmasks.put("title", 64L);
+
+		cacheModelGetterFunctions.put(
+			"content",
+			lvEntryLocalizationVersionCacheModel ->
+				lvEntryLocalizationVersionCacheModel.content);
+
+		columnBitmasks.put("content", 128L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<LVEntryLocalizationVersionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		LVEntryLocalizationVersionCacheModel
+			lvEntryLocalizationVersionCacheModel =
+				_lvEntryLocalizationVersionCacheModel;
+
+		if (lvEntryLocalizationVersionCacheModel == null) {
+			lvEntryLocalizationVersionCacheModel =
+				_dummyLVEntryLocalizationVersionCacheModel;
+		}
+
+		return (T)function.apply(lvEntryLocalizationVersionCacheModel);
+	}
+
+	private static final LVEntryLocalizationVersionCacheModel
+		_dummyLVEntryLocalizationVersionCacheModel =
+			new LVEntryLocalizationVersionCacheModel();
+
+	private LVEntryLocalizationVersionCacheModel
+		_lvEntryLocalizationVersionCacheModel;
 	private long _lvEntryLocalizationVersionId;
 	private int _version;
-	private int _originalVersion;
-	private boolean _setOriginalVersion;
 	private long _lvEntryLocalizationId;
-	private long _originalLvEntryLocalizationId;
-	private boolean _setOriginalLvEntryLocalizationId;
 	private long _companyId;
 	private long _lvEntryId;
-	private long _originalLvEntryId;
-	private boolean _setOriginalLvEntryId;
 	private String _languageId;
-	private String _originalLanguageId;
 	private String _title;
 	private String _content;
 	private long _columnBitmask;

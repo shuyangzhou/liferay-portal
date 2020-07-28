@@ -122,12 +122,32 @@ public class CountryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long A2_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long A3_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
 	/**
@@ -345,6 +365,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -356,6 +378,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setCountryId(long countryId) {
+		_columnBitmask |= _columnBitmasks.get("countryId");
+
 		_countryId = countryId;
 	}
 
@@ -372,17 +396,18 @@ public class CountryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -398,17 +423,18 @@ public class CountryModelImpl
 
 	@Override
 	public void setA2(String a2) {
-		_columnBitmask |= A2_COLUMN_BITMASK;
-
-		if (_originalA2 == null) {
-			_originalA2 = _a2;
-		}
+		_columnBitmask |= _columnBitmasks.get("a2");
 
 		_a2 = a2;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalA2() {
-		return GetterUtil.getString(_originalA2);
+		return getOriginalAttributeValue("a2");
 	}
 
 	@JSON
@@ -424,17 +450,18 @@ public class CountryModelImpl
 
 	@Override
 	public void setA3(String a3) {
-		_columnBitmask |= A3_COLUMN_BITMASK;
-
-		if (_originalA3 == null) {
-			_originalA3 = _a3;
-		}
+		_columnBitmask |= _columnBitmasks.get("a3");
 
 		_a3 = a3;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalA3() {
-		return GetterUtil.getString(_originalA3);
+		return getOriginalAttributeValue("a3");
 	}
 
 	@JSON
@@ -450,6 +477,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setNumber(String number) {
+		_columnBitmask |= _columnBitmasks.get("number");
+
 		_number = number;
 	}
 
@@ -466,6 +495,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setIdd(String idd) {
+		_columnBitmask |= _columnBitmasks.get("idd");
+
 		_idd = idd;
 	}
 
@@ -483,6 +514,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setZipRequired(boolean zipRequired) {
+		_columnBitmask |= _columnBitmasks.get("zipRequired");
+
 		_zipRequired = zipRequired;
 	}
 
@@ -500,19 +533,18 @@ public class CountryModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return getOriginalAttributeValue("active");
 	}
 
 	public long getColumnBitmask() {
@@ -626,19 +658,9 @@ public class CountryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CountryModelImpl countryModelImpl = this;
+		_columnBitmask = 0;
 
-		countryModelImpl._originalName = countryModelImpl._name;
-
-		countryModelImpl._originalA2 = countryModelImpl._a2;
-
-		countryModelImpl._originalA3 = countryModelImpl._a3;
-
-		countryModelImpl._originalActive = countryModelImpl._active;
-
-		countryModelImpl._setOriginalActive = false;
-
-		countryModelImpl._columnBitmask = 0;
+		_countryCacheModel = (CountryCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -766,20 +788,102 @@ public class CountryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map<String, Function<CountryCacheModel, Object>>
+		_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<CountryCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<CountryCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion", countryCacheModel -> countryCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"countryId", countryCacheModel -> countryCacheModel.countryId);
+
+		columnBitmasks.put("countryId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"name", countryCacheModel -> countryCacheModel.name);
+
+		columnBitmasks.put("name", 4L);
+
+		cacheModelGetterFunctions.put(
+			"a2", countryCacheModel -> countryCacheModel.a2);
+
+		columnBitmasks.put("a2", 8L);
+
+		cacheModelGetterFunctions.put(
+			"a3", countryCacheModel -> countryCacheModel.a3);
+
+		columnBitmasks.put("a3", 16L);
+
+		cacheModelGetterFunctions.put(
+			"number", countryCacheModel -> countryCacheModel.number);
+
+		columnBitmasks.put("number", 32L);
+
+		cacheModelGetterFunctions.put(
+			"idd", countryCacheModel -> countryCacheModel.idd);
+
+		columnBitmasks.put("idd", 64L);
+
+		cacheModelGetterFunctions.put(
+			"zipRequired", countryCacheModel -> countryCacheModel.zipRequired);
+
+		columnBitmasks.put("zipRequired", 128L);
+
+		cacheModelGetterFunctions.put(
+			"active", countryCacheModel -> countryCacheModel.active);
+
+		columnBitmasks.put("active", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<CountryCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		CountryCacheModel countryCacheModel = _countryCacheModel;
+
+		if (countryCacheModel == null) {
+			countryCacheModel = _dummyCountryCacheModel;
+		}
+
+		return (T)function.apply(countryCacheModel);
+	}
+
+	private static final CountryCacheModel _dummyCountryCacheModel =
+		new CountryCacheModel();
+
+	private CountryCacheModel _countryCacheModel;
 	private long _mvccVersion;
 	private long _countryId;
 	private String _name;
-	private String _originalName;
 	private String _a2;
-	private String _originalA2;
 	private String _a3;
-	private String _originalA3;
 	private String _number;
 	private String _idd;
 	private boolean _zipRequired;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
 	private Country _escapedModel;
 

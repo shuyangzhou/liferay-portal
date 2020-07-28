@@ -103,10 +103,25 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTGROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTGROUPACCOUNTENTRYRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -350,6 +365,8 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -363,6 +380,8 @@ public class AccountGroupAccountEntryRelModelImpl
 	public void setAccountGroupAccountEntryRelId(
 		long AccountGroupAccountEntryRelId) {
 
+		_columnBitmask |= _columnBitmasks.get("AccountGroupAccountEntryRelId");
+
 		_AccountGroupAccountEntryRelId = AccountGroupAccountEntryRelId;
 	}
 
@@ -374,6 +393,8 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -385,19 +406,18 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setAccountGroupId(long accountGroupId) {
-		_columnBitmask |= ACCOUNTGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountGroupId) {
-			_setOriginalAccountGroupId = true;
-
-			_originalAccountGroupId = _accountGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountGroupId");
 
 		_accountGroupId = accountGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountGroupId() {
-		return _originalAccountGroupId;
+		return getOriginalAttributeValue("accountGroupId");
 	}
 
 	@JSON
@@ -408,19 +428,18 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
-
-			_originalAccountEntryId = _accountEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountEntryId");
 
 		_accountEntryId = accountEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		return getOriginalAttributeValue("accountEntryId");
 	}
 
 	public long getColumnBitmask() {
@@ -538,20 +557,10 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountGroupAccountEntryRelModelImpl
-			accountGroupAccountEntryRelModelImpl = this;
+		_columnBitmask = 0;
 
-		accountGroupAccountEntryRelModelImpl._originalAccountGroupId =
-			accountGroupAccountEntryRelModelImpl._accountGroupId;
-
-		accountGroupAccountEntryRelModelImpl._setOriginalAccountGroupId = false;
-
-		accountGroupAccountEntryRelModelImpl._originalAccountEntryId =
-			accountGroupAccountEntryRelModelImpl._accountEntryId;
-
-		accountGroupAccountEntryRelModelImpl._setOriginalAccountEntryId = false;
-
-		accountGroupAccountEntryRelModelImpl._columnBitmask = 0;
+		_accountGroupAccountEntryRelCacheModel =
+			(AccountGroupAccountEntryRelCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -652,15 +661,96 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<AccountGroupAccountEntryRelCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<AccountGroupAccountEntryRelCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function<AccountGroupAccountEntryRelCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			accountGroupAccountEntryRelCacheModel ->
+				accountGroupAccountEntryRelCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"AccountGroupAccountEntryRelId",
+			accountGroupAccountEntryRelCacheModel ->
+				accountGroupAccountEntryRelCacheModel.
+					AccountGroupAccountEntryRelId);
+
+		columnBitmasks.put("AccountGroupAccountEntryRelId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			accountGroupAccountEntryRelCacheModel ->
+				accountGroupAccountEntryRelCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"accountGroupId",
+			accountGroupAccountEntryRelCacheModel ->
+				accountGroupAccountEntryRelCacheModel.accountGroupId);
+
+		columnBitmasks.put("accountGroupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"accountEntryId",
+			accountGroupAccountEntryRelCacheModel ->
+				accountGroupAccountEntryRelCacheModel.accountEntryId);
+
+		columnBitmasks.put("accountEntryId", 16L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<AccountGroupAccountEntryRelCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		AccountGroupAccountEntryRelCacheModel
+			accountGroupAccountEntryRelCacheModel =
+				_accountGroupAccountEntryRelCacheModel;
+
+		if (accountGroupAccountEntryRelCacheModel == null) {
+			accountGroupAccountEntryRelCacheModel =
+				_dummyAccountGroupAccountEntryRelCacheModel;
+		}
+
+		return (T)function.apply(accountGroupAccountEntryRelCacheModel);
+	}
+
+	private static final AccountGroupAccountEntryRelCacheModel
+		_dummyAccountGroupAccountEntryRelCacheModel =
+			new AccountGroupAccountEntryRelCacheModel();
+
+	private AccountGroupAccountEntryRelCacheModel
+		_accountGroupAccountEntryRelCacheModel;
 	private long _mvccVersion;
 	private long _AccountGroupAccountEntryRelId;
 	private long _companyId;
 	private long _accountGroupId;
-	private long _originalAccountGroupId;
-	private boolean _setOriginalAccountGroupId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _columnBitmask;
 	private AccountGroupAccountEntryRel _escapedModel;
 

@@ -836,8 +836,9 @@ public class WeDeployAuthAppPersistenceImpl
 			 _finderPathFetchByRU_CI.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				weDeployAuthAppModelImpl.getOriginalRedirectURI(),
-				weDeployAuthAppModelImpl.getOriginalClientId()
+				weDeployAuthAppModelImpl.getOriginalAttributeValue(
+					"redirectURI"),
+				weDeployAuthAppModelImpl.getOriginalAttributeValue("clientId")
 			};
 
 			finderCache.removeResult(_finderPathCountByRU_CI, args);
@@ -858,8 +859,9 @@ public class WeDeployAuthAppPersistenceImpl
 			 _finderPathFetchByCI_CS.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				weDeployAuthAppModelImpl.getOriginalClientId(),
-				weDeployAuthAppModelImpl.getOriginalClientSecret()
+				weDeployAuthAppModelImpl.getOriginalAttributeValue("clientId"),
+				weDeployAuthAppModelImpl.getOriginalAttributeValue(
+					"clientSecret")
 			};
 
 			finderCache.removeResult(_finderPathCountByCI_CS, args);
@@ -1334,8 +1336,8 @@ public class WeDeployAuthAppPersistenceImpl
 		_finderPathFetchByRU_CI = new FinderPath(
 			WeDeployAuthAppImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByRU_CI",
 			new String[] {String.class.getName(), String.class.getName()},
-			WeDeployAuthAppModelImpl.REDIRECTURI_COLUMN_BITMASK |
-			WeDeployAuthAppModelImpl.CLIENTID_COLUMN_BITMASK);
+			WeDeployAuthAppModelImpl.getColumnBitmask("redirectURI") |
+			WeDeployAuthAppModelImpl.getColumnBitmask("clientId"));
 
 		_finderPathCountByRU_CI = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1345,8 +1347,8 @@ public class WeDeployAuthAppPersistenceImpl
 		_finderPathFetchByCI_CS = new FinderPath(
 			WeDeployAuthAppImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByCI_CS",
 			new String[] {String.class.getName(), String.class.getName()},
-			WeDeployAuthAppModelImpl.CLIENTID_COLUMN_BITMASK |
-			WeDeployAuthAppModelImpl.CLIENTSECRET_COLUMN_BITMASK);
+			WeDeployAuthAppModelImpl.getColumnBitmask("clientId") |
+			WeDeployAuthAppModelImpl.getColumnBitmask("clientSecret"));
 
 		_finderPathCountByCI_CS = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

@@ -6358,8 +6358,8 @@ public class SyncDLObjectPersistenceImpl
 			 _finderPathFetchByT_T.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				syncDLObjectModelImpl.getOriginalType(),
-				syncDLObjectModelImpl.getOriginalTypePK()
+				syncDLObjectModelImpl.getOriginalAttributeValue("type"),
+				syncDLObjectModelImpl.getOriginalAttributeValue("typePK")
 			};
 
 			finderCache.removeResult(_finderPathCountByT_T, args);
@@ -6565,8 +6565,10 @@ public class SyncDLObjectPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalRepositoryId(),
-					syncDLObjectModelImpl.getOriginalParentFolderId()
+					syncDLObjectModelImpl.getOriginalAttributeValue(
+						"repositoryId"),
+					syncDLObjectModelImpl.getOriginalAttributeValue(
+						"parentFolderId")
 				};
 
 				finderCache.removeResult(_finderPathCountByR_P, args);
@@ -6588,8 +6590,9 @@ public class SyncDLObjectPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalRepositoryId(),
-					syncDLObjectModelImpl.getOriginalType()
+					syncDLObjectModelImpl.getOriginalAttributeValue(
+						"repositoryId"),
+					syncDLObjectModelImpl.getOriginalAttributeValue("type")
 				};
 
 				finderCache.removeResult(_finderPathCountByR_T, args);
@@ -6611,8 +6614,8 @@ public class SyncDLObjectPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalVersion(),
-					syncDLObjectModelImpl.getOriginalType()
+					syncDLObjectModelImpl.getOriginalAttributeValue("version"),
+					syncDLObjectModelImpl.getOriginalAttributeValue("type")
 				};
 
 				finderCache.removeResult(_finderPathCountByV_T, args);
@@ -6634,9 +6637,11 @@ public class SyncDLObjectPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalRepositoryId(),
-					syncDLObjectModelImpl.getOriginalParentFolderId(),
-					syncDLObjectModelImpl.getOriginalType()
+					syncDLObjectModelImpl.getOriginalAttributeValue(
+						"repositoryId"),
+					syncDLObjectModelImpl.getOriginalAttributeValue(
+						"parentFolderId"),
+					syncDLObjectModelImpl.getOriginalAttributeValue("type")
 				};
 
 				finderCache.removeResult(_finderPathCountByR_P_T, args);
@@ -6976,9 +6981,9 @@ public class SyncDLObjectPersistenceImpl
 			SyncDLObjectImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByR_P",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.getColumnBitmask("repositoryId") |
+			SyncDLObjectModelImpl.getColumnBitmask("parentFolderId") |
+			SyncDLObjectModelImpl.getColumnBitmask("modifiedTime"));
 
 		_finderPathCountByR_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_P",
@@ -7010,9 +7015,9 @@ public class SyncDLObjectPersistenceImpl
 			SyncDLObjectImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByR_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.getColumnBitmask("repositoryId") |
+			SyncDLObjectModelImpl.getColumnBitmask("type") |
+			SyncDLObjectModelImpl.getColumnBitmask("modifiedTime"));
 
 		_finderPathCountByR_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_T",
@@ -7044,10 +7049,10 @@ public class SyncDLObjectPersistenceImpl
 			SyncDLObjectImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByV_T",
 			new String[] {String.class.getName(), String.class.getName()},
-			SyncDLObjectModelImpl.VERSION_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.getColumnBitmask("version") |
+			SyncDLObjectModelImpl.getColumnBitmask("type") |
+			SyncDLObjectModelImpl.getColumnBitmask("modifiedTime") |
+			SyncDLObjectModelImpl.getColumnBitmask("repositoryId"));
 
 		_finderPathCountByV_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByV_T",
@@ -7056,8 +7061,8 @@ public class SyncDLObjectPersistenceImpl
 		_finderPathFetchByT_T = new FinderPath(
 			SyncDLObjectImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByT_T",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.TYPEPK_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.getColumnBitmask("type") |
+			SyncDLObjectModelImpl.getColumnBitmask("typePK"));
 
 		_finderPathCountByT_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_T",
@@ -7096,10 +7101,10 @@ public class SyncDLObjectPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.getColumnBitmask("repositoryId") |
+			SyncDLObjectModelImpl.getColumnBitmask("parentFolderId") |
+			SyncDLObjectModelImpl.getColumnBitmask("type") |
+			SyncDLObjectModelImpl.getColumnBitmask("modifiedTime"));
 
 		_finderPathCountByR_P_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

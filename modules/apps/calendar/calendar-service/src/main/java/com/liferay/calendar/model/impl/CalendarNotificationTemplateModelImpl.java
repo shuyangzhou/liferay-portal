@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -126,18 +125,53 @@ public class CalendarNotificationTemplateModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CALENDARID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NOTIFICATIONTEMPLATETYPE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NOTIFICATIONTYPE_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CALENDARNOTIFICATIONTEMPLATEID_COLUMN_BITMASK =
 		64L;
 
@@ -466,6 +500,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -482,17 +518,18 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -505,6 +542,8 @@ public class CalendarNotificationTemplateModelImpl
 	public void setCalendarNotificationTemplateId(
 		long calendarNotificationTemplateId) {
 
+		_columnBitmask |= _columnBitmasks.get("calendarNotificationTemplateId");
+
 		_calendarNotificationTemplateId = calendarNotificationTemplateId;
 	}
 
@@ -516,19 +555,18 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@JSON
@@ -539,19 +577,18 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@JSON
@@ -562,6 +599,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -594,6 +633,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -605,6 +646,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -622,6 +665,8 @@ public class CalendarNotificationTemplateModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -633,19 +678,18 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setCalendarId(long calendarId) {
-		_columnBitmask |= CALENDARID_COLUMN_BITMASK;
-
-		if (!_setOriginalCalendarId) {
-			_setOriginalCalendarId = true;
-
-			_originalCalendarId = _calendarId;
-		}
+		_columnBitmask |= _columnBitmasks.get("calendarId");
 
 		_calendarId = calendarId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCalendarId() {
-		return _originalCalendarId;
+		return getOriginalAttributeValue("calendarId");
 	}
 
 	@JSON
@@ -661,17 +705,18 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setNotificationType(String notificationType) {
-		_columnBitmask |= NOTIFICATIONTYPE_COLUMN_BITMASK;
-
-		if (_originalNotificationType == null) {
-			_originalNotificationType = _notificationType;
-		}
+		_columnBitmask |= _columnBitmasks.get("notificationType");
 
 		_notificationType = notificationType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalNotificationType() {
-		return GetterUtil.getString(_originalNotificationType);
+		return getOriginalAttributeValue("notificationType");
 	}
 
 	@JSON
@@ -687,6 +732,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setNotificationTypeSettings(String notificationTypeSettings) {
+		_columnBitmask |= _columnBitmasks.get("notificationTypeSettings");
+
 		_notificationTypeSettings = notificationTypeSettings;
 	}
 
@@ -703,17 +750,18 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setNotificationTemplateType(String notificationTemplateType) {
-		_columnBitmask |= NOTIFICATIONTEMPLATETYPE_COLUMN_BITMASK;
-
-		if (_originalNotificationTemplateType == null) {
-			_originalNotificationTemplateType = _notificationTemplateType;
-		}
+		_columnBitmask |= _columnBitmasks.get("notificationTemplateType");
 
 		_notificationTemplateType = notificationTemplateType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalNotificationTemplateType() {
-		return GetterUtil.getString(_originalNotificationTemplateType);
+		return getOriginalAttributeValue("notificationTemplateType");
 	}
 
 	@JSON
@@ -729,6 +777,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setSubject(String subject) {
+		_columnBitmask |= _columnBitmasks.get("subject");
+
 		_subject = subject;
 	}
 
@@ -745,6 +795,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setBody(String body) {
+		_columnBitmask |= _columnBitmasks.get("body");
+
 		_body = body;
 	}
 
@@ -756,6 +808,8 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -896,37 +950,12 @@ public class CalendarNotificationTemplateModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CalendarNotificationTemplateModelImpl
-			calendarNotificationTemplateModelImpl = this;
+		_setModifiedDate = false;
 
-		calendarNotificationTemplateModelImpl._originalUuid =
-			calendarNotificationTemplateModelImpl._uuid;
+		_columnBitmask = 0;
 
-		calendarNotificationTemplateModelImpl._originalGroupId =
-			calendarNotificationTemplateModelImpl._groupId;
-
-		calendarNotificationTemplateModelImpl._setOriginalGroupId = false;
-
-		calendarNotificationTemplateModelImpl._originalCompanyId =
-			calendarNotificationTemplateModelImpl._companyId;
-
-		calendarNotificationTemplateModelImpl._setOriginalCompanyId = false;
-
-		calendarNotificationTemplateModelImpl._setModifiedDate = false;
-
-		calendarNotificationTemplateModelImpl._originalCalendarId =
-			calendarNotificationTemplateModelImpl._calendarId;
-
-		calendarNotificationTemplateModelImpl._setOriginalCalendarId = false;
-
-		calendarNotificationTemplateModelImpl._originalNotificationType =
-			calendarNotificationTemplateModelImpl._notificationType;
-
-		calendarNotificationTemplateModelImpl.
-			_originalNotificationTemplateType =
-				calendarNotificationTemplateModelImpl._notificationTemplateType;
-
-		calendarNotificationTemplateModelImpl._columnBitmask = 0;
+		_calendarNotificationTemplateCacheModel =
+			(CalendarNotificationTemplateCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -1127,29 +1156,185 @@ public class CalendarNotificationTemplateModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<CalendarNotificationTemplateCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<CalendarNotificationTemplateCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String,
+					 Function
+						 <CalendarNotificationTemplateCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"mvccVersion",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.mvccVersion);
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		cacheModelGetterFunctions.put(
+			"uuid",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.uuid);
+
+		columnBitmasks.put("uuid", 2L);
+
+		cacheModelGetterFunctions.put(
+			"calendarNotificationTemplateId",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.
+					calendarNotificationTemplateId);
+
+		columnBitmasks.put("calendarNotificationTemplateId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 16L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.userId);
+
+		columnBitmasks.put("userId", 32L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.userName);
+
+		columnBitmasks.put("userName", 64L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 128L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		cacheModelGetterFunctions.put(
+			"calendarId",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.calendarId);
+
+		columnBitmasks.put("calendarId", 512L);
+
+		cacheModelGetterFunctions.put(
+			"notificationType",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.notificationType);
+
+		columnBitmasks.put("notificationType", 1024L);
+
+		cacheModelGetterFunctions.put(
+			"notificationTypeSettings",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.
+					notificationTypeSettings);
+
+		columnBitmasks.put("notificationTypeSettings", 2048L);
+
+		cacheModelGetterFunctions.put(
+			"notificationTemplateType",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.
+					notificationTemplateType);
+
+		columnBitmasks.put("notificationTemplateType", 4096L);
+
+		cacheModelGetterFunctions.put(
+			"subject",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.subject);
+
+		columnBitmasks.put("subject", 8192L);
+
+		cacheModelGetterFunctions.put(
+			"body",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.body);
+
+		columnBitmasks.put("body", 16384L);
+
+		cacheModelGetterFunctions.put(
+			"lastPublishDate",
+			calendarNotificationTemplateCacheModel ->
+				calendarNotificationTemplateCacheModel.lastPublishDate);
+
+		columnBitmasks.put("lastPublishDate", 32768L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<CalendarNotificationTemplateCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		CalendarNotificationTemplateCacheModel
+			calendarNotificationTemplateCacheModel =
+				_calendarNotificationTemplateCacheModel;
+
+		if (calendarNotificationTemplateCacheModel == null) {
+			calendarNotificationTemplateCacheModel =
+				_dummyCalendarNotificationTemplateCacheModel;
+		}
+
+		return (T)function.apply(calendarNotificationTemplateCacheModel);
+	}
+
+	private static final CalendarNotificationTemplateCacheModel
+		_dummyCalendarNotificationTemplateCacheModel =
+			new CalendarNotificationTemplateCacheModel();
+
+	private CalendarNotificationTemplateCacheModel
+		_calendarNotificationTemplateCacheModel;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _calendarNotificationTemplateId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _calendarId;
-	private long _originalCalendarId;
-	private boolean _setOriginalCalendarId;
 	private String _notificationType;
-	private String _originalNotificationType;
 	private String _notificationTypeSettings;
 	private String _notificationTemplateType;
-	private String _originalNotificationTemplateType;
 	private String _subject;
 	private String _body;
 	private Date _lastPublishDate;

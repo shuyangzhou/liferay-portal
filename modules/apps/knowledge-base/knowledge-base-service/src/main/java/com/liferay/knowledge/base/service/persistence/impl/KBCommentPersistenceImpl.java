@@ -5129,8 +5129,8 @@ public class KBCommentPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kbCommentModelImpl.getOriginalUuid(),
-				kbCommentModelImpl.getOriginalGroupId()
+				kbCommentModelImpl.getOriginalAttributeValue("uuid"),
+				kbCommentModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -5393,7 +5393,7 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalUuid()
+					kbCommentModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -5412,8 +5412,8 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalUuid(),
-					kbCommentModelImpl.getOriginalCompanyId()
+					kbCommentModelImpl.getOriginalAttributeValue("uuid"),
+					kbCommentModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -5435,7 +5435,7 @@ public class KBCommentPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalGroupId()
+					kbCommentModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -5454,8 +5454,8 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalGroupId(),
-					kbCommentModelImpl.getOriginalClassNameId()
+					kbCommentModelImpl.getOriginalAttributeValue("groupId"),
+					kbCommentModelImpl.getOriginalAttributeValue("classNameId")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_C, args);
@@ -5477,8 +5477,8 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalGroupId(),
-					kbCommentModelImpl.getOriginalStatus()
+					kbCommentModelImpl.getOriginalAttributeValue("groupId"),
+					kbCommentModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_S, args);
@@ -5500,8 +5500,8 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalClassNameId(),
-					kbCommentModelImpl.getOriginalClassPK()
+					kbCommentModelImpl.getOriginalAttributeValue("classNameId"),
+					kbCommentModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_C, args);
@@ -5523,9 +5523,9 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalUserId(),
-					kbCommentModelImpl.getOriginalClassNameId(),
-					kbCommentModelImpl.getOriginalClassPK()
+					kbCommentModelImpl.getOriginalAttributeValue("userId"),
+					kbCommentModelImpl.getOriginalAttributeValue("classNameId"),
+					kbCommentModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByU_C_C, args);
@@ -5548,9 +5548,9 @@ public class KBCommentPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbCommentModelImpl.getOriginalClassNameId(),
-					kbCommentModelImpl.getOriginalClassPK(),
-					kbCommentModelImpl.getOriginalStatus()
+					kbCommentModelImpl.getOriginalAttributeValue("classNameId"),
+					kbCommentModelImpl.getOriginalAttributeValue("classPK"),
+					kbCommentModelImpl.getOriginalAttributeValue("status")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_C_S, args);
@@ -5862,8 +5862,8 @@ public class KBCommentPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			KBCommentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			KBCommentModelImpl.UUID_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("uuid") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5872,8 +5872,8 @@ public class KBCommentPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			KBCommentImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KBCommentModelImpl.UUID_COLUMN_BITMASK |
-			KBCommentModelImpl.GROUPID_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("uuid") |
+			KBCommentModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5893,9 +5893,9 @@ public class KBCommentPersistenceImpl
 			KBCommentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KBCommentModelImpl.UUID_COLUMN_BITMASK |
-			KBCommentModelImpl.COMPANYID_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("uuid") |
+			KBCommentModelImpl.getColumnBitmask("companyId") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5913,8 +5913,8 @@ public class KBCommentPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			KBCommentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			KBCommentModelImpl.GROUPID_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("groupId") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -5933,9 +5933,9 @@ public class KBCommentPersistenceImpl
 			KBCommentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			KBCommentModelImpl.GROUPID_COLUMN_BITMASK |
-			KBCommentModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("groupId") |
+			KBCommentModelImpl.getColumnBitmask("classNameId") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByG_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
@@ -5954,9 +5954,9 @@ public class KBCommentPersistenceImpl
 			KBCommentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByG_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			KBCommentModelImpl.GROUPID_COLUMN_BITMASK |
-			KBCommentModelImpl.STATUS_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("groupId") |
+			KBCommentModelImpl.getColumnBitmask("status") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByG_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
@@ -5975,9 +5975,9 @@ public class KBCommentPersistenceImpl
 			KBCommentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			KBCommentModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			KBCommentModelImpl.CLASSPK_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("classNameId") |
+			KBCommentModelImpl.getColumnBitmask("classPK") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
@@ -5998,10 +5998,10 @@ public class KBCommentPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			KBCommentModelImpl.USERID_COLUMN_BITMASK |
-			KBCommentModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			KBCommentModelImpl.CLASSPK_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("userId") |
+			KBCommentModelImpl.getColumnBitmask("classNameId") |
+			KBCommentModelImpl.getColumnBitmask("classPK") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByU_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6026,10 +6026,10 @@ public class KBCommentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			KBCommentModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			KBCommentModelImpl.CLASSPK_COLUMN_BITMASK |
-			KBCommentModelImpl.STATUS_COLUMN_BITMASK |
-			KBCommentModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBCommentModelImpl.getColumnBitmask("classNameId") |
+			KBCommentModelImpl.getColumnBitmask("classPK") |
+			KBCommentModelImpl.getColumnBitmask("status") |
+			KBCommentModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_C_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -108,14 +107,39 @@ public class ChangesetCollectionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CHANGESETCOLLECTIONID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -326,6 +350,8 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setChangesetCollectionId(long changesetCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("changesetCollectionId");
+
 		_changesetCollectionId = changesetCollectionId;
 	}
 
@@ -336,19 +362,18 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return getOriginalAttributeValue("groupId");
 	}
 
 	@Override
@@ -358,19 +383,18 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return getOriginalAttributeValue("companyId");
 	}
 
 	@Override
@@ -380,13 +404,7 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -407,8 +425,13 @@ public class ChangesetCollectionModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return getOriginalAttributeValue("userId");
 	}
 
 	@Override
@@ -423,6 +446,8 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -433,6 +458,8 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -449,6 +476,8 @@ public class ChangesetCollectionModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -464,17 +493,18 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -489,6 +519,8 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -608,29 +640,12 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ChangesetCollectionModelImpl changesetCollectionModelImpl = this;
+		_setModifiedDate = false;
 
-		changesetCollectionModelImpl._originalGroupId =
-			changesetCollectionModelImpl._groupId;
+		_columnBitmask = 0;
 
-		changesetCollectionModelImpl._setOriginalGroupId = false;
-
-		changesetCollectionModelImpl._originalCompanyId =
-			changesetCollectionModelImpl._companyId;
-
-		changesetCollectionModelImpl._setOriginalCompanyId = false;
-
-		changesetCollectionModelImpl._originalUserId =
-			changesetCollectionModelImpl._userId;
-
-		changesetCollectionModelImpl._setOriginalUserId = false;
-
-		changesetCollectionModelImpl._setModifiedDate = false;
-
-		changesetCollectionModelImpl._originalName =
-			changesetCollectionModelImpl._name;
-
-		changesetCollectionModelImpl._columnBitmask = 0;
+		_changesetCollectionCacheModel =
+			(ChangesetCollectionCacheModel)toCacheModel();
 	}
 
 	@Override
@@ -762,22 +777,123 @@ public class ChangesetCollectionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	private static final Map
+		<String, Function<ChangesetCollectionCacheModel, Object>>
+			_cacheModelGetterFunctions;
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Function<ChangesetCollectionCacheModel, Object>>
+			cacheModelGetterFunctions =
+				new LinkedHashMap
+					<String, Function<ChangesetCollectionCacheModel, Object>>();
+		Map<String, Long> columnBitmasks = new LinkedHashMap<String, Long>();
+
+		cacheModelGetterFunctions.put(
+			"changesetCollectionId",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.changesetCollectionId);
+
+		columnBitmasks.put("changesetCollectionId", 1L);
+
+		cacheModelGetterFunctions.put(
+			"groupId",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.groupId);
+
+		columnBitmasks.put("groupId", 2L);
+
+		cacheModelGetterFunctions.put(
+			"companyId",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.companyId);
+
+		columnBitmasks.put("companyId", 4L);
+
+		cacheModelGetterFunctions.put(
+			"userId",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.userId);
+
+		columnBitmasks.put("userId", 8L);
+
+		cacheModelGetterFunctions.put(
+			"userName",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.userName);
+
+		columnBitmasks.put("userName", 16L);
+
+		cacheModelGetterFunctions.put(
+			"createDate",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.createDate);
+
+		columnBitmasks.put("createDate", 32L);
+
+		cacheModelGetterFunctions.put(
+			"modifiedDate",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.modifiedDate);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		cacheModelGetterFunctions.put(
+			"name",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.name);
+
+		columnBitmasks.put("name", 128L);
+
+		cacheModelGetterFunctions.put(
+			"description",
+			changesetCollectionCacheModel ->
+				changesetCollectionCacheModel.description);
+
+		columnBitmasks.put("description", 256L);
+
+		_cacheModelGetterFunctions = Collections.unmodifiableMap(
+			cacheModelGetterFunctions);
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		Function<ChangesetCollectionCacheModel, Object> function =
+			_cacheModelGetterFunctions.get(attributeName);
+
+		if (function == null) {
+			throw new IllegalArgumentException(
+				"Unknown attribute name " + attributeName);
+		}
+
+		ChangesetCollectionCacheModel changesetCollectionCacheModel =
+			_changesetCollectionCacheModel;
+
+		if (changesetCollectionCacheModel == null) {
+			changesetCollectionCacheModel = _dummyChangesetCollectionCacheModel;
+		}
+
+		return (T)function.apply(changesetCollectionCacheModel);
+	}
+
+	private static final ChangesetCollectionCacheModel
+		_dummyChangesetCollectionCacheModel =
+			new ChangesetCollectionCacheModel();
+
+	private ChangesetCollectionCacheModel _changesetCollectionCacheModel;
 	private long _changesetCollectionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private long _columnBitmask;
 	private ChangesetCollection _escapedModel;
