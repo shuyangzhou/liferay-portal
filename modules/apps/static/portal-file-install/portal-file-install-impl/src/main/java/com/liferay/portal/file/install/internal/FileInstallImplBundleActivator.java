@@ -220,7 +220,7 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 	}
 
 	private void _updated(String pid, Map<String, String> properties) {
-		InterpolationUtil.performSubstitution(properties, _bundleContext);
+		InterpolationUtil.performSubstitution(properties);
 
 		DirectoryWatcher directoryWatcher = null;
 
