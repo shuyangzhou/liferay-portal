@@ -102,14 +102,39 @@ public class JournalArticleLocalizationModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ARTICLEPK_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LANGUAGEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TITLE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ARTICLELOCALIZATIONID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -321,6 +346,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -331,6 +358,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -341,6 +370,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setArticleLocalizationId(long articleLocalizationId) {
+		_columnBitmask |= _columnBitmasks.get("articleLocalizationId");
+
 		_articleLocalizationId = articleLocalizationId;
 	}
 
@@ -351,19 +382,18 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -373,19 +403,18 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setArticlePK(long articlePK) {
-		_columnBitmask |= ARTICLEPK_COLUMN_BITMASK;
-
-		if (!_setOriginalArticlePK) {
-			_setOriginalArticlePK = true;
-
-			_originalArticlePK = _articlePK;
-		}
+		_columnBitmask |= _columnBitmasks.get("articlePK");
 
 		_articlePK = articlePK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalArticlePK() {
-		return _originalArticlePK;
+		return GetterUtil.getLong(getOriginalAttributeValue("articlePK"));
 	}
 
 	@Override
@@ -400,17 +429,18 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setTitle(String title) {
-		_columnBitmask |= TITLE_COLUMN_BITMASK;
-
-		if (_originalTitle == null) {
-			_originalTitle = _title;
-		}
+		_columnBitmask |= _columnBitmasks.get("title");
 
 		_title = title;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTitle() {
-		return GetterUtil.getString(_originalTitle);
+		return getOriginalAttributeValue("title");
 	}
 
 	@Override
@@ -425,6 +455,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -440,17 +472,18 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
-
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("languageId");
 
 		_languageId = languageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		return getOriginalAttributeValue("languageId");
 	}
 
 	public long getColumnBitmask() {
@@ -571,26 +604,9 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalArticleLocalizationModelImpl
-			journalArticleLocalizationModelImpl = this;
+		_columnBitmask = 0;
 
-		journalArticleLocalizationModelImpl._originalCompanyId =
-			journalArticleLocalizationModelImpl._companyId;
-
-		journalArticleLocalizationModelImpl._setOriginalCompanyId = false;
-
-		journalArticleLocalizationModelImpl._originalArticlePK =
-			journalArticleLocalizationModelImpl._articlePK;
-
-		journalArticleLocalizationModelImpl._setOriginalArticlePK = false;
-
-		journalArticleLocalizationModelImpl._originalTitle =
-			journalArticleLocalizationModelImpl._title;
-
-		journalArticleLocalizationModelImpl._originalLanguageId =
-			journalArticleLocalizationModelImpl._languageId;
-
-		journalArticleLocalizationModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -714,20 +730,51 @@ public class JournalArticleLocalizationModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("articleLocalizationId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("articlePK", 16L);
+
+		columnBitmasks.put("title", 32L);
+
+		columnBitmasks.put("description", 64L);
+
+		columnBitmasks.put("languageId", 128L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _articleLocalizationId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _articlePK;
-	private long _originalArticlePK;
-	private boolean _setOriginalArticlePK;
 	private String _title;
-	private String _originalTitle;
 	private String _description;
 	private String _languageId;
-	private String _originalLanguageId;
 	private long _columnBitmask;
 	private JournalArticleLocalization _escapedModel;
 

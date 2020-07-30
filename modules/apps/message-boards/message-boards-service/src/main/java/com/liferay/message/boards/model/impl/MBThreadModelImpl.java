@@ -140,20 +140,60 @@ public class MBThreadModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CATEGORYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LASTPOSTDATE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PRIORITY_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROOTMESSAGEID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 128L;
 
 	/**
@@ -454,6 +494,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -465,6 +507,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -481,17 +525,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -502,6 +547,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setThreadId(long threadId) {
+		_columnBitmask |= _columnBitmasks.get("threadId");
+
 		_threadId = threadId;
 	}
 
@@ -513,19 +560,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -536,19 +582,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -559,6 +604,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -591,6 +638,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -602,6 +651,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -619,6 +670,8 @@ public class MBThreadModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -630,19 +683,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
-		_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCategoryId) {
-			_setOriginalCategoryId = true;
-
-			_originalCategoryId = _categoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("categoryId");
 
 		_categoryId = categoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCategoryId() {
-		return _originalCategoryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("categoryId"));
 	}
 
 	@JSON
@@ -653,19 +705,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setRootMessageId(long rootMessageId) {
-		_columnBitmask |= ROOTMESSAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalRootMessageId) {
-			_setOriginalRootMessageId = true;
-
-			_originalRootMessageId = _rootMessageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("rootMessageId");
 
 		_rootMessageId = rootMessageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRootMessageId() {
-		return _originalRootMessageId;
+		return GetterUtil.getLong(getOriginalAttributeValue("rootMessageId"));
 	}
 
 	@JSON
@@ -676,6 +727,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setRootMessageUserId(long rootMessageUserId) {
+		_columnBitmask |= _columnBitmasks.get("rootMessageUserId");
+
 		_rootMessageUserId = rootMessageUserId;
 	}
 
@@ -709,6 +762,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
 		_title = title;
 	}
 
@@ -720,6 +775,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setLastPostByUserId(long lastPostByUserId) {
+		_columnBitmask |= _columnBitmasks.get("lastPostByUserId");
+
 		_lastPostByUserId = lastPostByUserId;
 	}
 
@@ -747,17 +804,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
-		_columnBitmask = -1L;
-
-		if (_originalLastPostDate == null) {
-			_originalLastPostDate = _lastPostDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("lastPostDate");
 
 		_lastPostDate = lastPostDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public Date getOriginalLastPostDate() {
-		return _originalLastPostDate;
+		return getOriginalAttributeValue("lastPostDate");
 	}
 
 	@JSON
@@ -768,19 +826,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setPriority(double priority) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalPriority) {
-			_setOriginalPriority = true;
-
-			_originalPriority = _priority;
-		}
+		_columnBitmask |= _columnBitmasks.get("priority");
 
 		_priority = priority;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public double getOriginalPriority() {
-		return _originalPriority;
+		return GetterUtil.getDouble(getOriginalAttributeValue("priority"));
 	}
 
 	@JSON
@@ -797,6 +854,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setQuestion(boolean question) {
+		_columnBitmask |= _columnBitmasks.get("question");
+
 		_question = question;
 	}
 
@@ -808,6 +867,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -819,19 +880,18 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return GetterUtil.getInteger(getOriginalAttributeValue("status"));
 	}
 
 	@JSON
@@ -842,6 +902,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -874,6 +936,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -885,6 +949,8 @@ public class MBThreadModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1288,41 +1354,11 @@ public class MBThreadModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBThreadModelImpl mbThreadModelImpl = this;
+		_setModifiedDate = false;
 
-		mbThreadModelImpl._originalUuid = mbThreadModelImpl._uuid;
+		_columnBitmask = 0;
 
-		mbThreadModelImpl._originalGroupId = mbThreadModelImpl._groupId;
-
-		mbThreadModelImpl._setOriginalGroupId = false;
-
-		mbThreadModelImpl._originalCompanyId = mbThreadModelImpl._companyId;
-
-		mbThreadModelImpl._setOriginalCompanyId = false;
-
-		mbThreadModelImpl._setModifiedDate = false;
-
-		mbThreadModelImpl._originalCategoryId = mbThreadModelImpl._categoryId;
-
-		mbThreadModelImpl._setOriginalCategoryId = false;
-
-		mbThreadModelImpl._originalRootMessageId =
-			mbThreadModelImpl._rootMessageId;
-
-		mbThreadModelImpl._setOriginalRootMessageId = false;
-
-		mbThreadModelImpl._originalLastPostDate =
-			mbThreadModelImpl._lastPostDate;
-
-		mbThreadModelImpl._originalPriority = mbThreadModelImpl._priority;
-
-		mbThreadModelImpl._setOriginalPriority = false;
-
-		mbThreadModelImpl._originalStatus = mbThreadModelImpl._status;
-
-		mbThreadModelImpl._setOriginalStatus = false;
-
-		mbThreadModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1507,41 +1543,94 @@ public class MBThreadModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("uuid", 4L);
+
+		columnBitmasks.put("threadId", 8L);
+
+		columnBitmasks.put("groupId", 16L);
+
+		columnBitmasks.put("companyId", 32L);
+
+		columnBitmasks.put("userId", 64L);
+
+		columnBitmasks.put("userName", 128L);
+
+		columnBitmasks.put("createDate", 256L);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		columnBitmasks.put("categoryId", 1024L);
+
+		columnBitmasks.put("rootMessageId", 2048L);
+
+		columnBitmasks.put("rootMessageUserId", 4096L);
+
+		columnBitmasks.put("title", 8192L);
+
+		columnBitmasks.put("lastPostByUserId", 16384L);
+
+		columnBitmasks.put("lastPostDate", 32768L);
+
+		columnBitmasks.put("priority", 65536L);
+
+		columnBitmasks.put("question", 131072L);
+
+		columnBitmasks.put("lastPublishDate", 262144L);
+
+		columnBitmasks.put("status", 524288L);
+
+		columnBitmasks.put("statusByUserId", 1048576L);
+
+		columnBitmasks.put("statusByUserName", 2097152L);
+
+		columnBitmasks.put("statusDate", 4194304L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _threadId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _categoryId;
-	private long _originalCategoryId;
-	private boolean _setOriginalCategoryId;
 	private long _rootMessageId;
-	private long _originalRootMessageId;
-	private boolean _setOriginalRootMessageId;
 	private long _rootMessageUserId;
 	private String _title;
 	private long _lastPostByUserId;
 	private Date _lastPostDate;
-	private Date _originalLastPostDate;
 	private double _priority;
-	private double _originalPriority;
-	private boolean _setOriginalPriority;
 	private boolean _question;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

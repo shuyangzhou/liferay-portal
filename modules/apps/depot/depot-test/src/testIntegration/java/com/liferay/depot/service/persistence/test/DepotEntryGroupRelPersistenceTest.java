@@ -470,13 +470,13 @@ public class DepotEntryGroupRelPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDepotEntryGroupRel.getDepotEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntryGroupRel, "getOriginalDepotEntryId",
-				new Class<?>[0]));
+				existingDepotEntryGroupRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "depotEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDepotEntryGroupRel.getToGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntryGroupRel, "getOriginalToGroupId",
-				new Class<?>[0]));
+				existingDepotEntryGroupRel, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "toGroupId"));
 	}
 
 	protected DepotEntryGroupRel addDepotEntryGroupRel() throws Exception {

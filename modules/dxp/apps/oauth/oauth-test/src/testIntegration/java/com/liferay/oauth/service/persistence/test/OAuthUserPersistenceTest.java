@@ -453,18 +453,19 @@ public class OAuthUserPersistenceTest {
 			Objects.equals(
 				existingOAuthUser.getAccessToken(),
 				ReflectionTestUtil.invoke(
-					existingOAuthUser, "getOriginalAccessToken",
-					new Class<?>[0])));
+					existingOAuthUser, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "accessToken")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingOAuthUser.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingOAuthUser, "getOriginalUserId", new Class<?>[0]));
+				existingOAuthUser, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertEquals(
 			Long.valueOf(existingOAuthUser.getOAuthApplicationId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingOAuthUser, "getOriginalOAuthApplicationId",
-				new Class<?>[0]));
+				existingOAuthUser, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "oAuthApplicationId"));
 	}
 
 	protected OAuthUser addOAuthUser() throws Exception {

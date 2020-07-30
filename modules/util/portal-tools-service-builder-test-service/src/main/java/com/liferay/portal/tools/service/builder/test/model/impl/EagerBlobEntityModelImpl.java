@@ -324,15 +324,16 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
-
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -354,17 +355,16 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
-
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -481,14 +481,7 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		EagerBlobEntityModelImpl eagerBlobEntityModelImpl = this;
-
-		eagerBlobEntityModelImpl._originalUuid = eagerBlobEntityModelImpl._uuid;
-
-		eagerBlobEntityModelImpl._originalGroupId =
-			eagerBlobEntityModelImpl._groupId;
-
-		eagerBlobEntityModelImpl._setOriginalGroupId = false;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -581,12 +574,38 @@ public class EagerBlobEntityModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uuid", 1L);
+
+		columnBitmasks.put("eagerBlobEntityId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("blob", 8L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _uuid;
-	private String _originalUuid;
 	private long _eagerBlobEntityId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private Blob _blob;
 	private EagerBlobEntity _escapedModel;
 

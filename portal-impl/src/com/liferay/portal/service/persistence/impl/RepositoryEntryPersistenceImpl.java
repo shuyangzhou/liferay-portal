@@ -2369,8 +2369,8 @@ public class RepositoryEntryPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				repositoryEntryModelImpl.getOriginalUuid(),
-				repositoryEntryModelImpl.getOriginalGroupId()
+				repositoryEntryModelImpl.getOriginalAttributeValue("uuid"),
+				repositoryEntryModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
@@ -2391,8 +2391,9 @@ public class RepositoryEntryPersistenceImpl
 			 _finderPathFetchByR_M.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				repositoryEntryModelImpl.getOriginalRepositoryId(),
-				repositoryEntryModelImpl.getOriginalMappedId()
+				repositoryEntryModelImpl.getOriginalAttributeValue(
+					"repositoryId"),
+				repositoryEntryModelImpl.getOriginalAttributeValue("mappedId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByR_M, args);
@@ -2620,7 +2621,7 @@ public class RepositoryEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					repositoryEntryModelImpl.getOriginalUuid()
+					repositoryEntryModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
@@ -2639,8 +2640,9 @@ public class RepositoryEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					repositoryEntryModelImpl.getOriginalUuid(),
-					repositoryEntryModelImpl.getOriginalCompanyId()
+					repositoryEntryModelImpl.getOriginalAttributeValue("uuid"),
+					repositoryEntryModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
@@ -2662,7 +2664,8 @@ public class RepositoryEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					repositoryEntryModelImpl.getOriginalRepositoryId()
+					repositoryEntryModelImpl.getOriginalAttributeValue(
+						"repositoryId")
 				};
 
 				FinderCacheUtil.removeResult(
@@ -2978,7 +2981,7 @@ public class RepositoryEntryPersistenceImpl
 			RepositoryEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			RepositoryEntryModelImpl.UUID_COLUMN_BITMASK);
+			RepositoryEntryModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2988,8 +2991,8 @@ public class RepositoryEntryPersistenceImpl
 			RepositoryEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			RepositoryEntryModelImpl.UUID_COLUMN_BITMASK |
-			RepositoryEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			RepositoryEntryModelImpl.getColumnBitmask("uuid") |
+			RepositoryEntryModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3009,8 +3012,8 @@ public class RepositoryEntryPersistenceImpl
 			RepositoryEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			RepositoryEntryModelImpl.UUID_COLUMN_BITMASK |
-			RepositoryEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			RepositoryEntryModelImpl.getColumnBitmask("uuid") |
+			RepositoryEntryModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3029,7 +3032,7 @@ public class RepositoryEntryPersistenceImpl
 			RepositoryEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRepositoryId",
 			new String[] {Long.class.getName()},
-			RepositoryEntryModelImpl.REPOSITORYID_COLUMN_BITMASK);
+			RepositoryEntryModelImpl.getColumnBitmask("repositoryId"));
 
 		_finderPathCountByRepositoryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3038,8 +3041,8 @@ public class RepositoryEntryPersistenceImpl
 		_finderPathFetchByR_M = new FinderPath(
 			RepositoryEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByR_M",
 			new String[] {Long.class.getName(), String.class.getName()},
-			RepositoryEntryModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			RepositoryEntryModelImpl.MAPPEDID_COLUMN_BITMASK);
+			RepositoryEntryModelImpl.getColumnBitmask("repositoryId") |
+			RepositoryEntryModelImpl.getColumnBitmask("mappedId"));
 
 		_finderPathCountByR_M = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_M",

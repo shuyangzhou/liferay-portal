@@ -524,13 +524,13 @@ public class DDMFormInstancePersistenceTest {
 			Objects.equals(
 				existingDDMFormInstance.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDMFormInstance, "getOriginalUuid",
-					new Class<?>[0])));
+					existingDDMFormInstance, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDDMFormInstance.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMFormInstance, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingDDMFormInstance, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected DDMFormInstance addDDMFormInstance() throws Exception {

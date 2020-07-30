@@ -94,6 +94,27 @@ public class ViewCountEntryModelImpl
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
@@ -264,6 +285,8 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -294,6 +317,8 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_columnBitmask |= _columnBitmasks.get("classNameId");
+
 		_classNameId = classNameId;
 	}
 
@@ -304,6 +329,8 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_columnBitmask |= _columnBitmasks.get("classPK");
+
 		_classPK = classPK;
 	}
 
@@ -314,7 +341,13 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setViewCount(long viewCount) {
+		_columnBitmask |= _columnBitmasks.get("viewCount");
+
 		_viewCount = viewCount;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -400,6 +433,9 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -490,10 +526,40 @@ public class ViewCountEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("companyId", 1L);
+
+		columnBitmasks.put("classNameId", 2L);
+
+		columnBitmasks.put("classPK", 4L);
+
+		columnBitmasks.put("viewCount", 8L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _companyId;
 	private long _classNameId;
 	private long _classPK;
 	private long _viewCount;
+	private long _columnBitmask;
 	private ViewCountEntry _escapedModel;
 
 }

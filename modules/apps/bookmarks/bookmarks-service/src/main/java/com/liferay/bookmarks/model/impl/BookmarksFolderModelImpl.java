@@ -131,18 +131,53 @@ public class BookmarksFolderModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FOLDERID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTFOLDERID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 64L;
 
 	/**
@@ -445,6 +480,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -461,17 +498,18 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -482,19 +520,18 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
-
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
-
-			_originalFolderId = _folderId;
-		}
+		_columnBitmask |= _columnBitmasks.get("folderId");
 
 		_folderId = folderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		return GetterUtil.getLong(getOriginalAttributeValue("folderId"));
 	}
 
 	@JSON
@@ -505,19 +542,18 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -528,19 +564,18 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -551,6 +586,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -583,6 +620,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -594,6 +633,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -611,6 +652,8 @@ public class BookmarksFolderModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -622,19 +665,18 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setParentFolderId(long parentFolderId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalParentFolderId) {
-			_setOriginalParentFolderId = true;
-
-			_originalParentFolderId = _parentFolderId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentFolderId");
 
 		_parentFolderId = parentFolderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentFolderId() {
-		return _originalParentFolderId;
+		return GetterUtil.getLong(getOriginalAttributeValue("parentFolderId"));
 	}
 
 	@JSON
@@ -650,6 +692,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
+		_columnBitmask |= _columnBitmasks.get("treePath");
+
 		_treePath = treePath;
 	}
 
@@ -666,7 +710,7 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
@@ -684,6 +728,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -695,6 +741,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -706,19 +754,18 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return GetterUtil.getInteger(getOriginalAttributeValue("status"));
 	}
 
 	@JSON
@@ -729,6 +776,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -761,6 +810,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -772,6 +823,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1165,38 +1218,11 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BookmarksFolderModelImpl bookmarksFolderModelImpl = this;
+		_setModifiedDate = false;
 
-		bookmarksFolderModelImpl._originalUuid = bookmarksFolderModelImpl._uuid;
+		_columnBitmask = 0;
 
-		bookmarksFolderModelImpl._originalFolderId =
-			bookmarksFolderModelImpl._folderId;
-
-		bookmarksFolderModelImpl._setOriginalFolderId = false;
-
-		bookmarksFolderModelImpl._originalGroupId =
-			bookmarksFolderModelImpl._groupId;
-
-		bookmarksFolderModelImpl._setOriginalGroupId = false;
-
-		bookmarksFolderModelImpl._originalCompanyId =
-			bookmarksFolderModelImpl._companyId;
-
-		bookmarksFolderModelImpl._setOriginalCompanyId = false;
-
-		bookmarksFolderModelImpl._setModifiedDate = false;
-
-		bookmarksFolderModelImpl._originalParentFolderId =
-			bookmarksFolderModelImpl._parentFolderId;
-
-		bookmarksFolderModelImpl._setOriginalParentFolderId = false;
-
-		bookmarksFolderModelImpl._originalStatus =
-			bookmarksFolderModelImpl._status;
-
-		bookmarksFolderModelImpl._setOriginalStatus = false;
-
-		bookmarksFolderModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1378,33 +1404,79 @@ public class BookmarksFolderModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("uuid", 2L);
+
+		columnBitmasks.put("folderId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("userId", 32L);
+
+		columnBitmasks.put("userName", 64L);
+
+		columnBitmasks.put("createDate", 128L);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		columnBitmasks.put("parentFolderId", 512L);
+
+		columnBitmasks.put("treePath", 1024L);
+
+		columnBitmasks.put("name", 2048L);
+
+		columnBitmasks.put("description", 4096L);
+
+		columnBitmasks.put("lastPublishDate", 8192L);
+
+		columnBitmasks.put("status", 16384L);
+
+		columnBitmasks.put("statusByUserId", 32768L);
+
+		columnBitmasks.put("statusByUserName", 65536L);
+
+		columnBitmasks.put("statusDate", 131072L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _parentFolderId;
-	private long _originalParentFolderId;
-	private boolean _setOriginalParentFolderId;
 	private String _treePath;
 	private String _name;
 	private String _description;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

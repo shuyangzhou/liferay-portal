@@ -455,15 +455,18 @@ public class DLFileRankPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDLFileRank.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileRank, "getOriginalCompanyId", new Class<?>[0]));
+				existingDLFileRank, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDLFileRank.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileRank, "getOriginalUserId", new Class<?>[0]));
+				existingDLFileRank, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDLFileRank.getFileEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileRank, "getOriginalFileEntryId", new Class<?>[0]));
+				existingDLFileRank, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "fileEntryId"));
 	}
 
 	protected DLFileRank addDLFileRank() throws Exception {

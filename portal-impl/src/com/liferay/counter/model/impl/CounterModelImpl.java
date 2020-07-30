@@ -102,7 +102,14 @@ public class CounterModelImpl
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = true;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long NAME_COLUMN_BITMASK = 1L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -255,6 +262,8 @@ public class CounterModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -265,7 +274,13 @@ public class CounterModelImpl
 
 	@Override
 	public void setCurrentId(long currentId) {
+		_columnBitmask |= _columnBitmasks.get("currentId");
+
 		_currentId = currentId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -349,6 +364,9 @@ public class CounterModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -438,8 +456,34 @@ public class CounterModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("name", 1L);
+
+		columnBitmasks.put("currentId", 2L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _name;
 	private long _currentId;
+	private long _columnBitmask;
 	private Counter _escapedModel;
 
 }

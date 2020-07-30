@@ -136,10 +136,25 @@ public class AssetCategoryPropertyModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CATEGORYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KEY_COLUMN_BITMASK = 4L;
 
 	/**
@@ -407,6 +422,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -418,6 +435,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -429,6 +448,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCategoryPropertyId(long categoryPropertyId) {
+		_columnBitmask |= _columnBitmasks.get("categoryPropertyId");
+
 		_categoryPropertyId = categoryPropertyId;
 	}
 
@@ -440,19 +461,18 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -463,6 +483,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -495,6 +517,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -506,6 +530,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -523,6 +549,8 @@ public class AssetCategoryPropertyModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -534,19 +562,18 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
-		_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCategoryId) {
-			_setOriginalCategoryId = true;
-
-			_originalCategoryId = _categoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("categoryId");
 
 		_categoryId = categoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCategoryId() {
-		return _originalCategoryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("categoryId"));
 	}
 
 	@JSON
@@ -562,17 +589,18 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setKey(String key) {
-		_columnBitmask = -1L;
-
-		if (_originalKey == null) {
-			_originalKey = _key;
-		}
+		_columnBitmask |= _columnBitmasks.get("key");
 
 		_key = key;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalKey() {
-		return GetterUtil.getString(_originalKey);
+		return getOriginalAttributeValue("key");
 	}
 
 	@JSON
@@ -588,6 +616,8 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setValue(String value) {
+		_columnBitmask |= _columnBitmasks.get("value");
+
 		_value = value;
 	}
 
@@ -708,24 +738,11 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetCategoryPropertyModelImpl assetCategoryPropertyModelImpl = this;
+		_setModifiedDate = false;
 
-		assetCategoryPropertyModelImpl._originalCompanyId =
-			assetCategoryPropertyModelImpl._companyId;
+		_columnBitmask = 0;
 
-		assetCategoryPropertyModelImpl._setOriginalCompanyId = false;
-
-		assetCategoryPropertyModelImpl._setModifiedDate = false;
-
-		assetCategoryPropertyModelImpl._originalCategoryId =
-			assetCategoryPropertyModelImpl._categoryId;
-
-		assetCategoryPropertyModelImpl._setOriginalCategoryId = false;
-
-		assetCategoryPropertyModelImpl._originalKey =
-			assetCategoryPropertyModelImpl._key;
-
-		assetCategoryPropertyModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -864,22 +881,60 @@ public class AssetCategoryPropertyModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("categoryPropertyId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("userId", 16L);
+
+		columnBitmasks.put("userName", 32L);
+
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("categoryId", 256L);
+
+		columnBitmasks.put("key", 512L);
+
+		columnBitmasks.put("value", 1024L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _categoryPropertyId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _categoryId;
-	private long _originalCategoryId;
-	private boolean _setOriginalCategoryId;
 	private String _key;
-	private String _originalKey;
 	private String _value;
 	private long _columnBitmask;
 	private AssetCategoryProperty _escapedModel;

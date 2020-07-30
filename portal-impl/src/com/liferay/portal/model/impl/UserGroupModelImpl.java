@@ -136,16 +136,46 @@ public class UserGroupModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PARENTUSERGROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERGROUPID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -448,6 +478,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -459,6 +491,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -475,17 +509,18 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -501,17 +536,18 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
-
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
-		}
+		_columnBitmask |= _columnBitmasks.get("externalReferenceCode");
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		return getOriginalAttributeValue("externalReferenceCode");
 	}
 
 	@JSON
@@ -522,19 +558,18 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setUserGroupId(long userGroupId) {
-		_columnBitmask |= USERGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserGroupId) {
-			_setOriginalUserGroupId = true;
-
-			_originalUserGroupId = _userGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userGroupId");
 
 		_userGroupId = userGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserGroupId() {
-		return _originalUserGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userGroupId"));
 	}
 
 	@JSON
@@ -545,19 +580,18 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -568,6 +602,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -600,6 +636,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -611,6 +649,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -628,6 +668,8 @@ public class UserGroupModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -639,19 +681,19 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setParentUserGroupId(long parentUserGroupId) {
-		_columnBitmask |= PARENTUSERGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentUserGroupId) {
-			_setOriginalParentUserGroupId = true;
-
-			_originalParentUserGroupId = _parentUserGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("parentUserGroupId");
 
 		_parentUserGroupId = parentUserGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalParentUserGroupId() {
-		return _originalParentUserGroupId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("parentUserGroupId"));
 	}
 
 	@JSON
@@ -667,17 +709,18 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -693,6 +736,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -710,6 +755,8 @@ public class UserGroupModelImpl
 
 	@Override
 	public void setAddedByLDAPImport(boolean addedByLDAPImport) {
+		_columnBitmask |= _columnBitmasks.get("addedByLDAPImport");
+
 		_addedByLDAPImport = addedByLDAPImport;
 	}
 
@@ -835,32 +882,11 @@ public class UserGroupModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserGroupModelImpl userGroupModelImpl = this;
+		_setModifiedDate = false;
 
-		userGroupModelImpl._originalUuid = userGroupModelImpl._uuid;
+		_columnBitmask = 0;
 
-		userGroupModelImpl._originalExternalReferenceCode =
-			userGroupModelImpl._externalReferenceCode;
-
-		userGroupModelImpl._originalUserGroupId =
-			userGroupModelImpl._userGroupId;
-
-		userGroupModelImpl._setOriginalUserGroupId = false;
-
-		userGroupModelImpl._originalCompanyId = userGroupModelImpl._companyId;
-
-		userGroupModelImpl._setOriginalCompanyId = false;
-
-		userGroupModelImpl._setModifiedDate = false;
-
-		userGroupModelImpl._originalParentUserGroupId =
-			userGroupModelImpl._parentUserGroupId;
-
-		userGroupModelImpl._setOriginalParentUserGroupId = false;
-
-		userGroupModelImpl._originalName = userGroupModelImpl._name;
-
-		userGroupModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1015,28 +1041,68 @@ public class UserGroupModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("uuid", 4L);
+
+		columnBitmasks.put("externalReferenceCode", 8L);
+
+		columnBitmasks.put("userGroupId", 16L);
+
+		columnBitmasks.put("companyId", 32L);
+
+		columnBitmasks.put("userId", 64L);
+
+		columnBitmasks.put("userName", 128L);
+
+		columnBitmasks.put("createDate", 256L);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		columnBitmasks.put("parentUserGroupId", 1024L);
+
+		columnBitmasks.put("name", 2048L);
+
+		columnBitmasks.put("description", 4096L);
+
+		columnBitmasks.put("addedByLDAPImport", 8192L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _userGroupId;
-	private long _originalUserGroupId;
-	private boolean _setOriginalUserGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _parentUserGroupId;
-	private long _originalParentUserGroupId;
-	private boolean _setOriginalParentUserGroupId;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private boolean _addedByLDAPImport;
 	private long _columnBitmask;

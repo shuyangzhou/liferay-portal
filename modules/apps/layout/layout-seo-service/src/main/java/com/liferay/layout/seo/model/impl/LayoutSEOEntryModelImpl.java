@@ -141,16 +141,46 @@ public class LayoutSEOEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTSEOENTRYID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -481,6 +511,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -497,17 +529,18 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -518,6 +551,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setLayoutSEOEntryId(long layoutSEOEntryId) {
+		_columnBitmask |= _columnBitmasks.get("layoutSEOEntryId");
+
 		_layoutSEOEntryId = layoutSEOEntryId;
 	}
 
@@ -529,19 +564,18 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -552,19 +586,18 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -575,6 +608,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -607,6 +642,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -618,6 +655,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -634,6 +673,8 @@ public class LayoutSEOEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -652,19 +693,19 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
-
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
-
-			_originalPrivateLayout = _privateLayout;
-		}
+		_columnBitmask |= _columnBitmasks.get("privateLayout");
 
 		_privateLayout = privateLayout;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		return GetterUtil.getBoolean(
+			getOriginalAttributeValue("privateLayout"));
 	}
 
 	@JSON
@@ -675,19 +716,18 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setLayoutId(long layoutId) {
-		_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutId) {
-			_setOriginalLayoutId = true;
-
-			_originalLayoutId = _layoutId;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutId");
 
 		_layoutId = layoutId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLayoutId() {
-		return _originalLayoutId;
+		return GetterUtil.getLong(getOriginalAttributeValue("layoutId"));
 	}
 
 	@JSON
@@ -746,6 +786,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCanonicalURL(String canonicalURL) {
+		_columnBitmask |= _columnBitmasks.get("canonicalURL");
+
 		_canonicalURL = canonicalURL;
 	}
 
@@ -812,6 +854,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCanonicalURLEnabled(boolean canonicalURLEnabled) {
+		_columnBitmask |= _columnBitmasks.get("canonicalURLEnabled");
+
 		_canonicalURLEnabled = canonicalURLEnabled;
 	}
 
@@ -823,6 +867,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setDDMStorageId(long DDMStorageId) {
+		_columnBitmask |= _columnBitmasks.get("DDMStorageId");
+
 		_DDMStorageId = DDMStorageId;
 	}
 
@@ -885,6 +931,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphDescription(String openGraphDescription) {
+		_columnBitmask |= _columnBitmasks.get("openGraphDescription");
+
 		_openGraphDescription = openGraphDescription;
 	}
 
@@ -961,6 +1009,8 @@ public class LayoutSEOEntryModelImpl
 	public void setOpenGraphDescriptionEnabled(
 		boolean openGraphDescriptionEnabled) {
 
+		_columnBitmask |= _columnBitmasks.get("openGraphDescriptionEnabled");
+
 		_openGraphDescriptionEnabled = openGraphDescriptionEnabled;
 	}
 
@@ -1021,6 +1071,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphImageAlt(String openGraphImageAlt) {
+		_columnBitmask |= _columnBitmasks.get("openGraphImageAlt");
+
 		_openGraphImageAlt = openGraphImageAlt;
 	}
 
@@ -1085,6 +1137,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphImageFileEntryId(long openGraphImageFileEntryId) {
+		_columnBitmask |= _columnBitmasks.get("openGraphImageFileEntryId");
+
 		_openGraphImageFileEntryId = openGraphImageFileEntryId;
 	}
 
@@ -1145,6 +1199,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphTitle(String openGraphTitle) {
+		_columnBitmask |= _columnBitmasks.get("openGraphTitle");
+
 		_openGraphTitle = openGraphTitle;
 	}
 
@@ -1211,6 +1267,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphTitleEnabled(boolean openGraphTitleEnabled) {
+		_columnBitmask |= _columnBitmasks.get("openGraphTitleEnabled");
+
 		_openGraphTitleEnabled = openGraphTitleEnabled;
 	}
 
@@ -1222,6 +1280,8 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1499,33 +1559,11 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutSEOEntryModelImpl layoutSEOEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		layoutSEOEntryModelImpl._originalUuid = layoutSEOEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		layoutSEOEntryModelImpl._originalGroupId =
-			layoutSEOEntryModelImpl._groupId;
-
-		layoutSEOEntryModelImpl._setOriginalGroupId = false;
-
-		layoutSEOEntryModelImpl._originalCompanyId =
-			layoutSEOEntryModelImpl._companyId;
-
-		layoutSEOEntryModelImpl._setOriginalCompanyId = false;
-
-		layoutSEOEntryModelImpl._setModifiedDate = false;
-
-		layoutSEOEntryModelImpl._originalPrivateLayout =
-			layoutSEOEntryModelImpl._privateLayout;
-
-		layoutSEOEntryModelImpl._setOriginalPrivateLayout = false;
-
-		layoutSEOEntryModelImpl._originalLayoutId =
-			layoutSEOEntryModelImpl._layoutId;
-
-		layoutSEOEntryModelImpl._setOriginalLayoutId = false;
-
-		layoutSEOEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1713,27 +1751,81 @@ public class LayoutSEOEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("uuid", 2L);
+
+		columnBitmasks.put("layoutSEOEntryId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("userId", 32L);
+
+		columnBitmasks.put("userName", 64L);
+
+		columnBitmasks.put("createDate", 128L);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		columnBitmasks.put("privateLayout", 512L);
+
+		columnBitmasks.put("layoutId", 1024L);
+
+		columnBitmasks.put("canonicalURL", 2048L);
+
+		columnBitmasks.put("canonicalURLEnabled", 4096L);
+
+		columnBitmasks.put("DDMStorageId", 8192L);
+
+		columnBitmasks.put("openGraphDescription", 16384L);
+
+		columnBitmasks.put("openGraphDescriptionEnabled", 32768L);
+
+		columnBitmasks.put("openGraphImageAlt", 65536L);
+
+		columnBitmasks.put("openGraphImageFileEntryId", 131072L);
+
+		columnBitmasks.put("openGraphTitle", 262144L);
+
+		columnBitmasks.put("openGraphTitleEnabled", 524288L);
+
+		columnBitmasks.put("lastPublishDate", 1048576L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutSEOEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private long _layoutId;
-	private long _originalLayoutId;
-	private boolean _setOriginalLayoutId;
 	private String _canonicalURL;
 	private String _canonicalURLCurrentLanguageId;
 	private boolean _canonicalURLEnabled;

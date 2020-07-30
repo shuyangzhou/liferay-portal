@@ -129,6 +129,13 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
@@ -403,6 +410,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEntryId(long entryId) {
+		_columnBitmask |= _columnBitmasks.get("entryId");
+
 		_entryId = entryId;
 	}
 
@@ -414,6 +423,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -425,6 +436,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -436,6 +449,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -468,6 +483,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -479,6 +496,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -496,6 +515,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -507,6 +528,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setDefinitionId(long definitionId) {
+		_columnBitmask |= _columnBitmasks.get("definitionId");
+
 		_definitionId = definitionId;
 	}
 
@@ -523,6 +546,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setFormat(String format) {
+		_columnBitmask |= _columnBitmasks.get("format");
+
 		_format = format;
 	}
 
@@ -540,6 +565,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setScheduleRequest(boolean scheduleRequest) {
+		_columnBitmask |= _columnBitmasks.get("scheduleRequest");
+
 		_scheduleRequest = scheduleRequest;
 	}
 
@@ -551,6 +578,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setStartDate(Date startDate) {
+		_columnBitmask |= _columnBitmasks.get("startDate");
+
 		_startDate = startDate;
 	}
 
@@ -562,6 +591,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEndDate(Date endDate) {
+		_columnBitmask |= _columnBitmasks.get("endDate");
+
 		_endDate = endDate;
 	}
 
@@ -579,6 +610,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setRepeating(boolean repeating) {
+		_columnBitmask |= _columnBitmasks.get("repeating");
+
 		_repeating = repeating;
 	}
 
@@ -595,6 +628,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setRecurrence(String recurrence) {
+		_columnBitmask |= _columnBitmasks.get("recurrence");
+
 		_recurrence = recurrence;
 	}
 
@@ -611,6 +646,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEmailNotifications(String emailNotifications) {
+		_columnBitmask |= _columnBitmasks.get("emailNotifications");
+
 		_emailNotifications = emailNotifications;
 	}
 
@@ -627,6 +664,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setEmailDelivery(String emailDelivery) {
+		_columnBitmask |= _columnBitmasks.get("emailDelivery");
+
 		_emailDelivery = emailDelivery;
 	}
 
@@ -643,6 +682,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setPortletId(String portletId) {
+		_columnBitmask |= _columnBitmasks.get("portletId");
+
 		_portletId = portletId;
 	}
 
@@ -659,6 +700,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setPageURL(String pageURL) {
+		_columnBitmask |= _columnBitmasks.get("pageURL");
+
 		_pageURL = pageURL;
 	}
 
@@ -675,6 +718,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setReportParameters(String reportParameters) {
+		_columnBitmask |= _columnBitmasks.get("reportParameters");
+
 		_reportParameters = reportParameters;
 	}
 
@@ -691,6 +736,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setErrorMessage(String errorMessage) {
+		_columnBitmask |= _columnBitmasks.get("errorMessage");
+
 		_errorMessage = errorMessage;
 	}
 
@@ -707,7 +754,13 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setStatus(String status) {
+		_columnBitmask |= _columnBitmasks.get("status");
+
 		_status = status;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -829,9 +882,11 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void resetOriginalValues() {
-		EntryModelImpl entryModelImpl = this;
+		_setModifiedDate = false;
 
-		entryModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
+
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1041,6 +1096,69 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("entryId", 1L);
+
+		columnBitmasks.put("groupId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("userId", 8L);
+
+		columnBitmasks.put("userName", 16L);
+
+		columnBitmasks.put("createDate", 32L);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		columnBitmasks.put("definitionId", 128L);
+
+		columnBitmasks.put("format", 256L);
+
+		columnBitmasks.put("scheduleRequest", 512L);
+
+		columnBitmasks.put("startDate", 1024L);
+
+		columnBitmasks.put("endDate", 2048L);
+
+		columnBitmasks.put("repeating", 4096L);
+
+		columnBitmasks.put("recurrence", 8192L);
+
+		columnBitmasks.put("emailNotifications", 16384L);
+
+		columnBitmasks.put("emailDelivery", 32768L);
+
+		columnBitmasks.put("portletId", 65536L);
+
+		columnBitmasks.put("pageURL", 131072L);
+
+		columnBitmasks.put("reportParameters", 262144L);
+
+		columnBitmasks.put("errorMessage", 524288L);
+
+		columnBitmasks.put("status", 1048576L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _entryId;
 	private long _groupId;
 	private long _companyId;
@@ -1063,6 +1181,7 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	private String _reportParameters;
 	private String _errorMessage;
 	private String _status;
+	private long _columnBitmask;
 	private Entry _escapedModel;
 
 }

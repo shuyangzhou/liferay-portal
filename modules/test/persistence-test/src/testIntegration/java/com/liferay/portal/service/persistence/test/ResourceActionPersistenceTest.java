@@ -425,14 +425,14 @@ public class ResourceActionPersistenceTest {
 			Objects.equals(
 				existingResourceAction.getName(),
 				ReflectionTestUtil.invoke(
-					existingResourceAction, "getOriginalName",
-					new Class<?>[0])));
+					existingResourceAction, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingResourceAction.getActionId(),
 				ReflectionTestUtil.invoke(
-					existingResourceAction, "getOriginalActionId",
-					new Class<?>[0])));
+					existingResourceAction, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "actionId")));
 	}
 
 	protected ResourceAction addResourceAction() throws Exception {

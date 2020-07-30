@@ -123,8 +123,18 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SIZE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long IMAGEID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -339,6 +349,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -350,6 +362,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -361,7 +375,7 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setImageId(long imageId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("imageId");
 
 		_imageId = imageId;
 	}
@@ -374,6 +388,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -385,6 +401,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -401,6 +419,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
 		_type = type;
 	}
 
@@ -412,6 +432,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setHeight(int height) {
+		_columnBitmask |= _columnBitmasks.get("height");
+
 		_height = height;
 	}
 
@@ -423,6 +445,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setWidth(int width) {
+		_columnBitmask |= _columnBitmasks.get("width");
+
 		_width = width;
 	}
 
@@ -434,19 +458,18 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setSize(int size) {
-		_columnBitmask |= SIZE_COLUMN_BITMASK;
-
-		if (!_setOriginalSize) {
-			_setOriginalSize = true;
-
-			_originalSize = _size;
-		}
+		_columnBitmask |= _columnBitmasks.get("size");
 
 		_size = size;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalSize() {
-		return _originalSize;
+		return GetterUtil.getInteger(getOriginalAttributeValue("size"));
 	}
 
 	public long getColumnBitmask() {
@@ -568,13 +591,9 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void resetOriginalValues() {
-		ImageModelImpl imageModelImpl = this;
+		_columnBitmask = 0;
 
-		imageModelImpl._originalSize = imageModelImpl._size;
-
-		imageModelImpl._setOriginalSize = false;
-
-		imageModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -683,6 +702,45 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("imageId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("modifiedDate", 16L);
+
+		columnBitmasks.put("type", 32L);
+
+		columnBitmasks.put("height", 64L);
+
+		columnBitmasks.put("width", 128L);
+
+		columnBitmasks.put("size", 256L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _imageId;
@@ -692,8 +750,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	private int _height;
 	private int _width;
 	private int _size;
-	private int _originalSize;
-	private boolean _setOriginalSize;
 	private long _columnBitmask;
 	private Image _escapedModel;
 

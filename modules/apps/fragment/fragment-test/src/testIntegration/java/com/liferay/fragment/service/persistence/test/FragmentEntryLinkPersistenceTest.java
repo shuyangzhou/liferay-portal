@@ -645,13 +645,13 @@ public class FragmentEntryLinkPersistenceTest {
 			Objects.equals(
 				existingFragmentEntryLink.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingFragmentEntryLink, "getOriginalUuid",
-					new Class<?>[0])));
+					existingFragmentEntryLink, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntryLink.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntryLink, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingFragmentEntryLink, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected FragmentEntryLink addFragmentEntryLink() throws Exception {

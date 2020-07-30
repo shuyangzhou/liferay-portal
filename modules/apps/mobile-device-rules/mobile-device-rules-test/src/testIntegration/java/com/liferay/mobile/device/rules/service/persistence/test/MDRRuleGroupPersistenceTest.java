@@ -487,11 +487,13 @@ public class MDRRuleGroupPersistenceTest {
 			Objects.equals(
 				existingMDRRuleGroup.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMDRRuleGroup, "getOriginalUuid", new Class<?>[0])));
+					existingMDRRuleGroup, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMDRRuleGroup.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRuleGroup, "getOriginalGroupId", new Class<?>[0]));
+				existingMDRRuleGroup, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected MDRRuleGroup addMDRRuleGroup() throws Exception {

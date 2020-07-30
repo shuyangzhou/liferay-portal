@@ -441,18 +441,21 @@ public class CompanyPersistenceTest {
 			Objects.equals(
 				existingCompany.getWebId(),
 				ReflectionTestUtil.invoke(
-					existingCompany, "getOriginalWebId", new Class<?>[0])));
+					existingCompany, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "webId")));
 
 		Assert.assertTrue(
 			Objects.equals(
 				existingCompany.getMx(),
 				ReflectionTestUtil.invoke(
-					existingCompany, "getOriginalMx", new Class<?>[0])));
+					existingCompany, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "mx")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingCompany.getLogoId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCompany, "getOriginalLogoId", new Class<?>[0]));
+				existingCompany, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "logoId"));
 	}
 
 	protected Company addCompany() throws Exception {

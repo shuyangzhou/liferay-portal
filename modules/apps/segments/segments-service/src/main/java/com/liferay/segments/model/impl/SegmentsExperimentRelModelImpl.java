@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.segments.model.SegmentsExperimentRel;
 import com.liferay.segments.model.SegmentsExperimentRelModel;
@@ -117,10 +118,25 @@ public class SegmentsExperimentRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIMENTID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEGMENTSEXPERIMENTRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -410,6 +426,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -421,6 +439,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -432,6 +452,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSegmentsExperimentRelId(long segmentsExperimentRelId) {
+		_columnBitmask |= _columnBitmasks.get("segmentsExperimentRelId");
+
 		_segmentsExperimentRelId = segmentsExperimentRelId;
 	}
 
@@ -443,6 +465,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -454,6 +478,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -465,6 +491,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -497,6 +525,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -508,6 +538,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -525,6 +557,8 @@ public class SegmentsExperimentRelModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -536,19 +570,19 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSegmentsExperimentId(long segmentsExperimentId) {
-		_columnBitmask |= SEGMENTSEXPERIMENTID_COLUMN_BITMASK;
-
-		if (!_setOriginalSegmentsExperimentId) {
-			_setOriginalSegmentsExperimentId = true;
-
-			_originalSegmentsExperimentId = _segmentsExperimentId;
-		}
+		_columnBitmask |= _columnBitmasks.get("segmentsExperimentId");
 
 		_segmentsExperimentId = segmentsExperimentId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsExperimentId() {
-		return _originalSegmentsExperimentId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("segmentsExperimentId"));
 	}
 
 	@JSON
@@ -559,19 +593,19 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSegmentsExperienceId(long segmentsExperienceId) {
-		_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
-
-		if (!_setOriginalSegmentsExperienceId) {
-			_setOriginalSegmentsExperienceId = true;
-
-			_originalSegmentsExperienceId = _segmentsExperienceId;
-		}
+		_columnBitmask |= _columnBitmasks.get("segmentsExperienceId");
 
 		_segmentsExperienceId = segmentsExperienceId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSegmentsExperienceId() {
-		return _originalSegmentsExperienceId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("segmentsExperienceId"));
 	}
 
 	@JSON
@@ -582,6 +616,8 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void setSplit(double split) {
+		_columnBitmask |= _columnBitmasks.get("split");
+
 		_split = split;
 	}
 
@@ -707,21 +743,11 @@ public class SegmentsExperimentRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl = this;
+		_setModifiedDate = false;
 
-		segmentsExperimentRelModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		segmentsExperimentRelModelImpl._originalSegmentsExperimentId =
-			segmentsExperimentRelModelImpl._segmentsExperimentId;
-
-		segmentsExperimentRelModelImpl._setOriginalSegmentsExperimentId = false;
-
-		segmentsExperimentRelModelImpl._originalSegmentsExperienceId =
-			segmentsExperimentRelModelImpl._segmentsExperienceId;
-
-		segmentsExperimentRelModelImpl._setOriginalSegmentsExperienceId = false;
-
-		segmentsExperimentRelModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -852,6 +878,51 @@ public class SegmentsExperimentRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("segmentsExperimentRelId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("userId", 32L);
+
+		columnBitmasks.put("userName", 64L);
+
+		columnBitmasks.put("createDate", 128L);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		columnBitmasks.put("segmentsExperimentId", 512L);
+
+		columnBitmasks.put("segmentsExperienceId", 1024L);
+
+		columnBitmasks.put("split", 2048L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _segmentsExperimentRelId;
@@ -863,11 +934,7 @@ public class SegmentsExperimentRelModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _segmentsExperimentId;
-	private long _originalSegmentsExperimentId;
-	private boolean _setOriginalSegmentsExperimentId;
 	private long _segmentsExperienceId;
-	private long _originalSegmentsExperienceId;
-	private boolean _setOriginalSegmentsExperienceId;
 	private double _split;
 	private long _columnBitmask;
 	private SegmentsExperimentRel _escapedModel;

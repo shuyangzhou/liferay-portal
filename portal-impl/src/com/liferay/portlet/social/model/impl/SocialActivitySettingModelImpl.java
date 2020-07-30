@@ -129,14 +129,39 @@ public class SocialActivitySettingModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVITYTYPE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVITYSETTINGID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -390,6 +415,8 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -401,6 +428,8 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -412,6 +441,8 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setActivitySettingId(long activitySettingId) {
+		_columnBitmask |= _columnBitmasks.get("activitySettingId");
+
 		_activitySettingId = activitySettingId;
 	}
 
@@ -423,19 +454,18 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -446,6 +476,8 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -477,19 +509,18 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return GetterUtil.getLong(getOriginalAttributeValue("classNameId"));
 	}
 
 	@JSON
@@ -500,19 +531,18 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setActivityType(int activityType) {
-		_columnBitmask |= ACTIVITYTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalActivityType) {
-			_setOriginalActivityType = true;
-
-			_originalActivityType = _activityType;
-		}
+		_columnBitmask |= _columnBitmasks.get("activityType");
 
 		_activityType = activityType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalActivityType() {
-		return _originalActivityType;
+		return GetterUtil.getInteger(getOriginalAttributeValue("activityType"));
 	}
 
 	@JSON
@@ -528,17 +558,18 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -554,6 +585,8 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void setValue(String value) {
+		_columnBitmask |= _columnBitmasks.get("value");
+
 		_value = value;
 	}
 
@@ -673,27 +706,9 @@ public class SocialActivitySettingModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialActivitySettingModelImpl socialActivitySettingModelImpl = this;
+		_columnBitmask = 0;
 
-		socialActivitySettingModelImpl._originalGroupId =
-			socialActivitySettingModelImpl._groupId;
-
-		socialActivitySettingModelImpl._setOriginalGroupId = false;
-
-		socialActivitySettingModelImpl._originalClassNameId =
-			socialActivitySettingModelImpl._classNameId;
-
-		socialActivitySettingModelImpl._setOriginalClassNameId = false;
-
-		socialActivitySettingModelImpl._originalActivityType =
-			socialActivitySettingModelImpl._activityType;
-
-		socialActivitySettingModelImpl._setOriginalActivityType = false;
-
-		socialActivitySettingModelImpl._originalName =
-			socialActivitySettingModelImpl._name;
-
-		socialActivitySettingModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -807,21 +822,53 @@ public class SocialActivitySettingModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("activitySettingId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("classNameId", 32L);
+
+		columnBitmasks.put("activityType", 64L);
+
+		columnBitmasks.put("name", 128L);
+
+		columnBitmasks.put("value", 256L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _activitySettingId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private int _activityType;
-	private int _originalActivityType;
-	private boolean _setOriginalActivityType;
 	private String _name;
-	private String _originalName;
 	private String _value;
 	private long _columnBitmask;
 	private SocialActivitySetting _escapedModel;

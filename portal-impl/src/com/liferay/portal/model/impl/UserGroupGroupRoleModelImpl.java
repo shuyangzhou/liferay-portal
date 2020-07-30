@@ -123,12 +123,32 @@ public class UserGroupGroupRoleModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROLEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERGROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERGROUPGROUPROLEID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -365,6 +385,8 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -376,6 +398,8 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -387,6 +411,8 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setUserGroupGroupRoleId(long userGroupGroupRoleId) {
+		_columnBitmask |= _columnBitmasks.get("userGroupGroupRoleId");
+
 		_userGroupGroupRoleId = userGroupGroupRoleId;
 	}
 
@@ -398,6 +424,8 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -409,19 +437,18 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setUserGroupId(long userGroupId) {
-		_columnBitmask |= USERGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserGroupId) {
-			_setOriginalUserGroupId = true;
-
-			_originalUserGroupId = _userGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userGroupId");
 
 		_userGroupId = userGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserGroupId() {
-		return _originalUserGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userGroupId"));
 	}
 
 	@JSON
@@ -432,19 +459,18 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -455,19 +481,18 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
-
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
-
-			_originalRoleId = _roleId;
-		}
+		_columnBitmask |= _columnBitmasks.get("roleId");
 
 		_roleId = roleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		return GetterUtil.getLong(getOriginalAttributeValue("roleId"));
 	}
 
 	public long getColumnBitmask() {
@@ -584,24 +609,9 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserGroupGroupRoleModelImpl userGroupGroupRoleModelImpl = this;
+		_columnBitmask = 0;
 
-		userGroupGroupRoleModelImpl._originalUserGroupId =
-			userGroupGroupRoleModelImpl._userGroupId;
-
-		userGroupGroupRoleModelImpl._setOriginalUserGroupId = false;
-
-		userGroupGroupRoleModelImpl._originalGroupId =
-			userGroupGroupRoleModelImpl._groupId;
-
-		userGroupGroupRoleModelImpl._setOriginalGroupId = false;
-
-		userGroupGroupRoleModelImpl._originalRoleId =
-			userGroupGroupRoleModelImpl._roleId;
-
-		userGroupGroupRoleModelImpl._setOriginalRoleId = false;
-
-		userGroupGroupRoleModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -697,19 +707,48 @@ public class UserGroupGroupRoleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("userGroupGroupRoleId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("userGroupId", 16L);
+
+		columnBitmasks.put("groupId", 32L);
+
+		columnBitmasks.put("roleId", 64L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _userGroupGroupRoleId;
 	private long _companyId;
 	private long _userGroupId;
-	private long _originalUserGroupId;
-	private boolean _setOriginalUserGroupId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _columnBitmask;
 	private UserGroupGroupRole _escapedModel;
 

@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -101,12 +102,32 @@ public class StatusModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ONLINE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUSID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -282,6 +303,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
+		_columnBitmask |= _columnBitmasks.get("statusId");
+
 		_statusId = statusId;
 	}
 
@@ -292,13 +315,7 @@ public class StatusModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -319,8 +336,13 @@ public class StatusModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@Override
@@ -330,19 +352,18 @@ public class StatusModelImpl
 
 	@Override
 	public void setModifiedDate(long modifiedDate) {
-		_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
-
-		if (!_setOriginalModifiedDate) {
-			_setOriginalModifiedDate = true;
-
-			_originalModifiedDate = _modifiedDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalModifiedDate() {
-		return _originalModifiedDate;
+		return GetterUtil.getLong(getOriginalAttributeValue("modifiedDate"));
 	}
 
 	@Override
@@ -357,19 +378,18 @@ public class StatusModelImpl
 
 	@Override
 	public void setOnline(boolean online) {
-		_columnBitmask |= ONLINE_COLUMN_BITMASK;
-
-		if (!_setOriginalOnline) {
-			_setOriginalOnline = true;
-
-			_originalOnline = _online;
-		}
+		_columnBitmask |= _columnBitmasks.get("online");
 
 		_online = online;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalOnline() {
-		return _originalOnline;
+		return GetterUtil.getBoolean(getOriginalAttributeValue("online"));
 	}
 
 	@Override
@@ -384,6 +404,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setAwake(boolean awake) {
+		_columnBitmask |= _columnBitmasks.get("awake");
+
 		_awake = awake;
 	}
 
@@ -399,6 +421,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setActivePanelIds(String activePanelIds) {
+		_columnBitmask |= _columnBitmasks.get("activePanelIds");
+
 		_activePanelIds = activePanelIds;
 	}
 
@@ -414,6 +438,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		_columnBitmask |= _columnBitmasks.get("message");
+
 		_message = message;
 	}
 
@@ -429,6 +455,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setPlaySound(boolean playSound) {
+		_columnBitmask |= _columnBitmasks.get("playSound");
+
 		_playSound = playSound;
 	}
 
@@ -544,21 +572,9 @@ public class StatusModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		StatusModelImpl statusModelImpl = this;
+		_columnBitmask = 0;
 
-		statusModelImpl._originalUserId = statusModelImpl._userId;
-
-		statusModelImpl._setOriginalUserId = false;
-
-		statusModelImpl._originalModifiedDate = statusModelImpl._modifiedDate;
-
-		statusModelImpl._setOriginalModifiedDate = false;
-
-		statusModelImpl._originalOnline = statusModelImpl._online;
-
-		statusModelImpl._setOriginalOnline = false;
-
-		statusModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -664,16 +680,47 @@ public class StatusModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("statusId", 1L);
+
+		columnBitmasks.put("userId", 2L);
+
+		columnBitmasks.put("modifiedDate", 4L);
+
+		columnBitmasks.put("online", 8L);
+
+		columnBitmasks.put("awake", 16L);
+
+		columnBitmasks.put("activePanelIds", 32L);
+
+		columnBitmasks.put("message", 64L);
+
+		columnBitmasks.put("playSound", 128L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _statusId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _modifiedDate;
-	private long _originalModifiedDate;
-	private boolean _setOriginalModifiedDate;
 	private boolean _online;
-	private boolean _originalOnline;
-	private boolean _setOriginalOnline;
 	private boolean _awake;
 	private String _activePanelIds;
 	private String _message;

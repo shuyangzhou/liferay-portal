@@ -106,14 +106,39 @@ public class CTSContentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PATH_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REPOSITORYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STORETYPE_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 16L;
 
 	/**
@@ -306,6 +331,8 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -316,6 +343,8 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -326,6 +355,8 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setCtsContentId(long ctsContentId) {
+		_columnBitmask |= _columnBitmasks.get("ctsContentId");
+
 		_ctsContentId = ctsContentId;
 	}
 
@@ -336,19 +367,18 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -358,19 +388,18 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
-
-			_originalRepositoryId = _repositoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("repositoryId");
 
 		_repositoryId = repositoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("repositoryId"));
 	}
 
 	@Override
@@ -385,17 +414,18 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setPath(String path) {
-		_columnBitmask |= PATH_COLUMN_BITMASK;
-
-		if (_originalPath == null) {
-			_originalPath = _path;
-		}
+		_columnBitmask |= _columnBitmasks.get("path");
 
 		_path = path;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPath() {
-		return GetterUtil.getString(_originalPath);
+		return getOriginalAttributeValue("path");
 	}
 
 	@Override
@@ -410,17 +440,18 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask = -1L;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return getOriginalAttributeValue("version");
 	}
 
 	@Override
@@ -445,6 +476,8 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setData(Blob data) {
+		_columnBitmask |= _columnBitmasks.get("data");
+
 		if (_dataBlobModel == null) {
 			_dataBlobModel = new CTSContentDataBlobModel(getPrimaryKey(), data);
 		}
@@ -460,6 +493,8 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
 		_size = size;
 	}
 
@@ -475,17 +510,18 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setStoreType(String storeType) {
-		_columnBitmask |= STORETYPE_COLUMN_BITMASK;
-
-		if (_originalStoreType == null) {
-			_originalStoreType = _storeType;
-		}
+		_columnBitmask |= _columnBitmasks.get("storeType");
 
 		_storeType = storeType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalStoreType() {
-		return GetterUtil.getString(_originalStoreType);
+		return getOriginalAttributeValue("storeType");
 	}
 
 	public long getColumnBitmask() {
@@ -601,26 +637,11 @@ public class CTSContentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTSContentModelImpl ctsContentModelImpl = this;
+		_dataBlobModel = null;
 
-		ctsContentModelImpl._originalCompanyId = ctsContentModelImpl._companyId;
+		_columnBitmask = 0;
 
-		ctsContentModelImpl._setOriginalCompanyId = false;
-
-		ctsContentModelImpl._originalRepositoryId =
-			ctsContentModelImpl._repositoryId;
-
-		ctsContentModelImpl._setOriginalRepositoryId = false;
-
-		ctsContentModelImpl._originalPath = ctsContentModelImpl._path;
-
-		ctsContentModelImpl._originalVersion = ctsContentModelImpl._version;
-
-		ctsContentModelImpl._dataBlobModel = null;
-
-		ctsContentModelImpl._originalStoreType = ctsContentModelImpl._storeType;
-
-		ctsContentModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -750,23 +771,57 @@ public class CTSContentModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("ctsContentId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("repositoryId", 16L);
+
+		columnBitmasks.put("path", 32L);
+
+		columnBitmasks.put("version", 64L);
+
+		columnBitmasks.put("data", 128L);
+
+		columnBitmasks.put("size", 256L);
+
+		columnBitmasks.put("storeType", 512L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _ctsContentId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private String _path;
-	private String _originalPath;
 	private String _version;
-	private String _originalVersion;
 	private CTSContentDataBlobModel _dataBlobModel;
 	private long _size;
 	private String _storeType;
-	private String _originalStoreType;
 	private long _columnBitmask;
 	private CTSContent _escapedModel;
 

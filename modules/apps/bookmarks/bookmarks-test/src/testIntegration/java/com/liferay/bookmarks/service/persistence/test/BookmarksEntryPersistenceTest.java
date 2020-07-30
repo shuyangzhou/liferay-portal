@@ -623,12 +623,13 @@ public class BookmarksEntryPersistenceTest {
 			Objects.equals(
 				existingBookmarksEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingBookmarksEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					existingBookmarksEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingBookmarksEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBookmarksEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingBookmarksEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected BookmarksEntry addBookmarksEntry() throws Exception {

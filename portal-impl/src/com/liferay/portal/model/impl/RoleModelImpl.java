@@ -145,18 +145,53 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SUBTYPE_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -429,6 +464,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -440,6 +477,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -456,17 +495,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -477,6 +517,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setRoleId(long roleId) {
+		_columnBitmask |= _columnBitmasks.get("roleId");
+
 		_roleId = roleId;
 	}
 
@@ -488,19 +530,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -511,6 +552,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -543,6 +586,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -554,6 +599,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -570,6 +617,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -602,19 +651,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return GetterUtil.getLong(getOriginalAttributeValue("classNameId"));
 	}
 
 	@JSON
@@ -625,19 +673,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return GetterUtil.getLong(getOriginalAttributeValue("classPK"));
 	}
 
 	@JSON
@@ -653,17 +700,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -722,6 +770,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
 		_title = title;
 	}
 
@@ -827,6 +877,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -887,19 +939,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return GetterUtil.getInteger(getOriginalAttributeValue("type"));
 	}
 
 	@JSON
@@ -915,17 +966,18 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void setSubtype(String subtype) {
-		_columnBitmask |= SUBTYPE_COLUMN_BITMASK;
-
-		if (_originalSubtype == null) {
-			_originalSubtype = _subtype;
-		}
+		_columnBitmask |= _columnBitmasks.get("subtype");
 
 		_subtype = subtype;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalSubtype() {
-		return GetterUtil.getString(_originalSubtype);
+		return getOriginalAttributeValue("subtype");
 	}
 
 	@Override
@@ -1140,33 +1192,11 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public void resetOriginalValues() {
-		RoleModelImpl roleModelImpl = this;
+		_setModifiedDate = false;
 
-		roleModelImpl._originalUuid = roleModelImpl._uuid;
+		_columnBitmask = 0;
 
-		roleModelImpl._originalCompanyId = roleModelImpl._companyId;
-
-		roleModelImpl._setOriginalCompanyId = false;
-
-		roleModelImpl._setModifiedDate = false;
-
-		roleModelImpl._originalClassNameId = roleModelImpl._classNameId;
-
-		roleModelImpl._setOriginalClassNameId = false;
-
-		roleModelImpl._originalClassPK = roleModelImpl._classPK;
-
-		roleModelImpl._setOriginalClassPK = false;
-
-		roleModelImpl._originalName = roleModelImpl._name;
-
-		roleModelImpl._originalType = roleModelImpl._type;
-
-		roleModelImpl._setOriginalType = false;
-
-		roleModelImpl._originalSubtype = roleModelImpl._subtype;
-
-		roleModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1326,36 +1356,78 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("uuid", 4L);
+
+		columnBitmasks.put("roleId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("userId", 32L);
+
+		columnBitmasks.put("userName", 64L);
+
+		columnBitmasks.put("createDate", 128L);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		columnBitmasks.put("classNameId", 512L);
+
+		columnBitmasks.put("classPK", 1024L);
+
+		columnBitmasks.put("name", 2048L);
+
+		columnBitmasks.put("title", 4096L);
+
+		columnBitmasks.put("description", 8192L);
+
+		columnBitmasks.put("type", 16384L);
+
+		columnBitmasks.put("subtype", 32768L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _roleId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _name;
-	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _subtype;
-	private String _originalSubtype;
 	private long _columnBitmask;
 	private Role _escapedModel;
 

@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -102,14 +103,39 @@ public class CTPreferencesModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PREVIOUSCTCOLLECTIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTPREFERENCESID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -299,6 +325,8 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -309,6 +337,8 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setCtPreferencesId(long ctPreferencesId) {
+		_columnBitmask |= _columnBitmasks.get("ctPreferencesId");
+
 		_ctPreferencesId = ctPreferencesId;
 	}
 
@@ -319,19 +349,18 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -341,13 +370,7 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -368,8 +391,13 @@ public class CTPreferencesModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@Override
@@ -379,19 +407,18 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
-
-			_originalCtCollectionId = _ctCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
 
 		_ctCollectionId = ctCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		return GetterUtil.getLong(getOriginalAttributeValue("ctCollectionId"));
 	}
 
 	@Override
@@ -401,19 +428,19 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setPreviousCtCollectionId(long previousCtCollectionId) {
-		_columnBitmask |= PREVIOUSCTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalPreviousCtCollectionId) {
-			_setOriginalPreviousCtCollectionId = true;
-
-			_originalPreviousCtCollectionId = _previousCtCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("previousCtCollectionId");
 
 		_previousCtCollectionId = previousCtCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalPreviousCtCollectionId() {
-		return _originalPreviousCtCollectionId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("previousCtCollectionId"));
 	}
 
 	@Override
@@ -428,6 +455,8 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void setConfirmationEnabled(boolean confirmationEnabled) {
+		_columnBitmask |= _columnBitmasks.get("confirmationEnabled");
+
 		_confirmationEnabled = confirmationEnabled;
 	}
 
@@ -543,28 +572,9 @@ public class CTPreferencesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTPreferencesModelImpl ctPreferencesModelImpl = this;
+		_columnBitmask = 0;
 
-		ctPreferencesModelImpl._originalCompanyId =
-			ctPreferencesModelImpl._companyId;
-
-		ctPreferencesModelImpl._setOriginalCompanyId = false;
-
-		ctPreferencesModelImpl._originalUserId = ctPreferencesModelImpl._userId;
-
-		ctPreferencesModelImpl._setOriginalUserId = false;
-
-		ctPreferencesModelImpl._originalCtCollectionId =
-			ctPreferencesModelImpl._ctCollectionId;
-
-		ctPreferencesModelImpl._setOriginalCtCollectionId = false;
-
-		ctPreferencesModelImpl._originalPreviousCtCollectionId =
-			ctPreferencesModelImpl._previousCtCollectionId;
-
-		ctPreferencesModelImpl._setOriginalPreviousCtCollectionId = false;
-
-		ctPreferencesModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -660,20 +670,47 @@ public class CTPreferencesModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctPreferencesId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("userId", 8L);
+
+		columnBitmasks.put("ctCollectionId", 16L);
+
+		columnBitmasks.put("previousCtCollectionId", 32L);
+
+		columnBitmasks.put("confirmationEnabled", 64L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctPreferencesId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private long _previousCtCollectionId;
-	private long _originalPreviousCtCollectionId;
-	private boolean _setOriginalPreviousCtCollectionId;
 	private boolean _confirmationEnabled;
 	private long _columnBitmask;
 	private CTPreferences _escapedModel;

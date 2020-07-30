@@ -440,24 +440,27 @@ public class UserIdMapperPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingUserIdMapper.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserIdMapper, "getOriginalUserId", new Class<?>[0]));
+				existingUserIdMapper, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingUserIdMapper.getType(),
 				ReflectionTestUtil.invoke(
-					existingUserIdMapper, "getOriginalType", new Class<?>[0])));
+					existingUserIdMapper, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "type")));
 
 		Assert.assertTrue(
 			Objects.equals(
 				existingUserIdMapper.getType(),
 				ReflectionTestUtil.invoke(
-					existingUserIdMapper, "getOriginalType", new Class<?>[0])));
+					existingUserIdMapper, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "type")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingUserIdMapper.getExternalUserId(),
 				ReflectionTestUtil.invoke(
-					existingUserIdMapper, "getOriginalExternalUserId",
-					new Class<?>[0])));
+					existingUserIdMapper, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "externalUserId")));
 	}
 
 	protected UserIdMapper addUserIdMapper() throws Exception {

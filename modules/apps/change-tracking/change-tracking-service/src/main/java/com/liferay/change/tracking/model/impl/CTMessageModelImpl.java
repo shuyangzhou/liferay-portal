@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -95,8 +96,18 @@ public class CTMessageModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTMESSAGEID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -271,6 +282,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -281,6 +294,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCtMessageId(long ctMessageId) {
+		_columnBitmask |= _columnBitmasks.get("ctMessageId");
+
 		_ctMessageId = ctMessageId;
 	}
 
@@ -291,6 +306,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -301,19 +318,18 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
-
-			_originalCtCollectionId = _ctCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
 
 		_ctCollectionId = ctCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		return GetterUtil.getLong(getOriginalAttributeValue("ctCollectionId"));
 	}
 
 	@Override
@@ -328,6 +344,8 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setMessageContent(String messageContent) {
+		_columnBitmask |= _columnBitmasks.get("messageContent");
+
 		_messageContent = messageContent;
 	}
 
@@ -440,14 +458,9 @@ public class CTMessageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTMessageModelImpl ctMessageModelImpl = this;
+		_columnBitmask = 0;
 
-		ctMessageModelImpl._originalCtCollectionId =
-			ctMessageModelImpl._ctCollectionId;
-
-		ctMessageModelImpl._setOriginalCtCollectionId = false;
-
-		ctMessageModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -543,12 +556,41 @@ public class CTMessageModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctMessageId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("ctCollectionId", 8L);
+
+		columnBitmasks.put("messageContent", 16L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctMessageId;
 	private long _companyId;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private String _messageContent;
 	private long _columnBitmask;
 	private CTMessage _escapedModel;

@@ -1253,8 +1253,8 @@ public class UserIdMapperPersistenceImpl
 			 _finderPathFetchByU_T.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				userIdMapperModelImpl.getOriginalUserId(),
-				userIdMapperModelImpl.getOriginalType()
+				userIdMapperModelImpl.getOriginalAttributeValue("userId"),
+				userIdMapperModelImpl.getOriginalAttributeValue("type")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByU_T, args);
@@ -1275,8 +1275,9 @@ public class UserIdMapperPersistenceImpl
 			 _finderPathFetchByT_E.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				userIdMapperModelImpl.getOriginalType(),
-				userIdMapperModelImpl.getOriginalExternalUserId()
+				userIdMapperModelImpl.getOriginalAttributeValue("type"),
+				userIdMapperModelImpl.getOriginalAttributeValue(
+					"externalUserId")
 			};
 
 			FinderCacheUtil.removeResult(_finderPathCountByT_E, args);
@@ -1452,7 +1453,7 @@ public class UserIdMapperPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					userIdMapperModelImpl.getOriginalUserId()
+					userIdMapperModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
@@ -1760,7 +1761,7 @@ public class UserIdMapperPersistenceImpl
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			UserIdMapperImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUserId", new String[] {Long.class.getName()},
-			UserIdMapperModelImpl.USERID_COLUMN_BITMASK);
+			UserIdMapperModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1769,8 +1770,8 @@ public class UserIdMapperPersistenceImpl
 		_finderPathFetchByU_T = new FinderPath(
 			UserIdMapperImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByU_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			UserIdMapperModelImpl.USERID_COLUMN_BITMASK |
-			UserIdMapperModelImpl.TYPE_COLUMN_BITMASK);
+			UserIdMapperModelImpl.getColumnBitmask("userId") |
+			UserIdMapperModelImpl.getColumnBitmask("type"));
 
 		_finderPathCountByU_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_T",
@@ -1779,8 +1780,8 @@ public class UserIdMapperPersistenceImpl
 		_finderPathFetchByT_E = new FinderPath(
 			UserIdMapperImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByT_E",
 			new String[] {String.class.getName(), String.class.getName()},
-			UserIdMapperModelImpl.TYPE_COLUMN_BITMASK |
-			UserIdMapperModelImpl.EXTERNALUSERID_COLUMN_BITMASK);
+			UserIdMapperModelImpl.getColumnBitmask("type") |
+			UserIdMapperModelImpl.getColumnBitmask("externalUserId"));
 
 		_finderPathCountByT_E = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_E",

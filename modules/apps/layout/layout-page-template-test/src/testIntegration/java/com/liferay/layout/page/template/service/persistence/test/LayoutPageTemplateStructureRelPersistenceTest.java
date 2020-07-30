@@ -566,13 +566,15 @@ public class LayoutPageTemplateStructureRelPersistenceTest {
 			Objects.equals(
 				existingLayoutPageTemplateStructureRel.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutPageTemplateStructureRel, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLayoutPageTemplateStructureRel,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutPageTemplateStructureRel.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateStructureRel, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutPageTemplateStructureRel,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(
@@ -580,14 +582,16 @@ public class LayoutPageTemplateStructureRelPersistenceTest {
 					getLayoutPageTemplateStructureId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingLayoutPageTemplateStructureRel,
-				"getOriginalLayoutPageTemplateStructureId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"layoutPageTemplateStructureId"));
 		Assert.assertEquals(
 			Long.valueOf(
 				existingLayoutPageTemplateStructureRel.
 					getSegmentsExperienceId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingLayoutPageTemplateStructureRel,
-				"getOriginalSegmentsExperienceId", new Class<?>[0]));
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"segmentsExperienceId"));
 	}
 
 	protected LayoutPageTemplateStructureRel addLayoutPageTemplateStructureRel()

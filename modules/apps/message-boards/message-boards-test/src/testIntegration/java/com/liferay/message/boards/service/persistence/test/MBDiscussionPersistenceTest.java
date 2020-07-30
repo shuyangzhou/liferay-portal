@@ -493,26 +493,30 @@ public class MBDiscussionPersistenceTest {
 			Objects.equals(
 				existingMBDiscussion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBDiscussion, "getOriginalUuid", new Class<?>[0])));
+					existingMBDiscussion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingMBDiscussion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBDiscussion, "getOriginalGroupId", new Class<?>[0]));
+				existingMBDiscussion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMBDiscussion.getThreadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBDiscussion, "getOriginalThreadId", new Class<?>[0]));
+				existingMBDiscussion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "threadId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingMBDiscussion.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBDiscussion, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingMBDiscussion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingMBDiscussion.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBDiscussion, "getOriginalClassPK", new Class<?>[0]));
+				existingMBDiscussion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 	}
 
 	protected MBDiscussion addMBDiscussion() throws Exception {

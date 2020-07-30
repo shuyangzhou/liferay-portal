@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -100,10 +101,25 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETCATEGORYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ASSETENTRYASSETCATEGORYRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -309,6 +325,8 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -319,6 +337,8 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -331,6 +351,8 @@ public class AssetEntryAssetCategoryRelModelImpl
 	public void setAssetEntryAssetCategoryRelId(
 		long assetEntryAssetCategoryRelId) {
 
+		_columnBitmask |= _columnBitmasks.get("assetEntryAssetCategoryRelId");
+
 		_assetEntryAssetCategoryRelId = assetEntryAssetCategoryRelId;
 	}
 
@@ -341,6 +363,8 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -351,19 +375,18 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void setAssetEntryId(long assetEntryId) {
-		_columnBitmask |= ASSETENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAssetEntryId) {
-			_setOriginalAssetEntryId = true;
-
-			_originalAssetEntryId = _assetEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("assetEntryId");
 
 		_assetEntryId = assetEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAssetEntryId() {
-		return _originalAssetEntryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("assetEntryId"));
 	}
 
 	@Override
@@ -373,19 +396,18 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void setAssetCategoryId(long assetCategoryId) {
-		_columnBitmask |= ASSETCATEGORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAssetCategoryId) {
-			_setOriginalAssetCategoryId = true;
-
-			_originalAssetCategoryId = _assetCategoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("assetCategoryId");
 
 		_assetCategoryId = assetCategoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAssetCategoryId() {
-		return _originalAssetCategoryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("assetCategoryId"));
 	}
 
 	@Override
@@ -395,6 +417,8 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void setPriority(int priority) {
+		_columnBitmask |= _columnBitmasks.get("priority");
+
 		_priority = priority;
 	}
 
@@ -515,20 +539,9 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetEntryAssetCategoryRelModelImpl
-			assetEntryAssetCategoryRelModelImpl = this;
+		_columnBitmask = 0;
 
-		assetEntryAssetCategoryRelModelImpl._originalAssetEntryId =
-			assetEntryAssetCategoryRelModelImpl._assetEntryId;
-
-		assetEntryAssetCategoryRelModelImpl._setOriginalAssetEntryId = false;
-
-		assetEntryAssetCategoryRelModelImpl._originalAssetCategoryId =
-			assetEntryAssetCategoryRelModelImpl._assetCategoryId;
-
-		assetEntryAssetCategoryRelModelImpl._setOriginalAssetCategoryId = false;
-
-		assetEntryAssetCategoryRelModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -633,16 +646,47 @@ public class AssetEntryAssetCategoryRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("assetEntryAssetCategoryRelId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("assetEntryId", 16L);
+
+		columnBitmasks.put("assetCategoryId", 32L);
+
+		columnBitmasks.put("priority", 64L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _assetEntryAssetCategoryRelId;
 	private long _companyId;
 	private long _assetEntryId;
-	private long _originalAssetEntryId;
-	private boolean _setOriginalAssetEntryId;
 	private long _assetCategoryId;
-	private long _originalAssetCategoryId;
-	private boolean _setOriginalAssetCategoryId;
 	private int _priority;
 	private long _columnBitmask;
 	private AssetEntryAssetCategoryRel _escapedModel;

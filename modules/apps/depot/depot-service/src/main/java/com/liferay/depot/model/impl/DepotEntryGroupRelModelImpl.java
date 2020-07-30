@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -104,14 +105,39 @@ public class DepotEntryGroupRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMSTRUCTURESAVAILABLE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEPOTENTRYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SEARCHABLE_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOGROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEPOTENTRYGROUPRELID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -361,6 +387,8 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -372,6 +400,8 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setDepotEntryGroupRelId(long depotEntryGroupRelId) {
+		_columnBitmask |= _columnBitmasks.get("depotEntryGroupRelId");
+
 		_depotEntryGroupRelId = depotEntryGroupRelId;
 	}
 
@@ -383,6 +413,8 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -400,19 +432,19 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setDdmStructuresAvailable(boolean ddmStructuresAvailable) {
-		_columnBitmask |= DDMSTRUCTURESAVAILABLE_COLUMN_BITMASK;
-
-		if (!_setOriginalDdmStructuresAvailable) {
-			_setOriginalDdmStructuresAvailable = true;
-
-			_originalDdmStructuresAvailable = _ddmStructuresAvailable;
-		}
+		_columnBitmask |= _columnBitmasks.get("ddmStructuresAvailable");
 
 		_ddmStructuresAvailable = ddmStructuresAvailable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDdmStructuresAvailable() {
-		return _originalDdmStructuresAvailable;
+		return GetterUtil.getBoolean(
+			getOriginalAttributeValue("ddmStructuresAvailable"));
 	}
 
 	@JSON
@@ -423,19 +455,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setDepotEntryId(long depotEntryId) {
-		_columnBitmask |= DEPOTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalDepotEntryId) {
-			_setOriginalDepotEntryId = true;
-
-			_originalDepotEntryId = _depotEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("depotEntryId");
 
 		_depotEntryId = depotEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDepotEntryId() {
-		return _originalDepotEntryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("depotEntryId"));
 	}
 
 	@JSON
@@ -452,19 +483,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setSearchable(boolean searchable) {
-		_columnBitmask |= SEARCHABLE_COLUMN_BITMASK;
-
-		if (!_setOriginalSearchable) {
-			_setOriginalSearchable = true;
-
-			_originalSearchable = _searchable;
-		}
+		_columnBitmask |= _columnBitmasks.get("searchable");
 
 		_searchable = searchable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalSearchable() {
-		return _originalSearchable;
+		return GetterUtil.getBoolean(getOriginalAttributeValue("searchable"));
 	}
 
 	@JSON
@@ -475,19 +505,18 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void setToGroupId(long toGroupId) {
-		_columnBitmask |= TOGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalToGroupId) {
-			_setOriginalToGroupId = true;
-
-			_originalToGroupId = _toGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("toGroupId");
 
 		_toGroupId = toGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalToGroupId() {
-		return _originalToGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("toGroupId"));
 	}
 
 	public long getColumnBitmask() {
@@ -605,29 +634,9 @@ public class DepotEntryGroupRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DepotEntryGroupRelModelImpl depotEntryGroupRelModelImpl = this;
+		_columnBitmask = 0;
 
-		depotEntryGroupRelModelImpl._originalDdmStructuresAvailable =
-			depotEntryGroupRelModelImpl._ddmStructuresAvailable;
-
-		depotEntryGroupRelModelImpl._setOriginalDdmStructuresAvailable = false;
-
-		depotEntryGroupRelModelImpl._originalDepotEntryId =
-			depotEntryGroupRelModelImpl._depotEntryId;
-
-		depotEntryGroupRelModelImpl._setOriginalDepotEntryId = false;
-
-		depotEntryGroupRelModelImpl._originalSearchable =
-			depotEntryGroupRelModelImpl._searchable;
-
-		depotEntryGroupRelModelImpl._setOriginalSearchable = false;
-
-		depotEntryGroupRelModelImpl._originalToGroupId =
-			depotEntryGroupRelModelImpl._toGroupId;
-
-		depotEntryGroupRelModelImpl._setOriginalToGroupId = false;
-
-		depotEntryGroupRelModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -724,21 +733,48 @@ public class DepotEntryGroupRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("depotEntryGroupRelId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("ddmStructuresAvailable", 8L);
+
+		columnBitmasks.put("depotEntryId", 16L);
+
+		columnBitmasks.put("searchable", 32L);
+
+		columnBitmasks.put("toGroupId", 64L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _depotEntryGroupRelId;
 	private long _companyId;
 	private boolean _ddmStructuresAvailable;
-	private boolean _originalDdmStructuresAvailable;
-	private boolean _setOriginalDdmStructuresAvailable;
 	private long _depotEntryId;
-	private long _originalDepotEntryId;
-	private boolean _setOriginalDepotEntryId;
 	private boolean _searchable;
-	private boolean _originalSearchable;
-	private boolean _setOriginalSearchable;
 	private long _toGroupId;
-	private long _originalToGroupId;
-	private boolean _setOriginalToGroupId;
 	private long _columnBitmask;
 	private DepotEntryGroupRel _escapedModel;
 

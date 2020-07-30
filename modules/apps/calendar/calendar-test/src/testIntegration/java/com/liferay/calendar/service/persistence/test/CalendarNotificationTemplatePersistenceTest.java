@@ -578,32 +578,37 @@ public class CalendarNotificationTemplatePersistenceTest {
 			Objects.equals(
 				existingCalendarNotificationTemplate.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingCalendarNotificationTemplate, "getOriginalUuid",
-					new Class<?>[0])));
+					existingCalendarNotificationTemplate,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingCalendarNotificationTemplate.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarNotificationTemplate, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingCalendarNotificationTemplate,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingCalendarNotificationTemplate.getCalendarId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarNotificationTemplate, "getOriginalCalendarId",
-				new Class<?>[0]));
+				existingCalendarNotificationTemplate,
+				"getOriginalAttributeValue", new Class<?>[] {String.class},
+				"calendarId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingCalendarNotificationTemplate.getNotificationType(),
 				ReflectionTestUtil.invoke(
 					existingCalendarNotificationTemplate,
-					"getOriginalNotificationType", new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"notificationType")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingCalendarNotificationTemplate.
 					getNotificationTemplateType(),
 				ReflectionTestUtil.invoke(
 					existingCalendarNotificationTemplate,
-					"getOriginalNotificationTemplateType", new Class<?>[0])));
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"notificationTemplateType")));
 	}
 
 	protected CalendarNotificationTemplate addCalendarNotificationTemplate()

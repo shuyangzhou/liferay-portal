@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthAppModel;
@@ -113,12 +112,32 @@ public class WeDeployAuthAppModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLIENTID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLIENTSECRET_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REDIRECTURI_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WEDEPLOYAUTHAPPID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -375,6 +394,8 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setWeDeployAuthAppId(long weDeployAuthAppId) {
+		_columnBitmask |= _columnBitmasks.get("weDeployAuthAppId");
+
 		_weDeployAuthAppId = weDeployAuthAppId;
 	}
 
@@ -386,6 +407,8 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -397,6 +420,8 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -429,6 +454,8 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -440,6 +467,8 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -457,6 +486,8 @@ public class WeDeployAuthAppModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -473,6 +504,8 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -489,17 +522,18 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setRedirectURI(String redirectURI) {
-		_columnBitmask |= REDIRECTURI_COLUMN_BITMASK;
-
-		if (_originalRedirectURI == null) {
-			_originalRedirectURI = _redirectURI;
-		}
+		_columnBitmask |= _columnBitmasks.get("redirectURI");
 
 		_redirectURI = redirectURI;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalRedirectURI() {
-		return GetterUtil.getString(_originalRedirectURI);
+		return getOriginalAttributeValue("redirectURI");
 	}
 
 	@JSON
@@ -515,17 +549,18 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setClientId(String clientId) {
-		_columnBitmask |= CLIENTID_COLUMN_BITMASK;
-
-		if (_originalClientId == null) {
-			_originalClientId = _clientId;
-		}
+		_columnBitmask |= _columnBitmasks.get("clientId");
 
 		_clientId = clientId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalClientId() {
-		return GetterUtil.getString(_originalClientId);
+		return getOriginalAttributeValue("clientId");
 	}
 
 	@JSON
@@ -541,17 +576,18 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setClientSecret(String clientSecret) {
-		_columnBitmask |= CLIENTSECRET_COLUMN_BITMASK;
-
-		if (_originalClientSecret == null) {
-			_originalClientSecret = _clientSecret;
-		}
+		_columnBitmask |= _columnBitmasks.get("clientSecret");
 
 		_clientSecret = clientSecret;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalClientSecret() {
-		return GetterUtil.getString(_originalClientSecret);
+		return getOriginalAttributeValue("clientSecret");
 	}
 
 	public long getColumnBitmask() {
@@ -668,20 +704,11 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WeDeployAuthAppModelImpl weDeployAuthAppModelImpl = this;
+		_setModifiedDate = false;
 
-		weDeployAuthAppModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		weDeployAuthAppModelImpl._originalRedirectURI =
-			weDeployAuthAppModelImpl._redirectURI;
-
-		weDeployAuthAppModelImpl._originalClientId =
-			weDeployAuthAppModelImpl._clientId;
-
-		weDeployAuthAppModelImpl._originalClientSecret =
-			weDeployAuthAppModelImpl._clientSecret;
-
-		weDeployAuthAppModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -826,6 +853,47 @@ public class WeDeployAuthAppModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("weDeployAuthAppId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("name", 64L);
+
+		columnBitmasks.put("redirectURI", 128L);
+
+		columnBitmasks.put("clientId", 256L);
+
+		columnBitmasks.put("clientSecret", 512L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _weDeployAuthAppId;
 	private long _companyId;
 	private long _userId;
@@ -835,11 +903,8 @@ public class WeDeployAuthAppModelImpl
 	private boolean _setModifiedDate;
 	private String _name;
 	private String _redirectURI;
-	private String _originalRedirectURI;
 	private String _clientId;
-	private String _originalClientId;
 	private String _clientSecret;
-	private String _originalClientSecret;
 	private long _columnBitmask;
 	private WeDeployAuthApp _escapedModel;
 

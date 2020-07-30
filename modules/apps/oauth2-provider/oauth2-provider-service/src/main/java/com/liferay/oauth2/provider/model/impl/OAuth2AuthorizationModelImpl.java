@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -126,16 +127,46 @@ public class OAuth2AuthorizationModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCESSTOKENCONTENTHASH_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OAUTH2APPLICATIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REFRESHTOKENCONTENTHASH_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OAUTH2AUTHORIZATIONID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -479,6 +510,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setOAuth2AuthorizationId(long oAuth2AuthorizationId) {
+		_columnBitmask |= _columnBitmasks.get("oAuth2AuthorizationId");
+
 		_oAuth2AuthorizationId = oAuth2AuthorizationId;
 	}
 
@@ -489,19 +522,18 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -511,13 +543,7 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -538,8 +564,13 @@ public class OAuth2AuthorizationModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@Override
@@ -554,6 +585,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -564,6 +597,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -574,19 +609,19 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setOAuth2ApplicationId(long oAuth2ApplicationId) {
-		_columnBitmask |= OAUTH2APPLICATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalOAuth2ApplicationId) {
-			_setOriginalOAuth2ApplicationId = true;
-
-			_originalOAuth2ApplicationId = _oAuth2ApplicationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("oAuth2ApplicationId");
 
 		_oAuth2ApplicationId = oAuth2ApplicationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOAuth2ApplicationId() {
-		return _originalOAuth2ApplicationId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("oAuth2ApplicationId"));
 	}
 
 	@Override
@@ -597,6 +632,9 @@ public class OAuth2AuthorizationModelImpl
 	@Override
 	public void setOAuth2ApplicationScopeAliasesId(
 		long oAuth2ApplicationScopeAliasesId) {
+
+		_columnBitmask |= _columnBitmasks.get(
+			"oAuth2ApplicationScopeAliasesId");
 
 		_oAuth2ApplicationScopeAliasesId = oAuth2ApplicationScopeAliasesId;
 	}
@@ -613,6 +651,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setAccessTokenContent(String accessTokenContent) {
+		_columnBitmask |= _columnBitmasks.get("accessTokenContent");
+
 		_accessTokenContent = accessTokenContent;
 	}
 
@@ -623,19 +663,19 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setAccessTokenContentHash(long accessTokenContentHash) {
-		_columnBitmask |= ACCESSTOKENCONTENTHASH_COLUMN_BITMASK;
-
-		if (!_setOriginalAccessTokenContentHash) {
-			_setOriginalAccessTokenContentHash = true;
-
-			_originalAccessTokenContentHash = _accessTokenContentHash;
-		}
+		_columnBitmask |= _columnBitmasks.get("accessTokenContentHash");
 
 		_accessTokenContentHash = accessTokenContentHash;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccessTokenContentHash() {
-		return _originalAccessTokenContentHash;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("accessTokenContentHash"));
 	}
 
 	@Override
@@ -645,6 +685,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setAccessTokenCreateDate(Date accessTokenCreateDate) {
+		_columnBitmask |= _columnBitmasks.get("accessTokenCreateDate");
+
 		_accessTokenCreateDate = accessTokenCreateDate;
 	}
 
@@ -655,6 +697,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setAccessTokenExpirationDate(Date accessTokenExpirationDate) {
+		_columnBitmask |= _columnBitmasks.get("accessTokenExpirationDate");
+
 		_accessTokenExpirationDate = accessTokenExpirationDate;
 	}
 
@@ -670,6 +714,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setRemoteHostInfo(String remoteHostInfo) {
+		_columnBitmask |= _columnBitmasks.get("remoteHostInfo");
+
 		_remoteHostInfo = remoteHostInfo;
 	}
 
@@ -685,6 +731,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setRemoteIPInfo(String remoteIPInfo) {
+		_columnBitmask |= _columnBitmasks.get("remoteIPInfo");
+
 		_remoteIPInfo = remoteIPInfo;
 	}
 
@@ -700,6 +748,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setRefreshTokenContent(String refreshTokenContent) {
+		_columnBitmask |= _columnBitmasks.get("refreshTokenContent");
+
 		_refreshTokenContent = refreshTokenContent;
 	}
 
@@ -710,19 +760,19 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setRefreshTokenContentHash(long refreshTokenContentHash) {
-		_columnBitmask |= REFRESHTOKENCONTENTHASH_COLUMN_BITMASK;
-
-		if (!_setOriginalRefreshTokenContentHash) {
-			_setOriginalRefreshTokenContentHash = true;
-
-			_originalRefreshTokenContentHash = _refreshTokenContentHash;
-		}
+		_columnBitmask |= _columnBitmasks.get("refreshTokenContentHash");
 
 		_refreshTokenContentHash = refreshTokenContentHash;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRefreshTokenContentHash() {
-		return _originalRefreshTokenContentHash;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("refreshTokenContentHash"));
 	}
 
 	@Override
@@ -732,6 +782,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setRefreshTokenCreateDate(Date refreshTokenCreateDate) {
+		_columnBitmask |= _columnBitmasks.get("refreshTokenCreateDate");
+
 		_refreshTokenCreateDate = refreshTokenCreateDate;
 	}
 
@@ -742,6 +794,8 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void setRefreshTokenExpirationDate(Date refreshTokenExpirationDate) {
+		_columnBitmask |= _columnBitmasks.get("refreshTokenExpirationDate");
+
 		_refreshTokenExpirationDate = refreshTokenExpirationDate;
 	}
 
@@ -878,35 +932,9 @@ public class OAuth2AuthorizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuth2AuthorizationModelImpl oAuth2AuthorizationModelImpl = this;
+		_columnBitmask = 0;
 
-		oAuth2AuthorizationModelImpl._originalCompanyId =
-			oAuth2AuthorizationModelImpl._companyId;
-
-		oAuth2AuthorizationModelImpl._setOriginalCompanyId = false;
-
-		oAuth2AuthorizationModelImpl._originalUserId =
-			oAuth2AuthorizationModelImpl._userId;
-
-		oAuth2AuthorizationModelImpl._setOriginalUserId = false;
-
-		oAuth2AuthorizationModelImpl._originalOAuth2ApplicationId =
-			oAuth2AuthorizationModelImpl._oAuth2ApplicationId;
-
-		oAuth2AuthorizationModelImpl._setOriginalOAuth2ApplicationId = false;
-
-		oAuth2AuthorizationModelImpl._originalAccessTokenContentHash =
-			oAuth2AuthorizationModelImpl._accessTokenContentHash;
-
-		oAuth2AuthorizationModelImpl._setOriginalAccessTokenContentHash = false;
-
-		oAuth2AuthorizationModelImpl._originalRefreshTokenContentHash =
-			oAuth2AuthorizationModelImpl._refreshTokenContentHash;
-
-		oAuth2AuthorizationModelImpl._setOriginalRefreshTokenContentHash =
-			false;
-
-		oAuth2AuthorizationModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1107,31 +1135,76 @@ public class OAuth2AuthorizationModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("oAuth2AuthorizationId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("oAuth2ApplicationId", 32L);
+
+		columnBitmasks.put("oAuth2ApplicationScopeAliasesId", 64L);
+
+		columnBitmasks.put("accessTokenContent", 128L);
+
+		columnBitmasks.put("accessTokenContentHash", 256L);
+
+		columnBitmasks.put("accessTokenCreateDate", 512L);
+
+		columnBitmasks.put("accessTokenExpirationDate", 1024L);
+
+		columnBitmasks.put("remoteHostInfo", 2048L);
+
+		columnBitmasks.put("remoteIPInfo", 4096L);
+
+		columnBitmasks.put("refreshTokenContent", 8192L);
+
+		columnBitmasks.put("refreshTokenContentHash", 16384L);
+
+		columnBitmasks.put("refreshTokenCreateDate", 32768L);
+
+		columnBitmasks.put("refreshTokenExpirationDate", 65536L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _oAuth2AuthorizationId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private long _oAuth2ApplicationId;
-	private long _originalOAuth2ApplicationId;
-	private boolean _setOriginalOAuth2ApplicationId;
 	private long _oAuth2ApplicationScopeAliasesId;
 	private String _accessTokenContent;
 	private long _accessTokenContentHash;
-	private long _originalAccessTokenContentHash;
-	private boolean _setOriginalAccessTokenContentHash;
 	private Date _accessTokenCreateDate;
 	private Date _accessTokenExpirationDate;
 	private String _remoteHostInfo;
 	private String _remoteIPInfo;
 	private String _refreshTokenContent;
 	private long _refreshTokenContentHash;
-	private long _originalRefreshTokenContentHash;
-	private boolean _setOriginalRefreshTokenContentHash;
 	private Date _refreshTokenCreateDate;
 	private Date _refreshTokenExpirationDate;
 	private long _columnBitmask;

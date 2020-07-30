@@ -117,16 +117,46 @@ public class ReadingTimeEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
 
 	/**
@@ -385,17 +415,18 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -406,6 +437,8 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setReadingTimeEntryId(long readingTimeEntryId) {
+		_columnBitmask |= _columnBitmasks.get("readingTimeEntryId");
+
 		_readingTimeEntryId = readingTimeEntryId;
 	}
 
@@ -417,19 +450,18 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -440,19 +472,18 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -463,7 +494,7 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -481,6 +512,8 @@ public class ReadingTimeEntryModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -513,19 +546,18 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return GetterUtil.getLong(getOriginalAttributeValue("classNameId"));
 	}
 
 	@JSON
@@ -536,19 +568,18 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return GetterUtil.getLong(getOriginalAttributeValue("classPK"));
 	}
 
 	@JSON
@@ -559,6 +590,8 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void setReadingTime(long readingTime) {
+		_columnBitmask |= _columnBitmasks.get("readingTime");
+
 		_readingTime = readingTime;
 	}
 
@@ -833,34 +866,11 @@ public class ReadingTimeEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ReadingTimeEntryModelImpl readingTimeEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		readingTimeEntryModelImpl._originalUuid =
-			readingTimeEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		readingTimeEntryModelImpl._originalGroupId =
-			readingTimeEntryModelImpl._groupId;
-
-		readingTimeEntryModelImpl._setOriginalGroupId = false;
-
-		readingTimeEntryModelImpl._originalCompanyId =
-			readingTimeEntryModelImpl._companyId;
-
-		readingTimeEntryModelImpl._setOriginalCompanyId = false;
-
-		readingTimeEntryModelImpl._setModifiedDate = false;
-
-		readingTimeEntryModelImpl._originalClassNameId =
-			readingTimeEntryModelImpl._classNameId;
-
-		readingTimeEntryModelImpl._setOriginalClassNameId = false;
-
-		readingTimeEntryModelImpl._originalClassPK =
-			readingTimeEntryModelImpl._classPK;
-
-		readingTimeEntryModelImpl._setOriginalClassPK = false;
-
-		readingTimeEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -979,24 +989,54 @@ public class ReadingTimeEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uuid", 1L);
+
+		columnBitmasks.put("readingTimeEntryId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("classNameId", 64L);
+
+		columnBitmasks.put("classPK", 128L);
+
+		columnBitmasks.put("readingTime", 256L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _uuid;
-	private String _originalUuid;
 	private long _readingTimeEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _readingTime;
 	private long _columnBitmask;
 	private ReadingTimeEntry _escapedModel;

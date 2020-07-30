@@ -503,11 +503,13 @@ public class CalendarPersistenceTest {
 			Objects.equals(
 				existingCalendar.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingCalendar, "getOriginalUuid", new Class<?>[0])));
+					existingCalendar, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingCalendar.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendar, "getOriginalGroupId", new Class<?>[0]));
+				existingCalendar, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected Calendar addCalendar() throws Exception {

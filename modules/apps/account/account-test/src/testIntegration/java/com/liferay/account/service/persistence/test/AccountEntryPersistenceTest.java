@@ -484,13 +484,14 @@ public class AccountEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAccountEntry.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountEntry, "getOriginalCompanyId", new Class<?>[0]));
+				existingAccountEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAccountEntry.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingAccountEntry, "getOriginalExternalReferenceCode",
-					new Class<?>[0])));
+					existingAccountEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "externalReferenceCode")));
 	}
 
 	protected AccountEntry addAccountEntry() throws Exception {

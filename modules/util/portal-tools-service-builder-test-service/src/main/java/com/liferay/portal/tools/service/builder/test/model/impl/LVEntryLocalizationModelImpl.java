@@ -123,14 +123,39 @@ public class LVEntryLocalizationModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEAD_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEADID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LANGUAGEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LVENTRYID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LVENTRYLOCALIZATIONID_COLUMN_BITMASK = 16L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -319,31 +344,6 @@ public class LVEntryLocalizationModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
-	public boolean getHead() {
-		return _head;
-	}
-
-	@Override
-	public boolean isHead() {
-		return _head;
-	}
-
-	public boolean getOriginalHead() {
-		return _originalHead;
-	}
-
-	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
-
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
-		}
-
-		_head = head;
-	}
-
 	@Override
 	public void populateVersionModel(
 		LVEntryLocalizationVersion lvEntryLocalizationVersion) {
@@ -362,6 +362,8 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -372,13 +374,7 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setHeadId(long headId) {
-		_columnBitmask |= HEADID_COLUMN_BITMASK;
-
-		if (!_setOriginalHeadId) {
-			_setOriginalHeadId = true;
-
-			_originalHeadId = _headId;
-		}
+		_columnBitmask |= _columnBitmasks.get("headId");
 
 		if (headId >= 0) {
 			setHead(false);
@@ -390,8 +386,37 @@ public class LVEntryLocalizationModelImpl
 		_headId = headId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalHeadId() {
-		return _originalHeadId;
+		return GetterUtil.getLong(getOriginalAttributeValue("headId"));
+	}
+
+	public boolean getHead() {
+		return _head;
+	}
+
+	@Override
+	public boolean isHead() {
+		return _head;
+	}
+
+	public void setHead(boolean head) {
+		_columnBitmask |= _columnBitmasks.get("head");
+
+		_head = head;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalHead() {
+		return GetterUtil.getBoolean(getOriginalAttributeValue("head"));
 	}
 
 	@Override
@@ -401,6 +426,8 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setLvEntryLocalizationId(long lvEntryLocalizationId) {
+		_columnBitmask |= _columnBitmasks.get("lvEntryLocalizationId");
+
 		_lvEntryLocalizationId = lvEntryLocalizationId;
 	}
 
@@ -411,6 +438,8 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -421,19 +450,18 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setLvEntryId(long lvEntryId) {
-		_columnBitmask |= LVENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalLvEntryId) {
-			_setOriginalLvEntryId = true;
-
-			_originalLvEntryId = _lvEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("lvEntryId");
 
 		_lvEntryId = lvEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLvEntryId() {
-		return _originalLvEntryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("lvEntryId"));
 	}
 
 	@Override
@@ -448,17 +476,18 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
-
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("languageId");
 
 		_languageId = languageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		return getOriginalAttributeValue("languageId");
 	}
 
 	@Override
@@ -473,6 +502,8 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
 		_title = title;
 	}
 
@@ -488,6 +519,8 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
 		_content = content;
 	}
 
@@ -606,27 +639,11 @@ public class LVEntryLocalizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LVEntryLocalizationModelImpl lvEntryLocalizationModelImpl = this;
+		_columnBitmask = 0;
 
-		lvEntryLocalizationModelImpl._originalHeadId =
-			lvEntryLocalizationModelImpl._headId;
+		_originalAttributeValues = getModelAttributes();
 
-		lvEntryLocalizationModelImpl._setOriginalHeadId = false;
-
-		lvEntryLocalizationModelImpl._originalHead =
-			lvEntryLocalizationModelImpl._head;
-
-		lvEntryLocalizationModelImpl._setOriginalHead = false;
-
-		lvEntryLocalizationModelImpl._originalLvEntryId =
-			lvEntryLocalizationModelImpl._lvEntryId;
-
-		lvEntryLocalizationModelImpl._setOriginalLvEntryId = false;
-
-		lvEntryLocalizationModelImpl._originalLanguageId =
-			lvEntryLocalizationModelImpl._languageId;
-
-		lvEntryLocalizationModelImpl._columnBitmask = 0;
+		_originalAttributeValues.put("head", isHead());
 	}
 
 	@Override
@@ -744,20 +761,52 @@ public class LVEntryLocalizationModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("headId", 2L);
+
+		columnBitmasks.put("head", 4L);
+
+		columnBitmasks.put("lvEntryLocalizationId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("lvEntryId", 32L);
+
+		columnBitmasks.put("languageId", 64L);
+
+		columnBitmasks.put("title", 128L);
+
+		columnBitmasks.put("content", 256L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _headId;
-	private long _originalHeadId;
-	private boolean _setOriginalHeadId;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private long _lvEntryLocalizationId;
 	private long _companyId;
 	private long _lvEntryId;
-	private long _originalLvEntryId;
-	private boolean _setOriginalLvEntryId;
 	private String _languageId;
-	private String _originalLanguageId;
 	private String _title;
 	private String _content;
 	private long _columnBitmask;

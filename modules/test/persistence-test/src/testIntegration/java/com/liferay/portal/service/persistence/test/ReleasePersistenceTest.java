@@ -431,8 +431,8 @@ public class ReleasePersistenceTest {
 			Objects.equals(
 				existingRelease.getServletContextName(),
 				ReflectionTestUtil.invoke(
-					existingRelease, "getOriginalServletContextName",
-					new Class<?>[0])));
+					existingRelease, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "servletContextName")));
 	}
 
 	protected Release addRelease() throws Exception {

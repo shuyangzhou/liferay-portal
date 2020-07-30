@@ -950,43 +950,47 @@ public class JournalArticlePersistenceTest {
 			Objects.equals(
 				existingJournalArticle.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticle, "getOriginalUuid",
-					new Class<?>[0])));
+					existingJournalArticle, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticle.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticle, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalArticle, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticle.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticle, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalArticle, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticle.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticle, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingJournalArticle, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticle.getDDMStructureKey(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticle, "getOriginalDDMStructureKey",
-					new Class<?>[0])));
+					existingJournalArticle, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "DDMStructureKey")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticle.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticle, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalArticle, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticle.getArticleId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticle, "getOriginalArticleId",
-					new Class<?>[0])));
+					existingJournalArticle, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "articleId")));
 		AssertUtils.assertEquals(
 			existingJournalArticle.getVersion(),
 			ReflectionTestUtil.<Double>invoke(
-				existingJournalArticle, "getOriginalVersion", new Class<?>[0]));
+				existingJournalArticle, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 	}
 
 	protected JournalArticle addJournalArticle() throws Exception {

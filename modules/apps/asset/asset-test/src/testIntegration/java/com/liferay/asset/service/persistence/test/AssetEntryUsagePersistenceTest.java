@@ -530,34 +530,35 @@ public class AssetEntryUsagePersistenceTest {
 			Objects.equals(
 				existingAssetEntryUsage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetEntryUsage, "getOriginalUuid",
-					new Class<?>[0])));
+					existingAssetEntryUsage, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetEntryUsage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingAssetEntryUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingAssetEntryUsage.getAssetEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalAssetEntryId",
-				new Class<?>[0]));
+				existingAssetEntryUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "assetEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetEntryUsage.getContainerType()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalContainerType",
-				new Class<?>[0]));
+				existingAssetEntryUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "containerType"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAssetEntryUsage.getContainerKey(),
 				ReflectionTestUtil.invoke(
-					existingAssetEntryUsage, "getOriginalContainerKey",
-					new Class<?>[0])));
+					existingAssetEntryUsage, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "containerKey")));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetEntryUsage.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalPlid", new Class<?>[0]));
+				existingAssetEntryUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "plid"));
 	}
 
 	protected AssetEntryUsage addAssetEntryUsage() throws Exception {

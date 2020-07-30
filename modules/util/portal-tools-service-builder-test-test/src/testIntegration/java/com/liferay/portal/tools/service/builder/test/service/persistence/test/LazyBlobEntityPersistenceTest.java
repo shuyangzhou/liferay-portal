@@ -450,12 +450,13 @@ public class LazyBlobEntityPersistenceTest {
 			Objects.equals(
 				existingLazyBlobEntity.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLazyBlobEntity, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLazyBlobEntity, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLazyBlobEntity.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLazyBlobEntity, "getOriginalGroupId", new Class<?>[0]));
+				existingLazyBlobEntity, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected LazyBlobEntity addLazyBlobEntity() throws Exception {

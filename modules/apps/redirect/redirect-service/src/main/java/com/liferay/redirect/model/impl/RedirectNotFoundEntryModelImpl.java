@@ -110,10 +110,25 @@ public class RedirectNotFoundEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long URL_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REDIRECTNOTFOUNDENTRYID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -333,6 +348,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -343,6 +360,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setRedirectNotFoundEntryId(long redirectNotFoundEntryId) {
+		_columnBitmask |= _columnBitmasks.get("redirectNotFoundEntryId");
+
 		_redirectNotFoundEntryId = redirectNotFoundEntryId;
 	}
 
@@ -353,19 +372,18 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@Override
@@ -375,6 +393,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -385,6 +405,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -416,6 +438,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -426,6 +450,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -442,6 +468,8 @@ public class RedirectNotFoundEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -457,6 +485,8 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setIgnored(boolean ignored) {
+		_columnBitmask |= _columnBitmasks.get("ignored");
+
 		_ignored = ignored;
 	}
 
@@ -472,17 +502,18 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void setUrl(String url) {
-		_columnBitmask |= URL_COLUMN_BITMASK;
-
-		if (_originalUrl == null) {
-			_originalUrl = _url;
-		}
+		_columnBitmask |= _columnBitmasks.get("url");
 
 		_url = url;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUrl() {
-		return GetterUtil.getString(_originalUrl);
+		return getOriginalAttributeValue("url");
 	}
 
 	public long getColumnBitmask() {
@@ -603,19 +634,11 @@ public class RedirectNotFoundEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		redirectNotFoundEntryModelImpl._originalGroupId =
-			redirectNotFoundEntryModelImpl._groupId;
+		_columnBitmask = 0;
 
-		redirectNotFoundEntryModelImpl._setOriginalGroupId = false;
-
-		redirectNotFoundEntryModelImpl._setModifiedDate = false;
-
-		redirectNotFoundEntryModelImpl._originalUrl =
-			redirectNotFoundEntryModelImpl._url;
-
-		redirectNotFoundEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -746,11 +769,50 @@ public class RedirectNotFoundEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("redirectNotFoundEntryId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("userId", 16L);
+
+		columnBitmasks.put("userName", 32L);
+
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("ignored", 256L);
+
+		columnBitmasks.put("url", 512L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _redirectNotFoundEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -759,7 +821,6 @@ public class RedirectNotFoundEntryModelImpl
 	private boolean _setModifiedDate;
 	private boolean _ignored;
 	private String _url;
-	private String _originalUrl;
 	private long _columnBitmask;
 	private RedirectNotFoundEntry _escapedModel;
 

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoCondition;
 import com.liferay.portal.workflow.kaleo.model.KaleoConditionModel;
@@ -114,12 +115,32 @@ public class KaleoConditionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEONODEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEOCONDITIONID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -346,6 +367,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -356,7 +379,7 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoConditionId(long kaleoConditionId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("kaleoConditionId");
 
 		_kaleoConditionId = kaleoConditionId;
 	}
@@ -368,6 +391,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -378,19 +403,18 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -400,6 +424,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -431,6 +457,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -441,6 +469,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -457,6 +487,8 @@ public class KaleoConditionModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -467,6 +499,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionId");
+
 		_kaleoDefinitionId = kaleoDefinitionId;
 	}
 
@@ -477,19 +511,19 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
-
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionVersionId");
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override
@@ -499,19 +533,18 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
-		_columnBitmask |= KALEONODEID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoNodeId) {
-			_setOriginalKaleoNodeId = true;
-
-			_originalKaleoNodeId = _kaleoNodeId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoNodeId");
 
 		_kaleoNodeId = kaleoNodeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoNodeId() {
-		return _originalKaleoNodeId;
+		return GetterUtil.getLong(getOriginalAttributeValue("kaleoNodeId"));
 	}
 
 	@Override
@@ -526,6 +559,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setScript(String script) {
+		_columnBitmask |= _columnBitmasks.get("script");
+
 		_script = script;
 	}
 
@@ -541,6 +576,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setScriptLanguage(String scriptLanguage) {
+		_columnBitmask |= _columnBitmasks.get("scriptLanguage");
+
 		_scriptLanguage = scriptLanguage;
 	}
 
@@ -556,6 +593,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setScriptRequiredContexts(String scriptRequiredContexts) {
+		_columnBitmask |= _columnBitmasks.get("scriptRequiredContexts");
+
 		_scriptRequiredContexts = scriptRequiredContexts;
 	}
 
@@ -685,26 +724,11 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoConditionModelImpl kaleoConditionModelImpl = this;
+		_setModifiedDate = false;
 
-		kaleoConditionModelImpl._originalCompanyId =
-			kaleoConditionModelImpl._companyId;
+		_columnBitmask = 0;
 
-		kaleoConditionModelImpl._setOriginalCompanyId = false;
-
-		kaleoConditionModelImpl._setModifiedDate = false;
-
-		kaleoConditionModelImpl._originalKaleoDefinitionVersionId =
-			kaleoConditionModelImpl._kaleoDefinitionVersionId;
-
-		kaleoConditionModelImpl._setOriginalKaleoDefinitionVersionId = false;
-
-		kaleoConditionModelImpl._originalKaleoNodeId =
-			kaleoConditionModelImpl._kaleoNodeId;
-
-		kaleoConditionModelImpl._setOriginalKaleoNodeId = false;
-
-		kaleoConditionModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -856,12 +880,59 @@ public class KaleoConditionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("kaleoConditionId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("userId", 16L);
+
+		columnBitmasks.put("userName", 32L);
+
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("kaleoDefinitionId", 256L);
+
+		columnBitmasks.put("kaleoDefinitionVersionId", 512L);
+
+		columnBitmasks.put("kaleoNodeId", 1024L);
+
+		columnBitmasks.put("script", 2048L);
+
+		columnBitmasks.put("scriptLanguage", 4096L);
+
+		columnBitmasks.put("scriptRequiredContexts", 8192L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _kaleoConditionId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -869,11 +940,7 @@ public class KaleoConditionModelImpl
 	private boolean _setModifiedDate;
 	private long _kaleoDefinitionId;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
-	private long _originalKaleoNodeId;
-	private boolean _setOriginalKaleoNodeId;
 	private String _script;
 	private String _scriptLanguage;
 	private String _scriptRequiredContexts;

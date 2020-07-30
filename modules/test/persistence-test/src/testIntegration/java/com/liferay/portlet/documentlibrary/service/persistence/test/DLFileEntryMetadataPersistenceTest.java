@@ -484,13 +484,13 @@ public class DLFileEntryMetadataPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingDLFileEntryMetadata.getDDMStructureId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileEntryMetadata, "getOriginalDDMStructureId",
-				new Class<?>[0]));
+				existingDLFileEntryMetadata, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "DDMStructureId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDLFileEntryMetadata.getFileVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileEntryMetadata, "getOriginalFileVersionId",
-				new Class<?>[0]));
+				existingDLFileEntryMetadata, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "fileVersionId"));
 	}
 
 	protected DLFileEntryMetadata addDLFileEntryMetadata() throws Exception {

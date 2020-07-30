@@ -533,18 +533,20 @@ public class StyleBookEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingStyleBookEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingStyleBookEntry, "getOriginalGroupId", new Class<?>[0]));
+				existingStyleBookEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingStyleBookEntry.getStyleBookEntryKey(),
 				ReflectionTestUtil.invoke(
-					existingStyleBookEntry, "getOriginalStyleBookEntryKey",
-					new Class<?>[0])));
+					existingStyleBookEntry, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "styleBookEntryKey")));
 
 		Assert.assertEquals(
 			Long.valueOf(existingStyleBookEntry.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingStyleBookEntry, "getOriginalHeadId", new Class<?>[0]));
+				existingStyleBookEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "headId"));
 	}
 
 	protected StyleBookEntry addStyleBookEntry() throws Exception {

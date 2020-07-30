@@ -114,10 +114,25 @@ public class ResourceActionModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIONID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long BITWISEVALUE_COLUMN_BITMASK = 4L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -286,6 +301,8 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -296,6 +313,8 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setResourceActionId(long resourceActionId) {
+		_columnBitmask |= _columnBitmasks.get("resourceActionId");
+
 		_resourceActionId = resourceActionId;
 	}
 
@@ -311,17 +330,18 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -336,17 +356,18 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setActionId(String actionId) {
-		_columnBitmask |= ACTIONID_COLUMN_BITMASK;
-
-		if (_originalActionId == null) {
-			_originalActionId = _actionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("actionId");
 
 		_actionId = actionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalActionId() {
-		return GetterUtil.getString(_originalActionId);
+		return getOriginalAttributeValue("actionId");
 	}
 
 	@Override
@@ -356,7 +377,7 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setBitwiseValue(long bitwiseValue) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("bitwiseValue");
 
 		_bitwiseValue = bitwiseValue;
 	}
@@ -482,14 +503,9 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ResourceActionModelImpl resourceActionModelImpl = this;
+		_columnBitmask = 0;
 
-		resourceActionModelImpl._originalName = resourceActionModelImpl._name;
-
-		resourceActionModelImpl._originalActionId =
-			resourceActionModelImpl._actionId;
-
-		resourceActionModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -592,12 +608,41 @@ public class ResourceActionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("resourceActionId", 2L);
+
+		columnBitmasks.put("name", 4L);
+
+		columnBitmasks.put("actionId", 8L);
+
+		columnBitmasks.put("bitwiseValue", 16L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _resourceActionId;
 	private String _name;
-	private String _originalName;
 	private String _actionId;
-	private String _originalActionId;
 	private long _bitwiseValue;
 	private long _columnBitmask;
 	private ResourceAction _escapedModel;

@@ -650,35 +650,39 @@ public class LayoutRevisionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutRevision.getLayoutSetBranchId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutRevision, "getOriginalLayoutSetBranchId",
-				new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutSetBranchId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayoutRevision.getHead()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayoutRevision, "getOriginalHead", new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "head"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutRevision.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutRevision, "getOriginalPlid", new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "plid"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutRevision.getLayoutSetBranchId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutRevision, "getOriginalLayoutSetBranchId",
-				new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutSetBranchId"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutRevision.getLayoutBranchId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutRevision, "getOriginalLayoutBranchId",
-				new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "layoutBranchId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingLayoutRevision.getHead()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayoutRevision, "getOriginalHead", new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "head"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutRevision.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutRevision, "getOriginalPlid", new Class<?>[0]));
+				existingLayoutRevision, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "plid"));
 	}
 
 	protected LayoutRevision addLayoutRevision() throws Exception {

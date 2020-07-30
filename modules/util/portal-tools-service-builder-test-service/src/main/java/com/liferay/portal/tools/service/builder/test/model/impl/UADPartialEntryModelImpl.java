@@ -118,7 +118,14 @@ public class UADPartialEntryModelImpl
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = true;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long UADPARTIALENTRYID_COLUMN_BITMASK = 1L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -327,6 +334,8 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUadPartialEntryId(long uadPartialEntryId) {
+		_columnBitmask |= _columnBitmasks.get("uadPartialEntryId");
+
 		_uadPartialEntryId = uadPartialEntryId;
 	}
 
@@ -338,6 +347,8 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -370,6 +381,8 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -386,7 +399,13 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		_columnBitmask |= _columnBitmasks.get("message");
+
 		_message = message;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -493,6 +512,9 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -593,10 +615,40 @@ public class UADPartialEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uadPartialEntryId", 1L);
+
+		columnBitmasks.put("userId", 2L);
+
+		columnBitmasks.put("userName", 4L);
+
+		columnBitmasks.put("message", 8L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _uadPartialEntryId;
 	private long _userId;
 	private String _userName;
 	private String _message;
+	private long _columnBitmask;
 	private UADPartialEntry _escapedModel;
 
 }

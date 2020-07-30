@@ -2396,8 +2396,8 @@ public class DispatchTriggerPersistenceImpl
 			 _finderPathFetchByC_N.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				dispatchTriggerModelImpl.getOriginalCompanyId(),
-				dispatchTriggerModelImpl.getOriginalName()
+				dispatchTriggerModelImpl.getOriginalAttributeValue("companyId"),
+				dispatchTriggerModelImpl.getOriginalAttributeValue("name")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_N, args);
@@ -2610,7 +2610,8 @@ public class DispatchTriggerPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					dispatchTriggerModelImpl.getOriginalCompanyId()
+					dispatchTriggerModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCompanyId, args);
@@ -2629,8 +2630,9 @@ public class DispatchTriggerPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					dispatchTriggerModelImpl.getOriginalCompanyId(),
-					dispatchTriggerModelImpl.getOriginalType()
+					dispatchTriggerModelImpl.getOriginalAttributeValue(
+						"companyId"),
+					dispatchTriggerModelImpl.getOriginalAttributeValue("type")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_T, args);
@@ -2946,8 +2948,8 @@ public class DispatchTriggerPersistenceImpl
 			DispatchTriggerImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
-			DispatchTriggerModelImpl.COMPANYID_COLUMN_BITMASK |
-			DispatchTriggerModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			DispatchTriggerModelImpl.getColumnBitmask("companyId") |
+			DispatchTriggerModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByCompanyId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2956,8 +2958,8 @@ public class DispatchTriggerPersistenceImpl
 		_finderPathFetchByC_N = new FinderPath(
 			DispatchTriggerImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			DispatchTriggerModelImpl.COMPANYID_COLUMN_BITMASK |
-			DispatchTriggerModelImpl.NAME_COLUMN_BITMASK);
+			DispatchTriggerModelImpl.getColumnBitmask("companyId") |
+			DispatchTriggerModelImpl.getColumnBitmask("name"));
 
 		_finderPathCountByC_N = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",
@@ -2976,9 +2978,9 @@ public class DispatchTriggerPersistenceImpl
 			DispatchTriggerImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			DispatchTriggerModelImpl.COMPANYID_COLUMN_BITMASK |
-			DispatchTriggerModelImpl.TYPE_COLUMN_BITMASK |
-			DispatchTriggerModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			DispatchTriggerModelImpl.getColumnBitmask("companyId") |
+			DispatchTriggerModelImpl.getColumnBitmask("type") |
+			DispatchTriggerModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByC_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_T",

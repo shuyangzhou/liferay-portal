@@ -157,40 +157,130 @@ public class JournalArticleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMSTRUCTUREKEY_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMTEMPLATEKEY_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ARTICLEID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DISPLAYDATE_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FOLDERID_COLUMN_BITMASK = 128L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 256L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long INDEXABLE_COLUMN_BITMASK = 512L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTUUID_COLUMN_BITMASK = 1024L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RESOURCEPRIMKEY_COLUMN_BITMASK = 2048L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SMALLIMAGEID_COLUMN_BITMASK = 4096L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STATUS_COLUMN_BITMASK = 8192L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long URLTITLE_COLUMN_BITMASK = 16384L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 32768L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 65536L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 131072L;
 
 	/**
@@ -590,6 +680,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -601,6 +693,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -617,17 +711,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -638,6 +733,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setId(long id) {
+		_columnBitmask |= _columnBitmasks.get("id");
+
 		_id = id;
 	}
 
@@ -649,13 +746,7 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
-		_columnBitmask |= RESOURCEPRIMKEY_COLUMN_BITMASK;
-
-		if (!_setOriginalResourcePrimKey) {
-			_setOriginalResourcePrimKey = true;
-
-			_originalResourcePrimKey = _resourcePrimKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("resourcePrimKey");
 
 		_resourcePrimKey = resourcePrimKey;
 	}
@@ -665,8 +756,13 @@ public class JournalArticleModelImpl
 		return true;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalResourcePrimKey() {
-		return _originalResourcePrimKey;
+		return GetterUtil.getLong(getOriginalAttributeValue("resourcePrimKey"));
 	}
 
 	@JSON
@@ -677,19 +773,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -700,19 +795,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -723,13 +817,7 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -750,8 +838,13 @@ public class JournalArticleModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@JSON
@@ -767,6 +860,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -778,6 +873,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -795,6 +892,8 @@ public class JournalArticleModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -806,19 +905,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
-
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
-
-			_originalFolderId = _folderId;
-		}
+		_columnBitmask |= _columnBitmasks.get("folderId");
 
 		_folderId = folderId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		return GetterUtil.getLong(getOriginalAttributeValue("folderId"));
 	}
 
 	@Override
@@ -849,19 +947,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return GetterUtil.getLong(getOriginalAttributeValue("classNameId"));
 	}
 
 	@JSON
@@ -872,19 +969,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return GetterUtil.getLong(getOriginalAttributeValue("classPK"));
 	}
 
 	@JSON
@@ -900,6 +996,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
+		_columnBitmask |= _columnBitmasks.get("treePath");
+
 		_treePath = treePath;
 	}
 
@@ -916,17 +1014,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setArticleId(String articleId) {
-		_columnBitmask = -1L;
-
-		if (_originalArticleId == null) {
-			_originalArticleId = _articleId;
-		}
+		_columnBitmask |= _columnBitmasks.get("articleId");
 
 		_articleId = articleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalArticleId() {
-		return GetterUtil.getString(_originalArticleId);
+		return getOriginalAttributeValue("articleId");
 	}
 
 	@JSON
@@ -937,19 +1036,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setVersion(double version) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public double getOriginalVersion() {
-		return _originalVersion;
+		return GetterUtil.getDouble(getOriginalAttributeValue("version"));
 	}
 
 	@JSON
@@ -965,17 +1063,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setUrlTitle(String urlTitle) {
-		_columnBitmask |= URLTITLE_COLUMN_BITMASK;
-
-		if (_originalUrlTitle == null) {
-			_originalUrlTitle = _urlTitle;
-		}
+		_columnBitmask |= _columnBitmasks.get("urlTitle");
 
 		_urlTitle = urlTitle;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUrlTitle() {
-		return GetterUtil.getString(_originalUrlTitle);
+		return getOriginalAttributeValue("urlTitle");
 	}
 
 	@JSON
@@ -991,6 +1090,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_columnBitmask |= _columnBitmasks.get("content");
+
 		_content = content;
 	}
 
@@ -1007,17 +1108,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setDDMStructureKey(String DDMStructureKey) {
-		_columnBitmask |= DDMSTRUCTUREKEY_COLUMN_BITMASK;
-
-		if (_originalDDMStructureKey == null) {
-			_originalDDMStructureKey = _DDMStructureKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("DDMStructureKey");
 
 		_DDMStructureKey = DDMStructureKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalDDMStructureKey() {
-		return GetterUtil.getString(_originalDDMStructureKey);
+		return getOriginalAttributeValue("DDMStructureKey");
 	}
 
 	@JSON
@@ -1033,17 +1135,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setDDMTemplateKey(String DDMTemplateKey) {
-		_columnBitmask |= DDMTEMPLATEKEY_COLUMN_BITMASK;
-
-		if (_originalDDMTemplateKey == null) {
-			_originalDDMTemplateKey = _DDMTemplateKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("DDMTemplateKey");
 
 		_DDMTemplateKey = DDMTemplateKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalDDMTemplateKey() {
-		return GetterUtil.getString(_originalDDMTemplateKey);
+		return getOriginalAttributeValue("DDMTemplateKey");
 	}
 
 	@JSON
@@ -1059,6 +1162,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_columnBitmask |= _columnBitmasks.get("defaultLanguageId");
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -1075,17 +1180,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setLayoutUuid(String layoutUuid) {
-		_columnBitmask |= LAYOUTUUID_COLUMN_BITMASK;
-
-		if (_originalLayoutUuid == null) {
-			_originalLayoutUuid = _layoutUuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("layoutUuid");
 
 		_layoutUuid = layoutUuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLayoutUuid() {
-		return GetterUtil.getString(_originalLayoutUuid);
+		return getOriginalAttributeValue("layoutUuid");
 	}
 
 	@JSON
@@ -1096,17 +1202,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setDisplayDate(Date displayDate) {
-		_columnBitmask |= DISPLAYDATE_COLUMN_BITMASK;
-
-		if (_originalDisplayDate == null) {
-			_originalDisplayDate = _displayDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("displayDate");
 
 		_displayDate = displayDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public Date getOriginalDisplayDate() {
-		return _originalDisplayDate;
+		return getOriginalAttributeValue("displayDate");
 	}
 
 	@JSON
@@ -1117,6 +1224,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		_columnBitmask |= _columnBitmasks.get("expirationDate");
+
 		_expirationDate = expirationDate;
 	}
 
@@ -1128,6 +1237,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setReviewDate(Date reviewDate) {
+		_columnBitmask |= _columnBitmasks.get("reviewDate");
+
 		_reviewDate = reviewDate;
 	}
 
@@ -1145,19 +1256,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setIndexable(boolean indexable) {
-		_columnBitmask |= INDEXABLE_COLUMN_BITMASK;
-
-		if (!_setOriginalIndexable) {
-			_setOriginalIndexable = true;
-
-			_originalIndexable = _indexable;
-		}
+		_columnBitmask |= _columnBitmasks.get("indexable");
 
 		_indexable = indexable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalIndexable() {
-		return _originalIndexable;
+		return GetterUtil.getBoolean(getOriginalAttributeValue("indexable"));
 	}
 
 	@JSON
@@ -1174,6 +1284,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setSmallImage(boolean smallImage) {
+		_columnBitmask |= _columnBitmasks.get("smallImage");
+
 		_smallImage = smallImage;
 	}
 
@@ -1185,19 +1297,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setSmallImageId(long smallImageId) {
-		_columnBitmask |= SMALLIMAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalSmallImageId) {
-			_setOriginalSmallImageId = true;
-
-			_originalSmallImageId = _smallImageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("smallImageId");
 
 		_smallImageId = smallImageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalSmallImageId() {
-		return _originalSmallImageId;
+		return GetterUtil.getLong(getOriginalAttributeValue("smallImageId"));
 	}
 
 	@JSON
@@ -1213,6 +1324,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setSmallImageURL(String smallImageURL) {
+		_columnBitmask |= _columnBitmasks.get("smallImageURL");
+
 		_smallImageURL = smallImageURL;
 	}
 
@@ -1224,6 +1337,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1235,19 +1350,18 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_columnBitmask |= _columnBitmasks.get("status");
 
 		_status = status;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return GetterUtil.getInteger(getOriginalAttributeValue("status"));
 	}
 
 	@JSON
@@ -1258,6 +1372,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserId");
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1290,6 +1406,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_columnBitmask |= _columnBitmasks.get("statusByUserName");
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -1301,6 +1419,8 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_columnBitmask |= _columnBitmasks.get("statusDate");
+
 		_statusDate = statusDate;
 	}
 
@@ -1696,88 +1816,13 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalArticleModelImpl journalArticleModelImpl = this;
-
-		journalArticleModelImpl._originalUuid = journalArticleModelImpl._uuid;
-
-		journalArticleModelImpl._originalResourcePrimKey =
-			journalArticleModelImpl._resourcePrimKey;
-
-		journalArticleModelImpl._setOriginalResourcePrimKey = false;
-
-		journalArticleModelImpl._originalGroupId =
-			journalArticleModelImpl._groupId;
-
-		journalArticleModelImpl._setOriginalGroupId = false;
-
-		journalArticleModelImpl._originalCompanyId =
-			journalArticleModelImpl._companyId;
-
-		journalArticleModelImpl._setOriginalCompanyId = false;
-
-		journalArticleModelImpl._originalUserId =
-			journalArticleModelImpl._userId;
-
-		journalArticleModelImpl._setOriginalUserId = false;
-
-		journalArticleModelImpl._setModifiedDate = false;
-
-		journalArticleModelImpl._originalFolderId =
-			journalArticleModelImpl._folderId;
-
-		journalArticleModelImpl._setOriginalFolderId = false;
-
-		journalArticleModelImpl._originalClassNameId =
-			journalArticleModelImpl._classNameId;
-
-		journalArticleModelImpl._setOriginalClassNameId = false;
-
-		journalArticleModelImpl._originalClassPK =
-			journalArticleModelImpl._classPK;
-
-		journalArticleModelImpl._setOriginalClassPK = false;
-
-		journalArticleModelImpl._originalArticleId =
-			journalArticleModelImpl._articleId;
-
-		journalArticleModelImpl._originalVersion =
-			journalArticleModelImpl._version;
-
-		journalArticleModelImpl._setOriginalVersion = false;
-
-		journalArticleModelImpl._originalUrlTitle =
-			journalArticleModelImpl._urlTitle;
-
-		journalArticleModelImpl._originalDDMStructureKey =
-			journalArticleModelImpl._DDMStructureKey;
-
-		journalArticleModelImpl._originalDDMTemplateKey =
-			journalArticleModelImpl._DDMTemplateKey;
-
-		journalArticleModelImpl._originalLayoutUuid =
-			journalArticleModelImpl._layoutUuid;
-
-		journalArticleModelImpl._originalDisplayDate =
-			journalArticleModelImpl._displayDate;
-
-		journalArticleModelImpl._originalIndexable =
-			journalArticleModelImpl._indexable;
-
-		journalArticleModelImpl._setOriginalIndexable = false;
-
-		journalArticleModelImpl._originalSmallImageId =
-			journalArticleModelImpl._smallImageId;
-
-		journalArticleModelImpl._setOriginalSmallImageId = false;
-
-		journalArticleModelImpl._originalStatus =
-			journalArticleModelImpl._status;
-
-		journalArticleModelImpl._setOriginalStatus = false;
+		_setModifiedDate = false;
 
 		setDocument(null);
 
-		journalArticleModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
+
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -2052,68 +2097,130 @@ public class JournalArticleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("uuid", 4L);
+
+		columnBitmasks.put("id", 8L);
+
+		columnBitmasks.put("resourcePrimKey", 16L);
+
+		columnBitmasks.put("groupId", 32L);
+
+		columnBitmasks.put("companyId", 64L);
+
+		columnBitmasks.put("userId", 128L);
+
+		columnBitmasks.put("userName", 256L);
+
+		columnBitmasks.put("createDate", 512L);
+
+		columnBitmasks.put("modifiedDate", 1024L);
+
+		columnBitmasks.put("folderId", 2048L);
+
+		columnBitmasks.put("classNameId", 4096L);
+
+		columnBitmasks.put("classPK", 8192L);
+
+		columnBitmasks.put("treePath", 16384L);
+
+		columnBitmasks.put("articleId", 32768L);
+
+		columnBitmasks.put("version", 65536L);
+
+		columnBitmasks.put("urlTitle", 131072L);
+
+		columnBitmasks.put("content", 262144L);
+
+		columnBitmasks.put("DDMStructureKey", 524288L);
+
+		columnBitmasks.put("DDMTemplateKey", 1048576L);
+
+		columnBitmasks.put("defaultLanguageId", 2097152L);
+
+		columnBitmasks.put("layoutUuid", 4194304L);
+
+		columnBitmasks.put("displayDate", 8388608L);
+
+		columnBitmasks.put("expirationDate", 16777216L);
+
+		columnBitmasks.put("reviewDate", 33554432L);
+
+		columnBitmasks.put("indexable", 67108864L);
+
+		columnBitmasks.put("smallImage", 134217728L);
+
+		columnBitmasks.put("smallImageId", 268435456L);
+
+		columnBitmasks.put("smallImageURL", 536870912L);
+
+		columnBitmasks.put("lastPublishDate", 1073741824L);
+
+		columnBitmasks.put("status", 2147483648L);
+
+		columnBitmasks.put("statusByUserId", 4294967296L);
+
+		columnBitmasks.put("statusByUserName", 8589934592L);
+
+		columnBitmasks.put("statusDate", 17179869184L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _id;
 	private long _resourcePrimKey;
-	private long _originalResourcePrimKey;
-	private boolean _setOriginalResourcePrimKey;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _treePath;
 	private String _articleId;
-	private String _originalArticleId;
 	private double _version;
-	private double _originalVersion;
-	private boolean _setOriginalVersion;
 	private String _urlTitle;
-	private String _originalUrlTitle;
 	private String _content;
 	private String _DDMStructureKey;
-	private String _originalDDMStructureKey;
 	private String _DDMTemplateKey;
-	private String _originalDDMTemplateKey;
 	private String _defaultLanguageId;
 	private String _layoutUuid;
-	private String _originalLayoutUuid;
 	private Date _displayDate;
-	private Date _originalDisplayDate;
 	private Date _expirationDate;
 	private Date _reviewDate;
 	private boolean _indexable;
-	private boolean _originalIndexable;
-	private boolean _setOriginalIndexable;
 	private boolean _smallImage;
 	private long _smallImageId;
-	private long _originalSmallImageId;
-	private boolean _setOriginalSmallImageId;
 	private String _smallImageURL;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;

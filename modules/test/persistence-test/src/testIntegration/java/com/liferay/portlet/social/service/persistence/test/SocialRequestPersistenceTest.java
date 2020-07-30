@@ -553,35 +553,39 @@ public class SocialRequestPersistenceTest {
 			Objects.equals(
 				existingSocialRequest.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSocialRequest, "getOriginalUuid",
-					new Class<?>[0])));
+					existingSocialRequest, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialRequest.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalGroupId", new Class<?>[0]));
+				existingSocialRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSocialRequest.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalUserId", new Class<?>[0]));
+				existingSocialRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "userId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialRequest.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingSocialRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialRequest.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalClassPK", new Class<?>[0]));
+				existingSocialRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertEquals(
 			Integer.valueOf(existingSocialRequest.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialRequest, "getOriginalType", new Class<?>[0]));
+				existingSocialRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "type"));
 		Assert.assertEquals(
 			Long.valueOf(existingSocialRequest.getReceiverUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalReceiverUserId",
-				new Class<?>[0]));
+				existingSocialRequest, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "receiverUserId"));
 	}
 
 	protected SocialRequest addSocialRequest() throws Exception {

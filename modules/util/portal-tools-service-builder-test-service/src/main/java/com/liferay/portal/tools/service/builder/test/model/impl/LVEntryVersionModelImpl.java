@@ -119,16 +119,46 @@ public class LVEntryVersionModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LVENTRYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UNIQUEGROUPKEY_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 32L;
 
 	public static final String MAPPING_TABLE_BIGDECIMALENTRIES_LVENTRIES_NAME =
@@ -363,6 +393,8 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setLvEntryVersionId(long lvEntryVersionId) {
+		_columnBitmask |= _columnBitmasks.get("lvEntryVersionId");
+
 		_lvEntryVersionId = lvEntryVersionId;
 	}
 
@@ -373,19 +405,18 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setVersion(int version) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalVersion() {
-		return _originalVersion;
+		return GetterUtil.getInteger(getOriginalAttributeValue("version"));
 	}
 
 	@Override
@@ -400,17 +431,18 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -425,6 +457,8 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_columnBitmask |= _columnBitmasks.get("defaultLanguageId");
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -435,19 +469,18 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setLvEntryId(long lvEntryId) {
-		_columnBitmask |= LVENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalLvEntryId) {
-			_setOriginalLvEntryId = true;
-
-			_originalLvEntryId = _lvEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("lvEntryId");
 
 		_lvEntryId = lvEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalLvEntryId() {
-		return _originalLvEntryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("lvEntryId"));
 	}
 
 	@Override
@@ -457,19 +490,18 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -479,19 +511,18 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@Override
@@ -506,17 +537,18 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void setUniqueGroupKey(String uniqueGroupKey) {
-		_columnBitmask |= UNIQUEGROUPKEY_COLUMN_BITMASK;
-
-		if (_originalUniqueGroupKey == null) {
-			_originalUniqueGroupKey = _uniqueGroupKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("uniqueGroupKey");
 
 		_uniqueGroupKey = uniqueGroupKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUniqueGroupKey() {
-		return GetterUtil.getString(_originalUniqueGroupKey);
+		return getOriginalAttributeValue("uniqueGroupKey");
 	}
 
 	public long getColumnBitmask() {
@@ -639,34 +671,9 @@ public class LVEntryVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LVEntryVersionModelImpl lvEntryVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		lvEntryVersionModelImpl._originalVersion =
-			lvEntryVersionModelImpl._version;
-
-		lvEntryVersionModelImpl._setOriginalVersion = false;
-
-		lvEntryVersionModelImpl._originalUuid = lvEntryVersionModelImpl._uuid;
-
-		lvEntryVersionModelImpl._originalLvEntryId =
-			lvEntryVersionModelImpl._lvEntryId;
-
-		lvEntryVersionModelImpl._setOriginalLvEntryId = false;
-
-		lvEntryVersionModelImpl._originalCompanyId =
-			lvEntryVersionModelImpl._companyId;
-
-		lvEntryVersionModelImpl._setOriginalCompanyId = false;
-
-		lvEntryVersionModelImpl._originalGroupId =
-			lvEntryVersionModelImpl._groupId;
-
-		lvEntryVersionModelImpl._setOriginalGroupId = false;
-
-		lvEntryVersionModelImpl._originalUniqueGroupKey =
-			lvEntryVersionModelImpl._uniqueGroupKey;
-
-		lvEntryVersionModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -781,24 +788,51 @@ public class LVEntryVersionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("lvEntryVersionId", 1L);
+
+		columnBitmasks.put("version", 2L);
+
+		columnBitmasks.put("uuid", 4L);
+
+		columnBitmasks.put("defaultLanguageId", 8L);
+
+		columnBitmasks.put("lvEntryId", 16L);
+
+		columnBitmasks.put("companyId", 32L);
+
+		columnBitmasks.put("groupId", 64L);
+
+		columnBitmasks.put("uniqueGroupKey", 128L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _lvEntryVersionId;
 	private int _version;
-	private int _originalVersion;
-	private boolean _setOriginalVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private String _defaultLanguageId;
 	private long _lvEntryId;
-	private long _originalLvEntryId;
-	private boolean _setOriginalLvEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private String _uniqueGroupKey;
-	private String _originalUniqueGroupKey;
 	private long _columnBitmask;
 	private LVEntryVersion _escapedModel;
 

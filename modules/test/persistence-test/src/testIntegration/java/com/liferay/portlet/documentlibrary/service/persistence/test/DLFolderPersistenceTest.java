@@ -658,35 +658,41 @@ public class DLFolderPersistenceTest {
 			Objects.equals(
 				existingDLFolder.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDLFolder, "getOriginalUuid", new Class<?>[0])));
+					existingDLFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingDLFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingDLFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingDLFolder.getRepositoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalRepositoryId", new Class<?>[0]));
+				existingDLFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "repositoryId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingDLFolder.getMountPoint()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingDLFolder, "getOriginalMountPoint", new Class<?>[0]));
+				existingDLFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "mountPoint"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingDLFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalGroupId", new Class<?>[0]));
+				existingDLFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Long.valueOf(existingDLFolder.getParentFolderId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalParentFolderId",
-				new Class<?>[0]));
+				existingDLFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "parentFolderId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingDLFolder.getName(),
 				ReflectionTestUtil.invoke(
-					existingDLFolder, "getOriginalName", new Class<?>[0])));
+					existingDLFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected DLFolder addDLFolder() throws Exception {

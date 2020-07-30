@@ -841,8 +841,8 @@ public class WeDeployAuthTokenPersistenceImpl
 			 _finderPathFetchByT_T.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				weDeployAuthTokenModelImpl.getOriginalToken(),
-				weDeployAuthTokenModelImpl.getOriginalType()
+				weDeployAuthTokenModelImpl.getOriginalAttributeValue("token"),
+				weDeployAuthTokenModelImpl.getOriginalAttributeValue("type")
 			};
 
 			finderCache.removeResult(_finderPathCountByT_T, args);
@@ -864,9 +864,10 @@ public class WeDeployAuthTokenPersistenceImpl
 			 _finderPathFetchByCI_T_T.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				weDeployAuthTokenModelImpl.getOriginalClientId(),
-				weDeployAuthTokenModelImpl.getOriginalToken(),
-				weDeployAuthTokenModelImpl.getOriginalType()
+				weDeployAuthTokenModelImpl.getOriginalAttributeValue(
+					"clientId"),
+				weDeployAuthTokenModelImpl.getOriginalAttributeValue("token"),
+				weDeployAuthTokenModelImpl.getOriginalAttributeValue("type")
 			};
 
 			finderCache.removeResult(_finderPathCountByCI_T_T, args);
@@ -1349,8 +1350,8 @@ public class WeDeployAuthTokenPersistenceImpl
 		_finderPathFetchByT_T = new FinderPath(
 			WeDeployAuthTokenImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByT_T",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			WeDeployAuthTokenModelImpl.TOKEN_COLUMN_BITMASK |
-			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK);
+			WeDeployAuthTokenModelImpl.getColumnBitmask("token") |
+			WeDeployAuthTokenModelImpl.getColumnBitmask("type"));
 
 		_finderPathCountByT_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_T",
@@ -1363,9 +1364,9 @@ public class WeDeployAuthTokenPersistenceImpl
 				String.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			WeDeployAuthTokenModelImpl.CLIENTID_COLUMN_BITMASK |
-			WeDeployAuthTokenModelImpl.TOKEN_COLUMN_BITMASK |
-			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK);
+			WeDeployAuthTokenModelImpl.getColumnBitmask("clientId") |
+			WeDeployAuthTokenModelImpl.getColumnBitmask("token") |
+			WeDeployAuthTokenModelImpl.getColumnBitmask("type"));
 
 		_finderPathCountByCI_T_T = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

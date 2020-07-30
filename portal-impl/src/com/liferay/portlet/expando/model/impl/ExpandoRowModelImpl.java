@@ -113,10 +113,25 @@ public class ExpandoRowModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TABLEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ROWID_COLUMN_BITMASK = 4L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -287,6 +302,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -297,6 +314,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -307,6 +326,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setRowId(long rowId) {
+		_columnBitmask |= _columnBitmasks.get("rowId");
+
 		_rowId = rowId;
 	}
 
@@ -317,6 +338,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -327,6 +350,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -337,19 +362,18 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
-		_columnBitmask |= TABLEID_COLUMN_BITMASK;
-
-		if (!_setOriginalTableId) {
-			_setOriginalTableId = true;
-
-			_originalTableId = _tableId;
-		}
+		_columnBitmask |= _columnBitmasks.get("tableId");
 
 		_tableId = tableId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalTableId() {
-		return _originalTableId;
+		return GetterUtil.getLong(getOriginalAttributeValue("tableId"));
 	}
 
 	@Override
@@ -359,19 +383,18 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return GetterUtil.getLong(getOriginalAttributeValue("classPK"));
 	}
 
 	public long getColumnBitmask() {
@@ -472,17 +495,9 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoRowModelImpl expandoRowModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoRowModelImpl._originalTableId = expandoRowModelImpl._tableId;
-
-		expandoRowModelImpl._setOriginalTableId = false;
-
-		expandoRowModelImpl._originalClassPK = expandoRowModelImpl._classPK;
-
-		expandoRowModelImpl._setOriginalClassPK = false;
-
-		expandoRowModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -583,17 +598,48 @@ public class ExpandoRowModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("rowId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("modifiedDate", 16L);
+
+		columnBitmasks.put("tableId", 32L);
+
+		columnBitmasks.put("classPK", 64L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _rowId;
 	private long _companyId;
 	private Date _modifiedDate;
 	private long _tableId;
-	private long _originalTableId;
-	private boolean _setOriginalTableId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _columnBitmask;
 	private ExpandoRow _escapedModel;
 

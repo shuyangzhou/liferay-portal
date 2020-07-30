@@ -104,14 +104,39 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long APPBUILDERAPPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long APPBUILDERAPPVERSIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMSTRUCTURELAYOUTID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WORKFLOWTASKNAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long APPBUILDERWORKFLOWTASKLINKID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -326,6 +351,8 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -338,7 +365,7 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 	public void setAppBuilderWorkflowTaskLinkId(
 		long appBuilderWorkflowTaskLinkId) {
 
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("appBuilderWorkflowTaskLinkId");
 
 		_appBuilderWorkflowTaskLinkId = appBuilderWorkflowTaskLinkId;
 	}
@@ -350,6 +377,8 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -360,19 +389,18 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setAppBuilderAppId(long appBuilderAppId) {
-		_columnBitmask |= APPBUILDERAPPID_COLUMN_BITMASK;
-
-		if (!_setOriginalAppBuilderAppId) {
-			_setOriginalAppBuilderAppId = true;
-
-			_originalAppBuilderAppId = _appBuilderAppId;
-		}
+		_columnBitmask |= _columnBitmasks.get("appBuilderAppId");
 
 		_appBuilderAppId = appBuilderAppId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAppBuilderAppId() {
-		return _originalAppBuilderAppId;
+		return GetterUtil.getLong(getOriginalAttributeValue("appBuilderAppId"));
 	}
 
 	@Override
@@ -382,19 +410,19 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setAppBuilderAppVersionId(long appBuilderAppVersionId) {
-		_columnBitmask |= APPBUILDERAPPVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalAppBuilderAppVersionId) {
-			_setOriginalAppBuilderAppVersionId = true;
-
-			_originalAppBuilderAppVersionId = _appBuilderAppVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("appBuilderAppVersionId");
 
 		_appBuilderAppVersionId = appBuilderAppVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAppBuilderAppVersionId() {
-		return _originalAppBuilderAppVersionId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("appBuilderAppVersionId"));
 	}
 
 	@Override
@@ -404,19 +432,19 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setDdmStructureLayoutId(long ddmStructureLayoutId) {
-		_columnBitmask |= DDMSTRUCTURELAYOUTID_COLUMN_BITMASK;
-
-		if (!_setOriginalDdmStructureLayoutId) {
-			_setOriginalDdmStructureLayoutId = true;
-
-			_originalDdmStructureLayoutId = _ddmStructureLayoutId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ddmStructureLayoutId");
 
 		_ddmStructureLayoutId = ddmStructureLayoutId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDdmStructureLayoutId() {
-		return _originalDdmStructureLayoutId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("ddmStructureLayoutId"));
 	}
 
 	@Override
@@ -431,6 +459,8 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setReadOnly(boolean readOnly) {
+		_columnBitmask |= _columnBitmasks.get("readOnly");
+
 		_readOnly = readOnly;
 	}
 
@@ -446,17 +476,18 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void setWorkflowTaskName(String workflowTaskName) {
-		_columnBitmask |= WORKFLOWTASKNAME_COLUMN_BITMASK;
-
-		if (_originalWorkflowTaskName == null) {
-			_originalWorkflowTaskName = _workflowTaskName;
-		}
+		_columnBitmask |= _columnBitmasks.get("workflowTaskName");
 
 		_workflowTaskName = workflowTaskName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalWorkflowTaskName() {
-		return GetterUtil.getString(_originalWorkflowTaskName);
+		return getOriginalAttributeValue("workflowTaskName");
 	}
 
 	public long getColumnBitmask() {
@@ -591,30 +622,9 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AppBuilderWorkflowTaskLinkModelImpl
-			appBuilderWorkflowTaskLinkModelImpl = this;
+		_columnBitmask = 0;
 
-		appBuilderWorkflowTaskLinkModelImpl._originalAppBuilderAppId =
-			appBuilderWorkflowTaskLinkModelImpl._appBuilderAppId;
-
-		appBuilderWorkflowTaskLinkModelImpl._setOriginalAppBuilderAppId = false;
-
-		appBuilderWorkflowTaskLinkModelImpl._originalAppBuilderAppVersionId =
-			appBuilderWorkflowTaskLinkModelImpl._appBuilderAppVersionId;
-
-		appBuilderWorkflowTaskLinkModelImpl._setOriginalAppBuilderAppVersionId =
-			false;
-
-		appBuilderWorkflowTaskLinkModelImpl._originalDdmStructureLayoutId =
-			appBuilderWorkflowTaskLinkModelImpl._ddmStructureLayoutId;
-
-		appBuilderWorkflowTaskLinkModelImpl._setOriginalDdmStructureLayoutId =
-			false;
-
-		appBuilderWorkflowTaskLinkModelImpl._originalWorkflowTaskName =
-			appBuilderWorkflowTaskLinkModelImpl._workflowTaskName;
-
-		appBuilderWorkflowTaskLinkModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -730,21 +740,51 @@ public class AppBuilderWorkflowTaskLinkModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("appBuilderWorkflowTaskLinkId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("appBuilderAppId", 8L);
+
+		columnBitmasks.put("appBuilderAppVersionId", 16L);
+
+		columnBitmasks.put("ddmStructureLayoutId", 32L);
+
+		columnBitmasks.put("readOnly", 64L);
+
+		columnBitmasks.put("workflowTaskName", 128L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _appBuilderWorkflowTaskLinkId;
 	private long _companyId;
 	private long _appBuilderAppId;
-	private long _originalAppBuilderAppId;
-	private boolean _setOriginalAppBuilderAppId;
 	private long _appBuilderAppVersionId;
-	private long _originalAppBuilderAppVersionId;
-	private boolean _setOriginalAppBuilderAppVersionId;
 	private long _ddmStructureLayoutId;
-	private long _originalDdmStructureLayoutId;
-	private boolean _setOriginalDdmStructureLayoutId;
 	private boolean _readOnly;
 	private String _workflowTaskName;
-	private String _originalWorkflowTaskName;
 	private long _columnBitmask;
 	private AppBuilderWorkflowTaskLink _escapedModel;
 

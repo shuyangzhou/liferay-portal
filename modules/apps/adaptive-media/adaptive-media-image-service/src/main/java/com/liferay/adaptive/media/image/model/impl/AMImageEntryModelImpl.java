@@ -106,16 +106,46 @@ public class AMImageEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CONFIGURATIONUUID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FILEVERSIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long AMIMAGEENTRYID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -320,17 +350,18 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -340,6 +371,8 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setAmImageEntryId(long amImageEntryId) {
+		_columnBitmask |= _columnBitmasks.get("amImageEntryId");
+
 		_amImageEntryId = amImageEntryId;
 	}
 
@@ -350,19 +383,18 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@Override
@@ -372,19 +404,18 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -394,6 +425,8 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -409,17 +442,18 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setConfigurationUuid(String configurationUuid) {
-		_columnBitmask |= CONFIGURATIONUUID_COLUMN_BITMASK;
-
-		if (_originalConfigurationUuid == null) {
-			_originalConfigurationUuid = _configurationUuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("configurationUuid");
 
 		_configurationUuid = configurationUuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalConfigurationUuid() {
-		return GetterUtil.getString(_originalConfigurationUuid);
+		return getOriginalAttributeValue("configurationUuid");
 	}
 
 	@Override
@@ -429,19 +463,18 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setFileVersionId(long fileVersionId) {
-		_columnBitmask |= FILEVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalFileVersionId) {
-			_setOriginalFileVersionId = true;
-
-			_originalFileVersionId = _fileVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("fileVersionId");
 
 		_fileVersionId = fileVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalFileVersionId() {
-		return _originalFileVersionId;
+		return GetterUtil.getLong(getOriginalAttributeValue("fileVersionId"));
 	}
 
 	@Override
@@ -456,6 +489,8 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setMimeType(String mimeType) {
+		_columnBitmask |= _columnBitmasks.get("mimeType");
+
 		_mimeType = mimeType;
 	}
 
@@ -466,6 +501,8 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setHeight(int height) {
+		_columnBitmask |= _columnBitmasks.get("height");
+
 		_height = height;
 	}
 
@@ -476,6 +513,8 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setWidth(int width) {
+		_columnBitmask |= _columnBitmasks.get("width");
+
 		_width = width;
 	}
 
@@ -486,6 +525,8 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
 		_size = size;
 	}
 
@@ -604,28 +645,9 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AMImageEntryModelImpl amImageEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		amImageEntryModelImpl._originalUuid = amImageEntryModelImpl._uuid;
-
-		amImageEntryModelImpl._originalGroupId = amImageEntryModelImpl._groupId;
-
-		amImageEntryModelImpl._setOriginalGroupId = false;
-
-		amImageEntryModelImpl._originalCompanyId =
-			amImageEntryModelImpl._companyId;
-
-		amImageEntryModelImpl._setOriginalCompanyId = false;
-
-		amImageEntryModelImpl._originalConfigurationUuid =
-			amImageEntryModelImpl._configurationUuid;
-
-		amImageEntryModelImpl._originalFileVersionId =
-			amImageEntryModelImpl._fileVersionId;
-
-		amImageEntryModelImpl._setOriginalFileVersionId = false;
-
-		amImageEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -753,21 +775,56 @@ public class AMImageEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uuid", 1L);
+
+		columnBitmasks.put("amImageEntryId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("configurationUuid", 32L);
+
+		columnBitmasks.put("fileVersionId", 64L);
+
+		columnBitmasks.put("mimeType", 128L);
+
+		columnBitmasks.put("height", 256L);
+
+		columnBitmasks.put("width", 512L);
+
+		columnBitmasks.put("size", 1024L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _uuid;
-	private String _originalUuid;
 	private long _amImageEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private Date _createDate;
 	private String _configurationUuid;
-	private String _originalConfigurationUuid;
 	private long _fileVersionId;
-	private long _originalFileVersionId;
-	private boolean _setOriginalFileVersionId;
 	private String _mimeType;
 	private int _height;
 	private int _width;

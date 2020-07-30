@@ -114,10 +114,25 @@ public class PortalPreferencesModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OWNERID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OWNERTYPE_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PORTALPREFERENCESID_COLUMN_BITMASK = 4L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -293,6 +308,8 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -303,6 +320,8 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setPortalPreferencesId(long portalPreferencesId) {
+		_columnBitmask |= _columnBitmasks.get("portalPreferencesId");
+
 		_portalPreferencesId = portalPreferencesId;
 	}
 
@@ -313,19 +332,18 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setOwnerId(long ownerId) {
-		_columnBitmask |= OWNERID_COLUMN_BITMASK;
-
-		if (!_setOriginalOwnerId) {
-			_setOriginalOwnerId = true;
-
-			_originalOwnerId = _ownerId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ownerId");
 
 		_ownerId = ownerId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOwnerId() {
-		return _originalOwnerId;
+		return GetterUtil.getLong(getOriginalAttributeValue("ownerId"));
 	}
 
 	@Override
@@ -335,19 +353,18 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
-
-			_originalOwnerType = _ownerType;
-		}
+		_columnBitmask |= _columnBitmasks.get("ownerType");
 
 		_ownerType = ownerType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		return GetterUtil.getInteger(getOriginalAttributeValue("ownerType"));
 	}
 
 	@Override
@@ -362,6 +379,8 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setPreferences(String preferences) {
+		_columnBitmask |= _columnBitmasks.get("preferences");
+
 		_preferences = preferences;
 	}
 
@@ -475,19 +494,9 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortalPreferencesModelImpl portalPreferencesModelImpl = this;
+		_columnBitmask = 0;
 
-		portalPreferencesModelImpl._originalOwnerId =
-			portalPreferencesModelImpl._ownerId;
-
-		portalPreferencesModelImpl._setOriginalOwnerId = false;
-
-		portalPreferencesModelImpl._originalOwnerType =
-			portalPreferencesModelImpl._ownerType;
-
-		portalPreferencesModelImpl._setOriginalOwnerType = false;
-
-		portalPreferencesModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -585,14 +594,41 @@ public class PortalPreferencesModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("portalPreferencesId", 2L);
+
+		columnBitmasks.put("ownerId", 4L);
+
+		columnBitmasks.put("ownerType", 8L);
+
+		columnBitmasks.put("preferences", 16L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _portalPreferencesId;
 	private long _ownerId;
-	private long _originalOwnerId;
-	private boolean _setOriginalOwnerId;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private String _preferences;
 	private long _columnBitmask;
 	private PortalPreferences _escapedModel;

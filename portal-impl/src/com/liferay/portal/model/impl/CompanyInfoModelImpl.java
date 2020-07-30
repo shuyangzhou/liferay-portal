@@ -112,8 +112,18 @@ public class CompanyInfoModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYINFOID_COLUMN_BITMASK = 2L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -275,6 +285,8 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -285,6 +297,8 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setCompanyInfoId(long companyInfoId) {
+		_columnBitmask |= _columnBitmasks.get("companyInfoId");
+
 		_companyInfoId = companyInfoId;
 	}
 
@@ -295,19 +309,18 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -322,6 +335,8 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setKey(String key) {
+		_columnBitmask |= _columnBitmasks.get("key");
+
 		_key = key;
 	}
 
@@ -433,14 +448,9 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CompanyInfoModelImpl companyInfoModelImpl = this;
+		_columnBitmask = 0;
 
-		companyInfoModelImpl._originalCompanyId =
-			companyInfoModelImpl._companyId;
-
-		companyInfoModelImpl._setOriginalCompanyId = false;
-
-		companyInfoModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -535,11 +545,38 @@ public class CompanyInfoModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("companyInfoId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("key", 8L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _companyInfoId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _key;
 	private long _columnBitmask;
 	private CompanyInfo _escapedModel;

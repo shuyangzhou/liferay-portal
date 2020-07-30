@@ -106,12 +106,32 @@ public class DLContentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PATH_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long REPOSITORYID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSION_COLUMN_BITMASK = 8L;
 
 	/**
@@ -300,6 +320,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -310,6 +332,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -320,6 +344,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setContentId(long contentId) {
+		_columnBitmask |= _columnBitmasks.get("contentId");
+
 		_contentId = contentId;
 	}
 
@@ -330,6 +356,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -340,19 +368,18 @@ public class DLContentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -362,19 +389,18 @@ public class DLContentModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
-
-			_originalRepositoryId = _repositoryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("repositoryId");
 
 		_repositoryId = repositoryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("repositoryId"));
 	}
 
 	@Override
@@ -389,17 +415,18 @@ public class DLContentModelImpl
 
 	@Override
 	public void setPath(String path) {
-		_columnBitmask |= PATH_COLUMN_BITMASK;
-
-		if (_originalPath == null) {
-			_originalPath = _path;
-		}
+		_columnBitmask |= _columnBitmasks.get("path");
 
 		_path = path;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPath() {
-		return GetterUtil.getString(_originalPath);
+		return getOriginalAttributeValue("path");
 	}
 
 	@Override
@@ -414,17 +441,18 @@ public class DLContentModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask = -1L;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_columnBitmask |= _columnBitmasks.get("version");
 
 		_version = version;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return getOriginalAttributeValue("version");
 	}
 
 	@Override
@@ -449,6 +477,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setData(Blob data) {
+		_columnBitmask |= _columnBitmasks.get("data");
+
 		if (_dataBlobModel == null) {
 			_dataBlobModel = new DLContentDataBlobModel(getPrimaryKey(), data);
 		}
@@ -464,6 +494,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_columnBitmask |= _columnBitmasks.get("size");
+
 		_size = size;
 	}
 
@@ -580,24 +612,11 @@ public class DLContentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLContentModelImpl dlContentModelImpl = this;
+		_dataBlobModel = null;
 
-		dlContentModelImpl._originalCompanyId = dlContentModelImpl._companyId;
+		_columnBitmask = 0;
 
-		dlContentModelImpl._setOriginalCompanyId = false;
-
-		dlContentModelImpl._originalRepositoryId =
-			dlContentModelImpl._repositoryId;
-
-		dlContentModelImpl._setOriginalRepositoryId = false;
-
-		dlContentModelImpl._originalPath = dlContentModelImpl._path;
-
-		dlContentModelImpl._originalVersion = dlContentModelImpl._version;
-
-		dlContentModelImpl._dataBlobModel = null;
-
-		dlContentModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -721,20 +740,55 @@ public class DLContentModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("contentId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("repositoryId", 32L);
+
+		columnBitmasks.put("path", 64L);
+
+		columnBitmasks.put("version", 128L);
+
+		columnBitmasks.put("data", 256L);
+
+		columnBitmasks.put("size", 512L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _contentId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private String _path;
-	private String _originalPath;
 	private String _version;
-	private String _originalVersion;
 	private DLContentDataBlobModel _dataBlobModel;
 	private long _size;
 	private long _columnBitmask;

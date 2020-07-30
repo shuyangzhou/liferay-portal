@@ -115,8 +115,18 @@ public class ListTypeModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 2L;
 
 	/**
@@ -315,6 +325,8 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -326,6 +338,8 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setListTypeId(long listTypeId) {
+		_columnBitmask |= _columnBitmasks.get("listTypeId");
+
 		_listTypeId = listTypeId;
 	}
 
@@ -342,17 +356,18 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -368,17 +383,18 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (_originalType == null) {
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		return getOriginalAttributeValue("type");
 	}
 
 	public long getColumnBitmask() {
@@ -487,13 +503,9 @@ public class ListTypeModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ListTypeModelImpl listTypeModelImpl = this;
+		_columnBitmask = 0;
 
-		listTypeModelImpl._originalName = listTypeModelImpl._name;
-
-		listTypeModelImpl._originalType = listTypeModelImpl._type;
-
-		listTypeModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -593,12 +605,39 @@ public class ListTypeModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("listTypeId", 2L);
+
+		columnBitmasks.put("name", 4L);
+
+		columnBitmasks.put("type", 8L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _listTypeId;
 	private String _name;
-	private String _originalName;
 	private String _type;
-	private String _originalType;
 	private long _columnBitmask;
 	private ListType _escapedModel;
 

@@ -133,20 +133,60 @@ public class SocialActivityCounterModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ENDPERIOD_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OWNERTYPE_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long STARTPERIOD_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVITYCOUNTERID_COLUMN_BITMASK = 128L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -385,6 +425,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -395,6 +437,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -405,6 +449,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setActivityCounterId(long activityCounterId) {
+		_columnBitmask |= _columnBitmasks.get("activityCounterId");
+
 		_activityCounterId = activityCounterId;
 	}
 
@@ -415,19 +461,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@Override
@@ -437,6 +482,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -467,19 +514,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("classNameId");
 
 		_classNameId = classNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return GetterUtil.getLong(getOriginalAttributeValue("classNameId"));
 	}
 
 	@Override
@@ -489,19 +535,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("classPK");
 
 		_classPK = classPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return GetterUtil.getLong(getOriginalAttributeValue("classPK"));
 	}
 
 	@Override
@@ -516,17 +561,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -536,19 +582,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
-
-			_originalOwnerType = _ownerType;
-		}
+		_columnBitmask |= _columnBitmasks.get("ownerType");
 
 		_ownerType = ownerType;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		return GetterUtil.getInteger(getOriginalAttributeValue("ownerType"));
 	}
 
 	@Override
@@ -558,6 +603,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setCurrentValue(int currentValue) {
+		_columnBitmask |= _columnBitmasks.get("currentValue");
+
 		_currentValue = currentValue;
 	}
 
@@ -568,6 +615,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setTotalValue(int totalValue) {
+		_columnBitmask |= _columnBitmasks.get("totalValue");
+
 		_totalValue = totalValue;
 	}
 
@@ -578,6 +627,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setGraceValue(int graceValue) {
+		_columnBitmask |= _columnBitmasks.get("graceValue");
+
 		_graceValue = graceValue;
 	}
 
@@ -588,19 +639,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setStartPeriod(int startPeriod) {
-		_columnBitmask |= STARTPERIOD_COLUMN_BITMASK;
-
-		if (!_setOriginalStartPeriod) {
-			_setOriginalStartPeriod = true;
-
-			_originalStartPeriod = _startPeriod;
-		}
+		_columnBitmask |= _columnBitmasks.get("startPeriod");
 
 		_startPeriod = startPeriod;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalStartPeriod() {
-		return _originalStartPeriod;
+		return GetterUtil.getInteger(getOriginalAttributeValue("startPeriod"));
 	}
 
 	@Override
@@ -610,19 +660,18 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setEndPeriod(int endPeriod) {
-		_columnBitmask |= ENDPERIOD_COLUMN_BITMASK;
-
-		if (!_setOriginalEndPeriod) {
-			_setOriginalEndPeriod = true;
-
-			_originalEndPeriod = _endPeriod;
-		}
+		_columnBitmask |= _columnBitmasks.get("endPeriod");
 
 		_endPeriod = endPeriod;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalEndPeriod() {
-		return _originalEndPeriod;
+		return GetterUtil.getInteger(getOriginalAttributeValue("endPeriod"));
 	}
 
 	@Override
@@ -637,6 +686,8 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		_columnBitmask |= _columnBitmasks.get("active");
+
 		_active = active;
 	}
 
@@ -762,42 +813,9 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialActivityCounterModelImpl socialActivityCounterModelImpl = this;
+		_columnBitmask = 0;
 
-		socialActivityCounterModelImpl._originalGroupId =
-			socialActivityCounterModelImpl._groupId;
-
-		socialActivityCounterModelImpl._setOriginalGroupId = false;
-
-		socialActivityCounterModelImpl._originalClassNameId =
-			socialActivityCounterModelImpl._classNameId;
-
-		socialActivityCounterModelImpl._setOriginalClassNameId = false;
-
-		socialActivityCounterModelImpl._originalClassPK =
-			socialActivityCounterModelImpl._classPK;
-
-		socialActivityCounterModelImpl._setOriginalClassPK = false;
-
-		socialActivityCounterModelImpl._originalName =
-			socialActivityCounterModelImpl._name;
-
-		socialActivityCounterModelImpl._originalOwnerType =
-			socialActivityCounterModelImpl._ownerType;
-
-		socialActivityCounterModelImpl._setOriginalOwnerType = false;
-
-		socialActivityCounterModelImpl._originalStartPeriod =
-			socialActivityCounterModelImpl._startPeriod;
-
-		socialActivityCounterModelImpl._setOriginalStartPeriod = false;
-
-		socialActivityCounterModelImpl._originalEndPeriod =
-			socialActivityCounterModelImpl._endPeriod;
-
-		socialActivityCounterModelImpl._setOriginalEndPeriod = false;
-
-		socialActivityCounterModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -917,33 +935,71 @@ public class SocialActivityCounterModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("activityCounterId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("classNameId", 32L);
+
+		columnBitmasks.put("classPK", 64L);
+
+		columnBitmasks.put("name", 128L);
+
+		columnBitmasks.put("ownerType", 256L);
+
+		columnBitmasks.put("currentValue", 512L);
+
+		columnBitmasks.put("totalValue", 1024L);
+
+		columnBitmasks.put("graceValue", 2048L);
+
+		columnBitmasks.put("startPeriod", 4096L);
+
+		columnBitmasks.put("endPeriod", 8192L);
+
+		columnBitmasks.put("active", 16384L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private long _activityCounterId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _name;
-	private String _originalName;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private int _currentValue;
 	private int _totalValue;
 	private int _graceValue;
 	private int _startPeriod;
-	private int _originalStartPeriod;
-	private boolean _setOriginalStartPeriod;
 	private int _endPeriod;
-	private int _originalEndPeriod;
-	private boolean _setOriginalEndPeriod;
 	private boolean _active;
 	private long _columnBitmask;
 	private SocialActivityCounter _escapedModel;

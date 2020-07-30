@@ -111,7 +111,14 @@ public class LocalizedEntryModelImpl
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = true;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
+	public static final long LOCALIZEDENTRYID_COLUMN_BITMASK = 1L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -425,6 +432,8 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_columnBitmask |= _columnBitmasks.get("defaultLanguageId");
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -435,7 +444,13 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setLocalizedEntryId(long localizedEntryId) {
+		_columnBitmask |= _columnBitmasks.get("localizedEntryId");
+
 		_localizedEntryId = localizedEntryId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -540,6 +555,9 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -630,8 +648,34 @@ public class LocalizedEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("defaultLanguageId", 1L);
+
+		columnBitmasks.put("localizedEntryId", 2L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _defaultLanguageId;
 	private long _localizedEntryId;
+	private long _columnBitmask;
 	private LocalizedEntry _escapedModel;
 
 }

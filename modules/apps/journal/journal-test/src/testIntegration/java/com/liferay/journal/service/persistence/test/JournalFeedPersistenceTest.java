@@ -549,22 +549,25 @@ public class JournalFeedPersistenceTest {
 			Objects.equals(
 				existingJournalFeed.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingJournalFeed, "getOriginalUuid", new Class<?>[0])));
+					existingJournalFeed, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalFeed.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFeed, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalFeed, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalFeed.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFeed, "getOriginalGroupId", new Class<?>[0]));
+				existingJournalFeed, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalFeed.getFeedId(),
 				ReflectionTestUtil.invoke(
-					existingJournalFeed, "getOriginalFeedId",
-					new Class<?>[0])));
+					existingJournalFeed, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "feedId")));
 	}
 
 	protected JournalFeed addJournalFeed() throws Exception {

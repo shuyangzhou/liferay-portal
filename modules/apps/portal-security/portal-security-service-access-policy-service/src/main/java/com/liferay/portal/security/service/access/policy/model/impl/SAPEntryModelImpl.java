@@ -125,14 +125,39 @@ public class SAPEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEFAULTSAPENTRY_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SAPENTRYID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -384,17 +409,18 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -405,6 +431,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setSapEntryId(long sapEntryId) {
+		_columnBitmask |= _columnBitmasks.get("sapEntryId");
+
 		_sapEntryId = sapEntryId;
 	}
 
@@ -416,19 +444,18 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -439,6 +466,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -471,6 +500,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -482,6 +513,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -499,6 +532,8 @@ public class SAPEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -515,6 +550,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setAllowedServiceSignatures(String allowedServiceSignatures) {
+		_columnBitmask |= _columnBitmasks.get("allowedServiceSignatures");
+
 		_allowedServiceSignatures = allowedServiceSignatures;
 	}
 
@@ -532,19 +569,19 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setDefaultSAPEntry(boolean defaultSAPEntry) {
-		_columnBitmask |= DEFAULTSAPENTRY_COLUMN_BITMASK;
-
-		if (!_setOriginalDefaultSAPEntry) {
-			_setOriginalDefaultSAPEntry = true;
-
-			_originalDefaultSAPEntry = _defaultSAPEntry;
-		}
+		_columnBitmask |= _columnBitmasks.get("defaultSAPEntry");
 
 		_defaultSAPEntry = defaultSAPEntry;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDefaultSAPEntry() {
-		return _originalDefaultSAPEntry;
+		return GetterUtil.getBoolean(
+			getOriginalAttributeValue("defaultSAPEntry"));
 	}
 
 	@JSON
@@ -561,6 +598,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		_columnBitmask |= _columnBitmasks.get("enabled");
+
 		_enabled = enabled;
 	}
 
@@ -577,17 +616,18 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@JSON
@@ -646,6 +686,8 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_columnBitmask |= _columnBitmasks.get("title");
+
 		_title = title;
 	}
 
@@ -883,24 +925,11 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SAPEntryModelImpl sapEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		sapEntryModelImpl._originalUuid = sapEntryModelImpl._uuid;
+		_columnBitmask = 0;
 
-		sapEntryModelImpl._originalCompanyId = sapEntryModelImpl._companyId;
-
-		sapEntryModelImpl._setOriginalCompanyId = false;
-
-		sapEntryModelImpl._setModifiedDate = false;
-
-		sapEntryModelImpl._originalDefaultSAPEntry =
-			sapEntryModelImpl._defaultSAPEntry;
-
-		sapEntryModelImpl._setOriginalDefaultSAPEntry = false;
-
-		sapEntryModelImpl._originalName = sapEntryModelImpl._name;
-
-		sapEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1052,12 +1081,54 @@ public class SAPEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uuid", 1L);
+
+		columnBitmasks.put("sapEntryId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("userId", 8L);
+
+		columnBitmasks.put("userName", 16L);
+
+		columnBitmasks.put("createDate", 32L);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		columnBitmasks.put("allowedServiceSignatures", 128L);
+
+		columnBitmasks.put("defaultSAPEntry", 256L);
+
+		columnBitmasks.put("enabled", 512L);
+
+		columnBitmasks.put("name", 1024L);
+
+		columnBitmasks.put("title", 2048L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _uuid;
-	private String _originalUuid;
 	private long _sapEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1065,11 +1136,8 @@ public class SAPEntryModelImpl
 	private boolean _setModifiedDate;
 	private String _allowedServiceSignatures;
 	private boolean _defaultSAPEntry;
-	private boolean _originalDefaultSAPEntry;
-	private boolean _setOriginalDefaultSAPEntry;
 	private boolean _enabled;
 	private String _name;
-	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
 	private long _columnBitmask;

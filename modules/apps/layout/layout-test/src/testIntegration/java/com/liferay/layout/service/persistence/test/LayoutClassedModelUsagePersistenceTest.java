@@ -579,40 +579,42 @@ public class LayoutClassedModelUsagePersistenceTest {
 			Objects.equals(
 				existingLayoutClassedModelUsage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutClassedModelUsage, "getOriginalUuid",
-					new Class<?>[0])));
+					existingLayoutClassedModelUsage,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutClassedModelUsage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingLayoutClassedModelUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutClassedModelUsage.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalClassNameId",
-				new Class<?>[0]));
+				existingLayoutClassedModelUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classNameId"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutClassedModelUsage.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalClassPK",
-				new Class<?>[0]));
+				existingLayoutClassedModelUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "classPK"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLayoutClassedModelUsage.getContainerKey(),
 				ReflectionTestUtil.invoke(
-					existingLayoutClassedModelUsage, "getOriginalContainerKey",
-					new Class<?>[0])));
+					existingLayoutClassedModelUsage,
+					"getOriginalAttributeValue", new Class<?>[] {String.class},
+					"containerKey")));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutClassedModelUsage.getContainerType()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalContainerType",
-				new Class<?>[0]));
+				existingLayoutClassedModelUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "containerType"));
 		Assert.assertEquals(
 			Long.valueOf(existingLayoutClassedModelUsage.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalPlid",
-				new Class<?>[0]));
+				existingLayoutClassedModelUsage, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "plid"));
 	}
 
 	protected LayoutClassedModelUsage addLayoutClassedModelUsage()

@@ -2128,8 +2128,8 @@ public class MBDiscussionPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getOriginalUuid(),
-				mbDiscussionModelImpl.getOriginalGroupId()
+				mbDiscussionModelImpl.getOriginalAttributeValue("uuid"),
+				mbDiscussionModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2147,7 +2147,7 @@ public class MBDiscussionPersistenceImpl
 			 _finderPathFetchByThreadId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getOriginalThreadId()
+				mbDiscussionModelImpl.getOriginalAttributeValue("threadId")
 			};
 
 			finderCache.removeResult(_finderPathCountByThreadId, args);
@@ -2168,8 +2168,8 @@ public class MBDiscussionPersistenceImpl
 			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				mbDiscussionModelImpl.getOriginalClassNameId(),
-				mbDiscussionModelImpl.getOriginalClassPK()
+				mbDiscussionModelImpl.getOriginalAttributeValue("classNameId"),
+				mbDiscussionModelImpl.getOriginalAttributeValue("classPK")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_C, args);
@@ -2407,7 +2407,7 @@ public class MBDiscussionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					mbDiscussionModelImpl.getOriginalUuid()
+					mbDiscussionModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2426,8 +2426,8 @@ public class MBDiscussionPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					mbDiscussionModelImpl.getOriginalUuid(),
-					mbDiscussionModelImpl.getOriginalCompanyId()
+					mbDiscussionModelImpl.getOriginalAttributeValue("uuid"),
+					mbDiscussionModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2925,7 +2925,7 @@ public class MBDiscussionPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			MBDiscussionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			MBDiscussionModelImpl.UUID_COLUMN_BITMASK);
+			MBDiscussionModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2934,8 +2934,8 @@ public class MBDiscussionPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			MBDiscussionImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			MBDiscussionModelImpl.UUID_COLUMN_BITMASK |
-			MBDiscussionModelImpl.GROUPID_COLUMN_BITMASK);
+			MBDiscussionModelImpl.getColumnBitmask("uuid") |
+			MBDiscussionModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2955,8 +2955,8 @@ public class MBDiscussionPersistenceImpl
 			MBDiscussionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			MBDiscussionModelImpl.UUID_COLUMN_BITMASK |
-			MBDiscussionModelImpl.COMPANYID_COLUMN_BITMASK);
+			MBDiscussionModelImpl.getColumnBitmask("uuid") |
+			MBDiscussionModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2966,7 +2966,7 @@ public class MBDiscussionPersistenceImpl
 		_finderPathFetchByThreadId = new FinderPath(
 			MBDiscussionImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByThreadId",
 			new String[] {Long.class.getName()},
-			MBDiscussionModelImpl.THREADID_COLUMN_BITMASK);
+			MBDiscussionModelImpl.getColumnBitmask("threadId"));
 
 		_finderPathCountByThreadId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2975,8 +2975,8 @@ public class MBDiscussionPersistenceImpl
 		_finderPathFetchByC_C = new FinderPath(
 			MBDiscussionImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			MBDiscussionModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			MBDiscussionModelImpl.CLASSPK_COLUMN_BITMASK);
+			MBDiscussionModelImpl.getColumnBitmask("classNameId") |
+			MBDiscussionModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",

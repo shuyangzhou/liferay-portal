@@ -5480,8 +5480,8 @@ public class SharingEntryPersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				sharingEntryModelImpl.getOriginalUuid(),
-				sharingEntryModelImpl.getOriginalGroupId()
+				sharingEntryModelImpl.getOriginalAttributeValue("uuid"),
+				sharingEntryModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -5503,9 +5503,9 @@ public class SharingEntryPersistenceImpl
 			 _finderPathFetchByTU_C_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				sharingEntryModelImpl.getOriginalToUserId(),
-				sharingEntryModelImpl.getOriginalClassNameId(),
-				sharingEntryModelImpl.getOriginalClassPK()
+				sharingEntryModelImpl.getOriginalAttributeValue("toUserId"),
+				sharingEntryModelImpl.getOriginalAttributeValue("classNameId"),
+				sharingEntryModelImpl.getOriginalAttributeValue("classPK")
 			};
 
 			finderCache.removeResult(_finderPathCountByTU_C_C, args);
@@ -5768,7 +5768,7 @@ public class SharingEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalUuid()
+					sharingEntryModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -5787,8 +5787,8 @@ public class SharingEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalUuid(),
-					sharingEntryModelImpl.getOriginalCompanyId()
+					sharingEntryModelImpl.getOriginalAttributeValue("uuid"),
+					sharingEntryModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -5810,7 +5810,7 @@ public class SharingEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalGroupId()
+					sharingEntryModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -5829,7 +5829,7 @@ public class SharingEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalUserId()
+					sharingEntryModelImpl.getOriginalAttributeValue("userId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUserId, args);
@@ -5848,7 +5848,7 @@ public class SharingEntryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalToUserId()
+					sharingEntryModelImpl.getOriginalAttributeValue("toUserId")
 				};
 
 				finderCache.removeResult(_finderPathCountByToUserId, args);
@@ -5867,8 +5867,9 @@ public class SharingEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalUserId(),
-					sharingEntryModelImpl.getOriginalClassNameId()
+					sharingEntryModelImpl.getOriginalAttributeValue("userId"),
+					sharingEntryModelImpl.getOriginalAttributeValue(
+						"classNameId")
 				};
 
 				finderCache.removeResult(_finderPathCountByU_C, args);
@@ -5890,8 +5891,9 @@ public class SharingEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalToUserId(),
-					sharingEntryModelImpl.getOriginalClassNameId()
+					sharingEntryModelImpl.getOriginalAttributeValue("toUserId"),
+					sharingEntryModelImpl.getOriginalAttributeValue(
+						"classNameId")
 				};
 
 				finderCache.removeResult(_finderPathCountByTU_C, args);
@@ -5913,8 +5915,9 @@ public class SharingEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharingEntryModelImpl.getOriginalClassNameId(),
-					sharingEntryModelImpl.getOriginalClassPK()
+					sharingEntryModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					sharingEntryModelImpl.getOriginalAttributeValue("classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByC_C, args);
@@ -6226,7 +6229,7 @@ public class SharingEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			SharingEntryModelImpl.UUID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6235,8 +6238,8 @@ public class SharingEntryPersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			SharingEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SharingEntryModelImpl.UUID_COLUMN_BITMASK |
-			SharingEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("uuid") |
+			SharingEntryModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6256,8 +6259,8 @@ public class SharingEntryPersistenceImpl
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SharingEntryModelImpl.UUID_COLUMN_BITMASK |
-			SharingEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("uuid") |
+			SharingEntryModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6275,7 +6278,7 @@ public class SharingEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			SharingEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6292,7 +6295,7 @@ public class SharingEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUserId", new String[] {Long.class.getName()},
-			SharingEntryModelImpl.USERID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6309,7 +6312,7 @@ public class SharingEntryPersistenceImpl
 		_finderPathWithoutPaginationFindByToUserId = new FinderPath(
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByToUserId", new String[] {Long.class.getName()},
-			SharingEntryModelImpl.TOUSERID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("toUserId"));
 
 		_finderPathCountByToUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6340,8 +6343,8 @@ public class SharingEntryPersistenceImpl
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByU_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			SharingEntryModelImpl.USERID_COLUMN_BITMASK |
-			SharingEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("userId") |
+			SharingEntryModelImpl.getColumnBitmask("classNameId"));
 
 		_finderPathCountByU_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_C",
@@ -6360,8 +6363,8 @@ public class SharingEntryPersistenceImpl
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByTU_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			SharingEntryModelImpl.TOUSERID_COLUMN_BITMASK |
-			SharingEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("toUserId") |
+			SharingEntryModelImpl.getColumnBitmask("classNameId"));
 
 		_finderPathCountByTU_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -6381,8 +6384,8 @@ public class SharingEntryPersistenceImpl
 			SharingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			SharingEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SharingEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("classNameId") |
+			SharingEntryModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByC_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
@@ -6393,9 +6396,9 @@ public class SharingEntryPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			SharingEntryModelImpl.TOUSERID_COLUMN_BITMASK |
-			SharingEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SharingEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+			SharingEntryModelImpl.getColumnBitmask("toUserId") |
+			SharingEntryModelImpl.getColumnBitmask("classNameId") |
+			SharingEntryModelImpl.getColumnBitmask("classPK"));
 
 		_finderPathCountByTU_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

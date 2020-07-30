@@ -507,14 +507,14 @@ public class AssetCategoryPropertyPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAssetCategoryProperty.getCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetCategoryProperty, "getOriginalCategoryId",
-				new Class<?>[0]));
+				existingAssetCategoryProperty, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "categoryId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingAssetCategoryProperty.getKey(),
 				ReflectionTestUtil.invoke(
-					existingAssetCategoryProperty, "getOriginalKey",
-					new Class<?>[0])));
+					existingAssetCategoryProperty, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "key")));
 	}
 
 	protected AssetCategoryProperty addAssetCategoryProperty()

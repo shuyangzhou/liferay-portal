@@ -486,13 +486,13 @@ public class AssetAutoTaggerEntryPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingAssetAutoTaggerEntry.getAssetEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetAutoTaggerEntry, "getOriginalAssetEntryId",
-				new Class<?>[0]));
+				existingAssetAutoTaggerEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "assetEntryId"));
 		Assert.assertEquals(
 			Long.valueOf(existingAssetAutoTaggerEntry.getAssetTagId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetAutoTaggerEntry, "getOriginalAssetTagId",
-				new Class<?>[0]));
+				existingAssetAutoTaggerEntry, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "assetTagId"));
 	}
 
 	protected AssetAutoTaggerEntry addAssetAutoTaggerEntry() throws Exception {

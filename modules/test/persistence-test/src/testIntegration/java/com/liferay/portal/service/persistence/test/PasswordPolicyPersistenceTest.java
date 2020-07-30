@@ -604,25 +604,25 @@ public class PasswordPolicyPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingPasswordPolicy.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPasswordPolicy, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingPasswordPolicy, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
 			Boolean.valueOf(existingPasswordPolicy.getDefaultPolicy()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingPasswordPolicy, "getOriginalDefaultPolicy",
-				new Class<?>[0]));
+				existingPasswordPolicy, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "defaultPolicy"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingPasswordPolicy.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPasswordPolicy, "getOriginalCompanyId",
-				new Class<?>[0]));
+				existingPasswordPolicy, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingPasswordPolicy.getName(),
 				ReflectionTestUtil.invoke(
-					existingPasswordPolicy, "getOriginalName",
-					new Class<?>[0])));
+					existingPasswordPolicy, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 	}
 
 	protected PasswordPolicy addPasswordPolicy() throws Exception {

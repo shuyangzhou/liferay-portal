@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -103,10 +104,25 @@ public class AccountEntryOrganizationRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ORGANIZATIONID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYORGANIZATIONRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -350,6 +366,8 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -363,6 +381,8 @@ public class AccountEntryOrganizationRelModelImpl
 	public void setAccountEntryOrganizationRelId(
 		long accountEntryOrganizationRelId) {
 
+		_columnBitmask |= _columnBitmasks.get("accountEntryOrganizationRelId");
+
 		_accountEntryOrganizationRelId = accountEntryOrganizationRelId;
 	}
 
@@ -374,6 +394,8 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -385,19 +407,18 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
-
-			_originalAccountEntryId = _accountEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountEntryId");
 
 		_accountEntryId = accountEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("accountEntryId"));
 	}
 
 	@JSON
@@ -408,19 +429,18 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
-		_columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalOrganizationId) {
-			_setOriginalOrganizationId = true;
-
-			_originalOrganizationId = _organizationId;
-		}
+		_columnBitmask |= _columnBitmasks.get("organizationId");
 
 		_organizationId = organizationId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalOrganizationId() {
-		return _originalOrganizationId;
+		return GetterUtil.getLong(getOriginalAttributeValue("organizationId"));
 	}
 
 	public long getColumnBitmask() {
@@ -538,20 +558,9 @@ public class AccountEntryOrganizationRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEntryOrganizationRelModelImpl
-			accountEntryOrganizationRelModelImpl = this;
+		_columnBitmask = 0;
 
-		accountEntryOrganizationRelModelImpl._originalAccountEntryId =
-			accountEntryOrganizationRelModelImpl._accountEntryId;
-
-		accountEntryOrganizationRelModelImpl._setOriginalAccountEntryId = false;
-
-		accountEntryOrganizationRelModelImpl._originalOrganizationId =
-			accountEntryOrganizationRelModelImpl._organizationId;
-
-		accountEntryOrganizationRelModelImpl._setOriginalOrganizationId = false;
-
-		accountEntryOrganizationRelModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -652,15 +661,42 @@ public class AccountEntryOrganizationRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("accountEntryOrganizationRelId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("accountEntryId", 8L);
+
+		columnBitmasks.put("organizationId", 16L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _accountEntryOrganizationRelId;
 	private long _companyId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _organizationId;
-	private long _originalOrganizationId;
-	private boolean _setOriginalOrganizationId;
 	private long _columnBitmask;
 	private AccountEntryOrganizationRel _escapedModel;
 

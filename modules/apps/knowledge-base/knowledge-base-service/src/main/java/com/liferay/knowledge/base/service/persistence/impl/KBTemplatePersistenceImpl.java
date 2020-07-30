@@ -2457,8 +2457,8 @@ public class KBTemplatePersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				kbTemplateModelImpl.getOriginalUuid(),
-				kbTemplateModelImpl.getOriginalGroupId()
+				kbTemplateModelImpl.getOriginalAttributeValue("uuid"),
+				kbTemplateModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2703,7 +2703,7 @@ public class KBTemplatePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbTemplateModelImpl.getOriginalUuid()
+					kbTemplateModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2722,8 +2722,8 @@ public class KBTemplatePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					kbTemplateModelImpl.getOriginalUuid(),
-					kbTemplateModelImpl.getOriginalCompanyId()
+					kbTemplateModelImpl.getOriginalAttributeValue("uuid"),
+					kbTemplateModelImpl.getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2745,7 +2745,7 @@ public class KBTemplatePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					kbTemplateModelImpl.getOriginalGroupId()
+					kbTemplateModelImpl.getOriginalAttributeValue("groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -3054,8 +3054,8 @@ public class KBTemplatePersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			KBTemplateImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			KBTemplateModelImpl.UUID_COLUMN_BITMASK |
-			KBTemplateModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBTemplateModelImpl.getColumnBitmask("uuid") |
+			KBTemplateModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3064,8 +3064,8 @@ public class KBTemplatePersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			KBTemplateImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KBTemplateModelImpl.UUID_COLUMN_BITMASK |
-			KBTemplateModelImpl.GROUPID_COLUMN_BITMASK);
+			KBTemplateModelImpl.getColumnBitmask("uuid") |
+			KBTemplateModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3085,9 +3085,9 @@ public class KBTemplatePersistenceImpl
 			KBTemplateImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			KBTemplateModelImpl.UUID_COLUMN_BITMASK |
-			KBTemplateModelImpl.COMPANYID_COLUMN_BITMASK |
-			KBTemplateModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBTemplateModelImpl.getColumnBitmask("uuid") |
+			KBTemplateModelImpl.getColumnBitmask("companyId") |
+			KBTemplateModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3105,8 +3105,8 @@ public class KBTemplatePersistenceImpl
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			KBTemplateImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
-			KBTemplateModelImpl.GROUPID_COLUMN_BITMASK |
-			KBTemplateModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			KBTemplateModelImpl.getColumnBitmask("groupId") |
+			KBTemplateModelImpl.getColumnBitmask("modifiedDate"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

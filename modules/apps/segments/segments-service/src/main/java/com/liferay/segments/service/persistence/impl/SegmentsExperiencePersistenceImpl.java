@@ -9768,8 +9768,8 @@ public class SegmentsExperiencePersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				segmentsExperienceModelImpl.getOriginalUuid(),
-				segmentsExperienceModelImpl.getOriginalGroupId()
+				segmentsExperienceModelImpl.getOriginalAttributeValue("uuid"),
+				segmentsExperienceModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -9790,8 +9790,10 @@ public class SegmentsExperiencePersistenceImpl
 			 _finderPathFetchByG_S.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				segmentsExperienceModelImpl.getOriginalGroupId(),
-				segmentsExperienceModelImpl.getOriginalSegmentsExperienceKey()
+				segmentsExperienceModelImpl.getOriginalAttributeValue(
+					"groupId"),
+				segmentsExperienceModelImpl.getOriginalAttributeValue(
+					"segmentsExperienceKey")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_S, args);
@@ -9814,10 +9816,14 @@ public class SegmentsExperiencePersistenceImpl
 			 _finderPathFetchByG_C_C_P.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				segmentsExperienceModelImpl.getOriginalGroupId(),
-				segmentsExperienceModelImpl.getOriginalClassNameId(),
-				segmentsExperienceModelImpl.getOriginalClassPK(),
-				segmentsExperienceModelImpl.getOriginalPriority()
+				segmentsExperienceModelImpl.getOriginalAttributeValue(
+					"groupId"),
+				segmentsExperienceModelImpl.getOriginalAttributeValue(
+					"classNameId"),
+				segmentsExperienceModelImpl.getOriginalAttributeValue(
+					"classPK"),
+				segmentsExperienceModelImpl.getOriginalAttributeValue(
+					"priority")
 			};
 
 			finderCache.removeResult(_finderPathCountByG_C_C_P, args);
@@ -10124,7 +10130,8 @@ public class SegmentsExperiencePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalUuid()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -10143,8 +10150,10 @@ public class SegmentsExperiencePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalUuid(),
-					segmentsExperienceModelImpl.getOriginalCompanyId()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"uuid"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -10166,7 +10175,8 @@ public class SegmentsExperiencePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalGroupId()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"groupId")
 				};
 
 				finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -10185,7 +10195,8 @@ public class SegmentsExperiencePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalSegmentsEntryId()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"segmentsEntryId")
 				};
 
 				finderCache.removeResult(
@@ -10208,9 +10219,12 @@ public class SegmentsExperiencePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalGroupId(),
-					segmentsExperienceModelImpl.getOriginalClassNameId(),
-					segmentsExperienceModelImpl.getOriginalClassPK()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_C_C, args);
@@ -10233,10 +10247,14 @@ public class SegmentsExperiencePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalGroupId(),
-					segmentsExperienceModelImpl.getOriginalSegmentsEntryId(),
-					segmentsExperienceModelImpl.getOriginalClassNameId(),
-					segmentsExperienceModelImpl.getOriginalClassPK()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"segmentsEntryId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classPK")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_S_C_C, args);
@@ -10260,10 +10278,14 @@ public class SegmentsExperiencePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalGroupId(),
-					segmentsExperienceModelImpl.getOriginalClassNameId(),
-					segmentsExperienceModelImpl.getOriginalClassPK(),
-					segmentsExperienceModelImpl.getOriginalActive()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classPK"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"active")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_C_C_A, args);
@@ -10287,11 +10309,16 @@ public class SegmentsExperiencePersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					segmentsExperienceModelImpl.getOriginalGroupId(),
-					segmentsExperienceModelImpl.getOriginalSegmentsEntryId(),
-					segmentsExperienceModelImpl.getOriginalClassNameId(),
-					segmentsExperienceModelImpl.getOriginalClassPK(),
-					segmentsExperienceModelImpl.getOriginalActive()
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"groupId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"segmentsEntryId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classNameId"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"classPK"),
+					segmentsExperienceModelImpl.getOriginalAttributeValue(
+						"active")
 				};
 
 				finderCache.removeResult(_finderPathCountByG_S_C_C_A, args);
@@ -10808,8 +10835,8 @@ public class SegmentsExperiencePersistenceImpl
 			SegmentsExperienceImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			SegmentsExperienceModelImpl.UUID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("uuid") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10819,8 +10846,8 @@ public class SegmentsExperiencePersistenceImpl
 			SegmentsExperienceImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SegmentsExperienceModelImpl.UUID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("uuid") |
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10840,9 +10867,9 @@ public class SegmentsExperiencePersistenceImpl
 			SegmentsExperienceImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			SegmentsExperienceModelImpl.UUID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.COMPANYID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("uuid") |
+			SegmentsExperienceModelImpl.getColumnBitmask("companyId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10861,8 +10888,8 @@ public class SegmentsExperiencePersistenceImpl
 			SegmentsExperienceImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10880,8 +10907,8 @@ public class SegmentsExperiencePersistenceImpl
 			SegmentsExperienceImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySegmentsEntryId",
 			new String[] {Long.class.getName()},
-			SegmentsExperienceModelImpl.SEGMENTSENTRYID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("segmentsEntryId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountBySegmentsEntryId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10891,8 +10918,9 @@ public class SegmentsExperiencePersistenceImpl
 			SegmentsExperienceImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByG_S",
 			new String[] {Long.class.getName(), String.class.getName()},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.SEGMENTSEXPERIENCEKEY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask(
+				"segmentsExperienceKey"));
 
 		_finderPathCountByG_S = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
@@ -10913,10 +10941,10 @@ public class SegmentsExperiencePersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSPK_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classNameId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classPK") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByG_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10942,11 +10970,11 @@ public class SegmentsExperiencePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Long.class.getName()
 			},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.SEGMENTSENTRYID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSPK_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("segmentsEntryId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classNameId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classPK") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByG_S_C_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -10963,10 +10991,10 @@ public class SegmentsExperiencePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSPK_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classNameId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classPK") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByG_C_C_P = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -11011,11 +11039,11 @@ public class SegmentsExperiencePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Boolean.class.getName()
 			},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSPK_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.ACTIVE_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classNameId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classPK") |
+			SegmentsExperienceModelImpl.getColumnBitmask("active") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByG_C_C_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -11043,12 +11071,12 @@ public class SegmentsExperiencePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			SegmentsExperienceModelImpl.GROUPID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.SEGMENTSENTRYID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.CLASSPK_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.ACTIVE_COLUMN_BITMASK |
-			SegmentsExperienceModelImpl.PRIORITY_COLUMN_BITMASK);
+			SegmentsExperienceModelImpl.getColumnBitmask("groupId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("segmentsEntryId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classNameId") |
+			SegmentsExperienceModelImpl.getColumnBitmask("classPK") |
+			SegmentsExperienceModelImpl.getColumnBitmask("active") |
+			SegmentsExperienceModelImpl.getColumnBitmask("priority"));
 
 		_finderPathCountByG_S_C_C_A = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

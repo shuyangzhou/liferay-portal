@@ -135,20 +135,60 @@ public class LayoutFriendlyURLModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FRIENDLYURL_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LANGUAGEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PLID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long LAYOUTFRIENDLYURLID_COLUMN_BITMASK = 128L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -378,6 +418,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -388,6 +430,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -403,17 +447,18 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -423,6 +468,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setLayoutFriendlyURLId(long layoutFriendlyURLId) {
+		_columnBitmask |= _columnBitmasks.get("layoutFriendlyURLId");
+
 		_layoutFriendlyURLId = layoutFriendlyURLId;
 	}
 
@@ -433,19 +480,18 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@Override
@@ -455,19 +501,18 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -477,6 +522,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -508,6 +555,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -518,6 +567,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -534,6 +585,8 @@ public class LayoutFriendlyURLModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -544,19 +597,18 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setPlid(long plid) {
-		_columnBitmask |= PLID_COLUMN_BITMASK;
-
-		if (!_setOriginalPlid) {
-			_setOriginalPlid = true;
-
-			_originalPlid = _plid;
-		}
+		_columnBitmask |= _columnBitmasks.get("plid");
 
 		_plid = plid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalPlid() {
-		return _originalPlid;
+		return GetterUtil.getLong(getOriginalAttributeValue("plid"));
 	}
 
 	@Override
@@ -571,19 +623,19 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
-
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
-
-			_originalPrivateLayout = _privateLayout;
-		}
+		_columnBitmask |= _columnBitmasks.get("privateLayout");
 
 		_privateLayout = privateLayout;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		return GetterUtil.getBoolean(
+			getOriginalAttributeValue("privateLayout"));
 	}
 
 	@Override
@@ -598,17 +650,18 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setFriendlyURL(String friendlyURL) {
-		_columnBitmask |= FRIENDLYURL_COLUMN_BITMASK;
-
-		if (_originalFriendlyURL == null) {
-			_originalFriendlyURL = _friendlyURL;
-		}
+		_columnBitmask |= _columnBitmasks.get("friendlyURL");
 
 		_friendlyURL = friendlyURL;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFriendlyURL() {
-		return GetterUtil.getString(_originalFriendlyURL);
+		return getOriginalAttributeValue("friendlyURL");
 	}
 
 	@Override
@@ -623,17 +676,18 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
-
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
-		}
+		_columnBitmask |= _columnBitmasks.get("languageId");
 
 		_languageId = languageId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		return getOriginalAttributeValue("languageId");
 	}
 
 	@Override
@@ -643,6 +697,8 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -772,40 +828,11 @@ public class LayoutFriendlyURLModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutFriendlyURLModelImpl layoutFriendlyURLModelImpl = this;
+		_setModifiedDate = false;
 
-		layoutFriendlyURLModelImpl._originalUuid =
-			layoutFriendlyURLModelImpl._uuid;
+		_columnBitmask = 0;
 
-		layoutFriendlyURLModelImpl._originalGroupId =
-			layoutFriendlyURLModelImpl._groupId;
-
-		layoutFriendlyURLModelImpl._setOriginalGroupId = false;
-
-		layoutFriendlyURLModelImpl._originalCompanyId =
-			layoutFriendlyURLModelImpl._companyId;
-
-		layoutFriendlyURLModelImpl._setOriginalCompanyId = false;
-
-		layoutFriendlyURLModelImpl._setModifiedDate = false;
-
-		layoutFriendlyURLModelImpl._originalPlid =
-			layoutFriendlyURLModelImpl._plid;
-
-		layoutFriendlyURLModelImpl._setOriginalPlid = false;
-
-		layoutFriendlyURLModelImpl._originalPrivateLayout =
-			layoutFriendlyURLModelImpl._privateLayout;
-
-		layoutFriendlyURLModelImpl._setOriginalPrivateLayout = false;
-
-		layoutFriendlyURLModelImpl._originalFriendlyURL =
-			layoutFriendlyURLModelImpl._friendlyURL;
-
-		layoutFriendlyURLModelImpl._originalLanguageId =
-			layoutFriendlyURLModelImpl._languageId;
-
-		layoutFriendlyURLModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -963,32 +990,72 @@ public class LayoutFriendlyURLModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctCollectionId", 2L);
+
+		columnBitmasks.put("uuid", 4L);
+
+		columnBitmasks.put("layoutFriendlyURLId", 8L);
+
+		columnBitmasks.put("groupId", 16L);
+
+		columnBitmasks.put("companyId", 32L);
+
+		columnBitmasks.put("userId", 64L);
+
+		columnBitmasks.put("userName", 128L);
+
+		columnBitmasks.put("createDate", 256L);
+
+		columnBitmasks.put("modifiedDate", 512L);
+
+		columnBitmasks.put("plid", 1024L);
+
+		columnBitmasks.put("privateLayout", 2048L);
+
+		columnBitmasks.put("friendlyURL", 4096L);
+
+		columnBitmasks.put("languageId", 8192L);
+
+		columnBitmasks.put("lastPublishDate", 16384L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutFriendlyURLId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _plid;
-	private long _originalPlid;
-	private boolean _setOriginalPlid;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private String _friendlyURL;
-	private String _originalFriendlyURL;
 	private String _languageId;
-	private String _originalLanguageId;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private LayoutFriendlyURL _escapedModel;

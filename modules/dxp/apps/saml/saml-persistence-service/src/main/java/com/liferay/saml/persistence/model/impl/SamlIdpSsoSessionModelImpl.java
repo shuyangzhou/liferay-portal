@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.saml.persistence.model.SamlIdpSsoSession;
 import com.liferay.saml.persistence.model.SamlIdpSsoSessionModel;
@@ -103,10 +102,25 @@ public class SamlIdpSsoSessionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SAMLIDPSSOSESSIONKEY_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SAMLIDPSSOSESSIONID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -304,6 +318,8 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void setSamlIdpSsoSessionId(long samlIdpSsoSessionId) {
+		_columnBitmask |= _columnBitmasks.get("samlIdpSsoSessionId");
+
 		_samlIdpSsoSessionId = samlIdpSsoSessionId;
 	}
 
@@ -314,6 +330,8 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -324,6 +342,8 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -355,6 +375,8 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -365,17 +387,18 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
-
-		if (_originalCreateDate == null) {
-			_originalCreateDate = _createDate;
-		}
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public Date getOriginalCreateDate() {
-		return _originalCreateDate;
+		return getOriginalAttributeValue("createDate");
 	}
 
 	@Override
@@ -390,6 +413,8 @@ public class SamlIdpSsoSessionModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
 
 		_modifiedDate = modifiedDate;
 	}
@@ -406,17 +431,18 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void setSamlIdpSsoSessionKey(String samlIdpSsoSessionKey) {
-		_columnBitmask |= SAMLIDPSSOSESSIONKEY_COLUMN_BITMASK;
-
-		if (_originalSamlIdpSsoSessionKey == null) {
-			_originalSamlIdpSsoSessionKey = _samlIdpSsoSessionKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("samlIdpSsoSessionKey");
 
 		_samlIdpSsoSessionKey = samlIdpSsoSessionKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalSamlIdpSsoSessionKey() {
-		return GetterUtil.getString(_originalSamlIdpSsoSessionKey);
+		return getOriginalAttributeValue("samlIdpSsoSessionKey");
 	}
 
 	public long getColumnBitmask() {
@@ -532,17 +558,11 @@ public class SamlIdpSsoSessionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SamlIdpSsoSessionModelImpl samlIdpSsoSessionModelImpl = this;
+		_setModifiedDate = false;
 
-		samlIdpSsoSessionModelImpl._originalCreateDate =
-			samlIdpSsoSessionModelImpl._createDate;
+		_columnBitmask = 0;
 
-		samlIdpSsoSessionModelImpl._setModifiedDate = false;
-
-		samlIdpSsoSessionModelImpl._originalSamlIdpSsoSessionKey =
-			samlIdpSsoSessionModelImpl._samlIdpSsoSessionKey;
-
-		samlIdpSsoSessionModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -668,16 +688,49 @@ public class SamlIdpSsoSessionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("samlIdpSsoSessionId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("samlIdpSsoSessionKey", 64L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _samlIdpSsoSessionId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
-	private Date _originalCreateDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _samlIdpSsoSessionKey;
-	private String _originalSamlIdpSsoSessionKey;
 	private long _columnBitmask;
 	private SamlIdpSsoSession _escapedModel;
 

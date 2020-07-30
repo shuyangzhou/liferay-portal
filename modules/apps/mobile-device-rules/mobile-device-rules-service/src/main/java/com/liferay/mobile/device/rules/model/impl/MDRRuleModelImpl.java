@@ -130,14 +130,39 @@ public class MDRRuleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long RULEGROUPID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
 	/**
@@ -393,6 +418,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -409,17 +436,18 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -430,6 +458,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setRuleId(long ruleId) {
+		_columnBitmask |= _columnBitmasks.get("ruleId");
+
 		_ruleId = ruleId;
 	}
 
@@ -441,19 +471,18 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@JSON
@@ -464,19 +493,18 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -487,6 +515,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -519,6 +549,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -530,7 +562,7 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("createDate");
 
 		_createDate = createDate;
 	}
@@ -549,6 +581,8 @@ public class MDRRuleModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -560,19 +594,18 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setRuleGroupId(long ruleGroupId) {
-		_columnBitmask |= RULEGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalRuleGroupId) {
-			_setOriginalRuleGroupId = true;
-
-			_originalRuleGroupId = _ruleGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ruleGroupId");
 
 		_ruleGroupId = ruleGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalRuleGroupId() {
-		return _originalRuleGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("ruleGroupId"));
 	}
 
 	@JSON
@@ -631,6 +664,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -734,6 +769,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -799,6 +836,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
 		_type = type;
 	}
 
@@ -815,6 +854,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		_columnBitmask |= _columnBitmasks.get("typeSettings");
+
 		_typeSettings = typeSettings;
 	}
 
@@ -826,6 +867,8 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_columnBitmask |= _columnBitmasks.get("lastPublishDate");
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1040,25 +1083,11 @@ public class MDRRuleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MDRRuleModelImpl mdrRuleModelImpl = this;
+		_setModifiedDate = false;
 
-		mdrRuleModelImpl._originalUuid = mdrRuleModelImpl._uuid;
+		_columnBitmask = 0;
 
-		mdrRuleModelImpl._originalGroupId = mdrRuleModelImpl._groupId;
-
-		mdrRuleModelImpl._setOriginalGroupId = false;
-
-		mdrRuleModelImpl._originalCompanyId = mdrRuleModelImpl._companyId;
-
-		mdrRuleModelImpl._setOriginalCompanyId = false;
-
-		mdrRuleModelImpl._setModifiedDate = false;
-
-		mdrRuleModelImpl._originalRuleGroupId = mdrRuleModelImpl._ruleGroupId;
-
-		mdrRuleModelImpl._setOriginalRuleGroupId = false;
-
-		mdrRuleModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1225,24 +1254,68 @@ public class MDRRuleModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("uuid", 2L);
+
+		columnBitmasks.put("ruleId", 4L);
+
+		columnBitmasks.put("groupId", 8L);
+
+		columnBitmasks.put("companyId", 16L);
+
+		columnBitmasks.put("userId", 32L);
+
+		columnBitmasks.put("userName", 64L);
+
+		columnBitmasks.put("createDate", 128L);
+
+		columnBitmasks.put("modifiedDate", 256L);
+
+		columnBitmasks.put("ruleGroupId", 512L);
+
+		columnBitmasks.put("name", 1024L);
+
+		columnBitmasks.put("description", 2048L);
+
+		columnBitmasks.put("type", 4096L);
+
+		columnBitmasks.put("typeSettings", 8192L);
+
+		columnBitmasks.put("lastPublishDate", 16384L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _ruleId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _ruleGroupId;
-	private long _originalRuleGroupId;
-	private boolean _setOriginalRuleGroupId;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _description;

@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -103,10 +104,25 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTGROUPID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTGROUPACCOUNTENTRYRELID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -350,6 +366,8 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -363,6 +381,8 @@ public class AccountGroupAccountEntryRelModelImpl
 	public void setAccountGroupAccountEntryRelId(
 		long AccountGroupAccountEntryRelId) {
 
+		_columnBitmask |= _columnBitmasks.get("AccountGroupAccountEntryRelId");
+
 		_AccountGroupAccountEntryRelId = AccountGroupAccountEntryRelId;
 	}
 
@@ -374,6 +394,8 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -385,19 +407,18 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setAccountGroupId(long accountGroupId) {
-		_columnBitmask |= ACCOUNTGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountGroupId) {
-			_setOriginalAccountGroupId = true;
-
-			_originalAccountGroupId = _accountGroupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountGroupId");
 
 		_accountGroupId = accountGroupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountGroupId() {
-		return _originalAccountGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("accountGroupId"));
 	}
 
 	@JSON
@@ -408,19 +429,18 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
-
-			_originalAccountEntryId = _accountEntryId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountEntryId");
 
 		_accountEntryId = accountEntryId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		return GetterUtil.getLong(getOriginalAttributeValue("accountEntryId"));
 	}
 
 	public long getColumnBitmask() {
@@ -538,20 +558,9 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountGroupAccountEntryRelModelImpl
-			accountGroupAccountEntryRelModelImpl = this;
+		_columnBitmask = 0;
 
-		accountGroupAccountEntryRelModelImpl._originalAccountGroupId =
-			accountGroupAccountEntryRelModelImpl._accountGroupId;
-
-		accountGroupAccountEntryRelModelImpl._setOriginalAccountGroupId = false;
-
-		accountGroupAccountEntryRelModelImpl._originalAccountEntryId =
-			accountGroupAccountEntryRelModelImpl._accountEntryId;
-
-		accountGroupAccountEntryRelModelImpl._setOriginalAccountEntryId = false;
-
-		accountGroupAccountEntryRelModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -652,15 +661,42 @@ public class AccountGroupAccountEntryRelModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("AccountGroupAccountEntryRelId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("accountGroupId", 8L);
+
+		columnBitmasks.put("accountEntryId", 16L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _AccountGroupAccountEntryRelId;
 	private long _companyId;
 	private long _accountGroupId;
-	private long _originalAccountGroupId;
-	private boolean _setOriginalAccountGroupId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _columnBitmask;
 	private AccountGroupAccountEntryRel _escapedModel;
 

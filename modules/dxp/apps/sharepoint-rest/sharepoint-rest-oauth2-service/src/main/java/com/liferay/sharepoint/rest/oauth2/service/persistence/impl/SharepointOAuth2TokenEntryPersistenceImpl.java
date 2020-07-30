@@ -1013,9 +1013,10 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 			 _finderPathFetchByU_C.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				sharepointOAuth2TokenEntryModelImpl.getOriginalUserId(),
-				sharepointOAuth2TokenEntryModelImpl.
-					getOriginalConfigurationPid()
+				sharepointOAuth2TokenEntryModelImpl.getOriginalAttributeValue(
+					"userId"),
+				sharepointOAuth2TokenEntryModelImpl.getOriginalAttributeValue(
+					"configurationPid")
 			};
 
 			finderCache.removeResult(_finderPathCountByU_C, args);
@@ -1208,7 +1209,8 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					sharepointOAuth2TokenEntryModelImpl.getOriginalUserId()
+					sharepointOAuth2TokenEntryModelImpl.
+						getOriginalAttributeValue("userId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUserId, args);
@@ -1527,7 +1529,7 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 			SharepointOAuth2TokenEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
-			SharepointOAuth2TokenEntryModelImpl.USERID_COLUMN_BITMASK);
+			SharepointOAuth2TokenEntryModelImpl.getColumnBitmask("userId"));
 
 		_finderPathCountByUserId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1537,9 +1539,9 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 			SharepointOAuth2TokenEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByU_C",
 			new String[] {Long.class.getName(), String.class.getName()},
-			SharepointOAuth2TokenEntryModelImpl.USERID_COLUMN_BITMASK |
-			SharepointOAuth2TokenEntryModelImpl.
-				CONFIGURATIONPID_COLUMN_BITMASK);
+			SharepointOAuth2TokenEntryModelImpl.getColumnBitmask("userId") |
+			SharepointOAuth2TokenEntryModelImpl.getColumnBitmask(
+				"configurationPid"));
 
 		_finderPathCountByU_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_C",

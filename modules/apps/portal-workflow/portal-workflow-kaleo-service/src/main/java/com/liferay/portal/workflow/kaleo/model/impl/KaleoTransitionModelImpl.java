@@ -122,16 +122,46 @@ public class KaleoTransitionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DEFAULTTRANSITION_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEONODEID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long KALEOTRANSITIONID_COLUMN_BITMASK = 32L;
 
 	/**
@@ -384,6 +414,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -394,7 +426,7 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setKaleoTransitionId(long kaleoTransitionId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= _columnBitmasks.get("kaleoTransitionId");
 
 		_kaleoTransitionId = kaleoTransitionId;
 	}
@@ -406,6 +438,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_columnBitmask |= _columnBitmasks.get("groupId");
+
 		_groupId = groupId;
 	}
 
@@ -416,19 +450,18 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -438,6 +471,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -469,6 +504,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -479,6 +516,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -495,6 +534,8 @@ public class KaleoTransitionModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -505,6 +546,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionId");
+
 		_kaleoDefinitionId = kaleoDefinitionId;
 	}
 
@@ -515,19 +558,19 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
-
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoDefinitionVersionId");
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override
@@ -537,19 +580,18 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
-		_columnBitmask |= KALEONODEID_COLUMN_BITMASK;
-
-		if (!_setOriginalKaleoNodeId) {
-			_setOriginalKaleoNodeId = true;
-
-			_originalKaleoNodeId = _kaleoNodeId;
-		}
+		_columnBitmask |= _columnBitmasks.get("kaleoNodeId");
 
 		_kaleoNodeId = kaleoNodeId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalKaleoNodeId() {
-		return _originalKaleoNodeId;
+		return GetterUtil.getLong(getOriginalAttributeValue("kaleoNodeId"));
 	}
 
 	@Override
@@ -564,17 +606,18 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_columnBitmask |= _columnBitmasks.get("name");
 
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return getOriginalAttributeValue("name");
 	}
 
 	@Override
@@ -589,6 +632,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask |= _columnBitmasks.get("description");
+
 		_description = description;
 	}
 
@@ -599,6 +644,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setSourceKaleoNodeId(long sourceKaleoNodeId) {
+		_columnBitmask |= _columnBitmasks.get("sourceKaleoNodeId");
+
 		_sourceKaleoNodeId = sourceKaleoNodeId;
 	}
 
@@ -614,6 +661,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setSourceKaleoNodeName(String sourceKaleoNodeName) {
+		_columnBitmask |= _columnBitmasks.get("sourceKaleoNodeName");
+
 		_sourceKaleoNodeName = sourceKaleoNodeName;
 	}
 
@@ -624,6 +673,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setTargetKaleoNodeId(long targetKaleoNodeId) {
+		_columnBitmask |= _columnBitmasks.get("targetKaleoNodeId");
+
 		_targetKaleoNodeId = targetKaleoNodeId;
 	}
 
@@ -639,6 +690,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setTargetKaleoNodeName(String targetKaleoNodeName) {
+		_columnBitmask |= _columnBitmasks.get("targetKaleoNodeName");
+
 		_targetKaleoNodeName = targetKaleoNodeName;
 	}
 
@@ -654,19 +707,19 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setDefaultTransition(boolean defaultTransition) {
-		_columnBitmask |= DEFAULTTRANSITION_COLUMN_BITMASK;
-
-		if (!_setOriginalDefaultTransition) {
-			_setOriginalDefaultTransition = true;
-
-			_originalDefaultTransition = _defaultTransition;
-		}
+		_columnBitmask |= _columnBitmasks.get("defaultTransition");
 
 		_defaultTransition = defaultTransition;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalDefaultTransition() {
-		return _originalDefaultTransition;
+		return GetterUtil.getBoolean(
+			getOriginalAttributeValue("defaultTransition"));
 	}
 
 	public long getColumnBitmask() {
@@ -800,33 +853,11 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoTransitionModelImpl kaleoTransitionModelImpl = this;
+		_setModifiedDate = false;
 
-		kaleoTransitionModelImpl._originalCompanyId =
-			kaleoTransitionModelImpl._companyId;
+		_columnBitmask = 0;
 
-		kaleoTransitionModelImpl._setOriginalCompanyId = false;
-
-		kaleoTransitionModelImpl._setModifiedDate = false;
-
-		kaleoTransitionModelImpl._originalKaleoDefinitionVersionId =
-			kaleoTransitionModelImpl._kaleoDefinitionVersionId;
-
-		kaleoTransitionModelImpl._setOriginalKaleoDefinitionVersionId = false;
-
-		kaleoTransitionModelImpl._originalKaleoNodeId =
-			kaleoTransitionModelImpl._kaleoNodeId;
-
-		kaleoTransitionModelImpl._setOriginalKaleoNodeId = false;
-
-		kaleoTransitionModelImpl._originalName = kaleoTransitionModelImpl._name;
-
-		kaleoTransitionModelImpl._originalDefaultTransition =
-			kaleoTransitionModelImpl._defaultTransition;
-
-		kaleoTransitionModelImpl._setOriginalDefaultTransition = false;
-
-		kaleoTransitionModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -996,12 +1027,67 @@ public class KaleoTransitionModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("kaleoTransitionId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("userId", 16L);
+
+		columnBitmasks.put("userName", 32L);
+
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("kaleoDefinitionId", 256L);
+
+		columnBitmasks.put("kaleoDefinitionVersionId", 512L);
+
+		columnBitmasks.put("kaleoNodeId", 1024L);
+
+		columnBitmasks.put("name", 2048L);
+
+		columnBitmasks.put("description", 4096L);
+
+		columnBitmasks.put("sourceKaleoNodeId", 8192L);
+
+		columnBitmasks.put("sourceKaleoNodeName", 16384L);
+
+		columnBitmasks.put("targetKaleoNodeId", 32768L);
+
+		columnBitmasks.put("targetKaleoNodeName", 65536L);
+
+		columnBitmasks.put("defaultTransition", 131072L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _kaleoTransitionId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1009,21 +1095,14 @@ public class KaleoTransitionModelImpl
 	private boolean _setModifiedDate;
 	private long _kaleoDefinitionId;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
-	private long _originalKaleoNodeId;
-	private boolean _setOriginalKaleoNodeId;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private long _sourceKaleoNodeId;
 	private String _sourceKaleoNodeName;
 	private long _targetKaleoNodeId;
 	private String _targetKaleoNodeName;
 	private boolean _defaultTransition;
-	private boolean _originalDefaultTransition;
-	private boolean _setOriginalDefaultTransition;
 	private long _columnBitmask;
 	private KaleoTransition _escapedModel;
 

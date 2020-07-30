@@ -594,25 +594,25 @@ public class SegmentsExperimentPersistenceTest {
 			Objects.equals(
 				existingSegmentsExperiment.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSegmentsExperiment, "getOriginalUuid",
-					new Class<?>[0])));
+					existingSegmentsExperiment, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsExperiment.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperiment, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSegmentsExperiment, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingSegmentsExperiment.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperiment, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingSegmentsExperiment, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingSegmentsExperiment.getSegmentsExperimentKey(),
 				ReflectionTestUtil.invoke(
-					existingSegmentsExperiment,
-					"getOriginalSegmentsExperimentKey", new Class<?>[0])));
+					existingSegmentsExperiment, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "segmentsExperimentKey")));
 	}
 
 	protected SegmentsExperiment addSegmentsExperiment() throws Exception {

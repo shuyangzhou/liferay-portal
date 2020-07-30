@@ -115,12 +115,32 @@ public class VersionedEntryModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEAD_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long HEADID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long VERSIONEDENTRYID_COLUMN_BITMASK = 8L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -278,31 +298,6 @@ public class VersionedEntryModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
-	public boolean getHead() {
-		return _head;
-	}
-
-	@Override
-	public boolean isHead() {
-		return _head;
-	}
-
-	public boolean getOriginalHead() {
-		return _originalHead;
-	}
-
-	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
-
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
-		}
-
-		_head = head;
-	}
-
 	@Override
 	public void populateVersionModel(
 		VersionedEntryVersion versionedEntryVersion) {
@@ -317,6 +312,8 @@ public class VersionedEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -327,13 +324,7 @@ public class VersionedEntryModelImpl
 
 	@Override
 	public void setHeadId(long headId) {
-		_columnBitmask |= HEADID_COLUMN_BITMASK;
-
-		if (!_setOriginalHeadId) {
-			_setOriginalHeadId = true;
-
-			_originalHeadId = _headId;
-		}
+		_columnBitmask |= _columnBitmasks.get("headId");
 
 		if (headId >= 0) {
 			setHead(false);
@@ -345,8 +336,37 @@ public class VersionedEntryModelImpl
 		_headId = headId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalHeadId() {
-		return _originalHeadId;
+		return GetterUtil.getLong(getOriginalAttributeValue("headId"));
+	}
+
+	public boolean getHead() {
+		return _head;
+	}
+
+	@Override
+	public boolean isHead() {
+		return _head;
+	}
+
+	public void setHead(boolean head) {
+		_columnBitmask |= _columnBitmasks.get("head");
+
+		_head = head;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalHead() {
+		return GetterUtil.getBoolean(getOriginalAttributeValue("head"));
 	}
 
 	@Override
@@ -356,6 +376,8 @@ public class VersionedEntryModelImpl
 
 	@Override
 	public void setVersionedEntryId(long versionedEntryId) {
+		_columnBitmask |= _columnBitmasks.get("versionedEntryId");
+
 		_versionedEntryId = versionedEntryId;
 	}
 
@@ -366,19 +388,18 @@ public class VersionedEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	public long getColumnBitmask() {
@@ -489,23 +510,11 @@ public class VersionedEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		VersionedEntryModelImpl versionedEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		versionedEntryModelImpl._originalHeadId =
-			versionedEntryModelImpl._headId;
+		_originalAttributeValues = getModelAttributes();
 
-		versionedEntryModelImpl._setOriginalHeadId = false;
-
-		versionedEntryModelImpl._originalHead = versionedEntryModelImpl._head;
-
-		versionedEntryModelImpl._setOriginalHead = false;
-
-		versionedEntryModelImpl._originalGroupId =
-			versionedEntryModelImpl._groupId;
-
-		versionedEntryModelImpl._setOriginalGroupId = false;
-
-		versionedEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues.put("head", isHead());
 	}
 
 	@Override
@@ -596,17 +605,42 @@ public class VersionedEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("headId", 2L);
+
+		columnBitmasks.put("head", 4L);
+
+		columnBitmasks.put("versionedEntryId", 8L);
+
+		columnBitmasks.put("groupId", 16L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _headId;
-	private long _originalHeadId;
-	private boolean _setOriginalHeadId;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private long _versionedEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _columnBitmask;
 	private VersionedEntry _escapedModel;
 

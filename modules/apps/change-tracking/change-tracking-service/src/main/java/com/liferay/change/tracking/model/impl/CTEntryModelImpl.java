@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -107,12 +108,32 @@ public class CTEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODELCLASSNAMEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODELCLASSPK_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CTENTRYID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -306,6 +327,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("mvccVersion");
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -316,6 +339,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCtEntryId(long ctEntryId) {
+		_columnBitmask |= _columnBitmasks.get("ctEntryId");
+
 		_ctEntryId = ctEntryId;
 	}
 
@@ -326,6 +351,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -336,6 +363,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -362,6 +391,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -378,6 +409,8 @@ public class CTEntryModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -388,19 +421,18 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
-
-			_originalCtCollectionId = _ctCollectionId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ctCollectionId");
 
 		_ctCollectionId = ctCollectionId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		return GetterUtil.getLong(getOriginalAttributeValue("ctCollectionId"));
 	}
 
 	@Override
@@ -410,19 +442,19 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setModelClassNameId(long modelClassNameId) {
-		_columnBitmask |= MODELCLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalModelClassNameId) {
-			_setOriginalModelClassNameId = true;
-
-			_originalModelClassNameId = _modelClassNameId;
-		}
+		_columnBitmask |= _columnBitmasks.get("modelClassNameId");
 
 		_modelClassNameId = modelClassNameId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalModelClassNameId() {
-		return _originalModelClassNameId;
+		return GetterUtil.getLong(
+			getOriginalAttributeValue("modelClassNameId"));
 	}
 
 	@Override
@@ -432,19 +464,18 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setModelClassPK(long modelClassPK) {
-		_columnBitmask |= MODELCLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalModelClassPK) {
-			_setOriginalModelClassPK = true;
-
-			_originalModelClassPK = _modelClassPK;
-		}
+		_columnBitmask |= _columnBitmasks.get("modelClassPK");
 
 		_modelClassPK = modelClassPK;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalModelClassPK() {
-		return _originalModelClassPK;
+		return GetterUtil.getLong(getOriginalAttributeValue("modelClassPK"));
 	}
 
 	@Override
@@ -454,6 +485,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setModelMvccVersion(long modelMvccVersion) {
+		_columnBitmask |= _columnBitmasks.get("modelMvccVersion");
+
 		_modelMvccVersion = modelMvccVersion;
 	}
 
@@ -464,6 +497,8 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setChangeType(int changeType) {
+		_columnBitmask |= _columnBitmasks.get("changeType");
+
 		_changeType = changeType;
 	}
 
@@ -582,25 +617,11 @@ public class CTEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTEntryModelImpl ctEntryModelImpl = this;
+		_setModifiedDate = false;
 
-		ctEntryModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		ctEntryModelImpl._originalCtCollectionId =
-			ctEntryModelImpl._ctCollectionId;
-
-		ctEntryModelImpl._setOriginalCtCollectionId = false;
-
-		ctEntryModelImpl._originalModelClassNameId =
-			ctEntryModelImpl._modelClassNameId;
-
-		ctEntryModelImpl._setOriginalModelClassNameId = false;
-
-		ctEntryModelImpl._originalModelClassPK = ctEntryModelImpl._modelClassPK;
-
-		ctEntryModelImpl._setOriginalModelClassPK = false;
-
-		ctEntryModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -716,6 +737,49 @@ public class CTEntryModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("mvccVersion", 1L);
+
+		columnBitmasks.put("ctEntryId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("userId", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("ctCollectionId", 64L);
+
+		columnBitmasks.put("modelClassNameId", 128L);
+
+		columnBitmasks.put("modelClassPK", 256L);
+
+		columnBitmasks.put("modelMvccVersion", 512L);
+
+		columnBitmasks.put("changeType", 1024L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _mvccVersion;
 	private long _ctEntryId;
 	private long _companyId;
@@ -724,14 +788,8 @@ public class CTEntryModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private long _modelClassNameId;
-	private long _originalModelClassNameId;
-	private boolean _setOriginalModelClassNameId;
 	private long _modelClassPK;
-	private long _originalModelClassPK;
-	private boolean _setOriginalModelClassPK;
 	private long _modelMvccVersion;
 	private int _changeType;
 	private long _columnBitmask;

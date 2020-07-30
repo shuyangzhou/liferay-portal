@@ -2539,8 +2539,10 @@ public class CalendarNotificationTemplatePersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				calendarNotificationTemplateModelImpl.getOriginalUuid(),
-				calendarNotificationTemplateModelImpl.getOriginalGroupId()
+				calendarNotificationTemplateModelImpl.getOriginalAttributeValue(
+					"uuid"),
+				calendarNotificationTemplateModelImpl.getOriginalAttributeValue(
+					"groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -2563,11 +2565,12 @@ public class CalendarNotificationTemplatePersistenceImpl
 			 _finderPathFetchByC_NT_NTT.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				calendarNotificationTemplateModelImpl.getOriginalCalendarId(),
-				calendarNotificationTemplateModelImpl.
-					getOriginalNotificationType(),
-				calendarNotificationTemplateModelImpl.
-					getOriginalNotificationTemplateType()
+				calendarNotificationTemplateModelImpl.getOriginalAttributeValue(
+					"calendarId"),
+				calendarNotificationTemplateModelImpl.getOriginalAttributeValue(
+					"notificationType"),
+				calendarNotificationTemplateModelImpl.getOriginalAttributeValue(
+					"notificationTemplateType")
 			};
 
 			finderCache.removeResult(_finderPathCountByC_NT_NTT, args);
@@ -2817,7 +2820,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					calendarNotificationTemplateModelImpl.getOriginalUuid()
+					calendarNotificationTemplateModelImpl.
+						getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2838,8 +2842,10 @@ public class CalendarNotificationTemplatePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					calendarNotificationTemplateModelImpl.getOriginalUuid(),
-					calendarNotificationTemplateModelImpl.getOriginalCompanyId()
+					calendarNotificationTemplateModelImpl.
+						getOriginalAttributeValue("uuid"),
+					calendarNotificationTemplateModelImpl.
+						getOriginalAttributeValue("companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2862,7 +2868,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 				Object[] args = new Object[] {
 					calendarNotificationTemplateModelImpl.
-						getOriginalCalendarId()
+						getOriginalAttributeValue("calendarId")
 				};
 
 				finderCache.removeResult(_finderPathCountByCalendarId, args);
@@ -3187,7 +3193,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 			CalendarNotificationTemplateImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			CalendarNotificationTemplateModelImpl.UUID_COLUMN_BITMASK);
+			CalendarNotificationTemplateModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3197,8 +3203,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 			CalendarNotificationTemplateImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			CalendarNotificationTemplateModelImpl.UUID_COLUMN_BITMASK |
-			CalendarNotificationTemplateModelImpl.GROUPID_COLUMN_BITMASK);
+			CalendarNotificationTemplateModelImpl.getColumnBitmask("uuid") |
+			CalendarNotificationTemplateModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3218,8 +3224,9 @@ public class CalendarNotificationTemplatePersistenceImpl
 			CalendarNotificationTemplateImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			CalendarNotificationTemplateModelImpl.UUID_COLUMN_BITMASK |
-			CalendarNotificationTemplateModelImpl.COMPANYID_COLUMN_BITMASK);
+			CalendarNotificationTemplateModelImpl.getColumnBitmask("uuid") |
+			CalendarNotificationTemplateModelImpl.getColumnBitmask(
+				"companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3238,7 +3245,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 			CalendarNotificationTemplateImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCalendarId",
 			new String[] {Long.class.getName()},
-			CalendarNotificationTemplateModelImpl.CALENDARID_COLUMN_BITMASK);
+			CalendarNotificationTemplateModelImpl.getColumnBitmask(
+				"calendarId"));
 
 		_finderPathCountByCalendarId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -3251,11 +3259,12 @@ public class CalendarNotificationTemplatePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			CalendarNotificationTemplateModelImpl.CALENDARID_COLUMN_BITMASK |
-			CalendarNotificationTemplateModelImpl.
-				NOTIFICATIONTYPE_COLUMN_BITMASK |
-			CalendarNotificationTemplateModelImpl.
-				NOTIFICATIONTEMPLATETYPE_COLUMN_BITMASK);
+			CalendarNotificationTemplateModelImpl.getColumnBitmask(
+				"calendarId") |
+			CalendarNotificationTemplateModelImpl.getColumnBitmask(
+				"notificationType") |
+			CalendarNotificationTemplateModelImpl.getColumnBitmask(
+				"notificationTemplateType"));
 
 		_finderPathCountByC_NT_NTT = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

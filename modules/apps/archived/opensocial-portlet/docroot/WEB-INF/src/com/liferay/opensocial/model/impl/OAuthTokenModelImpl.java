@@ -132,16 +132,46 @@ public class OAuthTokenModelImpl
 	@Deprecated
 	public static final boolean COLUMN_BITMASK_ENABLED = true;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GADGETKEY_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long MODULEID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SERVICENAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOKENNAME_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long OAUTHTOKENID_COLUMN_BITMASK = 32L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
@@ -342,6 +372,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setOAuthTokenId(long oAuthTokenId) {
+		_columnBitmask |= _columnBitmasks.get("oAuthTokenId");
+
 		_oAuthTokenId = oAuthTokenId;
 	}
 
@@ -352,6 +384,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -362,13 +396,7 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -389,8 +417,13 @@ public class OAuthTokenModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@Override
@@ -405,6 +438,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -415,6 +450,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -431,6 +468,8 @@ public class OAuthTokenModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -446,17 +485,18 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setGadgetKey(String gadgetKey) {
-		_columnBitmask |= GADGETKEY_COLUMN_BITMASK;
-
-		if (_originalGadgetKey == null) {
-			_originalGadgetKey = _gadgetKey;
-		}
+		_columnBitmask |= _columnBitmasks.get("gadgetKey");
 
 		_gadgetKey = gadgetKey;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalGadgetKey() {
-		return GetterUtil.getString(_originalGadgetKey);
+		return getOriginalAttributeValue("gadgetKey");
 	}
 
 	@Override
@@ -471,17 +511,18 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setServiceName(String serviceName) {
-		_columnBitmask |= SERVICENAME_COLUMN_BITMASK;
-
-		if (_originalServiceName == null) {
-			_originalServiceName = _serviceName;
-		}
+		_columnBitmask |= _columnBitmasks.get("serviceName");
 
 		_serviceName = serviceName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalServiceName() {
-		return GetterUtil.getString(_originalServiceName);
+		return getOriginalAttributeValue("serviceName");
 	}
 
 	@Override
@@ -491,19 +532,18 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setModuleId(long moduleId) {
-		_columnBitmask |= MODULEID_COLUMN_BITMASK;
-
-		if (!_setOriginalModuleId) {
-			_setOriginalModuleId = true;
-
-			_originalModuleId = _moduleId;
-		}
+		_columnBitmask |= _columnBitmasks.get("moduleId");
 
 		_moduleId = moduleId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalModuleId() {
-		return _originalModuleId;
+		return GetterUtil.getLong(getOriginalAttributeValue("moduleId"));
 	}
 
 	@Override
@@ -518,6 +558,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setAccessToken(String accessToken) {
+		_columnBitmask |= _columnBitmasks.get("accessToken");
+
 		_accessToken = accessToken;
 	}
 
@@ -533,17 +575,18 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setTokenName(String tokenName) {
-		_columnBitmask |= TOKENNAME_COLUMN_BITMASK;
-
-		if (_originalTokenName == null) {
-			_originalTokenName = _tokenName;
-		}
+		_columnBitmask |= _columnBitmasks.get("tokenName");
 
 		_tokenName = tokenName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalTokenName() {
-		return GetterUtil.getString(_originalTokenName);
+		return getOriginalAttributeValue("tokenName");
 	}
 
 	@Override
@@ -558,6 +601,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setTokenSecret(String tokenSecret) {
+		_columnBitmask |= _columnBitmasks.get("tokenSecret");
+
 		_tokenSecret = tokenSecret;
 	}
 
@@ -573,6 +618,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setSessionHandle(String sessionHandle) {
+		_columnBitmask |= _columnBitmasks.get("sessionHandle");
+
 		_sessionHandle = sessionHandle;
 	}
 
@@ -583,6 +630,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setExpiration(long expiration) {
+		_columnBitmask |= _columnBitmasks.get("expiration");
+
 		_expiration = expiration;
 	}
 
@@ -704,26 +753,11 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuthTokenModelImpl oAuthTokenModelImpl = this;
+		_setModifiedDate = false;
 
-		oAuthTokenModelImpl._originalUserId = oAuthTokenModelImpl._userId;
+		_columnBitmask = 0;
 
-		oAuthTokenModelImpl._setOriginalUserId = false;
-
-		oAuthTokenModelImpl._setModifiedDate = false;
-
-		oAuthTokenModelImpl._originalGadgetKey = oAuthTokenModelImpl._gadgetKey;
-
-		oAuthTokenModelImpl._originalServiceName =
-			oAuthTokenModelImpl._serviceName;
-
-		oAuthTokenModelImpl._originalModuleId = oAuthTokenModelImpl._moduleId;
-
-		oAuthTokenModelImpl._setOriginalModuleId = false;
-
-		oAuthTokenModelImpl._originalTokenName = oAuthTokenModelImpl._tokenName;
-
-		oAuthTokenModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -887,25 +921,67 @@ public class OAuthTokenModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("oAuthTokenId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("gadgetKey", 64L);
+
+		columnBitmasks.put("serviceName", 128L);
+
+		columnBitmasks.put("moduleId", 256L);
+
+		columnBitmasks.put("accessToken", 512L);
+
+		columnBitmasks.put("tokenName", 1024L);
+
+		columnBitmasks.put("tokenSecret", 2048L);
+
+		columnBitmasks.put("sessionHandle", 4096L);
+
+		columnBitmasks.put("expiration", 8192L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _oAuthTokenId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _gadgetKey;
-	private String _originalGadgetKey;
 	private String _serviceName;
-	private String _originalServiceName;
 	private long _moduleId;
-	private long _originalModuleId;
-	private boolean _setOriginalModuleId;
 	private String _accessToken;
 	private String _tokenName;
-	private String _originalTokenName;
 	private String _tokenSecret;
 	private String _sessionHandle;
 	private long _expiration;

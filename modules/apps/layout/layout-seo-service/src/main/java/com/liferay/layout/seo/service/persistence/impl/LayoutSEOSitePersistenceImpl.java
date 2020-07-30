@@ -1805,8 +1805,8 @@ public class LayoutSEOSitePersistenceImpl
 			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				layoutSEOSiteModelImpl.getOriginalUuid(),
-				layoutSEOSiteModelImpl.getOriginalGroupId()
+				layoutSEOSiteModelImpl.getOriginalAttributeValue("uuid"),
+				layoutSEOSiteModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
@@ -1824,7 +1824,7 @@ public class LayoutSEOSitePersistenceImpl
 			 _finderPathFetchByGroupId.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				layoutSEOSiteModelImpl.getOriginalGroupId()
+				layoutSEOSiteModelImpl.getOriginalAttributeValue("groupId")
 			};
 
 			finderCache.removeResult(_finderPathCountByGroupId, args);
@@ -2042,7 +2042,7 @@ public class LayoutSEOSitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					layoutSEOSiteModelImpl.getOriginalUuid()
+					layoutSEOSiteModelImpl.getOriginalAttributeValue("uuid")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid, args);
@@ -2061,8 +2061,9 @@ public class LayoutSEOSitePersistenceImpl
 					 0) {
 
 				Object[] args = new Object[] {
-					layoutSEOSiteModelImpl.getOriginalUuid(),
-					layoutSEOSiteModelImpl.getOriginalCompanyId()
+					layoutSEOSiteModelImpl.getOriginalAttributeValue("uuid"),
+					layoutSEOSiteModelImpl.getOriginalAttributeValue(
+						"companyId")
 				};
 
 				finderCache.removeResult(_finderPathCountByUuid_C, args);
@@ -2375,7 +2376,7 @@ public class LayoutSEOSitePersistenceImpl
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			LayoutSEOSiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
-			LayoutSEOSiteModelImpl.UUID_COLUMN_BITMASK);
+			LayoutSEOSiteModelImpl.getColumnBitmask("uuid"));
 
 		_finderPathCountByUuid = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2384,8 +2385,8 @@ public class LayoutSEOSitePersistenceImpl
 		_finderPathFetchByUUID_G = new FinderPath(
 			LayoutSEOSiteImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			LayoutSEOSiteModelImpl.UUID_COLUMN_BITMASK |
-			LayoutSEOSiteModelImpl.GROUPID_COLUMN_BITMASK);
+			LayoutSEOSiteModelImpl.getColumnBitmask("uuid") |
+			LayoutSEOSiteModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByUUID_G = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2405,8 +2406,8 @@ public class LayoutSEOSitePersistenceImpl
 			LayoutSEOSiteImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			LayoutSEOSiteModelImpl.UUID_COLUMN_BITMASK |
-			LayoutSEOSiteModelImpl.COMPANYID_COLUMN_BITMASK);
+			LayoutSEOSiteModelImpl.getColumnBitmask("uuid") |
+			LayoutSEOSiteModelImpl.getColumnBitmask("companyId"));
 
 		_finderPathCountByUuid_C = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2416,7 +2417,7 @@ public class LayoutSEOSitePersistenceImpl
 		_finderPathFetchByGroupId = new FinderPath(
 			LayoutSEOSiteImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByGroupId",
 			new String[] {Long.class.getName()},
-			LayoutSEOSiteModelImpl.GROUPID_COLUMN_BITMASK);
+			LayoutSEOSiteModelImpl.getColumnBitmask("groupId"));
 
 		_finderPathCountByGroupId = new FinderPath(
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,

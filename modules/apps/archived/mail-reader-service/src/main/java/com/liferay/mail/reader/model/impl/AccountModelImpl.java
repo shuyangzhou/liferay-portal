@@ -130,8 +130,18 @@ public class AccountModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ADDRESS_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 2L;
 
 	/**
@@ -386,6 +396,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		_columnBitmask |= _columnBitmasks.get("accountId");
+
 		_accountId = accountId;
 	}
 
@@ -396,6 +408,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -406,13 +420,7 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -433,8 +441,13 @@ public class AccountModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@Override
@@ -449,6 +462,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -459,6 +474,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -475,6 +492,8 @@ public class AccountModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -490,17 +509,18 @@ public class AccountModelImpl
 
 	@Override
 	public void setAddress(String address) {
-		_columnBitmask = -1L;
-
-		if (_originalAddress == null) {
-			_originalAddress = _address;
-		}
+		_columnBitmask |= _columnBitmasks.get("address");
 
 		_address = address;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalAddress() {
-		return GetterUtil.getString(_originalAddress);
+		return getOriginalAttributeValue("address");
 	}
 
 	@Override
@@ -515,6 +535,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setPersonalName(String personalName) {
+		_columnBitmask |= _columnBitmasks.get("personalName");
+
 		_personalName = personalName;
 	}
 
@@ -530,6 +552,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setProtocol(String protocol) {
+		_columnBitmask |= _columnBitmasks.get("protocol");
+
 		_protocol = protocol;
 	}
 
@@ -545,6 +569,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setIncomingHostName(String incomingHostName) {
+		_columnBitmask |= _columnBitmasks.get("incomingHostName");
+
 		_incomingHostName = incomingHostName;
 	}
 
@@ -555,6 +581,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setIncomingPort(int incomingPort) {
+		_columnBitmask |= _columnBitmasks.get("incomingPort");
+
 		_incomingPort = incomingPort;
 	}
 
@@ -570,6 +598,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setIncomingSecure(boolean incomingSecure) {
+		_columnBitmask |= _columnBitmasks.get("incomingSecure");
+
 		_incomingSecure = incomingSecure;
 	}
 
@@ -585,6 +615,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setOutgoingHostName(String outgoingHostName) {
+		_columnBitmask |= _columnBitmasks.get("outgoingHostName");
+
 		_outgoingHostName = outgoingHostName;
 	}
 
@@ -595,6 +627,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setOutgoingPort(int outgoingPort) {
+		_columnBitmask |= _columnBitmasks.get("outgoingPort");
+
 		_outgoingPort = outgoingPort;
 	}
 
@@ -610,6 +644,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setOutgoingSecure(boolean outgoingSecure) {
+		_columnBitmask |= _columnBitmasks.get("outgoingSecure");
+
 		_outgoingSecure = outgoingSecure;
 	}
 
@@ -625,6 +661,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setLogin(String login) {
+		_columnBitmask |= _columnBitmasks.get("login");
+
 		_login = login;
 	}
 
@@ -640,6 +678,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setPassword(String password) {
+		_columnBitmask |= _columnBitmasks.get("password");
+
 		_password = password;
 	}
 
@@ -655,6 +695,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setSavePassword(boolean savePassword) {
+		_columnBitmask |= _columnBitmasks.get("savePassword");
+
 		_savePassword = savePassword;
 	}
 
@@ -670,6 +712,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setSignature(String signature) {
+		_columnBitmask |= _columnBitmasks.get("signature");
+
 		_signature = signature;
 	}
 
@@ -685,6 +729,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setUseSignature(boolean useSignature) {
+		_columnBitmask |= _columnBitmasks.get("useSignature");
+
 		_useSignature = useSignature;
 	}
 
@@ -700,6 +746,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setFolderPrefix(String folderPrefix) {
+		_columnBitmask |= _columnBitmasks.get("folderPrefix");
+
 		_folderPrefix = folderPrefix;
 	}
 
@@ -710,6 +758,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setInboxFolderId(long inboxFolderId) {
+		_columnBitmask |= _columnBitmasks.get("inboxFolderId");
+
 		_inboxFolderId = inboxFolderId;
 	}
 
@@ -720,6 +770,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setDraftFolderId(long draftFolderId) {
+		_columnBitmask |= _columnBitmasks.get("draftFolderId");
+
 		_draftFolderId = draftFolderId;
 	}
 
@@ -730,6 +782,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setSentFolderId(long sentFolderId) {
+		_columnBitmask |= _columnBitmasks.get("sentFolderId");
+
 		_sentFolderId = sentFolderId;
 	}
 
@@ -740,6 +794,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setTrashFolderId(long trashFolderId) {
+		_columnBitmask |= _columnBitmasks.get("trashFolderId");
+
 		_trashFolderId = trashFolderId;
 	}
 
@@ -755,6 +811,8 @@ public class AccountModelImpl
 
 	@Override
 	public void setDefaultSender(boolean defaultSender) {
+		_columnBitmask |= _columnBitmasks.get("defaultSender");
+
 		_defaultSender = defaultSender;
 	}
 
@@ -886,17 +944,11 @@ public class AccountModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountModelImpl accountModelImpl = this;
+		_setModifiedDate = false;
 
-		accountModelImpl._originalUserId = accountModelImpl._userId;
+		_columnBitmask = 0;
 
-		accountModelImpl._setOriginalUserId = false;
-
-		accountModelImpl._setModifiedDate = false;
-
-		accountModelImpl._originalAddress = accountModelImpl._address;
-
-		accountModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1102,17 +1154,87 @@ public class AccountModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("accountId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("address", 64L);
+
+		columnBitmasks.put("personalName", 128L);
+
+		columnBitmasks.put("protocol", 256L);
+
+		columnBitmasks.put("incomingHostName", 512L);
+
+		columnBitmasks.put("incomingPort", 1024L);
+
+		columnBitmasks.put("incomingSecure", 2048L);
+
+		columnBitmasks.put("outgoingHostName", 4096L);
+
+		columnBitmasks.put("outgoingPort", 8192L);
+
+		columnBitmasks.put("outgoingSecure", 16384L);
+
+		columnBitmasks.put("login", 32768L);
+
+		columnBitmasks.put("password", 65536L);
+
+		columnBitmasks.put("savePassword", 131072L);
+
+		columnBitmasks.put("signature", 262144L);
+
+		columnBitmasks.put("useSignature", 524288L);
+
+		columnBitmasks.put("folderPrefix", 1048576L);
+
+		columnBitmasks.put("inboxFolderId", 2097152L);
+
+		columnBitmasks.put("draftFolderId", 4194304L);
+
+		columnBitmasks.put("sentFolderId", 8388608L);
+
+		columnBitmasks.put("trashFolderId", 16777216L);
+
+		columnBitmasks.put("defaultSender", 33554432L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _accountId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _address;
-	private String _originalAddress;
 	private String _personalName;
 	private String _protocol;
 	private String _incomingHostName;

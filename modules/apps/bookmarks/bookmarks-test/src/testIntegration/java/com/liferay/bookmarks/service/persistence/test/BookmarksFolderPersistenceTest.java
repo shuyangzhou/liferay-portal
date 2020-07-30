@@ -565,13 +565,13 @@ public class BookmarksFolderPersistenceTest {
 			Objects.equals(
 				existingBookmarksFolder.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingBookmarksFolder, "getOriginalUuid",
-					new Class<?>[0])));
+					existingBookmarksFolder, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingBookmarksFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBookmarksFolder, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingBookmarksFolder, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 	}
 
 	protected BookmarksFolder addBookmarksFolder() throws Exception {

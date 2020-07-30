@@ -109,12 +109,32 @@ public class PushNotificationsDeviceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PLATFORM_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOKEN_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long PUSHNOTIFICATIONSDEVICEID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -362,6 +382,8 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setPushNotificationsDeviceId(long pushNotificationsDeviceId) {
+		_columnBitmask |= _columnBitmasks.get("pushNotificationsDeviceId");
+
 		_pushNotificationsDeviceId = pushNotificationsDeviceId;
 	}
 
@@ -373,6 +395,8 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -384,13 +408,7 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -411,8 +429,13 @@ public class PushNotificationsDeviceModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@JSON
@@ -423,6 +446,8 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -439,17 +464,18 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setPlatform(String platform) {
-		_columnBitmask |= PLATFORM_COLUMN_BITMASK;
-
-		if (_originalPlatform == null) {
-			_originalPlatform = _platform;
-		}
+		_columnBitmask |= _columnBitmasks.get("platform");
 
 		_platform = platform;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalPlatform() {
-		return GetterUtil.getString(_originalPlatform);
+		return getOriginalAttributeValue("platform");
 	}
 
 	@JSON
@@ -465,17 +491,18 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setToken(String token) {
-		_columnBitmask |= TOKEN_COLUMN_BITMASK;
-
-		if (_originalToken == null) {
-			_originalToken = _token;
-		}
+		_columnBitmask |= _columnBitmasks.get("token");
 
 		_token = token;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalToken() {
-		return GetterUtil.getString(_originalToken);
+		return getOriginalAttributeValue("token");
 	}
 
 	public long getColumnBitmask() {
@@ -592,21 +619,9 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PushNotificationsDeviceModelImpl pushNotificationsDeviceModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		pushNotificationsDeviceModelImpl._originalUserId =
-			pushNotificationsDeviceModelImpl._userId;
-
-		pushNotificationsDeviceModelImpl._setOriginalUserId = false;
-
-		pushNotificationsDeviceModelImpl._originalPlatform =
-			pushNotificationsDeviceModelImpl._platform;
-
-		pushNotificationsDeviceModelImpl._originalToken =
-			pushNotificationsDeviceModelImpl._token;
-
-		pushNotificationsDeviceModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -723,16 +738,45 @@ public class PushNotificationsDeviceModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("pushNotificationsDeviceId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("createDate", 8L);
+
+		columnBitmasks.put("platform", 16L);
+
+		columnBitmasks.put("token", 32L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _pushNotificationsDeviceId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private String _platform;
-	private String _originalPlatform;
 	private String _token;
-	private String _originalToken;
 	private long _columnBitmask;
 	private PushNotificationsDevice _escapedModel;
 

@@ -408,12 +408,14 @@ public class ListTypePersistenceTest {
 			Objects.equals(
 				existingListType.getName(),
 				ReflectionTestUtil.invoke(
-					existingListType, "getOriginalName", new Class<?>[0])));
+					existingListType, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "name")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingListType.getType(),
 				ReflectionTestUtil.invoke(
-					existingListType, "getOriginalType", new Class<?>[0])));
+					existingListType, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "type")));
 	}
 
 	protected ListType addListType() throws Exception {

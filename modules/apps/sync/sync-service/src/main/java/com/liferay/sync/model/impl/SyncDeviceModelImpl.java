@@ -117,14 +117,39 @@ public class SyncDeviceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long USERNAME_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SYNCDEVICEID_COLUMN_BITMASK = 16L;
 
 	/**
@@ -379,17 +404,18 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@JSON
@@ -400,6 +426,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setSyncDeviceId(long syncDeviceId) {
+		_columnBitmask |= _columnBitmasks.get("syncDeviceId");
+
 		_syncDeviceId = syncDeviceId;
 	}
 
@@ -411,19 +439,18 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@JSON
@@ -434,13 +461,7 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_columnBitmask |= _columnBitmasks.get("userId");
 
 		_userId = userId;
 	}
@@ -461,8 +482,13 @@ public class SyncDeviceModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return GetterUtil.getLong(getOriginalAttributeValue("userId"));
 	}
 
 	@JSON
@@ -478,17 +504,18 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setUserName(String userName) {
-		_columnBitmask |= USERNAME_COLUMN_BITMASK;
-
-		if (_originalUserName == null) {
-			_originalUserName = _userName;
-		}
+		_columnBitmask |= _columnBitmasks.get("userName");
 
 		_userName = userName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUserName() {
-		return GetterUtil.getString(_originalUserName);
+		return getOriginalAttributeValue("userName");
 	}
 
 	@JSON
@@ -499,6 +526,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -516,6 +545,8 @@ public class SyncDeviceModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -532,6 +563,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setType(String type) {
+		_columnBitmask |= _columnBitmasks.get("type");
+
 		_type = type;
 	}
 
@@ -543,6 +576,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setBuildNumber(long buildNumber) {
+		_columnBitmask |= _columnBitmasks.get("buildNumber");
+
 		_buildNumber = buildNumber;
 	}
 
@@ -554,6 +589,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setFeatureSet(int featureSet) {
+		_columnBitmask |= _columnBitmasks.get("featureSet");
+
 		_featureSet = featureSet;
 	}
 
@@ -570,6 +607,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setHostname(String hostname) {
+		_columnBitmask |= _columnBitmasks.get("hostname");
+
 		_hostname = hostname;
 	}
 
@@ -581,6 +620,8 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setStatus(int status) {
+		_columnBitmask |= _columnBitmasks.get("status");
+
 		_status = status;
 	}
 
@@ -706,23 +747,11 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SyncDeviceModelImpl syncDeviceModelImpl = this;
+		_setModifiedDate = false;
 
-		syncDeviceModelImpl._originalUuid = syncDeviceModelImpl._uuid;
+		_columnBitmask = 0;
 
-		syncDeviceModelImpl._originalCompanyId = syncDeviceModelImpl._companyId;
-
-		syncDeviceModelImpl._setOriginalCompanyId = false;
-
-		syncDeviceModelImpl._originalUserId = syncDeviceModelImpl._userId;
-
-		syncDeviceModelImpl._setOriginalUserId = false;
-
-		syncDeviceModelImpl._originalUserName = syncDeviceModelImpl._userName;
-
-		syncDeviceModelImpl._setModifiedDate = false;
-
-		syncDeviceModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -864,17 +893,56 @@ public class SyncDeviceModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uuid", 1L);
+
+		columnBitmasks.put("syncDeviceId", 2L);
+
+		columnBitmasks.put("companyId", 4L);
+
+		columnBitmasks.put("userId", 8L);
+
+		columnBitmasks.put("userName", 16L);
+
+		columnBitmasks.put("createDate", 32L);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		columnBitmasks.put("type", 128L);
+
+		columnBitmasks.put("buildNumber", 256L);
+
+		columnBitmasks.put("featureSet", 512L);
+
+		columnBitmasks.put("hostname", 1024L);
+
+		columnBitmasks.put("status", 2048L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _uuid;
-	private String _originalUuid;
 	private long _syncDeviceId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
-	private String _originalUserName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;

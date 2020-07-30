@@ -493,25 +493,25 @@ public class JournalArticleResourcePersistenceTest {
 			Objects.equals(
 				existingJournalArticleResource.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleResource, "getOriginalUuid",
-					new Class<?>[0])));
+					existingJournalArticleResource, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleResource.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleResource, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingJournalArticleResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingJournalArticleResource.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleResource, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingJournalArticleResource, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingJournalArticleResource.getArticleId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleResource, "getOriginalArticleId",
-					new Class<?>[0])));
+					existingJournalArticleResource, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "articleId")));
 	}
 
 	protected JournalArticleResource addJournalArticleResource()

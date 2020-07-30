@@ -764,47 +764,47 @@ public class FragmentEntryVersionPersistenceTest {
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntryVersion.getFragmentEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntryVersion, "getOriginalFragmentEntryId",
-				new Class<?>[0]));
+				existingFragmentEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "fragmentEntryId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingFragmentEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingFragmentEntryVersion, "getOriginalVersion",
-				new Class<?>[0]));
+				existingFragmentEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertTrue(
 			Objects.equals(
 				existingFragmentEntryVersion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingFragmentEntryVersion, "getOriginalUuid",
-					new Class<?>[0])));
+					existingFragmentEntryVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "uuid")));
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntryVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntryVersion, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingFragmentEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
 			Integer.valueOf(existingFragmentEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingFragmentEntryVersion, "getOriginalVersion",
-				new Class<?>[0]));
+				existingFragmentEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 
 		Assert.assertEquals(
 			Long.valueOf(existingFragmentEntryVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntryVersion, "getOriginalGroupId",
-				new Class<?>[0]));
+				existingFragmentEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertTrue(
 			Objects.equals(
 				existingFragmentEntryVersion.getFragmentEntryKey(),
 				ReflectionTestUtil.invoke(
-					existingFragmentEntryVersion, "getOriginalFragmentEntryKey",
-					new Class<?>[0])));
+					existingFragmentEntryVersion, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "fragmentEntryKey")));
 		Assert.assertEquals(
 			Integer.valueOf(existingFragmentEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingFragmentEntryVersion, "getOriginalVersion",
-				new Class<?>[0]));
+				existingFragmentEntryVersion, "getOriginalAttributeValue",
+				new Class<?>[] {String.class}, "version"));
 	}
 
 	protected FragmentEntryVersion addFragmentEntryVersion() throws Exception {

@@ -458,12 +458,14 @@ public class LockPersistenceTest {
 			Objects.equals(
 				existingLock.getClassName(),
 				ReflectionTestUtil.invoke(
-					existingLock, "getOriginalClassName", new Class<?>[0])));
+					existingLock, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "className")));
 		Assert.assertTrue(
 			Objects.equals(
 				existingLock.getKey(),
 				ReflectionTestUtil.invoke(
-					existingLock, "getOriginalKey", new Class<?>[0])));
+					existingLock, "getOriginalAttributeValue",
+					new Class<?>[] {String.class}, "key")));
 	}
 
 	protected Lock addLock() throws Exception {

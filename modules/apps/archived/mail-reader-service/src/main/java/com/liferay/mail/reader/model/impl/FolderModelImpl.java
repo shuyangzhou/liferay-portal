@@ -106,8 +106,18 @@ public class FolderModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long FULLNAME_COLUMN_BITMASK = 2L;
 
 	/**
@@ -289,6 +299,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
+		_columnBitmask |= _columnBitmasks.get("folderId");
+
 		_folderId = folderId;
 	}
 
@@ -299,6 +311,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -309,6 +323,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -340,6 +356,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -350,6 +368,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -366,6 +386,8 @@ public class FolderModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -376,19 +398,18 @@ public class FolderModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
-		_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountId) {
-			_setOriginalAccountId = true;
-
-			_originalAccountId = _accountId;
-		}
+		_columnBitmask |= _columnBitmasks.get("accountId");
 
 		_accountId = accountId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalAccountId() {
-		return _originalAccountId;
+		return GetterUtil.getLong(getOriginalAttributeValue("accountId"));
 	}
 
 	@Override
@@ -403,17 +424,18 @@ public class FolderModelImpl
 
 	@Override
 	public void setFullName(String fullName) {
-		_columnBitmask = -1L;
-
-		if (_originalFullName == null) {
-			_originalFullName = _fullName;
-		}
+		_columnBitmask |= _columnBitmasks.get("fullName");
 
 		_fullName = fullName;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalFullName() {
-		return GetterUtil.getString(_originalFullName);
+		return getOriginalAttributeValue("fullName");
 	}
 
 	@Override
@@ -428,6 +450,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setDisplayName(String displayName) {
+		_columnBitmask |= _columnBitmasks.get("displayName");
+
 		_displayName = displayName;
 	}
 
@@ -438,6 +462,8 @@ public class FolderModelImpl
 
 	@Override
 	public void setRemoteMessageCount(int remoteMessageCount) {
+		_columnBitmask |= _columnBitmasks.get("remoteMessageCount");
+
 		_remoteMessageCount = remoteMessageCount;
 	}
 
@@ -553,17 +579,11 @@ public class FolderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FolderModelImpl folderModelImpl = this;
+		_setModifiedDate = false;
 
-		folderModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		folderModelImpl._originalAccountId = folderModelImpl._accountId;
-
-		folderModelImpl._setOriginalAccountId = false;
-
-		folderModelImpl._originalFullName = folderModelImpl._fullName;
-
-		folderModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -693,6 +713,47 @@ public class FolderModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("folderId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("accountId", 64L);
+
+		columnBitmasks.put("fullName", 128L);
+
+		columnBitmasks.put("displayName", 256L);
+
+		columnBitmasks.put("remoteMessageCount", 512L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _folderId;
 	private long _companyId;
 	private long _userId;
@@ -701,10 +762,7 @@ public class FolderModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _accountId;
-	private long _originalAccountId;
-	private boolean _setOriginalAccountId;
 	private String _fullName;
-	private String _originalFullName;
 	private String _displayName;
 	private int _remoteMessageCount;
 	private long _columnBitmask;

@@ -107,12 +107,32 @@ public class WeDeployAuthTokenModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long CLIENTID_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TOKEN_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long TYPE_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long WEDEPLOYAUTHTOKENID_COLUMN_BITMASK = 8L;
 
 	/**
@@ -318,6 +338,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setWeDeployAuthTokenId(long weDeployAuthTokenId) {
+		_columnBitmask |= _columnBitmasks.get("weDeployAuthTokenId");
+
 		_weDeployAuthTokenId = weDeployAuthTokenId;
 	}
 
@@ -328,6 +350,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= _columnBitmasks.get("companyId");
+
 		_companyId = companyId;
 	}
 
@@ -338,6 +362,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -369,6 +395,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -379,6 +407,8 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -395,6 +425,8 @@ public class WeDeployAuthTokenModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -410,17 +442,18 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setClientId(String clientId) {
-		_columnBitmask |= CLIENTID_COLUMN_BITMASK;
-
-		if (_originalClientId == null) {
-			_originalClientId = _clientId;
-		}
+		_columnBitmask |= _columnBitmasks.get("clientId");
 
 		_clientId = clientId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalClientId() {
-		return GetterUtil.getString(_originalClientId);
+		return getOriginalAttributeValue("clientId");
 	}
 
 	@Override
@@ -435,17 +468,18 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setToken(String token) {
-		_columnBitmask |= TOKEN_COLUMN_BITMASK;
-
-		if (_originalToken == null) {
-			_originalToken = _token;
-		}
+		_columnBitmask |= _columnBitmasks.get("token");
 
 		_token = token;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalToken() {
-		return GetterUtil.getString(_originalToken);
+		return getOriginalAttributeValue("token");
 	}
 
 	@Override
@@ -455,19 +489,18 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_columnBitmask |= _columnBitmasks.get("type");
 
 		_type = type;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public int getOriginalType() {
-		return _originalType;
+		return GetterUtil.getInteger(getOriginalAttributeValue("type"));
 	}
 
 	public long getColumnBitmask() {
@@ -584,22 +617,11 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl = this;
+		_setModifiedDate = false;
 
-		weDeployAuthTokenModelImpl._setModifiedDate = false;
+		_columnBitmask = 0;
 
-		weDeployAuthTokenModelImpl._originalClientId =
-			weDeployAuthTokenModelImpl._clientId;
-
-		weDeployAuthTokenModelImpl._originalToken =
-			weDeployAuthTokenModelImpl._token;
-
-		weDeployAuthTokenModelImpl._originalType =
-			weDeployAuthTokenModelImpl._type;
-
-		weDeployAuthTokenModelImpl._setOriginalType = false;
-
-		weDeployAuthTokenModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -731,6 +753,45 @@ public class WeDeployAuthTokenModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("weDeployAuthTokenId", 1L);
+
+		columnBitmasks.put("companyId", 2L);
+
+		columnBitmasks.put("userId", 4L);
+
+		columnBitmasks.put("userName", 8L);
+
+		columnBitmasks.put("createDate", 16L);
+
+		columnBitmasks.put("modifiedDate", 32L);
+
+		columnBitmasks.put("clientId", 64L);
+
+		columnBitmasks.put("token", 128L);
+
+		columnBitmasks.put("type", 256L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private long _weDeployAuthTokenId;
 	private long _companyId;
 	private long _userId;
@@ -739,12 +800,8 @@ public class WeDeployAuthTokenModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _clientId;
-	private String _originalClientId;
 	private String _token;
-	private String _originalToken;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private long _columnBitmask;
 	private WeDeployAuthToken _escapedModel;
 

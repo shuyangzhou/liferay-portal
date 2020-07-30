@@ -126,18 +126,53 @@ public class AppBuilderAppModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long DDMSTRUCTUREID_COLUMN_BITMASK = 4L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long SCOPE_COLUMN_BITMASK = 16L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long UUID_COLUMN_BITMASK = 32L;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *		#getColumnBitmask(String)
+	 */
+	@Deprecated
 	public static final long APPBUILDERAPPID_COLUMN_BITMASK = 64L;
 
 	/**
@@ -364,17 +399,18 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_columnBitmask |= _columnBitmasks.get("uuid");
 
 		_uuid = uuid;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return getOriginalAttributeValue("uuid");
 	}
 
 	@Override
@@ -384,6 +420,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setAppBuilderAppId(long appBuilderAppId) {
+		_columnBitmask |= _columnBitmasks.get("appBuilderAppId");
+
 		_appBuilderAppId = appBuilderAppId;
 	}
 
@@ -394,19 +432,18 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_columnBitmask |= _columnBitmasks.get("groupId");
 
 		_groupId = groupId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return GetterUtil.getLong(getOriginalAttributeValue("groupId"));
 	}
 
 	@Override
@@ -416,19 +453,18 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_columnBitmask |= _columnBitmasks.get("companyId");
 
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return GetterUtil.getLong(getOriginalAttributeValue("companyId"));
 	}
 
 	@Override
@@ -438,6 +474,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= _columnBitmasks.get("userId");
+
 		_userId = userId;
 	}
 
@@ -469,6 +507,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_columnBitmask |= _columnBitmasks.get("userName");
+
 		_userName = userName;
 	}
 
@@ -479,6 +519,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask |= _columnBitmasks.get("createDate");
+
 		_createDate = createDate;
 	}
 
@@ -495,6 +537,8 @@ public class AppBuilderAppModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
+		_columnBitmask |= _columnBitmasks.get("modifiedDate");
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -510,19 +554,18 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_columnBitmask |= _columnBitmasks.get("active");
 
 		_active = active;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return GetterUtil.getBoolean(getOriginalAttributeValue("active"));
 	}
 
 	@Override
@@ -532,6 +575,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setDdlRecordSetId(long ddlRecordSetId) {
+		_columnBitmask |= _columnBitmasks.get("ddlRecordSetId");
+
 		_ddlRecordSetId = ddlRecordSetId;
 	}
 
@@ -542,19 +587,18 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setDdmStructureId(long ddmStructureId) {
-		_columnBitmask |= DDMSTRUCTUREID_COLUMN_BITMASK;
-
-		if (!_setOriginalDdmStructureId) {
-			_setOriginalDdmStructureId = true;
-
-			_originalDdmStructureId = _ddmStructureId;
-		}
+		_columnBitmask |= _columnBitmasks.get("ddmStructureId");
 
 		_ddmStructureId = ddmStructureId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public long getOriginalDdmStructureId() {
-		return _originalDdmStructureId;
+		return GetterUtil.getLong(getOriginalAttributeValue("ddmStructureId"));
 	}
 
 	@Override
@@ -564,6 +608,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setDdmStructureLayoutId(long ddmStructureLayoutId) {
+		_columnBitmask |= _columnBitmasks.get("ddmStructureLayoutId");
+
 		_ddmStructureLayoutId = ddmStructureLayoutId;
 	}
 
@@ -574,6 +620,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setDeDataListViewId(long deDataListViewId) {
+		_columnBitmask |= _columnBitmasks.get("deDataListViewId");
+
 		_deDataListViewId = deDataListViewId;
 	}
 
@@ -632,6 +680,8 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= _columnBitmasks.get("name");
+
 		_name = name;
 	}
 
@@ -691,17 +741,18 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void setScope(String scope) {
-		_columnBitmask |= SCOPE_COLUMN_BITMASK;
-
-		if (_originalScope == null) {
-			_originalScope = _scope;
-		}
+		_columnBitmask |= _columnBitmasks.get("scope");
 
 		_scope = scope;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getOriginalAttributeValue(String)}
+	 */
+	@Deprecated
 	public String getOriginalScope() {
-		return GetterUtil.getString(_originalScope);
+		return getOriginalAttributeValue("scope");
 	}
 
 	@Override
@@ -895,34 +946,11 @@ public class AppBuilderAppModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AppBuilderAppModelImpl appBuilderAppModelImpl = this;
+		_setModifiedDate = false;
 
-		appBuilderAppModelImpl._originalUuid = appBuilderAppModelImpl._uuid;
+		_columnBitmask = 0;
 
-		appBuilderAppModelImpl._originalGroupId =
-			appBuilderAppModelImpl._groupId;
-
-		appBuilderAppModelImpl._setOriginalGroupId = false;
-
-		appBuilderAppModelImpl._originalCompanyId =
-			appBuilderAppModelImpl._companyId;
-
-		appBuilderAppModelImpl._setOriginalCompanyId = false;
-
-		appBuilderAppModelImpl._setModifiedDate = false;
-
-		appBuilderAppModelImpl._originalActive = appBuilderAppModelImpl._active;
-
-		appBuilderAppModelImpl._setOriginalActive = false;
-
-		appBuilderAppModelImpl._originalDdmStructureId =
-			appBuilderAppModelImpl._ddmStructureId;
-
-		appBuilderAppModelImpl._setOriginalDdmStructureId = false;
-
-		appBuilderAppModelImpl._originalScope = appBuilderAppModelImpl._scope;
-
-		appBuilderAppModelImpl._columnBitmask = 0;
+		_originalAttributeValues = getModelAttributes();
 	}
 
 	@Override
@@ -1072,33 +1100,74 @@ public class AppBuilderAppModelImpl
 
 	}
 
+	public static long getColumnBitmask(String attributeName) {
+		return _columnBitmasks.get(attributeName);
+	}
+
+	public <T> T getOriginalAttributeValue(String attributeName) {
+		if (_originalAttributeValues == null) {
+			return null;
+		}
+
+		return (T)_originalAttributeValues.get(attributeName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
+
+	static {
+		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+
+		columnBitmasks.put("uuid", 1L);
+
+		columnBitmasks.put("appBuilderAppId", 2L);
+
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("companyId", 8L);
+
+		columnBitmasks.put("userId", 16L);
+
+		columnBitmasks.put("userName", 32L);
+
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("active", 256L);
+
+		columnBitmasks.put("ddlRecordSetId", 512L);
+
+		columnBitmasks.put("ddmStructureId", 1024L);
+
+		columnBitmasks.put("ddmStructureLayoutId", 2048L);
+
+		columnBitmasks.put("deDataListViewId", 4096L);
+
+		columnBitmasks.put("name", 8192L);
+
+		columnBitmasks.put("scope", 16384L);
+
+		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
+	}
+
+	private transient Map<String, Object> _originalAttributeValues;
 	private String _uuid;
-	private String _originalUuid;
 	private long _appBuilderAppId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _ddlRecordSetId;
 	private long _ddmStructureId;
-	private long _originalDdmStructureId;
-	private boolean _setOriginalDdmStructureId;
 	private long _ddmStructureLayoutId;
 	private long _deDataListViewId;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _scope;
-	private String _originalScope;
 	private long _columnBitmask;
 	private AppBuilderApp _escapedModel;
 
