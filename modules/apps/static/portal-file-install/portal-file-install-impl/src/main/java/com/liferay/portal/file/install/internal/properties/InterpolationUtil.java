@@ -14,134 +14,16 @@
 
 package com.liferay.portal.file.install.internal.properties;
 
-import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.osgi.framework.BundleContext;
-
 /**
  * @author Matthew Tambara
  */
 public class InterpolationUtil {
 
-	public static void performSubstitution(
-		Map<String, String> properties, BundleContext bundleContext) {
-
-		performSubstitution(
-			properties, new BundleContextSubstitutionCallback(bundleContext));
+	public static String substVars(String value) {
+		return _substVars(value);
 	}
 
-	public static void performSubstitution(
-		Map<String, String> properties,
-		SubstitutionalCallback substitutionCallback) {
-
-		Map<String, String> map = new HashMap<>(properties);
-
-		for (Map.Entry<String, String> entry : properties.entrySet()) {
-			String name = entry.getKey();
-
-			properties.put(
-				name,
-				substVars(
-					entry.getValue(), name, null, map, substitutionCallback,
-					true));
-		}
-	}
-
-	public static String substVars(
-			String value, String currentKey, Map<String, String> cycleMap,
-			Map<String, String> configProps,
-			SubstitutionalCallback substitutionalCallback,
-			boolean substituteFromConfig)
-		throws IllegalArgumentException {
-
-		return _unescape(
-			_substVars(
-				value, currentKey, cycleMap, configProps,
-				substitutionalCallback, substituteFromConfig));
-	}
-
-	public static class BundleContextSubstitutionCallback
-		implements SubstitutionalCallback {
-
-		public BundleContextSubstitutionCallback(BundleContext bundleContext) {
-			_bundleContext = bundleContext;
-		}
-
-		@Override
-		public String getValue(String key) {
-			String value = null;
-
-			if (key.startsWith(_ENV_PREFIX)) {
-				value = System.getenv(key.substring(_ENV_PREFIX.length()));
-			}
-			else {
-				if (_bundleContext != null) {
-					value = _bundleContext.getProperty(key);
-				}
-
-				if (value == null) {
-					value = System.getProperty(key);
-				}
-			}
-
-			return value;
-		}
-
-		private final BundleContext _bundleContext;
-
-	}
-
-	private static int _indexOf(String value, int fromIndex) {
-		Matcher escapedOpeningCurlyMatcher = _escapedOpeningCurly.matcher(
-			value);
-
-		Matcher escapedClosingCurlyMatcher = _escapedClosingCurly.matcher(
-			value);
-
-		int escapedOpeningCurlyMatcherIndex = Integer.MAX_VALUE;
-
-		if (escapedOpeningCurlyMatcher.find(fromIndex)) {
-			escapedOpeningCurlyMatcherIndex =
-				escapedOpeningCurlyMatcher.start();
-		}
-
-		int escapedClosingCurlyMatcherIndex = Integer.MAX_VALUE;
-
-		if (escapedClosingCurlyMatcher.find(fromIndex)) {
-			escapedClosingCurlyMatcherIndex =
-				escapedClosingCurlyMatcher.start();
-		}
-
-		int index = Math.min(
-			escapedOpeningCurlyMatcherIndex, escapedClosingCurlyMatcherIndex);
-
-		if (index == Integer.MAX_VALUE) {
-			return -1;
-		}
-
-		return index;
-	}
-
-	private static String _substVars(
-			String value, String currentKey, Map<String, String> cycleMap,
-			Map<String, String> configProps,
-			SubstitutionalCallback substitutionalCallback,
-			boolean substituteFromConfig)
-		throws IllegalArgumentException {
-
-		if (cycleMap == null) {
-			cycleMap = new HashMap<>();
-		}
-
-		// Put the current key in the cycle map
-
-		cycleMap.put(currentKey, currentKey);
+	private static String _substVars(String value) {
 
 		// Assume we have a value that is something like: "leading ${foo.${bar}}
 		// middle ${baz} trailing". Find the first ending "}" variable
@@ -186,8 +68,6 @@ public class InterpolationUtil {
 		// existing value
 
 		if ((startDelim < 0) || (stopDelim < 0)) {
-			cycleMap.remove(currentKey);
-
 			return value;
 		}
 
@@ -199,86 +79,18 @@ public class InterpolationUtil {
 		String variable = value.substring(
 			startDelim + _DELIM_START.length(), stopDelim);
 
-		String original = variable;
-
-		// Strip expansion modifiers
-
-		int index1 = variable.lastIndexOf(":-");
-		int index2 = variable.lastIndexOf(":+");
-
-		int index = -1;
-
-		if ((index1 >= 0) && (index2 >= 0)) {
-			index = Math.min(index1, index1);
-		}
-		else if (index1 >= 0) {
-			index = index1;
-		}
-		else {
-			index = index2;
-		}
-
-		String op = null;
-
-		if ((index >= 0) && (index < variable.length())) {
-			op = variable.substring(index);
-
-			variable = variable.substring(0, index);
-		}
-
-		// Verify that this is not a recursive variable reference
-
-		if (cycleMap.get(variable) != null) {
-			throw new IllegalArgumentException(
-				"recursive variable reference: " + variable);
-		}
-
 		String substValue = null;
 
 		// Get the value of the deepest nested variable placeholder. Try the
 		// configuration properties first.
 
-		if (substituteFromConfig && (configProps != null)) {
-			substValue = configProps.get(variable);
-		}
-
 		if ((substValue == null) && (variable.length() > 0)) {
-			if (substitutionalCallback != null) {
-				substValue = substitutionalCallback.getValue(variable);
-			}
-
-			if (substValue == null) {
-				substValue = System.getProperty(variable);
-			}
-		}
-
-		if (op != null) {
-			if (op.startsWith(":-")) {
-				if ((substValue == null) || (substValue.length() == 0)) {
-					substValue = op.substring(":-".length());
-				}
-			}
-			else if (op.startsWith(":+")) {
-				if ((substValue != null) && (substValue.length() != 0)) {
-					substValue = op.substring(":+".length());
-				}
-			}
-			else {
-				throw new IllegalArgumentException(
-					"Bad substitution: ${" + original +
-						StringPool.CLOSE_CURLY_BRACE);
-			}
+			substValue = System.getProperty(variable);
 		}
 
 		if (substValue == null) {
 			substValue = "";
 		}
-
-		// Remove the found variable from the cycle map since it may appear more
-		// than once in the value and we do not want such situations to appear
-		// as a recursive reference
-
-		cycleMap.remove(variable);
 
 		// Append the leading characters, the substituted value of the variable,
 		// and the trailing characters to get the new value
@@ -290,62 +102,17 @@ public class InterpolationUtil {
 		// Perform the substitution again since there could still be
 		// substitutions to make
 
-		value = _substVars(
-			value, currentKey, cycleMap, configProps, substitutionalCallback,
-			substituteFromConfig);
-
-		cycleMap.remove(currentKey);
+		value = _substVars(value);
 
 		// Return the value
 
 		return value;
 	}
 
-	private static String _unescape(String value) {
-		value = value.replaceAll("\\" + _MARKER, "\\$");
-
-		Matcher existingSubstVarMatcher = _existingSubstVar.matcher(value);
-
-		if (!existingSubstVarMatcher.matches()) {
-			return value;
-		}
-
-		int escape = _indexOf(value, 0);
-
-		while ((escape >= 0) && (escape < (value.length() - 1))) {
-			char c = value.charAt(escape + 1);
-
-			if ((c == CharPool.OPEN_CURLY_BRACE) ||
-				(c == CharPool.CLOSE_CURLY_BRACE) || (c == _ESCAPE_CHAR)) {
-
-				value =
-					value.substring(0, escape) + value.substring(escape + 1);
-			}
-
-			escape = _indexOf(value, escape + 1);
-		}
-
-		return value;
-	}
-
-	private InterpolationUtil() {
-	}
-
 	private static final String _DELIM_START = "${";
 
 	private static final String _DELIM_STOP = "}";
 
-	private static final String _ENV_PREFIX = "env:";
-
 	private static final char _ESCAPE_CHAR = '\\';
-
-	private static final String _MARKER = "$__";
-
-	private static final Pattern _escapedClosingCurly = Pattern.compile(
-		"\\\\+\\}");
-	private static final Pattern _escapedOpeningCurly = Pattern.compile(
-		"\\\\+\\{");
-	private static final Pattern _existingSubstVar = Pattern.compile(
-		".*\\$\\\\*\\{.*\\}.*");
 
 }

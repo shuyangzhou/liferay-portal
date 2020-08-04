@@ -14,8 +14,6 @@
 
 package com.liferay.portal.file.install.internal.properties;
 
-import com.liferay.petra.string.CharPool;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -23,20 +21,14 @@ import java.io.Writer;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Matthew Tambara
  */
 public class TypedProperties extends AbstractMap<String, Object> {
-
-	public TypedProperties(SubstitutionalCallback substitutionalCallback) {
-		_substitutionalCallback = substitutionalCallback;
-	}
 
 	@Override
 	public void clear() {
@@ -74,7 +66,7 @@ public class TypedProperties extends AbstractMap<String, Object> {
 	public void load(Reader reader) throws IOException {
 		_storage.loadLayout(reader);
 
-		_substitute(_substitutionalCallback);
+		_storage.substitute();
 	}
 
 	@Override
@@ -137,161 +129,7 @@ public class TypedProperties extends AbstractMap<String, Object> {
 		}
 	}
 
-	private void _substitute(SubstitutionalCallback substitutionCallback) {
-		if (substitutionCallback == null) {
-			substitutionCallback = _defaultSubstitutionCallback;
-		}
-
-		DynamicMap dynamic = new DynamicMap(_storage, substitutionCallback);
-
-		_storage.putAllSubstituted(dynamic);
-	}
-
-	private static final String _ENV_PREFIX = "env:";
-
-	private final SubstitutionalCallback _defaultSubstitutionCallback =
-		value -> {
-			if (value.startsWith(_ENV_PREFIX)) {
-				return System.getenv(value.substring(_ENV_PREFIX.length()));
-			}
-
-			return System.getProperty(value);
-		};
-
 	private final Properties _storage = new Properties();
-	private final SubstitutionalCallback _substitutionalCallback;
-
-	private static class DynamicMap extends AbstractMap<String, String> {
-
-		public DynamicMap(
-			Properties properties,
-			SubstitutionalCallback substitutionCallback) {
-
-			_properties = properties;
-			_substitutionCallback = substitutionCallback;
-		}
-
-		@Override
-		public Set<Entry<String, String>> entrySet() {
-			return new AbstractSet<Entry<String, String>>() {
-
-				@Override
-				public Iterator<Entry<String, String>> iterator() {
-					Set<String> keys = _properties.keySet();
-
-					return new ComputedIterator(keys.iterator());
-				}
-
-				@Override
-				public int size() {
-					return _properties.size();
-				}
-
-			};
-		}
-
-		private String _compute(final String key) {
-			return InterpolationUtil.substVars(
-				_properties.get(key), key, _cycles, this,
-				value -> {
-					String string = DynamicMap.this.get(value);
-
-					if (string == null) {
-						return _substitutionCallback.getValue(value);
-					}
-
-					if (!_properties.isTyped()) {
-						return string;
-					}
-
-					boolean mult = false;
-
-					boolean hasType = false;
-
-					char t = string.charAt(0);
-
-					if ((t == CharPool.OPEN_BRACKET) ||
-						(t == CharPool.OPEN_PARENTHESIS)) {
-
-						mult = true;
-					}
-					else {
-						t = string.charAt(1);
-
-						if ((t == CharPool.OPEN_BRACKET) ||
-							(t == CharPool.OPEN_PARENTHESIS)) {
-
-							mult = true;
-						}
-
-						hasType = true;
-					}
-
-					if (mult) {
-						throw new IllegalArgumentException(
-							"Cannot substitute from a collection/array " +
-								"value: " + value);
-					}
-
-					if (hasType) {
-						return (String)_convertFromString(string.substring(1));
-					}
-
-					return (String)_convertFromString(string);
-				},
-				false);
-		}
-
-		private final Map<String, String> _cycles = new HashMap<>();
-		private final Properties _properties;
-		private final SubstitutionalCallback _substitutionCallback;
-
-		private class ComputedIterator
-			implements Iterator<Entry<String, String>> {
-
-			public ComputedIterator(Iterator<String> iterator) {
-				_iterator = iterator;
-			}
-
-			@Override
-			public boolean hasNext() {
-				return _iterator.hasNext();
-			}
-
-			@Override
-			public Entry<String, String> next() {
-				String key = _iterator.next();
-
-				return new Entry<String, String>() {
-
-					@Override
-					public String getKey() {
-						return key;
-					}
-
-					@Override
-					public String getValue() {
-						return _compute(key);
-					}
-
-					@Override
-					public String setValue(String value) {
-						throw new UnsupportedOperationException();
-					}
-
-				};
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-
-			private final Iterator<String> _iterator;
-
-		}
-
-	}
 
 	private class KeyIterator implements Iterator<Entry<String, Object>> {
 

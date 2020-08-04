@@ -43,8 +43,6 @@ import java.util.regex.Pattern;
  */
 public class Properties extends AbstractMap<String, String> {
 
-	public static final String DEFAULT_ENCODING = "ISO-8859-1";
-
 	@Override
 	public void clear() {
 		for (Layout layout : _layoutMap.values()) {
@@ -249,6 +247,12 @@ public class Properties extends AbstractMap<String, String> {
 
 	public void setTyped(boolean typed) {
 		_typed = typed;
+	}
+
+	public void substitute() {
+		for (Entry<String, String> entry : _storage.entrySet()) {
+			entry.setValue(InterpolationUtil.substVars(entry.getValue()));
+		}
 	}
 
 	public static class PropertiesReader extends BufferedReader {
