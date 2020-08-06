@@ -527,30 +527,49 @@ public class PortletPreferencesPersistenceTest {
 
 		_persistence.clearCache();
 
-		PortletPreferences existingPortletPreferences =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newPortletPreferences.getPrimaryKey());
+				newPortletPreferences.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PortletPreferences newPortletPreferences = addPortletPreferences();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PortletPreferences.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"portletPreferencesId",
+				newPortletPreferences.getPortletPreferencesId()));
+
+		List<PortletPreferences> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PortletPreferences portletPreferences) {
 		Assert.assertEquals(
-			Long.valueOf(existingPortletPreferences.getOwnerId()),
+			Long.valueOf(portletPreferences.getOwnerId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortletPreferences, "getOriginalOwnerId",
-				new Class<?>[0]));
+				portletPreferences, "getOriginalOwnerId", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingPortletPreferences.getOwnerType()),
+			Integer.valueOf(portletPreferences.getOwnerType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingPortletPreferences, "getOriginalOwnerType",
-				new Class<?>[0]));
+				portletPreferences, "getOriginalOwnerType", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingPortletPreferences.getPlid()),
+			Long.valueOf(portletPreferences.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortletPreferences, "getOriginalPlid",
-				new Class<?>[0]));
+				portletPreferences, "getOriginalPlid", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPortletPreferences.getPortletId(),
+				portletPreferences.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingPortletPreferences, "getOriginalPortletId",
+					portletPreferences, "getOriginalPortletId",
 					new Class<?>[0])));
 	}
 

@@ -502,28 +502,47 @@ public class AssetTagPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetTag existingAssetTag = _persistence.findByPrimaryKey(
-			newAssetTag.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAssetTag.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetTag newAssetTag = addAssetTag();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetTag.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("tagId", newAssetTag.getTagId()));
+
+		List<AssetTag> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AssetTag assetTag) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetTag.getUuid(),
+				assetTag.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetTag, "getOriginalUuid", new Class<?>[0])));
+					assetTag, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetTag.getGroupId()),
+			Long.valueOf(assetTag.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetTag, "getOriginalGroupId", new Class<?>[0]));
+				assetTag, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetTag.getGroupId()),
+			Long.valueOf(assetTag.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetTag, "getOriginalGroupId", new Class<?>[0]));
+				assetTag, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetTag.getName(),
+				assetTag.getName(),
 				ReflectionTestUtil.invoke(
-					existingAssetTag, "getOriginalName", new Class<?>[0])));
+					assetTag, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected AssetTag addAssetTag() throws Exception {

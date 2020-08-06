@@ -482,21 +482,43 @@ public class ChangesetCollectionPersistenceTest {
 
 		_persistence.clearCache();
 
-		ChangesetCollection existingChangesetCollection =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newChangesetCollection.getPrimaryKey());
+				newChangesetCollection.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ChangesetCollection newChangesetCollection = addChangesetCollection();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ChangesetCollection.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"changesetCollectionId",
+				newChangesetCollection.getChangesetCollectionId()));
+
+		List<ChangesetCollection> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		ChangesetCollection changesetCollection) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingChangesetCollection.getGroupId()),
+			Long.valueOf(changesetCollection.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingChangesetCollection, "getOriginalGroupId",
-				new Class<?>[0]));
+				changesetCollection, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingChangesetCollection.getName(),
+				changesetCollection.getName(),
 				ReflectionTestUtil.invoke(
-					existingChangesetCollection, "getOriginalName",
-					new Class<?>[0])));
+					changesetCollection, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected ChangesetCollection addChangesetCollection() throws Exception {

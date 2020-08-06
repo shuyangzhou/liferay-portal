@@ -569,34 +569,58 @@ public class AssetListEntrySegmentsEntryRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetListEntrySegmentsEntryRel existingAssetListEntrySegmentsEntryRel =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAssetListEntrySegmentsEntryRel.getPrimaryKey());
+				newAssetListEntrySegmentsEntryRel.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetListEntrySegmentsEntryRel newAssetListEntrySegmentsEntryRel =
+			addAssetListEntrySegmentsEntryRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetListEntrySegmentsEntryRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"assetListEntrySegmentsEntryRelId",
+				newAssetListEntrySegmentsEntryRel.
+					getAssetListEntrySegmentsEntryRelId()));
+
+		List<AssetListEntrySegmentsEntryRel> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetListEntrySegmentsEntryRel.getUuid(),
+				assetListEntrySegmentsEntryRel.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetListEntrySegmentsEntryRel, "getOriginalUuid",
+					assetListEntrySegmentsEntryRel, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetListEntrySegmentsEntryRel.getGroupId()),
+			Long.valueOf(assetListEntrySegmentsEntryRel.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetListEntrySegmentsEntryRel, "getOriginalGroupId",
+				assetListEntrySegmentsEntryRel, "getOriginalGroupId",
 				new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAssetListEntrySegmentsEntryRel.getAssetListEntryId()),
+			Long.valueOf(assetListEntrySegmentsEntryRel.getAssetListEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetListEntrySegmentsEntryRel,
-				"getOriginalAssetListEntryId", new Class<?>[0]));
+				assetListEntrySegmentsEntryRel, "getOriginalAssetListEntryId",
+				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAssetListEntrySegmentsEntryRel.getSegmentsEntryId()),
+			Long.valueOf(assetListEntrySegmentsEntryRel.getSegmentsEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetListEntrySegmentsEntryRel,
-				"getOriginalSegmentsEntryId", new Class<?>[0]));
+				assetListEntrySegmentsEntryRel, "getOriginalSegmentsEntryId",
+				new Class<?>[0]));
 	}
 
 	protected AssetListEntrySegmentsEntryRel addAssetListEntrySegmentsEntryRel()

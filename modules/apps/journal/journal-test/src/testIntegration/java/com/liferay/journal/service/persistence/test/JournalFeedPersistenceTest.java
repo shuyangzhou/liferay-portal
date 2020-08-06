@@ -542,29 +542,48 @@ public class JournalFeedPersistenceTest {
 
 		_persistence.clearCache();
 
-		JournalFeed existingJournalFeed = _persistence.findByPrimaryKey(
-			newJournalFeed.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newJournalFeed.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		JournalFeed newJournalFeed = addJournalFeed();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			JournalFeed.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("id", newJournalFeed.getId()));
+
+		List<JournalFeed> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(JournalFeed journalFeed) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalFeed.getUuid(),
+				journalFeed.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingJournalFeed, "getOriginalUuid", new Class<?>[0])));
+					journalFeed, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingJournalFeed.getGroupId()),
+			Long.valueOf(journalFeed.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFeed, "getOriginalGroupId", new Class<?>[0]));
+				journalFeed, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingJournalFeed.getGroupId()),
+			Long.valueOf(journalFeed.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalFeed, "getOriginalGroupId", new Class<?>[0]));
+				journalFeed, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalFeed.getFeedId(),
+				journalFeed.getFeedId(),
 				ReflectionTestUtil.invoke(
-					existingJournalFeed, "getOriginalFeedId",
-					new Class<?>[0])));
+					journalFeed, "getOriginalFeedId", new Class<?>[0])));
 	}
 
 	protected JournalFeed addJournalFeed() throws Exception {

@@ -490,32 +490,50 @@ public class RepositoryEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		RepositoryEntry existingRepositoryEntry = _persistence.findByPrimaryKey(
-			newRepositoryEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newRepositoryEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		RepositoryEntry newRepositoryEntry = addRepositoryEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			RepositoryEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"repositoryEntryId",
+				newRepositoryEntry.getRepositoryEntryId()));
+
+		List<RepositoryEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(RepositoryEntry repositoryEntry) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingRepositoryEntry.getUuid(),
+				repositoryEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingRepositoryEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					repositoryEntry, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingRepositoryEntry.getGroupId()),
+			Long.valueOf(repositoryEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRepositoryEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				repositoryEntry, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingRepositoryEntry.getRepositoryId()),
+			Long.valueOf(repositoryEntry.getRepositoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRepositoryEntry, "getOriginalRepositoryId",
-				new Class<?>[0]));
+				repositoryEntry, "getOriginalRepositoryId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingRepositoryEntry.getMappedId(),
+				repositoryEntry.getMappedId(),
 				ReflectionTestUtil.invoke(
-					existingRepositoryEntry, "getOriginalMappedId",
-					new Class<?>[0])));
+					repositoryEntry, "getOriginalMappedId", new Class<?>[0])));
 	}
 
 	protected RepositoryEntry addRepositoryEntry() throws Exception {

@@ -423,19 +423,41 @@ public class KaleoProcessLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoProcessLink existingKaleoProcessLink =
-			_persistence.findByPrimaryKey(newKaleoProcessLink.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newKaleoProcessLink.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoProcessLink newKaleoProcessLink = addKaleoProcessLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoProcessLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoProcessLinkId",
+				newKaleoProcessLink.getKaleoProcessLinkId()));
+
+		List<KaleoProcessLink> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(KaleoProcessLink kaleoProcessLink) {
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoProcessLink.getKaleoProcessId()),
+			Long.valueOf(kaleoProcessLink.getKaleoProcessId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoProcessLink, "getOriginalKaleoProcessId",
+				kaleoProcessLink, "getOriginalKaleoProcessId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingKaleoProcessLink.getWorkflowTaskName(),
+				kaleoProcessLink.getWorkflowTaskName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoProcessLink, "getOriginalWorkflowTaskName",
+					kaleoProcessLink, "getOriginalWorkflowTaskName",
 					new Class<?>[0])));
 	}
 

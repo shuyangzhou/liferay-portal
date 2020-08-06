@@ -483,27 +483,48 @@ public class MBThreadFlagPersistenceTest {
 
 		_persistence.clearCache();
 
-		MBThreadFlag existingMBThreadFlag = _persistence.findByPrimaryKey(
-			newMBThreadFlag.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMBThreadFlag.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MBThreadFlag newMBThreadFlag = addMBThreadFlag();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MBThreadFlag.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"threadFlagId", newMBThreadFlag.getThreadFlagId()));
+
+		List<MBThreadFlag> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MBThreadFlag mbThreadFlag) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMBThreadFlag.getUuid(),
+				mbThreadFlag.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBThreadFlag, "getOriginalUuid", new Class<?>[0])));
+					mbThreadFlag, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMBThreadFlag.getGroupId()),
+			Long.valueOf(mbThreadFlag.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThreadFlag, "getOriginalGroupId", new Class<?>[0]));
+				mbThreadFlag, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingMBThreadFlag.getUserId()),
+			Long.valueOf(mbThreadFlag.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThreadFlag, "getOriginalUserId", new Class<?>[0]));
+				mbThreadFlag, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingMBThreadFlag.getThreadId()),
+			Long.valueOf(mbThreadFlag.getThreadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThreadFlag, "getOriginalThreadId", new Class<?>[0]));
+				mbThreadFlag, "getOriginalThreadId", new Class<?>[0]));
 	}
 
 	protected MBThreadFlag addMBThreadFlag() throws Exception {

@@ -692,88 +692,107 @@ public class GroupPersistenceTest {
 
 		_persistence.clearCache();
 
-		Group existingGroup = _persistence.findByPrimaryKey(
-			newGroup.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newGroup.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Group newGroup = addGroup();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Group.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("groupId", newGroup.getGroupId()));
+
+		List<Group> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Group group) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingGroup.getUuid(),
+				group.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingGroup, "getOriginalUuid", new Class<?>[0])));
+					group, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getGroupId()),
+			Long.valueOf(group.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalGroupId", new Class<?>[0]));
+				group, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getLiveGroupId()),
+			Long.valueOf(group.getLiveGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalLiveGroupId", new Class<?>[0]));
+				group, "getOriginalLiveGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getCompanyId()),
+			Long.valueOf(group.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalCompanyId", new Class<?>[0]));
+				group, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingGroup.getGroupKey(),
+				group.getGroupKey(),
 				ReflectionTestUtil.invoke(
-					existingGroup, "getOriginalGroupKey", new Class<?>[0])));
+					group, "getOriginalGroupKey", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getCompanyId()),
+			Long.valueOf(group.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalCompanyId", new Class<?>[0]));
+				group, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingGroup.getFriendlyURL(),
+				group.getFriendlyURL(),
 				ReflectionTestUtil.invoke(
-					existingGroup, "getOriginalFriendlyURL", new Class<?>[0])));
+					group, "getOriginalFriendlyURL", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getCompanyId()),
+			Long.valueOf(group.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalCompanyId", new Class<?>[0]));
+				group, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getClassNameId()),
+			Long.valueOf(group.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalClassNameId", new Class<?>[0]));
+				group, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getClassPK()),
+			Long.valueOf(group.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalClassPK", new Class<?>[0]));
+				group, "getOriginalClassPK", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getCompanyId()),
+			Long.valueOf(group.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalCompanyId", new Class<?>[0]));
+				group, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getLiveGroupId()),
+			Long.valueOf(group.getLiveGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalLiveGroupId", new Class<?>[0]));
+				group, "getOriginalLiveGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingGroup.getGroupKey(),
+				group.getGroupKey(),
 				ReflectionTestUtil.invoke(
-					existingGroup, "getOriginalGroupKey", new Class<?>[0])));
+					group, "getOriginalGroupKey", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getCompanyId()),
+			Long.valueOf(group.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalCompanyId", new Class<?>[0]));
+				group, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getClassNameId()),
+			Long.valueOf(group.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalClassNameId", new Class<?>[0]));
+				group, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingGroup.getLiveGroupId()),
+			Long.valueOf(group.getLiveGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingGroup, "getOriginalLiveGroupId", new Class<?>[0]));
+				group, "getOriginalLiveGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingGroup.getGroupKey(),
+				group.getGroupKey(),
 				ReflectionTestUtil.invoke(
-					existingGroup, "getOriginalGroupKey", new Class<?>[0])));
+					group, "getOriginalGroupKey", new Class<?>[0])));
 	}
 
 	protected Group addGroup() throws Exception {

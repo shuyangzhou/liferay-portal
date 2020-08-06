@@ -486,18 +486,39 @@ public class DefinitionPersistenceTest {
 
 		_persistence.clearCache();
 
-		Definition existingDefinition = _persistence.findByPrimaryKey(
-			newDefinition.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDefinition.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Definition newDefinition = addDefinition();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Definition.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"definitionId", newDefinition.getDefinitionId()));
+
+		List<Definition> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Definition definition) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDefinition.getUuid(),
+				definition.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDefinition, "getOriginalUuid", new Class<?>[0])));
+					definition, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDefinition.getGroupId()),
+			Long.valueOf(definition.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDefinition, "getOriginalGroupId", new Class<?>[0]));
+				definition, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected Definition addDefinition() throws Exception {

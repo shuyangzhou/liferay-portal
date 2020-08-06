@@ -485,32 +485,55 @@ public class JournalArticleResourcePersistenceTest {
 
 		_persistence.clearCache();
 
-		JournalArticleResource existingJournalArticleResource =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newJournalArticleResource.getPrimaryKey());
+				newJournalArticleResource.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		JournalArticleResource newJournalArticleResource =
+			addJournalArticleResource();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			JournalArticleResource.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"resourcePrimKey",
+				newJournalArticleResource.getResourcePrimKey()));
+
+		List<JournalArticleResource> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		JournalArticleResource journalArticleResource) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalArticleResource.getUuid(),
+				journalArticleResource.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleResource, "getOriginalUuid",
+					journalArticleResource, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleResource.getGroupId()),
+			Long.valueOf(journalArticleResource.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleResource, "getOriginalGroupId",
-				new Class<?>[0]));
+				journalArticleResource, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleResource.getGroupId()),
+			Long.valueOf(journalArticleResource.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleResource, "getOriginalGroupId",
-				new Class<?>[0]));
+				journalArticleResource, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalArticleResource.getArticleId(),
+				journalArticleResource.getArticleId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleResource, "getOriginalArticleId",
+					journalArticleResource, "getOriginalArticleId",
 					new Class<?>[0])));
 	}
 

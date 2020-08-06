@@ -515,30 +515,49 @@ public class KaleoTransitionPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoTransition existingKaleoTransition = _persistence.findByPrimaryKey(
-			newKaleoTransition.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newKaleoTransition.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoTransition newKaleoTransition = addKaleoTransition();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoTransition.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoTransitionId",
+				newKaleoTransition.getKaleoTransitionId()));
+
+		List<KaleoTransition> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(KaleoTransition kaleoTransition) {
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTransition.getKaleoNodeId()),
+			Long.valueOf(kaleoTransition.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTransition, "getOriginalKaleoNodeId",
-				new Class<?>[0]));
+				kaleoTransition, "getOriginalKaleoNodeId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingKaleoTransition.getName(),
+				kaleoTransition.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoTransition, "getOriginalName",
-					new Class<?>[0])));
+					kaleoTransition, "getOriginalName", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTransition.getKaleoNodeId()),
+			Long.valueOf(kaleoTransition.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTransition, "getOriginalKaleoNodeId",
-				new Class<?>[0]));
+				kaleoTransition, "getOriginalKaleoNodeId", new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingKaleoTransition.getDefaultTransition()),
+			Boolean.valueOf(kaleoTransition.getDefaultTransition()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingKaleoTransition, "getOriginalDefaultTransition",
+				kaleoTransition, "getOriginalDefaultTransition",
 				new Class<?>[0]));
 	}
 

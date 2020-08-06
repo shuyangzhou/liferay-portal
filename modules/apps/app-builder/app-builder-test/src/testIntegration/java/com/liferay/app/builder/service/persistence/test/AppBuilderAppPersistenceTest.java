@@ -550,19 +550,39 @@ public class AppBuilderAppPersistenceTest {
 
 		_persistence.clearCache();
 
-		AppBuilderApp existingAppBuilderApp = _persistence.findByPrimaryKey(
-			newAppBuilderApp.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAppBuilderApp.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AppBuilderApp newAppBuilderApp = addAppBuilderApp();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AppBuilderApp.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"appBuilderAppId", newAppBuilderApp.getAppBuilderAppId()));
+
+		List<AppBuilderApp> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AppBuilderApp appBuilderApp) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingAppBuilderApp.getUuid(),
+				appBuilderApp.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderApp, "getOriginalUuid",
-					new Class<?>[0])));
+					appBuilderApp, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAppBuilderApp.getGroupId()),
+			Long.valueOf(appBuilderApp.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderApp, "getOriginalGroupId", new Class<?>[0]));
+				appBuilderApp, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected AppBuilderApp addAppBuilderApp() throws Exception {

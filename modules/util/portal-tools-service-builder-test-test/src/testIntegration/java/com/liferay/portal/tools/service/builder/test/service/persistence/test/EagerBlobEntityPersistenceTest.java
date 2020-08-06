@@ -437,20 +437,40 @@ public class EagerBlobEntityPersistenceTest {
 
 		_persistence.clearCache();
 
-		EagerBlobEntity existingEagerBlobEntity = _persistence.findByPrimaryKey(
-			newEagerBlobEntity.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newEagerBlobEntity.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		EagerBlobEntity newEagerBlobEntity = addEagerBlobEntity();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			EagerBlobEntity.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"eagerBlobEntityId",
+				newEagerBlobEntity.getEagerBlobEntityId()));
+
+		List<EagerBlobEntity> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(EagerBlobEntity eagerBlobEntity) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingEagerBlobEntity.getUuid(),
+				eagerBlobEntity.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingEagerBlobEntity, "getOriginalUuid",
-					new Class<?>[0])));
+					eagerBlobEntity, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingEagerBlobEntity.getGroupId()),
+			Long.valueOf(eagerBlobEntity.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingEagerBlobEntity, "getOriginalGroupId",
-				new Class<?>[0]));
+				eagerBlobEntity, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected EagerBlobEntity addEagerBlobEntity() throws Exception {

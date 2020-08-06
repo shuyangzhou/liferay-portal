@@ -623,18 +623,39 @@ public class SyncDLObjectPersistenceTest {
 
 		_persistence.clearCache();
 
-		SyncDLObject existingSyncDLObject = _persistence.findByPrimaryKey(
-			newSyncDLObject.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newSyncDLObject.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SyncDLObject newSyncDLObject = addSyncDLObject();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SyncDLObject.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"syncDLObjectId", newSyncDLObject.getSyncDLObjectId()));
+
+		List<SyncDLObject> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SyncDLObject syncDLObject) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSyncDLObject.getType(),
+				syncDLObject.getType(),
 				ReflectionTestUtil.invoke(
-					existingSyncDLObject, "getOriginalType", new Class<?>[0])));
+					syncDLObject, "getOriginalType", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingSyncDLObject.getTypePK()),
+			Long.valueOf(syncDLObject.getTypePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSyncDLObject, "getOriginalTypePK", new Class<?>[0]));
+				syncDLObject, "getOriginalTypePK", new Class<?>[0]));
 	}
 
 	protected SyncDLObject addSyncDLObject() throws Exception {

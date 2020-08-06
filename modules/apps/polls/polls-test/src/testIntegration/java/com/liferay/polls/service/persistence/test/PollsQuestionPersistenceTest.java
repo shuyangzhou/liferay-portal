@@ -486,19 +486,39 @@ public class PollsQuestionPersistenceTest {
 
 		_persistence.clearCache();
 
-		PollsQuestion existingPollsQuestion = _persistence.findByPrimaryKey(
-			newPollsQuestion.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newPollsQuestion.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PollsQuestion newPollsQuestion = addPollsQuestion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PollsQuestion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"questionId", newPollsQuestion.getQuestionId()));
+
+		List<PollsQuestion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PollsQuestion pollsQuestion) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingPollsQuestion.getUuid(),
+				pollsQuestion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingPollsQuestion, "getOriginalUuid",
-					new Class<?>[0])));
+					pollsQuestion, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingPollsQuestion.getGroupId()),
+			Long.valueOf(pollsQuestion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPollsQuestion, "getOriginalGroupId", new Class<?>[0]));
+				pollsQuestion, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected PollsQuestion addPollsQuestion() throws Exception {

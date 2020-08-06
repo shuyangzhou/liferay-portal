@@ -507,30 +507,49 @@ public class RedirectEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		RedirectEntry existingRedirectEntry = _persistence.findByPrimaryKey(
-			newRedirectEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newRedirectEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		RedirectEntry newRedirectEntry = addRedirectEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			RedirectEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"redirectEntryId", newRedirectEntry.getRedirectEntryId()));
+
+		List<RedirectEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(RedirectEntry redirectEntry) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingRedirectEntry.getUuid(),
+				redirectEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingRedirectEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					redirectEntry, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingRedirectEntry.getGroupId()),
+			Long.valueOf(redirectEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRedirectEntry, "getOriginalGroupId", new Class<?>[0]));
+				redirectEntry, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingRedirectEntry.getGroupId()),
+			Long.valueOf(redirectEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRedirectEntry, "getOriginalGroupId", new Class<?>[0]));
+				redirectEntry, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingRedirectEntry.getSourceURL(),
+				redirectEntry.getSourceURL(),
 				ReflectionTestUtil.invoke(
-					existingRedirectEntry, "getOriginalSourceURL",
-					new Class<?>[0])));
+					redirectEntry, "getOriginalSourceURL", new Class<?>[0])));
 	}
 
 	protected RedirectEntry addRedirectEntry() throws Exception {

@@ -512,36 +512,54 @@ public class TranslationEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		TranslationEntry existingTranslationEntry =
-			_persistence.findByPrimaryKey(newTranslationEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newTranslationEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		TranslationEntry newTranslationEntry = addTranslationEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			TranslationEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"translationEntryId",
+				newTranslationEntry.getTranslationEntryId()));
+
+		List<TranslationEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(TranslationEntry translationEntry) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingTranslationEntry.getUuid(),
+				translationEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingTranslationEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					translationEntry, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingTranslationEntry.getGroupId()),
+			Long.valueOf(translationEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTranslationEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				translationEntry, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingTranslationEntry.getClassNameId()),
+			Long.valueOf(translationEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTranslationEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				translationEntry, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingTranslationEntry.getClassPK()),
+			Long.valueOf(translationEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTranslationEntry, "getOriginalClassPK",
-				new Class<?>[0]));
+				translationEntry, "getOriginalClassPK", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingTranslationEntry.getLanguageId(),
+				translationEntry.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingTranslationEntry, "getOriginalLanguageId",
+					translationEntry, "getOriginalLanguageId",
 					new Class<?>[0])));
 	}
 

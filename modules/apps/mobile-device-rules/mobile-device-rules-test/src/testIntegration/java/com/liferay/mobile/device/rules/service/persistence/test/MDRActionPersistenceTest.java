@@ -479,18 +479,38 @@ public class MDRActionPersistenceTest {
 
 		_persistence.clearCache();
 
-		MDRAction existingMDRAction = _persistence.findByPrimaryKey(
-			newMDRAction.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMDRAction.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MDRAction newMDRAction = addMDRAction();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MDRAction.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("actionId", newMDRAction.getActionId()));
+
+		List<MDRAction> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MDRAction mdrAction) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMDRAction.getUuid(),
+				mdrAction.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMDRAction, "getOriginalUuid", new Class<?>[0])));
+					mdrAction, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMDRAction.getGroupId()),
+			Long.valueOf(mdrAction.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRAction, "getOriginalGroupId", new Class<?>[0]));
+				mdrAction, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected MDRAction addMDRAction() throws Exception {

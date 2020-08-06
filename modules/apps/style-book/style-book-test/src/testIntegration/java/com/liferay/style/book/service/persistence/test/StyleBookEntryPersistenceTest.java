@@ -527,24 +527,45 @@ public class StyleBookEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		StyleBookEntry existingStyleBookEntry = _persistence.findByPrimaryKey(
-			newStyleBookEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newStyleBookEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		StyleBookEntry newStyleBookEntry = addStyleBookEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			StyleBookEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"styleBookEntryId", newStyleBookEntry.getStyleBookEntryId()));
+
+		List<StyleBookEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(StyleBookEntry styleBookEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingStyleBookEntry.getGroupId()),
+			Long.valueOf(styleBookEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingStyleBookEntry, "getOriginalGroupId", new Class<?>[0]));
+				styleBookEntry, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingStyleBookEntry.getStyleBookEntryKey(),
+				styleBookEntry.getStyleBookEntryKey(),
 				ReflectionTestUtil.invoke(
-					existingStyleBookEntry, "getOriginalStyleBookEntryKey",
+					styleBookEntry, "getOriginalStyleBookEntryKey",
 					new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingStyleBookEntry.getHeadId()),
+			Long.valueOf(styleBookEntry.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingStyleBookEntry, "getOriginalHeadId", new Class<?>[0]));
+				styleBookEntry, "getOriginalHeadId", new Class<?>[0]));
 	}
 
 	protected StyleBookEntry addStyleBookEntry() throws Exception {

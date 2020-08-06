@@ -388,18 +388,37 @@ public class RegionPersistenceTest {
 
 		_persistence.clearCache();
 
-		Region existingRegion = _persistence.findByPrimaryKey(
-			newRegion.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newRegion.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Region newRegion = addRegion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Region.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("regionId", newRegion.getRegionId()));
+
+		List<Region> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Region region) {
 		Assert.assertEquals(
-			Long.valueOf(existingRegion.getCountryId()),
+			Long.valueOf(region.getCountryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRegion, "getOriginalCountryId", new Class<?>[0]));
+				region, "getOriginalCountryId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingRegion.getRegionCode(),
+				region.getRegionCode(),
 				ReflectionTestUtil.invoke(
-					existingRegion, "getOriginalRegionCode", new Class<?>[0])));
+					region, "getOriginalRegionCode", new Class<?>[0])));
 	}
 
 	protected Region addRegion() throws Exception {

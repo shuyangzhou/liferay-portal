@@ -566,28 +566,49 @@ public class OrganizationPersistenceTest {
 
 		_persistence.clearCache();
 
-		Organization existingOrganization = _persistence.findByPrimaryKey(
-			newOrganization.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newOrganization.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Organization newOrganization = addOrganization();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Organization.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"organizationId", newOrganization.getOrganizationId()));
+
+		List<Organization> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Organization organization) {
 		Assert.assertEquals(
-			Long.valueOf(existingOrganization.getCompanyId()),
+			Long.valueOf(organization.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingOrganization, "getOriginalCompanyId", new Class<?>[0]));
+				organization, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingOrganization.getName(),
+				organization.getName(),
 				ReflectionTestUtil.invoke(
-					existingOrganization, "getOriginalName", new Class<?>[0])));
+					organization, "getOriginalName", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingOrganization.getCompanyId()),
+			Long.valueOf(organization.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingOrganization, "getOriginalCompanyId", new Class<?>[0]));
+				organization, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingOrganization.getExternalReferenceCode(),
+				organization.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingOrganization, "getOriginalExternalReferenceCode",
+					organization, "getOriginalExternalReferenceCode",
 					new Class<?>[0])));
 	}
 

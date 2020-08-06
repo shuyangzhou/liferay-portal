@@ -785,29 +785,49 @@ public class MBMessagePersistenceTest {
 
 		_persistence.clearCache();
 
-		MBMessage existingMBMessage = _persistence.findByPrimaryKey(
-			newMBMessage.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMBMessage.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MBMessage newMBMessage = addMBMessage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MBMessage.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"messageId", newMBMessage.getMessageId()));
+
+		List<MBMessage> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MBMessage mbMessage) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMBMessage.getUuid(),
+				mbMessage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBMessage, "getOriginalUuid", new Class<?>[0])));
+					mbMessage, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMBMessage.getGroupId()),
+			Long.valueOf(mbMessage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMessage, "getOriginalGroupId", new Class<?>[0]));
+				mbMessage, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingMBMessage.getGroupId()),
+			Long.valueOf(mbMessage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMessage, "getOriginalGroupId", new Class<?>[0]));
+				mbMessage, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingMBMessage.getUrlSubject(),
+				mbMessage.getUrlSubject(),
 				ReflectionTestUtil.invoke(
-					existingMBMessage, "getOriginalUrlSubject",
-					new Class<?>[0])));
+					mbMessage, "getOriginalUrlSubject", new Class<?>[0])));
 	}
 
 	protected MBMessage addMBMessage() throws Exception {

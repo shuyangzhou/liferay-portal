@@ -478,18 +478,39 @@ public class AccountEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		AccountEntry existingAccountEntry = _persistence.findByPrimaryKey(
-			newAccountEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAccountEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AccountEntry newAccountEntry = addAccountEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AccountEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"accountEntryId", newAccountEntry.getAccountEntryId()));
+
+		List<AccountEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AccountEntry accountEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingAccountEntry.getCompanyId()),
+			Long.valueOf(accountEntry.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountEntry, "getOriginalCompanyId", new Class<?>[0]));
+				accountEntry, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAccountEntry.getExternalReferenceCode(),
+				accountEntry.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingAccountEntry, "getOriginalExternalReferenceCode",
+					accountEntry, "getOriginalExternalReferenceCode",
 					new Class<?>[0])));
 	}
 

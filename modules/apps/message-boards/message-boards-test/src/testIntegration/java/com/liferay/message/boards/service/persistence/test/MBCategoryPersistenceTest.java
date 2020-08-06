@@ -612,18 +612,39 @@ public class MBCategoryPersistenceTest {
 
 		_persistence.clearCache();
 
-		MBCategory existingMBCategory = _persistence.findByPrimaryKey(
-			newMBCategory.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMBCategory.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MBCategory newMBCategory = addMBCategory();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MBCategory.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"categoryId", newMBCategory.getCategoryId()));
+
+		List<MBCategory> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MBCategory mbCategory) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMBCategory.getUuid(),
+				mbCategory.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBCategory, "getOriginalUuid", new Class<?>[0])));
+					mbCategory, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMBCategory.getGroupId()),
+			Long.valueOf(mbCategory.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBCategory, "getOriginalGroupId", new Class<?>[0]));
+				mbCategory, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected MBCategory addMBCategory() throws Exception {

@@ -453,21 +453,42 @@ public class UserGroupRolePersistenceTest {
 
 		_persistence.clearCache();
 
-		UserGroupRole existingUserGroupRole = _persistence.findByPrimaryKey(
-			newUserGroupRole.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newUserGroupRole.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		UserGroupRole newUserGroupRole = addUserGroupRole();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserGroupRole.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"userGroupRoleId", newUserGroupRole.getUserGroupRoleId()));
+
+		List<UserGroupRole> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(UserGroupRole userGroupRole) {
 		Assert.assertEquals(
-			Long.valueOf(existingUserGroupRole.getUserId()),
+			Long.valueOf(userGroupRole.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserGroupRole, "getOriginalUserId", new Class<?>[0]));
+				userGroupRole, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingUserGroupRole.getGroupId()),
+			Long.valueOf(userGroupRole.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserGroupRole, "getOriginalGroupId", new Class<?>[0]));
+				userGroupRole, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingUserGroupRole.getRoleId()),
+			Long.valueOf(userGroupRole.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserGroupRole, "getOriginalRoleId", new Class<?>[0]));
+				userGroupRole, "getOriginalRoleId", new Class<?>[0]));
 	}
 
 	protected UserGroupRole addUserGroupRole() throws Exception {

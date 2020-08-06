@@ -464,18 +464,37 @@ public class MDRRulePersistenceTest {
 
 		_persistence.clearCache();
 
-		MDRRule existingMDRRule = _persistence.findByPrimaryKey(
-			newMDRRule.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMDRRule.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MDRRule newMDRRule = addMDRRule();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MDRRule.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("ruleId", newMDRRule.getRuleId()));
+
+		List<MDRRule> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MDRRule mdrRule) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMDRRule.getUuid(),
+				mdrRule.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMDRRule, "getOriginalUuid", new Class<?>[0])));
+					mdrRule, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMDRRule.getGroupId()),
+			Long.valueOf(mdrRule.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRule, "getOriginalGroupId", new Class<?>[0]));
+				mdrRule, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected MDRRule addMDRRule() throws Exception {

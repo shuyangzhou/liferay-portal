@@ -542,29 +542,49 @@ public class DDLRecordSetPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDLRecordSet existingDDLRecordSet = _persistence.findByPrimaryKey(
-			newDDLRecordSet.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDLRecordSet.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDLRecordSet newDDLRecordSet = addDDLRecordSet();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDLRecordSet.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"recordSetId", newDDLRecordSet.getRecordSetId()));
+
+		List<DDLRecordSet> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDLRecordSet ddlRecordSet) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDLRecordSet.getUuid(),
+				ddlRecordSet.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecordSet, "getOriginalUuid", new Class<?>[0])));
+					ddlRecordSet, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDDLRecordSet.getGroupId()),
+			Long.valueOf(ddlRecordSet.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecordSet, "getOriginalGroupId", new Class<?>[0]));
+				ddlRecordSet, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingDDLRecordSet.getGroupId()),
+			Long.valueOf(ddlRecordSet.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecordSet, "getOriginalGroupId", new Class<?>[0]));
+				ddlRecordSet, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDLRecordSet.getRecordSetKey(),
+				ddlRecordSet.getRecordSetKey(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecordSet, "getOriginalRecordSetKey",
-					new Class<?>[0])));
+					ddlRecordSet, "getOriginalRecordSetKey", new Class<?>[0])));
 	}
 
 	protected DDLRecordSet addDDLRecordSet() throws Exception {

@@ -487,14 +487,40 @@ public class AppBuilderAppDataRecordLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		AppBuilderAppDataRecordLink existingAppBuilderAppDataRecordLink =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAppBuilderAppDataRecordLink.getPrimaryKey());
+				newAppBuilderAppDataRecordLink.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AppBuilderAppDataRecordLink newAppBuilderAppDataRecordLink =
+			addAppBuilderAppDataRecordLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AppBuilderAppDataRecordLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"appBuilderAppDataRecordLinkId",
+				newAppBuilderAppDataRecordLink.
+					getAppBuilderAppDataRecordLinkId()));
+
+		List<AppBuilderAppDataRecordLink> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AppBuilderAppDataRecordLink appBuilderAppDataRecordLink) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingAppBuilderAppDataRecordLink.getDdlRecordId()),
+			Long.valueOf(appBuilderAppDataRecordLink.getDdlRecordId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppDataRecordLink, "getOriginalDdlRecordId",
+				appBuilderAppDataRecordLink, "getOriginalDdlRecordId",
 				new Class<?>[0]));
 	}
 

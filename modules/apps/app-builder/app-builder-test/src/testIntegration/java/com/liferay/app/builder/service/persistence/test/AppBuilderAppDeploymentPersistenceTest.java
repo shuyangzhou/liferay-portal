@@ -454,20 +454,45 @@ public class AppBuilderAppDeploymentPersistenceTest {
 
 		_persistence.clearCache();
 
-		AppBuilderAppDeployment existingAppBuilderAppDeployment =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAppBuilderAppDeployment.getPrimaryKey());
+				newAppBuilderAppDeployment.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AppBuilderAppDeployment newAppBuilderAppDeployment =
+			addAppBuilderAppDeployment();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AppBuilderAppDeployment.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"appBuilderAppDeploymentId",
+				newAppBuilderAppDeployment.getAppBuilderAppDeploymentId()));
+
+		List<AppBuilderAppDeployment> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AppBuilderAppDeployment appBuilderAppDeployment) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingAppBuilderAppDeployment.getAppBuilderAppId()),
+			Long.valueOf(appBuilderAppDeployment.getAppBuilderAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppDeployment, "getOriginalAppBuilderAppId",
+				appBuilderAppDeployment, "getOriginalAppBuilderAppId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAppBuilderAppDeployment.getType(),
+				appBuilderAppDeployment.getType(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderAppDeployment, "getOriginalType",
+					appBuilderAppDeployment, "getOriginalType",
 					new Class<?>[0])));
 	}
 

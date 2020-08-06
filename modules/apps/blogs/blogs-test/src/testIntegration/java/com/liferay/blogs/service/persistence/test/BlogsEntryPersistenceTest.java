@@ -757,29 +757,48 @@ public class BlogsEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(
-			newBlogsEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newBlogsEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		BlogsEntry newBlogsEntry = addBlogsEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			BlogsEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("entryId", newBlogsEntry.getEntryId()));
+
+		List<BlogsEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(BlogsEntry blogsEntry) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingBlogsEntry.getUuid(),
+				blogsEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingBlogsEntry, "getOriginalUuid", new Class<?>[0])));
+					blogsEntry, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingBlogsEntry.getGroupId()),
+			Long.valueOf(blogsEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsEntry, "getOriginalGroupId", new Class<?>[0]));
+				blogsEntry, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingBlogsEntry.getGroupId()),
+			Long.valueOf(blogsEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsEntry, "getOriginalGroupId", new Class<?>[0]));
+				blogsEntry, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingBlogsEntry.getUrlTitle(),
+				blogsEntry.getUrlTitle(),
 				ReflectionTestUtil.invoke(
-					existingBlogsEntry, "getOriginalUrlTitle",
-					new Class<?>[0])));
+					blogsEntry, "getOriginalUrlTitle", new Class<?>[0])));
 	}
 
 	protected BlogsEntry addBlogsEntry() throws Exception {

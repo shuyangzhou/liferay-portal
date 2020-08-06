@@ -616,19 +616,39 @@ public class BookmarksEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		BookmarksEntry existingBookmarksEntry = _persistence.findByPrimaryKey(
-			newBookmarksEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newBookmarksEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		BookmarksEntry newBookmarksEntry = addBookmarksEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			BookmarksEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"entryId", newBookmarksEntry.getEntryId()));
+
+		List<BookmarksEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(BookmarksEntry bookmarksEntry) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingBookmarksEntry.getUuid(),
+				bookmarksEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingBookmarksEntry, "getOriginalUuid",
-					new Class<?>[0])));
+					bookmarksEntry, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingBookmarksEntry.getGroupId()),
+			Long.valueOf(bookmarksEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBookmarksEntry, "getOriginalGroupId", new Class<?>[0]));
+				bookmarksEntry, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected BookmarksEntry addBookmarksEntry() throws Exception {

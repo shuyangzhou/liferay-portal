@@ -434,29 +434,50 @@ public class UserIdMapperPersistenceTest {
 
 		_persistence.clearCache();
 
-		UserIdMapper existingUserIdMapper = _persistence.findByPrimaryKey(
-			newUserIdMapper.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newUserIdMapper.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		UserIdMapper newUserIdMapper = addUserIdMapper();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserIdMapper.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"userIdMapperId", newUserIdMapper.getUserIdMapperId()));
+
+		List<UserIdMapper> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(UserIdMapper userIdMapper) {
 		Assert.assertEquals(
-			Long.valueOf(existingUserIdMapper.getUserId()),
+			Long.valueOf(userIdMapper.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserIdMapper, "getOriginalUserId", new Class<?>[0]));
+				userIdMapper, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingUserIdMapper.getType(),
+				userIdMapper.getType(),
 				ReflectionTestUtil.invoke(
-					existingUserIdMapper, "getOriginalType", new Class<?>[0])));
+					userIdMapper, "getOriginalType", new Class<?>[0])));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingUserIdMapper.getType(),
+				userIdMapper.getType(),
 				ReflectionTestUtil.invoke(
-					existingUserIdMapper, "getOriginalType", new Class<?>[0])));
+					userIdMapper, "getOriginalType", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingUserIdMapper.getExternalUserId(),
+				userIdMapper.getExternalUserId(),
 				ReflectionTestUtil.invoke(
-					existingUserIdMapper, "getOriginalExternalUserId",
+					userIdMapper, "getOriginalExternalUserId",
 					new Class<?>[0])));
 	}
 

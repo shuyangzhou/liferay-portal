@@ -496,48 +496,67 @@ public class LVEntryVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		LVEntryVersion existingLVEntryVersion = _persistence.findByPrimaryKey(
-			newLVEntryVersion.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newLVEntryVersion.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		LVEntryVersion newLVEntryVersion = addLVEntryVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			LVEntryVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"lvEntryVersionId", newLVEntryVersion.getLvEntryVersionId()));
+
+		List<LVEntryVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(LVEntryVersion lvEntryVersion) {
 		Assert.assertEquals(
-			Long.valueOf(existingLVEntryVersion.getLvEntryId()),
+			Long.valueOf(lvEntryVersion.getLvEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryVersion, "getOriginalLvEntryId",
-				new Class<?>[0]));
+				lvEntryVersion, "getOriginalLvEntryId", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingLVEntryVersion.getVersion()),
+			Integer.valueOf(lvEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryVersion, "getOriginalVersion", new Class<?>[0]));
+				lvEntryVersion, "getOriginalVersion", new Class<?>[0]));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingLVEntryVersion.getUuid(),
+				lvEntryVersion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryVersion, "getOriginalUuid",
-					new Class<?>[0])));
+					lvEntryVersion, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingLVEntryVersion.getGroupId()),
+			Long.valueOf(lvEntryVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryVersion, "getOriginalGroupId", new Class<?>[0]));
+				lvEntryVersion, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingLVEntryVersion.getVersion()),
+			Integer.valueOf(lvEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryVersion, "getOriginalVersion", new Class<?>[0]));
+				lvEntryVersion, "getOriginalVersion", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingLVEntryVersion.getGroupId()),
+			Long.valueOf(lvEntryVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryVersion, "getOriginalGroupId", new Class<?>[0]));
+				lvEntryVersion, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLVEntryVersion.getUniqueGroupKey(),
+				lvEntryVersion.getUniqueGroupKey(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryVersion, "getOriginalUniqueGroupKey",
+					lvEntryVersion, "getOriginalUniqueGroupKey",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Integer.valueOf(existingLVEntryVersion.getVersion()),
+			Integer.valueOf(lvEntryVersion.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingLVEntryVersion, "getOriginalVersion", new Class<?>[0]));
+				lvEntryVersion, "getOriginalVersion", new Class<?>[0]));
 	}
 
 	protected LVEntryVersion addLVEntryVersion() throws Exception {

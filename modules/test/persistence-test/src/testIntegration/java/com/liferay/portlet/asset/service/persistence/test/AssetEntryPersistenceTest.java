@@ -577,28 +577,47 @@ public class AssetEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetEntry existingAssetEntry = _persistence.findByPrimaryKey(
-			newAssetEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAssetEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetEntry newAssetEntry = addAssetEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("entryId", newAssetEntry.getEntryId()));
+
+		List<AssetEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AssetEntry assetEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntry.getGroupId()),
+			Long.valueOf(assetEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntry, "getOriginalGroupId", new Class<?>[0]));
+				assetEntry, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetEntry.getClassUuid(),
+				assetEntry.getClassUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetEntry, "getOriginalClassUuid",
-					new Class<?>[0])));
+					assetEntry, "getOriginalClassUuid", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntry.getClassNameId()),
+			Long.valueOf(assetEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntry, "getOriginalClassNameId", new Class<?>[0]));
+				assetEntry, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntry.getClassPK()),
+			Long.valueOf(assetEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntry, "getOriginalClassPK", new Class<?>[0]));
+				assetEntry, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected AssetEntry addAssetEntry() throws Exception {

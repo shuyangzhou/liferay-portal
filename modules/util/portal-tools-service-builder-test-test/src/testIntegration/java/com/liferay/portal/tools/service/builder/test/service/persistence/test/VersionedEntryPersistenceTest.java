@@ -418,13 +418,34 @@ public class VersionedEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		VersionedEntry existingVersionedEntry = _persistence.findByPrimaryKey(
-			newVersionedEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newVersionedEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		VersionedEntry newVersionedEntry = addVersionedEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			VersionedEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"versionedEntryId", newVersionedEntry.getVersionedEntryId()));
+
+		List<VersionedEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(VersionedEntry versionedEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingVersionedEntry.getHeadId()),
+			Long.valueOf(versionedEntry.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVersionedEntry, "getOriginalHeadId", new Class<?>[0]));
+				versionedEntry, "getOriginalHeadId", new Class<?>[0]));
 	}
 
 	protected VersionedEntry addVersionedEntry() throws Exception {

@@ -558,35 +558,60 @@ public class LayoutPageTemplateStructureRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		LayoutPageTemplateStructureRel existingLayoutPageTemplateStructureRel =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newLayoutPageTemplateStructureRel.getPrimaryKey());
+				newLayoutPageTemplateStructureRel.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		LayoutPageTemplateStructureRel newLayoutPageTemplateStructureRel =
+			addLayoutPageTemplateStructureRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			LayoutPageTemplateStructureRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"layoutPageTemplateStructureRelId",
+				newLayoutPageTemplateStructureRel.
+					getLayoutPageTemplateStructureRelId()));
+
+		List<LayoutPageTemplateStructureRel> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		LayoutPageTemplateStructureRel layoutPageTemplateStructureRel) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutPageTemplateStructureRel.getUuid(),
+				layoutPageTemplateStructureRel.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutPageTemplateStructureRel, "getOriginalUuid",
+					layoutPageTemplateStructureRel, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutPageTemplateStructureRel.getGroupId()),
+			Long.valueOf(layoutPageTemplateStructureRel.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateStructureRel, "getOriginalGroupId",
+				layoutPageTemplateStructureRel, "getOriginalGroupId",
 				new Class<?>[0]));
 
 		Assert.assertEquals(
 			Long.valueOf(
-				existingLayoutPageTemplateStructureRel.
+				layoutPageTemplateStructureRel.
 					getLayoutPageTemplateStructureId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateStructureRel,
+				layoutPageTemplateStructureRel,
 				"getOriginalLayoutPageTemplateStructureId", new Class<?>[0]));
 		Assert.assertEquals(
 			Long.valueOf(
-				existingLayoutPageTemplateStructureRel.
-					getSegmentsExperienceId()),
+				layoutPageTemplateStructureRel.getSegmentsExperienceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutPageTemplateStructureRel,
+				layoutPageTemplateStructureRel,
 				"getOriginalSegmentsExperienceId", new Class<?>[0]));
 	}
 

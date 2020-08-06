@@ -428,27 +428,49 @@ public class LVEntryLocalizationPersistenceTest {
 
 		_persistence.clearCache();
 
-		LVEntryLocalization existingLVEntryLocalization =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newLVEntryLocalization.getPrimaryKey());
+				newLVEntryLocalization.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		LVEntryLocalization newLVEntryLocalization = addLVEntryLocalization();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			LVEntryLocalization.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"lvEntryLocalizationId",
+				newLVEntryLocalization.getLvEntryLocalizationId()));
+
+		List<LVEntryLocalization> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		LVEntryLocalization lvEntryLocalization) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingLVEntryLocalization.getLvEntryId()),
+			Long.valueOf(lvEntryLocalization.getLvEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryLocalization, "getOriginalLvEntryId",
-				new Class<?>[0]));
+				lvEntryLocalization, "getOriginalLvEntryId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLVEntryLocalization.getLanguageId(),
+				lvEntryLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingLVEntryLocalization, "getOriginalLanguageId",
+					lvEntryLocalization, "getOriginalLanguageId",
 					new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingLVEntryLocalization.getHeadId()),
+			Long.valueOf(lvEntryLocalization.getHeadId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLVEntryLocalization, "getOriginalHeadId",
-				new Class<?>[0]));
+				lvEntryLocalization, "getOriginalHeadId", new Class<?>[0]));
 	}
 
 	protected LVEntryLocalization addLVEntryLocalization() throws Exception {

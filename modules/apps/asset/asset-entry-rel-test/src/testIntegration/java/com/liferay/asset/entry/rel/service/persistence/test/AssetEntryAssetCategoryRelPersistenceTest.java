@@ -482,21 +482,46 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetEntryAssetCategoryRel existingAssetEntryAssetCategoryRel =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAssetEntryAssetCategoryRel.getPrimaryKey());
+				newAssetEntryAssetCategoryRel.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetEntryAssetCategoryRel newAssetEntryAssetCategoryRel =
+			addAssetEntryAssetCategoryRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetEntryAssetCategoryRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"assetEntryAssetCategoryRelId",
+				newAssetEntryAssetCategoryRel.
+					getAssetEntryAssetCategoryRelId()));
+
+		List<AssetEntryAssetCategoryRel> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AssetEntryAssetCategoryRel assetEntryAssetCategoryRel) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntryAssetCategoryRel.getAssetEntryId()),
+			Long.valueOf(assetEntryAssetCategoryRel.getAssetEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryAssetCategoryRel, "getOriginalAssetEntryId",
+				assetEntryAssetCategoryRel, "getOriginalAssetEntryId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAssetEntryAssetCategoryRel.getAssetCategoryId()),
+			Long.valueOf(assetEntryAssetCategoryRel.getAssetCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryAssetCategoryRel,
-				"getOriginalAssetCategoryId", new Class<?>[0]));
+				assetEntryAssetCategoryRel, "getOriginalAssetCategoryId",
+				new Class<?>[0]));
 	}
 
 	protected AssetEntryAssetCategoryRel addAssetEntryAssetCategoryRel()

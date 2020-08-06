@@ -437,24 +437,42 @@ public class DDMStructureLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMStructureLink existingDDMStructureLink =
-			_persistence.findByPrimaryKey(newDDMStructureLink.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDMStructureLink.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMStructureLink newDDMStructureLink = addDDMStructureLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMStructureLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"structureLinkId", newDDMStructureLink.getStructureLinkId()));
+
+		List<DDMStructureLink> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDMStructureLink ddmStructureLink) {
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStructureLink.getClassNameId()),
+			Long.valueOf(ddmStructureLink.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLink, "getOriginalClassNameId",
-				new Class<?>[0]));
+				ddmStructureLink, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStructureLink.getClassPK()),
+			Long.valueOf(ddmStructureLink.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLink, "getOriginalClassPK",
-				new Class<?>[0]));
+				ddmStructureLink, "getOriginalClassPK", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStructureLink.getStructureId()),
+			Long.valueOf(ddmStructureLink.getStructureId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructureLink, "getOriginalStructureId",
-				new Class<?>[0]));
+				ddmStructureLink, "getOriginalStructureId", new Class<?>[0]));
 	}
 
 	protected DDMStructureLink addDDMStructureLink() throws Exception {

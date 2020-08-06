@@ -434,25 +434,44 @@ public class CompanyPersistenceTest {
 
 		_persistence.clearCache();
 
-		Company existingCompany = _persistence.findByPrimaryKey(
-			newCompany.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCompany.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Company newCompany = addCompany();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Company.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("companyId", newCompany.getCompanyId()));
+
+		List<Company> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Company company) {
+		Assert.assertTrue(
+			Objects.equals(
+				company.getWebId(),
+				ReflectionTestUtil.invoke(
+					company, "getOriginalWebId", new Class<?>[0])));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingCompany.getWebId(),
+				company.getMx(),
 				ReflectionTestUtil.invoke(
-					existingCompany, "getOriginalWebId", new Class<?>[0])));
-
-		Assert.assertTrue(
-			Objects.equals(
-				existingCompany.getMx(),
-				ReflectionTestUtil.invoke(
-					existingCompany, "getOriginalMx", new Class<?>[0])));
+					company, "getOriginalMx", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingCompany.getLogoId()),
+			Long.valueOf(company.getLogoId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCompany, "getOriginalLogoId", new Class<?>[0]));
+				company, "getOriginalLogoId", new Class<?>[0]));
 	}
 
 	protected Company addCompany() throws Exception {

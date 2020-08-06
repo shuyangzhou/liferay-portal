@@ -479,19 +479,44 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetAutoTaggerEntry existingAssetAutoTaggerEntry =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAssetAutoTaggerEntry.getPrimaryKey());
+				newAssetAutoTaggerEntry.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetAutoTaggerEntry newAssetAutoTaggerEntry =
+			addAssetAutoTaggerEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetAutoTaggerEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"assetAutoTaggerEntryId",
+				newAssetAutoTaggerEntry.getAssetAutoTaggerEntryId()));
+
+		List<AssetAutoTaggerEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AssetAutoTaggerEntry assetAutoTaggerEntry) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetAutoTaggerEntry.getAssetEntryId()),
+			Long.valueOf(assetAutoTaggerEntry.getAssetEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetAutoTaggerEntry, "getOriginalAssetEntryId",
+				assetAutoTaggerEntry, "getOriginalAssetEntryId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetAutoTaggerEntry.getAssetTagId()),
+			Long.valueOf(assetAutoTaggerEntry.getAssetTagId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetAutoTaggerEntry, "getOriginalAssetTagId",
+				assetAutoTaggerEntry, "getOriginalAssetTagId",
 				new Class<?>[0]));
 	}
 

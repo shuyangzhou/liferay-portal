@@ -559,53 +559,73 @@ public class LayoutFriendlyURLPersistenceTest {
 
 		_persistence.clearCache();
 
-		LayoutFriendlyURL existingLayoutFriendlyURL =
-			_persistence.findByPrimaryKey(newLayoutFriendlyURL.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newLayoutFriendlyURL.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		LayoutFriendlyURL newLayoutFriendlyURL = addLayoutFriendlyURL();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			LayoutFriendlyURL.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"layoutFriendlyURLId",
+				newLayoutFriendlyURL.getLayoutFriendlyURLId()));
+
+		List<LayoutFriendlyURL> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(LayoutFriendlyURL layoutFriendlyURL) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutFriendlyURL.getUuid(),
+				layoutFriendlyURL.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutFriendlyURL, "getOriginalUuid",
-					new Class<?>[0])));
+					layoutFriendlyURL, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutFriendlyURL.getGroupId()),
+			Long.valueOf(layoutFriendlyURL.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutFriendlyURL, "getOriginalGroupId",
-				new Class<?>[0]));
+				layoutFriendlyURL, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutFriendlyURL.getPlid()),
+			Long.valueOf(layoutFriendlyURL.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutFriendlyURL, "getOriginalPlid", new Class<?>[0]));
+				layoutFriendlyURL, "getOriginalPlid", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutFriendlyURL.getLanguageId(),
+				layoutFriendlyURL.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingLayoutFriendlyURL, "getOriginalLanguageId",
+					layoutFriendlyURL, "getOriginalLanguageId",
 					new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutFriendlyURL.getGroupId()),
+			Long.valueOf(layoutFriendlyURL.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutFriendlyURL, "getOriginalGroupId",
-				new Class<?>[0]));
+				layoutFriendlyURL, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingLayoutFriendlyURL.getPrivateLayout()),
+			Boolean.valueOf(layoutFriendlyURL.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayoutFriendlyURL, "getOriginalPrivateLayout",
+				layoutFriendlyURL, "getOriginalPrivateLayout",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutFriendlyURL.getFriendlyURL(),
+				layoutFriendlyURL.getFriendlyURL(),
 				ReflectionTestUtil.invoke(
-					existingLayoutFriendlyURL, "getOriginalFriendlyURL",
+					layoutFriendlyURL, "getOriginalFriendlyURL",
 					new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutFriendlyURL.getLanguageId(),
+				layoutFriendlyURL.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingLayoutFriendlyURL, "getOriginalLanguageId",
+					layoutFriendlyURL, "getOriginalLanguageId",
 					new Class<?>[0])));
 	}
 

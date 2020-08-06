@@ -524,18 +524,38 @@ public class DDLRecordPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDLRecord existingDDLRecord = _persistence.findByPrimaryKey(
-			newDDLRecord.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDLRecord.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDLRecord newDDLRecord = addDDLRecord();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDLRecord.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("recordId", newDDLRecord.getRecordId()));
+
+		List<DDLRecord> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDLRecord ddlRecord) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDLRecord.getUuid(),
+				ddlRecord.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecord, "getOriginalUuid", new Class<?>[0])));
+					ddlRecord, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDDLRecord.getGroupId()),
+			Long.valueOf(ddlRecord.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecord, "getOriginalGroupId", new Class<?>[0]));
+				ddlRecord, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected DDLRecord addDDLRecord() throws Exception {

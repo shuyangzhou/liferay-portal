@@ -424,18 +424,37 @@ public class FolderPersistenceTest {
 
 		_persistence.clearCache();
 
-		Folder existingFolder = _persistence.findByPrimaryKey(
-			newFolder.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newFolder.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Folder newFolder = addFolder();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Folder.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("folderId", newFolder.getFolderId()));
+
+		List<Folder> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Folder folder) {
 		Assert.assertEquals(
-			Long.valueOf(existingFolder.getAccountId()),
+			Long.valueOf(folder.getAccountId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFolder, "getOriginalAccountId", new Class<?>[0]));
+				folder, "getOriginalAccountId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingFolder.getFullName(),
+				folder.getFullName(),
 				ReflectionTestUtil.invoke(
-					existingFolder, "getOriginalFullName", new Class<?>[0])));
+					folder, "getOriginalFullName", new Class<?>[0])));
 	}
 
 	protected Folder addFolder() throws Exception {

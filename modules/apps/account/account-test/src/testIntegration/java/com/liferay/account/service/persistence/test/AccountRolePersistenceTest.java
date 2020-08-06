@@ -421,13 +421,34 @@ public class AccountRolePersistenceTest {
 
 		_persistence.clearCache();
 
-		AccountRole existingAccountRole = _persistence.findByPrimaryKey(
-			newAccountRole.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAccountRole.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AccountRole newAccountRole = addAccountRole();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AccountRole.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"accountRoleId", newAccountRole.getAccountRoleId()));
+
+		List<AccountRole> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AccountRole accountRole) {
 		Assert.assertEquals(
-			Long.valueOf(existingAccountRole.getRoleId()),
+			Long.valueOf(accountRole.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountRole, "getOriginalRoleId", new Class<?>[0]));
+				accountRole, "getOriginalRoleId", new Class<?>[0]));
 	}
 
 	protected AccountRole addAccountRole() throws Exception {

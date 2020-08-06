@@ -479,36 +479,60 @@ public class UserNotificationDeliveryPersistenceTest {
 
 		_persistence.clearCache();
 
-		UserNotificationDelivery existingUserNotificationDelivery =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newUserNotificationDelivery.getPrimaryKey());
+				newUserNotificationDelivery.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		UserNotificationDelivery newUserNotificationDelivery =
+			addUserNotificationDelivery();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserNotificationDelivery.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"userNotificationDeliveryId",
+				newUserNotificationDelivery.getUserNotificationDeliveryId()));
+
+		List<UserNotificationDelivery> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		UserNotificationDelivery userNotificationDelivery) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingUserNotificationDelivery.getUserId()),
+			Long.valueOf(userNotificationDelivery.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserNotificationDelivery, "getOriginalUserId",
+				userNotificationDelivery, "getOriginalUserId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingUserNotificationDelivery.getPortletId(),
+				userNotificationDelivery.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingUserNotificationDelivery, "getOriginalPortletId",
+					userNotificationDelivery, "getOriginalPortletId",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingUserNotificationDelivery.getClassNameId()),
+			Long.valueOf(userNotificationDelivery.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserNotificationDelivery, "getOriginalClassNameId",
+				userNotificationDelivery, "getOriginalClassNameId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(
-				existingUserNotificationDelivery.getNotificationType()),
+			Integer.valueOf(userNotificationDelivery.getNotificationType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingUserNotificationDelivery, "getOriginalNotificationType",
+				userNotificationDelivery, "getOriginalNotificationType",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingUserNotificationDelivery.getDeliveryType()),
+			Integer.valueOf(userNotificationDelivery.getDeliveryType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingUserNotificationDelivery, "getOriginalDeliveryType",
+				userNotificationDelivery, "getOriginalDeliveryType",
 				new Class<?>[0]));
 	}
 

@@ -424,20 +424,41 @@ public class SamlSpMessagePersistenceTest {
 
 		_persistence.clearCache();
 
-		SamlSpMessage existingSamlSpMessage = _persistence.findByPrimaryKey(
-			newSamlSpMessage.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newSamlSpMessage.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SamlSpMessage newSamlSpMessage = addSamlSpMessage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlSpMessage.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlSpMessageId", newSamlSpMessage.getSamlSpMessageId()));
+
+		List<SamlSpMessage> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SamlSpMessage samlSpMessage) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSamlSpMessage.getSamlIdpEntityId(),
+				samlSpMessage.getSamlIdpEntityId(),
 				ReflectionTestUtil.invoke(
-					existingSamlSpMessage, "getOriginalSamlIdpEntityId",
+					samlSpMessage, "getOriginalSamlIdpEntityId",
 					new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSamlSpMessage.getSamlIdpResponseKey(),
+				samlSpMessage.getSamlIdpResponseKey(),
 				ReflectionTestUtil.invoke(
-					existingSamlSpMessage, "getOriginalSamlIdpResponseKey",
+					samlSpMessage, "getOriginalSamlIdpResponseKey",
 					new Class<?>[0])));
 	}
 

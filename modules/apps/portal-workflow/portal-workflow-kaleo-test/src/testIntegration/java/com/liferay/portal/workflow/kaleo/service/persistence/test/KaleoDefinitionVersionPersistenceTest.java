@@ -543,26 +543,51 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoDefinitionVersion existingKaleoDefinitionVersion =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newKaleoDefinitionVersion.getPrimaryKey());
+				newKaleoDefinitionVersion.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoDefinitionVersion newKaleoDefinitionVersion =
+			addKaleoDefinitionVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoDefinitionVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoDefinitionVersionId",
+				newKaleoDefinitionVersion.getKaleoDefinitionVersionId()));
+
+		List<KaleoDefinitionVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		KaleoDefinitionVersion kaleoDefinitionVersion) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoDefinitionVersion.getCompanyId()),
+			Long.valueOf(kaleoDefinitionVersion.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoDefinitionVersion, "getOriginalCompanyId",
+				kaleoDefinitionVersion, "getOriginalCompanyId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingKaleoDefinitionVersion.getName(),
+				kaleoDefinitionVersion.getName(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinitionVersion, "getOriginalName",
+					kaleoDefinitionVersion, "getOriginalName",
 					new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingKaleoDefinitionVersion.getVersion(),
+				kaleoDefinitionVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingKaleoDefinitionVersion, "getOriginalVersion",
+					kaleoDefinitionVersion, "getOriginalVersion",
 					new Class<?>[0])));
 	}
 

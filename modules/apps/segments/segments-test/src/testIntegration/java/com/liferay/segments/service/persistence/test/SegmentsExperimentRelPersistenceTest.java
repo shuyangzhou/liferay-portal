@@ -492,22 +492,45 @@ public class SegmentsExperimentRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		SegmentsExperimentRel existingSegmentsExperimentRel =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSegmentsExperimentRel.getPrimaryKey());
+				newSegmentsExperimentRel.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SegmentsExperimentRel newSegmentsExperimentRel =
+			addSegmentsExperimentRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SegmentsExperimentRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"segmentsExperimentRelId",
+				newSegmentsExperimentRel.getSegmentsExperimentRelId()));
+
+		List<SegmentsExperimentRel> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		SegmentsExperimentRel segmentsExperimentRel) {
 
 		Assert.assertEquals(
-			Long.valueOf(
-				existingSegmentsExperimentRel.getSegmentsExperimentId()),
+			Long.valueOf(segmentsExperimentRel.getSegmentsExperimentId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperimentRel,
-				"getOriginalSegmentsExperimentId", new Class<?>[0]));
+				segmentsExperimentRel, "getOriginalSegmentsExperimentId",
+				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingSegmentsExperimentRel.getSegmentsExperienceId()),
+			Long.valueOf(segmentsExperimentRel.getSegmentsExperienceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperimentRel,
-				"getOriginalSegmentsExperienceId", new Class<?>[0]));
+				segmentsExperimentRel, "getOriginalSegmentsExperienceId",
+				new Class<?>[0]));
 	}
 
 	protected SegmentsExperimentRel addSegmentsExperimentRel()

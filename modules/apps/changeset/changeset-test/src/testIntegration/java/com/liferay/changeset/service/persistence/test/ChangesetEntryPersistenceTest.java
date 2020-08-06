@@ -474,23 +474,43 @@ public class ChangesetEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		ChangesetEntry existingChangesetEntry = _persistence.findByPrimaryKey(
-			newChangesetEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newChangesetEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ChangesetEntry newChangesetEntry = addChangesetEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ChangesetEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"changesetEntryId", newChangesetEntry.getChangesetEntryId()));
+
+		List<ChangesetEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ChangesetEntry changesetEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingChangesetEntry.getChangesetCollectionId()),
+			Long.valueOf(changesetEntry.getChangesetCollectionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingChangesetEntry, "getOriginalChangesetCollectionId",
+				changesetEntry, "getOriginalChangesetCollectionId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingChangesetEntry.getClassNameId()),
+			Long.valueOf(changesetEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingChangesetEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				changesetEntry, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingChangesetEntry.getClassPK()),
+			Long.valueOf(changesetEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingChangesetEntry, "getOriginalClassPK", new Class<?>[0]));
+				changesetEntry, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected ChangesetEntry addChangesetEntry() throws Exception {

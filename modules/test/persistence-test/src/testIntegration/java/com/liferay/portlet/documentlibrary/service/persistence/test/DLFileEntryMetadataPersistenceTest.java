@@ -477,19 +477,43 @@ public class DLFileEntryMetadataPersistenceTest {
 
 		_persistence.clearCache();
 
-		DLFileEntryMetadata existingDLFileEntryMetadata =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDLFileEntryMetadata.getPrimaryKey());
+				newDLFileEntryMetadata.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLFileEntryMetadata newDLFileEntryMetadata = addDLFileEntryMetadata();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLFileEntryMetadata.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileEntryMetadataId",
+				newDLFileEntryMetadata.getFileEntryMetadataId()));
+
+		List<DLFileEntryMetadata> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		DLFileEntryMetadata dlFileEntryMetadata) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileEntryMetadata.getDDMStructureId()),
+			Long.valueOf(dlFileEntryMetadata.getDDMStructureId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileEntryMetadata, "getOriginalDDMStructureId",
+				dlFileEntryMetadata, "getOriginalDDMStructureId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileEntryMetadata.getFileVersionId()),
+			Long.valueOf(dlFileEntryMetadata.getFileVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileEntryMetadata, "getOriginalFileVersionId",
+				dlFileEntryMetadata, "getOriginalFileVersionId",
 				new Class<?>[0]));
 	}
 

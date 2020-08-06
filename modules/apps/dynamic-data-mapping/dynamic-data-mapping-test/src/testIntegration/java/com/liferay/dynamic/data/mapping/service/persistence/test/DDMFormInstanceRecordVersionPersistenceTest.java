@@ -577,21 +577,47 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMFormInstanceRecordVersion existingDDMFormInstanceRecordVersion =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDDMFormInstanceRecordVersion.getPrimaryKey());
+				newDDMFormInstanceRecordVersion.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMFormInstanceRecordVersion newDDMFormInstanceRecordVersion =
+			addDDMFormInstanceRecordVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMFormInstanceRecordVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"formInstanceRecordVersionId",
+				newDDMFormInstanceRecordVersion.
+					getFormInstanceRecordVersionId()));
+
+		List<DDMFormInstanceRecordVersion> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion) {
 
 		Assert.assertEquals(
 			Long.valueOf(
-				existingDDMFormInstanceRecordVersion.getFormInstanceRecordId()),
+				ddmFormInstanceRecordVersion.getFormInstanceRecordId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMFormInstanceRecordVersion,
-				"getOriginalFormInstanceRecordId", new Class<?>[0]));
+				ddmFormInstanceRecordVersion, "getOriginalFormInstanceRecordId",
+				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDMFormInstanceRecordVersion.getVersion(),
+				ddmFormInstanceRecordVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDDMFormInstanceRecordVersion, "getOriginalVersion",
+					ddmFormInstanceRecordVersion, "getOriginalVersion",
 					new Class<?>[0])));
 	}
 

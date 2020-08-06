@@ -456,19 +456,41 @@ public class SamlIdpSpSessionPersistenceTest {
 
 		_persistence.clearCache();
 
-		SamlIdpSpSession existingSamlIdpSpSession =
-			_persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSpSession.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlIdpSpSessionId",
+				newSamlIdpSpSession.getSamlIdpSpSessionId()));
+
+		List<SamlIdpSpSession> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SamlIdpSpSession samlIdpSpSession) {
 		Assert.assertEquals(
-			Long.valueOf(existingSamlIdpSpSession.getSamlIdpSsoSessionId()),
+			Long.valueOf(samlIdpSpSession.getSamlIdpSsoSessionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSamlIdpSpSession, "getOriginalSamlIdpSsoSessionId",
+				samlIdpSpSession, "getOriginalSamlIdpSsoSessionId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSamlIdpSpSession.getSamlSpEntityId(),
+				samlIdpSpSession.getSamlSpEntityId(),
 				ReflectionTestUtil.invoke(
-					existingSamlIdpSpSession, "getOriginalSamlSpEntityId",
+					samlIdpSpSession, "getOriginalSamlSpEntityId",
 					new Class<?>[0])));
 	}
 

@@ -551,20 +551,45 @@ public class DDMDataProviderInstancePersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMDataProviderInstance existingDDMDataProviderInstance =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDDMDataProviderInstance.getPrimaryKey());
+				newDDMDataProviderInstance.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMDataProviderInstance newDDMDataProviderInstance =
+			addDDMDataProviderInstance();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMDataProviderInstance.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"dataProviderInstanceId",
+				newDDMDataProviderInstance.getDataProviderInstanceId()));
+
+		List<DDMDataProviderInstance> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		DDMDataProviderInstance ddmDataProviderInstance) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDMDataProviderInstance.getUuid(),
+				ddmDataProviderInstance.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDMDataProviderInstance, "getOriginalUuid",
+					ddmDataProviderInstance, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDDMDataProviderInstance.getGroupId()),
+			Long.valueOf(ddmDataProviderInstance.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMDataProviderInstance, "getOriginalGroupId",
+				ddmDataProviderInstance, "getOriginalGroupId",
 				new Class<?>[0]));
 	}
 

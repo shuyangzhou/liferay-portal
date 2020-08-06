@@ -544,43 +544,59 @@ public class AssetVocabularyPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetVocabulary existingAssetVocabulary = _persistence.findByPrimaryKey(
-			newAssetVocabulary.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAssetVocabulary.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetVocabulary newAssetVocabulary = addAssetVocabulary();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetVocabulary.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"vocabularyId", newAssetVocabulary.getVocabularyId()));
+
+		List<AssetVocabulary> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AssetVocabulary assetVocabulary) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetVocabulary.getUuid(),
+				assetVocabulary.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetVocabulary, "getOriginalUuid",
-					new Class<?>[0])));
+					assetVocabulary, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetVocabulary.getGroupId()),
+			Long.valueOf(assetVocabulary.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetVocabulary, "getOriginalGroupId",
-				new Class<?>[0]));
+				assetVocabulary, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetVocabulary.getGroupId()),
+			Long.valueOf(assetVocabulary.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetVocabulary, "getOriginalGroupId",
-				new Class<?>[0]));
+				assetVocabulary, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetVocabulary.getName(),
+				assetVocabulary.getName(),
 				ReflectionTestUtil.invoke(
-					existingAssetVocabulary, "getOriginalName",
-					new Class<?>[0])));
+					assetVocabulary, "getOriginalName", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetVocabulary.getCompanyId()),
+			Long.valueOf(assetVocabulary.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetVocabulary, "getOriginalCompanyId",
-				new Class<?>[0]));
+				assetVocabulary, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetVocabulary.getExternalReferenceCode(),
+				assetVocabulary.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingAssetVocabulary, "getOriginalExternalReferenceCode",
+					assetVocabulary, "getOriginalExternalReferenceCode",
 					new Class<?>[0])));
 	}
 

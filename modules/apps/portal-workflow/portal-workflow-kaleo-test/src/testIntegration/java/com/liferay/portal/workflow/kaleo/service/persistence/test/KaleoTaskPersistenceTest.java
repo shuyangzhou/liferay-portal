@@ -453,13 +453,34 @@ public class KaleoTaskPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoTask existingKaleoTask = _persistence.findByPrimaryKey(
-			newKaleoTask.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newKaleoTask.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoTask newKaleoTask = addKaleoTask();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoTask.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoTaskId", newKaleoTask.getKaleoTaskId()));
+
+		List<KaleoTask> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(KaleoTask kaleoTask) {
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTask.getKaleoNodeId()),
+			Long.valueOf(kaleoTask.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTask, "getOriginalKaleoNodeId", new Class<?>[0]));
+				kaleoTask, "getOriginalKaleoNodeId", new Class<?>[0]));
 	}
 
 	protected KaleoTask addKaleoTask() throws Exception {

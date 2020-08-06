@@ -570,39 +570,64 @@ public class CalendarNotificationTemplatePersistenceTest {
 
 		_persistence.clearCache();
 
-		CalendarNotificationTemplate existingCalendarNotificationTemplate =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newCalendarNotificationTemplate.getPrimaryKey());
+				newCalendarNotificationTemplate.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		CalendarNotificationTemplate newCalendarNotificationTemplate =
+			addCalendarNotificationTemplate();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			CalendarNotificationTemplate.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"calendarNotificationTemplateId",
+				newCalendarNotificationTemplate.
+					getCalendarNotificationTemplateId()));
+
+		List<CalendarNotificationTemplate> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		CalendarNotificationTemplate calendarNotificationTemplate) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingCalendarNotificationTemplate.getUuid(),
+				calendarNotificationTemplate.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingCalendarNotificationTemplate, "getOriginalUuid",
+					calendarNotificationTemplate, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingCalendarNotificationTemplate.getGroupId()),
+			Long.valueOf(calendarNotificationTemplate.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarNotificationTemplate, "getOriginalGroupId",
+				calendarNotificationTemplate, "getOriginalGroupId",
 				new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingCalendarNotificationTemplate.getCalendarId()),
+			Long.valueOf(calendarNotificationTemplate.getCalendarId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendarNotificationTemplate, "getOriginalCalendarId",
+				calendarNotificationTemplate, "getOriginalCalendarId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingCalendarNotificationTemplate.getNotificationType(),
+				calendarNotificationTemplate.getNotificationType(),
 				ReflectionTestUtil.invoke(
-					existingCalendarNotificationTemplate,
-					"getOriginalNotificationType", new Class<?>[0])));
+					calendarNotificationTemplate, "getOriginalNotificationType",
+					new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingCalendarNotificationTemplate.
-					getNotificationTemplateType(),
+				calendarNotificationTemplate.getNotificationTemplateType(),
 				ReflectionTestUtil.invoke(
-					existingCalendarNotificationTemplate,
+					calendarNotificationTemplate,
 					"getOriginalNotificationTemplateType", new Class<?>[0])));
 	}
 

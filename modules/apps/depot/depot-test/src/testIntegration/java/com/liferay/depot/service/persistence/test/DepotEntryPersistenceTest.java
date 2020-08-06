@@ -448,23 +448,44 @@ public class DepotEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		DepotEntry existingDepotEntry = _persistence.findByPrimaryKey(
-			newDepotEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDepotEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DepotEntry newDepotEntry = addDepotEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DepotEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"depotEntryId", newDepotEntry.getDepotEntryId()));
+
+		List<DepotEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DepotEntry depotEntry) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDepotEntry.getUuid(),
+				depotEntry.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDepotEntry, "getOriginalUuid", new Class<?>[0])));
+					depotEntry, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDepotEntry.getGroupId()),
+			Long.valueOf(depotEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntry, "getOriginalGroupId", new Class<?>[0]));
+				depotEntry, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingDepotEntry.getGroupId()),
+			Long.valueOf(depotEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntry, "getOriginalGroupId", new Class<?>[0]));
+				depotEntry, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected DepotEntry addDepotEntry() throws Exception {

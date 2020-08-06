@@ -469,18 +469,36 @@ public class MessagePersistenceTest {
 
 		_persistence.clearCache();
 
-		Message existingMessage = _persistence.findByPrimaryKey(
-			newMessage.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMessage.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Message newMessage = addMessage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Message.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("messageId", newMessage.getMessageId()));
+
+		List<Message> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Message message) {
 		Assert.assertEquals(
-			Long.valueOf(existingMessage.getFolderId()),
+			Long.valueOf(message.getFolderId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMessage, "getOriginalFolderId", new Class<?>[0]));
+				message, "getOriginalFolderId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingMessage.getRemoteMessageId()),
+			Long.valueOf(message.getRemoteMessageId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMessage, "getOriginalRemoteMessageId",
-				new Class<?>[0]));
+				message, "getOriginalRemoteMessageId", new Class<?>[0]));
 	}
 
 	protected Message addMessage() throws Exception {

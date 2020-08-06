@@ -434,24 +434,43 @@ public class AnnouncementsFlagPersistenceTest {
 
 		_persistence.clearCache();
 
-		AnnouncementsFlag existingAnnouncementsFlag =
-			_persistence.findByPrimaryKey(newAnnouncementsFlag.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newAnnouncementsFlag.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AnnouncementsFlag newAnnouncementsFlag = addAnnouncementsFlag();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AnnouncementsFlag.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"flagId", newAnnouncementsFlag.getFlagId()));
+
+		List<AnnouncementsFlag> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AnnouncementsFlag announcementsFlag) {
 		Assert.assertEquals(
-			Long.valueOf(existingAnnouncementsFlag.getUserId()),
+			Long.valueOf(announcementsFlag.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAnnouncementsFlag, "getOriginalUserId",
-				new Class<?>[0]));
+				announcementsFlag, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingAnnouncementsFlag.getEntryId()),
+			Long.valueOf(announcementsFlag.getEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAnnouncementsFlag, "getOriginalEntryId",
-				new Class<?>[0]));
+				announcementsFlag, "getOriginalEntryId", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingAnnouncementsFlag.getValue()),
+			Integer.valueOf(announcementsFlag.getValue()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingAnnouncementsFlag, "getOriginalValue",
-				new Class<?>[0]));
+				announcementsFlag, "getOriginalValue", new Class<?>[0]));
 	}
 
 	protected AnnouncementsFlag addAnnouncementsFlag() throws Exception {

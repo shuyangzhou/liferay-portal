@@ -621,31 +621,49 @@ public class DLFileVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		DLFileVersion existingDLFileVersion = _persistence.findByPrimaryKey(
-			newDLFileVersion.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDLFileVersion.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLFileVersion newDLFileVersion = addDLFileVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLFileVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileVersionId", newDLFileVersion.getFileVersionId()));
+
+		List<DLFileVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DLFileVersion dlFileVersion) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDLFileVersion.getUuid(),
+				dlFileVersion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDLFileVersion, "getOriginalUuid",
-					new Class<?>[0])));
+					dlFileVersion, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileVersion.getGroupId()),
+			Long.valueOf(dlFileVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileVersion, "getOriginalGroupId", new Class<?>[0]));
+				dlFileVersion, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileVersion.getFileEntryId()),
+			Long.valueOf(dlFileVersion.getFileEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileVersion, "getOriginalFileEntryId",
-				new Class<?>[0]));
+				dlFileVersion, "getOriginalFileEntryId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDLFileVersion.getVersion(),
+				dlFileVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDLFileVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					dlFileVersion, "getOriginalVersion", new Class<?>[0])));
 	}
 
 	protected DLFileVersion addDLFileVersion() throws Exception {

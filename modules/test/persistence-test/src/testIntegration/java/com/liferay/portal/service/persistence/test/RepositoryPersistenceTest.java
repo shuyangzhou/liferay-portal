@@ -490,34 +490,54 @@ public class RepositoryPersistenceTest {
 
 		_persistence.clearCache();
 
-		Repository existingRepository = _persistence.findByPrimaryKey(
-			newRepository.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newRepository.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Repository newRepository = addRepository();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Repository.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"repositoryId", newRepository.getRepositoryId()));
+
+		List<Repository> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Repository repository) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingRepository.getUuid(),
+				repository.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingRepository, "getOriginalUuid", new Class<?>[0])));
+					repository, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingRepository.getGroupId()),
+			Long.valueOf(repository.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRepository, "getOriginalGroupId", new Class<?>[0]));
+				repository, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingRepository.getGroupId()),
+			Long.valueOf(repository.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRepository, "getOriginalGroupId", new Class<?>[0]));
+				repository, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingRepository.getName(),
+				repository.getName(),
 				ReflectionTestUtil.invoke(
-					existingRepository, "getOriginalName", new Class<?>[0])));
+					repository, "getOriginalName", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingRepository.getPortletId(),
+				repository.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingRepository, "getOriginalPortletId",
-					new Class<?>[0])));
+					repository, "getOriginalPortletId", new Class<?>[0])));
 	}
 
 	protected Repository addRepository() throws Exception {

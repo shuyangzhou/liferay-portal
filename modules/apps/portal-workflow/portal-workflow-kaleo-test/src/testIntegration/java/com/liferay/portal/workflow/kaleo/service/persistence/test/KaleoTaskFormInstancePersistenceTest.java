@@ -561,14 +561,39 @@ public class KaleoTaskFormInstancePersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoTaskFormInstance existingKaleoTaskFormInstance =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newKaleoTaskFormInstance.getPrimaryKey());
+				newKaleoTaskFormInstance.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoTaskFormInstance newKaleoTaskFormInstance =
+			addKaleoTaskFormInstance();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoTaskFormInstance.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoTaskFormInstanceId",
+				newKaleoTaskFormInstance.getKaleoTaskFormInstanceId()));
+
+		List<KaleoTaskFormInstance> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		KaleoTaskFormInstance kaleoTaskFormInstance) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTaskFormInstance.getKaleoTaskFormId()),
+			Long.valueOf(kaleoTaskFormInstance.getKaleoTaskFormId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskFormInstance, "getOriginalKaleoTaskFormId",
+				kaleoTaskFormInstance, "getOriginalKaleoTaskFormId",
 				new Class<?>[0]));
 	}
 

@@ -506,28 +506,49 @@ public class UserGroupPersistenceTest {
 
 		_persistence.clearCache();
 
-		UserGroup existingUserGroup = _persistence.findByPrimaryKey(
-			newUserGroup.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newUserGroup.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		UserGroup newUserGroup = addUserGroup();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserGroup.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"userGroupId", newUserGroup.getUserGroupId()));
+
+		List<UserGroup> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(UserGroup userGroup) {
 		Assert.assertEquals(
-			Long.valueOf(existingUserGroup.getCompanyId()),
+			Long.valueOf(userGroup.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserGroup, "getOriginalCompanyId", new Class<?>[0]));
+				userGroup, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingUserGroup.getName(),
+				userGroup.getName(),
 				ReflectionTestUtil.invoke(
-					existingUserGroup, "getOriginalName", new Class<?>[0])));
+					userGroup, "getOriginalName", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingUserGroup.getCompanyId()),
+			Long.valueOf(userGroup.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingUserGroup, "getOriginalCompanyId", new Class<?>[0]));
+				userGroup, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingUserGroup.getExternalReferenceCode(),
+				userGroup.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingUserGroup, "getOriginalExternalReferenceCode",
+					userGroup, "getOriginalExternalReferenceCode",
 					new Class<?>[0])));
 	}
 

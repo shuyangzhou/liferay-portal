@@ -404,26 +404,45 @@ public class CountryPersistenceTest {
 
 		_persistence.clearCache();
 
-		Country existingCountry = _persistence.findByPrimaryKey(
-			newCountry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCountry.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Country newCountry = addCountry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Country.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("countryId", newCountry.getCountryId()));
+
+		List<Country> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Country country) {
+		Assert.assertTrue(
+			Objects.equals(
+				country.getName(),
+				ReflectionTestUtil.invoke(
+					country, "getOriginalName", new Class<?>[0])));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingCountry.getName(),
+				country.getA2(),
 				ReflectionTestUtil.invoke(
-					existingCountry, "getOriginalName", new Class<?>[0])));
+					country, "getOriginalA2", new Class<?>[0])));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingCountry.getA2(),
+				country.getA3(),
 				ReflectionTestUtil.invoke(
-					existingCountry, "getOriginalA2", new Class<?>[0])));
-
-		Assert.assertTrue(
-			Objects.equals(
-				existingCountry.getA3(),
-				ReflectionTestUtil.invoke(
-					existingCountry, "getOriginalA3", new Class<?>[0])));
+					country, "getOriginalA3", new Class<?>[0])));
 	}
 
 	protected Country addCountry() throws Exception {

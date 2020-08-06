@@ -615,34 +615,53 @@ public class DDMStructurePersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(
-			newDDMStructure.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDMStructure.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMStructure newDDMStructure = addDDMStructure();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMStructure.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"structureId", newDDMStructure.getStructureId()));
+
+		List<DDMStructure> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDMStructure ddmStructure) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDMStructure.getUuid(),
+				ddmStructure.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDMStructure, "getOriginalUuid", new Class<?>[0])));
+					ddmStructure, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStructure.getGroupId()),
+			Long.valueOf(ddmStructure.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructure, "getOriginalGroupId", new Class<?>[0]));
+				ddmStructure, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStructure.getGroupId()),
+			Long.valueOf(ddmStructure.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructure, "getOriginalGroupId", new Class<?>[0]));
+				ddmStructure, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStructure.getClassNameId()),
+			Long.valueOf(ddmStructure.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructure, "getOriginalClassNameId",
-				new Class<?>[0]));
+				ddmStructure, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDMStructure.getStructureKey(),
+				ddmStructure.getStructureKey(),
 				ReflectionTestUtil.invoke(
-					existingDDMStructure, "getOriginalStructureKey",
-					new Class<?>[0])));
+					ddmStructure, "getOriginalStructureKey", new Class<?>[0])));
 	}
 
 	protected DDMStructure addDDMStructure() throws Exception {

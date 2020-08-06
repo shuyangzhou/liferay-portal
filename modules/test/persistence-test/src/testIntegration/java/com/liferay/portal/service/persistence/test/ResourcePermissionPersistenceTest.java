@@ -560,37 +560,55 @@ public class ResourcePermissionPersistenceTest {
 
 		_persistence.clearCache();
 
-		ResourcePermission existingResourcePermission =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newResourcePermission.getPrimaryKey());
+				newResourcePermission.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ResourcePermission newResourcePermission = addResourcePermission();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourcePermission.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"resourcePermissionId",
+				newResourcePermission.getResourcePermissionId()));
+
+		List<ResourcePermission> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ResourcePermission resourcePermission) {
 		Assert.assertEquals(
-			Long.valueOf(existingResourcePermission.getCompanyId()),
+			Long.valueOf(resourcePermission.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingResourcePermission, "getOriginalCompanyId",
-				new Class<?>[0]));
+				resourcePermission, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingResourcePermission.getName(),
+				resourcePermission.getName(),
 				ReflectionTestUtil.invoke(
-					existingResourcePermission, "getOriginalName",
-					new Class<?>[0])));
+					resourcePermission, "getOriginalName", new Class<?>[0])));
 		Assert.assertEquals(
-			Integer.valueOf(existingResourcePermission.getScope()),
+			Integer.valueOf(resourcePermission.getScope()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingResourcePermission, "getOriginalScope",
-				new Class<?>[0]));
+				resourcePermission, "getOriginalScope", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingResourcePermission.getPrimKey(),
+				resourcePermission.getPrimKey(),
 				ReflectionTestUtil.invoke(
-					existingResourcePermission, "getOriginalPrimKey",
+					resourcePermission, "getOriginalPrimKey",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingResourcePermission.getRoleId()),
+			Long.valueOf(resourcePermission.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingResourcePermission, "getOriginalRoleId",
-				new Class<?>[0]));
+				resourcePermission, "getOriginalRoleId", new Class<?>[0]));
 	}
 
 	protected ResourcePermission addResourcePermission() throws Exception {

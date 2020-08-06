@@ -571,48 +571,72 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 		_persistence.clearCache();
 
-		LayoutClassedModelUsage existingLayoutClassedModelUsage =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newLayoutClassedModelUsage.getPrimaryKey());
+				newLayoutClassedModelUsage.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		LayoutClassedModelUsage newLayoutClassedModelUsage =
+			addLayoutClassedModelUsage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			LayoutClassedModelUsage.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"layoutClassedModelUsageId",
+				newLayoutClassedModelUsage.getLayoutClassedModelUsageId()));
+
+		List<LayoutClassedModelUsage> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		LayoutClassedModelUsage layoutClassedModelUsage) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutClassedModelUsage.getUuid(),
+				layoutClassedModelUsage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingLayoutClassedModelUsage, "getOriginalUuid",
+					layoutClassedModelUsage, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutClassedModelUsage.getGroupId()),
+			Long.valueOf(layoutClassedModelUsage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalGroupId",
+				layoutClassedModelUsage, "getOriginalGroupId",
 				new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutClassedModelUsage.getClassNameId()),
+			Long.valueOf(layoutClassedModelUsage.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalClassNameId",
+				layoutClassedModelUsage, "getOriginalClassNameId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutClassedModelUsage.getClassPK()),
+			Long.valueOf(layoutClassedModelUsage.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalClassPK",
+				layoutClassedModelUsage, "getOriginalClassPK",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutClassedModelUsage.getContainerKey(),
+				layoutClassedModelUsage.getContainerKey(),
 				ReflectionTestUtil.invoke(
-					existingLayoutClassedModelUsage, "getOriginalContainerKey",
+					layoutClassedModelUsage, "getOriginalContainerKey",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutClassedModelUsage.getContainerType()),
+			Long.valueOf(layoutClassedModelUsage.getContainerType()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalContainerType",
+				layoutClassedModelUsage, "getOriginalContainerType",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutClassedModelUsage.getPlid()),
+			Long.valueOf(layoutClassedModelUsage.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutClassedModelUsage, "getOriginalPlid",
-				new Class<?>[0]));
+				layoutClassedModelUsage, "getOriginalPlid", new Class<?>[0]));
 	}
 
 	protected LayoutClassedModelUsage addLayoutClassedModelUsage()

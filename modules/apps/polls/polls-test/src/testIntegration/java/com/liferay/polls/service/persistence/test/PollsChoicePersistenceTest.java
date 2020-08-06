@@ -472,28 +472,49 @@ public class PollsChoicePersistenceTest {
 
 		_persistence.clearCache();
 
-		PollsChoice existingPollsChoice = _persistence.findByPrimaryKey(
-			newPollsChoice.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newPollsChoice.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PollsChoice newPollsChoice = addPollsChoice();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PollsChoice.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"choiceId", newPollsChoice.getChoiceId()));
+
+		List<PollsChoice> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PollsChoice pollsChoice) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingPollsChoice.getUuid(),
+				pollsChoice.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingPollsChoice, "getOriginalUuid", new Class<?>[0])));
+					pollsChoice, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingPollsChoice.getGroupId()),
+			Long.valueOf(pollsChoice.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPollsChoice, "getOriginalGroupId", new Class<?>[0]));
+				pollsChoice, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingPollsChoice.getQuestionId()),
+			Long.valueOf(pollsChoice.getQuestionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPollsChoice, "getOriginalQuestionId", new Class<?>[0]));
+				pollsChoice, "getOriginalQuestionId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPollsChoice.getName(),
+				pollsChoice.getName(),
 				ReflectionTestUtil.invoke(
-					existingPollsChoice, "getOriginalName", new Class<?>[0])));
+					pollsChoice, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected PollsChoice addPollsChoice() throws Exception {

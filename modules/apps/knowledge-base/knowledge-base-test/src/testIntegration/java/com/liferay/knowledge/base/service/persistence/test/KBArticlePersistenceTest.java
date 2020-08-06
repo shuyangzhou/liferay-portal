@@ -929,42 +929,61 @@ public class KBArticlePersistenceTest {
 
 		_persistence.clearCache();
 
-		KBArticle existingKBArticle = _persistence.findByPrimaryKey(
-			newKBArticle.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newKBArticle.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KBArticle newKBArticle = addKBArticle();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KBArticle.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kbArticleId", newKBArticle.getKbArticleId()));
+
+		List<KBArticle> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(KBArticle kbArticle) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingKBArticle.getUuid(),
+				kbArticle.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingKBArticle, "getOriginalUuid", new Class<?>[0])));
+					kbArticle, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingKBArticle.getGroupId()),
+			Long.valueOf(kbArticle.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBArticle, "getOriginalGroupId", new Class<?>[0]));
+				kbArticle, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingKBArticle.getResourcePrimKey()),
+			Long.valueOf(kbArticle.getResourcePrimKey()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBArticle, "getOriginalResourcePrimKey",
-				new Class<?>[0]));
+				kbArticle, "getOriginalResourcePrimKey", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingKBArticle.getVersion()),
+			Integer.valueOf(kbArticle.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingKBArticle, "getOriginalVersion", new Class<?>[0]));
+				kbArticle, "getOriginalVersion", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingKBArticle.getResourcePrimKey()),
+			Long.valueOf(kbArticle.getResourcePrimKey()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBArticle, "getOriginalResourcePrimKey",
-				new Class<?>[0]));
+				kbArticle, "getOriginalResourcePrimKey", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingKBArticle.getGroupId()),
+			Long.valueOf(kbArticle.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBArticle, "getOriginalGroupId", new Class<?>[0]));
+				kbArticle, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingKBArticle.getVersion()),
+			Integer.valueOf(kbArticle.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingKBArticle, "getOriginalVersion", new Class<?>[0]));
+				kbArticle, "getOriginalVersion", new Class<?>[0]));
 	}
 
 	protected KBArticle addKBArticle() throws Exception {

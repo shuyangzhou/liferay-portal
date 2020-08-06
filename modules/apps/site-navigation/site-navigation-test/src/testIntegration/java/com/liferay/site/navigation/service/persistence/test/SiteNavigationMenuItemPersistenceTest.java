@@ -561,21 +561,45 @@ public class SiteNavigationMenuItemPersistenceTest {
 
 		_persistence.clearCache();
 
-		SiteNavigationMenuItem existingSiteNavigationMenuItem =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSiteNavigationMenuItem.getPrimaryKey());
+				newSiteNavigationMenuItem.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SiteNavigationMenuItem newSiteNavigationMenuItem =
+			addSiteNavigationMenuItem();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SiteNavigationMenuItem.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"siteNavigationMenuItemId",
+				newSiteNavigationMenuItem.getSiteNavigationMenuItemId()));
+
+		List<SiteNavigationMenuItem> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		SiteNavigationMenuItem siteNavigationMenuItem) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingSiteNavigationMenuItem.getUuid(),
+				siteNavigationMenuItem.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSiteNavigationMenuItem, "getOriginalUuid",
+					siteNavigationMenuItem, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingSiteNavigationMenuItem.getGroupId()),
+			Long.valueOf(siteNavigationMenuItem.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteNavigationMenuItem, "getOriginalGroupId",
-				new Class<?>[0]));
+				siteNavigationMenuItem, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected SiteNavigationMenuItem addSiteNavigationMenuItem()

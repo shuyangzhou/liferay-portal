@@ -472,18 +472,37 @@ public class SourcePersistenceTest {
 
 		_persistence.clearCache();
 
-		Source existingSource = _persistence.findByPrimaryKey(
-			newSource.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newSource.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Source newSource = addSource();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Source.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("sourceId", newSource.getSourceId()));
+
+		List<Source> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Source source) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSource.getUuid(),
+				source.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSource, "getOriginalUuid", new Class<?>[0])));
+					source, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingSource.getGroupId()),
+			Long.valueOf(source.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSource, "getOriginalGroupId", new Class<?>[0]));
+				source, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected Source addSource() throws Exception {

@@ -546,33 +546,51 @@ public class SiteNavigationMenuPersistenceTest {
 
 		_persistence.clearCache();
 
-		SiteNavigationMenu existingSiteNavigationMenu =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSiteNavigationMenu.getPrimaryKey());
+				newSiteNavigationMenu.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SiteNavigationMenu newSiteNavigationMenu = addSiteNavigationMenu();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SiteNavigationMenu.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"siteNavigationMenuId",
+				newSiteNavigationMenu.getSiteNavigationMenuId()));
+
+		List<SiteNavigationMenu> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SiteNavigationMenu siteNavigationMenu) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSiteNavigationMenu.getUuid(),
+				siteNavigationMenu.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSiteNavigationMenu, "getOriginalUuid",
-					new Class<?>[0])));
+					siteNavigationMenu, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingSiteNavigationMenu.getGroupId()),
+			Long.valueOf(siteNavigationMenu.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteNavigationMenu, "getOriginalGroupId",
-				new Class<?>[0]));
+				siteNavigationMenu, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingSiteNavigationMenu.getGroupId()),
+			Long.valueOf(siteNavigationMenu.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSiteNavigationMenu, "getOriginalGroupId",
-				new Class<?>[0]));
+				siteNavigationMenu, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSiteNavigationMenu.getName(),
+				siteNavigationMenu.getName(),
 				ReflectionTestUtil.invoke(
-					existingSiteNavigationMenu, "getOriginalName",
-					new Class<?>[0])));
+					siteNavigationMenu, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected SiteNavigationMenu addSiteNavigationMenu() throws Exception {

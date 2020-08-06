@@ -471,15 +471,40 @@ public class PushNotificationsDevicePersistenceTest {
 
 		_persistence.clearCache();
 
-		PushNotificationsDevice existingPushNotificationsDevice =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newPushNotificationsDevice.getPrimaryKey());
+				newPushNotificationsDevice.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PushNotificationsDevice newPushNotificationsDevice =
+			addPushNotificationsDevice();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PushNotificationsDevice.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"pushNotificationsDeviceId",
+				newPushNotificationsDevice.getPushNotificationsDeviceId()));
+
+		List<PushNotificationsDevice> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		PushNotificationsDevice pushNotificationsDevice) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingPushNotificationsDevice.getToken(),
+				pushNotificationsDevice.getToken(),
 				ReflectionTestUtil.invoke(
-					existingPushNotificationsDevice, "getOriginalToken",
+					pushNotificationsDevice, "getOriginalToken",
 					new Class<?>[0])));
 	}
 

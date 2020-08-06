@@ -577,20 +577,44 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoTimerInstanceToken existingKaleoTimerInstanceToken =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newKaleoTimerInstanceToken.getPrimaryKey());
+				newKaleoTimerInstanceToken.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoTimerInstanceToken newKaleoTimerInstanceToken =
+			addKaleoTimerInstanceToken();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoTimerInstanceToken.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoTimerInstanceTokenId",
+				newKaleoTimerInstanceToken.getKaleoTimerInstanceTokenId()));
+
+		List<KaleoTimerInstanceToken> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		KaleoTimerInstanceToken kaleoTimerInstanceToken) {
 
 		Assert.assertEquals(
-			Long.valueOf(
-				existingKaleoTimerInstanceToken.getKaleoInstanceTokenId()),
+			Long.valueOf(kaleoTimerInstanceToken.getKaleoInstanceTokenId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTimerInstanceToken,
-				"getOriginalKaleoInstanceTokenId", new Class<?>[0]));
+				kaleoTimerInstanceToken, "getOriginalKaleoInstanceTokenId",
+				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTimerInstanceToken.getKaleoTimerId()),
+			Long.valueOf(kaleoTimerInstanceToken.getKaleoTimerId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTimerInstanceToken, "getOriginalKaleoTimerId",
+				kaleoTimerInstanceToken, "getOriginalKaleoTimerId",
 				new Class<?>[0]));
 	}
 

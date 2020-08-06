@@ -523,41 +523,59 @@ public class AssetEntryUsagePersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetEntryUsage existingAssetEntryUsage = _persistence.findByPrimaryKey(
-			newAssetEntryUsage.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAssetEntryUsage.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetEntryUsage newAssetEntryUsage = addAssetEntryUsage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetEntryUsage.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"assetEntryUsageId",
+				newAssetEntryUsage.getAssetEntryUsageId()));
+
+		List<AssetEntryUsage> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AssetEntryUsage assetEntryUsage) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetEntryUsage.getUuid(),
+				assetEntryUsage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetEntryUsage, "getOriginalUuid",
-					new Class<?>[0])));
+					assetEntryUsage, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntryUsage.getGroupId()),
+			Long.valueOf(assetEntryUsage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalGroupId",
-				new Class<?>[0]));
+				assetEntryUsage, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntryUsage.getAssetEntryId()),
+			Long.valueOf(assetEntryUsage.getAssetEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalAssetEntryId",
-				new Class<?>[0]));
+				assetEntryUsage, "getOriginalAssetEntryId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntryUsage.getContainerType()),
+			Long.valueOf(assetEntryUsage.getContainerType()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalContainerType",
-				new Class<?>[0]));
+				assetEntryUsage, "getOriginalContainerType", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetEntryUsage.getContainerKey(),
+				assetEntryUsage.getContainerKey(),
 				ReflectionTestUtil.invoke(
-					existingAssetEntryUsage, "getOriginalContainerKey",
+					assetEntryUsage, "getOriginalContainerKey",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetEntryUsage.getPlid()),
+			Long.valueOf(assetEntryUsage.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryUsage, "getOriginalPlid", new Class<?>[0]));
+				assetEntryUsage, "getOriginalPlid", new Class<?>[0]));
 	}
 
 	protected AssetEntryUsage addAssetEntryUsage() throws Exception {

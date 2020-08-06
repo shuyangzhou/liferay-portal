@@ -474,35 +474,53 @@ public class CTSContentPersistenceTest {
 
 		_persistence.clearCache();
 
-		CTSContent existingCTSContent = _persistence.findByPrimaryKey(
-			newCTSContent.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCTSContent.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		CTSContent newCTSContent = addCTSContent();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			CTSContent.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"ctsContentId", newCTSContent.getCtsContentId()));
+
+		List<CTSContent> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(CTSContent ctsContent) {
 		Assert.assertEquals(
-			Long.valueOf(existingCTSContent.getCompanyId()),
+			Long.valueOf(ctsContent.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTSContent, "getOriginalCompanyId", new Class<?>[0]));
+				ctsContent, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingCTSContent.getRepositoryId()),
+			Long.valueOf(ctsContent.getRepositoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTSContent, "getOriginalRepositoryId",
-				new Class<?>[0]));
+				ctsContent, "getOriginalRepositoryId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingCTSContent.getPath(),
+				ctsContent.getPath(),
 				ReflectionTestUtil.invoke(
-					existingCTSContent, "getOriginalPath", new Class<?>[0])));
+					ctsContent, "getOriginalPath", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingCTSContent.getVersion(),
+				ctsContent.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingCTSContent, "getOriginalVersion",
-					new Class<?>[0])));
+					ctsContent, "getOriginalVersion", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingCTSContent.getStoreType(),
+				ctsContent.getStoreType(),
 				ReflectionTestUtil.invoke(
-					existingCTSContent, "getOriginalStoreType",
-					new Class<?>[0])));
+					ctsContent, "getOriginalStoreType", new Class<?>[0])));
 	}
 
 	protected CTSContent addCTSContent() throws Exception {

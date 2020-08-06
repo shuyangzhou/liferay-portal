@@ -562,29 +562,48 @@ public class MBMailingListPersistenceTest {
 
 		_persistence.clearCache();
 
-		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(
-			newMBMailingList.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMBMailingList.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MBMailingList newMBMailingList = addMBMailingList();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MBMailingList.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"mailingListId", newMBMailingList.getMailingListId()));
+
+		List<MBMailingList> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MBMailingList mbMailingList) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMBMailingList.getUuid(),
+				mbMailingList.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBMailingList, "getOriginalUuid",
-					new Class<?>[0])));
+					mbMailingList, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMBMailingList.getGroupId()),
+			Long.valueOf(mbMailingList.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalGroupId", new Class<?>[0]));
+				mbMailingList, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingMBMailingList.getGroupId()),
+			Long.valueOf(mbMailingList.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalGroupId", new Class<?>[0]));
+				mbMailingList, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingMBMailingList.getCategoryId()),
+			Long.valueOf(mbMailingList.getCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalCategoryId",
-				new Class<?>[0]));
+				mbMailingList, "getOriginalCategoryId", new Class<?>[0]));
 	}
 
 	protected MBMailingList addMBMailingList() throws Exception {

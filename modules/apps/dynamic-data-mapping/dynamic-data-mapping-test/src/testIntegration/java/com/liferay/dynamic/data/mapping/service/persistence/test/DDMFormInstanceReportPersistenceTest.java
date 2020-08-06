@@ -466,14 +466,39 @@ public class DDMFormInstanceReportPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMFormInstanceReport existingDDMFormInstanceReport =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDDMFormInstanceReport.getPrimaryKey());
+				newDDMFormInstanceReport.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMFormInstanceReport newDDMFormInstanceReport =
+			addDDMFormInstanceReport();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMFormInstanceReport.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"formInstanceReportId",
+				newDDMFormInstanceReport.getFormInstanceReportId()));
+
+		List<DDMFormInstanceReport> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		DDMFormInstanceReport ddmFormInstanceReport) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingDDMFormInstanceReport.getFormInstanceId()),
+			Long.valueOf(ddmFormInstanceReport.getFormInstanceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMFormInstanceReport, "getOriginalFormInstanceId",
+				ddmFormInstanceReport, "getOriginalFormInstanceId",
 				new Class<?>[0]));
 	}
 

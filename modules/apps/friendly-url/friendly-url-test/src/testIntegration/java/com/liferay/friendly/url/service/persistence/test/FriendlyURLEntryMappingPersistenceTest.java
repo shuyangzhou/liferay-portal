@@ -426,19 +426,44 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 		_persistence.clearCache();
 
-		FriendlyURLEntryMapping existingFriendlyURLEntryMapping =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newFriendlyURLEntryMapping.getPrimaryKey());
+				newFriendlyURLEntryMapping.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		FriendlyURLEntryMapping newFriendlyURLEntryMapping =
+			addFriendlyURLEntryMapping();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FriendlyURLEntryMapping.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"friendlyURLEntryMappingId",
+				newFriendlyURLEntryMapping.getFriendlyURLEntryMappingId()));
+
+		List<FriendlyURLEntryMapping> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		FriendlyURLEntryMapping friendlyURLEntryMapping) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingFriendlyURLEntryMapping.getClassNameId()),
+			Long.valueOf(friendlyURLEntryMapping.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFriendlyURLEntryMapping, "getOriginalClassNameId",
+				friendlyURLEntryMapping, "getOriginalClassNameId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingFriendlyURLEntryMapping.getClassPK()),
+			Long.valueOf(friendlyURLEntryMapping.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFriendlyURLEntryMapping, "getOriginalClassPK",
+				friendlyURLEntryMapping, "getOriginalClassPK",
 				new Class<?>[0]));
 	}
 

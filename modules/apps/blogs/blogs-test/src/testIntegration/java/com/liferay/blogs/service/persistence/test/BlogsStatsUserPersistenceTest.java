@@ -475,17 +475,38 @@ public class BlogsStatsUserPersistenceTest {
 
 		_persistence.clearCache();
 
-		BlogsStatsUser existingBlogsStatsUser = _persistence.findByPrimaryKey(
-			newBlogsStatsUser.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newBlogsStatsUser.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		BlogsStatsUser newBlogsStatsUser = addBlogsStatsUser();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			BlogsStatsUser.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"statsUserId", newBlogsStatsUser.getStatsUserId()));
+
+		List<BlogsStatsUser> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(BlogsStatsUser blogsStatsUser) {
 		Assert.assertEquals(
-			Long.valueOf(existingBlogsStatsUser.getGroupId()),
+			Long.valueOf(blogsStatsUser.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsStatsUser, "getOriginalGroupId", new Class<?>[0]));
+				blogsStatsUser, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingBlogsStatsUser.getUserId()),
+			Long.valueOf(blogsStatsUser.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBlogsStatsUser, "getOriginalUserId", new Class<?>[0]));
+				blogsStatsUser, "getOriginalUserId", new Class<?>[0]));
 	}
 
 	protected BlogsStatsUser addBlogsStatsUser() throws Exception {

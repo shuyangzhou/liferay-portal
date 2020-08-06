@@ -468,13 +468,34 @@ public class DDMStorageLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMStorageLink existingDDMStorageLink = _persistence.findByPrimaryKey(
-			newDDMStorageLink.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDMStorageLink.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMStorageLink newDDMStorageLink = addDDMStorageLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMStorageLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"storageLinkId", newDDMStorageLink.getStorageLinkId()));
+
+		List<DDMStorageLink> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDMStorageLink ddmStorageLink) {
 		Assert.assertEquals(
-			Long.valueOf(existingDDMStorageLink.getClassPK()),
+			Long.valueOf(ddmStorageLink.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMStorageLink, "getOriginalClassPK", new Class<?>[0]));
+				ddmStorageLink, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected DDMStorageLink addDDMStorageLink() throws Exception {

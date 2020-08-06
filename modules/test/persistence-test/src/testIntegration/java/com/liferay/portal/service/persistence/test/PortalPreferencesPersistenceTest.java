@@ -415,19 +415,40 @@ public class PortalPreferencesPersistenceTest {
 
 		_persistence.clearCache();
 
-		PortalPreferences existingPortalPreferences =
-			_persistence.findByPrimaryKey(newPortalPreferences.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newPortalPreferences.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PortalPreferences newPortalPreferences = addPortalPreferences();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PortalPreferences.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"portalPreferencesId",
+				newPortalPreferences.getPortalPreferencesId()));
+
+		List<PortalPreferences> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PortalPreferences portalPreferences) {
 		Assert.assertEquals(
-			Long.valueOf(existingPortalPreferences.getOwnerId()),
+			Long.valueOf(portalPreferences.getOwnerId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortalPreferences, "getOriginalOwnerId",
-				new Class<?>[0]));
+				portalPreferences, "getOriginalOwnerId", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingPortalPreferences.getOwnerType()),
+			Integer.valueOf(portalPreferences.getOwnerType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingPortalPreferences, "getOriginalOwnerType",
-				new Class<?>[0]));
+				portalPreferences, "getOriginalOwnerType", new Class<?>[0]));
 	}
 
 	protected PortalPreferences addPortalPreferences() throws Exception {

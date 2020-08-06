@@ -630,23 +630,42 @@ public class MBThreadPersistenceTest {
 
 		_persistence.clearCache();
 
-		MBThread existingMBThread = _persistence.findByPrimaryKey(
-			newMBThread.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMBThread.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MBThread newMBThread = addMBThread();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MBThread.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("threadId", newMBThread.getThreadId()));
+
+		List<MBThread> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MBThread mbThread) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMBThread.getUuid(),
+				mbThread.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMBThread, "getOriginalUuid", new Class<?>[0])));
+					mbThread, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMBThread.getGroupId()),
+			Long.valueOf(mbThread.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThread, "getOriginalGroupId", new Class<?>[0]));
+				mbThread, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingMBThread.getRootMessageId()),
+			Long.valueOf(mbThread.getRootMessageId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMBThread, "getOriginalRootMessageId", new Class<?>[0]));
+				mbThread, "getOriginalRootMessageId", new Class<?>[0]));
 	}
 
 	protected MBThread addMBThread() throws Exception {

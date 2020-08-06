@@ -480,21 +480,44 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		RedirectNotFoundEntry existingRedirectNotFoundEntry =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newRedirectNotFoundEntry.getPrimaryKey());
+				newRedirectNotFoundEntry.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		RedirectNotFoundEntry newRedirectNotFoundEntry =
+			addRedirectNotFoundEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			RedirectNotFoundEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"redirectNotFoundEntryId",
+				newRedirectNotFoundEntry.getRedirectNotFoundEntryId()));
+
+		List<RedirectNotFoundEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		RedirectNotFoundEntry redirectNotFoundEntry) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingRedirectNotFoundEntry.getGroupId()),
+			Long.valueOf(redirectNotFoundEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRedirectNotFoundEntry, "getOriginalGroupId",
-				new Class<?>[0]));
+				redirectNotFoundEntry, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingRedirectNotFoundEntry.getUrl(),
+				redirectNotFoundEntry.getUrl(),
 				ReflectionTestUtil.invoke(
-					existingRedirectNotFoundEntry, "getOriginalUrl",
-					new Class<?>[0])));
+					redirectNotFoundEntry, "getOriginalUrl", new Class<?>[0])));
 	}
 
 	protected RedirectNotFoundEntry addRedirectNotFoundEntry()

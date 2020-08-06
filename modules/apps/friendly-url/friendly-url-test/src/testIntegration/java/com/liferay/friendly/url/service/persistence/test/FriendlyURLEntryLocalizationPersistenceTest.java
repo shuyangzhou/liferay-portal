@@ -492,38 +492,63 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 
 		_persistence.clearCache();
 
-		FriendlyURLEntryLocalization existingFriendlyURLEntryLocalization =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newFriendlyURLEntryLocalization.getPrimaryKey());
+				newFriendlyURLEntryLocalization.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		FriendlyURLEntryLocalization newFriendlyURLEntryLocalization =
+			addFriendlyURLEntryLocalization();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FriendlyURLEntryLocalization.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"friendlyURLEntryLocalizationId",
+				newFriendlyURLEntryLocalization.
+					getFriendlyURLEntryLocalizationId()));
+
+		List<FriendlyURLEntryLocalization> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		FriendlyURLEntryLocalization friendlyURLEntryLocalization) {
 
 		Assert.assertEquals(
-			Long.valueOf(
-				existingFriendlyURLEntryLocalization.getFriendlyURLEntryId()),
+			Long.valueOf(friendlyURLEntryLocalization.getFriendlyURLEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFriendlyURLEntryLocalization,
-				"getOriginalFriendlyURLEntryId", new Class<?>[0]));
+				friendlyURLEntryLocalization, "getOriginalFriendlyURLEntryId",
+				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingFriendlyURLEntryLocalization.getLanguageId(),
+				friendlyURLEntryLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingFriendlyURLEntryLocalization,
-					"getOriginalLanguageId", new Class<?>[0])));
+					friendlyURLEntryLocalization, "getOriginalLanguageId",
+					new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingFriendlyURLEntryLocalization.getGroupId()),
+			Long.valueOf(friendlyURLEntryLocalization.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFriendlyURLEntryLocalization, "getOriginalGroupId",
+				friendlyURLEntryLocalization, "getOriginalGroupId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingFriendlyURLEntryLocalization.getClassNameId()),
+			Long.valueOf(friendlyURLEntryLocalization.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFriendlyURLEntryLocalization, "getOriginalClassNameId",
+				friendlyURLEntryLocalization, "getOriginalClassNameId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingFriendlyURLEntryLocalization.getUrlTitle(),
+				friendlyURLEntryLocalization.getUrlTitle(),
 				ReflectionTestUtil.invoke(
-					existingFriendlyURLEntryLocalization, "getOriginalUrlTitle",
+					friendlyURLEntryLocalization, "getOriginalUrlTitle",
 					new Class<?>[0])));
 	}
 
