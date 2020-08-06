@@ -517,20 +517,39 @@ public class DDMFormInstancePersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMFormInstance existingDDMFormInstance = _persistence.findByPrimaryKey(
-			newDDMFormInstance.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDMFormInstance.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMFormInstance newDDMFormInstance = addDDMFormInstance();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMFormInstance.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"formInstanceId", newDDMFormInstance.getFormInstanceId()));
+
+		List<DDMFormInstance> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDMFormInstance ddmFormInstance) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDMFormInstance.getUuid(),
+				ddmFormInstance.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDDMFormInstance, "getOriginalUuid",
-					new Class<?>[0])));
+					ddmFormInstance, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDDMFormInstance.getGroupId()),
+			Long.valueOf(ddmFormInstance.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMFormInstance, "getOriginalGroupId",
-				new Class<?>[0]));
+				ddmFormInstance, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected DDMFormInstance addDDMFormInstance() throws Exception {

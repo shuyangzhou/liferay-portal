@@ -421,13 +421,32 @@ public class StatusPersistenceTest {
 
 		_persistence.clearCache();
 
-		Status existingStatus = _persistence.findByPrimaryKey(
-			newStatus.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newStatus.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Status newStatus = addStatus();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Status.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("statusId", newStatus.getStatusId()));
+
+		List<Status> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Status status) {
 		Assert.assertEquals(
-			Long.valueOf(existingStatus.getUserId()),
+			Long.valueOf(status.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingStatus, "getOriginalUserId", new Class<?>[0]));
+				status, "getOriginalUserId", new Class<?>[0]));
 	}
 
 	protected Status addStatus() throws Exception {

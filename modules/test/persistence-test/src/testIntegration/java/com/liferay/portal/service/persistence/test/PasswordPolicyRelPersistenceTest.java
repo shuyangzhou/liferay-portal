@@ -428,19 +428,40 @@ public class PasswordPolicyRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		PasswordPolicyRel existingPasswordPolicyRel =
-			_persistence.findByPrimaryKey(newPasswordPolicyRel.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newPasswordPolicyRel.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PasswordPolicyRel newPasswordPolicyRel = addPasswordPolicyRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PasswordPolicyRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"passwordPolicyRelId",
+				newPasswordPolicyRel.getPasswordPolicyRelId()));
+
+		List<PasswordPolicyRel> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PasswordPolicyRel passwordPolicyRel) {
 		Assert.assertEquals(
-			Long.valueOf(existingPasswordPolicyRel.getClassNameId()),
+			Long.valueOf(passwordPolicyRel.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPasswordPolicyRel, "getOriginalClassNameId",
-				new Class<?>[0]));
+				passwordPolicyRel, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingPasswordPolicyRel.getClassPK()),
+			Long.valueOf(passwordPolicyRel.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPasswordPolicyRel, "getOriginalClassPK",
-				new Class<?>[0]));
+				passwordPolicyRel, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected PasswordPolicyRel addPasswordPolicyRel() throws Exception {

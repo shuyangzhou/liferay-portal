@@ -508,31 +508,49 @@ public class DLFileEntryTypePersistenceTest {
 
 		_persistence.clearCache();
 
-		DLFileEntryType existingDLFileEntryType = _persistence.findByPrimaryKey(
-			newDLFileEntryType.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDLFileEntryType.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLFileEntryType newDLFileEntryType = addDLFileEntryType();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLFileEntryType.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileEntryTypeId", newDLFileEntryType.getFileEntryTypeId()));
+
+		List<DLFileEntryType> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DLFileEntryType dlFileEntryType) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDLFileEntryType.getUuid(),
+				dlFileEntryType.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDLFileEntryType, "getOriginalUuid",
-					new Class<?>[0])));
+					dlFileEntryType, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileEntryType.getGroupId()),
+			Long.valueOf(dlFileEntryType.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileEntryType, "getOriginalGroupId",
-				new Class<?>[0]));
+				dlFileEntryType, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileEntryType.getGroupId()),
+			Long.valueOf(dlFileEntryType.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileEntryType, "getOriginalGroupId",
-				new Class<?>[0]));
+				dlFileEntryType, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDLFileEntryType.getFileEntryTypeKey(),
+				dlFileEntryType.getFileEntryTypeKey(),
 				ReflectionTestUtil.invoke(
-					existingDLFileEntryType, "getOriginalFileEntryTypeKey",
+					dlFileEntryType, "getOriginalFileEntryTypeKey",
 					new Class<?>[0])));
 	}
 

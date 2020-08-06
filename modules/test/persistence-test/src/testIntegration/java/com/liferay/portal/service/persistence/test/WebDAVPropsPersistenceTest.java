@@ -419,18 +419,38 @@ public class WebDAVPropsPersistenceTest {
 
 		_persistence.clearCache();
 
-		WebDAVProps existingWebDAVProps = _persistence.findByPrimaryKey(
-			newWebDAVProps.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newWebDAVProps.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		WebDAVProps newWebDAVProps = addWebDAVProps();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			WebDAVProps.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"webDavPropsId", newWebDAVProps.getWebDavPropsId()));
+
+		List<WebDAVProps> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(WebDAVProps webDAVProps) {
 		Assert.assertEquals(
-			Long.valueOf(existingWebDAVProps.getClassNameId()),
+			Long.valueOf(webDAVProps.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWebDAVProps, "getOriginalClassNameId",
-				new Class<?>[0]));
+				webDAVProps, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingWebDAVProps.getClassPK()),
+			Long.valueOf(webDAVProps.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWebDAVProps, "getOriginalClassPK", new Class<?>[0]));
+				webDAVProps, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected WebDAVProps addWebDAVProps() throws Exception {

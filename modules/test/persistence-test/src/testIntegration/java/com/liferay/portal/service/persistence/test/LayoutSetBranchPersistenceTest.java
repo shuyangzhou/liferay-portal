@@ -519,25 +519,44 @@ public class LayoutSetBranchPersistenceTest {
 
 		_persistence.clearCache();
 
-		LayoutSetBranch existingLayoutSetBranch = _persistence.findByPrimaryKey(
-			newLayoutSetBranch.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newLayoutSetBranch.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		LayoutSetBranch newLayoutSetBranch = addLayoutSetBranch();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			LayoutSetBranch.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"layoutSetBranchId",
+				newLayoutSetBranch.getLayoutSetBranchId()));
+
+		List<LayoutSetBranch> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(LayoutSetBranch layoutSetBranch) {
 		Assert.assertEquals(
-			Long.valueOf(existingLayoutSetBranch.getGroupId()),
+			Long.valueOf(layoutSetBranch.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingLayoutSetBranch, "getOriginalGroupId",
-				new Class<?>[0]));
+				layoutSetBranch, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingLayoutSetBranch.getPrivateLayout()),
+			Boolean.valueOf(layoutSetBranch.getPrivateLayout()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingLayoutSetBranch, "getOriginalPrivateLayout",
-				new Class<?>[0]));
+				layoutSetBranch, "getOriginalPrivateLayout", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingLayoutSetBranch.getName(),
+				layoutSetBranch.getName(),
 				ReflectionTestUtil.invoke(
-					existingLayoutSetBranch, "getOriginalName",
-					new Class<?>[0])));
+					layoutSetBranch, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected LayoutSetBranch addLayoutSetBranch() throws Exception {

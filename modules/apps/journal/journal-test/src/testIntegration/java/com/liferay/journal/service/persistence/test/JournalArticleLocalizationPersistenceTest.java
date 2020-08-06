@@ -468,60 +468,85 @@ public class JournalArticleLocalizationPersistenceTest {
 
 		_persistence.clearCache();
 
-		JournalArticleLocalization existingJournalArticleLocalization =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newJournalArticleLocalization.getPrimaryKey());
+				newJournalArticleLocalization.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		JournalArticleLocalization newJournalArticleLocalization =
+			addJournalArticleLocalization();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			JournalArticleLocalization.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"articleLocalizationId",
+				newJournalArticleLocalization.getArticleLocalizationId()));
+
+		List<JournalArticleLocalization> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		JournalArticleLocalization journalArticleLocalization) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleLocalization.getArticlePK()),
+			Long.valueOf(journalArticleLocalization.getArticlePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalArticlePK",
+				journalArticleLocalization, "getOriginalArticlePK",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalArticleLocalization.getLanguageId(),
+				journalArticleLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalLanguageId",
+					journalArticleLocalization, "getOriginalLanguageId",
 					new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleLocalization.getCompanyId()),
+			Long.valueOf(journalArticleLocalization.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalCompanyId",
+				journalArticleLocalization, "getOriginalCompanyId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleLocalization.getArticlePK()),
+			Long.valueOf(journalArticleLocalization.getArticlePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalArticlePK",
+				journalArticleLocalization, "getOriginalArticlePK",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalArticleLocalization.getLanguageId(),
+				journalArticleLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalLanguageId",
+					journalArticleLocalization, "getOriginalLanguageId",
 					new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleLocalization.getCompanyId()),
+			Long.valueOf(journalArticleLocalization.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalCompanyId",
+				journalArticleLocalization, "getOriginalCompanyId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingJournalArticleLocalization.getArticlePK()),
+			Long.valueOf(journalArticleLocalization.getArticlePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingJournalArticleLocalization, "getOriginalArticlePK",
+				journalArticleLocalization, "getOriginalArticlePK",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalArticleLocalization.getTitle(),
+				journalArticleLocalization.getTitle(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalTitle",
+					journalArticleLocalization, "getOriginalTitle",
 					new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingJournalArticleLocalization.getLanguageId(),
+				journalArticleLocalization.getLanguageId(),
 				ReflectionTestUtil.invoke(
-					existingJournalArticleLocalization, "getOriginalLanguageId",
+					journalArticleLocalization, "getOriginalLanguageId",
 					new Class<?>[0])));
 	}
 

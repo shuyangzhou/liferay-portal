@@ -465,17 +465,37 @@ public class TrashEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		TrashEntry existingTrashEntry = _persistence.findByPrimaryKey(
-			newTrashEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newTrashEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		TrashEntry newTrashEntry = addTrashEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			TrashEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("entryId", newTrashEntry.getEntryId()));
+
+		List<TrashEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(TrashEntry trashEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingTrashEntry.getClassNameId()),
+			Long.valueOf(trashEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTrashEntry, "getOriginalClassNameId", new Class<?>[0]));
+				trashEntry, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingTrashEntry.getClassPK()),
+			Long.valueOf(trashEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingTrashEntry, "getOriginalClassPK", new Class<?>[0]));
+				trashEntry, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected TrashEntry addTrashEntry() throws Exception {

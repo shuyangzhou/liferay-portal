@@ -463,20 +463,41 @@ public class DepotEntryGroupRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		DepotEntryGroupRel existingDepotEntryGroupRel =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDepotEntryGroupRel.getPrimaryKey());
+				newDepotEntryGroupRel.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DepotEntryGroupRel newDepotEntryGroupRel = addDepotEntryGroupRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DepotEntryGroupRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"depotEntryGroupRelId",
+				newDepotEntryGroupRel.getDepotEntryGroupRelId()));
+
+		List<DepotEntryGroupRel> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DepotEntryGroupRel depotEntryGroupRel) {
 		Assert.assertEquals(
-			Long.valueOf(existingDepotEntryGroupRel.getDepotEntryId()),
+			Long.valueOf(depotEntryGroupRel.getDepotEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntryGroupRel, "getOriginalDepotEntryId",
+				depotEntryGroupRel, "getOriginalDepotEntryId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDepotEntryGroupRel.getToGroupId()),
+			Long.valueOf(depotEntryGroupRel.getToGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotEntryGroupRel, "getOriginalToGroupId",
-				new Class<?>[0]));
+				depotEntryGroupRel, "getOriginalToGroupId", new Class<?>[0]));
 	}
 
 	protected DepotEntryGroupRel addDepotEntryGroupRel() throws Exception {

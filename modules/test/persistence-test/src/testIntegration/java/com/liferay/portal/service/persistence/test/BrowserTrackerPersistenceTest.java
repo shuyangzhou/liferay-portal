@@ -406,13 +406,34 @@ public class BrowserTrackerPersistenceTest {
 
 		_persistence.clearCache();
 
-		BrowserTracker existingBrowserTracker = _persistence.findByPrimaryKey(
-			newBrowserTracker.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newBrowserTracker.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		BrowserTracker newBrowserTracker = addBrowserTracker();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			BrowserTracker.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"browserTrackerId", newBrowserTracker.getBrowserTrackerId()));
+
+		List<BrowserTracker> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(BrowserTracker browserTracker) {
 		Assert.assertEquals(
-			Long.valueOf(existingBrowserTracker.getUserId()),
+			Long.valueOf(browserTracker.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingBrowserTracker, "getOriginalUserId", new Class<?>[0]));
+				browserTracker, "getOriginalUserId", new Class<?>[0]));
 	}
 
 	protected BrowserTracker addBrowserTracker() throws Exception {

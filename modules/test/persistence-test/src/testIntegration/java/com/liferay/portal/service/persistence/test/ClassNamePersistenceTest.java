@@ -392,14 +392,35 @@ public class ClassNamePersistenceTest {
 
 		_persistence.clearCache();
 
-		ClassName existingClassName = _persistence.findByPrimaryKey(
-			newClassName.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newClassName.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ClassName newClassName = addClassName();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ClassName.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"classNameId", newClassName.getClassNameId()));
+
+		List<ClassName> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ClassName className) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingClassName.getValue(),
+				className.getValue(),
 				ReflectionTestUtil.invoke(
-					existingClassName, "getOriginalValue", new Class<?>[0])));
+					className, "getOriginalValue", new Class<?>[0])));
 	}
 
 	protected ClassName addClassName() throws Exception {

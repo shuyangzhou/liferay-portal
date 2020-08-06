@@ -461,21 +461,41 @@ public class AssetLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetLink existingAssetLink = _persistence.findByPrimaryKey(
-			newAssetLink.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAssetLink.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetLink newAssetLink = addAssetLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("linkId", newAssetLink.getLinkId()));
+
+		List<AssetLink> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AssetLink assetLink) {
 		Assert.assertEquals(
-			Long.valueOf(existingAssetLink.getEntryId1()),
+			Long.valueOf(assetLink.getEntryId1()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetLink, "getOriginalEntryId1", new Class<?>[0]));
+				assetLink, "getOriginalEntryId1", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetLink.getEntryId2()),
+			Long.valueOf(assetLink.getEntryId2()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetLink, "getOriginalEntryId2", new Class<?>[0]));
+				assetLink, "getOriginalEntryId2", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingAssetLink.getType()),
+			Integer.valueOf(assetLink.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingAssetLink, "getOriginalType", new Class<?>[0]));
+				assetLink, "getOriginalType", new Class<?>[0]));
 	}
 
 	protected AssetLink addAssetLink() throws Exception {

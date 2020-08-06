@@ -475,22 +475,46 @@ public class AccountGroupAccountEntryRelPersistenceTest {
 
 		_persistence.clearCache();
 
-		AccountGroupAccountEntryRel existingAccountGroupAccountEntryRel =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAccountGroupAccountEntryRel.getPrimaryKey());
+				newAccountGroupAccountEntryRel.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AccountGroupAccountEntryRel newAccountGroupAccountEntryRel =
+			addAccountGroupAccountEntryRel();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AccountGroupAccountEntryRel.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"AccountGroupAccountEntryRelId",
+				newAccountGroupAccountEntryRel.
+					getAccountGroupAccountEntryRelId()));
+
+		List<AccountGroupAccountEntryRel> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AccountGroupAccountEntryRel accountGroupAccountEntryRel) {
 
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAccountGroupAccountEntryRel.getAccountGroupId()),
+			Long.valueOf(accountGroupAccountEntryRel.getAccountGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountGroupAccountEntryRel,
-				"getOriginalAccountGroupId", new Class<?>[0]));
+				accountGroupAccountEntryRel, "getOriginalAccountGroupId",
+				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAccountGroupAccountEntryRel.getAccountEntryId()),
+			Long.valueOf(accountGroupAccountEntryRel.getAccountEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountGroupAccountEntryRel,
-				"getOriginalAccountEntryId", new Class<?>[0]));
+				accountGroupAccountEntryRel, "getOriginalAccountEntryId",
+				new Class<?>[0]));
 	}
 
 	protected AccountGroupAccountEntryRel addAccountGroupAccountEntryRel()

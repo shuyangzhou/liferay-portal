@@ -517,20 +517,41 @@ public class DDMTemplateVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMTemplateVersion existingDDMTemplateVersion =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDDMTemplateVersion.getPrimaryKey());
+				newDDMTemplateVersion.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDMTemplateVersion newDDMTemplateVersion = addDDMTemplateVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDMTemplateVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"templateVersionId",
+				newDDMTemplateVersion.getTemplateVersionId()));
+
+		List<DDMTemplateVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDMTemplateVersion ddmTemplateVersion) {
 		Assert.assertEquals(
-			Long.valueOf(existingDDMTemplateVersion.getTemplateId()),
+			Long.valueOf(ddmTemplateVersion.getTemplateId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDMTemplateVersion, "getOriginalTemplateId",
-				new Class<?>[0]));
+				ddmTemplateVersion, "getOriginalTemplateId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDMTemplateVersion.getVersion(),
+				ddmTemplateVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDDMTemplateVersion, "getOriginalVersion",
+					ddmTemplateVersion, "getOriginalVersion",
 					new Class<?>[0])));
 	}
 

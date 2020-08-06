@@ -451,12 +451,32 @@ public class AppPersistenceTest {
 
 		_persistence.clearCache();
 
-		App existingApp = _persistence.findByPrimaryKey(newApp.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newApp.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		App newApp = addApp();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			App.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("appId", newApp.getAppId()));
+
+		List<App> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(App app) {
 		Assert.assertEquals(
-			Long.valueOf(existingApp.getRemoteAppId()),
+			Long.valueOf(app.getRemoteAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingApp, "getOriginalRemoteAppId", new Class<?>[0]));
+				app, "getOriginalRemoteAppId", new Class<?>[0]));
 	}
 
 	protected App addApp() throws Exception {

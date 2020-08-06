@@ -446,25 +446,44 @@ public class OAuthUserPersistenceTest {
 
 		_persistence.clearCache();
 
-		OAuthUser existingOAuthUser = _persistence.findByPrimaryKey(
-			newOAuthUser.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newOAuthUser.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		OAuthUser newOAuthUser = addOAuthUser();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			OAuthUser.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"oAuthUserId", newOAuthUser.getOAuthUserId()));
+
+		List<OAuthUser> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(OAuthUser oAuthUser) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingOAuthUser.getAccessToken(),
+				oAuthUser.getAccessToken(),
 				ReflectionTestUtil.invoke(
-					existingOAuthUser, "getOriginalAccessToken",
-					new Class<?>[0])));
+					oAuthUser, "getOriginalAccessToken", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingOAuthUser.getUserId()),
+			Long.valueOf(oAuthUser.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingOAuthUser, "getOriginalUserId", new Class<?>[0]));
+				oAuthUser, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingOAuthUser.getOAuthApplicationId()),
+			Long.valueOf(oAuthUser.getOAuthApplicationId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingOAuthUser, "getOriginalOAuthApplicationId",
-				new Class<?>[0]));
+				oAuthUser, "getOriginalOAuthApplicationId", new Class<?>[0]));
 	}
 
 	protected OAuthUser addOAuthUser() throws Exception {

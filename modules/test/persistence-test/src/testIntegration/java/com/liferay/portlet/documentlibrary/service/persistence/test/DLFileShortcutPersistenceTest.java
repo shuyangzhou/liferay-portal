@@ -553,19 +553,39 @@ public class DLFileShortcutPersistenceTest {
 
 		_persistence.clearCache();
 
-		DLFileShortcut existingDLFileShortcut = _persistence.findByPrimaryKey(
-			newDLFileShortcut.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDLFileShortcut.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLFileShortcut newDLFileShortcut = addDLFileShortcut();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLFileShortcut.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileShortcutId", newDLFileShortcut.getFileShortcutId()));
+
+		List<DLFileShortcut> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DLFileShortcut dlFileShortcut) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingDLFileShortcut.getUuid(),
+				dlFileShortcut.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingDLFileShortcut, "getOriginalUuid",
-					new Class<?>[0])));
+					dlFileShortcut, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileShortcut.getGroupId()),
+			Long.valueOf(dlFileShortcut.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileShortcut, "getOriginalGroupId", new Class<?>[0]));
+				dlFileShortcut, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected DLFileShortcut addDLFileShortcut() throws Exception {

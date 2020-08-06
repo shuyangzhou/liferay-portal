@@ -467,18 +467,38 @@ public class SAPEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		SAPEntry existingSAPEntry = _persistence.findByPrimaryKey(
-			newSAPEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newSAPEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SAPEntry newSAPEntry = addSAPEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SAPEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"sapEntryId", newSAPEntry.getSapEntryId()));
+
+		List<SAPEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SAPEntry sapEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingSAPEntry.getCompanyId()),
+			Long.valueOf(sapEntry.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSAPEntry, "getOriginalCompanyId", new Class<?>[0]));
+				sapEntry, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSAPEntry.getName(),
+				sapEntry.getName(),
 				ReflectionTestUtil.invoke(
-					existingSAPEntry, "getOriginalName", new Class<?>[0])));
+					sapEntry, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected SAPEntry addSAPEntry() throws Exception {

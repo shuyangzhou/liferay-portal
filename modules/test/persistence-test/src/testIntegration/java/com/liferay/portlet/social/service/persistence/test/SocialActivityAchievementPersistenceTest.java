@@ -518,25 +518,50 @@ public class SocialActivityAchievementPersistenceTest {
 
 		_persistence.clearCache();
 
-		SocialActivityAchievement existingSocialActivityAchievement =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSocialActivityAchievement.getPrimaryKey());
+				newSocialActivityAchievement.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SocialActivityAchievement newSocialActivityAchievement =
+			addSocialActivityAchievement();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SocialActivityAchievement.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"activityAchievementId",
+				newSocialActivityAchievement.getActivityAchievementId()));
+
+		List<SocialActivityAchievement> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		SocialActivityAchievement socialActivityAchievement) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingSocialActivityAchievement.getGroupId()),
+			Long.valueOf(socialActivityAchievement.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityAchievement, "getOriginalGroupId",
+				socialActivityAchievement, "getOriginalGroupId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingSocialActivityAchievement.getUserId()),
+			Long.valueOf(socialActivityAchievement.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivityAchievement, "getOriginalUserId",
+				socialActivityAchievement, "getOriginalUserId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSocialActivityAchievement.getName(),
+				socialActivityAchievement.getName(),
 				ReflectionTestUtil.invoke(
-					existingSocialActivityAchievement, "getOriginalName",
+					socialActivityAchievement, "getOriginalName",
 					new Class<?>[0])));
 	}
 

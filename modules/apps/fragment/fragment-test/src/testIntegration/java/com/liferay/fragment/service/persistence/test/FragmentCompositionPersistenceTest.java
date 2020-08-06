@@ -594,33 +594,54 @@ public class FragmentCompositionPersistenceTest {
 
 		_persistence.clearCache();
 
-		FragmentComposition existingFragmentComposition =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newFragmentComposition.getPrimaryKey());
+				newFragmentComposition.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		FragmentComposition newFragmentComposition = addFragmentComposition();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FragmentComposition.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fragmentCompositionId",
+				newFragmentComposition.getFragmentCompositionId()));
+
+		List<FragmentComposition> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		FragmentComposition fragmentComposition) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingFragmentComposition.getUuid(),
+				fragmentComposition.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingFragmentComposition, "getOriginalUuid",
+					fragmentComposition, "getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(
+			Long.valueOf(fragmentComposition.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				fragmentComposition, "getOriginalGroupId", new Class<?>[0]));
+
+		Assert.assertEquals(
+			Long.valueOf(fragmentComposition.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				fragmentComposition, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(
+			Objects.equals(
+				fragmentComposition.getFragmentCompositionKey(),
+				ReflectionTestUtil.invoke(
+					fragmentComposition, "getOriginalFragmentCompositionKey",
 					new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingFragmentComposition.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingFragmentComposition, "getOriginalGroupId",
-				new Class<?>[0]));
-
-		Assert.assertEquals(
-			Long.valueOf(existingFragmentComposition.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingFragmentComposition, "getOriginalGroupId",
-				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingFragmentComposition.getFragmentCompositionKey(),
-				ReflectionTestUtil.invoke(
-					existingFragmentComposition,
-					"getOriginalFragmentCompositionKey", new Class<?>[0])));
 	}
 
 	protected FragmentComposition addFragmentComposition() throws Exception {

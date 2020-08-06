@@ -662,33 +662,59 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 		_persistence.clearCache();
 
-		WorkflowMetricsSLADefinition existingWorkflowMetricsSLADefinition =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newWorkflowMetricsSLADefinition.getPrimaryKey());
+				newWorkflowMetricsSLADefinition.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		WorkflowMetricsSLADefinition newWorkflowMetricsSLADefinition =
+			addWorkflowMetricsSLADefinition();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			WorkflowMetricsSLADefinition.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"workflowMetricsSLADefinitionId",
+				newWorkflowMetricsSLADefinition.
+					getWorkflowMetricsSLADefinitionId()));
+
+		List<WorkflowMetricsSLADefinition> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		WorkflowMetricsSLADefinition workflowMetricsSLADefinition) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingWorkflowMetricsSLADefinition.getUuid(),
+				workflowMetricsSLADefinition.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingWorkflowMetricsSLADefinition, "getOriginalUuid",
+					workflowMetricsSLADefinition, "getOriginalUuid",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingWorkflowMetricsSLADefinition.getGroupId()),
+			Long.valueOf(workflowMetricsSLADefinition.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWorkflowMetricsSLADefinition, "getOriginalGroupId",
+				workflowMetricsSLADefinition, "getOriginalGroupId",
 				new Class<?>[0]));
 
 		Assert.assertEquals(
 			Long.valueOf(
-				existingWorkflowMetricsSLADefinition.
+				workflowMetricsSLADefinition.
 					getWorkflowMetricsSLADefinitionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWorkflowMetricsSLADefinition,
+				workflowMetricsSLADefinition,
 				"getOriginalWorkflowMetricsSLADefinitionId", new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingWorkflowMetricsSLADefinition.getActive()),
+			Boolean.valueOf(workflowMetricsSLADefinition.getActive()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingWorkflowMetricsSLADefinition, "getOriginalActive",
+				workflowMetricsSLADefinition, "getOriginalActive",
 				new Class<?>[0]));
 	}
 

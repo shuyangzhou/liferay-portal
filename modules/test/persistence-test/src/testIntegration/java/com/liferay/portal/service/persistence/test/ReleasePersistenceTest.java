@@ -424,14 +424,33 @@ public class ReleasePersistenceTest {
 
 		_persistence.clearCache();
 
-		Release existingRelease = _persistence.findByPrimaryKey(
-			newRelease.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newRelease.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Release newRelease = addRelease();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Release.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("releaseId", newRelease.getReleaseId()));
+
+		List<Release> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Release release) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingRelease.getServletContextName(),
+				release.getServletContextName(),
 				ReflectionTestUtil.invoke(
-					existingRelease, "getOriginalServletContextName",
+					release, "getOriginalServletContextName",
 					new Class<?>[0])));
 	}
 

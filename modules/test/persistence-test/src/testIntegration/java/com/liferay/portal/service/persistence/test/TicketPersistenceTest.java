@@ -431,14 +431,33 @@ public class TicketPersistenceTest {
 
 		_persistence.clearCache();
 
-		Ticket existingTicket = _persistence.findByPrimaryKey(
-			newTicket.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newTicket.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Ticket newTicket = addTicket();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Ticket.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("ticketId", newTicket.getTicketId()));
+
+		List<Ticket> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Ticket ticket) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingTicket.getKey(),
+				ticket.getKey(),
 				ReflectionTestUtil.invoke(
-					existingTicket, "getOriginalKey", new Class<?>[0])));
+					ticket, "getOriginalKey", new Class<?>[0])));
 	}
 
 	protected Ticket addTicket() throws Exception {

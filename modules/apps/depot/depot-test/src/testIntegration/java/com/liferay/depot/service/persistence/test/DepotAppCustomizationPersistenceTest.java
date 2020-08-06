@@ -464,31 +464,55 @@ public class DepotAppCustomizationPersistenceTest {
 
 		_persistence.clearCache();
 
-		DepotAppCustomization existingDepotAppCustomization =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDepotAppCustomization.getPrimaryKey());
+				newDepotAppCustomization.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DepotAppCustomization newDepotAppCustomization =
+			addDepotAppCustomization();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DepotAppCustomization.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"depotAppCustomizationId",
+				newDepotAppCustomization.getDepotAppCustomizationId()));
+
+		List<DepotAppCustomization> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		DepotAppCustomization depotAppCustomization) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingDepotAppCustomization.getDepotEntryId()),
+			Long.valueOf(depotAppCustomization.getDepotEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotAppCustomization, "getOriginalDepotEntryId",
+				depotAppCustomization, "getOriginalDepotEntryId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingDepotAppCustomization.getEnabled()),
+			Boolean.valueOf(depotAppCustomization.getEnabled()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingDepotAppCustomization, "getOriginalEnabled",
-				new Class<?>[0]));
+				depotAppCustomization, "getOriginalEnabled", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingDepotAppCustomization.getDepotEntryId()),
+			Long.valueOf(depotAppCustomization.getDepotEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDepotAppCustomization, "getOriginalDepotEntryId",
+				depotAppCustomization, "getOriginalDepotEntryId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDepotAppCustomization.getPortletId(),
+				depotAppCustomization.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingDepotAppCustomization, "getOriginalPortletId",
+					depotAppCustomization, "getOriginalPortletId",
 					new Class<?>[0])));
 	}
 

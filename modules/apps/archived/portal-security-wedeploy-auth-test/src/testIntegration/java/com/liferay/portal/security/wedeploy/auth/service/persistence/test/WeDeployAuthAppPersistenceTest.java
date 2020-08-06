@@ -449,33 +449,53 @@ public class WeDeployAuthAppPersistenceTest {
 
 		_persistence.clearCache();
 
-		WeDeployAuthApp existingWeDeployAuthApp = _persistence.findByPrimaryKey(
-			newWeDeployAuthApp.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newWeDeployAuthApp.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		WeDeployAuthApp newWeDeployAuthApp = addWeDeployAuthApp();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			WeDeployAuthApp.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"weDeployAuthAppId",
+				newWeDeployAuthApp.getWeDeployAuthAppId()));
+
+		List<WeDeployAuthApp> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(WeDeployAuthApp weDeployAuthApp) {
+		Assert.assertTrue(
+			Objects.equals(
+				weDeployAuthApp.getRedirectURI(),
+				ReflectionTestUtil.invoke(
+					weDeployAuthApp, "getOriginalRedirectURI",
+					new Class<?>[0])));
+		Assert.assertTrue(
+			Objects.equals(
+				weDeployAuthApp.getClientId(),
+				ReflectionTestUtil.invoke(
+					weDeployAuthApp, "getOriginalClientId", new Class<?>[0])));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingWeDeployAuthApp.getRedirectURI(),
+				weDeployAuthApp.getClientId(),
 				ReflectionTestUtil.invoke(
-					existingWeDeployAuthApp, "getOriginalRedirectURI",
-					new Class<?>[0])));
+					weDeployAuthApp, "getOriginalClientId", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingWeDeployAuthApp.getClientId(),
+				weDeployAuthApp.getClientSecret(),
 				ReflectionTestUtil.invoke(
-					existingWeDeployAuthApp, "getOriginalClientId",
-					new Class<?>[0])));
-
-		Assert.assertTrue(
-			Objects.equals(
-				existingWeDeployAuthApp.getClientId(),
-				ReflectionTestUtil.invoke(
-					existingWeDeployAuthApp, "getOriginalClientId",
-					new Class<?>[0])));
-		Assert.assertTrue(
-			Objects.equals(
-				existingWeDeployAuthApp.getClientSecret(),
-				ReflectionTestUtil.invoke(
-					existingWeDeployAuthApp, "getOriginalClientSecret",
+					weDeployAuthApp, "getOriginalClientSecret",
 					new Class<?>[0])));
 	}
 

@@ -429,21 +429,44 @@ public class SamlSpAuthRequestPersistenceTest {
 
 		_persistence.clearCache();
 
-		SamlSpAuthRequest existingSamlSpAuthRequest =
-			_persistence.findByPrimaryKey(newSamlSpAuthRequest.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newSamlSpAuthRequest.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SamlSpAuthRequest newSamlSpAuthRequest = addSamlSpAuthRequest();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlSpAuthRequest.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlSpAuthnRequestId",
+				newSamlSpAuthRequest.getSamlSpAuthnRequestId()));
+
+		List<SamlSpAuthRequest> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SamlSpAuthRequest samlSpAuthRequest) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSamlSpAuthRequest.getSamlIdpEntityId(),
+				samlSpAuthRequest.getSamlIdpEntityId(),
 				ReflectionTestUtil.invoke(
-					existingSamlSpAuthRequest, "getOriginalSamlIdpEntityId",
+					samlSpAuthRequest, "getOriginalSamlIdpEntityId",
 					new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSamlSpAuthRequest.getSamlSpAuthRequestKey(),
+				samlSpAuthRequest.getSamlSpAuthRequestKey(),
 				ReflectionTestUtil.invoke(
-					existingSamlSpAuthRequest,
-					"getOriginalSamlSpAuthRequestKey", new Class<?>[0])));
+					samlSpAuthRequest, "getOriginalSamlSpAuthRequestKey",
+					new Class<?>[0])));
 	}
 
 	protected SamlSpAuthRequest addSamlSpAuthRequest() throws Exception {

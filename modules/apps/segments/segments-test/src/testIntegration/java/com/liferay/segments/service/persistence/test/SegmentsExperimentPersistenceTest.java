@@ -586,33 +586,52 @@ public class SegmentsExperimentPersistenceTest {
 
 		_persistence.clearCache();
 
-		SegmentsExperiment existingSegmentsExperiment =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSegmentsExperiment.getPrimaryKey());
+				newSegmentsExperiment.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SegmentsExperiment newSegmentsExperiment = addSegmentsExperiment();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SegmentsExperiment.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"segmentsExperimentId",
+				newSegmentsExperiment.getSegmentsExperimentId()));
+
+		List<SegmentsExperiment> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SegmentsExperiment segmentsExperiment) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSegmentsExperiment.getUuid(),
+				segmentsExperiment.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSegmentsExperiment, "getOriginalUuid",
+					segmentsExperiment, "getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(
+			Long.valueOf(segmentsExperiment.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				segmentsExperiment, "getOriginalGroupId", new Class<?>[0]));
+
+		Assert.assertEquals(
+			Long.valueOf(segmentsExperiment.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				segmentsExperiment, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(
+			Objects.equals(
+				segmentsExperiment.getSegmentsExperimentKey(),
+				ReflectionTestUtil.invoke(
+					segmentsExperiment, "getOriginalSegmentsExperimentKey",
 					new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingSegmentsExperiment.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperiment, "getOriginalGroupId",
-				new Class<?>[0]));
-
-		Assert.assertEquals(
-			Long.valueOf(existingSegmentsExperiment.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsExperiment, "getOriginalGroupId",
-				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingSegmentsExperiment.getSegmentsExperimentKey(),
-				ReflectionTestUtil.invoke(
-					existingSegmentsExperiment,
-					"getOriginalSegmentsExperimentKey", new Class<?>[0])));
 	}
 
 	protected SegmentsExperiment addSegmentsExperiment() throws Exception {

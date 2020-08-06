@@ -598,31 +598,48 @@ public class PasswordPolicyPersistenceTest {
 
 		_persistence.clearCache();
 
-		PasswordPolicy existingPasswordPolicy = _persistence.findByPrimaryKey(
-			newPasswordPolicy.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newPasswordPolicy.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PasswordPolicy newPasswordPolicy = addPasswordPolicy();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PasswordPolicy.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"passwordPolicyId", newPasswordPolicy.getPasswordPolicyId()));
+
+		List<PasswordPolicy> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PasswordPolicy passwordPolicy) {
 		Assert.assertEquals(
-			Long.valueOf(existingPasswordPolicy.getCompanyId()),
+			Long.valueOf(passwordPolicy.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPasswordPolicy, "getOriginalCompanyId",
-				new Class<?>[0]));
+				passwordPolicy, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingPasswordPolicy.getDefaultPolicy()),
+			Boolean.valueOf(passwordPolicy.getDefaultPolicy()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingPasswordPolicy, "getOriginalDefaultPolicy",
-				new Class<?>[0]));
+				passwordPolicy, "getOriginalDefaultPolicy", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingPasswordPolicy.getCompanyId()),
+			Long.valueOf(passwordPolicy.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPasswordPolicy, "getOriginalCompanyId",
-				new Class<?>[0]));
+				passwordPolicy, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPasswordPolicy.getName(),
+				passwordPolicy.getName(),
 				ReflectionTestUtil.invoke(
-					existingPasswordPolicy, "getOriginalName",
-					new Class<?>[0])));
+					passwordPolicy, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected PasswordPolicy addPasswordPolicy() throws Exception {

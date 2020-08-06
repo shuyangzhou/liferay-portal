@@ -458,19 +458,41 @@ public class SegmentsEntryRolePersistenceTest {
 
 		_persistence.clearCache();
 
-		SegmentsEntryRole existingSegmentsEntryRole =
-			_persistence.findByPrimaryKey(newSegmentsEntryRole.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newSegmentsEntryRole.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SegmentsEntryRole newSegmentsEntryRole = addSegmentsEntryRole();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SegmentsEntryRole.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"segmentsEntryRoleId",
+				newSegmentsEntryRole.getSegmentsEntryRoleId()));
+
+		List<SegmentsEntryRole> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SegmentsEntryRole segmentsEntryRole) {
 		Assert.assertEquals(
-			Long.valueOf(existingSegmentsEntryRole.getSegmentsEntryId()),
+			Long.valueOf(segmentsEntryRole.getSegmentsEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRole, "getOriginalSegmentsEntryId",
+				segmentsEntryRole, "getOriginalSegmentsEntryId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingSegmentsEntryRole.getRoleId()),
+			Long.valueOf(segmentsEntryRole.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSegmentsEntryRole, "getOriginalRoleId",
-				new Class<?>[0]));
+				segmentsEntryRole, "getOriginalRoleId", new Class<?>[0]));
 	}
 
 	protected SegmentsEntryRole addSegmentsEntryRole() throws Exception {

@@ -505,26 +505,52 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 
 		_persistence.clearCache();
 
-		DLOpenerFileEntryReference existingDLOpenerFileEntryReference =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newDLOpenerFileEntryReference.getPrimaryKey());
+				newDLOpenerFileEntryReference.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLOpenerFileEntryReference newDLOpenerFileEntryReference =
+			addDLOpenerFileEntryReference();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLOpenerFileEntryReference.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"dlOpenerFileEntryReferenceId",
+				newDLOpenerFileEntryReference.
+					getDlOpenerFileEntryReferenceId()));
+
+		List<DLOpenerFileEntryReference> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		DLOpenerFileEntryReference dlOpenerFileEntryReference) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingDLOpenerFileEntryReference.getFileEntryId()),
+			Long.valueOf(dlOpenerFileEntryReference.getFileEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLOpenerFileEntryReference, "getOriginalFileEntryId",
+				dlOpenerFileEntryReference, "getOriginalFileEntryId",
 				new Class<?>[0]));
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingDLOpenerFileEntryReference.getReferenceType(),
+				dlOpenerFileEntryReference.getReferenceType(),
 				ReflectionTestUtil.invoke(
-					existingDLOpenerFileEntryReference,
-					"getOriginalReferenceType", new Class<?>[0])));
+					dlOpenerFileEntryReference, "getOriginalReferenceType",
+					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingDLOpenerFileEntryReference.getFileEntryId()),
+			Long.valueOf(dlOpenerFileEntryReference.getFileEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLOpenerFileEntryReference, "getOriginalFileEntryId",
+				dlOpenerFileEntryReference, "getOriginalFileEntryId",
 				new Class<?>[0]));
 	}
 

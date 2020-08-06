@@ -495,30 +495,54 @@ public class SocialActivitySettingPersistenceTest {
 
 		_persistence.clearCache();
 
-		SocialActivitySetting existingSocialActivitySetting =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSocialActivitySetting.getPrimaryKey());
+				newSocialActivitySetting.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SocialActivitySetting newSocialActivitySetting =
+			addSocialActivitySetting();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SocialActivitySetting.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"activitySettingId",
+				newSocialActivitySetting.getActivitySettingId()));
+
+		List<SocialActivitySetting> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		SocialActivitySetting socialActivitySetting) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingSocialActivitySetting.getGroupId()),
+			Long.valueOf(socialActivitySetting.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivitySetting, "getOriginalGroupId",
+				socialActivitySetting, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(socialActivitySetting.getClassNameId()),
+			ReflectionTestUtil.<Long>invoke(
+				socialActivitySetting, "getOriginalClassNameId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingSocialActivitySetting.getClassNameId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingSocialActivitySetting, "getOriginalClassNameId",
-				new Class<?>[0]));
-		Assert.assertEquals(
-			Integer.valueOf(existingSocialActivitySetting.getActivityType()),
+			Integer.valueOf(socialActivitySetting.getActivityType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialActivitySetting, "getOriginalActivityType",
+				socialActivitySetting, "getOriginalActivityType",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSocialActivitySetting.getName(),
+				socialActivitySetting.getName(),
 				ReflectionTestUtil.invoke(
-					existingSocialActivitySetting, "getOriginalName",
+					socialActivitySetting, "getOriginalName",
 					new Class<?>[0])));
 	}
 

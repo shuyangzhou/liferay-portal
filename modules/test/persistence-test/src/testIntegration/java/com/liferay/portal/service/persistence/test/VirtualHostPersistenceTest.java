@@ -436,30 +436,48 @@ public class VirtualHostPersistenceTest {
 
 		_persistence.clearCache();
 
-		VirtualHost existingVirtualHost = _persistence.findByPrimaryKey(
-			newVirtualHost.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newVirtualHost.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		VirtualHost newVirtualHost = addVirtualHost();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			VirtualHost.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"virtualHostId", newVirtualHost.getVirtualHostId()));
+
+		List<VirtualHost> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(VirtualHost virtualHost) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingVirtualHost.getHostname(),
+				virtualHost.getHostname(),
 				ReflectionTestUtil.invoke(
-					existingVirtualHost, "getOriginalHostname",
-					new Class<?>[0])));
+					virtualHost, "getOriginalHostname", new Class<?>[0])));
 
 		Assert.assertEquals(
-			Long.valueOf(existingVirtualHost.getCompanyId()),
+			Long.valueOf(virtualHost.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVirtualHost, "getOriginalCompanyId", new Class<?>[0]));
+				virtualHost, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingVirtualHost.getLayoutSetId()),
+			Long.valueOf(virtualHost.getLayoutSetId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingVirtualHost, "getOriginalLayoutSetId",
-				new Class<?>[0]));
+				virtualHost, "getOriginalLayoutSetId", new Class<?>[0]));
 		Assert.assertEquals(
-			Boolean.valueOf(existingVirtualHost.getDefaultVirtualHost()),
+			Boolean.valueOf(virtualHost.getDefaultVirtualHost()),
 			ReflectionTestUtil.<Boolean>invoke(
-				existingVirtualHost, "getOriginalDefaultVirtualHost",
-				new Class<?>[0]));
+				virtualHost, "getOriginalDefaultVirtualHost", new Class<?>[0]));
 	}
 
 	protected VirtualHost addVirtualHost() throws Exception {

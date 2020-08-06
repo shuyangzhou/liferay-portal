@@ -457,22 +457,40 @@ public class CTEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		CTEntry existingCTEntry = _persistence.findByPrimaryKey(
-			newCTEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCTEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		CTEntry newCTEntry = addCTEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			CTEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("ctEntryId", newCTEntry.getCtEntryId()));
+
+		List<CTEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(CTEntry ctEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingCTEntry.getCtCollectionId()),
+			Long.valueOf(ctEntry.getCtCollectionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTEntry, "getOriginalCtCollectionId", new Class<?>[0]));
+				ctEntry, "getOriginalCtCollectionId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingCTEntry.getModelClassNameId()),
+			Long.valueOf(ctEntry.getModelClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTEntry, "getOriginalModelClassNameId",
-				new Class<?>[0]));
+				ctEntry, "getOriginalModelClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingCTEntry.getModelClassPK()),
+			Long.valueOf(ctEntry.getModelClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTEntry, "getOriginalModelClassPK", new Class<?>[0]));
+				ctEntry, "getOriginalModelClassPK", new Class<?>[0]));
 	}
 
 	protected CTEntry addCTEntry() throws Exception {

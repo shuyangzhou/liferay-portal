@@ -451,29 +451,48 @@ public class PortletItemPersistenceTest {
 
 		_persistence.clearCache();
 
-		PortletItem existingPortletItem = _persistence.findByPrimaryKey(
-			newPortletItem.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newPortletItem.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PortletItem newPortletItem = addPortletItem();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PortletItem.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"portletItemId", newPortletItem.getPortletItemId()));
+
+		List<PortletItem> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PortletItem portletItem) {
 		Assert.assertEquals(
-			Long.valueOf(existingPortletItem.getGroupId()),
+			Long.valueOf(portletItem.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortletItem, "getOriginalGroupId", new Class<?>[0]));
+				portletItem, "getOriginalGroupId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPortletItem.getName(),
+				portletItem.getName(),
 				ReflectionTestUtil.invoke(
-					existingPortletItem, "getOriginalName", new Class<?>[0])));
+					portletItem, "getOriginalName", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPortletItem.getPortletId(),
+				portletItem.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingPortletItem, "getOriginalPortletId",
-					new Class<?>[0])));
+					portletItem, "getOriginalPortletId", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingPortletItem.getClassNameId()),
+			Long.valueOf(portletItem.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPortletItem, "getOriginalClassNameId",
-				new Class<?>[0]));
+				portletItem, "getOriginalClassNameId", new Class<?>[0]));
 	}
 
 	protected PortletItem addPortletItem() throws Exception {

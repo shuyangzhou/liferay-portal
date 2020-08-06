@@ -412,13 +412,34 @@ public class DLSyncEventPersistenceTest {
 
 		_persistence.clearCache();
 
-		DLSyncEvent existingDLSyncEvent = _persistence.findByPrimaryKey(
-			newDLSyncEvent.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDLSyncEvent.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLSyncEvent newDLSyncEvent = addDLSyncEvent();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLSyncEvent.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"syncEventId", newDLSyncEvent.getSyncEventId()));
+
+		List<DLSyncEvent> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DLSyncEvent dlSyncEvent) {
 		Assert.assertEquals(
-			Long.valueOf(existingDLSyncEvent.getTypePK()),
+			Long.valueOf(dlSyncEvent.getTypePK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLSyncEvent, "getOriginalTypePK", new Class<?>[0]));
+				dlSyncEvent, "getOriginalTypePK", new Class<?>[0]));
 	}
 
 	protected DLSyncEvent addDLSyncEvent() throws Exception {

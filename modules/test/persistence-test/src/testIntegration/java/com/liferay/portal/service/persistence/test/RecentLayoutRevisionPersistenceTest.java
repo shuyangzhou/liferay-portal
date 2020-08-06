@@ -476,25 +476,48 @@ public class RecentLayoutRevisionPersistenceTest {
 
 		_persistence.clearCache();
 
-		RecentLayoutRevision existingRecentLayoutRevision =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newRecentLayoutRevision.getPrimaryKey());
+				newRecentLayoutRevision.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		RecentLayoutRevision newRecentLayoutRevision =
+			addRecentLayoutRevision();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			RecentLayoutRevision.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"recentLayoutRevisionId",
+				newRecentLayoutRevision.getRecentLayoutRevisionId()));
+
+		List<RecentLayoutRevision> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		RecentLayoutRevision recentLayoutRevision) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingRecentLayoutRevision.getUserId()),
+			Long.valueOf(recentLayoutRevision.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutRevision, "getOriginalUserId",
+				recentLayoutRevision, "getOriginalUserId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(recentLayoutRevision.getLayoutSetBranchId()),
+			ReflectionTestUtil.<Long>invoke(
+				recentLayoutRevision, "getOriginalLayoutSetBranchId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingRecentLayoutRevision.getLayoutSetBranchId()),
+			Long.valueOf(recentLayoutRevision.getPlid()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutRevision, "getOriginalLayoutSetBranchId",
-				new Class<?>[0]));
-		Assert.assertEquals(
-			Long.valueOf(existingRecentLayoutRevision.getPlid()),
-			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutRevision, "getOriginalPlid",
-				new Class<?>[0]));
+				recentLayoutRevision, "getOriginalPlid", new Class<?>[0]));
 	}
 
 	protected RecentLayoutRevision addRecentLayoutRevision() throws Exception {

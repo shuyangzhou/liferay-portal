@@ -449,21 +449,42 @@ public class DLFileRankPersistenceTest {
 
 		_persistence.clearCache();
 
-		DLFileRank existingDLFileRank = _persistence.findByPrimaryKey(
-			newDLFileRank.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDLFileRank.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DLFileRank newDLFileRank = addDLFileRank();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DLFileRank.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileRankId", newDLFileRank.getFileRankId()));
+
+		List<DLFileRank> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DLFileRank dlFileRank) {
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileRank.getCompanyId()),
+			Long.valueOf(dlFileRank.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileRank, "getOriginalCompanyId", new Class<?>[0]));
+				dlFileRank, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileRank.getUserId()),
+			Long.valueOf(dlFileRank.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileRank, "getOriginalUserId", new Class<?>[0]));
+				dlFileRank, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingDLFileRank.getFileEntryId()),
+			Long.valueOf(dlFileRank.getFileEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDLFileRank, "getOriginalFileEntryId", new Class<?>[0]));
+				dlFileRank, "getOriginalFileEntryId", new Class<?>[0]));
 	}
 
 	protected DLFileRank addDLFileRank() throws Exception {

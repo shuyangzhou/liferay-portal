@@ -418,23 +418,43 @@ public class ExpandoTablePersistenceTest {
 
 		_persistence.clearCache();
 
-		ExpandoTable existingExpandoTable = _persistence.findByPrimaryKey(
-			newExpandoTable.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newExpandoTable.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ExpandoTable newExpandoTable = addExpandoTable();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ExpandoTable.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"tableId", newExpandoTable.getTableId()));
+
+		List<ExpandoTable> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ExpandoTable expandoTable) {
 		Assert.assertEquals(
-			Long.valueOf(existingExpandoTable.getCompanyId()),
+			Long.valueOf(expandoTable.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingExpandoTable, "getOriginalCompanyId", new Class<?>[0]));
+				expandoTable, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingExpandoTable.getClassNameId()),
+			Long.valueOf(expandoTable.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingExpandoTable, "getOriginalClassNameId",
-				new Class<?>[0]));
+				expandoTable, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingExpandoTable.getName(),
+				expandoTable.getName(),
 				ReflectionTestUtil.invoke(
-					existingExpandoTable, "getOriginalName", new Class<?>[0])));
+					expandoTable, "getOriginalName", new Class<?>[0])));
 	}
 
 	protected ExpandoTable addExpandoTable() throws Exception {

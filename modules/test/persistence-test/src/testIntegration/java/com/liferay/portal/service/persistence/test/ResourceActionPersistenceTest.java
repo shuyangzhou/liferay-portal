@@ -418,21 +418,40 @@ public class ResourceActionPersistenceTest {
 
 		_persistence.clearCache();
 
-		ResourceAction existingResourceAction = _persistence.findByPrimaryKey(
-			newResourceAction.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newResourceAction.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ResourceAction newResourceAction = addResourceAction();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceAction.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"resourceActionId", newResourceAction.getResourceActionId()));
+
+		List<ResourceAction> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ResourceAction resourceAction) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingResourceAction.getName(),
+				resourceAction.getName(),
 				ReflectionTestUtil.invoke(
-					existingResourceAction, "getOriginalName",
-					new Class<?>[0])));
+					resourceAction, "getOriginalName", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingResourceAction.getActionId(),
+				resourceAction.getActionId(),
 				ReflectionTestUtil.invoke(
-					existingResourceAction, "getOriginalActionId",
-					new Class<?>[0])));
+					resourceAction, "getOriginalActionId", new Class<?>[0])));
 	}
 
 	protected ResourceAction addResourceAction() throws Exception {

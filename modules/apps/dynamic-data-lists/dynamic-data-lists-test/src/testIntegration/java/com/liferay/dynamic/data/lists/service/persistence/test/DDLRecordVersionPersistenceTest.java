@@ -512,20 +512,39 @@ public class DDLRecordVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		DDLRecordVersion existingDDLRecordVersion =
-			_persistence.findByPrimaryKey(newDDLRecordVersion.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newDDLRecordVersion.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		DDLRecordVersion newDDLRecordVersion = addDDLRecordVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			DDLRecordVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"recordVersionId", newDDLRecordVersion.getRecordVersionId()));
+
+		List<DDLRecordVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(DDLRecordVersion ddlRecordVersion) {
 		Assert.assertEquals(
-			Long.valueOf(existingDDLRecordVersion.getRecordId()),
+			Long.valueOf(ddlRecordVersion.getRecordId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingDDLRecordVersion, "getOriginalRecordId",
-				new Class<?>[0]));
+				ddlRecordVersion, "getOriginalRecordId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingDDLRecordVersion.getVersion(),
+				ddlRecordVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingDDLRecordVersion, "getOriginalVersion",
-					new Class<?>[0])));
+					ddlRecordVersion, "getOriginalVersion", new Class<?>[0])));
 	}
 
 	protected DDLRecordVersion addDDLRecordVersion() throws Exception {

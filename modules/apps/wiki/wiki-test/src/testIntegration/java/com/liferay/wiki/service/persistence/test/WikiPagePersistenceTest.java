@@ -809,46 +809,64 @@ public class WikiPagePersistenceTest {
 
 		_persistence.clearCache();
 
-		WikiPage existingWikiPage = _persistence.findByPrimaryKey(
-			newWikiPage.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newWikiPage.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		WikiPage newWikiPage = addWikiPage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			WikiPage.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("pageId", newWikiPage.getPageId()));
+
+		List<WikiPage> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(WikiPage wikiPage) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingWikiPage.getUuid(),
+				wikiPage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingWikiPage, "getOriginalUuid", new Class<?>[0])));
+					wikiPage, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingWikiPage.getGroupId()),
+			Long.valueOf(wikiPage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalGroupId", new Class<?>[0]));
+				wikiPage, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingWikiPage.getResourcePrimKey()),
+			Long.valueOf(wikiPage.getResourcePrimKey()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalResourcePrimKey",
-				new Class<?>[0]));
+				wikiPage, "getOriginalResourcePrimKey", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingWikiPage.getNodeId()),
+			Long.valueOf(wikiPage.getNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalNodeId", new Class<?>[0]));
+				wikiPage, "getOriginalNodeId", new Class<?>[0]));
 		AssertUtils.assertEquals(
-			existingWikiPage.getVersion(),
+			wikiPage.getVersion(),
 			ReflectionTestUtil.<Double>invoke(
-				existingWikiPage, "getOriginalVersion", new Class<?>[0]));
+				wikiPage, "getOriginalVersion", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingWikiPage.getNodeId()),
+			Long.valueOf(wikiPage.getNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingWikiPage, "getOriginalNodeId", new Class<?>[0]));
+				wikiPage, "getOriginalNodeId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingWikiPage.getTitle(),
+				wikiPage.getTitle(),
 				ReflectionTestUtil.invoke(
-					existingWikiPage, "getOriginalTitle", new Class<?>[0])));
+					wikiPage, "getOriginalTitle", new Class<?>[0])));
 		AssertUtils.assertEquals(
-			existingWikiPage.getVersion(),
+			wikiPage.getVersion(),
 			ReflectionTestUtil.<Double>invoke(
-				existingWikiPage, "getOriginalVersion", new Class<?>[0]));
+				wikiPage, "getOriginalVersion", new Class<?>[0]));
 	}
 
 	protected WikiPage addWikiPage() throws Exception {

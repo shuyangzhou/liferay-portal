@@ -480,18 +480,39 @@ public class MDRRuleGroupPersistenceTest {
 
 		_persistence.clearCache();
 
-		MDRRuleGroup existingMDRRuleGroup = _persistence.findByPrimaryKey(
-			newMDRRuleGroup.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newMDRRuleGroup.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		MDRRuleGroup newMDRRuleGroup = addMDRRuleGroup();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MDRRuleGroup.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"ruleGroupId", newMDRRuleGroup.getRuleGroupId()));
+
+		List<MDRRuleGroup> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(MDRRuleGroup mdrRuleGroup) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingMDRRuleGroup.getUuid(),
+				mdrRuleGroup.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingMDRRuleGroup, "getOriginalUuid", new Class<?>[0])));
+					mdrRuleGroup, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingMDRRuleGroup.getGroupId()),
+			Long.valueOf(mdrRuleGroup.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingMDRRuleGroup, "getOriginalGroupId", new Class<?>[0]));
+				mdrRuleGroup, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected MDRRuleGroup addMDRRuleGroup() throws Exception {

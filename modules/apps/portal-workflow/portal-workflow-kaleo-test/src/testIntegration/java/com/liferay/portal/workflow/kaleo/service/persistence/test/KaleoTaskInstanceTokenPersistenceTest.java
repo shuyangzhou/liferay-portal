@@ -570,19 +570,44 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoTaskInstanceToken existingKaleoTaskInstanceToken =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newKaleoTaskInstanceToken.getPrimaryKey());
+				newKaleoTaskInstanceToken.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoTaskInstanceToken newKaleoTaskInstanceToken =
+			addKaleoTaskInstanceToken();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoTaskInstanceToken.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoTaskInstanceTokenId",
+				newKaleoTaskInstanceToken.getKaleoTaskInstanceTokenId()));
+
+		List<KaleoTaskInstanceToken> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		KaleoTaskInstanceToken kaleoTaskInstanceToken) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTaskInstanceToken.getKaleoInstanceId()),
+			Long.valueOf(kaleoTaskInstanceToken.getKaleoInstanceId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskInstanceToken, "getOriginalKaleoInstanceId",
+				kaleoTaskInstanceToken, "getOriginalKaleoInstanceId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoTaskInstanceToken.getKaleoTaskId()),
+			Long.valueOf(kaleoTaskInstanceToken.getKaleoTaskId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoTaskInstanceToken, "getOriginalKaleoTaskId",
+				kaleoTaskInstanceToken, "getOriginalKaleoTaskId",
 				new Class<?>[0]));
 	}
 

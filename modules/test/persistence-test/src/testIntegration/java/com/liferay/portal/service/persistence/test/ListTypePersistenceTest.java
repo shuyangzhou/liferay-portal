@@ -401,19 +401,39 @@ public class ListTypePersistenceTest {
 
 		_persistence.clearCache();
 
-		ListType existingListType = _persistence.findByPrimaryKey(
-			newListType.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newListType.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ListType newListType = addListType();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ListType.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"listTypeId", newListType.getListTypeId()));
+
+		List<ListType> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ListType listType) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingListType.getName(),
+				listType.getName(),
 				ReflectionTestUtil.invoke(
-					existingListType, "getOriginalName", new Class<?>[0])));
+					listType, "getOriginalName", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingListType.getType(),
+				listType.getType(),
 				ReflectionTestUtil.invoke(
-					existingListType, "getOriginalType", new Class<?>[0])));
+					listType, "getOriginalType", new Class<?>[0])));
 	}
 
 	protected ListType addListType() throws Exception {

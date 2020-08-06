@@ -535,32 +535,55 @@ public class AppBuilderAppVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		AppBuilderAppVersion existingAppBuilderAppVersion =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAppBuilderAppVersion.getPrimaryKey());
+				newAppBuilderAppVersion.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AppBuilderAppVersion newAppBuilderAppVersion =
+			addAppBuilderAppVersion();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AppBuilderAppVersion.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"appBuilderAppVersionId",
+				newAppBuilderAppVersion.getAppBuilderAppVersionId()));
+
+		List<AppBuilderAppVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AppBuilderAppVersion appBuilderAppVersion) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingAppBuilderAppVersion.getUuid(),
+				appBuilderAppVersion.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderAppVersion, "getOriginalUuid",
-					new Class<?>[0])));
+					appBuilderAppVersion, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAppBuilderAppVersion.getGroupId()),
+			Long.valueOf(appBuilderAppVersion.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppVersion, "getOriginalGroupId",
-				new Class<?>[0]));
+				appBuilderAppVersion, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAppBuilderAppVersion.getAppBuilderAppId()),
+			Long.valueOf(appBuilderAppVersion.getAppBuilderAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderAppVersion, "getOriginalAppBuilderAppId",
+				appBuilderAppVersion, "getOriginalAppBuilderAppId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAppBuilderAppVersion.getVersion(),
+				appBuilderAppVersion.getVersion(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderAppVersion, "getOriginalVersion",
+					appBuilderAppVersion, "getOriginalVersion",
 					new Class<?>[0])));
 	}
 

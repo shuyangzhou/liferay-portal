@@ -526,20 +526,43 @@ public class SamlSpIdpConnectionPersistenceTest {
 
 		_persistence.clearCache();
 
-		SamlSpIdpConnection existingSamlSpIdpConnection =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSamlSpIdpConnection.getPrimaryKey());
+				newSamlSpIdpConnection.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SamlSpIdpConnection newSamlSpIdpConnection = addSamlSpIdpConnection();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlSpIdpConnection.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlSpIdpConnectionId",
+				newSamlSpIdpConnection.getSamlSpIdpConnectionId()));
+
+		List<SamlSpIdpConnection> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		SamlSpIdpConnection samlSpIdpConnection) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingSamlSpIdpConnection.getCompanyId()),
+			Long.valueOf(samlSpIdpConnection.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSamlSpIdpConnection, "getOriginalCompanyId",
-				new Class<?>[0]));
+				samlSpIdpConnection, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingSamlSpIdpConnection.getSamlIdpEntityId(),
+				samlSpIdpConnection.getSamlIdpEntityId(),
 				ReflectionTestUtil.invoke(
-					existingSamlSpIdpConnection, "getOriginalSamlIdpEntityId",
+					samlSpIdpConnection, "getOriginalSamlIdpEntityId",
 					new Class<?>[0])));
 	}
 

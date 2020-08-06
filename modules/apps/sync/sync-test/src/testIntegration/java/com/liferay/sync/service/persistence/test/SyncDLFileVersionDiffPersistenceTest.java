@@ -478,26 +478,49 @@ public class SyncDLFileVersionDiffPersistenceTest {
 
 		_persistence.clearCache();
 
-		SyncDLFileVersionDiff existingSyncDLFileVersionDiff =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newSyncDLFileVersionDiff.getPrimaryKey());
+				newSyncDLFileVersionDiff.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SyncDLFileVersionDiff newSyncDLFileVersionDiff =
+			addSyncDLFileVersionDiff();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SyncDLFileVersionDiff.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"syncDLFileVersionDiffId",
+				newSyncDLFileVersionDiff.getSyncDLFileVersionDiffId()));
+
+		List<SyncDLFileVersionDiff> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		SyncDLFileVersionDiff syncDLFileVersionDiff) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingSyncDLFileVersionDiff.getFileEntryId()),
+			Long.valueOf(syncDLFileVersionDiff.getFileEntryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSyncDLFileVersionDiff, "getOriginalFileEntryId",
+				syncDLFileVersionDiff, "getOriginalFileEntryId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingSyncDLFileVersionDiff.getSourceFileVersionId()),
+			Long.valueOf(syncDLFileVersionDiff.getSourceFileVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSyncDLFileVersionDiff, "getOriginalSourceFileVersionId",
+				syncDLFileVersionDiff, "getOriginalSourceFileVersionId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingSyncDLFileVersionDiff.getTargetFileVersionId()),
+			Long.valueOf(syncDLFileVersionDiff.getTargetFileVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSyncDLFileVersionDiff, "getOriginalTargetFileVersionId",
+				syncDLFileVersionDiff, "getOriginalTargetFileVersionId",
 				new Class<?>[0]));
 	}
 

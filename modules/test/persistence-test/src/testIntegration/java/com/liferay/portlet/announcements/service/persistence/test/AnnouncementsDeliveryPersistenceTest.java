@@ -467,20 +467,43 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 		_persistence.clearCache();
 
-		AnnouncementsDelivery existingAnnouncementsDelivery =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAnnouncementsDelivery.getPrimaryKey());
+				newAnnouncementsDelivery.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AnnouncementsDelivery newAnnouncementsDelivery =
+			addAnnouncementsDelivery();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AnnouncementsDelivery.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"deliveryId", newAnnouncementsDelivery.getDeliveryId()));
+
+		List<AnnouncementsDelivery> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AnnouncementsDelivery announcementsDelivery) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingAnnouncementsDelivery.getUserId()),
+			Long.valueOf(announcementsDelivery.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAnnouncementsDelivery, "getOriginalUserId",
-				new Class<?>[0]));
+				announcementsDelivery, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAnnouncementsDelivery.getType(),
+				announcementsDelivery.getType(),
 				ReflectionTestUtil.invoke(
-					existingAnnouncementsDelivery, "getOriginalType",
+					announcementsDelivery, "getOriginalType",
 					new Class<?>[0])));
 	}
 

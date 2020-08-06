@@ -395,13 +395,34 @@ public class CompanyInfoPersistenceTest {
 
 		_persistence.clearCache();
 
-		CompanyInfo existingCompanyInfo = _persistence.findByPrimaryKey(
-			newCompanyInfo.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCompanyInfo.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		CompanyInfo newCompanyInfo = addCompanyInfo();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			CompanyInfo.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"companyInfoId", newCompanyInfo.getCompanyInfoId()));
+
+		List<CompanyInfo> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(CompanyInfo companyInfo) {
 		Assert.assertEquals(
-			Long.valueOf(existingCompanyInfo.getCompanyId()),
+			Long.valueOf(companyInfo.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCompanyInfo, "getOriginalCompanyId", new Class<?>[0]));
+				companyInfo, "getOriginalCompanyId", new Class<?>[0]));
 	}
 
 	protected CompanyInfo addCompanyInfo() throws Exception {

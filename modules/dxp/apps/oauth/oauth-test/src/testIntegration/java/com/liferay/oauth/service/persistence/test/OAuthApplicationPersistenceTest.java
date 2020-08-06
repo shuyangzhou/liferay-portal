@@ -501,14 +501,36 @@ public class OAuthApplicationPersistenceTest {
 
 		_persistence.clearCache();
 
-		OAuthApplication existingOAuthApplication =
-			_persistence.findByPrimaryKey(newOAuthApplication.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newOAuthApplication.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		OAuthApplication newOAuthApplication = addOAuthApplication();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			OAuthApplication.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"oAuthApplicationId",
+				newOAuthApplication.getOAuthApplicationId()));
+
+		List<OAuthApplication> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(OAuthApplication oAuthApplication) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingOAuthApplication.getConsumerKey(),
+				oAuthApplication.getConsumerKey(),
 				ReflectionTestUtil.invoke(
-					existingOAuthApplication, "getOriginalConsumerKey",
+					oAuthApplication, "getOriginalConsumerKey",
 					new Class<?>[0])));
 	}
 

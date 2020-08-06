@@ -479,22 +479,42 @@ public class RatingsEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		RatingsEntry existingRatingsEntry = _persistence.findByPrimaryKey(
-			newRatingsEntry.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newRatingsEntry.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		RatingsEntry newRatingsEntry = addRatingsEntry();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			RatingsEntry.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"entryId", newRatingsEntry.getEntryId()));
+
+		List<RatingsEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(RatingsEntry ratingsEntry) {
 		Assert.assertEquals(
-			Long.valueOf(existingRatingsEntry.getUserId()),
+			Long.valueOf(ratingsEntry.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRatingsEntry, "getOriginalUserId", new Class<?>[0]));
+				ratingsEntry, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingRatingsEntry.getClassNameId()),
+			Long.valueOf(ratingsEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRatingsEntry, "getOriginalClassNameId",
-				new Class<?>[0]));
+				ratingsEntry, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingRatingsEntry.getClassPK()),
+			Long.valueOf(ratingsEntry.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRatingsEntry, "getOriginalClassPK", new Class<?>[0]));
+				ratingsEntry, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected RatingsEntry addRatingsEntry() throws Exception {

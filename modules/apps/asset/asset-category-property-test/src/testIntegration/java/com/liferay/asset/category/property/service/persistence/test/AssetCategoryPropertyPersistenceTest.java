@@ -500,21 +500,45 @@ public class AssetCategoryPropertyPersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetCategoryProperty existingAssetCategoryProperty =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAssetCategoryProperty.getPrimaryKey());
+				newAssetCategoryProperty.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetCategoryProperty newAssetCategoryProperty =
+			addAssetCategoryProperty();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetCategoryProperty.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"categoryPropertyId",
+				newAssetCategoryProperty.getCategoryPropertyId()));
+
+		List<AssetCategoryProperty> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AssetCategoryProperty assetCategoryProperty) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetCategoryProperty.getCategoryId()),
+			Long.valueOf(assetCategoryProperty.getCategoryId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetCategoryProperty, "getOriginalCategoryId",
+				assetCategoryProperty, "getOriginalCategoryId",
 				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetCategoryProperty.getKey(),
+				assetCategoryProperty.getKey(),
 				ReflectionTestUtil.invoke(
-					existingAssetCategoryProperty, "getOriginalKey",
-					new Class<?>[0])));
+					assetCategoryProperty, "getOriginalKey", new Class<?>[0])));
 	}
 
 	protected AssetCategoryProperty addAssetCategoryProperty()

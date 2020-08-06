@@ -496,18 +496,38 @@ public class CalendarPersistenceTest {
 
 		_persistence.clearCache();
 
-		Calendar existingCalendar = _persistence.findByPrimaryKey(
-			newCalendar.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCalendar.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Calendar newCalendar = addCalendar();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Calendar.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"calendarId", newCalendar.getCalendarId()));
+
+		List<Calendar> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Calendar calendar) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingCalendar.getUuid(),
+				calendar.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingCalendar, "getOriginalUuid", new Class<?>[0])));
+					calendar, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingCalendar.getGroupId()),
+			Long.valueOf(calendar.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCalendar, "getOriginalGroupId", new Class<?>[0]));
+				calendar, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected Calendar addCalendar() throws Exception {

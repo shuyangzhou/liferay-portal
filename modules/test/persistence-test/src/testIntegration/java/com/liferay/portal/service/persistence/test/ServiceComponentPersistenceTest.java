@@ -426,20 +426,41 @@ public class ServiceComponentPersistenceTest {
 
 		_persistence.clearCache();
 
-		ServiceComponent existingServiceComponent =
-			_persistence.findByPrimaryKey(newServiceComponent.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newServiceComponent.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		ServiceComponent newServiceComponent = addServiceComponent();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ServiceComponent.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"serviceComponentId",
+				newServiceComponent.getServiceComponentId()));
+
+		List<ServiceComponent> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(ServiceComponent serviceComponent) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingServiceComponent.getBuildNamespace(),
+				serviceComponent.getBuildNamespace(),
 				ReflectionTestUtil.invoke(
-					existingServiceComponent, "getOriginalBuildNamespace",
+					serviceComponent, "getOriginalBuildNamespace",
 					new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingServiceComponent.getBuildNumber()),
+			Long.valueOf(serviceComponent.getBuildNumber()),
 			ReflectionTestUtil.<Long>invoke(
-				existingServiceComponent, "getOriginalBuildNumber",
-				new Class<?>[0]));
+				serviceComponent, "getOriginalBuildNumber", new Class<?>[0]));
 	}
 
 	protected ServiceComponent addServiceComponent() throws Exception {

@@ -442,18 +442,39 @@ public class AccountGroupPersistenceTest {
 
 		_persistence.clearCache();
 
-		AccountGroup existingAccountGroup = _persistence.findByPrimaryKey(
-			newAccountGroup.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAccountGroup.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AccountGroup newAccountGroup = addAccountGroup();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AccountGroup.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"accountGroupId", newAccountGroup.getAccountGroupId()));
+
+		List<AccountGroup> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(AccountGroup accountGroup) {
 		Assert.assertEquals(
-			Long.valueOf(existingAccountGroup.getCompanyId()),
+			Long.valueOf(accountGroup.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccountGroup, "getOriginalCompanyId", new Class<?>[0]));
+				accountGroup, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAccountGroup.getExternalReferenceCode(),
+				accountGroup.getExternalReferenceCode(),
 				ReflectionTestUtil.invoke(
-					existingAccountGroup, "getOriginalExternalReferenceCode",
+					accountGroup, "getOriginalExternalReferenceCode",
 					new Class<?>[0])));
 	}
 

@@ -638,20 +638,41 @@ public class FragmentEntryLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		FragmentEntryLink existingFragmentEntryLink =
-			_persistence.findByPrimaryKey(newFragmentEntryLink.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(
+				newFragmentEntryLink.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		FragmentEntryLink newFragmentEntryLink = addFragmentEntryLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FragmentEntryLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fragmentEntryLinkId",
+				newFragmentEntryLink.getFragmentEntryLinkId()));
+
+		List<FragmentEntryLink> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(FragmentEntryLink fragmentEntryLink) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingFragmentEntryLink.getUuid(),
+				fragmentEntryLink.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingFragmentEntryLink, "getOriginalUuid",
-					new Class<?>[0])));
+					fragmentEntryLink, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingFragmentEntryLink.getGroupId()),
+			Long.valueOf(fragmentEntryLink.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFragmentEntryLink, "getOriginalGroupId",
-				new Class<?>[0]));
+				fragmentEntryLink, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected FragmentEntryLink addFragmentEntryLink() throws Exception {

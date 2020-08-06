@@ -497,18 +497,37 @@ public class AccountPersistenceTest {
 
 		_persistence.clearCache();
 
-		Account existingAccount = _persistence.findByPrimaryKey(
-			newAccount.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newAccount.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		Account newAccount = addAccount();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Account.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("accountId", newAccount.getAccountId()));
+
+		List<Account> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Account account) {
 		Assert.assertEquals(
-			Long.valueOf(existingAccount.getUserId()),
+			Long.valueOf(account.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAccount, "getOriginalUserId", new Class<?>[0]));
+				account, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAccount.getAddress(),
+				account.getAddress(),
 				ReflectionTestUtil.invoke(
-					existingAccount, "getOriginalAddress", new Class<?>[0])));
+					account, "getOriginalAddress", new Class<?>[0])));
 	}
 
 	protected Account addAccount() throws Exception {

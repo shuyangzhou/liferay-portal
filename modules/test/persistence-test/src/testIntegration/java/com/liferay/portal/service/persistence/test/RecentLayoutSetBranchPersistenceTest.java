@@ -473,19 +473,43 @@ public class RecentLayoutSetBranchPersistenceTest {
 
 		_persistence.clearCache();
 
-		RecentLayoutSetBranch existingRecentLayoutSetBranch =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newRecentLayoutSetBranch.getPrimaryKey());
+				newRecentLayoutSetBranch.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		RecentLayoutSetBranch newRecentLayoutSetBranch =
+			addRecentLayoutSetBranch();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			RecentLayoutSetBranch.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"recentLayoutSetBranchId",
+				newRecentLayoutSetBranch.getRecentLayoutSetBranchId()));
+
+		List<RecentLayoutSetBranch> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		RecentLayoutSetBranch recentLayoutSetBranch) {
 
 		Assert.assertEquals(
-			Long.valueOf(existingRecentLayoutSetBranch.getUserId()),
+			Long.valueOf(recentLayoutSetBranch.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutSetBranch, "getOriginalUserId",
-				new Class<?>[0]));
+				recentLayoutSetBranch, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingRecentLayoutSetBranch.getLayoutSetId()),
+			Long.valueOf(recentLayoutSetBranch.getLayoutSetId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingRecentLayoutSetBranch, "getOriginalLayoutSetId",
+				recentLayoutSetBranch, "getOriginalLayoutSetId",
 				new Class<?>[0]));
 	}
 

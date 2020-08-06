@@ -425,26 +425,44 @@ public class PluginSettingPersistenceTest {
 
 		_persistence.clearCache();
 
-		PluginSetting existingPluginSetting = _persistence.findByPrimaryKey(
-			newPluginSetting.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newPluginSetting.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		PluginSetting newPluginSetting = addPluginSetting();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			PluginSetting.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"pluginSettingId", newPluginSetting.getPluginSettingId()));
+
+		List<PluginSetting> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(PluginSetting pluginSetting) {
 		Assert.assertEquals(
-			Long.valueOf(existingPluginSetting.getCompanyId()),
+			Long.valueOf(pluginSetting.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingPluginSetting, "getOriginalCompanyId",
-				new Class<?>[0]));
+				pluginSetting, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPluginSetting.getPluginId(),
+				pluginSetting.getPluginId(),
 				ReflectionTestUtil.invoke(
-					existingPluginSetting, "getOriginalPluginId",
-					new Class<?>[0])));
+					pluginSetting, "getOriginalPluginId", new Class<?>[0])));
 		Assert.assertTrue(
 			Objects.equals(
-				existingPluginSetting.getPluginType(),
+				pluginSetting.getPluginType(),
 				ReflectionTestUtil.invoke(
-					existingPluginSetting, "getOriginalPluginType",
-					new Class<?>[0])));
+					pluginSetting, "getOriginalPluginType", new Class<?>[0])));
 	}
 
 	protected PluginSetting addPluginSetting() throws Exception {

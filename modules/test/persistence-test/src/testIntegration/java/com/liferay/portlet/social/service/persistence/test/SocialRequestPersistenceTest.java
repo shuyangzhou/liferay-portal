@@ -546,42 +546,60 @@ public class SocialRequestPersistenceTest {
 
 		_persistence.clearCache();
 
-		SocialRequest existingSocialRequest = _persistence.findByPrimaryKey(
-			newSocialRequest.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newSocialRequest.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		SocialRequest newSocialRequest = addSocialRequest();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SocialRequest.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"requestId", newSocialRequest.getRequestId()));
+
+		List<SocialRequest> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(SocialRequest socialRequest) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingSocialRequest.getUuid(),
+				socialRequest.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingSocialRequest, "getOriginalUuid",
-					new Class<?>[0])));
+					socialRequest, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingSocialRequest.getGroupId()),
+			Long.valueOf(socialRequest.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalGroupId", new Class<?>[0]));
+				socialRequest, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingSocialRequest.getUserId()),
+			Long.valueOf(socialRequest.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalUserId", new Class<?>[0]));
+				socialRequest, "getOriginalUserId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingSocialRequest.getClassNameId()),
+			Long.valueOf(socialRequest.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalClassNameId",
-				new Class<?>[0]));
+				socialRequest, "getOriginalClassNameId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingSocialRequest.getClassPK()),
+			Long.valueOf(socialRequest.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalClassPK", new Class<?>[0]));
+				socialRequest, "getOriginalClassPK", new Class<?>[0]));
 		Assert.assertEquals(
-			Integer.valueOf(existingSocialRequest.getType()),
+			Integer.valueOf(socialRequest.getType()),
 			ReflectionTestUtil.<Integer>invoke(
-				existingSocialRequest, "getOriginalType", new Class<?>[0]));
+				socialRequest, "getOriginalType", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingSocialRequest.getReceiverUserId()),
+			Long.valueOf(socialRequest.getReceiverUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingSocialRequest, "getOriginalReceiverUserId",
-				new Class<?>[0]));
+				socialRequest, "getOriginalReceiverUserId", new Class<?>[0]));
 	}
 
 	protected SocialRequest addSocialRequest() throws Exception {

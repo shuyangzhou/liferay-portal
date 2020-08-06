@@ -527,37 +527,58 @@ public class AssetListEntryUsagePersistenceTest {
 
 		_persistence.clearCache();
 
-		AssetListEntryUsage existingAssetListEntryUsage =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAssetListEntryUsage.getPrimaryKey());
+				newAssetListEntryUsage.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AssetListEntryUsage newAssetListEntryUsage = addAssetListEntryUsage();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AssetListEntryUsage.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"assetListEntryUsageId",
+				newAssetListEntryUsage.getAssetListEntryUsageId()));
+
+		List<AssetListEntryUsage> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AssetListEntryUsage assetListEntryUsage) {
 
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetListEntryUsage.getUuid(),
+				assetListEntryUsage.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingAssetListEntryUsage, "getOriginalUuid",
-					new Class<?>[0])));
+					assetListEntryUsage, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetListEntryUsage.getGroupId()),
+			Long.valueOf(assetListEntryUsage.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetListEntryUsage, "getOriginalGroupId",
-				new Class<?>[0]));
+				assetListEntryUsage, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingAssetListEntryUsage.getClassNameId()),
+			Long.valueOf(assetListEntryUsage.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetListEntryUsage, "getOriginalClassNameId",
+				assetListEntryUsage, "getOriginalClassNameId",
 				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingAssetListEntryUsage.getClassPK()),
+			Long.valueOf(assetListEntryUsage.getClassPK()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAssetListEntryUsage, "getOriginalClassPK",
-				new Class<?>[0]));
+				assetListEntryUsage, "getOriginalClassPK", new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAssetListEntryUsage.getPortletId(),
+				assetListEntryUsage.getPortletId(),
 				ReflectionTestUtil.invoke(
-					existingAssetListEntryUsage, "getOriginalPortletId",
+					assetListEntryUsage, "getOriginalPortletId",
 					new Class<?>[0])));
 	}
 

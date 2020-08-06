@@ -522,18 +522,39 @@ public class KBCommentPersistenceTest {
 
 		_persistence.clearCache();
 
-		KBComment existingKBComment = _persistence.findByPrimaryKey(
-			newKBComment.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newKBComment.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KBComment newKBComment = addKBComment();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KBComment.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kbCommentId", newKBComment.getKbCommentId()));
+
+		List<KBComment> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(KBComment kbComment) {
 		Assert.assertTrue(
 			Objects.equals(
-				existingKBComment.getUuid(),
+				kbComment.getUuid(),
 				ReflectionTestUtil.invoke(
-					existingKBComment, "getOriginalUuid", new Class<?>[0])));
+					kbComment, "getOriginalUuid", new Class<?>[0])));
 		Assert.assertEquals(
-			Long.valueOf(existingKBComment.getGroupId()),
+			Long.valueOf(kbComment.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKBComment, "getOriginalGroupId", new Class<?>[0]));
+				kbComment, "getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected KBComment addKBComment() throws Exception {

@@ -472,14 +472,34 @@ public class KaleoConditionPersistenceTest {
 
 		_persistence.clearCache();
 
-		KaleoCondition existingKaleoCondition = _persistence.findByPrimaryKey(
-			newKaleoCondition.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newKaleoCondition.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		KaleoCondition newKaleoCondition = addKaleoCondition();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			KaleoCondition.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"kaleoConditionId", newKaleoCondition.getKaleoConditionId()));
+
+		List<KaleoCondition> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(KaleoCondition kaleoCondition) {
 		Assert.assertEquals(
-			Long.valueOf(existingKaleoCondition.getKaleoNodeId()),
+			Long.valueOf(kaleoCondition.getKaleoNodeId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingKaleoCondition, "getOriginalKaleoNodeId",
-				new Class<?>[0]));
+				kaleoCondition, "getOriginalKaleoNodeId", new Class<?>[0]));
 	}
 
 	protected KaleoCondition addKaleoCondition() throws Exception {

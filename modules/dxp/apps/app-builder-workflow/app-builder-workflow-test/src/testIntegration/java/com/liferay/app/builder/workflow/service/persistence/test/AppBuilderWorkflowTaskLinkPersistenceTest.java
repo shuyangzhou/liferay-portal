@@ -507,34 +507,58 @@ public class AppBuilderWorkflowTaskLinkPersistenceTest {
 
 		_persistence.clearCache();
 
-		AppBuilderWorkflowTaskLink existingAppBuilderWorkflowTaskLink =
+		_assertOriginalValues(
 			_persistence.findByPrimaryKey(
-				newAppBuilderWorkflowTaskLink.getPrimaryKey());
+				newAppBuilderWorkflowTaskLink.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		AppBuilderWorkflowTaskLink newAppBuilderWorkflowTaskLink =
+			addAppBuilderWorkflowTaskLink();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			AppBuilderWorkflowTaskLink.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"appBuilderWorkflowTaskLinkId",
+				newAppBuilderWorkflowTaskLink.
+					getAppBuilderWorkflowTaskLinkId()));
+
+		List<AppBuilderWorkflowTaskLink> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(
+		AppBuilderWorkflowTaskLink appBuilderWorkflowTaskLink) {
 
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAppBuilderWorkflowTaskLink.getAppBuilderAppId()),
+			Long.valueOf(appBuilderWorkflowTaskLink.getAppBuilderAppId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderWorkflowTaskLink,
-				"getOriginalAppBuilderAppId", new Class<?>[0]));
+				appBuilderWorkflowTaskLink, "getOriginalAppBuilderAppId",
+				new Class<?>[0]));
 		Assert.assertEquals(
 			Long.valueOf(
-				existingAppBuilderWorkflowTaskLink.getAppBuilderAppVersionId()),
+				appBuilderWorkflowTaskLink.getAppBuilderAppVersionId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderWorkflowTaskLink,
-				"getOriginalAppBuilderAppVersionId", new Class<?>[0]));
+				appBuilderWorkflowTaskLink, "getOriginalAppBuilderAppVersionId",
+				new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(
-				existingAppBuilderWorkflowTaskLink.getDdmStructureLayoutId()),
+			Long.valueOf(appBuilderWorkflowTaskLink.getDdmStructureLayoutId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingAppBuilderWorkflowTaskLink,
-				"getOriginalDdmStructureLayoutId", new Class<?>[0]));
+				appBuilderWorkflowTaskLink, "getOriginalDdmStructureLayoutId",
+				new Class<?>[0]));
 		Assert.assertTrue(
 			Objects.equals(
-				existingAppBuilderWorkflowTaskLink.getWorkflowTaskName(),
+				appBuilderWorkflowTaskLink.getWorkflowTaskName(),
 				ReflectionTestUtil.invoke(
-					existingAppBuilderWorkflowTaskLink,
-					"getOriginalWorkflowTaskName", new Class<?>[0])));
+					appBuilderWorkflowTaskLink, "getOriginalWorkflowTaskName",
+					new Class<?>[0])));
 	}
 
 	protected AppBuilderWorkflowTaskLink addAppBuilderWorkflowTaskLink()

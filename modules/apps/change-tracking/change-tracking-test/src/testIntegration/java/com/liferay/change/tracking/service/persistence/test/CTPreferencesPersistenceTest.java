@@ -432,18 +432,38 @@ public class CTPreferencesPersistenceTest {
 
 		_persistence.clearCache();
 
-		CTPreferences existingCTPreferences = _persistence.findByPrimaryKey(
-			newCTPreferences.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newCTPreferences.getPrimaryKey()));
+	}
 
+	@Test
+	public void testResetOriginalValuesWithDynamicQuery() throws Exception {
+		CTPreferences newCTPreferences = addCTPreferences();
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			CTPreferences.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"ctPreferencesId", newCTPreferences.getCtPreferencesId()));
+
+		List<CTPreferences> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(1, result.size());
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(CTPreferences ctPreferences) {
 		Assert.assertEquals(
-			Long.valueOf(existingCTPreferences.getCompanyId()),
+			Long.valueOf(ctPreferences.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTPreferences, "getOriginalCompanyId",
-				new Class<?>[0]));
+				ctPreferences, "getOriginalCompanyId", new Class<?>[0]));
 		Assert.assertEquals(
-			Long.valueOf(existingCTPreferences.getUserId()),
+			Long.valueOf(ctPreferences.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingCTPreferences, "getOriginalUserId", new Class<?>[0]));
+				ctPreferences, "getOriginalUserId", new Class<?>[0]));
 	}
 
 	protected CTPreferences addCTPreferences() throws Exception {
