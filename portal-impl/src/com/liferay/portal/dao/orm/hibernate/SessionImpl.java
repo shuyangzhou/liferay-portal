@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.model.BaseModel;
 
 import java.io.Serializable;
 
@@ -34,6 +35,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.LockOptions;
+import org.hibernate.engine.EntityKey;
+import org.hibernate.engine.PersistenceContext;
+import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.event.EventSource;
 
 /**
  * @author Brian Wing Shun Chan
@@ -220,6 +225,31 @@ public class SessionImpl implements Session {
 	@Override
 	public void evict(Object object) throws ORMException {
 		try {
+			if (object instanceof BaseModel) {
+				BaseModel<?> baseModel = (BaseModel<?>)object;
+
+				Class<?> clazz = baseModel.getClass();
+
+				EventSource eventSource = (EventSource)_session;
+
+				PersistenceContext persistenceContext =
+					eventSource.getPersistenceContext();
+
+				SessionFactoryImplementor sessionFactoryImplementor =
+					eventSource.getFactory();
+
+				object = persistenceContext.getEntity(
+					new EntityKey(
+						baseModel.getPrimaryKeyObj(),
+						sessionFactoryImplementor.getEntityPersister(
+							clazz.getName()),
+						eventSource.getEntityMode()));
+
+				if (object == null) {
+					return;
+				}
+			}
+
 			_session.evict(object);
 		}
 		catch (Exception exception) {
