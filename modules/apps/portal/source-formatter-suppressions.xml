@@ -2,6 +2,7 @@
 
 <suppressions>
 	<checkstyle>
+		<suppress checks="PersistenceCallCheck" files="portal-dao-test/src/testIntegration/java/com/liferay/portal/dao/orm/hibernate/test/SessionImplTest\.java" />
 		<suppress checks="PersistenceCallCheck" files="portal-dao-test/src/testIntegration/java/com/liferay/portal/dao/orm/hibernate/test/SuspendedSessionConnectionTest\.java" />
 		<suppress checks="PersistenceCallCheck" files="portal-upgrade-test/src/testIntegration/java/com/liferay/portal/upgrade/test/BaseBuildAutoUpgradeTestCase\.java" />
 	</checkstyle>
