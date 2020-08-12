@@ -7876,13 +7876,7 @@ public class JournalFolderPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(journalFolder)) {
 				if (!isNew) {
-					JournalFolder oldJournalFolder = (JournalFolder)session.get(
-						JournalFolderImpl.class,
-						journalFolder.getPrimaryKeyObj());
-
-					if (oldJournalFolder != null) {
-						session.evict(oldJournalFolder);
-					}
+					session.evict(journalFolder);
 				}
 
 				session.save(journalFolder);

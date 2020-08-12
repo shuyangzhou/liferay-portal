@@ -6069,14 +6069,7 @@ public class SocialRelationPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(socialRelation)) {
 				if (!isNew) {
-					SocialRelation oldSocialRelation =
-						(SocialRelation)session.get(
-							SocialRelationImpl.class,
-							socialRelation.getPrimaryKeyObj());
-
-					if (oldSocialRelation != null) {
-						session.evict(oldSocialRelation);
-					}
+					session.evict(socialRelation);
 				}
 
 				session.save(socialRelation);

@@ -12897,12 +12897,7 @@ public class DLFolderPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(dlFolder)) {
 				if (!isNew) {
-					DLFolder oldDLFolder = (DLFolder)session.get(
-						DLFolderImpl.class, dlFolder.getPrimaryKeyObj());
-
-					if (oldDLFolder != null) {
-						session.evict(oldDLFolder);
-					}
+					session.evict(dlFolder);
 				}
 
 				session.save(dlFolder);

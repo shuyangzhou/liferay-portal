@@ -12444,13 +12444,7 @@ public class AssetCategoryPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(assetCategory)) {
 				if (!isNew) {
-					AssetCategory oldAssetCategory = (AssetCategory)session.get(
-						AssetCategoryImpl.class,
-						assetCategory.getPrimaryKeyObj());
-
-					if (oldAssetCategory != null) {
-						session.evict(oldAssetCategory);
-					}
+					session.evict(assetCategory);
 				}
 
 				session.save(assetCategory);

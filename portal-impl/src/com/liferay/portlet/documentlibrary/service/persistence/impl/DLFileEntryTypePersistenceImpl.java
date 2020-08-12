@@ -3521,14 +3521,7 @@ public class DLFileEntryTypePersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(dlFileEntryType)) {
 				if (!isNew) {
-					DLFileEntryType oldDLFileEntryType =
-						(DLFileEntryType)session.get(
-							DLFileEntryTypeImpl.class,
-							dlFileEntryType.getPrimaryKeyObj());
-
-					if (oldDLFileEntryType != null) {
-						session.evict(oldDLFileEntryType);
-					}
+					session.evict(dlFileEntryType);
 				}
 
 				session.save(dlFileEntryType);

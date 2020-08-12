@@ -10679,13 +10679,7 @@ public class DDMStructurePersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(ddmStructure)) {
 				if (!isNew) {
-					DDMStructure oldDDMStructure = (DDMStructure)session.get(
-						DDMStructureImpl.class,
-						ddmStructure.getPrimaryKeyObj());
-
-					if (oldDDMStructure != null) {
-						session.evict(oldDDMStructure);
-					}
+					session.evict(ddmStructure);
 				}
 
 				session.save(ddmStructure);

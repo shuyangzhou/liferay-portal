@@ -3078,14 +3078,7 @@ public class DDMStorageLinkPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(ddmStorageLink)) {
 				if (!isNew) {
-					DDMStorageLink oldDDMStorageLink =
-						(DDMStorageLink)session.get(
-							DDMStorageLinkImpl.class,
-							ddmStorageLink.getPrimaryKeyObj());
-
-					if (oldDDMStorageLink != null) {
-						session.evict(oldDDMStorageLink);
-					}
+					session.evict(ddmStorageLink);
 				}
 
 				session.save(ddmStorageLink);

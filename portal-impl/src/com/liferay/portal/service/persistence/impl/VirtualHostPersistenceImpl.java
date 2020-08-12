@@ -1496,12 +1496,7 @@ public class VirtualHostPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(virtualHost)) {
 				if (!isNew) {
-					VirtualHost oldVirtualHost = (VirtualHost)session.get(
-						VirtualHostImpl.class, virtualHost.getPrimaryKeyObj());
-
-					if (oldVirtualHost != null) {
-						session.evict(oldVirtualHost);
-					}
+					session.evict(virtualHost);
 				}
 
 				session.save(virtualHost);

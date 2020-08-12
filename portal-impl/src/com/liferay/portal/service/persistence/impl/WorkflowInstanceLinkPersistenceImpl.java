@@ -1612,14 +1612,7 @@ public class WorkflowInstanceLinkPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(workflowInstanceLink)) {
 				if (!isNew) {
-					WorkflowInstanceLink oldWorkflowInstanceLink =
-						(WorkflowInstanceLink)session.get(
-							WorkflowInstanceLinkImpl.class,
-							workflowInstanceLink.getPrimaryKeyObj());
-
-					if (oldWorkflowInstanceLink != null) {
-						session.evict(oldWorkflowInstanceLink);
-					}
+					session.evict(workflowInstanceLink);
 				}
 
 				session.save(workflowInstanceLink);

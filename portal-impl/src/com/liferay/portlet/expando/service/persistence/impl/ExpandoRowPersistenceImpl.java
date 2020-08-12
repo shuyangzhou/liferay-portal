@@ -1626,12 +1626,7 @@ public class ExpandoRowPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(expandoRow)) {
 				if (!isNew) {
-					ExpandoRow oldExpandoRow = (ExpandoRow)session.get(
-						ExpandoRowImpl.class, expandoRow.getPrimaryKeyObj());
-
-					if (oldExpandoRow != null) {
-						session.evict(oldExpandoRow);
-					}
+					session.evict(expandoRow);
 				}
 
 				session.save(expandoRow);

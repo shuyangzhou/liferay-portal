@@ -1683,13 +1683,7 @@ public class TrashVersionPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(trashVersion)) {
 				if (!isNew) {
-					TrashVersion oldTrashVersion = (TrashVersion)session.get(
-						TrashVersionImpl.class,
-						trashVersion.getPrimaryKeyObj());
-
-					if (oldTrashVersion != null) {
-						session.evict(oldTrashVersion);
-					}
+					session.evict(trashVersion);
 				}
 
 				session.save(trashVersion);

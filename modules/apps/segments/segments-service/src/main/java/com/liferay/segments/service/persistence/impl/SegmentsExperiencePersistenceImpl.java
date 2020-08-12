@@ -10004,14 +10004,7 @@ public class SegmentsExperiencePersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(segmentsExperience)) {
 				if (!isNew) {
-					SegmentsExperience oldSegmentsExperience =
-						(SegmentsExperience)session.get(
-							SegmentsExperienceImpl.class,
-							segmentsExperience.getPrimaryKeyObj());
-
-					if (oldSegmentsExperience != null) {
-						session.evict(oldSegmentsExperience);
-					}
+					session.evict(segmentsExperience);
 				}
 
 				session.save(segmentsExperience);

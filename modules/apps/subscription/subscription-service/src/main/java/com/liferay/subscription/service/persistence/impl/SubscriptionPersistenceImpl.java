@@ -3757,13 +3757,7 @@ public class SubscriptionPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(subscription)) {
 				if (!isNew) {
-					Subscription oldSubscription = (Subscription)session.get(
-						SubscriptionImpl.class,
-						subscription.getPrimaryKeyObj());
-
-					if (oldSubscription != null) {
-						session.evict(oldSubscription);
-					}
+					session.evict(subscription);
 				}
 
 				session.save(subscription);

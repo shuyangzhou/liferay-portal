@@ -2359,14 +2359,7 @@ public class AssetCategoryPropertyPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(assetCategoryProperty)) {
 				if (!isNew) {
-					AssetCategoryProperty oldAssetCategoryProperty =
-						(AssetCategoryProperty)session.get(
-							AssetCategoryPropertyImpl.class,
-							assetCategoryProperty.getPrimaryKeyObj());
-
-					if (oldAssetCategoryProperty != null) {
-						session.evict(oldAssetCategoryProperty);
-					}
+					session.evict(assetCategoryProperty);
 				}
 
 				session.save(assetCategoryProperty);

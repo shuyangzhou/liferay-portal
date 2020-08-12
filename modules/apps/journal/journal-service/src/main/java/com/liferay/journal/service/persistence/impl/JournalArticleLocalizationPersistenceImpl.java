@@ -1955,14 +1955,7 @@ public class JournalArticleLocalizationPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(journalArticleLocalization)) {
 				if (!isNew) {
-					JournalArticleLocalization oldJournalArticleLocalization =
-						(JournalArticleLocalization)session.get(
-							JournalArticleLocalizationImpl.class,
-							journalArticleLocalization.getPrimaryKeyObj());
-
-					if (oldJournalArticleLocalization != null) {
-						session.evict(oldJournalArticleLocalization);
-					}
+					session.evict(journalArticleLocalization);
 				}
 
 				session.save(journalArticleLocalization);

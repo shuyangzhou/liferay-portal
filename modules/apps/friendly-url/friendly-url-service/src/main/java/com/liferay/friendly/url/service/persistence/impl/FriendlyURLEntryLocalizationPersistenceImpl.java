@@ -2305,16 +2305,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(friendlyURLEntryLocalization)) {
 				if (!isNew) {
-					FriendlyURLEntryLocalization
-						oldFriendlyURLEntryLocalization =
-							(FriendlyURLEntryLocalization)session.get(
-								FriendlyURLEntryLocalizationImpl.class,
-								friendlyURLEntryLocalization.
-									getPrimaryKeyObj());
-
-					if (oldFriendlyURLEntryLocalization != null) {
-						session.evict(oldFriendlyURLEntryLocalization);
-					}
+					session.evict(friendlyURLEntryLocalization);
 				}
 
 				session.save(friendlyURLEntryLocalization);

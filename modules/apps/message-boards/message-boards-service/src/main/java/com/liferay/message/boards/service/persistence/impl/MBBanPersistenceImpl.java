@@ -3588,12 +3588,7 @@ public class MBBanPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(mbBan)) {
 				if (!isNew) {
-					MBBan oldMBBan = (MBBan)session.get(
-						MBBanImpl.class, mbBan.getPrimaryKeyObj());
-
-					if (oldMBBan != null) {
-						session.evict(oldMBBan);
-					}
+					session.evict(mbBan);
 				}
 
 				session.save(mbBan);

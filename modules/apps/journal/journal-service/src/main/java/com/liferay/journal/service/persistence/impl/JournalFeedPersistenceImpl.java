@@ -3015,12 +3015,7 @@ public class JournalFeedPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(journalFeed)) {
 				if (!isNew) {
-					JournalFeed oldJournalFeed = (JournalFeed)session.get(
-						JournalFeedImpl.class, journalFeed.getPrimaryKeyObj());
-
-					if (oldJournalFeed != null) {
-						session.evict(oldJournalFeed);
-					}
+					session.evict(journalFeed);
 				}
 
 				session.save(journalFeed);

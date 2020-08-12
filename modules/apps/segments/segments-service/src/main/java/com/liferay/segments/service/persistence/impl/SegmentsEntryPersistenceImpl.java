@@ -10284,13 +10284,7 @@ public class SegmentsEntryPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(segmentsEntry)) {
 				if (!isNew) {
-					SegmentsEntry oldSegmentsEntry = (SegmentsEntry)session.get(
-						SegmentsEntryImpl.class,
-						segmentsEntry.getPrimaryKeyObj());
-
-					if (oldSegmentsEntry != null) {
-						session.evict(oldSegmentsEntry);
-					}
+					session.evict(segmentsEntry);
 				}
 
 				session.save(segmentsEntry);

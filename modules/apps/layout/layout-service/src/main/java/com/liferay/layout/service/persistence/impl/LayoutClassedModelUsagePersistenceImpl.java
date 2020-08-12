@@ -4613,14 +4613,7 @@ public class LayoutClassedModelUsagePersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(layoutClassedModelUsage)) {
 				if (!isNew) {
-					LayoutClassedModelUsage oldLayoutClassedModelUsage =
-						(LayoutClassedModelUsage)session.get(
-							LayoutClassedModelUsageImpl.class,
-							layoutClassedModelUsage.getPrimaryKeyObj());
-
-					if (oldLayoutClassedModelUsage != null) {
-						session.evict(oldLayoutClassedModelUsage);
-					}
+					session.evict(layoutClassedModelUsage);
 				}
 
 				session.save(layoutClassedModelUsage);

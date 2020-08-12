@@ -1003,13 +1003,7 @@ public class RatingsStatsPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(ratingsStats)) {
 				if (!isNew) {
-					RatingsStats oldRatingsStats = (RatingsStats)session.get(
-						RatingsStatsImpl.class,
-						ratingsStats.getPrimaryKeyObj());
-
-					if (oldRatingsStats != null) {
-						session.evict(oldRatingsStats);
-					}
+					session.evict(ratingsStats);
 				}
 
 				session.save(ratingsStats);

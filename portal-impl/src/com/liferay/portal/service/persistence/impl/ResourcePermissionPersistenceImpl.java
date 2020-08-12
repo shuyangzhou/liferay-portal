@@ -6941,14 +6941,7 @@ public class ResourcePermissionPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(resourcePermission)) {
 				if (!isNew) {
-					ResourcePermission oldResourcePermission =
-						(ResourcePermission)session.get(
-							ResourcePermissionImpl.class,
-							resourcePermission.getPrimaryKeyObj());
-
-					if (oldResourcePermission != null) {
-						session.evict(oldResourcePermission);
-					}
+					session.evict(resourcePermission);
 				}
 
 				session.save(resourcePermission);

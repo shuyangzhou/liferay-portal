@@ -3822,14 +3822,7 @@ public class SocialActivitySetPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(socialActivitySet)) {
 				if (!isNew) {
-					SocialActivitySet oldSocialActivitySet =
-						(SocialActivitySet)session.get(
-							SocialActivitySetImpl.class,
-							socialActivitySet.getPrimaryKeyObj());
-
-					if (oldSocialActivitySet != null) {
-						session.evict(oldSocialActivitySet);
-					}
+					session.evict(socialActivitySet);
 				}
 
 				session.save(socialActivitySet);

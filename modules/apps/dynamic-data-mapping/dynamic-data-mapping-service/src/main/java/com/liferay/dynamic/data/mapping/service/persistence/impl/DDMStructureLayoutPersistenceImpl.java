@@ -4738,14 +4738,7 @@ public class DDMStructureLayoutPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(ddmStructureLayout)) {
 				if (!isNew) {
-					DDMStructureLayout oldDDMStructureLayout =
-						(DDMStructureLayout)session.get(
-							DDMStructureLayoutImpl.class,
-							ddmStructureLayout.getPrimaryKeyObj());
-
-					if (oldDDMStructureLayout != null) {
-						session.evict(oldDDMStructureLayout);
-					}
+					session.evict(ddmStructureLayout);
 				}
 
 				session.save(ddmStructureLayout);

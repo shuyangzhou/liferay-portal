@@ -11903,12 +11903,7 @@ public class MBCategoryPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(mbCategory)) {
 				if (!isNew) {
-					MBCategory oldMBCategory = (MBCategory)session.get(
-						MBCategoryImpl.class, mbCategory.getPrimaryKeyObj());
-
-					if (oldMBCategory != null) {
-						session.evict(oldMBCategory);
-					}
+					session.evict(mbCategory);
 				}
 
 				session.save(mbCategory);

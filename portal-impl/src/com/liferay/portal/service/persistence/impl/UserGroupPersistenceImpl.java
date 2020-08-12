@@ -6498,12 +6498,7 @@ public class UserGroupPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(userGroup)) {
 				if (!isNew) {
-					UserGroup oldUserGroup = (UserGroup)session.get(
-						UserGroupImpl.class, userGroup.getPrimaryKeyObj());
-
-					if (oldUserGroup != null) {
-						session.evict(oldUserGroup);
-					}
+					session.evict(userGroup);
 				}
 
 				session.save(userGroup);

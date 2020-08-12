@@ -1226,13 +1226,7 @@ public class ExpandoTablePersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(expandoTable)) {
 				if (!isNew) {
-					ExpandoTable oldExpandoTable = (ExpandoTable)session.get(
-						ExpandoTableImpl.class,
-						expandoTable.getPrimaryKeyObj());
-
-					if (oldExpandoTable != null) {
-						session.evict(oldExpandoTable);
-					}
+					session.evict(expandoTable);
 				}
 
 				session.save(expandoTable);

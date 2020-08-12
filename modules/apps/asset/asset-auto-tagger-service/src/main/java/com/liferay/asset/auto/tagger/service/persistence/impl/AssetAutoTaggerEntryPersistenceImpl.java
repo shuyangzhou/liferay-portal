@@ -1720,14 +1720,7 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 			if (ctPersistenceHelper.isInsert(assetAutoTaggerEntry)) {
 				if (!isNew) {
-					AssetAutoTaggerEntry oldAssetAutoTaggerEntry =
-						(AssetAutoTaggerEntry)session.get(
-							AssetAutoTaggerEntryImpl.class,
-							assetAutoTaggerEntry.getPrimaryKeyObj());
-
-					if (oldAssetAutoTaggerEntry != null) {
-						session.evict(oldAssetAutoTaggerEntry);
-					}
+					session.evict(assetAutoTaggerEntry);
 				}
 
 				session.save(assetAutoTaggerEntry);

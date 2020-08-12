@@ -2623,12 +2623,7 @@ public class SystemEventPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(systemEvent)) {
 				if (!isNew) {
-					SystemEvent oldSystemEvent = (SystemEvent)session.get(
-						SystemEventImpl.class, systemEvent.getPrimaryKeyObj());
-
-					if (oldSystemEvent != null) {
-						session.evict(oldSystemEvent);
-					}
+					session.evict(systemEvent);
 				}
 
 				session.save(systemEvent);

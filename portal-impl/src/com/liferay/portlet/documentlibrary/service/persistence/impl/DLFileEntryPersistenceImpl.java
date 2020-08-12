@@ -15173,12 +15173,7 @@ public class DLFileEntryPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(dlFileEntry)) {
 				if (!isNew) {
-					DLFileEntry oldDLFileEntry = (DLFileEntry)session.get(
-						DLFileEntryImpl.class, dlFileEntry.getPrimaryKeyObj());
-
-					if (oldDLFileEntry != null) {
-						session.evict(oldDLFileEntry);
-					}
+					session.evict(dlFileEntry);
 				}
 
 				session.save(dlFileEntry);

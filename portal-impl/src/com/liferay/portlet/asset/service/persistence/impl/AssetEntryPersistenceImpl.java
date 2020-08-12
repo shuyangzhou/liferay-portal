@@ -5463,12 +5463,7 @@ public class AssetEntryPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(assetEntry)) {
 				if (!isNew) {
-					AssetEntry oldAssetEntry = (AssetEntry)session.get(
-						AssetEntryImpl.class, assetEntry.getPrimaryKeyObj());
-
-					if (oldAssetEntry != null) {
-						session.evict(oldAssetEntry);
-					}
+					session.evict(assetEntry);
 				}
 
 				session.save(assetEntry);

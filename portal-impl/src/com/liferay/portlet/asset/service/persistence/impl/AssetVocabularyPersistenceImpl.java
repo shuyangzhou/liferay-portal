@@ -5386,14 +5386,7 @@ public class AssetVocabularyPersistenceImpl
 
 			if (CTPersistenceHelperUtil.isInsert(assetVocabulary)) {
 				if (!isNew) {
-					AssetVocabulary oldAssetVocabulary =
-						(AssetVocabulary)session.get(
-							AssetVocabularyImpl.class,
-							assetVocabulary.getPrimaryKeyObj());
-
-					if (oldAssetVocabulary != null) {
-						session.evict(oldAssetVocabulary);
-					}
+					session.evict(assetVocabulary);
 				}
 
 				session.save(assetVocabulary);
