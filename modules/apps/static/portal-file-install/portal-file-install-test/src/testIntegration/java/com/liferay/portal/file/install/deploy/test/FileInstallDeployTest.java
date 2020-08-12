@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 
 import java.util.Dictionary;
 import java.util.List;
@@ -183,6 +184,100 @@ public class FileInstallDeployTest {
 		finally {
 			System.clearProperty(systemTestPropertyKey);
 
+			Files.deleteIfExists(path);
+		}
+	}
+
+	@Test
+	public void testDeployAndChangeModifiedDate() throws Exception {
+		String dummyJarSymbolicName = _TEST_JAR_SYMBOLIC_NAME + "Dummy";
+
+		String dummyJarName = dummyJarSymbolicName.concat(".jar");
+
+		Path path = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+		Path dummyPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, dummyJarName);
+
+		Version baseVersion = new Version(1, 0, 0);
+
+		CountDownLatch dummyCountDownLatch = new CountDownLatch(1);
+		CountDownLatch installCountDownLatch = new CountDownLatch(1);
+
+		final AtomicBoolean bundleStoppedAtomicBoolean = new AtomicBoolean();
+
+		BundleListener bundleListener = new BundleListener() {
+
+			@Override
+			public void bundleChanged(BundleEvent bundleEvent) {
+				Bundle bundle = bundleEvent.getBundle();
+
+				if (!Objects.equals(
+						bundle.getSymbolicName(), _TEST_JAR_SYMBOLIC_NAME)) {
+
+					return;
+				}
+
+				int type = bundleEvent.getType();
+
+				if (type == BundleEvent.STARTED) {
+					installCountDownLatch.countDown();
+				}
+				else if ((type == BundleEvent.STOPPING) ||
+						 (type == BundleEvent.STOPPED)) {
+
+					bundleStoppedAtomicBoolean.set(true);
+				}
+			}
+
+		};
+
+		BundleListener dummyBundleListener = new BundleListener() {
+
+			@Override
+			public void bundleChanged(BundleEvent bundleEvent) {
+				Bundle bundle = bundleEvent.getBundle();
+
+				if (!Objects.equals(
+						bundle.getSymbolicName(), dummyJarSymbolicName)) {
+
+					return;
+				}
+
+				if (bundleEvent.getType() == BundleEvent.STARTED) {
+					dummyCountDownLatch.countDown();
+				}
+			}
+
+		};
+
+		_bundleContext.addBundleListener(bundleListener);
+		_bundleContext.addBundleListener(dummyBundleListener);
+
+		try {
+			_createJAR(path, _TEST_JAR_SYMBOLIC_NAME, baseVersion, null);
+
+			installCountDownLatch.await();
+
+			bundleStoppedAtomicBoolean.set(false);
+
+			Files.setLastModifiedTime(
+				path, FileTime.fromMillis(System.currentTimeMillis()));
+
+			_createJAR(dummyPath, dummyJarSymbolicName, baseVersion, null);
+
+			dummyCountDownLatch.await();
+
+			Assert.assertFalse(
+				"FAILED, bundle is attempting to re-install" +
+					"after changing its modifiedDate",
+				bundleStoppedAtomicBoolean.get());
+		}
+		finally {
+			_bundleContext.removeBundleListener(bundleListener);
+			_bundleContext.addBundleListener(dummyBundleListener);
+
+			Files.deleteIfExists(dummyPath);
 			Files.deleteIfExists(path);
 		}
 	}
