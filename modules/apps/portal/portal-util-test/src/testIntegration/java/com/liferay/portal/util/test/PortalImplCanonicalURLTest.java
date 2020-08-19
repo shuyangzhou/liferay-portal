@@ -217,30 +217,6 @@ public class PortalImplCanonicalURLTest {
 	}
 
 	@Test
-	public void testCanonicalURLWithFriendlyURLForBlogs() throws Exception {
-		String portalDomain = "localhost";
-
-		ThemeDisplay themeDisplay = _createThemeDisplay(
-			portalDomain, _group, 8080, false);
-
-		for (String urlSeparator :
-			FriendlyURLResolverRegistryUtil.getURLSeparators()) {
-
-			String completeURL = _generateURL(
-				portalDomain, "8080", StringPool.BLANK, _group.getFriendlyURL(),
-				 _layout1.getFriendlyURL() + urlSeparator + "blogs/"  + "content-name", false);
-
-			Assert.assertEquals(
-				completeURL,
-				_portal.getCanonicalURL(
-					_http.addParameter(
-						completeURL, "_ga",
-						"2.237928582.786466685.1515402734-1365236376"),
-					themeDisplay, _layout1, false, false));
-		}
-	}
-
-	@Test
 	public void testCanonicalURLWithFriendlyURLContainingLayoutID()
 		throws Exception {
 
@@ -251,6 +227,31 @@ public class PortalImplCanonicalURLTest {
 		_groupLocalService.updateGroup(_group);
 
 		testCanonicalURLWithFriendlyURL();
+	}
+
+	@Test
+	public void testCanonicalURLWithFriendlyURLForBlogs() throws Exception {
+		String portalDomain = "localhost";
+
+		ThemeDisplay themeDisplay = _createThemeDisplay(
+			portalDomain, _group, 8080, false);
+
+		for (String urlSeparator :
+				FriendlyURLResolverRegistryUtil.getURLSeparators()) {
+
+			String completeURL = _generateURL(
+				portalDomain, "8080", StringPool.BLANK, _group.getFriendlyURL(),
+				_layout1.getFriendlyURL() + urlSeparator + "blogs/content-name",
+				false);
+
+			Assert.assertEquals(
+				completeURL,
+				_portal.getCanonicalURL(
+					_http.addParameter(
+						completeURL, "_ga",
+						"2.237928582.786466685.1515402734-1365236376"),
+					themeDisplay, _layout1, false, false));
+		}
 	}
 
 	@Test
