@@ -599,10 +599,6 @@ public class EagerBlobEntityModelImpl
 	private long _groupId;
 	private Blob _blob;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -640,22 +636,9 @@ public class EagerBlobEntityModelImpl
 		_columnOriginalValues.put("blob_", _blob);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
-
-		columnBitmasks.put("uuid_", 1L);
-
-		columnBitmasks.put("eagerBlobEntityId", 2L);
-
-		columnBitmasks.put("groupId", 4L);
-
-		columnBitmasks.put("blob_", 8L);
-
-		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
 		Map<String, String> attributeNames = new LinkedHashMap<>();
 
 		attributeNames.put("uuid_", "uuid");

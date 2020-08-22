@@ -704,10 +704,6 @@ public class AnalyticsMessageModelImpl
 	private Date _createDate;
 	private AnalyticsMessageBodyBlobModel _bodyBlobModel;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<AnalyticsMessage, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -743,6 +739,12 @@ public class AnalyticsMessageModelImpl
 		_columnOriginalValues.put("createDate", _createDate);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -765,7 +767,6 @@ public class AnalyticsMessageModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AnalyticsMessage _escapedModel;
 

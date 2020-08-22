@@ -1165,10 +1165,6 @@ public class KaleoInstanceModelImpl
 	private Date _completionDate;
 	private String _workflowContext;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<KaleoInstance, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1219,6 +1215,12 @@ public class KaleoInstanceModelImpl
 		_columnOriginalValues.put("workflowContext", _workflowContext);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1263,7 +1265,6 @@ public class KaleoInstanceModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private KaleoInstance _escapedModel;
 

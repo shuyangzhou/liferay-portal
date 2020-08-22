@@ -512,10 +512,6 @@ public class RSVEntryModelImpl
 	private long _rsvEntryId;
 	private long _companyId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<RSVEntry, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -548,6 +544,12 @@ public class RSVEntryModelImpl
 		_columnOriginalValues.put("companyId", _companyId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -562,7 +564,6 @@ public class RSVEntryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private RSVEntry _escapedModel;
 

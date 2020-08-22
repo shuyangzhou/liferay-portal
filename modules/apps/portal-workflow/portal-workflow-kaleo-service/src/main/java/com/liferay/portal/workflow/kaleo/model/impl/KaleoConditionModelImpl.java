@@ -939,10 +939,6 @@ public class KaleoConditionModelImpl
 	private String _scriptLanguage;
 	private String _scriptRequiredContexts;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<KaleoCondition, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -988,6 +984,12 @@ public class KaleoConditionModelImpl
 			"scriptRequiredContexts", _scriptRequiredContexts);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1024,7 +1026,6 @@ public class KaleoConditionModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private KaleoCondition _escapedModel;
 

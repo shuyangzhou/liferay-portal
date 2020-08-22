@@ -894,10 +894,6 @@ public class SubscriptionModelImpl
 	private long _classPK;
 	private String _frequency;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<Subscription, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -939,6 +935,12 @@ public class SubscriptionModelImpl
 		_columnOriginalValues.put("frequency", _frequency);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -971,7 +973,6 @@ public class SubscriptionModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private Subscription _escapedModel;
 

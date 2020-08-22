@@ -1961,10 +1961,6 @@ public class AssetEntryModelImpl
 	private int _width;
 	private double _priority;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<AssetEntry, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -2020,6 +2016,12 @@ public class AssetEntryModelImpl
 		_columnOriginalValues.put("height", _height);
 		_columnOriginalValues.put("width", _width);
 		_columnOriginalValues.put("priority", _priority);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
 	}
 
 	private static final Map<String, Long> _columnBitmasks;
@@ -2086,7 +2088,6 @@ public class AssetEntryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AssetEntry _escapedModel;
 

@@ -895,10 +895,6 @@ public class CTCollectionModelImpl
 	private long _statusByUserId;
 	private Date _statusDate;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<CTCollection, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -939,6 +935,12 @@ public class CTCollectionModelImpl
 		_columnOriginalValues.put("statusDate", _statusDate);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -969,7 +971,6 @@ public class CTCollectionModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private CTCollection _escapedModel;
 

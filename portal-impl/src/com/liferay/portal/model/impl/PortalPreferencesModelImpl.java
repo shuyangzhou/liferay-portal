@@ -626,10 +626,6 @@ public class PortalPreferencesModelImpl
 	private int _ownerType;
 	private String _preferences;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<PortalPreferences, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -664,6 +660,12 @@ public class PortalPreferencesModelImpl
 		_columnOriginalValues.put("preferences", _preferences);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -682,7 +684,6 @@ public class PortalPreferencesModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private PortalPreferences _escapedModel;
 

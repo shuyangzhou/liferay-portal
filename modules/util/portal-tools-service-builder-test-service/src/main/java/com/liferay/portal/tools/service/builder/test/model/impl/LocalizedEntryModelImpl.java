@@ -673,10 +673,6 @@ public class LocalizedEntryModelImpl
 	private String _defaultLanguageId;
 	private long _localizedEntryId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<LocalizedEntry, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -708,6 +704,12 @@ public class LocalizedEntryModelImpl
 		_columnOriginalValues.put("localizedEntryId", _localizedEntryId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -720,7 +722,6 @@ public class LocalizedEntryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private LocalizedEntry _escapedModel;
 

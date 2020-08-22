@@ -727,10 +727,6 @@ public class SamlIdpSsoSessionModelImpl
 	private boolean _setModifiedDate;
 	private String _samlIdpSsoSessionKey;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<SamlIdpSsoSession, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -768,6 +764,12 @@ public class SamlIdpSsoSessionModelImpl
 			"samlIdpSsoSessionKey", _samlIdpSsoSessionKey);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -790,7 +792,6 @@ public class SamlIdpSsoSessionModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private SamlIdpSsoSession _escapedModel;
 

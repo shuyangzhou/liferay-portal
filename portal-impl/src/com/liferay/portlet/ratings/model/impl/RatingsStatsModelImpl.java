@@ -795,10 +795,6 @@ public class RatingsStatsModelImpl
 	private double _totalScore;
 	private double _averageScore;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<RatingsStats, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -839,6 +835,12 @@ public class RatingsStatsModelImpl
 		_columnOriginalValues.put("averageScore", _averageScore);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -869,7 +871,6 @@ public class RatingsStatsModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private RatingsStats _escapedModel;
 

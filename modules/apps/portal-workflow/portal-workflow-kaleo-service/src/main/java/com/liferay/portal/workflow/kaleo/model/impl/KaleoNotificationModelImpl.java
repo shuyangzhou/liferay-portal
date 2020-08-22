@@ -1163,10 +1163,6 @@ public class KaleoNotificationModelImpl
 	private String _templateLanguage;
 	private String _notificationTypes;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<KaleoNotification, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1216,6 +1212,12 @@ public class KaleoNotificationModelImpl
 		_columnOriginalValues.put("notificationTypes", _notificationTypes);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1262,7 +1264,6 @@ public class KaleoNotificationModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private KaleoNotification _escapedModel;
 

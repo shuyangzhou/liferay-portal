@@ -1382,10 +1382,6 @@ public class KaleoDefinitionVersionModelImpl
 	private long _startKaleoNodeId;
 	private int _status;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<KaleoDefinitionVersion, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1435,6 +1431,12 @@ public class KaleoDefinitionVersionModelImpl
 		_columnOriginalValues.put("status", _status);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1481,7 +1483,6 @@ public class KaleoDefinitionVersionModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private KaleoDefinitionVersion _escapedModel;
 

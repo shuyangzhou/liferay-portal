@@ -776,10 +776,6 @@ public class PushNotificationsDeviceModelImpl
 	private String _platform;
 	private String _token;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<PushNotificationsDevice, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -816,6 +812,12 @@ public class PushNotificationsDeviceModelImpl
 		_columnOriginalValues.put("token", _token);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -836,7 +838,6 @@ public class PushNotificationsDeviceModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private PushNotificationsDevice _escapedModel;
 
