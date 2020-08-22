@@ -2233,10 +2233,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private boolean _emailAddressVerified;
 	private int _status;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -2318,8 +2314,25 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_columnOriginalValues.put("status", _status);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new LinkedHashMap<>();
+
+		attributeNames.put("uuid_", "uuid");
+		attributeNames.put("password_", "password");
+		attributeNames.put("groups_", "groups");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
 
 	static {
 		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
@@ -2413,17 +2426,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		columnBitmasks.put("status", 8796093022208L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
-		Map<String, String> attributeNames = new LinkedHashMap<>();
-
-		attributeNames.put("uuid_", "uuid");
-		attributeNames.put("password_", "password");
-		attributeNames.put("groups_", "groups");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private User _escapedModel;
 

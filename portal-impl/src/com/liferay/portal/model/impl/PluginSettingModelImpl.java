@@ -767,10 +767,6 @@ public class PluginSettingModelImpl
 	private String _roles;
 	private boolean _active;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -811,8 +807,23 @@ public class PluginSettingModelImpl
 		_columnOriginalValues.put("active_", _active);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new LinkedHashMap<>();
+
+		attributeNames.put("active_", "active");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
 
 	static {
 		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
@@ -832,15 +843,8 @@ public class PluginSettingModelImpl
 		columnBitmasks.put("active_", 64L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
-		Map<String, String> attributeNames = new LinkedHashMap<>();
-
-		attributeNames.put("active_", "active");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private PluginSetting _escapedModel;
 

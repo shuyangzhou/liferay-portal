@@ -761,10 +761,6 @@ public class CTAutoResolutionInfoModelImpl
 	private long _targetModelClassPK;
 	private String _conflictIdentifier;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<CTAutoResolutionInfo, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -804,6 +800,12 @@ public class CTAutoResolutionInfoModelImpl
 		_columnOriginalValues.put("conflictIdentifier", _conflictIdentifier);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -830,7 +832,6 @@ public class CTAutoResolutionInfoModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private CTAutoResolutionInfo _escapedModel;
 

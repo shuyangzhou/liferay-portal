@@ -791,10 +791,6 @@ public class AssetLinkModelImpl
 	private int _type;
 	private int _weight;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -839,8 +835,23 @@ public class AssetLinkModelImpl
 		_columnOriginalValues.put("weight", _weight);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new LinkedHashMap<>();
+
+		attributeNames.put("type_", "type");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
 
 	static {
 		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
@@ -868,15 +879,8 @@ public class AssetLinkModelImpl
 		columnBitmasks.put("weight", 1024L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
-		Map<String, String> attributeNames = new LinkedHashMap<>();
-
-		attributeNames.put("type_", "type");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AssetLink _escapedModel;
 

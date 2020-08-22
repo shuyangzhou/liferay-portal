@@ -1527,10 +1527,6 @@ public class ContactModelImpl
 	private String _jobClass;
 	private String _hoursOfOperation;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<Contact, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -1587,6 +1583,12 @@ public class ContactModelImpl
 		_columnOriginalValues.put("jobTitle", _jobTitle);
 		_columnOriginalValues.put("jobClass", _jobClass);
 		_columnOriginalValues.put("hoursOfOperation", _hoursOfOperation);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
 	}
 
 	private static final Map<String, Long> _columnBitmasks;
@@ -1655,7 +1657,6 @@ public class ContactModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private Contact _escapedModel;
 

@@ -691,10 +691,6 @@ public class DDMStructureLinkModelImpl
 	private long _classPK;
 	private long _structureId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<DDMStructureLink, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -731,6 +727,12 @@ public class DDMStructureLinkModelImpl
 		_columnOriginalValues.put("structureId", _structureId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -753,7 +755,6 @@ public class DDMStructureLinkModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private DDMStructureLink _escapedModel;
 

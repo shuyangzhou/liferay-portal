@@ -1002,10 +1002,6 @@ public class OrgLaborModelImpl
 	private int _satOpen;
 	private int _satClose;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<OrgLabor, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -1054,6 +1050,12 @@ public class OrgLaborModelImpl
 		_columnOriginalValues.put("satClose", _satClose);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1100,7 +1102,6 @@ public class OrgLaborModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private OrgLabor _escapedModel;
 

@@ -1170,10 +1170,6 @@ public class SamlSpIdpConnectionModelImpl
 	private boolean _unknownUsersAreStrangers;
 	private String _userAttributeMappings;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<SamlSpIdpConnection, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1227,6 +1223,12 @@ public class SamlSpIdpConnectionModelImpl
 			"userAttributeMappings", _userAttributeMappings);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1275,7 +1277,6 @@ public class SamlSpIdpConnectionModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private SamlSpIdpConnection _escapedModel;
 

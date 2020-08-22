@@ -1276,10 +1276,6 @@ public class OAuth2ApplicationModelImpl
 	private String _privacyPolicyURL;
 	private String _redirectURIs;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -1336,8 +1332,24 @@ public class OAuth2ApplicationModelImpl
 		_columnOriginalValues.put("redirectURIs", _redirectURIs);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new LinkedHashMap<>();
+
+		attributeNames.put(
+			"oA2AScopeAliasesId", "oAuth2ApplicationScopeAliasesId");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
 
 	static {
 		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
@@ -1383,16 +1395,8 @@ public class OAuth2ApplicationModelImpl
 		columnBitmasks.put("redirectURIs", 524288L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
-		Map<String, String> attributeNames = new LinkedHashMap<>();
-
-		attributeNames.put(
-			"oA2AScopeAliasesId", "oAuth2ApplicationScopeAliasesId");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private OAuth2Application _escapedModel;
 

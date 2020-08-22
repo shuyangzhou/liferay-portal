@@ -1087,10 +1087,6 @@ public class KBCommentModelImpl
 	private Date _lastPublishDate;
 	private int _status;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -1139,8 +1135,23 @@ public class KBCommentModelImpl
 		_columnOriginalValues.put("status", _status);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new LinkedHashMap<>();
+
+		attributeNames.put("uuid_", "uuid");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
 
 	static {
 		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
@@ -1176,15 +1187,8 @@ public class KBCommentModelImpl
 		columnBitmasks.put("status", 16384L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
-		Map<String, String> attributeNames = new LinkedHashMap<>();
-
-		attributeNames.put("uuid_", "uuid");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private KBComment _escapedModel;
 

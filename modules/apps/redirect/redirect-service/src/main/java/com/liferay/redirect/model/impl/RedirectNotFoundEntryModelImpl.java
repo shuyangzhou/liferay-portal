@@ -817,10 +817,6 @@ public class RedirectNotFoundEntryModelImpl
 	private boolean _ignored;
 	private String _url;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<RedirectNotFoundEntry, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -861,6 +857,12 @@ public class RedirectNotFoundEntryModelImpl
 		_columnOriginalValues.put("url", _url);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -889,7 +891,6 @@ public class RedirectNotFoundEntryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private RedirectNotFoundEntry _escapedModel;
 

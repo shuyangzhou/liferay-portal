@@ -1090,10 +1090,6 @@ public class OAuthApplicationModelImpl
 	private String _callbackURI;
 	private String _websiteURL;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<OAuthApplication, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1139,6 +1135,12 @@ public class OAuthApplicationModelImpl
 		_columnOriginalValues.put("websiteURL", _websiteURL);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1177,7 +1179,6 @@ public class OAuthApplicationModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private OAuthApplication _escapedModel;
 

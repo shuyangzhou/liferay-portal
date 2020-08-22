@@ -1021,10 +1021,6 @@ public class AssetListEntrySegmentsEntryRelModelImpl
 	private String _typeSettings;
 	private Date _lastPublishDate;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (_attributeNames.containsKey(columnName)) {
 			columnName = _attributeNames.get(columnName);
@@ -1073,8 +1069,25 @@ public class AssetListEntrySegmentsEntryRelModelImpl
 		_columnOriginalValues.put("lastPublishDate", _lastPublishDate);
 	}
 
-	private static final Map<String, Long> _columnBitmasks;
 	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new LinkedHashMap<>();
+
+		attributeNames.put("uuid_", "uuid");
+		attributeNames.put(
+			"alEntrySegmentsEntryRelId", "assetListEntrySegmentsEntryRelId");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
+	private static final Map<String, Long> _columnBitmasks;
 
 	static {
 		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
@@ -1108,17 +1121,8 @@ public class AssetListEntrySegmentsEntryRelModelImpl
 		columnBitmasks.put("lastPublishDate", 8192L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
-
-		Map<String, String> attributeNames = new LinkedHashMap<>();
-
-		attributeNames.put("uuid_", "uuid");
-		attributeNames.put(
-			"alEntrySegmentsEntryRelId", "assetListEntrySegmentsEntryRelId");
-
-		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AssetListEntrySegmentsEntryRel _escapedModel;
 

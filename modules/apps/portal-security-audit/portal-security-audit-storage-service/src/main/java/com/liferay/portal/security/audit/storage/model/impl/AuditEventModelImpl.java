@@ -1025,10 +1025,6 @@ public class AuditEventModelImpl
 	private String _sessionID;
 	private String _additionalInfo;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<AuditEvent, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -1073,6 +1069,12 @@ public class AuditEventModelImpl
 		_columnOriginalValues.put("additionalInfo", _additionalInfo);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1111,7 +1113,6 @@ public class AuditEventModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AuditEvent _escapedModel;
 

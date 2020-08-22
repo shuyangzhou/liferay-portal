@@ -726,10 +726,6 @@ public class MBStatsUserModelImpl
 	private int _messageCount;
 	private Date _lastPostDate;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<MBStatsUser, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -767,6 +763,12 @@ public class MBStatsUserModelImpl
 		_columnOriginalValues.put("lastPostDate", _lastPostDate);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -791,7 +793,6 @@ public class MBStatsUserModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private MBStatsUser _escapedModel;
 

@@ -1069,10 +1069,6 @@ public class PowwowMeetingModelImpl
 	private long _calendarBookingId;
 	private int _status;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<PowwowMeeting, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1118,6 +1114,12 @@ public class PowwowMeetingModelImpl
 		_columnOriginalValues.put("status", _status);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -1156,7 +1158,6 @@ public class PowwowMeetingModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private PowwowMeeting _escapedModel;
 

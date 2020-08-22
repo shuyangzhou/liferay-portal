@@ -634,10 +634,6 @@ public class VersionedEntryModelImpl
 	private long _versionedEntryId;
 	private long _groupId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		if (columnName.equals("head")) {
 			return (T)(Object)getHead();
@@ -676,6 +672,12 @@ public class VersionedEntryModelImpl
 		_columnOriginalValues.put("groupId", _groupId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -694,7 +696,6 @@ public class VersionedEntryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private VersionedEntry _escapedModel;
 

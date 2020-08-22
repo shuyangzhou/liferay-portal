@@ -748,10 +748,6 @@ public class UserGroupGroupRoleModelImpl
 	private long _groupId;
 	private long _roleId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<UserGroupGroupRole, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -789,6 +785,12 @@ public class UserGroupGroupRoleModelImpl
 		_columnOriginalValues.put("roleId", _roleId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -811,7 +813,6 @@ public class UserGroupGroupRoleModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private UserGroupGroupRole _escapedModel;
 

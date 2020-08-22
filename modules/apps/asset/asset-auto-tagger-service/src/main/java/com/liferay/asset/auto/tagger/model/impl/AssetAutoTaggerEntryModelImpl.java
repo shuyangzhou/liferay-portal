@@ -747,10 +747,6 @@ public class AssetAutoTaggerEntryModelImpl
 	private long _assetEntryId;
 	private long _assetTagId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<AssetAutoTaggerEntry, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -790,6 +786,12 @@ public class AssetAutoTaggerEntryModelImpl
 		_columnOriginalValues.put("assetTagId", _assetTagId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -816,7 +818,6 @@ public class AssetAutoTaggerEntryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AssetAutoTaggerEntry _escapedModel;
 

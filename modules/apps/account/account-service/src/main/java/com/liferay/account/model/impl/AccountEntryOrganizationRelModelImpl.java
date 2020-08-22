@@ -697,10 +697,6 @@ public class AccountEntryOrganizationRelModelImpl
 	private long _accountEntryId;
 	private long _organizationId;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<AccountEntryOrganizationRel, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -736,6 +732,12 @@ public class AccountEntryOrganizationRelModelImpl
 		_columnOriginalValues.put("organizationId", _organizationId);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -754,7 +756,6 @@ public class AccountEntryOrganizationRelModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private AccountEntryOrganizationRel _escapedModel;
 

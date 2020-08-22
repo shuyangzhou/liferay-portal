@@ -837,10 +837,6 @@ public class UserNotificationDeliveryModelImpl
 	private int _deliveryType;
 	private boolean _deliver;
 
-	public static long getColumnBitmask(String columnName) {
-		return _columnBitmasks.get(columnName);
-	}
-
 	public <T> T getColumnValue(String columnName) {
 		Function<UserNotificationDelivery, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -880,6 +876,12 @@ public class UserNotificationDeliveryModelImpl
 		_columnOriginalValues.put("deliver", _deliver);
 	}
 
+	private transient Map<String, Object> _columnOriginalValues;
+
+	public static long getColumnBitmask(String columnName) {
+		return _columnBitmasks.get(columnName);
+	}
+
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
@@ -906,7 +908,6 @@ public class UserNotificationDeliveryModelImpl
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
 
-	private transient Map<String, Object> _columnOriginalValues;
 	private long _columnBitmask;
 	private UserNotificationDelivery _escapedModel;
 
