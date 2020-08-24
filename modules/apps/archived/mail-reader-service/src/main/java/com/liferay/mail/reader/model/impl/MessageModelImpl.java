@@ -1100,9 +1100,7 @@ public class MessageModelImpl
 	private String _contentType;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<Message, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -1155,7 +1153,7 @@ public class MessageModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("to_", "to");
 		attributeNames.put("size_", "size");
@@ -1172,7 +1170,7 @@ public class MessageModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("messageId", 1L);
 

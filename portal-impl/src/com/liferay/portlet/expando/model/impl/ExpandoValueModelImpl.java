@@ -892,9 +892,7 @@ public class ExpandoValueModelImpl
 	private String _data;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<ExpandoValue, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -937,7 +935,7 @@ public class ExpandoValueModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("rowId_", "rowId");
 		attributeNames.put("data_", "data");
@@ -954,7 +952,7 @@ public class ExpandoValueModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("mvccVersion", 1L);
 

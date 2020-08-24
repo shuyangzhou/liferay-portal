@@ -507,9 +507,7 @@ public class TestEntityModelImpl
 	private String _data;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<TestEntity, Object> function = _attributeGetterFunctions.get(
 			columnName);
@@ -544,7 +542,7 @@ public class TestEntityModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("id_", "id");
 		attributeNames.put("data_", "data");
@@ -561,7 +559,7 @@ public class TestEntityModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("id_", 1L);
 

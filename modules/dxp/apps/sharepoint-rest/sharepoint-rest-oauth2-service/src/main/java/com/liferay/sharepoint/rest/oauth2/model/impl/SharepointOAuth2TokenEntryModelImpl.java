@@ -866,7 +866,7 @@ public class SharepointOAuth2TokenEntryModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("sharepointOAuth2TokenEntryId", 1L);
 

@@ -1277,9 +1277,7 @@ public class OAuth2ApplicationModelImpl
 	private String _redirectURIs;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<OAuth2Application, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1335,7 +1333,7 @@ public class OAuth2ApplicationModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put(
 			"oA2AScopeAliasesId", "oAuth2ApplicationScopeAliasesId");
@@ -1352,7 +1350,7 @@ public class OAuth2ApplicationModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("oAuth2ApplicationId", 1L);
 

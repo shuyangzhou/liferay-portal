@@ -1299,9 +1299,7 @@ public class PollsQuestionModelImpl
 	private Date _lastVoteDate;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<PollsQuestion, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1348,7 +1346,7 @@ public class PollsQuestionModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("uuid_", "uuid");
 
@@ -1364,7 +1362,7 @@ public class PollsQuestionModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("mvccVersion", 1L);
 

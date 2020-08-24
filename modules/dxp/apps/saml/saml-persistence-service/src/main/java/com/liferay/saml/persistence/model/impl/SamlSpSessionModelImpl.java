@@ -1065,9 +1065,7 @@ public class SamlSpSessionModelImpl
 	private boolean _terminated;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<SamlSpSession, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -1117,7 +1115,7 @@ public class SamlSpSessionModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("terminated_", "terminated");
 
@@ -1133,7 +1131,7 @@ public class SamlSpSessionModelImpl
 	private static final Map<String, Long> _columnBitmasks;
 
 	static {
-		Map<String, Long> columnBitmasks = new LinkedHashMap<>();
+		Map<String, Long> columnBitmasks = new HashMap<>();
 
 		columnBitmasks.put("samlSpSessionId", 1L);
 

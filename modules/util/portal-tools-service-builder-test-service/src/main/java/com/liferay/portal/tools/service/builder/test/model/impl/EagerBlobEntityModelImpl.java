@@ -600,9 +600,7 @@ public class EagerBlobEntityModelImpl
 	private Blob _blob;
 
 	public <T> T getColumnValue(String columnName) {
-		if (_attributeNames.containsKey(columnName)) {
-			columnName = _attributeNames.get(columnName);
-		}
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<EagerBlobEntity, Object> function =
 			_attributeGetterFunctions.get(columnName);
@@ -639,7 +637,7 @@ public class EagerBlobEntityModelImpl
 	private static final Map<String, String> _attributeNames;
 
 	static {
-		Map<String, String> attributeNames = new LinkedHashMap<>();
+		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("uuid_", "uuid");
 		attributeNames.put("blob_", "blob");
