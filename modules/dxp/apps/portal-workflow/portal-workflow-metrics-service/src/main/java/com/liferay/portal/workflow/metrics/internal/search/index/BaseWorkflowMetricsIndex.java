@@ -70,11 +70,11 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 	}
 
 	@Override
-	public void createIndex(long companyId) throws PortalException {
+	public boolean createIndex(long companyId) throws PortalException {
 		if ((searchEngineAdapter == null) ||
 			hasIndex(getIndexName(companyId))) {
 
-			return;
+			return false;
 		}
 
 		CreateIndexRequest createIndexRequest = new CreateIndexRequest(
@@ -95,6 +95,8 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 			).toString());
 
 		searchEngineAdapter.execute(createIndexRequest);
+
+		return true;
 	}
 
 	@Override

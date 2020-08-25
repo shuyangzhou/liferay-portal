@@ -47,50 +47,80 @@ public class WorkflowMetricsIndexCreator {
 			return;
 		}
 
-		_instanceWorkflowMetricsIndex.createIndex(company.getCompanyId());
-		_nodeWorkflowMetricsIndex.createIndex(company.getCompanyId());
-		_processWorkflowMetricsIndex.createIndex(company.getCompanyId());
-		_slaInstanceResultWorkflowMetricsIndex.createIndex(
-			company.getCompanyId());
-		_slaTaskResultWorkflowMetricsIndex.createIndex(company.getCompanyId());
-		_taskWorkflowMetricsIndex.createIndex(company.getCompanyId());
-		_transitionWorkflowMetricsIndex.createIndex(company.getCompanyId());
+		boolean needReindex = false;
 
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				int count = _backgroundTaskLocalService.getBackgroundTasksCount(
-					company.getGroupId(),
-					WorkflowMetricsIndexCreator.class.getSimpleName(),
-					WorkflowMetricsReindexBackgroundTaskExecutor.class.
-						getName(),
-					false);
+		if (_instanceWorkflowMetricsIndex.createIndex(company.getCompanyId())) {
+			needReindex = true;
+		}
 
-				if (count > 0) {
+		if (_nodeWorkflowMetricsIndex.createIndex(company.getCompanyId())) {
+			needReindex = true;
+		}
+
+		if (_processWorkflowMetricsIndex.createIndex(company.getCompanyId())) {
+			needReindex = true;
+		}
+
+		if (_slaInstanceResultWorkflowMetricsIndex.createIndex(
+				company.getCompanyId())) {
+
+			needReindex = true;
+		}
+
+		if (_slaTaskResultWorkflowMetricsIndex.createIndex(
+				company.getCompanyId())) {
+
+			needReindex = true;
+		}
+
+		if (_taskWorkflowMetricsIndex.createIndex(company.getCompanyId())) {
+			needReindex = true;
+		}
+
+		if (_transitionWorkflowMetricsIndex.createIndex(
+				company.getCompanyId())) {
+
+			needReindex = true;
+		}
+
+		if (needReindex) {
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					int count =
+						_backgroundTaskLocalService.getBackgroundTasksCount(
+							company.getGroupId(),
+							WorkflowMetricsIndexCreator.class.getSimpleName(),
+							WorkflowMetricsReindexBackgroundTaskExecutor.class.
+								getName(),
+							false);
+
+					if (count > 0) {
+						return null;
+					}
+
+					User user = company.getDefaultUser();
+
+					_backgroundTaskLocalService.addBackgroundTask(
+						user.getUserId(), company.getGroupId(),
+						WorkflowMetricsIndexCreator.class.getSimpleName(),
+						WorkflowMetricsReindexBackgroundTaskExecutor.class.
+							getName(),
+						HashMapBuilder.<String, Serializable>put(
+							BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS,
+							true
+						).put(
+							"workflow.metrics.index.entity.names",
+							new String[] {
+								"instance", "node", "process",
+								"sla-instance-result", "sla-task-result",
+								"task", "transition"
+							}
+						).build(),
+						new ServiceContext());
+
 					return null;
-				}
-
-				User user = company.getDefaultUser();
-
-				_backgroundTaskLocalService.addBackgroundTask(
-					user.getUserId(), company.getGroupId(),
-					WorkflowMetricsIndexCreator.class.getSimpleName(),
-					WorkflowMetricsReindexBackgroundTaskExecutor.class.
-						getName(),
-					HashMapBuilder.<String, Serializable>put(
-						BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS,
-						true
-					).put(
-						"workflow.metrics.index.entity.names",
-						new String[] {
-							"instance", "node", "process",
-							"sla-instance-result", "sla-task-result", "task",
-							"transition"
-						}
-					).build(),
-					new ServiceContext());
-
-				return null;
-			});
+				});
+		}
 	}
 
 	public void removeIndex(Company company) throws PortalException {

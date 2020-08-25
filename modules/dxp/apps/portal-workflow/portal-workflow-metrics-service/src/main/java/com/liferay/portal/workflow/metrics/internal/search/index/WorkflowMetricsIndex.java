@@ -23,7 +23,7 @@ public interface WorkflowMetricsIndex {
 
 	public void clearIndex(long companyId) throws PortalException;
 
-	public void createIndex(long companyId) throws PortalException;
+	public boolean createIndex(long companyId) throws PortalException;
 
 	public String getIndexName(long companyId);
 
