@@ -56,6 +56,8 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
+		long startTime = System.currentTimeMillis();
+
 		User defaultUser = company.getDefaultUser();
 
 		if (!_exists(AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_MEMBER)) {
@@ -95,6 +97,9 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 			_addResourcePermissions(
 				role.getRoleId(), _accountManagerResourceActionsMap);
 		}
+
+		System.out.println(
+			"#########" + (System.currentTimeMillis() - startTime) + " ms");
 	}
 
 	private AccountRole _addAccountRole(long userId, String roleName)
