@@ -456,7 +456,7 @@ public class SyncDeviceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -496,7 +496,7 @@ public class SyncDeviceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON

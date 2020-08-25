@@ -660,7 +660,7 @@ public class DLFileVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -684,7 +684,7 @@ public class DLFileVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -810,7 +810,7 @@ public class DLFileVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFolderId() {
-		return GetterUtil.getLong(getColumnOriginalValue("folderId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("folderId"));
 	}
 
 	@JSON
@@ -834,7 +834,8 @@ public class DLFileVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFileEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fileEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fileEntryId"));
 	}
 
 	@JSON
@@ -1130,7 +1131,7 @@ public class DLFileVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

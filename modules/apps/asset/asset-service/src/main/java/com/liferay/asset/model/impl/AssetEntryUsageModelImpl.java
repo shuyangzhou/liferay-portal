@@ -479,7 +479,7 @@ public class AssetEntryUsageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -502,7 +502,7 @@ public class AssetEntryUsageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -559,7 +559,8 @@ public class AssetEntryUsageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalAssetEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("assetEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("assetEntryId"));
 	}
 
 	@Override
@@ -582,7 +583,8 @@ public class AssetEntryUsageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalContainerType() {
-		return GetterUtil.getLong(getColumnOriginalValue("containerType"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("containerType"));
 	}
 
 	@Override
@@ -633,7 +635,7 @@ public class AssetEntryUsageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalPlid() {
-		return GetterUtil.getLong(getColumnOriginalValue("plid"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("plid"));
 	}
 
 	@Override
@@ -656,7 +658,7 @@ public class AssetEntryUsageModelImpl
 	 */
 	@Deprecated
 	public int getOriginalType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("type_"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("type_"));
 	}
 
 	@Override

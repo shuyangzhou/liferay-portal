@@ -339,7 +339,8 @@ public class KaleoProcessLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoProcessId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoProcessId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoProcessId"));
 	}
 
 	@Override

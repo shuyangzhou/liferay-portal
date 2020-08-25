@@ -397,7 +397,7 @@ public class JournalArticleLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -420,7 +420,7 @@ public class JournalArticleLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalArticlePK() {
-		return GetterUtil.getLong(getColumnOriginalValue("articlePK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("articlePK"));
 	}
 
 	@Override

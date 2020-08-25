@@ -514,7 +514,7 @@ public class CompanyModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLogoId() {
-		return GetterUtil.getLong(getColumnOriginalValue("logoId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("logoId"));
 	}
 
 	@JSON
@@ -544,7 +544,7 @@ public class CompanyModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalSystem() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("system_"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("system_"));
 	}
 
 	@JSON

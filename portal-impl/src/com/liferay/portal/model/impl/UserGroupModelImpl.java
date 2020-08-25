@@ -577,7 +577,8 @@ public class UserGroupModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userGroupId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("userGroupId"));
 	}
 
 	@JSON
@@ -601,7 +602,7 @@ public class UserGroupModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -712,7 +713,8 @@ public class UserGroupModelImpl
 	 */
 	@Deprecated
 	public long getOriginalParentUserGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("parentUserGroupId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("parentUserGroupId"));
 	}
 
 	@JSON

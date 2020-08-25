@@ -637,7 +637,8 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public long getOriginalResourcePrimKey() {
-		return GetterUtil.getLong(getColumnOriginalValue("resourcePrimKey"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("resourcePrimKey"));
 	}
 
 	@JSON
@@ -661,7 +662,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -685,7 +686,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -827,7 +828,7 @@ public class KBArticleModelImpl
 	@Deprecated
 	public long getOriginalParentResourcePrimKey() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("parentResourcePrimKey"));
+			(Object)getColumnOriginalValue("parentResourcePrimKey"));
 	}
 
 	@JSON
@@ -851,7 +852,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKbFolderId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kbFolderId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("kbFolderId"));
 	}
 
 	@JSON
@@ -875,7 +876,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public int getOriginalVersion() {
-		return GetterUtil.getInteger(getColumnOriginalValue("version"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("version"));
 	}
 
 	@JSON
@@ -1038,7 +1039,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalLatest() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("latest"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("latest"));
 	}
 
 	@JSON
@@ -1068,7 +1069,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalMain() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("main"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("main"));
 	}
 
 	@JSON
@@ -1127,7 +1128,7 @@ public class KBArticleModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

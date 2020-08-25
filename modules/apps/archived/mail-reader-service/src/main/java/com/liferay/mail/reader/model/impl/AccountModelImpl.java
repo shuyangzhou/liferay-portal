@@ -451,7 +451,7 @@ public class AccountModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@Override

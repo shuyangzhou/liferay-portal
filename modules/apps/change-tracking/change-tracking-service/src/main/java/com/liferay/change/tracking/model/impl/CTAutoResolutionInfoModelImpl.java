@@ -412,7 +412,8 @@ public class CTAutoResolutionInfoModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return GetterUtil.getLong(getColumnOriginalValue("ctCollectionId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("ctCollectionId"));
 	}
 
 	@Override
@@ -435,7 +436,8 @@ public class CTAutoResolutionInfoModelImpl
 	 */
 	@Deprecated
 	public long getOriginalModelClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("modelClassNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("modelClassNameId"));
 	}
 
 	@Override
@@ -458,7 +460,8 @@ public class CTAutoResolutionInfoModelImpl
 	 */
 	@Deprecated
 	public long getOriginalSourceModelClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("sourceModelClassPK"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("sourceModelClassPK"));
 	}
 
 	@Override

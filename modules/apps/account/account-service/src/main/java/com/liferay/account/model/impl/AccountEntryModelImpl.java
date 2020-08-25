@@ -497,7 +497,7 @@ public class AccountEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -738,7 +738,7 @@ public class AccountEntryModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	public long getColumnBitmask() {

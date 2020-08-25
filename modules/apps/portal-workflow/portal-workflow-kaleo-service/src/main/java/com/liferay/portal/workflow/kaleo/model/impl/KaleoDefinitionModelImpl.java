@@ -424,7 +424,7 @@ public class KaleoDefinitionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -723,7 +723,7 @@ public class KaleoDefinitionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalVersion() {
-		return GetterUtil.getInteger(getColumnOriginalValue("version"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("version"));
 	}
 
 	@Override
@@ -751,7 +751,7 @@ public class KaleoDefinitionModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalActive() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("active_"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("active_"));
 	}
 
 	public long getColumnBitmask() {

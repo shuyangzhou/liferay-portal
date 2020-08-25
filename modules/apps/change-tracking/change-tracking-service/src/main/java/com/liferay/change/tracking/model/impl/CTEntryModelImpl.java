@@ -443,7 +443,8 @@ public class CTEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCtCollectionId() {
-		return GetterUtil.getLong(getColumnOriginalValue("ctCollectionId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("ctCollectionId"));
 	}
 
 	@Override
@@ -466,7 +467,8 @@ public class CTEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalModelClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("modelClassNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("modelClassNameId"));
 	}
 
 	@Override
@@ -489,7 +491,8 @@ public class CTEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalModelClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("modelClassPK"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("modelClassPK"));
 	}
 
 	@Override

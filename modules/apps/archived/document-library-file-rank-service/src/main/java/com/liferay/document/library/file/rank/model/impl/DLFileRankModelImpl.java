@@ -363,7 +363,7 @@ public class DLFileRankModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -386,7 +386,7 @@ public class DLFileRankModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -425,7 +425,7 @@ public class DLFileRankModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@Override
@@ -462,7 +462,8 @@ public class DLFileRankModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFileEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fileEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fileEntryId"));
 	}
 
 	@Override
@@ -490,7 +491,7 @@ public class DLFileRankModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalActive() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("active_"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("active_"));
 	}
 
 	public long getColumnBitmask() {

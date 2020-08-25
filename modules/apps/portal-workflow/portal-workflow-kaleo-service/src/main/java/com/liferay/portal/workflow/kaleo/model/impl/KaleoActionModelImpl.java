@@ -458,7 +458,7 @@ public class KaleoActionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -592,7 +592,8 @@ public class KaleoActionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoClassPK"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoClassPK"));
 	}
 
 	@Override
@@ -630,7 +631,7 @@ public class KaleoActionModelImpl
 	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("kaleoDefinitionVersionId"));
+			(Object)getColumnOriginalValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override

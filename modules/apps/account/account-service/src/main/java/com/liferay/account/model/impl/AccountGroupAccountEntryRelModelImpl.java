@@ -428,7 +428,8 @@ public class AccountGroupAccountEntryRelModelImpl
 	 */
 	@Deprecated
 	public long getOriginalAccountGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("accountGroupId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("accountGroupId"));
 	}
 
 	@JSON
@@ -452,7 +453,8 @@ public class AccountGroupAccountEntryRelModelImpl
 	 */
 	@Deprecated
 	public long getOriginalAccountEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("accountEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("accountEntryId"));
 	}
 
 	public long getColumnBitmask() {

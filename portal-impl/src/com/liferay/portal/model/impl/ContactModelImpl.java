@@ -543,7 +543,7 @@ public class ContactModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -674,7 +674,8 @@ public class ContactModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@JSON
@@ -698,7 +699,7 @@ public class ContactModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@JSON
@@ -722,7 +723,7 @@ public class ContactModelImpl
 	 */
 	@Deprecated
 	public long getOriginalAccountId() {
-		return GetterUtil.getLong(getColumnOriginalValue("accountId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("accountId"));
 	}
 
 	@JSON

@@ -493,7 +493,7 @@ public class AssetListEntryAssetEntryRelModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -516,7 +516,7 @@ public class AssetListEntryAssetEntryRelModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -622,7 +622,8 @@ public class AssetListEntryAssetEntryRelModelImpl
 	 */
 	@Deprecated
 	public long getOriginalAssetListEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("assetListEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("assetListEntryId"));
 	}
 
 	@Override
@@ -659,7 +660,8 @@ public class AssetListEntryAssetEntryRelModelImpl
 	 */
 	@Deprecated
 	public long getOriginalSegmentsEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("segmentsEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("segmentsEntryId"));
 	}
 
 	@Override
@@ -682,7 +684,8 @@ public class AssetListEntryAssetEntryRelModelImpl
 	 */
 	@Deprecated
 	public int getOriginalPosition() {
-		return GetterUtil.getInteger(getColumnOriginalValue("position"));
+		return GetterUtil.getInteger(
+			(Object)getColumnOriginalValue("position"));
 	}
 
 	@Override

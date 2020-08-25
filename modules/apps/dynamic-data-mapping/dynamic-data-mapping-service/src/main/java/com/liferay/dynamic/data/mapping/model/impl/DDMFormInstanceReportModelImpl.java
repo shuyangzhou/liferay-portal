@@ -446,7 +446,8 @@ public class DDMFormInstanceReportModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFormInstanceId() {
-		return GetterUtil.getLong(getColumnOriginalValue("formInstanceId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("formInstanceId"));
 	}
 
 	@Override

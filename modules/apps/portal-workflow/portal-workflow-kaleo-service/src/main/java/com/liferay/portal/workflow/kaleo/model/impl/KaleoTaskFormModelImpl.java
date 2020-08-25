@@ -474,7 +474,7 @@ public class KaleoTaskFormModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -595,7 +595,7 @@ public class KaleoTaskFormModelImpl
 	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("kaleoDefinitionVersionId"));
+			(Object)getColumnOriginalValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override
@@ -618,7 +618,8 @@ public class KaleoTaskFormModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoNodeId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoNodeId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoNodeId"));
 	}
 
 	@Override
@@ -641,7 +642,8 @@ public class KaleoTaskFormModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoTaskId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoTaskId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoTaskId"));
 	}
 
 	@Override

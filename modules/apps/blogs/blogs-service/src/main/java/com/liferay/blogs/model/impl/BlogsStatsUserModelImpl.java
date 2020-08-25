@@ -398,7 +398,7 @@ public class BlogsStatsUserModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -421,7 +421,7 @@ public class BlogsStatsUserModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -460,7 +460,7 @@ public class BlogsStatsUserModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@Override
@@ -483,7 +483,8 @@ public class BlogsStatsUserModelImpl
 	 */
 	@Deprecated
 	public int getOriginalEntryCount() {
-		return GetterUtil.getInteger(getColumnOriginalValue("entryCount"));
+		return GetterUtil.getInteger(
+			(Object)getColumnOriginalValue("entryCount"));
 	}
 
 	@Override

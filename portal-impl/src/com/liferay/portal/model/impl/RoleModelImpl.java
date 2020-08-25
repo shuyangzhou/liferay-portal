@@ -548,7 +548,7 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -679,7 +679,8 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@JSON
@@ -703,7 +704,7 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@JSON
@@ -977,7 +978,7 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	 */
 	@Deprecated
 	public int getOriginalType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("type_"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("type_"));
 	}
 
 	@JSON

@@ -603,7 +603,8 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalResourcePrimKey() {
-		return GetterUtil.getLong(getColumnOriginalValue("resourcePrimKey"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("resourcePrimKey"));
 	}
 
 	@JSON
@@ -627,7 +628,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -651,7 +652,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -691,7 +692,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -771,7 +772,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public long getOriginalNodeId() {
-		return GetterUtil.getLong(getColumnOriginalValue("nodeId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("nodeId"));
 	}
 
 	@JSON
@@ -824,7 +825,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public double getOriginalVersion() {
-		return GetterUtil.getDouble(getColumnOriginalValue("version"));
+		return GetterUtil.getDouble((Object)getColumnOriginalValue("version"));
 	}
 
 	@JSON
@@ -944,7 +945,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalHead() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("head"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("head"));
 	}
 
 	@JSON
@@ -1041,7 +1042,7 @@ public class WikiPageModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

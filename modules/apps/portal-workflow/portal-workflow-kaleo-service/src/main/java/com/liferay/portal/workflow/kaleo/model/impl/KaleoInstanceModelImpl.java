@@ -458,7 +458,8 @@ public class KaleoInstanceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoInstanceId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoInstanceId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoInstanceId"));
 	}
 
 	@Override
@@ -495,7 +496,7 @@ public class KaleoInstanceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -534,7 +535,7 @@ public class KaleoInstanceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@Override
@@ -610,7 +611,8 @@ public class KaleoInstanceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoDefinitionId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoDefinitionId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoDefinitionId"));
 	}
 
 	@Override
@@ -634,7 +636,7 @@ public class KaleoInstanceModelImpl
 	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("kaleoDefinitionVersionId"));
+			(Object)getColumnOriginalValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override
@@ -686,7 +688,7 @@ public class KaleoInstanceModelImpl
 	@Deprecated
 	public int getOriginalKaleoDefinitionVersion() {
 		return GetterUtil.getInteger(
-			getColumnOriginalValue("kaleoDefinitionVersion"));
+			(Object)getColumnOriginalValue("kaleoDefinitionVersion"));
 	}
 
 	@Override
@@ -751,7 +753,7 @@ public class KaleoInstanceModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@Override
@@ -779,7 +781,8 @@ public class KaleoInstanceModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalCompleted() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("completed"));
+		return GetterUtil.getBoolean(
+			(Object)getColumnOriginalValue("completed"));
 	}
 
 	@Override

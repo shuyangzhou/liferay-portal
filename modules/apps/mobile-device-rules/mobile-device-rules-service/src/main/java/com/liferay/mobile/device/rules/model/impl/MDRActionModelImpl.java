@@ -508,7 +508,7 @@ public class MDRActionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -532,7 +532,7 @@ public class MDRActionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -694,7 +694,7 @@ public class MDRActionModelImpl
 	@Deprecated
 	public long getOriginalRuleGroupInstanceId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("ruleGroupInstanceId"));
+			(Object)getColumnOriginalValue("ruleGroupInstanceId"));
 	}
 
 	@JSON

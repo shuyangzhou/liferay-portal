@@ -494,7 +494,7 @@ public class LayoutFriendlyURLModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -517,7 +517,7 @@ public class LayoutFriendlyURLModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -623,7 +623,7 @@ public class LayoutFriendlyURLModelImpl
 	 */
 	@Deprecated
 	public long getOriginalPlid() {
-		return GetterUtil.getLong(getColumnOriginalValue("plid"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("plid"));
 	}
 
 	@Override
@@ -651,7 +651,8 @@ public class LayoutFriendlyURLModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalPrivateLayout() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("privateLayout"));
+		return GetterUtil.getBoolean(
+			(Object)getColumnOriginalValue("privateLayout"));
 	}
 
 	@Override

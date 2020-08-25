@@ -468,7 +468,7 @@ public class TasksEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -523,7 +523,7 @@ public class TasksEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -654,7 +654,8 @@ public class TasksEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalAssigneeUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("assigneeUserId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("assigneeUserId"));
 	}
 
 	@JSON
@@ -694,7 +695,8 @@ public class TasksEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalResolverUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("resolverUserId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("resolverUserId"));
 	}
 
 	@JSON
@@ -748,7 +750,7 @@ public class TasksEntryModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	public long getColumnBitmask() {

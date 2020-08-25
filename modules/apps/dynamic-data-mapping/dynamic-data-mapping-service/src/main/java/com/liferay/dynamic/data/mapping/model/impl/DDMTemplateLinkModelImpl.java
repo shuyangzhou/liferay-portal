@@ -404,7 +404,8 @@ public class DDMTemplateLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@Override
@@ -427,7 +428,7 @@ public class DDMTemplateLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@Override
@@ -450,7 +451,7 @@ public class DDMTemplateLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalTemplateId() {
-		return GetterUtil.getLong(getColumnOriginalValue("templateId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("templateId"));
 	}
 
 	public long getColumnBitmask() {

@@ -424,7 +424,7 @@ public class OAuthTokenModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@Override
@@ -556,7 +556,7 @@ public class OAuthTokenModelImpl
 	 */
 	@Deprecated
 	public long getOriginalModuleId() {
-		return GetterUtil.getLong(getColumnOriginalValue("moduleId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("moduleId"));
 	}
 
 	@Override

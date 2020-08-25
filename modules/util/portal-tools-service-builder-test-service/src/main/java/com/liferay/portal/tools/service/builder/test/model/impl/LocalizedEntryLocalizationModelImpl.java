@@ -369,7 +369,8 @@ public class LocalizedEntryLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLocalizedEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("localizedEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("localizedEntryId"));
 	}
 
 	@Override

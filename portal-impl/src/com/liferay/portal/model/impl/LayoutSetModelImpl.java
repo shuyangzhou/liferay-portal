@@ -492,7 +492,7 @@ public class LayoutSetModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -516,7 +516,7 @@ public class LayoutSetModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -582,7 +582,8 @@ public class LayoutSetModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalPrivateLayout() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("privateLayout"));
+		return GetterUtil.getBoolean(
+			(Object)getColumnOriginalValue("privateLayout"));
 	}
 
 	@JSON
@@ -606,7 +607,7 @@ public class LayoutSetModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLogoId() {
-		return GetterUtil.getLong(getColumnOriginalValue("logoId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("logoId"));
 	}
 
 	@JSON

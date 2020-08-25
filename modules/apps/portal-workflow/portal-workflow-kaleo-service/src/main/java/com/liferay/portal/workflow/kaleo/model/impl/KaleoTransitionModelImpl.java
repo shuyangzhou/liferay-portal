@@ -464,7 +464,7 @@ public class KaleoTransitionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -585,7 +585,7 @@ public class KaleoTransitionModelImpl
 	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("kaleoDefinitionVersionId"));
+			(Object)getColumnOriginalValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override
@@ -608,7 +608,8 @@ public class KaleoTransitionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoNodeId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoNodeId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoNodeId"));
 	}
 
 	@Override
@@ -750,7 +751,7 @@ public class KaleoTransitionModelImpl
 	@Deprecated
 	public boolean getOriginalDefaultTransition() {
 		return GetterUtil.getBoolean(
-			getColumnOriginalValue("defaultTransition"));
+			(Object)getColumnOriginalValue("defaultTransition"));
 	}
 
 	public long getColumnBitmask() {

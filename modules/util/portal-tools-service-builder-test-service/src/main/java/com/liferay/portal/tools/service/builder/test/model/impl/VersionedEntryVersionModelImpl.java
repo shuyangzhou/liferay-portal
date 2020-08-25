@@ -360,7 +360,7 @@ public class VersionedEntryVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalVersion() {
-		return GetterUtil.getInteger(getColumnOriginalValue("version"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("version"));
 	}
 
 	@Override
@@ -383,7 +383,8 @@ public class VersionedEntryVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalVersionedEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("versionedEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("versionedEntryId"));
 	}
 
 	@Override
@@ -406,7 +407,7 @@ public class VersionedEntryVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	public long getColumnBitmask() {

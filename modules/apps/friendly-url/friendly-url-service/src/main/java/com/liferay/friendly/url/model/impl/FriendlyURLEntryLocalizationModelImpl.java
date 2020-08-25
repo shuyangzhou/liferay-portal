@@ -446,7 +446,8 @@ public class FriendlyURLEntryLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFriendlyURLEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("friendlyURLEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("friendlyURLEntryId"));
 	}
 
 	@Override
@@ -525,7 +526,7 @@ public class FriendlyURLEntryLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -568,7 +569,8 @@ public class FriendlyURLEntryLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@Override
@@ -591,7 +593,7 @@ public class FriendlyURLEntryLocalizationModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	public long getColumnBitmask() {

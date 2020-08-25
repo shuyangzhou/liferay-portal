@@ -395,7 +395,7 @@ public class AMImageEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -418,7 +418,7 @@ public class AMImageEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -483,7 +483,8 @@ public class AMImageEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFileVersionId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fileVersionId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fileVersionId"));
 	}
 
 	@Override

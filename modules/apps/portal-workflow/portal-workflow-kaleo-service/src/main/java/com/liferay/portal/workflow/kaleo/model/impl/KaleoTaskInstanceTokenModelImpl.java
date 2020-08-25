@@ -511,7 +511,7 @@ public class KaleoTaskInstanceTokenModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -632,7 +632,7 @@ public class KaleoTaskInstanceTokenModelImpl
 	@Deprecated
 	public long getOriginalKaleoDefinitionVersionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("kaleoDefinitionVersionId"));
+			(Object)getColumnOriginalValue("kaleoDefinitionVersionId"));
 	}
 
 	@Override
@@ -655,7 +655,8 @@ public class KaleoTaskInstanceTokenModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoInstanceId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoInstanceId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoInstanceId"));
 	}
 
 	@Override
@@ -692,7 +693,8 @@ public class KaleoTaskInstanceTokenModelImpl
 	 */
 	@Deprecated
 	public long getOriginalKaleoTaskId() {
-		return GetterUtil.getLong(getColumnOriginalValue("kaleoTaskId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("kaleoTaskId"));
 	}
 
 	@Override
@@ -762,7 +764,7 @@ public class KaleoTaskInstanceTokenModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@Override

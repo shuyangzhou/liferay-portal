@@ -348,7 +348,7 @@ public class NestedSetsTreeEntryModelImpl
 	@Deprecated
 	public long getOriginalParentNestedSetsTreeEntryId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("parentNestedSetsTreeEntryId"));
+			(Object)getColumnOriginalValue("parentNestedSetsTreeEntryId"));
 	}
 
 	@Override

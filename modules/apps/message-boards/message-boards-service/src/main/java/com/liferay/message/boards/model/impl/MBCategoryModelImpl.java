@@ -538,7 +538,7 @@ public class MBCategoryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCategoryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("categoryId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("categoryId"));
 	}
 
 	@JSON
@@ -562,7 +562,7 @@ public class MBCategoryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -586,7 +586,7 @@ public class MBCategoryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -697,7 +697,8 @@ public class MBCategoryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalParentCategoryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("parentCategoryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("parentCategoryId"));
 	}
 
 	@JSON
@@ -796,7 +797,7 @@ public class MBCategoryModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

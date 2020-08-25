@@ -473,7 +473,7 @@ public class SocialActivitySettingModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -532,7 +532,8 @@ public class SocialActivitySettingModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@JSON
@@ -556,7 +557,8 @@ public class SocialActivitySettingModelImpl
 	 */
 	@Deprecated
 	public int getOriginalActivityType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("activityType"));
+		return GetterUtil.getInteger(
+			(Object)getColumnOriginalValue("activityType"));
 	}
 
 	@JSON

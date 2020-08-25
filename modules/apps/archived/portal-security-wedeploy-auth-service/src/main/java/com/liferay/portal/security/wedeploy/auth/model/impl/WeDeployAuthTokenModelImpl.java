@@ -515,7 +515,7 @@ public class WeDeployAuthTokenModelImpl
 	 */
 	@Deprecated
 	public int getOriginalType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("type_"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("type_"));
 	}
 
 	public long getColumnBitmask() {

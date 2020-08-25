@@ -592,7 +592,7 @@ public class AssetVocabularyModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -616,7 +616,7 @@ public class AssetVocabularyModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -997,7 +997,8 @@ public class AssetVocabularyModelImpl
 	 */
 	@Deprecated
 	public int getOriginalVisibilityType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("visibilityType"));
+		return GetterUtil.getInteger(
+			(Object)getColumnOriginalValue("visibilityType"));
 	}
 
 	@JSON

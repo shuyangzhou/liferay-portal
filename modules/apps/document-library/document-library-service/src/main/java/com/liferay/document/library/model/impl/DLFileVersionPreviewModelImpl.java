@@ -415,7 +415,8 @@ public class DLFileVersionPreviewModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFileEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fileEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fileEntryId"));
 	}
 
 	@Override
@@ -438,7 +439,8 @@ public class DLFileVersionPreviewModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFileVersionId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fileVersionId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fileVersionId"));
 	}
 
 	@Override
@@ -461,7 +463,8 @@ public class DLFileVersionPreviewModelImpl
 	 */
 	@Deprecated
 	public int getOriginalPreviewStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("previewStatus"));
+		return GetterUtil.getInteger(
+			(Object)getColumnOriginalValue("previewStatus"));
 	}
 
 	public long getColumnBitmask() {

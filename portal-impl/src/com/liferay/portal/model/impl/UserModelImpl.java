@@ -843,7 +843,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -867,7 +867,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -951,7 +951,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public boolean getOriginalDefaultUser() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("defaultUser"));
+		return GetterUtil.getBoolean(
+			(Object)getColumnOriginalValue("defaultUser"));
 	}
 
 	@JSON
@@ -975,7 +976,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public long getOriginalContactId() {
-		return GetterUtil.getLong(getColumnOriginalValue("contactId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("contactId"));
 	}
 
 	@JSON(include = false)
@@ -1207,7 +1208,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public long getOriginalFacebookId() {
-		return GetterUtil.getLong(getColumnOriginalValue("facebookId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("facebookId"));
 	}
 
 	@JSON
@@ -1304,7 +1305,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public long getOriginalPortraitId() {
-		return GetterUtil.getLong(getColumnOriginalValue("portraitId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("portraitId"));
 	}
 
 	@JSON
@@ -1666,7 +1667,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@Override

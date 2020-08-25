@@ -467,7 +467,7 @@ public class MicroblogsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -507,7 +507,7 @@ public class MicroblogsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -596,7 +596,8 @@ public class MicroblogsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCreatorClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("creatorClassNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("creatorClassNameId"));
 	}
 
 	@JSON
@@ -620,7 +621,8 @@ public class MicroblogsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCreatorClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("creatorClassPK"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("creatorClassPK"));
 	}
 
 	@JSON
@@ -664,7 +666,7 @@ public class MicroblogsEntryModelImpl
 	 */
 	@Deprecated
 	public int getOriginalType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("type_"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("type_"));
 	}
 
 	@JSON
@@ -689,7 +691,7 @@ public class MicroblogsEntryModelImpl
 	@Deprecated
 	public long getOriginalParentMicroblogsEntryId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("parentMicroblogsEntryId"));
+			(Object)getColumnOriginalValue("parentMicroblogsEntryId"));
 	}
 
 	@JSON
@@ -714,7 +716,7 @@ public class MicroblogsEntryModelImpl
 	@Deprecated
 	public int getOriginalSocialRelationType() {
 		return GetterUtil.getInteger(
-			getColumnOriginalValue("socialRelationType"));
+			(Object)getColumnOriginalValue("socialRelationType"));
 	}
 
 	public long getColumnBitmask() {

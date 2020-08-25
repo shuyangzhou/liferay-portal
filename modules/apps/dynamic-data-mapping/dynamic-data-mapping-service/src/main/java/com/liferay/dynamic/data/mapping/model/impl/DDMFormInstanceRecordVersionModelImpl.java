@@ -608,7 +608,7 @@ public class DDMFormInstanceRecordVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -667,7 +667,8 @@ public class DDMFormInstanceRecordVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFormInstanceId() {
-		return GetterUtil.getLong(getColumnOriginalValue("formInstanceId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("formInstanceId"));
 	}
 
 	@JSON
@@ -721,7 +722,7 @@ public class DDMFormInstanceRecordVersionModelImpl
 	@Deprecated
 	public long getOriginalFormInstanceRecordId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("formInstanceRecordId"));
+			(Object)getColumnOriginalValue("formInstanceRecordId"));
 	}
 
 	@JSON
@@ -789,7 +790,7 @@ public class DDMFormInstanceRecordVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

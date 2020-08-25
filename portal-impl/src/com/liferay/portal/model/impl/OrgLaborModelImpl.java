@@ -473,7 +473,8 @@ public class OrgLaborModelImpl
 	 */
 	@Deprecated
 	public long getOriginalOrganizationId() {
-		return GetterUtil.getLong(getColumnOriginalValue("organizationId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("organizationId"));
 	}
 
 	@JSON

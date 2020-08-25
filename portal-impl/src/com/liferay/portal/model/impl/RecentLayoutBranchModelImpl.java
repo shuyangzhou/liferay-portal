@@ -390,7 +390,7 @@ public class RecentLayoutBranchModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -443,7 +443,7 @@ public class RecentLayoutBranchModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@Override
@@ -466,7 +466,8 @@ public class RecentLayoutBranchModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLayoutBranchId() {
-		return GetterUtil.getLong(getColumnOriginalValue("layoutBranchId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("layoutBranchId"));
 	}
 
 	@Override
@@ -489,7 +490,8 @@ public class RecentLayoutBranchModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLayoutSetBranchId() {
-		return GetterUtil.getLong(getColumnOriginalValue("layoutSetBranchId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("layoutSetBranchId"));
 	}
 
 	@Override
@@ -512,7 +514,7 @@ public class RecentLayoutBranchModelImpl
 	 */
 	@Deprecated
 	public long getOriginalPlid() {
-		return GetterUtil.getLong(getColumnOriginalValue("plid"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("plid"));
 	}
 
 	public long getColumnBitmask() {

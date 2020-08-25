@@ -471,7 +471,7 @@ public class AssetCategoryPropertyModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -582,7 +582,7 @@ public class AssetCategoryPropertyModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCategoryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("categoryId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("categoryId"));
 	}
 
 	@JSON

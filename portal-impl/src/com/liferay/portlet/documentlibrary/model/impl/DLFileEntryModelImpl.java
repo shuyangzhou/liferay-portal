@@ -696,7 +696,7 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -720,7 +720,7 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -760,7 +760,7 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -890,7 +890,8 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalRepositoryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("repositoryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("repositoryId"));
 	}
 
 	@JSON
@@ -914,7 +915,7 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFolderId() {
-		return GetterUtil.getLong(getColumnOriginalValue("folderId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("folderId"));
 	}
 
 	@JSON
@@ -1134,7 +1135,8 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFileEntryTypeId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fileEntryTypeId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fileEntryTypeId"));
 	}
 
 	@JSON
@@ -1193,7 +1195,8 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalSmallImageId() {
-		return GetterUtil.getLong(getColumnOriginalValue("smallImageId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("smallImageId"));
 	}
 
 	@JSON
@@ -1217,7 +1220,8 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLargeImageId() {
-		return GetterUtil.getLong(getColumnOriginalValue("largeImageId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("largeImageId"));
 	}
 
 	@JSON
@@ -1241,7 +1245,8 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCustom1ImageId() {
-		return GetterUtil.getLong(getColumnOriginalValue("custom1ImageId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("custom1ImageId"));
 	}
 
 	@JSON
@@ -1265,7 +1270,8 @@ public class DLFileEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCustom2ImageId() {
-		return GetterUtil.getLong(getColumnOriginalValue("custom2ImageId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("custom2ImageId"));
 	}
 
 	@JSON

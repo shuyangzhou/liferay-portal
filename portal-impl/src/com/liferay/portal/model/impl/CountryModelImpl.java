@@ -562,7 +562,7 @@ public class CountryModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalActive() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("active_"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("active_"));
 	}
 
 	public long getColumnBitmask() {

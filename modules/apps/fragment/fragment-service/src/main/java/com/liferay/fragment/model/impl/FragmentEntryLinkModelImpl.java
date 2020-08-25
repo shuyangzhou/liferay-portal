@@ -656,7 +656,7 @@ public class FragmentEntryLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -680,7 +680,7 @@ public class FragmentEntryLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -808,7 +808,8 @@ public class FragmentEntryLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFragmentEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fragmentEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fragmentEntryId"));
 	}
 
 	@JSON
@@ -833,7 +834,7 @@ public class FragmentEntryLinkModelImpl
 	@Deprecated
 	public long getOriginalSegmentsExperienceId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("segmentsExperienceId"));
+			(Object)getColumnOriginalValue("segmentsExperienceId"));
 	}
 
 	@Override
@@ -877,7 +878,8 @@ public class FragmentEntryLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@JSON
@@ -901,7 +903,7 @@ public class FragmentEntryLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@JSON
@@ -925,7 +927,7 @@ public class FragmentEntryLinkModelImpl
 	 */
 	@Deprecated
 	public long getOriginalPlid() {
-		return GetterUtil.getLong(getColumnOriginalValue("plid"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("plid"));
 	}
 
 	@JSON

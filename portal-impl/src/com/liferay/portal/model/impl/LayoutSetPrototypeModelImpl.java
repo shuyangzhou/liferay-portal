@@ -511,7 +511,7 @@ public class LayoutSetPrototypeModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -867,7 +867,7 @@ public class LayoutSetPrototypeModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalActive() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("active_"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("active_"));
 	}
 
 	@Override

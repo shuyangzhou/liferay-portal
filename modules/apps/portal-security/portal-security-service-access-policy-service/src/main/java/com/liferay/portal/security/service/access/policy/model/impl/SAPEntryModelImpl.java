@@ -461,7 +461,7 @@ public class SAPEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -598,7 +598,8 @@ public class SAPEntryModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalDefaultSAPEntry() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("defaultSAPEntry"));
+		return GetterUtil.getBoolean(
+			(Object)getColumnOriginalValue("defaultSAPEntry"));
 	}
 
 	@JSON

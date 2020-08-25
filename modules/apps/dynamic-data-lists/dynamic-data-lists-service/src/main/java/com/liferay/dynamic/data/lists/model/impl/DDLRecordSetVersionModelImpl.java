@@ -616,7 +616,8 @@ public class DDLRecordSetVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalRecordSetId() {
-		return GetterUtil.getLong(getColumnOriginalValue("recordSetId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("recordSetId"));
 	}
 
 	@JSON
@@ -923,7 +924,7 @@ public class DDLRecordSetVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

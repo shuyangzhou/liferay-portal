@@ -691,7 +691,7 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -715,7 +715,7 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -829,7 +829,7 @@ public class LayoutPageTemplateEntryModelImpl
 	@Deprecated
 	public long getOriginalLayoutPageTemplateCollectionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("layoutPageTemplateCollectionId"));
+			(Object)getColumnOriginalValue("layoutPageTemplateCollectionId"));
 	}
 
 	@JSON
@@ -904,7 +904,8 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@JSON
@@ -928,7 +929,8 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassTypeId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classTypeId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classTypeId"));
 	}
 
 	@JSON
@@ -981,7 +983,7 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public int getOriginalType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("type_"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("type_"));
 	}
 
 	@JSON
@@ -1026,7 +1028,8 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalDefaultTemplate() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("defaultTemplate"));
+		return GetterUtil.getBoolean(
+			(Object)getColumnOriginalValue("defaultTemplate"));
 	}
 
 	@JSON
@@ -1050,7 +1053,8 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalLayoutPrototypeId() {
-		return GetterUtil.getLong(getColumnOriginalValue("layoutPrototypeId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("layoutPrototypeId"));
 	}
 
 	@JSON
@@ -1074,7 +1078,7 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalPlid() {
-		return GetterUtil.getLong(getColumnOriginalValue("plid"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("plid"));
 	}
 
 	@JSON
@@ -1113,7 +1117,7 @@ public class LayoutPageTemplateEntryModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@JSON

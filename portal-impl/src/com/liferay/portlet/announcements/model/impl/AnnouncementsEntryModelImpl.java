@@ -575,7 +575,7 @@ public class AnnouncementsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@JSON
@@ -615,7 +615,7 @@ public class AnnouncementsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalUserId() {
-		return GetterUtil.getLong(getColumnOriginalValue("userId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("userId"));
 	}
 
 	@JSON
@@ -715,7 +715,8 @@ public class AnnouncementsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassNameId() {
-		return GetterUtil.getLong(getColumnOriginalValue("classNameId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("classNameId"));
 	}
 
 	@JSON
@@ -739,7 +740,7 @@ public class AnnouncementsEntryModelImpl
 	 */
 	@Deprecated
 	public long getOriginalClassPK() {
-		return GetterUtil.getLong(getColumnOriginalValue("classPK"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("classPK"));
 	}
 
 	@JSON
@@ -894,7 +895,7 @@ public class AnnouncementsEntryModelImpl
 	 */
 	@Deprecated
 	public boolean getOriginalAlert() {
-		return GetterUtil.getBoolean(getColumnOriginalValue("alert"));
+		return GetterUtil.getBoolean((Object)getColumnOriginalValue("alert"));
 	}
 
 	@Override

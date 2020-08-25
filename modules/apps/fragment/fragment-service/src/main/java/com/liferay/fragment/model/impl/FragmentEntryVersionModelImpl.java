@@ -621,7 +621,7 @@ public class FragmentEntryVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalVersion() {
-		return GetterUtil.getInteger(getColumnOriginalValue("version"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("version"));
 	}
 
 	@Override
@@ -672,7 +672,8 @@ public class FragmentEntryVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalFragmentEntryId() {
-		return GetterUtil.getLong(getColumnOriginalValue("fragmentEntryId"));
+		return GetterUtil.getLong(
+			(Object)getColumnOriginalValue("fragmentEntryId"));
 	}
 
 	@Override
@@ -695,7 +696,7 @@ public class FragmentEntryVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalGroupId() {
-		return GetterUtil.getLong(getColumnOriginalValue("groupId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -718,7 +719,7 @@ public class FragmentEntryVersionModelImpl
 	 */
 	@Deprecated
 	public long getOriginalCompanyId() {
-		return GetterUtil.getLong(getColumnOriginalValue("companyId"));
+		return GetterUtil.getLong((Object)getColumnOriginalValue("companyId"));
 	}
 
 	@Override
@@ -825,7 +826,7 @@ public class FragmentEntryVersionModelImpl
 	@Deprecated
 	public long getOriginalFragmentCollectionId() {
 		return GetterUtil.getLong(
-			getColumnOriginalValue("fragmentCollectionId"));
+			(Object)getColumnOriginalValue("fragmentCollectionId"));
 	}
 
 	@Override
@@ -1032,7 +1033,7 @@ public class FragmentEntryVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalType() {
-		return GetterUtil.getInteger(getColumnOriginalValue("type_"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("type_"));
 	}
 
 	@Override
@@ -1069,7 +1070,7 @@ public class FragmentEntryVersionModelImpl
 	 */
 	@Deprecated
 	public int getOriginalStatus() {
-		return GetterUtil.getInteger(getColumnOriginalValue("status"));
+		return GetterUtil.getInteger((Object)getColumnOriginalValue("status"));
 	}
 
 	@Override
