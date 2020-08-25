@@ -14,16 +14,13 @@
 
 package com.liferay.portal.workflow.metrics.internal.search.index;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -33,7 +30,6 @@ import com.liferay.portal.search.engine.adapter.index.DeleteIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexResponse;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -113,17 +109,6 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 			new DeleteIndexRequest(getIndexName(companyId)));
 	}
 
-	@Activate
-	protected void activate() throws Exception {
-		ActionableDynamicQuery actionableDynamicQuery =
-			companyLocalService.getActionableDynamicQuery();
-
-		actionableDynamicQuery.setPerformActionMethod(
-			(Company company) -> createIndex(company.getCompanyId()));
-
-		actionableDynamicQuery.performActions();
-	}
-
 	protected boolean hasIndex(String indexName) {
 		if (searchEngineAdapter == null) {
 			return false;
@@ -144,9 +129,6 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	@Reference
-	protected CompanyLocalService companyLocalService;
 
 	@Reference(
 		cardinality = ReferenceCardinality.OPTIONAL,
