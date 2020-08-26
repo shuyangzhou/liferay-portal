@@ -15,9 +15,6 @@
 package com.liferay.segments.internal.messaging;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -27,7 +24,6 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -38,11 +34,8 @@ import com.liferay.segments.provider.SegmentsEntryProviderRegistry;
 import com.liferay.segments.service.SegmentsEntryLocalService;
 import com.liferay.segments.service.SegmentsEntryRelLocalService;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -76,25 +69,16 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 
 		long companyId = message.getLong("companyId");
 
-		try {
-			Set<Long> classPKs = SetUtil.symmetricDifference(
-				_getOldClassPKs(companyId, segmentsEntryId, indexer),
-				_getNewClassPKs(segmentsEntryId));
+		Set<Long> classPKs = SetUtil.symmetricDifference(
+			_getOldClassPKs(companyId, segmentsEntryId, indexer),
+			_getNewClassPKs(segmentsEntryId));
 
-			for (long classPK : classPKs) {
-				indexer.reindex(type, classPK);
-			}
-		}
-		catch (PortalException portalException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to index segment members", portalException);
-			}
+		for (long classPK : classPKs) {
+			indexer.reindex(type, classPK);
 		}
 	}
 
-	private Set<Long> _getNewClassPKs(long segmentsEntryId)
-		throws PortalException {
-
+	private Set<Long> _getNewClassPKs(long segmentsEntryId) throws Exception {
 		long[] classPKs =
 			_segmentsEntryProviderRegistry.getSegmentsEntryClassPKs(
 				segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -124,7 +108,7 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 
 	private Set<Long> _getOldClassPKs(
 			long companyId, long segmentsEntryId, Indexer<Object> indexer)
-		throws SearchException {
+		throws Exception {
 
 		SearchContext searchContext = new SearchContext();
 
@@ -141,17 +125,8 @@ public class SegmentsEntryReindexMessageListener extends BaseMessageListener {
 				GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)));
 		}
 
-		Stream<Document> stream = Arrays.stream(hits.getDocs());
-
-		return stream.map(
-			doc -> GetterUtil.getLong(doc.getField(Field.ENTRY_CLASS_PK))
-		).collect(
-			Collectors.toSet()
-		);
+		return classPKsSet;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SegmentsEntryReindexMessageListener.class);
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;
