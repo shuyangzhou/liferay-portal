@@ -249,7 +249,80 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			sb.append(") TEMP_TABLE GROUP BY groupId");
 
-			String sql = StringUtil.replace(
+			boolean oracle = false;
+
+			if (db.getDBType() == DBType.ORACLE) {
+				oracle = true;
+			}
+
+			String sql = StringPool.BLANK;
+
+			SQLQuery sqlQuery = null;
+
+			QueryPos queryPos = null;
+
+			List<Object[]> list = Collections.emptyList();
+
+			if (oracle && (groupIds.length > 1000)) {
+				int batchSize = 1000;
+
+				int end = batchSize;
+
+				int start = 0;
+
+				long[] batchArray = null;
+
+				while (start < groupIds.length) {
+					batchArray = ArrayUtil.subset(groupIds, start, end);
+
+					sql = StringUtil.replace(
+						sb.toString(), "[$GROUP_ID$]",
+						StringPool.OPEN_PARENTHESIS +
+							StringUtil.merge(batchArray) +
+								StringPool.CLOSE_PARENTHESIS);
+
+					if (status == WorkflowConstants.STATUS_ANY) {
+						sql = StringUtil.removeSubstring(sql, _STATUS_SQL);
+					}
+
+					sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+					queryPos = QueryPos.getInstance(sqlQuery);
+
+					for (int i = 0; i < 4; i++) {
+						queryPos.add(companyId);
+						queryPos.add(false);
+
+						if (status != WorkflowConstants.STATUS_ANY) {
+							queryPos.add(status);
+						}
+					}
+
+					list = (List<Object[]>)QueryUtil.list(
+						sqlQuery, getDialect(), QueryUtil.ALL_POS,
+						QueryUtil.ALL_POS);
+
+					for (Object[] objects : list) {
+						Number groupId = (Number)objects[0];
+						Number count = (Number)objects[1];
+
+						counts.put(groupId.longValue(), count.intValue());
+					}
+
+					start += batchSize;
+
+					if (groupIds.length < (start + batchSize)) {
+						end = groupIds.length;
+					}
+					else {
+						end = start + batchSize;
+					}
+				}
+
+				return counts;
+			}
+
+			sql = StringUtil.replace(
 				sb.toString(), "[$GROUP_ID$]",
 				StringPool.OPEN_PARENTHESIS + StringUtil.merge(groupIds) +
 					StringPool.CLOSE_PARENTHESIS);
@@ -258,9 +331,9 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sql = StringUtil.removeSubstring(sql, _STATUS_SQL);
 			}
 
-			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+			sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+			queryPos = QueryPos.getInstance(sqlQuery);
 
 			for (int i = 0; i < 4; i++) {
 				queryPos.add(companyId);
@@ -271,7 +344,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				}
 			}
 
-			List<Object[]> list = (List<Object[]>)QueryUtil.list(
+			list = (List<Object[]>)QueryUtil.list(
 				sqlQuery, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			for (Object[] objects : list) {
