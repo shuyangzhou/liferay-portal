@@ -65,10 +65,11 @@ public class BNDWebContextPathCheck extends BaseFileCheck {
 		String webContextPath = BNDSourceUtil.getDefinitionValue(
 			content, "Web-ContextPath");
 
-		if (_hasPackageJSONNameProperty(absolutePath)) {
-			if (webContextPath == null) {
-				addMessage(fileName, "Missing Web-ContextPath");
-			}
+		if ((_hasPackageJSONNameProperty(absolutePath) ||
+			 moduleName.endsWith("-web")) &&
+			(webContextPath == null)) {
+
+			addMessage(fileName, "Missing Web-ContextPath");
 		}
 		else if ((webContextPath != null) &&
 				 !webContextPath.equals("/" + moduleName)) {
