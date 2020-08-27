@@ -7,4 +7,5 @@ Provide-Capability:\
 Require-Capability:\
 	alloyeditor.link.browse;\
 		filter:="(alloyeditor.link.browse=default)"
+Web-ContextPath: /wiki-editor-link-browse-web
 -dsannotations-options: inherit

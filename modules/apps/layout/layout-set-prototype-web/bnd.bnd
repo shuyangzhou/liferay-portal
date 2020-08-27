@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Layout Set Prototype Web
 Bundle-SymbolicName: com.liferay.layout.set.prototype.web
 Bundle-Version: 4.0.12
+Web-ContextPath: /layout-set-prototype-web
 -dsannotations-options: inherit

@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Site Browser Web
 Bundle-SymbolicName: com.liferay.site.browser.web
 Bundle-Version: 5.0.10
+Web-ContextPath: /site-browser-web

@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Adaptive Media Document Library Web
 Bundle-SymbolicName: com.liferay.adaptive.media.document.library.web
 Bundle-Version: 4.0.8
+Web-ContextPath: /adaptive-media-document-library-web
 -dsannotations-options: inherit

@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Adaptive Media Document Library Item Selector Web
 Bundle-SymbolicName: com.liferay.adaptive.media.document.library.item.selector.web
 Bundle-Version: 4.0.5
+Web-ContextPath: /adaptive-media-document-library-item-selector-web
 -dsannotations-options: inherit

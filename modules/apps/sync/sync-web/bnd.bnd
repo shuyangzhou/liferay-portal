@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Sync Web
 Bundle-SymbolicName: com.liferay.sync.web
 Bundle-Version: 4.0.14
+Web-ContextPath: /sync-web
 -dsannotations-options: inherit

@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Adaptive Media Journal Web
 Bundle-SymbolicName: com.liferay.adaptive.media.journal.web
 Bundle-Version: 4.0.7
+Web-ContextPath: /adaptive-media-journal-web
 -dsannotations-options: inherit

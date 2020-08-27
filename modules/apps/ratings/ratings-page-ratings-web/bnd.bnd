@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Ratings Page Ratings Web
 Bundle-SymbolicName: com.liferay.ratings.page.ratings.web
 Bundle-Version: 5.0.10
+Web-ContextPath: /ratings-page-ratings-web

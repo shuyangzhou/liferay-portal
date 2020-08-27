@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Quick Note Web
 Bundle-SymbolicName: com.liferay.quick.note.web
 Bundle-Version: 5.0.11
+Web-ContextPath: /quick-note-web

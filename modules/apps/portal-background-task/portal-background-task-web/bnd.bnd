@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Portal Background Task Web
 Bundle-SymbolicName: com.liferay.portal.background.task.web
 Bundle-Version: 5.0.7
+Web-ContextPath: /portal-background-task-web

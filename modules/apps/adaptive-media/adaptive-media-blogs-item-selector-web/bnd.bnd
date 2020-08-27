@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Adaptive Media Blogs Item Selector Web
 Bundle-SymbolicName: com.liferay.adaptive.media.blogs.item.selector.web
 Bundle-Version: 4.0.5
+Web-ContextPath: /adaptive-media-blogs-item-selector-web
 -dsannotations-options: inherit

@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Roles Selector Web
 Bundle-SymbolicName: com.liferay.roles.selector.web
 Bundle-Version: 4.0.10
+Web-ContextPath: /roles-selector-web

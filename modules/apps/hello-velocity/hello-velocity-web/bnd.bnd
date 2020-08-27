@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Hello Velocity Web
 Bundle-SymbolicName: com.liferay.hello.velocity.web
 Bundle-Version: 5.0.8
+Web-ContextPath: /hello-velocity-web

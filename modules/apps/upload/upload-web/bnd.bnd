@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Upload Web
 Bundle-SymbolicName: com.liferay.upload.web
 Bundle-Version: 4.0.11
+Web-ContextPath: /upload-web
 -dsannotations-options: inherit

@@ -1,4 +1,5 @@
 Bundle-Name: Liferay Adaptive Media Item Selector Upload Web
 Bundle-SymbolicName: com.liferay.adaptive.media.item.selector.upload.web
 Bundle-Version: 4.0.5
+Web-ContextPath: /adaptive-media-item-selector-upload-web
 -dsannotations-options: inherit

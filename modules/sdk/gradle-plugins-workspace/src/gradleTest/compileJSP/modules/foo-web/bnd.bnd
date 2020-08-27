@@ -1,2 +1,3 @@
 Bundle-SymbolicName: com.liferay.foo.web
 Bundle-Version: 1.0.0
+Web-ContextPath: /foo-web
