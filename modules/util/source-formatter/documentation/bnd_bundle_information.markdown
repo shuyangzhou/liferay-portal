@@ -33,8 +33,8 @@ For modules ending with `-util`, the `Bundle-Name` should end with `Utilities`.
 
 ---
 
-For web modules (modules ending with `-web`), the `Web-ContextPath` should also
-match the directory path of the module.
+Web modules (modules ending with `-web`) should have the `Web-ContextPath`
+header, the header should match the directory path of the module.
 
 ### Example
 
