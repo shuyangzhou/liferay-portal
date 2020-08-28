@@ -36,7 +36,6 @@ import com.liferay.portal.service.base.VirtualHostLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
 
 import java.net.IDN;
-import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -67,17 +66,14 @@ public class VirtualHostLocalServiceImpl
 
 	@Override
 	public VirtualHost fetchVirtualHost(String hostname) {
-		if (Validator.isIPv6Address(hostname)) {
-			try {
-				Inet6Address address = (Inet6Address)InetAddress.getByName(
-					hostname);
+		try {
+			InetAddress inetAddress = InetAddress.getByName(hostname);
 
-				hostname = address.getHostAddress();
-			}
-			catch (UnknownHostException unknownHostException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(unknownHostException, unknownHostException);
-				}
+			hostname = inetAddress.getHostAddress();
+		}
+		catch (UnknownHostException unknownHostException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(unknownHostException, unknownHostException);
 			}
 		}
 

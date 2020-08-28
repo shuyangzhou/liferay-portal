@@ -103,7 +103,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.IDN;
-import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -1405,12 +1404,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		if (Validator.isNotNull(virtualHostname)) {
 			try {
-				if (Validator.isIPv6Address(virtualHostname)) {
-					Inet6Address address = (Inet6Address)InetAddress.getByName(
-						virtualHostname);
+				InetAddress inetAddress = InetAddress.getByName(
+					virtualHostname);
 
-					virtualHostname = address.getHostAddress();
-				}
+				virtualHostname = inetAddress.getHostAddress();
 			}
 			catch (UnknownHostException unknownHostException) {
 				if (_log.isDebugEnabled()) {
