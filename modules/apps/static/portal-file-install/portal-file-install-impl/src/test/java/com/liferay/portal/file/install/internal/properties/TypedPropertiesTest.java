@@ -21,6 +21,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -65,12 +66,7 @@ public class TypedPropertiesTest {
 		TypedProperties typedProperties = _createTypedProperties(line);
 
 		Assert.assertEquals(
-			new ArrayList<String>() {
-				{
-					add("testValue1");
-					add("testValue2");
-				}
-			},
+			Arrays.asList("testValue1", "testValue2"),
 			typedProperties.get("testKey"));
 
 		_assertSave(typedProperties, line);
