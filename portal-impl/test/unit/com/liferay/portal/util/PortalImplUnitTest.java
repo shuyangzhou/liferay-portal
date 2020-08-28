@@ -254,8 +254,11 @@ public class PortalImplUnitTest {
 	}
 
 	@Test
-	public void testGetHostWithIPv6Address() {
-		_assertGetHost("[::1]", "::1");
+	public void testGetHost() {
+		_assertGetHost("abc.com", "abc.com");
+		_assertGetHost("abc.com:80", "abc.com");
+		_assertGetHost("123.1.1.1", "123.1.1.1");
+		_assertGetHost("123.1.1.1:80", "123.1.1.1");
 		_assertGetHost("[::1]:80", "::1");
 		_assertGetHost("[0:0:0:0:0:0:0:1]", "0:0:0:0:0:0:0:1");
 		_assertGetHost("[0:0:0:0:0:0:0:1]:80", "0:0:0:0:0:0:0:1");
