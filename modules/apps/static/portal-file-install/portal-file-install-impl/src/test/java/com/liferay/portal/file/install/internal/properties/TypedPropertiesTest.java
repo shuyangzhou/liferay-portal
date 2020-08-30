@@ -15,14 +15,13 @@
 package com.liferay.portal.file.install.internal.properties;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -34,54 +33,86 @@ import org.junit.Test;
 public class TypedPropertiesTest {
 
 	@Test
-	public void testClear() {
-		TypedProperties typedProperties = new TypedProperties();
+	public void testKeySet() throws IOException {
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey1 = \"testValue1\"\ntestKey2 = \"testValue2\"");
 
-		typedProperties.put("testKey1", 1);
-		typedProperties.put("testKey2", 2);
+		Set<String> keys = typedProperties.keySet();
 
-		Assert.assertEquals(2, typedProperties.size());
+		Assert.assertEquals(keys.toString(), 2, keys.size());
 
-		typedProperties.clear();
-
-		Assert.assertTrue(typedProperties.isEmpty());
-	}
-
-	@Test
-	public void testIterator() {
-		TypedProperties typedProperties = new TypedProperties();
-
-		typedProperties.put("testKey", 1);
-
-		Set<Map.Entry<String, Object>> set = typedProperties.entrySet();
-
-		Assert.assertEquals(set.toString(), 1, set.size());
-
-		Iterator<Map.Entry<String, Object>> iterator = set.iterator();
-
-		while (iterator.hasNext()) {
-			Map.Entry<String, Object> entry = iterator.next();
-
-			Assert.assertEquals("testKey", entry.getKey());
-			Assert.assertEquals(1, entry.getValue());
-
-			entry.setValue(2);
-
-			Assert.assertEquals(2, typedProperties.get("testKey"));
-
-			Assert.assertEquals(2, entry.getValue());
-
-			iterator.remove();
+		for (String key : keys) {
+			Assert.assertNotEquals(null, typedProperties.get(key));
 		}
-
-		Assert.assertTrue(typedProperties.isEmpty());
 	}
 
 	@Test
-	public void testLoadAndStoreSubstitution() throws IOException {
-		TypedProperties typedProperties = new TypedProperties();
+	public void testLoadandSaveArray() throws IOException {
+		String line = "testKey = [\"testValue1\",\"testValue2\"]";
 
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		Assert.assertArrayEquals(
+			new String[] {"testValue1", "testValue2"},
+			(String[])typedProperties.get("testKey"));
+
+		_assertSave(typedProperties, line);
+	}
+
+	@Test
+	public void testLoadandSaveCollection() throws IOException {
+		String line = "testKey = (\"testValue1\",\"testValue2\")";
+
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		Assert.assertEquals(
+			Arrays.asList("testValue1", "testValue2"),
+			typedProperties.get("testKey"));
+
+		_assertSave(typedProperties, line);
+	}
+
+	@Test
+	public void testLoadandSaveComment() throws IOException {
+		String line = "#comment\ntestKey = \"testValue\"";
+
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		Assert.assertEquals("testValue", typedProperties.get("testKey"));
+
+		_assertSave(typedProperties, line);
+	}
+
+	@Test
+	public void testLoadandSaveEscapedEquals() throws IOException {
+		String line = "testKey = \"testValue\\=test\"";
+
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		Assert.assertEquals("testValue=test", typedProperties.get("testKey"));
+
+		_assertSave(typedProperties, line);
+	}
+
+	@Test
+	public void testLoadandSaveMultiline() throws IOException {
+		String line =
+			"testKey = [\\\n\t\"testValue1\",\\\n\t\"testValue2\"\\\n]";
+
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		Assert.assertArrayEquals(
+			new String[] {"testValue1", "testValue2"},
+			(String[])typedProperties.get("testKey"));
+
+		_assertSave(typedProperties, line);
+	}
+
+	@Test
+	public void testLoadAndSaveSubstitution() throws IOException {
 		String systemKey = "testSystemKey";
+
+		String line = StringBundler.concat("testKey = \"${", systemKey, "}\"");
 
 		String systemValue = "testSystemValue";
 
@@ -89,11 +120,9 @@ public class TypedPropertiesTest {
 
 		System.setProperty(systemKey, systemValue);
 
-		String line = StringBundler.concat("testKey = \"${", systemKey, "}\"");
+		TypedProperties typedProperties = _createTypedProperties(line);
 
-		try (StringReader stringReader = new StringReader(line)) {
-			typedProperties.load(stringReader);
-
+		try {
 			Assert.assertEquals(
 				"testSystemValue", typedProperties.get("testKey"));
 		}
@@ -106,43 +135,111 @@ public class TypedPropertiesTest {
 			}
 		}
 
-		try (StringWriter stringWriter = new StringWriter()) {
-			typedProperties.save(stringWriter);
+		_assertSave(typedProperties, line);
+	}
 
-			Assert.assertEquals(
-				line.concat(StringPool.NEW_LINE), stringWriter.toString());
-		}
+	@Test
+	public void testLoadandStoreMultilineString() throws IOException {
+		String line = "testKey = \"testValue1,\\\n\ttestValue2\"";
+
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		Assert.assertEquals(
+			"testValue1,testValue2", typedProperties.get("testKey"));
+
+		_assertSave(typedProperties, line);
 	}
 
 	@Test
 	public void testLoadNontyped() throws IOException {
-		TypedProperties typedProperties = new TypedProperties();
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = \"testValue\"");
 
-		try (StringReader stringReader = new StringReader(
-				"testKey = \"testvalue\"")) {
+		Assert.assertEquals("testValue", typedProperties.get("testKey"));
+	}
 
-			typedProperties.load(stringReader);
-		}
+	@Test
+	public void testLoadPutandSaveMultiline() throws IOException {
+		String line =
+			"testKey = [\\\n\t\"testValue1\",\\\n\t\"testValue2\"\\\n]";
 
-		Assert.assertEquals("testvalue", typedProperties.get("testKey"));
+		TypedProperties typedProperties = _createTypedProperties(line);
+
+		typedProperties.put(
+			"testKey", new String[] {"testValue1", "testValue2"});
+
+		_assertSave(typedProperties, line);
 	}
 
 	@Test
 	public void testLoadTyped() throws IOException {
-		TypedProperties typedProperties = new TypedProperties();
-
-		try (StringReader stringReader = new StringReader("testKey = I\"1\"")) {
-			typedProperties.load(stringReader);
-		}
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = I\"1\"");
 
 		Assert.assertEquals(1, typedProperties.get("testKey"));
 	}
 
 	@Test
-	public void testRemove() {
+	public void testOverwriteNontypedWithNontyped() throws IOException {
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = \"testValue1\"");
+
+		Assert.assertEquals("testValue1", typedProperties.get("testKey"));
+
+		typedProperties.put("testKey", "testValue2");
+
+		Assert.assertEquals("testValue2", typedProperties.get("testKey"));
+	}
+
+	@Test
+	public void testOverwriteNontypedWithTyped() throws IOException {
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = \"1\"");
+
+		Assert.assertEquals("1", typedProperties.get("testKey"));
+
+		typedProperties.put("testKey", 1);
+
+		Assert.assertEquals(1, typedProperties.get("testKey"));
+	}
+
+	@Test
+	public void testOverwriteTypedWithNontyped() throws IOException {
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = I\"1\"");
+
+		Assert.assertEquals(1, typedProperties.get("testKey"));
+
+		typedProperties.put("testKey", "1");
+
+		Assert.assertEquals("1", typedProperties.get("testKey"));
+	}
+
+	@Test
+	public void testOverwriteTypedWithTyped() throws IOException {
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = I\"1\"");
+
+		Assert.assertEquals(1, typedProperties.get("testKey"));
+
+		typedProperties.put("testKey", 2);
+
+		Assert.assertEquals(2, typedProperties.get("testKey"));
+	}
+
+	@Test
+	public void testPutandSave() throws IOException {
 		TypedProperties typedProperties = new TypedProperties();
 
 		typedProperties.put("testKey", "testValue");
+
+		_assertSave(typedProperties, "testKey = \"testValue\"");
+	}
+
+	@Test
+	public void testRemove() throws IOException {
+		TypedProperties typedProperties = _createTypedProperties(
+			"testKey = \"testValue\"");
 
 		Assert.assertEquals("testValue", typedProperties.get("testKey"));
 
@@ -152,36 +249,21 @@ public class TypedPropertiesTest {
 	}
 
 	@Test
-	public void testStoreNontyped() throws IOException {
-		TypedProperties typedProperties = new TypedProperties();
+	public void testSaveNontyped() throws IOException {
+		String line = "testKey = \"testValue\"";
 
-		try (StringReader stringReader = new StringReader(
-				"testKey = \"testValue\"")) {
+		TypedProperties typedProperties = _createTypedProperties(line);
 
-			typedProperties.load(stringReader);
-		}
-
-		try (StringWriter stringWriter = new StringWriter()) {
-			typedProperties.save(stringWriter);
-
-			Assert.assertEquals(
-				"testKey = \"testValue\"\n", stringWriter.toString());
-		}
+		_assertSave(typedProperties, line);
 	}
 
 	@Test
-	public void testStoreTyped() throws IOException {
-		TypedProperties typedProperties = new TypedProperties();
+	public void testSaveTyped() throws IOException {
+		String line = "testKey = I\"1\"";
 
-		try (StringReader stringReader = new StringReader("testKey = I\"1\"")) {
-			typedProperties.load(stringReader);
-		}
+		TypedProperties typedProperties = _createTypedProperties(line);
 
-		try (StringWriter stringWriter = new StringWriter()) {
-			typedProperties.save(stringWriter);
-
-			Assert.assertEquals("testKey = I\"1\"\n", stringWriter.toString());
-		}
+		_assertSave(typedProperties, line);
 	}
 
 	@Test
@@ -200,6 +282,28 @@ public class TypedPropertiesTest {
 		typedProperties.put("testKey", 1);
 
 		Assert.assertEquals(1, typedProperties.get("testKey"));
+	}
+
+	private void _assertSave(TypedProperties typedProperties, String expected)
+		throws IOException {
+
+		try (StringWriter stringWriter = new StringWriter()) {
+			typedProperties.save(stringWriter);
+
+			Assert.assertEquals(expected, stringWriter.toString());
+		}
+	}
+
+	private TypedProperties _createTypedProperties(String string)
+		throws IOException {
+
+		TypedProperties typedProperties = new TypedProperties();
+
+		try (StringReader stringReader = new StringReader(string)) {
+			typedProperties.load(stringReader);
+		}
+
+		return typedProperties;
 	}
 
 }
