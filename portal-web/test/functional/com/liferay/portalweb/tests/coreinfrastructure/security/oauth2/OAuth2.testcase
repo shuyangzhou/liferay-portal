@@ -170,7 +170,7 @@ definition {
 
 		var portalVersionOutput = JSONCurlUtil.post("${portalVersionCurl}");
 
-		if (!(contains("${portalVersionOutput}", "Access denied to com.liferay.portal.kernel.service.PortalService#getVersion"))) {
+		if (!(contains("${portalVersionOutput}", "{}"))) {
 			fail("Access denied message was not returned");
 		}
 

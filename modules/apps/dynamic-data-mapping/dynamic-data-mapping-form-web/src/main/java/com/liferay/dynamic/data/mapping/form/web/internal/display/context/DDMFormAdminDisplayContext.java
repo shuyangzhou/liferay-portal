@@ -1521,14 +1521,14 @@ public class DDMFormAdminDisplayContext {
 
 	private void _escape(
 		String languageId, String propertyName,
-		JSONObject serializedFormBuilderContext) {
+		JSONObject serializedFormBuilderContextJSONObject) {
 
-		if (!serializedFormBuilderContext.has(propertyName)) {
+		if (!serializedFormBuilderContextJSONObject.has(propertyName)) {
 			return;
 		}
 
-		JSONObject jsonObject = serializedFormBuilderContext.getJSONObject(
-			propertyName);
+		JSONObject jsonObject =
+			serializedFormBuilderContextJSONObject.getJSONObject(propertyName);
 
 		jsonObject.put(
 			languageId, HtmlUtil.escape(jsonObject.getString(languageId)));

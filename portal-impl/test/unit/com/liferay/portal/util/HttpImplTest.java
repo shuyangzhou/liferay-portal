@@ -543,14 +543,14 @@ public class HttpImplTest {
 
 		// Remove redirect two deep
 
-		String encodedURL = URLCodec.encodeURL(
+		String encodedURL1 = URLCodec.encodeURL(
 			"www.liferay.com?key1=value1&redirect=" + paramValue);
 
 		Assert.assertEquals(
 			"www.liferay.com?key1=value1&redirect=" +
 				URLCodec.encodeURL("www.liferay.com?key1=value1"),
 			_httpImpl.shortenURL(
-				"www.liferay.com?key1=value1&redirect=" + encodedURL));
+				"www.liferay.com?key1=value1&redirect=" + encodedURL1));
 
 		// Remove redirect three deep
 
@@ -559,7 +559,7 @@ public class HttpImplTest {
 				URLCodec.encodeURL("www.liferay.com?key1=value1"));
 
 		String encodedURL3 = URLCodec.encodeURL(
-			"www.liferay.com?key1=value1&redirect=" + encodedURL);
+			"www.liferay.com?key1=value1&redirect=" + encodedURL1);
 
 		Assert.assertEquals(
 			"www.liferay.com?key1=value1&redirect=" + encodedURL2,
@@ -574,7 +574,7 @@ public class HttpImplTest {
 
 		String encodedURL5 = URLCodec.encodeURL(
 			"www.liferay.com?_returnToFullPageURL=test&key1=value1&redirect=" +
-				encodedURL);
+				encodedURL1);
 
 		Assert.assertEquals(
 			"www.liferay.com?key1=value1&redirect=" + encodedURL4,

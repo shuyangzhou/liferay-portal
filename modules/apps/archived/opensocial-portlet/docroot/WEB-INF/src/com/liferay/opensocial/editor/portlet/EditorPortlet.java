@@ -267,14 +267,14 @@ public class EditorPortlet extends AdminPortlet {
 			ResourceResponse resourceResponse)
 		throws IOException {
 
-		JSONObject jsonError = JSONUtil.put(
+		JSONObject errorJSONObject = JSONUtil.put(
 			"message", exception.getLocalizedMessage());
 
 		Class<?> clazz = exception.getClass();
 
-		jsonError.put("name", clazz.getSimpleName());
+		errorJSONObject.put("name", clazz.getSimpleName());
 
-		JSONObject jsonObject = JSONUtil.put("error", jsonError);
+		JSONObject jsonObject = JSONUtil.put("error", errorJSONObject);
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}
@@ -368,19 +368,20 @@ public class EditorPortlet extends AdminPortlet {
 					"leaf", true
 				);
 
-				JSONObject jsonPermissions = JSONFactoryUtil.createJSONObject();
+				JSONObject permissionsJSONObject =
+					JSONFactoryUtil.createJSONObject();
 
 				if (gadgetId > 0) {
 					boolean unpublishPermission = GadgetPermission.contains(
 						permissionChecker, themeDisplay.getScopeGroupId(),
 						gadgetId, ActionKeys.DELETE);
 
-					jsonPermissions.put(
+					permissionsJSONObject.put(
 						"unpublishPermission", unpublishPermission);
 				}
 
 				jsonObject.put(
-					"permissions", jsonPermissions
+					"permissions", permissionsJSONObject
 				).put(
 					"type", "editor"
 				);

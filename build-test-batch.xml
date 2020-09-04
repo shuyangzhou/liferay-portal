@@ -4438,6 +4438,14 @@ log.sanitizer.enabled=false</echo>
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
 	</target>
 
+	<target name="functional-smoke-tomcat90-mysql80-jdk8">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="8.0" test.portal.log.assert="true" />
+	</target>
+
+	<target name="functional-smoke-tomcat90-mysql80-jdk11_open">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="8.0" test.portal.log.assert="true" />
+	</target>
+
 	<target name="functional-smoke-tomcat90-oracle122-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="oracle" test.portal.log.assert="true" />
 	</target>
@@ -4612,6 +4620,14 @@ log.sanitizer.enabled=false</echo>
 
 	<target name="functional-tomcat90-mysql57-jdk11_zulu">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
+	</target>
+
+	<target name="functional-tomcat90-mysql80-jdk8">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="8.0" />
+	</target>
+
+	<target name="functional-tomcat90-mysql80-jdk11_open">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="8.0" />
 	</target>
 
 	<target name="functional-tomcat90-oracle122-jdk8">
@@ -5606,6 +5622,18 @@ log.sanitizer.enabled=false</echo>
 
 	<target name="modules-integration-mysql57-jdk11_open">
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
+	</target>
+
+	<target name="modules-integration-mysql80-jdk8">
+		<run-modules-integration-test database.type="mysql" database.version="8.0" />
+	</target>
+
+	<target name="modules-integration-mysql80-jdk8_stable">
+		<run-modules-integration-test database.type="mysql" database.version="8.0" />
+	</target>
+
+	<target name="modules-integration-mysql80-jdk11_open">
+		<run-modules-integration-test database.type="mysql" database.version="8.0" />
 	</target>
 
 	<target name="modules-integration-oracle122-jdk8">

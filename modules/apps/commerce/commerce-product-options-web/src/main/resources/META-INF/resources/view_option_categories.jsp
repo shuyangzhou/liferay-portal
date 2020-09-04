@@ -17,6 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String specificationNavbarItemKey = ParamUtil.getString(request, "specificationNavbarItemKey", "specification-groups");
+
 CPOptionCategoryDisplayContext cpOptionCategoryDisplayContext = (CPOptionCategoryDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
 String displayStyle = cpOptionCategoryDisplayContext.getDisplayStyle();
@@ -27,7 +29,7 @@ portletURL.setParameter("searchContainerId", "cpOptionCategories");
 
 request.setAttribute("view.jsp-portletURL", portletURL);
 
-renderResponse.setTitle(LanguageUtil.get(request, "catalog"));
+renderResponse.setTitle(LanguageUtil.get(request, "specifications"));
 %>
 
 <clay:navigation-bar
@@ -136,6 +138,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "catalog"));
 							PortletURL rowURL = renderResponse.createRenderURL();
 
 							rowURL.setParameter("mvcRenderCommandName", "editProductOptionCategory");
+							rowURL.setParameter("redirect", currentURL);
 							rowURL.setParameter("cpOptionCategoryId", String.valueOf(cpOptionCategory.getCPOptionCategoryId()));
 							%>
 
@@ -184,9 +187,10 @@ renderResponse.setTitle(LanguageUtil.get(request, "catalog"));
 			var form = window.document['<portlet:namespace />fm'];
 
 			form.setAttribute('method', 'post');
-			form['<%= Constants.CMD %>'].value = '<%= Constants.DELETE %>';
+			form['<portlet:namespace /><%= Constants.CMD %>'].value =
+				'<%= Constants.DELETE %>';
 			form[
-				'deleteCPOptionCategoryIds'
+				'<portlet:namespace />deleteCPOptionCategoryIds'
 			].value = Liferay.Util.listCheckedExcept(
 				form,
 				'<portlet:namespace />allRowIds'

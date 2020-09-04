@@ -138,7 +138,7 @@ public class SCRReferenceDynamicGreedyTest {
 
 		_componentController.enabledComponent(name);
 
-		ServiceRegistration<?> serviceRegistration =
+		ServiceRegistration<?> serviceRegistration1 =
 			bundleContext.registerService(Object.class, _SERVICE_1, properties);
 
 		ServiceTracker<DynamicGreedyComponent, DynamicGreedyComponent>
@@ -171,7 +171,7 @@ public class SCRReferenceDynamicGreedyTest {
 
 			bindingCalls.add("step2");
 
-			serviceRegistration.unregister();
+			serviceRegistration1.unregister();
 
 			bindingCalls.add("step3");
 
@@ -216,7 +216,7 @@ public class SCRReferenceDynamicGreedyTest {
 
 		_componentController.enabledComponent(name);
 
-		ServiceRegistration<?> serviceRegistration =
+		ServiceRegistration<?> serviceRegistration1 =
 			bundleContext.registerService(String.class, _SERVICE_1, properties);
 
 		ServiceTracker<DynamicGreedyComponent, DynamicGreedyComponent>
@@ -261,7 +261,7 @@ public class SCRReferenceDynamicGreedyTest {
 			Assert.assertEquals(
 				Arrays.asList(_SERVICE_1, _SERVICE_2), bindingCalls);
 
-			serviceRegistration.unregister();
+			serviceRegistration1.unregister();
 
 			if (update) {
 				Assert.assertSame(
@@ -279,7 +279,7 @@ public class SCRReferenceDynamicGreedyTest {
 
 			properties.remove("service.ranking");
 
-			serviceRegistration = bundleContext.registerService(
+			serviceRegistration1 = bundleContext.registerService(
 				String.class, _SERVICE_1, properties);
 
 			if (update) {
@@ -302,7 +302,7 @@ public class SCRReferenceDynamicGreedyTest {
 					Arrays.asList(_SERVICE_1, _SERVICE_2), bindingCalls);
 			}
 
-			serviceRegistration.unregister();
+			serviceRegistration1.unregister();
 
 			serviceRegistration2.unregister();
 

@@ -89,9 +89,9 @@ public class ModifiedFacet extends RangeFacet {
 		JSONArray rangesJSONArray = dataJSONObject.getJSONArray("ranges");
 
 		for (int i = 0; i < rangesJSONArray.length(); i++) {
-			JSONObject rangeObject = rangesJSONArray.getJSONObject(i);
+			JSONObject rangeJSONObject = rangesJSONArray.getJSONObject(i);
 
-			String rangeString = rangeObject.getString("range");
+			String rangeString = rangeJSONObject.getString("range");
 
 			rangeString = StringUtil.replace(
 				rangeString,
@@ -108,7 +108,7 @@ public class ModifiedFacet extends RangeFacet {
 					dateFormat.format(now.getTime())
 				});
 
-			rangeObject.put("range", rangeString);
+			rangeJSONObject.put("range", rangeString);
 		}
 	}
 

@@ -66,12 +66,12 @@
 </tr>
 <tr>
 	<td>DETAILS_CATEGORY_SELECT</td>
-	<td>//label[contains(.,'Categorization')]//following-sibling::div//button[contains(.,'Select')]</td>
+	<td>//label[contains(.,'${key_vocabularyName}')]//following-sibling::div//button[contains(.,'Select')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>DETAILS_TAG_FIELD_INPUT</td>
-	<td>//input[contains(@class,'form-control-inset')]</td>
+	<td>//label[contains(.,'Tags')]//following-sibling::div//*[contains(@class,'form-control-inset')]</td>
 	<td></td>
 </tr>
 <tr>

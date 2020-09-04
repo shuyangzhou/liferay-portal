@@ -140,15 +140,15 @@ public class DDMTemplateHelperImpl implements DDMTemplateHelper {
 		for (Method method : clazz.getMethods()) {
 			JSONObject methodJSONObject = _jsonFactory.createJSONObject();
 
-			JSONArray parametersTypesArray = _jsonFactory.createJSONArray();
+			JSONArray parametersTypesJSONArray = _jsonFactory.createJSONArray();
 
 			Class<?>[] parameterTypes = method.getParameterTypes();
 
 			for (Class<?> parameterType : parameterTypes) {
-				parametersTypesArray.put(parameterType.getCanonicalName());
+				parametersTypesJSONArray.put(parameterType.getCanonicalName());
 			}
 
-			methodJSONObject.put("argumentTypes", parametersTypesArray);
+			methodJSONObject.put("argumentTypes", parametersTypesJSONArray);
 
 			Class<?> returnTypeClass = method.getReturnType();
 

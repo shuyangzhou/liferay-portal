@@ -391,7 +391,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			fieldSetDDMFormField.setProperty(
 				"ddmStructureLayoutId", StringPool.BLANK);
 
-			JSONArray rows = _jsonFactory.createJSONArray();
+			JSONArray rowsJSONArray = _jsonFactory.createJSONArray();
 
 			List<String> nestedNames =
 				(List<String>)ddmFormFieldTuple.getObject(
@@ -402,7 +402,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 					fieldSetDDMFormField.addNestedDDMFormField(
 						ddmFormFieldsMap.get(ddmFormFieldName));
 
-					rows.put(
+					rowsJSONArray.put(
 						JSONUtil.put(
 							"columns",
 							JSONUtil.put(
@@ -417,7 +417,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 					ddmFormFieldsMap.remove(ddmFormFieldName);
 				});
 
-			fieldSetDDMFormField.setProperty("rows", rows);
+			fieldSetDDMFormField.setProperty("rows", rowsJSONArray);
 
 			fieldSetDDMFormField.setShowLabel(false);
 

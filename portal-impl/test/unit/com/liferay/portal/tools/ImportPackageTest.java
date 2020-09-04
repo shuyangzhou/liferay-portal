@@ -27,14 +27,14 @@ public class ImportPackageTest {
 
 	@Test
 	public void testContains() {
-		ImportPackage importPackage = _javaImportsFormatter.createImportPackage(
-			_ARRAYS_IMPORT_STATEMENT);
+		ImportPackage importPackage1 =
+			_javaImportsFormatter.createImportPackage(_ARRAYS_IMPORT_STATEMENT);
 
 		List<ImportPackage> importPackages = new ArrayList<>();
 
-		importPackages.add(importPackage);
+		importPackages.add(importPackage1);
 
-		if (!importPackages.contains(importPackage)) {
+		if (!importPackages.contains(importPackage1)) {
 			ImportPackage importPackage2 =
 				_javaImportsFormatter.createImportPackage(
 					_ARRAYS_IMPORT_STATEMENT);
@@ -48,12 +48,12 @@ public class ImportPackageTest {
 
 	@Test
 	public void testEquals() {
-		ImportPackage importPackage = _javaImportsFormatter.createImportPackage(
-			_ARRAYS_IMPORT_STATEMENT);
+		ImportPackage importPackage1 =
+			_javaImportsFormatter.createImportPackage(_ARRAYS_IMPORT_STATEMENT);
 		ImportPackage importPackage2 =
 			_javaImportsFormatter.createImportPackage(_ARRAYS_IMPORT_STATEMENT);
 
-		Assert.assertEquals(importPackage, importPackage2);
+		Assert.assertEquals(importPackage1, importPackage2);
 	}
 
 	private static final String _ARRAYS_IMPORT_STATEMENT =

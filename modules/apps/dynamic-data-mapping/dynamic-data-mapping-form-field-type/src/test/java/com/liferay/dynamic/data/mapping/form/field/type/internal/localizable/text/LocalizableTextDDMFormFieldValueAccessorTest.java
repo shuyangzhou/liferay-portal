@@ -57,10 +57,11 @@ public class LocalizableTextDDMFormFieldValueAccessorTest extends PowerMockito {
 			DDMFormValuesTestUtil.createDDMFormFieldValue(
 				"localizableText", new UnlocalizedValue("{"));
 
-		JSONObject value = _localizableTextDDMFormFieldValueAccessor.getValue(
-			ddmFormFieldValue, LocaleUtil.US);
+		JSONObject valueJSONObject =
+			_localizableTextDDMFormFieldValueAccessor.getValue(
+				ddmFormFieldValue, LocaleUtil.US);
 
-		Assert.assertTrue(value.length() == 0);
+		Assert.assertTrue(valueJSONObject.length() == 0);
 	}
 
 	@Test

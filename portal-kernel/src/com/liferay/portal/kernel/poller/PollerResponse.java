@@ -39,10 +39,10 @@ public interface PollerResponse extends Serializable {
 
 	public boolean isEmpty();
 
-	public void setParameter(String name, JSONArray value)
+	public void setParameter(String name, JSONArray jsonArray)
 		throws PollerResponseClosedException;
 
-	public void setParameter(String name, JSONObject value)
+	public void setParameter(String name, JSONObject jsonObject)
 		throws PollerResponseClosedException;
 
 	public void setParameter(String name, String value)

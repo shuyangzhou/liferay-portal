@@ -99,10 +99,10 @@ public class PortletConfigurationCSSPortletDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		JSONObject borderPropertySONObject = borderDataJSONObject.getJSONObject(
-			property);
+		JSONObject borderPropertyJSONObject =
+			borderDataJSONObject.getJSONObject(property);
 
-		return borderPropertySONObject.getString(position);
+		return borderPropertyJSONObject.getString(position);
 	}
 
 	public String getBorderWidthProperty(String position, String property) {
@@ -113,11 +113,11 @@ public class PortletConfigurationCSSPortletDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		JSONObject borderWidthSONObject = borderDataJSONObject.getJSONObject(
+		JSONObject borderWidthJSONObject = borderDataJSONObject.getJSONObject(
 			"borderWidth");
 
 		JSONObject borderWidthPositionJSONObject =
-			borderWidthSONObject.getJSONObject(position);
+			borderWidthJSONObject.getJSONObject(position);
 
 		return borderWidthPositionJSONObject.getString(property);
 	}
@@ -202,10 +202,10 @@ public class PortletConfigurationCSSPortletDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		JSONObject marginSONObject = spacingDataJSONObject.getJSONObject(
+		JSONObject marginJSONObject = spacingDataJSONObject.getJSONObject(
 			"margin");
 
-		JSONObject marginPositionJSONObject = marginSONObject.getJSONObject(
+		JSONObject marginPositionJSONObject = marginJSONObject.getJSONObject(
 			position);
 
 		return marginPositionJSONObject.getString(property);
@@ -219,10 +219,10 @@ public class PortletConfigurationCSSPortletDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		JSONObject paddingSONObject = spacingDataJSONObject.getJSONObject(
+		JSONObject paddingJSONObject = spacingDataJSONObject.getJSONObject(
 			"padding");
 
-		JSONObject paddingPositionJSONObject = paddingSONObject.getJSONObject(
+		JSONObject paddingPositionJSONObject = paddingJSONObject.getJSONObject(
 			position);
 
 		return paddingPositionJSONObject.getString(property);
@@ -294,10 +294,10 @@ public class PortletConfigurationCSSPortletDisplayContext {
 			return false;
 		}
 
-		JSONObject spacingPropertySONObject =
+		JSONObject spacingPropertyJSONObject =
 			spacingDataJSONObject.getJSONObject(property);
 
-		return spacingPropertySONObject.getBoolean("sameForAll");
+		return spacingPropertyJSONObject.getBoolean("sameForAll");
 	}
 
 	public boolean isUseCustomTitle() {

@@ -92,9 +92,9 @@ public class CommerceDiscountsImporter {
 		CommerceDiscount commerceDiscount = _addCommerceDiscount(
 			jsonObject, serviceContext);
 
-		JSONArray categories = jsonObject.getJSONArray("categories");
+		JSONArray categoriesJSONArray = jsonObject.getJSONArray("categories");
 
-		if (categories.length() > 0) {
+		if (categoriesJSONArray.length() > 0) {
 			DynamicQuery dynamicQuery =
 				_assetCategoryLocalService.dynamicQuery();
 
@@ -105,8 +105,8 @@ public class CommerceDiscountsImporter {
 				_assetCategoryLocalService.dynamicQuery(
 					dynamicQuery.add(criterion));
 
-			for (int i = 0; i < categories.length(); i++) {
-				String category = categories.getString(i);
+			for (int i = 0; i < categoriesJSONArray.length(); i++) {
+				String category = categoriesJSONArray.getString(i);
 
 				for (AssetCategory assetCategory : assetCategories) {
 					String name = assetCategory.getName();

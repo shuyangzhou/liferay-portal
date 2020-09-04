@@ -376,12 +376,12 @@ public class EditSegmentsEntryDisplayContext {
 		List<SegmentsCriteriaContributor> segmentsCriteriaContributors =
 			_getSegmentsCriteriaContributors();
 
-		JSONArray jsonContributorsArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonContributorsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (SegmentsCriteriaContributor segmentsCriteriaContributor :
 				segmentsCriteriaContributors) {
 
-			jsonContributorsArray.put(
+			jsonContributorsJSONArray.put(
 				JSONUtil.put(
 					"entityName", segmentsCriteriaContributor.getEntityName()
 				).put(
@@ -397,7 +397,7 @@ public class EditSegmentsEntryDisplayContext {
 				));
 		}
 
-		return jsonContributorsArray;
+		return jsonContributorsJSONArray;
 	}
 
 	private List<SegmentsCriteriaContributor> _getSegmentsCriteriaContributors()

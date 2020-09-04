@@ -318,7 +318,7 @@ public class ExpandoValueLocalServiceImpl
 	@Override
 	public ExpandoValue addValue(
 			long companyId, String className, String tableName,
-			String columnName, long classPK, JSONObject data)
+			String columnName, long classPK, JSONObject dataJSONObject)
 		throws PortalException {
 
 		ExpandoTable table = expandoTableLocalService.getTable(
@@ -331,7 +331,7 @@ public class ExpandoValueLocalServiceImpl
 
 		value.setCompanyId(table.getCompanyId());
 		value.setColumnId(column.getColumnId());
-		value.setGeolocationJSONObject(data);
+		value.setGeolocationJSONObject(dataJSONObject);
 
 		return expandoValueLocalService.addValue(
 			table.getClassNameId(), table.getTableId(), column.getColumnId(),
@@ -792,10 +792,10 @@ public class ExpandoValueLocalServiceImpl
 				value.setFloatArray((float[])attributeValue);
 			}
 			else if (type == ExpandoColumnConstants.GEOLOCATION) {
-				JSONObject geolocation = JSONFactoryUtil.createJSONObject(
-					attributeValue.toString());
+				JSONObject geolocationJSONObject =
+					JSONFactoryUtil.createJSONObject(attributeValue.toString());
 
-				value.setGeolocationJSONObject(geolocation);
+				value.setGeolocationJSONObject(geolocationJSONObject);
 			}
 			else if (type == ExpandoColumnConstants.INTEGER) {
 				value.setInteger((Integer)attributeValue);
@@ -1317,14 +1317,14 @@ public class ExpandoValueLocalServiceImpl
 	@Override
 	public JSONObject getData(
 			long companyId, String className, String tableName,
-			String columnName, long classPK, JSONObject defaultData)
+			String columnName, long classPK, JSONObject defaultDataJSONObject)
 		throws PortalException {
 
 		ExpandoValue value = expandoValueLocalService.getValue(
 			companyId, className, tableName, columnName, classPK);
 
 		if (value == null) {
-			return defaultData;
+			return defaultDataJSONObject;
 		}
 
 		return value.getGeolocationJSONObject();

@@ -204,13 +204,13 @@ public class EditCommerceDataIntegrationProcessActionCommand
 	}
 
 	private void _sendMessage(long commerceDataIntegrationProcessId) {
-		JSONObject payLoad = JSONUtil.put(
+		JSONObject payLoadJSONObject = JSONUtil.put(
 			"commerceDataIntegrationProcessId",
 			commerceDataIntegrationProcessId);
 
 		MessageBusUtil.sendMessage(
 			CommerceDataIntegrationConstants.EXECUTOR_DESTINATION_NAME,
-			payLoad.toString());
+			payLoadJSONObject.toString());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

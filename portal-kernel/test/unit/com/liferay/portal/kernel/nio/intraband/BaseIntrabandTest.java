@@ -1032,22 +1032,23 @@ public class BaseIntrabandTest {
 
 		// Add
 
-		Datagram requestDatagram = Datagram.createRequestDatagram(_TYPE, _DATA);
+		Datagram requestDatagram1 = Datagram.createRequestDatagram(
+			_TYPE, _DATA);
 
 		long sequenceId = 100;
 
-		requestDatagram.setSequenceId(sequenceId);
+		requestDatagram1.setSequenceId(sequenceId);
 
-		requestDatagram.timeout = 10000;
+		requestDatagram1.timeout = 10000;
 
-		_mockIntraband.addResponseWaitingDatagram(requestDatagram);
+		_mockIntraband.addResponseWaitingDatagram(requestDatagram1);
 
 		Map<Long, Datagram> responseWaitingMap =
 			_mockIntraband.responseWaitingMap;
 
 		Assert.assertEquals(
 			responseWaitingMap.toString(), 1, responseWaitingMap.size());
-		Assert.assertSame(requestDatagram, responseWaitingMap.get(sequenceId));
+		Assert.assertSame(requestDatagram1, responseWaitingMap.get(sequenceId));
 
 		Map<Long, Long> timeoutMap = _mockIntraband.timeoutMap;
 
@@ -1062,7 +1063,7 @@ public class BaseIntrabandTest {
 		// Remove, hit
 
 		Datagram responseDatagram = Datagram.createResponseDatagram(
-			requestDatagram, _DATA);
+			requestDatagram1, _DATA);
 
 		Assert.assertFalse(responseDatagram.isRequest());
 
@@ -1090,42 +1091,42 @@ public class BaseIntrabandTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Datagram requestDatagram1 = Datagram.createRequestDatagram(
+			Datagram requestDatagram2 = Datagram.createRequestDatagram(
 				_TYPE, _DATA);
 
-			requestDatagram1.setSequenceId(sequenceId);
+			requestDatagram2.setSequenceId(sequenceId);
 
 			RecordCompletionHandler<Object> recordCompletionHandler1 =
 				new RecordCompletionHandler<>();
 
-			requestDatagram1.completionHandler = recordCompletionHandler1;
-
-			requestDatagram1.timeout = 1;
-
-			_mockIntraband.addResponseWaitingDatagram(requestDatagram1);
-
-			Thread.sleep(10);
-
-			Datagram requestDatagram2 = Datagram.createRequestDatagram(
-				_TYPE, _DATA);
-
-			requestDatagram2.setSequenceId(sequenceId + 1);
-
-			RecordCompletionHandler<Object> recordCompletionHandler2 =
-				new RecordCompletionHandler<>();
-
-			requestDatagram2.completionHandler = recordCompletionHandler2;
+			requestDatagram2.completionHandler = recordCompletionHandler1;
 
 			requestDatagram2.timeout = 1;
 
 			_mockIntraband.addResponseWaitingDatagram(requestDatagram2);
 
+			Thread.sleep(10);
+
+			Datagram requestDatagram3 = Datagram.createRequestDatagram(
+				_TYPE, _DATA);
+
+			requestDatagram3.setSequenceId(sequenceId + 1);
+
+			RecordCompletionHandler<Object> recordCompletionHandler2 =
+				new RecordCompletionHandler<>();
+
+			requestDatagram3.completionHandler = recordCompletionHandler2;
+
+			requestDatagram3.timeout = 1;
+
+			_mockIntraband.addResponseWaitingDatagram(requestDatagram3);
+
 			Assert.assertEquals(
 				responseWaitingMap.toString(), 2, responseWaitingMap.size());
 			Assert.assertSame(
-				requestDatagram1, responseWaitingMap.get(sequenceId));
+				requestDatagram2, responseWaitingMap.get(sequenceId));
 			Assert.assertSame(
-				requestDatagram2, responseWaitingMap.get(sequenceId + 1));
+				requestDatagram3, responseWaitingMap.get(sequenceId + 1));
 			Assert.assertEquals(
 				timeoutSequenceIds.toString(), 2, timeoutSequenceIds.size());
 			Assert.assertTrue(
@@ -1155,38 +1156,38 @@ public class BaseIntrabandTest {
 
 			logRecords = captureHandler.resetLogLevel(Level.OFF);
 
-			requestDatagram1 = Datagram.createRequestDatagram(_TYPE, _DATA);
+			requestDatagram2 = Datagram.createRequestDatagram(_TYPE, _DATA);
 
-			requestDatagram1.setSequenceId(sequenceId);
+			requestDatagram2.setSequenceId(sequenceId);
 
 			recordCompletionHandler1 = new RecordCompletionHandler<>();
 
-			requestDatagram1.completionHandler = recordCompletionHandler1;
-
-			requestDatagram1.timeout = 1;
-
-			_mockIntraband.addResponseWaitingDatagram(requestDatagram1);
-
-			Thread.sleep(10);
-
-			requestDatagram2 = Datagram.createRequestDatagram(_TYPE, _DATA);
-
-			requestDatagram2.setSequenceId(sequenceId + 1);
-
-			recordCompletionHandler2 = new RecordCompletionHandler<>();
-
-			requestDatagram2.completionHandler = recordCompletionHandler2;
+			requestDatagram2.completionHandler = recordCompletionHandler1;
 
 			requestDatagram2.timeout = 1;
 
 			_mockIntraband.addResponseWaitingDatagram(requestDatagram2);
 
+			Thread.sleep(10);
+
+			requestDatagram3 = Datagram.createRequestDatagram(_TYPE, _DATA);
+
+			requestDatagram3.setSequenceId(sequenceId + 1);
+
+			recordCompletionHandler2 = new RecordCompletionHandler<>();
+
+			requestDatagram3.completionHandler = recordCompletionHandler2;
+
+			requestDatagram3.timeout = 1;
+
+			_mockIntraband.addResponseWaitingDatagram(requestDatagram3);
+
 			Assert.assertEquals(
 				responseWaitingMap.toString(), 2, responseWaitingMap.size());
 			Assert.assertSame(
-				requestDatagram1, responseWaitingMap.get(sequenceId));
+				requestDatagram2, responseWaitingMap.get(sequenceId));
 			Assert.assertSame(
-				requestDatagram2, responseWaitingMap.get(sequenceId + 1));
+				requestDatagram3, responseWaitingMap.get(sequenceId + 1));
 			Assert.assertEquals(
 				timeoutSequenceIds.toString(), 2, timeoutSequenceIds.size());
 			Assert.assertTrue(

@@ -478,10 +478,10 @@ public class CentralizedThreadLocalTest {
 
 		// Empty remove
 
-		CentralizedThreadLocal<String> centralizedThreadLocal =
+		CentralizedThreadLocal<String> centralizedThreadLocal4 =
 			new CentralizedThreadLocal<>(true);
 
-		centralizedThreadLocal.remove();
+		centralizedThreadLocal4.remove();
 	}
 
 	@Test

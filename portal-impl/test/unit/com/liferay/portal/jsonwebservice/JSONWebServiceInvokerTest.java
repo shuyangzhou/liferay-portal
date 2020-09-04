@@ -457,7 +457,7 @@ public class JSONWebServiceInvokerTest extends BaseJSONWebServiceTestCase {
 	public void testListFilteringAndFlags() throws Exception {
 		Map<String, Object> params = new LinkedHashMap<>();
 
-		Map<String, Object> map = LinkedHashMapBuilder.<String, Object>put(
+		Map<String, Object> map1 = LinkedHashMapBuilder.<String, Object>put(
 			"$world[id] = /foo/get-foo-datas", params
 		).build();
 
@@ -467,7 +467,7 @@ public class JSONWebServiceInvokerTest extends BaseJSONWebServiceTestCase {
 
 		map2.put("@id", "$world.id");
 
-		String json = toJSON(map);
+		String json = toJSON(map1);
 
 		JSONWebServiceAction jsonWebServiceAction = prepareInvokerAction(json);
 

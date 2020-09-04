@@ -158,12 +158,14 @@ public class UpgradeDDMFormFieldValidation extends UpgradeProcess {
 	}
 
 	private void _addParameterValue(
-		String value, JSONObject validation, String defaultLanguageId) {
+		String value, JSONObject validationJSONObject,
+		String defaultLanguageId) {
 
-		JSONObject parameter = validation.getJSONObject("parameter");
+		JSONObject parameterJSONObject = validationJSONObject.getJSONObject(
+			"parameter");
 
-		if (!parameter.has(defaultLanguageId)) {
-			parameter.put(defaultLanguageId, value);
+		if (!parameterJSONObject.has(defaultLanguageId)) {
+			parameterJSONObject.put(defaultLanguageId, value);
 		}
 	}
 

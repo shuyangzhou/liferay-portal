@@ -18,6 +18,8 @@
 
 <%
 CommerceApplicationAdminDisplayContext commerceApplicationAdminDisplayContext = (CommerceApplicationAdminDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+
+renderResponse.setTitle(LanguageUtil.get(request, "applications"));
 %>
 
 <clay:navigation-bar
@@ -128,7 +130,7 @@ CommerceApplicationAdminDisplayContext commerceApplicationAdminDisplayContext = 
 			var form = window.document['<portlet:namespace />fm'];
 
 			form[
-				'deleteCommerceApplicationBrandIds'
+				'<portlet:namespace />deleteCommerceApplicationBrandIds'
 			].value = Liferay.Util.listCheckedExcept(
 				form,
 				'<portlet:namespace />allRowIds'

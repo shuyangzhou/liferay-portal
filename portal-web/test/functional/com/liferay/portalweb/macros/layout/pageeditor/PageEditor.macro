@@ -698,6 +698,26 @@ definition {
 		AssertTextNotPresent(value1 = "${fragmentComment}");
 	}
 
+	macro deleteExperience {
+		var key_experienceName = "${newExperience}";
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		ClickNoError(locator1 = "PageEditor#EXPERIENCE_DELETE_BUTTON");
+
+		AssertConfirm(value1 = "Do you want to delete this experience? Its content will be deleted.");
+
+		Alert.viewSuccessMessage();
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		AssertElementNotPresent(
+			key_experienceName = "${newExperience}",
+			locator1 = "PageEditor#EXPERIENCE_SELECT_ITEM");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+	}
+
 	macro editCollectionDisplay {
 		var key_fragmentName = "${fragmentName}";
 
@@ -899,6 +919,40 @@ definition {
 		}
 	}
 
+	macro editExperience {
+		var key_experienceName = "${newExperience}";
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_EDIT_BUTTON");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_CREATE_SEGMENT");
+
+		Segmentation.addProperties(propertyOption = "Email Address");
+
+		Segmentation.fillTitle(titleField = "AddSegmentUserEmailAddressContains Test 2");
+
+		Segmentation.changeCriterionInputEmailAddress(criterionInputOption = "Contains");
+
+		Segmentation.fillProperty(PropertyField = "liferay2");
+
+		Button.clickSave();
+
+		Type(
+			locator1 = "PageEditor#EXPERIENCE_NAME",
+			value1 = "${key_experienceName}");
+
+		Click(locator1 = "Button#SAVE");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		AssertElementPresent(
+			key_experienceName = "${newExperience}",
+			locator1 = "PageEditor#EXPERIENCE_SELECT_ITEM");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+	}
+
 	macro editFragmentHTML {
 		PageEditor.gotoEditableFieldEdit(
 			fragmentName = "${fragmentName}",
@@ -934,6 +988,11 @@ definition {
 			ItemSelector.selectDMImage(
 				imageFileName = "${imageFileName}",
 				navTab = "Documents and Media");
+		}
+		if (isSet(imageSourceURL)) {
+			ItemSelector.addFromURL(
+				imageSourceURL = "${imageSourceURL}",
+				navTab = "URL");
 		}
 		else {
 			SelectFrame(locator1 = "IFrame#MODAL_BODY");

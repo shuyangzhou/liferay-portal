@@ -50,10 +50,10 @@ public class CommerceDataIntegrationMessageListener implements MessageListener {
 	public void receive(Message message) throws MessageListenerException {
 		String payLoadString = (String)message.getPayload();
 
-		JSONObject payLoad = null;
+		JSONObject payLoadJSONObject = null;
 
 		try {
-			payLoad = JSONFactoryUtil.createJSONObject(payLoadString);
+			payLoadJSONObject = JSONFactoryUtil.createJSONObject(payLoadString);
 		}
 		catch (JSONException jsonException) {
 			_log.error(jsonException, jsonException);
@@ -61,7 +61,7 @@ public class CommerceDataIntegrationMessageListener implements MessageListener {
 			throw new MessageListenerException(jsonException);
 		}
 
-		long commerceDataIntegrationProcessId = payLoad.getLong(
+		long commerceDataIntegrationProcessId = payLoadJSONObject.getLong(
 			"commerceDataIntegrationProcessId");
 
 		ScheduledTaskExecutorService scheduledTaskExecutorService = null;

@@ -183,13 +183,14 @@ public class CPPublisherConfigurationDisplayContext
 					cpContentRequestHelper.getRequest(),
 					"queryCategoryIds" + queryLogicIndex, queryValues);
 
-				JSONArray categoryIdsTitles = JSONFactoryUtil.createJSONArray();
+				JSONArray categoryIdsTitlesJSONArray =
+					JSONFactoryUtil.createJSONArray();
 
 				List<AssetCategory> categories = _filterAssetCategories(
 					GetterUtil.getLongValues(StringUtil.split(queryValues)));
 
 				for (AssetCategory category : categories) {
-					categoryIdsTitles.put(
+					categoryIdsTitlesJSONArray.put(
 						category.getTitle(themeDisplay.getLocale()));
 				}
 
@@ -198,7 +199,8 @@ public class CPPublisherConfigurationDisplayContext
 
 				queryValues = StringUtil.merge(categoryIds);
 
-				ruleJSONObject.put("categoryIdsTitles", categoryIdsTitles);
+				ruleJSONObject.put(
+					"categoryIdsTitles", categoryIdsTitlesJSONArray);
 			}
 
 			if (Validator.isNull(queryValues)) {

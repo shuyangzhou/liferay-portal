@@ -20,18 +20,23 @@ import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.product.navigation.applications.menu.web.internal.constants.ProductNavigationApplicationsMenuWebKeys;
 import com.liferay.product.navigation.applications.menu.web.internal.util.ApplicationsMenuUtil;
 import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -56,6 +61,22 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 	}
 
 	@Override
+	public boolean includeIcon(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws IOException {
+
+		httpServletRequest.setAttribute(
+			ProductNavigationApplicationsMenuWebKeys.LIFERAY_LOGO_URL,
+			ApplicationsMenuUtil.getLiferayLogoURL(_servletContext));
+		httpServletRequest.setAttribute(
+			ProductNavigationApplicationsMenuWebKeys.LIFERAY_NAME,
+			ApplicationsMenuUtil.getLiferayName());
+
+		return super.includeIcon(httpServletRequest, httpServletResponse);
+	}
+
+	@Override
 	public boolean isShow(HttpServletRequest httpServletRequest)
 		throws PortalException {
 
@@ -67,6 +88,12 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 				themeDisplay.getCompanyId(), _configurationProvider)) {
 
 			return false;
+		}
+
+		Group scopeGroup = themeDisplay.getScopeGroup();
+
+		if ((scopeGroup != null) && scopeGroup.isDepot()) {
+			return true;
 		}
 
 		PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(
@@ -107,6 +134,8 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+
 		super.setServletContext(servletContext);
 	}
 
@@ -118,5 +147,7 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 
 	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;
+
+	private ServletContext _servletContext;
 
 }

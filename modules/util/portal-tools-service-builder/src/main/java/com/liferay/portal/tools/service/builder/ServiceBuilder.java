@@ -5828,7 +5828,7 @@ public class ServiceBuilder {
 			javaAnnotationsMap.put(javaAnnotation.getType(), javaAnnotation);
 		}
 
-		List<JavaAnnotation> javaAnnotations = new ArrayList<>(
+		List<JavaAnnotation> javaAnnotations3 = new ArrayList<>(
 			javaAnnotationsMap.values());
 
 		Comparator<JavaAnnotation> comparator =
@@ -5848,9 +5848,9 @@ public class ServiceBuilder {
 
 			};
 
-		Collections.sort(javaAnnotations, comparator);
+		Collections.sort(javaAnnotations3, comparator);
 
-		return javaAnnotations;
+		return javaAnnotations3;
 	}
 
 	private List<JavaMethod> _mergeMethods(
@@ -5887,7 +5887,7 @@ public class ServiceBuilder {
 			}
 		}
 
-		List<JavaMethod> javaMethods = new ArrayList<>(javaMethodMap.values());
+		List<JavaMethod> javaMethods3 = new ArrayList<>(javaMethodMap.values());
 
 		Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
 
@@ -5908,9 +5908,9 @@ public class ServiceBuilder {
 
 		};
 
-		Collections.sort(javaMethods, comparator);
+		Collections.sort(javaMethods3, comparator);
 
-		return javaMethods;
+		return javaMethods3;
 	}
 
 	private List<Entity> _mergeReferenceEntities(Entity entity) {

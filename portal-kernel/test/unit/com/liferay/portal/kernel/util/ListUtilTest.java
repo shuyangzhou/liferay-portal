@@ -387,13 +387,13 @@ public class ListUtilTest {
 
 	@Test
 	public void testToList() throws Exception {
-		List<String> list = new ArrayList<>();
+		List<String> list1 = new ArrayList<>();
 
-		list.add("aaa");
-		list.add("bbb");
-		list.add("ccc");
+		list1.add("aaa");
+		list1.add("bbb");
+		list1.add("ccc");
 
-		List<Object> list2 = ListUtil.toList(list);
+		List<Object> list2 = ListUtil.toList(list1);
 
 		Assert.assertArrayEquals(
 			new Object[] {"aaa", "bbb", "ccc"}, list2.toArray());

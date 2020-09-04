@@ -23,6 +23,6 @@ public interface ModifiedFacetConfiguration {
 
 	public JSONArray getRangesJSONArray();
 
-	public void setRangesJSONArray(JSONArray ranges);
+	public void setRangesJSONArray(JSONArray rangesJSONArray);
 
 }

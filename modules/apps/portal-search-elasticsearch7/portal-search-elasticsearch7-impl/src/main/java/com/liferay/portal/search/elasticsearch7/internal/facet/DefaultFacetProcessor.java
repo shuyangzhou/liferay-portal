@@ -47,15 +47,15 @@ public class DefaultFacetProcessor
 
 		FacetConfiguration facetConfiguration = facet.getFacetConfiguration();
 
-		JSONObject data = facetConfiguration.getData();
+		JSONObject dataJSONObject = facetConfiguration.getData();
 
-		int minDocCount = data.getInt("frequencyThreshold");
+		int minDocCount = dataJSONObject.getInt("frequencyThreshold");
 
 		if (minDocCount > 0) {
 			termsAggregationBuilder.minDocCount(minDocCount);
 		}
 
-		int size = data.getInt("maxTerms");
+		int size = dataJSONObject.getInt("maxTerms");
 
 		if (size > 0) {
 			termsAggregationBuilder.size(size);

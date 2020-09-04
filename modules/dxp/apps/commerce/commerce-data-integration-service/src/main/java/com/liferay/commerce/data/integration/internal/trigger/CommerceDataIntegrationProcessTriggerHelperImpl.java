@@ -58,14 +58,14 @@ public class CommerceDataIntegrationProcessTriggerHelperImpl
 			_getGroupName(commerceDataIntegrationProcessId), startDate, endDate,
 			cronExpression);
 
-		JSONObject payLoad = JSONUtil.put(
+		JSONObject payLoadJSONObject = JSONUtil.put(
 			"commerceDataIntegrationProcessId",
 			commerceDataIntegrationProcessId);
 
 		_schedulerEngineHelper.schedule(
 			trigger, StorageType.PERSISTED, null,
 			CommerceDataIntegrationConstants.EXECUTOR_DESTINATION_NAME,
-			payLoad.toString(), 1000);
+			payLoadJSONObject.toString(), 1000);
 	}
 
 	@Override

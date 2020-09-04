@@ -811,15 +811,17 @@ public class CPDefinitionsImporter {
 		double price = skuJSONObject.getDouble("Price");
 		double promoPrice = skuJSONObject.getDouble("PromoPrice");
 
-		JSONArray options = skuJSONObject.getJSONArray("ContributorOptions");
+		JSONArray optionsJSONArray = skuJSONObject.getJSONArray(
+			"ContributorOptions");
 
 		String optionsJSON = null;
 
-		if (options != null) {
+		if (optionsJSONArray != null) {
 			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-			for (int i = 0; i < options.length(); i++) {
-				JSONObject optionsJSONObject = options.getJSONObject(i);
+			for (int i = 0; i < optionsJSONArray.length(); i++) {
+				JSONObject optionsJSONObject = optionsJSONArray.getJSONObject(
+					i);
 
 				String key = optionsJSONObject.getString("key");
 

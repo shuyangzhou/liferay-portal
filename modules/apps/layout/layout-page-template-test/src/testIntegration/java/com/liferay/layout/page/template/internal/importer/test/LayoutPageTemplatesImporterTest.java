@@ -329,14 +329,14 @@ public class LayoutPageTemplatesImporterTest {
 
 		Assert.assertNotNull(fragmentEntryLink);
 
-		JSONObject editableValues = JSONFactoryUtil.createJSONObject(
+		JSONObject editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
 			fragmentEntryLink.getEditableValues());
 
-		String portletId = editableValues.getString("portletId");
+		String portletId = editableValuesJSONObject.getString("portletId");
 
 		Assert.assertEquals(_testPortletName, portletId);
 
-		String instanceId = editableValues.getString("instanceId");
+		String instanceId = editableValuesJSONObject.getString("instanceId");
 
 		Assert.assertNotNull(instanceId);
 

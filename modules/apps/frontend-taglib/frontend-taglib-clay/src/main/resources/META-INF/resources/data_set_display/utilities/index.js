@@ -174,19 +174,10 @@ export function loadData(
 	page = 1,
 	sorting = []
 ) {
-	let providedFilters = '';
+	const url = new URL(apiURL, themeDisplay.getPortalURL());
+	const providedFilters = url.searchParams.get('filter');
 
-	const formattedUrl = apiURL.replace(
-		/[?|&]filter=(.*)[&.+]?/gm,
-		(matched) => {
-			providedFilters = matched.replace(/[?|&]filter=/, '');
-
-			return '';
-		}
-	);
-
-	const url = new URL(formattedUrl, themeDisplay.getPortalURL());
-
+	url.searchParams.delete('filter');
 	url.searchParams.append('currentURL', currentURL);
 
 	if (providedFilters || odataFiltersStrings.length) {

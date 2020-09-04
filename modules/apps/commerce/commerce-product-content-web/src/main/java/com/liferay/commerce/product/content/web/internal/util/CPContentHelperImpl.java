@@ -96,16 +96,16 @@ public class CPContentHelperImpl implements CPContentHelper {
 			HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		JSONObject availabilityEstimate =
+		JSONObject availabilityEstimateJSONObject =
 			(JSONObject)getCPContentContributorValue(
 				CPContentContributorConstants.AVAILABILITY_ESTIMATE_NAME,
 				httpServletRequest);
 
-		if (availabilityEstimate == null) {
+		if (availabilityEstimateJSONObject == null) {
 			return StringPool.BLANK;
 		}
 
-		return availabilityEstimate.getString(
+		return availabilityEstimateJSONObject.getString(
 			CPContentContributorConstants.AVAILABILITY_ESTIMATE_NAME);
 	}
 
@@ -113,15 +113,16 @@ public class CPContentHelperImpl implements CPContentHelper {
 	public String getAvailabilityLabel(HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		JSONObject availability = (JSONObject)getCPContentContributorValue(
-			CPContentContributorConstants.AVAILABILITY_NAME,
-			httpServletRequest);
+		JSONObject availabilityJSONObject =
+			(JSONObject)getCPContentContributorValue(
+				CPContentContributorConstants.AVAILABILITY_NAME,
+				httpServletRequest);
 
-		if (availability == null) {
+		if (availabilityJSONObject == null) {
 			return StringPool.BLANK;
 		}
 
-		return availability.getString(
+		return availabilityJSONObject.getString(
 			CPContentContributorConstants.AVAILABILITY_NAME);
 	}
 
@@ -376,15 +377,16 @@ public class CPContentHelperImpl implements CPContentHelper {
 	public String getStockQuantityLabel(HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		JSONObject stockQuantity = (JSONObject)getCPContentContributorValue(
-			CPContentContributorConstants.STOCK_QUANTITY_NAME,
-			httpServletRequest);
+		JSONObject stockQuantityJSONObject =
+			(JSONObject)getCPContentContributorValue(
+				CPContentContributorConstants.STOCK_QUANTITY_NAME,
+				httpServletRequest);
 
-		if (stockQuantity == null) {
+		if (stockQuantityJSONObject == null) {
 			return StringPool.BLANK;
 		}
 
-		return stockQuantity.getString(
+		return stockQuantityJSONObject.getString(
 			CPContentContributorConstants.STOCK_QUANTITY_NAME);
 	}
 
@@ -393,15 +395,16 @@ public class CPContentHelperImpl implements CPContentHelper {
 			HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		JSONObject subscriptionInfo = (JSONObject)getCPContentContributorValue(
-			CPContentContributorConstants.SUBSCRIPTION_INFO,
-			httpServletRequest);
+		JSONObject subscriptionInfoJSONObject =
+			(JSONObject)getCPContentContributorValue(
+				CPContentContributorConstants.SUBSCRIPTION_INFO,
+				httpServletRequest);
 
-		if (subscriptionInfo == null) {
+		if (subscriptionInfoJSONObject == null) {
 			return StringPool.BLANK;
 		}
 
-		return subscriptionInfo.getString(
+		return subscriptionInfoJSONObject.getString(
 			CPContentContributorConstants.SUBSCRIPTION_INFO);
 	}
 

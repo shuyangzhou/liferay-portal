@@ -565,10 +565,10 @@ public class ExpandoValueWrapper
 
 	@Override
 	public void setGeolocationJSONObject(
-			com.liferay.portal.kernel.json.JSONObject data)
+			com.liferay.portal.kernel.json.JSONObject dataJSONObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		model.setGeolocationJSONObject(data);
+		model.setGeolocationJSONObject(dataJSONObject);
 	}
 
 	@Override

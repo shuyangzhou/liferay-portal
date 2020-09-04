@@ -148,9 +148,11 @@ public class AutocompleteUserMVCResourceCommandTest {
 			new MockLiferayResourceResponse());
 	}
 
-	private boolean _containsField(JSONArray fieldValues, String field) {
-		for (int i = 0; i < fieldValues.length(); i++) {
-			JSONObject jsonObject = fieldValues.getJSONObject(i);
+	private boolean _containsField(
+		JSONArray fieldValuesJSONArray, String field) {
+
+		for (int i = 0; i < fieldValuesJSONArray.length(); i++) {
+			JSONObject jsonObject = fieldValuesJSONArray.getJSONObject(i);
 
 			if (jsonObject.has(field)) {
 				return true;

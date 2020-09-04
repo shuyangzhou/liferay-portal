@@ -65,9 +65,11 @@ const FragmentEditor = ({
 			initialConfiguration !== configuration ||
 			initialCSS !== css ||
 			initialHTML !== html ||
-			initialJS !== js
+			initialJS !== js ||
+			cacheable !== isCacheable
 		);
 	}, [
+		cacheable,
 		configuration,
 		css,
 		html,
@@ -75,6 +77,7 @@ const FragmentEditor = ({
 		initialConfiguration,
 		initialHTML,
 		initialJS,
+		isCacheable,
 		js,
 	]);
 
@@ -167,7 +170,7 @@ const FragmentEditor = ({
 					});
 				});
 		}, 500),
-		[configuration, css, html, js]
+		[configuration, css, html, isCacheable, js]
 	);
 
 	const previousSaveDraft = usePrevious(saveDraft);

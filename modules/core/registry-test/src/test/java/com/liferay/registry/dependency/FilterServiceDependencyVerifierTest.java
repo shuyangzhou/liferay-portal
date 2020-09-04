@@ -51,7 +51,7 @@ public class FilterServiceDependencyVerifierTest {
 		registry.registerService(
 			TestInterface2.class, new TestInstance2(), properties);
 
-		ServiceReference<?> serviceReference = registry.getServiceReference(
+		ServiceReference<?> serviceReference1 = registry.getServiceReference(
 			TestInstance1.class);
 
 		Filter filter1 = registry.getFilter(
@@ -62,7 +62,7 @@ public class FilterServiceDependencyVerifierTest {
 			new FilterServiceDependencyVerifier(filter1);
 
 		Assert.assertTrue(
-			filterServiceDependencyVerifier1.verify(serviceReference));
+			filterServiceDependencyVerifier1.verify(serviceReference1));
 
 		Filter filter2 = registry.getFilter(
 			"(&(objectClass=" + TestInterface2.class.getName() +
@@ -75,7 +75,7 @@ public class FilterServiceDependencyVerifierTest {
 			TestInterface2.class);
 
 		Assert.assertFalse(
-			filterServiceDependencyVerifier2.verify(serviceReference));
+			filterServiceDependencyVerifier2.verify(serviceReference1));
 		Assert.assertTrue(
 			filterServiceDependencyVerifier2.verify(serviceReference2));
 	}

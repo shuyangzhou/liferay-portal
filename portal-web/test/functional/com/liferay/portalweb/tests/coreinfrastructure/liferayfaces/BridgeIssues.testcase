@@ -27,142 +27,218 @@ definition {
 		}
 	}
 
-	@priority = "5"
-	test FacesPortletSmoke {
+	@priority = "3"
+	test Faces1470And1478PortletSmoke {
 
-		// FACES_1513_2185
-
-		BridgeIssues.addPageAndPortlet(
-			pageURL = "faces-1513-2185",
-			portletName = "FACES-1513-2185");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1513-2185");
-
-		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
-
-		// Only export files, no verification of file content
-
-		BridgeDemos.exportFile(lastName = "Export via pe:exporter");
-
-		BridgeDemos.exportFile(lastName = "Download via p:fileDownload");
-
-		// FACES_2921
+		// FACES_1470
 
 		BridgeIssues.addPageAndPortlet(
-			pageURL = "faces-2921",
-			portletName = "FACES-2921");
+			pageURL = "faces-1470",
+			portletName = "FACES-1470");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-2921");
+		BridgeIssues.navigateToDo(
+			pageLink = "Navigate to view1.xhtml",
+			urlAppend = "web/bridge-issues/faces-1470");
 
-		AssertElementPresent(locator1 = "BridgeIssues#RENDER_KITID");
+		BridgeIssues.navigateToDo(
+			pageLink = "Back to as7LeakTracker.xhtml",
+			urlAppend = "web/bridge-issues/faces-1470?p_p_id=FACES1470_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1470_WAR_comliferayfacesissuejsfportlet__facesViewIdRender=%2FWEB-INF%2Fviews%2FFACES-1470%2Fview1.xhtml");
 
-		AssertElementPresent(
-			key_attribute = "HTML_BASIC",
-			locator1 = "BridgeIssues#HTML_BASIC");
+		BridgeIssues.navigateToDo(
+			pageLink = "Refresh AS7Leak List",
+			urlAppend = "web/bridge-issues/faces-1470");
 
-		// FACES_3031
+		AssertElementPresent(locator1 = "BridgeIssues#AS7LEAKTRACKER");
 
-		BridgeIssues.addPageAndPortlet(
-			pageURL = "faces-3031",
-			portletName = "FACES-3031");
+		BridgeIssues.navigateToDo(
+			pageLink = "Click me to navigate to view2.xhtml via Ajax",
+			urlAppend = "web/bridge-issues/faces-1470?p_p_id=FACES1470_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1470_WAR_comliferayfacesissuejsfportlet__facesViewIdRender=%2FWEB-INF%2Fviews%2FFACES-1470%2Fview1.xhtml");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3031");
+		Click(
+			key_PageLink = "Click me to navigate to view1.xhtml via Ajax",
+			locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
 
-		BridgeIssues.verifyValue(
-			detailValue = "State successfully saved and restored.",
-			restorestate = "true",
-			statusValue = "SUCCESS",
-			textValue = "FACES-3031");
+		BridgeIssues.navigateToDo(
+			pageLink = "Refresh AS7Leak List",
+			urlAppend = "web/bridge-issues/faces-1470");
 
-		// FACES_3250
+		AssertElementPresent(locator1 = "BridgeIssues#AS7LEAKTRACKER");
 
-		BridgeIssues.addPageAndPortlet(
-			pageURL = "faces-3250",
-			portletName = "FACES-3250");
+		BridgeIssues.navigateToDo(
+			pageLink = "Click me to navigate to view2.xhtml via non-Ajax (full postback)",
+			urlAppend = "web/bridge-issues/faces-1470?p_p_id=FACES1470_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1470_WAR_comliferayfacesissuejsfportlet__facesViewIdRender=%2FWEB-INF%2Fviews%2FFACES-1470%2Fview1.xhtml");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3250");
+		Click(
+			key_PageLink = "Click me to navigate to view1.xhtml via non-Ajax (full postback)",
+			locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
 
-		Click(locator1 = "BridgeIssues#CHOOSE_FILE_BUTTON");
+		BridgeIssues.navigateToDo(
+			pageLink = "Refresh AS7Leak List",
+			urlAppend = "web/bridge-issues/faces-1470");
 
-		BridgeIssues.upload3250File(
-			fileName = "Document_2.jpeg",
-			instantAjax = "false");
+		AssertElementPresent(locator1 = "BridgeIssues#AS7LEAKTRACKER");
 
-		AssertElementPresent(locator1 = "BridgeIssues#FILE_NAME");
+		BridgeIssues.navigateToDo(
+			pageLink = "Click me to navigate to view2.xhtml via Ajax",
+			urlAppend = "web/bridge-issues/faces-1470?p_p_id=FACES1470_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1470_WAR_comliferayfacesissuejsfportlet__facesViewIdRender=%2FWEB-INF%2Fviews%2FFACES-1470%2Fview1.xhtml");
 
-		Click(locator1 = "BridgeIssues#CHOOSE_FILE_BUTTON_2");
+		Click(
+			key_PageLink = "Click me to navigate to view1.xhtml via non-Ajax (full postback)",
+			locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
 
-		BridgeIssues.upload3250File(
-			fileName = "Document_2.jpeg",
-			instantAjax = "true",
-			submit = "skinSimple=false");
+		BridgeIssues.navigateToDo(
+			pageLink = "Refresh AS7Leak List",
+			urlAppend = "web/bridge-issues/faces-1470");
 
-		Click(locator1 = "BridgeIssues#CHOOSE_FILE_BUTTON_3");
+		AssertElementPresent(locator1 = "BridgeIssues#AS7LEAKTRACKER");
 
-		BridgeIssues.upload3250File(
-			fileName = "Document_2.jpeg",
-			instantAjax = "true",
-			submit = "skinSimple=true");
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1470?p_p_id=FACES1470_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1470_WAR_comliferayfacesissuejsfportlet__facesViewIdRender=%2FWEB-INF%2Fviews%2FFACES-1470%2Fview1.xhtml");
 
-		// FACES_3327
+		UserBar.signOut();
 
-		BridgeIssues.addPageAndPortlet(
-			pageURL = "faces-3327",
-			portletName = "FACES-3327");
+		BridgeIssues.navigateToDo(
+			pageLink = "Refresh AS7Leak List",
+			urlAppend = "web/bridge-issues/faces-1470");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3327");
+		AssertElementPresent(locator1 = "BridgeIssues#AS7LEAKTRACKER");
 
-		BridgeIssues.verifyValue(
-			detailValue = "Successfully navigated after exporting/downloading data from a PrimeFaces component.",
-			restorestate = "true",
-			statusValue = "SUCCESS",
-			textValue = "FACES-3327");
+		// Click the Perform Garbage Collection button and confirm that no AS7Leak class instances appear
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3327");
-
-		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
-
-		// Only export files, no verification of file content
-
-		BridgeDemos.exportFile(lastName = "Export via pe:exporter");
-
-		BridgeDemos.exportFile(lastName = "Download via p:fileDownload");
-
-		// FACES_3328
-
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Issues",
-			layoutName = "FACES-3328-start");
-
-		JSONLayout.addPublicLayout(
-			groupName = "Bridge Issues",
-			layoutName = "FACES-3328-end");
+		// FACES-1478
 
 		BridgeIssues.addPageAndPortlet(
-			pageURL = "faces-3328",
-			portletName = "FACES-3328");
+			pageURL = "faces-1478",
+			portletName = "FACES-1478");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3328-start");
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1478");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3328");
+		AssertTextEquals(
+			locator1 = "BridgeIssues#URL_MESSAGE",
+			value1 = "http://localhost:8080/web/bridge-issues/faces-1478?p_p_id=FACES1478_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=foo&_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=bar");
 
-		Click(locator1 = "BridgeIssues#CALENDA_TRIGGER_BUTTON");
+		Click(
+			key_PageLink = "should be the same as the href attribute of this link",
+			locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
 
-		AssertElementPresent(locator1 = "BridgeIssues#CALENDA_TABLE");
+		AssertLocation(value1 = "http://localhost:8080/web/bridge-issues/faces-1478?p_p_id=FACES1478_WAR_comliferayfacesissuejsfportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=foo&_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=bar");
 
-		AssertElementPresent(locator1 = "BridgeIssues#CALENDA_DATEPICKER");
+		AssertTextEquals(
+			locator1 = "BridgeIssues#PARAM_URL1",
+			value1 = "_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=foo");
 
-		AssertElementPresent(locator1 = "BridgeIssues#CALENDA_DATEPICKER");
+		AssertTextEquals(
+			locator1 = "BridgeIssues#PARAM_URL2",
+			value1 = "_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=bar");
 
-		AssertElementPresent(locator1 = "BridgeIssues#SELECT_ONE_MENU");
+		AssertLocation.assertPartialLocation(value1 = "_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=foo");
 
-		BridgeIssues.select(textValue = "Item 2");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3328-end");
+		AssertLocation.assertPartialLocation(value1 = "_FACES1478_WAR_comliferayfacesissuejsfportlet_testParam=bar");
 	}
 
-	@priority = "5"
-	test FacesPortletSmokeInt {
+	@priority = "3"
+	test Faces1618And1638PortletSmoke {
+
+		// FACES-1618
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-1618",
+			portletName = "FACES-1618");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1618");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE_SIZE",
+			value1 = "2");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE",
+			value1 = "FACES-1618:example.css");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE2",
+			value1 = "javax.faces:jsf.js");
+
+		Click(
+			key_PageLink = "go to next view with immediate=",
+			locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE_SIZE",
+			value1 = "3");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE",
+			value1 = "FACES-1618:example.css");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE2",
+			value1 = "FACES-1618:example.js");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE3",
+			value1 = "javax.faces:jsf.js");
+
+		Click(
+			key_PageLink = "go to previous view with immediate=",
+			locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE",
+			value1 = "FACES-1618:example.css");
+
+		AssertTextEquals(
+			locator1 = "BridgeIssues#RESOURCE2",
+			value1 = "javax.faces:jsf.js");
+
+		AssertElementNotPresent(locator1 = "BridgeIssues#RESOURCE3");
+
+		// FACES-1638
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-1638",
+			portletName = "FACES-1638");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1638");
+
+		for (var Index : list "1,2") {
+			BridgeIssues.verifyParam(
+				liIndex = "1",
+				paramLink = "First-Item",
+				ulIndex = "${Index}");
+
+			BridgeIssues.verifyParam(
+				liIndex = "1",
+				paramValue = "1",
+				ulIndex = "${Index}");
+		}
+
+		for (var Index : list "1,2") {
+			BridgeIssues.verifyParam(
+				liIndex = "2",
+				paramLink = "Second-Item",
+				ulIndex = "${Index}");
+
+			BridgeIssues.verifyParam(
+				liIndex = "2",
+				paramValue = "2",
+				ulIndex = "${Index}");
+		}
+
+		for (var Index : list "1,2") {
+			BridgeIssues.verifyParam(
+				liIndex = "3",
+				paramLink = "Third-Item",
+				ulIndex = "${Index}");
+
+			BridgeIssues.verifyParam(
+				liIndex = "3",
+				paramValue = "3",
+				ulIndex = "${Index}");
+		}
+	}
+
+	@priority = "3"
+	test FacesIssuesPortletSmoke {
 
 		// FACES_224
 
@@ -183,7 +259,7 @@ definition {
 			value1 = "This is view2.xhtml");
 
 		AssertElementPresent.assertVisible(
-			locator1 = "BridgeIssues#VIEW_PARAM_VALUE1",
+			locator1 = "BridgeIssues#VIEW_PARAM1",
 			value1 = "abc");
 
 		AssertElementPresent.assertVisible(
@@ -191,7 +267,7 @@ definition {
 			value1 = "viewParam1=abc");
 
 		AssertElementPresent.assertVisible(
-			locator1 = "BridgeIssues#VIEW_PARAM_VALUE2",
+			locator1 = "BridgeIssues#VIEW_PARAM2",
 			value1 = "xyz");
 
 		AssertElementPresent.assertVisible(
@@ -259,7 +335,7 @@ definition {
 			BridgeIssues.verifyValue(
 				detailValue = "All special URL characters were correctly encoded.",
 				link = "${resourceActionIndex}",
-				restorestate = "true",
+				restoreState = "true",
 				statusValue = "SUCCESS",
 				textValue = "FACES-2958");
 
@@ -277,7 +353,7 @@ definition {
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully avoided reloading FACES-3175:reproducer.js resource.",
 			link = "result.xhtml",
-			restorestate = "true",
+			restoreState = "true",
 			statusValue = "SUCCESS",
 			textValue = "FACES-3175");
 
@@ -292,7 +368,7 @@ definition {
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully load html from head section template.",
 			link = "Load html from head section template.",
-			restorestate = "true",
+			restoreState = "true",
 			statusValue = "SUCCESS",
 			textValue = "FACES-3231");
 
@@ -331,7 +407,7 @@ definition {
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully handled",
 			link = "To nonExistentView.xhtml",
-			restorestate = "true",
+			restoreState = "true",
 			statusValue = "SUCCESS",
 			textValue = "FACES-3356");
 
@@ -347,7 +423,7 @@ definition {
 			BridgeIssues.verifyValue(
 				detailValue = "Liferay parameter was properly encoded in Render",
 				link = "${resourceActionIndex}",
-				restorestate = "true",
+				restoreState = "true",
 				statusValue = "SUCCESS",
 				textValue = "FACES-3404");
 
@@ -365,7 +441,7 @@ definition {
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully loaded body script in Ajax request.",
 			link = "result.xhtml",
-			restorestate = "true",
+			restoreState = "true",
 			statusValue = "SUCCESS",
 			textValue = "MOJARRA-4340-workaround");
 
@@ -380,9 +456,149 @@ definition {
 		BridgeIssues.verifyValue(
 			detailValue = "Resource URLs loaded via Ajax were not double escaped.",
 			link = "result.xhtml",
-			restorestate = "true",
+			restoreState = "true",
 			statusValue = "SUCCESS",
 			textValue = "MOJARRA-4340-workaround");
+	}
+
+	@priority = "3"
+	test PrimefacesIssuesSmoke {
+
+		// FACES_1513_2185
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-1513-2185",
+			portletName = "FACES-1513-2185");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1513-2185");
+
+		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
+
+		// Only export files, no verification of file content
+
+		BridgeDemos.exportFile(lastName = "Export via pe:exporter");
+
+		BridgeDemos.exportFile(lastName = "Download via p:fileDownload");
+
+		// FACES_2921
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-2921",
+			portletName = "FACES-2921");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-2921");
+
+		AssertElementPresent(locator1 = "BridgeIssues#RENDER_KITID");
+
+		AssertElementPresent(
+			key_attribute = "HTML_BASIC",
+			locator1 = "BridgeIssues#HTML_BASIC");
+
+		// FACES_3031
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-3031",
+			portletName = "FACES-3031");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3031");
+
+		BridgeIssues.verifyValue(
+			detailValue = "State successfully saved and restored.",
+			restoreState = "true",
+			statusValue = "SUCCESS",
+			textValue = "FACES-3031");
+
+		// FACES_3250
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-3250",
+			portletName = "FACES-3250");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3250");
+
+		Click(locator1 = "BridgeIssues#CHOOSE_FILE_BUTTON");
+
+		BridgeIssues.upload3250File(
+			fileName = "Document_2.jpeg",
+			instantAjax = "false");
+
+		AssertElementPresent(locator1 = "BridgeIssues#FILE_NAME");
+
+		Click(locator1 = "BridgeIssues#CHOOSE_FILE_BUTTON_2");
+
+		BridgeIssues.upload3250File(
+			fileName = "Document_2.jpeg",
+			instantAjax = "true",
+			submit = "skinSimple=false");
+
+		Click(locator1 = "BridgeIssues#CHOOSE_FILE_BUTTON_3");
+
+		BridgeIssues.upload3250File(
+			fileName = "Document_2.jpeg",
+			instantAjax = "true",
+			submit = "skinSimple=true");
+
+		// FACES_3327
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-3327",
+			portletName = "FACES-3327");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3327");
+
+		BridgeIssues.verifyValue(
+			detailValue = "Successfully navigated after exporting/downloading data from a PrimeFaces component.",
+			restoreState = "true",
+			statusValue = "SUCCESS",
+			textValue = "FACES-3327");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3327");
+
+		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
+
+		// Only export files, no verification of file content
+
+		BridgeDemos.exportFile(lastName = "Export via pe:exporter");
+
+		BridgeDemos.exportFile(lastName = "Download via p:fileDownload");
+
+		// FACES_3328
+
+		JSONLayout.addPublicLayout(
+			groupName = "Bridge Issues",
+			layoutName = "FACES-3328-start");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Bridge Issues",
+			layoutName = "FACES-3328-end");
+
+		BridgeIssues.addPageAndPortlet(
+			pageURL = "faces-3328",
+			portletName = "FACES-3328");
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3328-start");
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		Click(locator1 = "//a[@href='${portalURL}/web/bridge-issues/faces-3328']");
+
+		Click(locator1 = "BridgeIssues#CALENDA_TRIGGER_BUTTON");
+
+		AssertElementPresent(locator1 = "BridgeIssues#CALENDA_TABLE");
+
+		AssertElementPresent(locator1 = "BridgeIssues#CALENDA_DATEPICKER");
+
+		AssertElementPresent(locator1 = "BridgeIssues#SELECT_ONE_MENU");
+
+		Click(locator1 = "BridgeIssues#CALENDA_TRIGGER_BUTTON");
+
+		BridgeIssues.select(textValue = "Item 2");
+
+		Click(locator1 = "//a[@href='${portalURL}/web/bridge-issues/faces-3328-end']");
+
+		AssertNotVisible(locator1 = "//table[contains(@class, 'ui-datepicker-calendar')]");
+
+		AssertNotVisible(locator1 = "//*[contains(@id,'p_selectOneMenu')]");
 	}
 
 }

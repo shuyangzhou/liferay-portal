@@ -145,24 +145,24 @@ public class AddCommerceOrderItemMVCActionCommand extends BaseMVCActionCommand {
 				commerceOrderValidatorException.
 					getCommerceOrderValidatorResults();
 
-			JSONArray errorArray = _jsonFactory.createJSONArray();
+			JSONArray errorJSONArray = _jsonFactory.createJSONArray();
 
 			for (CommerceOrderValidatorResult commerceOrderValidatorResult :
 					commerceOrderValidatorResults) {
 
-				JSONObject errorObject = _jsonFactory.createJSONObject();
+				JSONObject errorJSONObject = _jsonFactory.createJSONObject();
 
-				errorObject.put(
+				errorJSONObject.put(
 					"message",
 					commerceOrderValidatorResult.getLocalizedMessage());
 
-				errorArray.put(errorObject);
+				errorJSONArray.put(errorJSONObject);
 			}
 
 			jsonObject.put(
 				"success", false
 			).put(
-				"validatorErrors", errorArray
+				"validatorErrors", errorJSONArray
 			);
 		}
 		catch (Exception exception) {

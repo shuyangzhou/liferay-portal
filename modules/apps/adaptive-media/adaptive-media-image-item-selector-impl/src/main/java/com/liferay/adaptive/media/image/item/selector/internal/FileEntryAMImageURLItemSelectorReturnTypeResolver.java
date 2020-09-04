@@ -80,7 +80,7 @@ public class FileEntryAMImageURLItemSelectorReturnTypeResolver
 			"fileEntryId", fileEntry.getFileEntryId()
 		);
 
-		JSONArray sourcesArray = JSONFactoryUtil.createJSONArray();
+		JSONArray sourcesJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<MediaQuery> mediaQueries = _mediaQueryProvider.getMediaQueries(
 			fileEntry);
@@ -90,10 +90,10 @@ public class FileEntryAMImageURLItemSelectorReturnTypeResolver
 		mediaQueryStream.map(
 			this::_getSourceJSONObject
 		).forEach(
-			sourcesArray::put
+			sourcesJSONArray::put
 		);
 
-		fileEntryJSONObject.put("sources", sourcesArray);
+		fileEntryJSONObject.put("sources", sourcesJSONArray);
 
 		return fileEntryJSONObject.toString();
 	}

@@ -135,10 +135,10 @@ public class DDLImpl implements DDL {
 
 				fieldValuesStream.forEach(
 					fieldValue -> {
-						JSONArray jsonArrayValue = getJSONArrayValue(
+						JSONArray valueJSONArray = getJSONArrayValue(
 							fieldValue);
 
-						fieldJSONArray.put(jsonArrayValue.get(0));
+						fieldJSONArray.put(valueJSONArray.get(0));
 					});
 
 				jsonObject.put(fieldName, fieldJSONArray);

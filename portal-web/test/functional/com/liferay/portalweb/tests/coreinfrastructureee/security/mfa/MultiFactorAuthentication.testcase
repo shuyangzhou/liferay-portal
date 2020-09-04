@@ -246,7 +246,7 @@ definition {
 
 		var reponse = JSONCurlUtil.get("${curl}");
 
-		if (contains("${reponse}", "Access denied to com.liferay.portal.kernel.service.UserService#getCurrentUser")) {
+		if (contains("${reponse}", "{}")) {
 			echo("Instance admin is able to disable Basic Authentication.");
 		}
 		else {

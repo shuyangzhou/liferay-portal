@@ -693,15 +693,17 @@ public class DDMImpl implements DDM {
 				JSONFactoryUtil.createJSONObject();
 
 			for (Locale availableLocale : availableLocales) {
-				JSONObject localeMap = JSONFactoryUtil.createJSONObject();
+				JSONObject localeMapJSONObject =
+					JSONFactoryUtil.createJSONObject();
 
 				addDDMFormFieldLocalizedProperty(
-					localeMap, "label",
+					localeMapJSONObject, "label",
 					ddmFormFieldOptions.getOptionLabels(optionValue),
 					availableLocale, defaultLocale, "option");
 
 				localizationMapJSONObject.put(
-					LocaleUtil.toLanguageId(availableLocale), localeMap);
+					LocaleUtil.toLanguageId(availableLocale),
+					localeMapJSONObject);
 			}
 
 			optionJSONObject.put("localizationMap", localizationMapJSONObject);
@@ -832,13 +834,16 @@ public class DDMImpl implements DDM {
 				JSONFactoryUtil.createJSONObject();
 
 			for (Locale availableLocale : availableLocales) {
-				JSONObject localeMap = JSONFactoryUtil.createJSONObject();
+				JSONObject localeMapJSONObject =
+					JSONFactoryUtil.createJSONObject();
 
 				addDDMFormFieldLocalizedProperties(
-					localeMap, ddmFormField, availableLocale, defaultLocale);
+					localeMapJSONObject, ddmFormField, availableLocale,
+					defaultLocale);
 
 				localizationMapJSONObject.put(
-					LocaleUtil.toLanguageId(availableLocale), localeMap);
+					LocaleUtil.toLanguageId(availableLocale),
+					localeMapJSONObject);
 			}
 
 			jsonObject.put(

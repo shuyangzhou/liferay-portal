@@ -68,15 +68,17 @@ public class ContentDashboardItemTypeUtil {
 		toContentDashboardItemTypeOptional(
 			ContentDashboardItemTypeFactoryTracker
 				contentDashboardItemTypeFactoryTracker,
-			JSONObject contentDashboardItemTypePayload) {
+			JSONObject contentDashboardItemTypePayloadJSONObject) {
 
 		return toContentDashboardItemTypeOptional(
 			contentDashboardItemTypeFactoryTracker,
 			new InfoItemReference(
 				GetterUtil.getString(
-					contentDashboardItemTypePayload.getString("className")),
+					contentDashboardItemTypePayloadJSONObject.getString(
+						"className")),
 				GetterUtil.getLong(
-					contentDashboardItemTypePayload.getLong("classPK"))));
+					contentDashboardItemTypePayloadJSONObject.getLong(
+						"classPK"))));
 	}
 
 	public static Optional<ContentDashboardItemType>

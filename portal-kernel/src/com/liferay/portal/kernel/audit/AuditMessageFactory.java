@@ -40,11 +40,11 @@ public interface AuditMessageFactory {
 	public AuditMessage getAuditMessage(
 		String eventType, long companyId, long userId, String userName,
 		String className, String classPK, String message, Date timestamp,
-		JSONObject additionalInfo);
+		JSONObject additionalInfoJSONObject);
 
 	public AuditMessage getAuditMessage(
 		String eventType, long companyId, long userId, String userName,
 		String className, String classPK, String message,
-		JSONObject additionalInfo);
+		JSONObject additionalInfoJSONObject);
 
 }

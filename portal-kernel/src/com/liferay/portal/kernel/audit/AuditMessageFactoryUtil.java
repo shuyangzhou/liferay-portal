@@ -60,21 +60,21 @@ public class AuditMessageFactoryUtil {
 	public AuditMessage getAuditMessage(
 		String eventType, long companyId, long userId, String userName,
 		String className, String classPK, String message, Date timestamp,
-		JSONObject additionalInfo) {
+		JSONObject additionalInfoJSONObject) {
 
 		return getAuditMessageFactory().getAuditMessage(
 			eventType, companyId, userId, userName, className, classPK, message,
-			timestamp, additionalInfo);
+			timestamp, additionalInfoJSONObject);
 	}
 
 	public AuditMessage getAuditMessage(
 		String eventType, long companyId, long userId, String userName,
 		String className, String classPK, String message,
-		JSONObject additionalInfo) {
+		JSONObject additionalInfoJSONObject) {
 
 		return getAuditMessageFactory().getAuditMessage(
 			eventType, companyId, userId, userName, className, classPK, message,
-			additionalInfo);
+			additionalInfoJSONObject);
 	}
 
 	private static volatile AuditMessageFactory _auditMessageFactory =

@@ -49,8 +49,10 @@ export function useSetCollectionActiveItemContext(itemId) {
 
 	if (
 		isActive(itemId) ||
-		(item.type === LAYOUT_DATA_ITEM_TYPES.fragment &&
+		(item &&
+			item.type === LAYOUT_DATA_ITEM_TYPES.fragment &&
 			activeItemType === ITEM_TYPES.editable &&
+			activeItemId &&
 			activeItemId.startsWith(item.config.fragmentEntryLinkId))
 	) {
 		setState(collectionContext);

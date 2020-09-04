@@ -165,11 +165,12 @@ public class ExpandoValueLocalServiceWrapper
 	public ExpandoValue addValue(
 			long companyId, String className, String tableName,
 			String columnName, long classPK,
-			com.liferay.portal.kernel.json.JSONObject data)
+			com.liferay.portal.kernel.json.JSONObject dataJSONObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoValueLocalService.addValue(
-			companyId, className, tableName, columnName, classPK, data);
+			companyId, className, tableName, columnName, classPK,
+			dataJSONObject);
 	}
 
 	@Override
@@ -750,11 +751,12 @@ public class ExpandoValueLocalServiceWrapper
 	public com.liferay.portal.kernel.json.JSONObject getData(
 			long companyId, String className, String tableName,
 			String columnName, long classPK,
-			com.liferay.portal.kernel.json.JSONObject defaultData)
+			com.liferay.portal.kernel.json.JSONObject defaultDataJSONObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _expandoValueLocalService.getData(
-			companyId, className, tableName, columnName, classPK, defaultData);
+			companyId, className, tableName, columnName, classPK,
+			defaultDataJSONObject);
 	}
 
 	@Override

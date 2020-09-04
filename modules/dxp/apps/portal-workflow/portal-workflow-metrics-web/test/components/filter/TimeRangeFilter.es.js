@@ -71,8 +71,8 @@ describe('The time range filter component should', () => {
 			const filterItems = await getAllByTestId('filterItem');
 
 			expect(filterItems[0].innerHTML).toContain('custom-range');
-			expect(filterItems[1].innerHTML).toContain('Last 7 Days');
-			expect(filterItems[2].innerHTML).toContain('Last 30 Days');
+			expect(filterItems[1].innerHTML).toContain('Last 30 Days');
+			expect(filterItems[2].innerHTML).toContain('Last 7 Days');
 		});
 
 		test('Be rendered with active option "Last 7 Days"', async () => {

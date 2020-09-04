@@ -7728,9 +7728,9 @@ public class PortalImpl implements Portal {
 	protected String getPortletParam(
 		HttpServletRequest httpServletRequest, String name) {
 
-		String portletId = ParamUtil.getString(httpServletRequest, "p_p_id");
+		String portletId1 = ParamUtil.getString(httpServletRequest, "p_p_id");
 
-		if (Validator.isNull(portletId)) {
+		if (Validator.isNull(portletId1)) {
 			return StringPool.BLANK;
 		}
 
@@ -7770,9 +7770,9 @@ public class PortalImpl implements Portal {
 
 			// The Struts action must be for the correct portlet
 
-			String portletId1 = parameterName.substring(1, pos);
+			String portletId2 = parameterName.substring(1, pos);
 
-			if (portletId.equals(portletId1)) {
+			if (portletId1.equals(portletId2)) {
 				value = parameterValues[0];
 			}
 		}

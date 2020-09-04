@@ -402,13 +402,15 @@ public class DDMFormContextToDDMForm
 					DDMFormField ddmFormField = new DDMFormField(name, type);
 
 					if (jsonObject.has("nestedFields")) {
-						JSONArray nestedFields = jsonObject.getJSONArray(
-							"nestedFields");
+						JSONArray nestedFieldsJSONArray =
+							jsonObject.getJSONArray("nestedFields");
 
-						for (int i = 0; i < nestedFields.length(); i++) {
+						for (int i = 0; i < nestedFieldsJSONArray.length();
+							 i++) {
+
 							DDMFormField nestedDDMFormField =
 								createDDMFormField(
-									nestedFields.getJSONObject(i));
+									nestedFieldsJSONArray.getJSONObject(i));
 
 							ddmFormField.addNestedDDMFormField(
 								nestedDDMFormField);

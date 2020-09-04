@@ -51,9 +51,9 @@ public interface JSONArray extends Externalizable, Iterable, JSONSerializable {
 
 	public JSONArray put(int value);
 
-	public JSONArray put(JSONArray value);
+	public JSONArray put(JSONArray jsonArray);
 
-	public JSONArray put(JSONObject value);
+	public JSONArray put(JSONObject jsonObject);
 
 	public JSONArray put(long value);
 

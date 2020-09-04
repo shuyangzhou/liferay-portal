@@ -204,17 +204,17 @@ public class JSONUtil {
 			return _createJSONObject(jsonObject1.toString());
 		}
 
-		JSONObject jsonObject = _createJSONObject(jsonObject1.toString());
+		JSONObject jsonObject3 = _createJSONObject(jsonObject1.toString());
 
 		Iterator<String> iterator = jsonObject2.keys();
 
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 
-			jsonObject.put(key, jsonObject2.get(key));
+			jsonObject3.put(key, jsonObject2.get(key));
 		}
 
-		return jsonObject;
+		return jsonObject3;
 	}
 
 	public static JSONArray put(Object value) {

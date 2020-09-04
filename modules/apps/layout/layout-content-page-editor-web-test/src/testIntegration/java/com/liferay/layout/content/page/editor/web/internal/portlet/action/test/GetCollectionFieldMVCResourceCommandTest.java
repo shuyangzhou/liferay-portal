@@ -153,9 +153,10 @@ public class GetCollectionFieldMVCResourceCommandTest {
 
 		Assert.assertEquals(1, jsonArray.length());
 
-		JSONObject item = jsonArray.getJSONObject(0);
+		JSONObject itemJSONObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals(blogsEntry.getTitle(), item.getString("title"));
+		Assert.assertEquals(
+			blogsEntry.getTitle(), itemJSONObject.getString("title"));
 	}
 
 	@Test
@@ -199,13 +200,15 @@ public class GetCollectionFieldMVCResourceCommandTest {
 
 		Assert.assertEquals(2, jsonArray.length());
 
-		JSONObject item1 = jsonArray.getJSONObject(0);
+		JSONObject itemJSONObject1 = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals(blogsEntry1.getTitle(), item1.getString("title"));
+		Assert.assertEquals(
+			blogsEntry1.getTitle(), itemJSONObject1.getString("title"));
 
-		JSONObject item2 = jsonArray.getJSONObject(1);
+		JSONObject itemJSONObject2 = jsonArray.getJSONObject(1);
 
-		Assert.assertEquals(blogsEntry2.getTitle(), item2.getString("title"));
+		Assert.assertEquals(
+			blogsEntry2.getTitle(), itemJSONObject2.getString("title"));
 	}
 
 	@Test
@@ -251,9 +254,10 @@ public class GetCollectionFieldMVCResourceCommandTest {
 
 		Assert.assertEquals(1, jsonArray.length());
 
-		JSONObject item1 = jsonArray.getJSONObject(0);
+		JSONObject itemJSONObject = jsonArray.getJSONObject(0);
 
-		Assert.assertEquals(blogsEntry.getTitle(), item1.getString("title"));
+		Assert.assertEquals(
+			blogsEntry.getTitle(), itemJSONObject.getString("title"));
 	}
 
 	@Rule

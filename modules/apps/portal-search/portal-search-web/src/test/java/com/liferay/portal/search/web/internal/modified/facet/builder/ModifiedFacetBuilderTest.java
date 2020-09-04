@@ -178,9 +178,9 @@ public class ModifiedFacetBuilderTest {
 
 		FacetConfiguration facetConfiguration = facet.getFacetConfiguration();
 
-		JSONObject data = facetConfiguration.getData();
+		JSONObject dataJSONObject = facetConfiguration.getData();
 
-		JSONArray facetRangesJSONArray = data.getJSONArray("ranges");
+		JSONArray facetRangesJSONArray = dataJSONObject.getJSONArray("ranges");
 
 		Assert.assertEquals(
 			rangesJSONArray.length(), facetRangesJSONArray.length());

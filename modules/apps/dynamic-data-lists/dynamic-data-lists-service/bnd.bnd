@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Dynamic Data Lists Service
 Bundle-SymbolicName: com.liferay.dynamic.data.lists.service
-Bundle-Version: 4.0.19
+Bundle-Version: 4.0.20
 Import-Package:\
 	com.github.*;resolution:=optional,\
 	\

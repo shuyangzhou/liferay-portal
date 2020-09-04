@@ -79,8 +79,8 @@ public class JSONFactoryUtil {
 		return getJSONFactory().createJSONSerializer();
 	}
 
-	public static Object deserialize(JSONObject jsonObj) {
-		return getJSONFactory().deserialize(jsonObj);
+	public static Object deserialize(JSONObject jsonObject) {
+		return getJSONFactory().deserialize(jsonObject);
 	}
 
 	public static Object deserialize(String json) {

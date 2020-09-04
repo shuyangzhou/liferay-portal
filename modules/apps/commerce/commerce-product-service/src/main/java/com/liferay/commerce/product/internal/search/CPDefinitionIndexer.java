@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.facet.util.RangeParserUtil;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.search.filter.RangeTermFilter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -138,11 +139,15 @@ public class CPDefinitionIndexer extends BaseIndexer<CPDefinition> {
 				attributes.get(CPField.BASE_PRICE));
 
 			for (String basePriceRange : basePriceRanges) {
-				String[] rangeArray = RangeParserUtil.parserRange(
+				String[] basePriceRangeParts = RangeParserUtil.parserRange(
 					basePriceRange);
 
-				contextBooleanFilter.addRangeTerm(
-					CPField.BASE_PRICE, rangeArray[0], rangeArray[1]);
+				RangeTermFilter rangeTermFilter = new RangeTermFilter(
+					CPField.BASE_PRICE, true, true, basePriceRangeParts[0],
+					basePriceRangeParts[1]);
+
+				contextBooleanFilter.add(
+					rangeTermFilter, BooleanClauseOccur.MUST);
 			}
 		}
 

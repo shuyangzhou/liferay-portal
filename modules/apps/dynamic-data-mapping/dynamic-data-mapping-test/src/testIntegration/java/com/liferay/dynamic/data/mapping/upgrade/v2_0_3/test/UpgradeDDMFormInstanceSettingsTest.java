@@ -73,18 +73,21 @@ public class UpgradeDDMFormInstanceSettingsTest {
 
 		DDMFormInstance formInstance = createFormInstance(settings);
 
-		JSONArray fieldValues = getFieldValuesJSONArray(
+		JSONArray fieldValuesJSONArray = getFieldValuesJSONArray(
 			formInstance.getSettings());
 
-		Assert.assertFalse(containsField(fieldValues, "requireAuthentication"));
+		Assert.assertFalse(
+			containsField(fieldValuesJSONArray, "requireAuthentication"));
 
 		_upgradeDDMFormInstanceSettings.upgrade();
 
 		formInstance = getRecordSet(formInstance);
 
-		fieldValues = getFieldValuesJSONArray(formInstance.getSettings());
+		fieldValuesJSONArray = getFieldValuesJSONArray(
+			formInstance.getSettings());
 
-		Assert.assertTrue(containsField(fieldValues, "requireAuthentication"));
+		Assert.assertTrue(
+			containsField(fieldValuesJSONArray, "requireAuthentication"));
 	}
 
 	@Test
@@ -93,25 +96,31 @@ public class UpgradeDDMFormInstanceSettingsTest {
 
 		DDMFormInstance formInstance = createFormInstance(settings);
 
-		JSONArray fieldValues = getFieldValuesJSONArray(
+		JSONArray fieldValuesJSONArray = getFieldValuesJSONArray(
 			formInstance.getSettings());
 
-		Assert.assertFalse(containsField(fieldValues, "autosaveEnabled"));
+		Assert.assertFalse(
+			containsField(fieldValuesJSONArray, "autosaveEnabled"));
 
 		_upgradeDDMFormInstanceSettings.upgrade();
 
 		formInstance = getRecordSet(formInstance);
 
-		fieldValues = getFieldValuesJSONArray(formInstance.getSettings());
+		fieldValuesJSONArray = getFieldValuesJSONArray(
+			formInstance.getSettings());
 
-		Assert.assertTrue(containsField(fieldValues, "autosaveEnabled"));
+		Assert.assertTrue(
+			containsField(fieldValuesJSONArray, "autosaveEnabled"));
 	}
 
-	protected boolean containsField(JSONArray fieldValues, String field) {
-		for (int i = 0; i < fieldValues.length(); i++) {
-			JSONObject fieldValue = fieldValues.getJSONObject(i);
+	protected boolean containsField(
+		JSONArray fieldValuesJSONArray, String field) {
 
-			String fieldName = fieldValue.getString("name");
+		for (int i = 0; i < fieldValuesJSONArray.length(); i++) {
+			JSONObject fieldValueJSONObject =
+				fieldValuesJSONArray.getJSONObject(i);
+
+			String fieldName = fieldValueJSONObject.getString("name");
 
 			if (fieldName.equals(field)) {
 				return true;
@@ -174,30 +183,30 @@ public class UpgradeDDMFormInstanceSettingsTest {
 	}
 
 	protected String createSettings(boolean hasSetting) {
-		JSONObject object = _jsonFactory.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		JSONArray availableLanguagesJSONArray = getAvailableLanguagesJSONArray(
 			"en_US");
 
-		object.put(
+		jsonObject.put(
 			"availableLanguageIdss", availableLanguagesJSONArray
 		).put(
 			"defaultLanguageId", "en_US"
 		);
 
-		JSONArray fieldValues = createFieldValues(hasSetting);
+		JSONArray fieldValuesJSONArray = createFieldValues(hasSetting);
 
-		object.put("fieldValues", fieldValues);
+		jsonObject.put("fieldValues", fieldValuesJSONArray);
 
-		return object.toJSONString();
+		return jsonObject.toJSONString();
 	}
 
 	protected JSONArray getAvailableLanguagesJSONArray(String languageId) {
-		JSONArray array = _jsonFactory.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
-		array.put(languageId);
+		jsonArray.put(languageId);
 
-		return array;
+		return jsonArray;
 	}
 
 	protected JSONObject getFieldValueJSONObject(String name, String value) {

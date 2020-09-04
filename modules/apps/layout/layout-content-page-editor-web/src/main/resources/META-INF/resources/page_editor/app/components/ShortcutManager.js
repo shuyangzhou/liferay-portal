@@ -39,28 +39,14 @@ import SaveFragmentCompositionModal from './SaveFragmentCompositionModal';
 const ctrlOrMeta = (event) =>
 	(event.ctrlKey && !event.metaKey) || (!event.ctrlKey && event.metaKey);
 
-const isCommentsAlloyEditor = (element) => {
-	return (
-		element.classList.contains('alloy-editor') &&
-		element.parentElement.classList.contains('alloy-editor-container') &&
-		closest(element, '.page-editor__sidebar')
-	);
-};
+const isEditableField = (element) =>
+	!!closest(element, '.page-editor__editable');
 
-const isEditableCKEditor = (element) => {
+const isInteractiveElement = (element) => {
 	return (
-		element.classList.contains('cke_editable') &&
-		closest(element, '.page-editor__editable')
-	);
-};
-
-const isTextElement = (element) => {
-	return (
-		(element.tagName === 'INPUT' &&
-			(element.type === 'text' ||
-				element.type === 'search' ||
-				element.type === 'number')) ||
-		element.tagName === 'TEXTAREA'
+		['INPUT', 'OPTION', 'SELECT', 'TEXTAREA'].includes(element.tagName) ||
+		!!closest(element, '.cke_editable') ||
+		!!closest(element, '.alloy-editor-container')
 	);
 };
 
@@ -76,6 +62,7 @@ export default function ShortcutManager() {
 	const [openSaveModal, setOpenSaveModal] = useState(false);
 
 	const state = useSelector((state) => state);
+
 	const {
 		fragmentEntryLinks,
 		layoutData,
@@ -83,137 +70,80 @@ export default function ShortcutManager() {
 		widgets,
 	} = state;
 
-	const duplicate = (event) => {
-		event.preventDefault();
+	const activeItem = layoutData.items[activeItemId];
 
-		const item = layoutData.items[activeItemId];
-
-		if (
-			item &&
-			canBeDuplicated(fragmentEntryLinks, item, layoutData, widgets) &&
-			(document.activeElement === document.body ||
-				document.activeElement.type === 'button')
-		) {
-			dispatch(
-				duplicateItem({
-					itemId: activeItemId,
-					segmentsExperienceId,
-					selectItem,
-				})
-			);
-		}
+	const duplicate = () => {
+		dispatch(
+			duplicateItem({
+				itemId: activeItemId,
+				segmentsExperienceId,
+				selectItem,
+			})
+		);
 	};
 
-	const remove = (event) => {
-		if (
-			!isEditableCKEditor(event.target) &&
-			!isTextElement(event.target) &&
-			!isCommentsAlloyEditor(event.target)
-		) {
-			event.preventDefault();
-		}
-
-		const item = layoutData.items[activeItemId];
-
-		if (
-			item &&
-			canBeRemoved(item, layoutData) &&
-			(document.activeElement === document.body ||
-				document.activeElement.type === 'button')
-		) {
-			dispatch(
-				deleteItem({
-					itemId: item.itemId,
-					selectItem,
-					store: state,
-				})
-			);
-		}
+	const remove = () => {
+		dispatch(
+			deleteItem({
+				itemId: activeItemId,
+				selectItem,
+				store: state,
+			})
+		);
 	};
 
-	const save = (event) => {
-		event.preventDefault();
-
-		const item = layoutData.items[activeItemId];
-
-		if (
-			item &&
-			canBeSaved(item, layoutData) &&
-			(document.activeElement === document.body ||
-				document.activeElement.type === 'button')
-		) {
-			setOpenSaveModal(true);
-		}
+	const save = () => {
+		setOpenSaveModal(true);
 	};
 
 	const undo = (event) => {
-		if (
-			!isTextElement(event.target) &&
-			!isCommentsAlloyEditor(event.target) &&
-			!isWithinIframe()
-		) {
-			event.preventDefault();
-
-			if (event.shiftKey) {
-				dispatch(redoThunk({store: state}));
-			}
-			else {
-				dispatch(undoThunk({store: state}));
-			}
+		if (event.shiftKey) {
+			dispatch(redoThunk({store: state}));
+		}
+		else {
+			dispatch(undoThunk({store: state}));
 		}
 	};
 
 	const move = (event) => {
-		const item = layoutData.items[activeItemId];
+		const {itemId, parentId} = activeItem;
+
+		const parentItem = layoutData.items[parentId];
+
+		const numChildren = parentItem.children.length;
+
+		const currentPosition = parentItem.children.indexOf(itemId);
+
+		const direction =
+			event.keyCode === ARROW_UP_KEYCODE
+				? MOVE_ITEM_DIRECTIONS.UP
+				: MOVE_ITEM_DIRECTIONS.DOWN;
 
 		if (
-			item &&
-			!isTextElement(event.target) &&
-			!isEditableCKEditor(event.target) &&
-			!isCommentsAlloyEditor(event.target)
+			(direction === MOVE_ITEM_DIRECTIONS.UP && currentPosition === 0) ||
+			(direction === MOVE_ITEM_DIRECTIONS.DOWN &&
+				currentPosition === numChildren - 1)
 		) {
-			event.preventDefault();
-
-			const {itemId, parentId} = item;
-
-			const parentItem = layoutData.items[parentId];
-
-			const numChildren = parentItem.children.length;
-
-			const currentPosition = parentItem.children.indexOf(itemId);
-
-			const direction =
-				event.keyCode === ARROW_UP_KEYCODE
-					? MOVE_ITEM_DIRECTIONS.UP
-					: MOVE_ITEM_DIRECTIONS.DOWN;
-
-			if (
-				(direction === MOVE_ITEM_DIRECTIONS.UP &&
-					currentPosition === 0) ||
-				(direction === MOVE_ITEM_DIRECTIONS.DOWN &&
-					currentPosition === numChildren - 1)
-			) {
-				return;
-			}
-
-			let position;
-
-			if (direction === MOVE_ITEM_DIRECTIONS.UP) {
-				position = currentPosition - 1;
-			}
-			else if (direction === MOVE_ITEM_DIRECTIONS.DOWN) {
-				position = currentPosition + 1;
-			}
-
-			dispatch(
-				moveItem({
-					itemId,
-					parentItemId: parentId,
-					position,
-					segmentsExperienceId,
-				})
-			);
+			return;
 		}
+
+		let position;
+
+		if (direction === MOVE_ITEM_DIRECTIONS.UP) {
+			position = currentPosition - 1;
+		}
+		else if (direction === MOVE_ITEM_DIRECTIONS.DOWN) {
+			position = currentPosition + 1;
+		}
+
+		dispatch(
+			moveItem({
+				itemId,
+				parentItemId: parentId,
+				position,
+				segmentsExperienceId,
+			})
+		);
 	};
 
 	const keymapRef = useRef(null);
@@ -221,26 +151,50 @@ export default function ShortcutManager() {
 	keymapRef.current = {
 		duplicate: {
 			action: duplicate,
+			canBeExecuted: () =>
+				!!layoutData.items[activeItemId] &&
+				canBeDuplicated(
+					fragmentEntryLinks,
+					layoutData.items[activeItemId],
+					layoutData,
+					widgets
+				),
 			isKeyCombination: (event) =>
 				ctrlOrMeta(event) && event.keyCode === D_KEYCODE,
 		},
 		move: {
 			action: move,
+			canBeExecuted: (event) =>
+				!!layoutData.items[activeItemId] &&
+				!isEditableField(event.target) &&
+				!isInteractiveElement(event.target),
 			isKeyCombination: (event) =>
 				event.keyCode === ARROW_UP_KEYCODE ||
 				event.keyCode === ARROW_DOWN_KEYCODE,
 		},
 		remove: {
 			action: remove,
+			canBeExecuted: (event) =>
+				!!layoutData.items[activeItemId] &&
+				canBeRemoved(layoutData.items[activeItemId], layoutData) &&
+				!isEditableField(event.target) &&
+				!isInteractiveElement(event.target),
 			isKeyCombination: (event) => event.keyCode === BACKSPACE_KEYCODE,
 		},
 		save: {
 			action: save,
+			canBeExecuted: () =>
+				!!layoutData.items[activeItemId] &&
+				canBeSaved(layoutData.items[activeItemId], layoutData),
 			isKeyCombination: (event) =>
 				ctrlOrMeta(event) && event.keyCode === S_KEYCODE,
 		},
 		undo: {
 			action: undo,
+			canBeExecuted: (event) =>
+				(isEditableField(event.target) ||
+					!isInteractiveElement(event.target)) &&
+				!isWithinIframe(),
 			isKeyCombination: (event) =>
 				ctrlOrMeta(event) &&
 				event.keyCode === Z_KEYCODE &&
@@ -250,11 +204,16 @@ export default function ShortcutManager() {
 
 	useEffect(() => {
 		const onKeyDown = (event) => {
-			const shortcut = Object.values(keymapRef.current).find((shortcut) =>
-				shortcut.isKeyCombination(event)
+			const shortcut = Object.values(keymapRef.current).find(
+				(shortcut) =>
+					shortcut.isKeyCombination(event) &&
+					shortcut.canBeExecuted(event)
 			);
 
 			if (shortcut) {
+				event.stopPropagation();
+				event.preventDefault();
+
 				shortcut.action(event);
 			}
 		};

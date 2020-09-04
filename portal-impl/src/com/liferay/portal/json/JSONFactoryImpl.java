@@ -179,8 +179,8 @@ public class JSONFactoryImpl implements JSONFactory {
 	}
 
 	@Override
-	public Object deserialize(JSONObject jsonObj) {
-		return deserialize(jsonObj.toString());
+	public Object deserialize(JSONObject jsonObject) {
+		return deserialize(jsonObject.toString());
 	}
 
 	@Override

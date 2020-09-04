@@ -277,11 +277,11 @@ public class AssetCategoriesSelectorDisplayContext {
 		for (AssetCategory category : categories) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			JSONArray children = _getCategoriesJSONArray(
+			JSONArray childrenJSONArray = _getCategoriesJSONArray(
 				vocabularyId, category.getCategoryId());
 
-			if (children.length() > 0) {
-				jsonObject.put("children", children);
+			if (childrenJSONArray.length() > 0) {
+				jsonObject.put("children", childrenJSONArray);
 			}
 
 			jsonObject.put(

@@ -88,8 +88,8 @@ public class DDMFormBuilderSettingsResponse {
 		addSetting("fieldSetDefinitionURL", fieldSetDefinitionURL);
 	}
 
-	public void setFieldSets(JSONArray fieldSets) {
-		addSetting("fieldSets", fieldSets);
+	public void setFieldSets(JSONArray fieldSetsJSONArray) {
+		addSetting("fieldSets", fieldSetsJSONArray);
 	}
 
 	public void setFieldSettingsDDMFormContextURL(

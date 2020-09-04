@@ -1153,9 +1153,9 @@ public class TableMapperTest {
 
 		Assert.assertEquals(lefts.toString(), 1, lefts.size());
 
-		Left left = lefts.get(0);
+		Left left3 = lefts.get(0);
 
-		Assert.assertEquals(leftPrimaryKey2, left.getPrimaryKeyObj());
+		Assert.assertEquals(leftPrimaryKey2, left3.getPrimaryKeyObj());
 
 		rightToLeftPortalCache.remove(rightPrimaryKey);
 
@@ -1341,9 +1341,9 @@ public class TableMapperTest {
 
 		Assert.assertEquals(rights.toString(), 1, rights.size());
 
-		Right right = rights.get(0);
+		Right right3 = rights.get(0);
 
-		Assert.assertEquals(rightPrimaryKey2, right.getPrimaryKeyObj());
+		Assert.assertEquals(rightPrimaryKey2, right3.getPrimaryKeyObj());
 
 		leftToRightPortalCache.remove(leftPrimaryKey);
 

@@ -20,6 +20,16 @@ definition {
 		Portlet.addPG(portletName = "${portletName}");
 	}
 
+	macro navigateToDo {
+		var key_urlAppend = "${urlAppend}";
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "${key_urlAppend}");
+
+		var key_PageLink = "${pageLink}";
+
+		Click(locator1 = "BridgeIssues#NAVIGATE_TO_VIEW");
+	}
+
 	macro select {
 		Click(locator1 = "BridgeIssues#SELECT_ONE_MENU");
 
@@ -64,9 +74,25 @@ definition {
 			value1 = "${gamma}");
 	}
 
-	macro verifyValue {
+	macro verifyParam {
+		var key_liIndex = "${liIndex}";
+		var key_ulIndex = "${ulIndex}";
 
-		if ("${restorestate}" == "true") {
+		if (isSet(paramLink)) {
+			AssertTextEquals(
+				locator1 = "BridgeIssues#PARAM_LINK",
+				value1 = "${paramLink}");
+		}
+
+		if (isSet(paramValue)) {
+			AssertTextEquals(
+				locator1 = "BridgeIssues#PARAM_VALUE",
+				value1 = "${paramValue}");
+		}
+	}
+
+	macro verifyValue {
+		if ("${restoreState}" == "true") {
 			Click(
 				key_PageLink = "${link}",
 				locator1 = "BridgeIssues#PAGE_LINK");

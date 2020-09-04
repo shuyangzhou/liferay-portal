@@ -46,8 +46,8 @@ describe('The filter component should', () => {
 		const filterItems = getAllByTestId('filterItem');
 		const filterItemsNames = getAllByTestId('filterItemName');
 
-		expect(filterItemsNames[0]).toHaveTextContent('Overdue');
-		expect(filterItemsNames[1]).toHaveTextContent('OnTime');
+		expect(filterItemsNames[0]).toHaveTextContent('OnTime');
+		expect(filterItemsNames[1]).toHaveTextContent('Overdue');
 		expect(filterItemsNames[2]).toHaveTextContent('Untracked');
 
 		const activeItem = filterItems.find((item) =>

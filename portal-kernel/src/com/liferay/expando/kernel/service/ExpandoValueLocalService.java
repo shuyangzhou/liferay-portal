@@ -144,7 +144,7 @@ public interface ExpandoValueLocalService
 
 	public ExpandoValue addValue(
 			long companyId, String className, String tableName,
-			String columnName, long classPK, JSONObject data)
+			String columnName, long classPK, JSONObject dataJSONObject)
 		throws PortalException;
 
 	public ExpandoValue addValue(
@@ -483,7 +483,7 @@ public interface ExpandoValueLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getData(
 			long companyId, String className, String tableName,
-			String columnName, long classPK, JSONObject defaultData)
+			String columnName, long classPK, JSONObject defaultDataJSONObject)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

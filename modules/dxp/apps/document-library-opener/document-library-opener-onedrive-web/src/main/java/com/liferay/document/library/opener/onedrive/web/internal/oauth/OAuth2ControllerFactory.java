@@ -149,22 +149,22 @@ public class OAuth2ControllerFactory {
 
 	private static class OAuth2Result {
 
-		public OAuth2Result(JSONObject response) {
+		public OAuth2Result(JSONObject responseJSONObject) {
 			_portalException = null;
-			_response = response;
+			_responseJSONObject = responseJSONObject;
 			_redirectURL = null;
 		}
 
 		public OAuth2Result(PortalException portalException) {
 			_portalException = portalException;
-			_response = null;
+			_responseJSONObject = null;
 			_redirectURL = null;
 		}
 
 		public OAuth2Result(String redirectURL) {
 			_portalException = null;
 			_redirectURL = redirectURL;
-			_response = null;
+			_responseJSONObject = null;
 		}
 
 		public PortalException getPortalException() {
@@ -181,7 +181,7 @@ public class OAuth2ControllerFactory {
 			}
 
 			return Optional.ofNullable(
-				_response
+				_responseJSONObject
 			).orElseGet(
 				JSONFactoryUtil::createJSONObject
 			);
@@ -189,7 +189,7 @@ public class OAuth2ControllerFactory {
 
 		private final PortalException _portalException;
 		private final String _redirectURL;
-		private final JSONObject _response;
+		private final JSONObject _responseJSONObject;
 
 	}
 

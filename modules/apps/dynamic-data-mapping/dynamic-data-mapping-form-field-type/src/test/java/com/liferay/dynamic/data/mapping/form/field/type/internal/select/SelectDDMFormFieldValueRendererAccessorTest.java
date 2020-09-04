@@ -64,11 +64,13 @@ public class SelectDDMFormFieldValueRendererAccessorTest {
 		DDMFormValues ddmFormValues = DDMFormValuesTestUtil.createDDMFormValues(
 			ddmForm);
 
-		JSONArray optionsValues = createOptionsValuesJSONArray(numberOfOptions);
+		JSONArray optionsValuesJSONArray = createOptionsValuesJSONArray(
+			numberOfOptions);
 
 		DDMFormFieldValue ddmFormFieldValue =
 			DDMFormValuesTestUtil.createDDMFormFieldValue(
-				"Select", new UnlocalizedValue(optionsValues.toString()));
+				"Select",
+				new UnlocalizedValue(optionsValuesJSONArray.toString()));
 
 		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
 
@@ -102,11 +104,13 @@ public class SelectDDMFormFieldValueRendererAccessorTest {
 		DDMFormValues ddmFormValues = DDMFormValuesTestUtil.createDDMFormValues(
 			ddmForm);
 
-		JSONArray optionsValues = createOptionsValuesJSONArray(numberOfOptions);
+		JSONArray optionsValuesJSONArray = createOptionsValuesJSONArray(
+			numberOfOptions);
 
 		DDMFormFieldValue ddmFormFieldValue =
 			DDMFormValuesTestUtil.createDDMFormFieldValue(
-				"Select", new UnlocalizedValue(optionsValues.toString()));
+				"Select",
+				new UnlocalizedValue(optionsValuesJSONArray.toString()));
 
 		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
 

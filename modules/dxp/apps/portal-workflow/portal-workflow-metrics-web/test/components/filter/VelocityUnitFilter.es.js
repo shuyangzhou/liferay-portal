@@ -15,6 +15,8 @@ import React from 'react';
 import VelocityUnitFilter from '../../../src/main/resources/META-INF/resources/js/components/filter/VelocityUnitFilter.es';
 import {MockRouter} from '../../mock/MockRouter.es';
 
+import '@testing-library/jest-dom/extend-expect';
+
 const query = '?filters.velocityUnit%5B0%5D=weeks';
 
 const wrapper = ({children}) => (
@@ -44,9 +46,9 @@ describe('The velocity unit filter component should', () => {
 	test('Be rendered with filter item names', async () => {
 		const filterItems = await getAllByTestId('filterItem');
 
-		expect(filterItems[0].innerHTML).toContain('inst-day');
-		expect(filterItems[1].innerHTML).toContain('inst-week');
-		expect(filterItems[2].innerHTML).toContain('inst-month');
+		expect(filterItems[0]).toHaveTextContent('inst-day');
+		expect(filterItems[1]).toHaveTextContent('inst-month');
+		expect(filterItems[2]).toHaveTextContent('inst-week');
 	});
 
 	test('Be rendered with active option "Weeks"', async () => {

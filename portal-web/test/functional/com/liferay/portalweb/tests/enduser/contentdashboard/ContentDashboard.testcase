@@ -13,25 +13,12 @@ definition {
 		JSONGroup.addGroup(groupName = "Test Site Name");
 
 		Navigator.openURL();
-
-		for (var count : list "1,2,3,4,5") {
-			JSONWebcontent.addWebContent(
-				content = "WC Content ${count}",
-				groupName = "Test Site Name",
-				title = "WC Title ${count}");
-		}
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		for (var count : list "1,2,3,4,5") {
-			JSONWebcontent.deleteWebContent(
-				groupName = "Test Site Name",
-				title = "WC Title ${count}");
-		}
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -40,9 +27,60 @@ definition {
 		}
 	}
 
+	@description = "Validate if the user can filter by category"
+	@priority = "5"
+	test ContentDashboardFilterByCategory {
+		JSONCategory.addVocabulary(
+			groupName = "Test Site Name",
+			title = "Vocabulary Name");
+
+		var categoryId = JSONCategory.addCategory(
+			groupName = "Test Site Name",
+			title = "Category Name",
+			vocabularyName = "Vocabulary Name");
+
+		JSONWebcontent.addWebContent(
+			assetCategoryIds = "${categoryId}",
+			content = "WC WebContent Content",
+			groupName = "Test Site Name",
+			title = "WC WebContent Title");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Content",
+			panel = "Applications",
+			portlet = "Content Dashboard");
+
+		Pause(locator1 = "5000");
+
+		ContentDashboard.filterByCategory();
+
+		Pause(locator1 = "3000");
+
+		AssertTextPresent(
+			locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+			value1 = "WC WebContent Title");
+
+		JSONWebcontent.deleteWebContent(
+			groupName = "Test Site Name",
+			title = "WC WebContent Title");
+
+		Category.openCategoriesAdmin(siteURLKey = "test-site-name");
+
+		Category.deleteCategoryByMenuCP(
+			categoryName = "Category Name",
+			vocabularyName = "Vocabulary Name");
+	}
+
 	@description = "Validate if the user can filter by title"
 	@priority = "5"
 	test ContentDashboardFilterByTitle {
+		for (var count : list "1,2,3,4,5") {
+			JSONWebcontent.addWebContent(
+				content = "WC Content ${count}",
+				groupName = "Test Site Name",
+				title = "WC Title ${count}");
+		}
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Content",
 			panel = "Applications",
@@ -55,6 +93,12 @@ definition {
 		AssertTextPresent(
 			locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
 			value1 = "WC Title 5");
+
+		for (var count : list "1,2,3,4,5") {
+			JSONWebcontent.deleteWebContent(
+				groupName = "Test Site Name",
+				title = "WC Title ${count}");
+		}
 	}
 
 	@description = "Validate if the user can open de Info side panel of a web content"

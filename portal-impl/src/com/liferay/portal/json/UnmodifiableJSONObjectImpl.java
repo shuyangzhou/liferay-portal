@@ -79,7 +79,7 @@ public class UnmodifiableJSONObjectImpl extends JSONObjectImpl {
 	}
 
 	@Override
-	public JSONObject put(String key, JSONArray value) {
+	public JSONObject put(String key, JSONArray jsonArray) {
 		if (_log.isWarnEnabled()) {
 			_log.warn("Modifications are unsupported");
 		}
@@ -88,7 +88,7 @@ public class UnmodifiableJSONObjectImpl extends JSONObjectImpl {
 	}
 
 	@Override
-	public JSONObject put(String key, JSONObject value) {
+	public JSONObject put(String key, JSONObject jsonObject) {
 		if (_log.isWarnEnabled()) {
 			_log.warn("Modifications are unsupported");
 		}

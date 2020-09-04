@@ -71,13 +71,13 @@ public class ClassServiceDependencyVerifierTest {
 		ServiceReference<?> serviceReference3 = registry.getServiceReference(
 			TestInterface2.class);
 
-		ClassServiceDependencyVerifier classServiceDependencyVerifier =
+		ClassServiceDependencyVerifier classServiceDependencyVerifier1 =
 			new ClassServiceDependencyVerifier(TestInstance1.class);
 
 		Assert.assertTrue(
-			classServiceDependencyVerifier.verify(serviceReference1));
+			classServiceDependencyVerifier1.verify(serviceReference1));
 		Assert.assertFalse(
-			classServiceDependencyVerifier.verify(serviceReference2));
+			classServiceDependencyVerifier1.verify(serviceReference2));
 
 		ClassServiceDependencyVerifier classServiceDependencyVerifier2 =
 			new ClassServiceDependencyVerifier(TestInstance2.class);

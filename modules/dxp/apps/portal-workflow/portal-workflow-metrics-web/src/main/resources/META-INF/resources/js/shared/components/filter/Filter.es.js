@@ -75,6 +75,10 @@ const Filter = ({
 	);
 
 	const filteredItems = useMemo(() => {
+		items.sort((current, next) =>
+			current[labelPropertyName]?.localeCompare(next[labelPropertyName])
+		);
+
 		return searchTerm
 			? items.filter((item) =>
 					item[labelPropertyName]

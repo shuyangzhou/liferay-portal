@@ -943,10 +943,10 @@ public class MiniumSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject productJSONObject = jsonArray.getJSONObject(i);
 
-			JSONArray relatedProducts = productJSONObject.getJSONArray(
+			JSONArray relatedProductsJSONArray = productJSONObject.getJSONArray(
 				"RelatedProducts");
 
-			if (relatedProducts == null) {
+			if (relatedProductsJSONArray == null) {
 				continue;
 			}
 
@@ -956,7 +956,8 @@ public class MiniumSiteInitializer implements SiteInitializer {
 
 			_cpDefinitionLinkLocalService.updateCPDefinitionLinkCProductIds(
 				cpDefinition.getCPDefinitionId(),
-				_getCProductIds(relatedProducts), "related", serviceContext);
+				_getCProductIds(relatedProductsJSONArray), "related",
+				serviceContext);
 		}
 	}
 

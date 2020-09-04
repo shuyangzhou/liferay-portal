@@ -63,10 +63,10 @@ public class ParamUtilTest {
 		mockHttpServletRequest.addParameter("key1", "\u1004\u103A\u1037");
 		mockHttpServletRequest.addParameter("key2", "\u1004\u1037\u103A");
 
-		String value = ParamUtil.getString(mockHttpServletRequest, "key1", "");
+		String value1 = ParamUtil.getString(mockHttpServletRequest, "key1", "");
 		String value2 = ParamUtil.getString(mockHttpServletRequest, "key2", "");
 
-		Assert.assertEquals(value, value2);
+		Assert.assertEquals(value1, value2);
 	}
 
 	@Test
