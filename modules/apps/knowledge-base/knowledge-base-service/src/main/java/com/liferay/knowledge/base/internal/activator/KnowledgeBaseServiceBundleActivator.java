@@ -14,10 +14,14 @@
 
 package com.liferay.knowledge.base.internal.activator;
 
+import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.release.BaseUpgradeServiceModuleRelease;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Adolfo Pérez
@@ -25,32 +29,55 @@ import org.osgi.framework.BundleContext;
 public class KnowledgeBaseServiceBundleActivator implements BundleActivator {
 
 	@Override
-	public void start(BundleContext bundleContext) throws Exception {
-		BaseUpgradeServiceModuleRelease upgradeServiceModuleRelease =
-			new BaseUpgradeServiceModuleRelease() {
+	public void start(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<CounterLocalService, Void>(
+			bundleContext, CounterLocalService.class, null) {
 
-				@Override
-				protected String getNamespace() {
-					return "KB";
+			@Override
+			public Void addingService(
+				ServiceReference<CounterLocalService> serviceReference) {
+
+				try {
+					BaseUpgradeServiceModuleRelease
+						baseUpgradeServiceModuleRelease =
+							new BaseUpgradeServiceModuleRelease() {
+
+								@Override
+								protected String getNamespace() {
+									return "KB";
+								}
+
+								@Override
+								protected String getNewBundleSymbolicName() {
+									return "com.liferay.knowledge.base.service";
+								}
+
+								@Override
+								protected String getOldBundleSymbolicName() {
+									return "knowledge-base-portlet";
+								}
+
+							};
+
+					baseUpgradeServiceModuleRelease.upgrade();
+
+					return null;
 				}
-
-				@Override
-				protected String getNewBundleSymbolicName() {
-					return "com.liferay.knowledge.base.service";
+				catch (UpgradeException upgradeException) {
+					throw new RuntimeException(upgradeException);
 				}
+			}
 
-				@Override
-				protected String getOldBundleSymbolicName() {
-					return "knowledge-base-portlet";
-				}
+		};
 
-			};
-
-		upgradeServiceModuleRelease.upgrade();
+		_serviceTracker.open();
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) {
+		_serviceTracker.close();
 	}
+
+	private ServiceTracker<?, ?> _serviceTracker;
 
 }

@@ -14,10 +14,14 @@
 
 package com.liferay.oauth.web.internal.activator;
 
+import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.release.BaseUpgradeWebModuleRelease;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Carlos Sierra Andrés
@@ -25,30 +29,52 @@ import org.osgi.framework.BundleContext;
 public class OAuthWebBundleActivator implements BundleActivator {
 
 	@Override
-	public void start(BundleContext bundleContext) throws Exception {
-		BaseUpgradeWebModuleRelease baseUpgradeWebModuleRelease =
-			new BaseUpgradeWebModuleRelease() {
+	public void start(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<CounterLocalService, Void>(
+			bundleContext, CounterLocalService.class, null) {
 
-				@Override
-				protected String getBundleSymbolicName() {
-					return "com.liferay.oauth.web";
+			@Override
+			public Void addingService(
+				ServiceReference<CounterLocalService> serviceReference) {
+
+				try {
+					BaseUpgradeWebModuleRelease baseUpgradeWebModuleRelease =
+						new BaseUpgradeWebModuleRelease() {
+
+							@Override
+							protected String getBundleSymbolicName() {
+								return "com.liferay.oauth.web";
+							}
+
+							@Override
+							protected String[] getPortletIds() {
+								return new String[] {
+									"1_WAR_oauthportlet", "2_WAR_oauthportlet",
+									"3_WAR_oauthportlet"
+								};
+							}
+
+						};
+
+					baseUpgradeWebModuleRelease.upgrade();
+				}
+				catch (UpgradeException upgradeException) {
+					throw new RuntimeException(upgradeException);
 				}
 
-				@Override
-				protected String[] getPortletIds() {
-					return new String[] {
-						"1_WAR_oauthportlet", "2_WAR_oauthportlet",
-						"3_WAR_oauthportlet"
-					};
-				}
+				return null;
+			}
 
-			};
+		};
 
-		baseUpgradeWebModuleRelease.upgrade();
+		_serviceTracker.open();
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) {
+		_serviceTracker.close();
 	}
+
+	private ServiceTracker<?, ?> _serviceTracker;
 
 }

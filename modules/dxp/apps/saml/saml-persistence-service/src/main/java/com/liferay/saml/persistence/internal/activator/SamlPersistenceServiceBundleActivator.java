@@ -14,10 +14,14 @@
 
 package com.liferay.saml.persistence.internal.activator;
 
+import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.release.BaseUpgradeServiceModuleRelease;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Carlos Sierra Andrés
@@ -25,16 +29,38 @@ import org.osgi.framework.BundleContext;
 public class SamlPersistenceServiceBundleActivator implements BundleActivator {
 
 	@Override
-	public void start(BundleContext context) throws Exception {
-		SamlServiceModuleRelease samlServiceModuleRelease =
-			new SamlServiceModuleRelease();
+	public void start(BundleContext bundleContext) {
+		_serviceTracker = new ServiceTracker<CounterLocalService, Void>(
+			bundleContext, CounterLocalService.class, null) {
 
-		samlServiceModuleRelease.upgrade();
+			@Override
+			public Void addingService(
+				ServiceReference<CounterLocalService> serviceReference) {
+
+				try {
+					SamlServiceModuleRelease samlServiceModuleRelease =
+						new SamlServiceModuleRelease();
+
+					samlServiceModuleRelease.upgrade();
+
+					return null;
+				}
+				catch (UpgradeException upgradeException) {
+					throw new RuntimeException(upgradeException);
+				}
+			}
+
+		};
+
+		_serviceTracker.open();
 	}
 
 	@Override
-	public void stop(BundleContext context) {
+	public void stop(BundleContext bundleContext) {
+		_serviceTracker.close();
 	}
+
+	private ServiceTracker<?, ?> _serviceTracker;
 
 	private static class SamlServiceModuleRelease
 		extends BaseUpgradeServiceModuleRelease {
