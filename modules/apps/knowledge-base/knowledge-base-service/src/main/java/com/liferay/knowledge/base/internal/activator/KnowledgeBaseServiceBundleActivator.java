@@ -38,28 +38,11 @@ public class KnowledgeBaseServiceBundleActivator implements BundleActivator {
 				ServiceReference<CounterLocalService> serviceReference) {
 
 				try {
-					BaseUpgradeServiceModuleRelease
-						baseUpgradeServiceModuleRelease =
-							new BaseUpgradeServiceModuleRelease() {
+					KBUpgradeServiceModuleRelease
+						kbUpgradeServiceModuleRelease =
+							new KBUpgradeServiceModuleRelease();
 
-								@Override
-								protected String getNamespace() {
-									return "KB";
-								}
-
-								@Override
-								protected String getNewBundleSymbolicName() {
-									return "com.liferay.knowledge.base.service";
-								}
-
-								@Override
-								protected String getOldBundleSymbolicName() {
-									return "knowledge-base-portlet";
-								}
-
-							};
-
-					baseUpgradeServiceModuleRelease.upgrade();
+					kbUpgradeServiceModuleRelease.upgrade();
 
 					return null;
 				}
@@ -79,5 +62,25 @@ public class KnowledgeBaseServiceBundleActivator implements BundleActivator {
 	}
 
 	private ServiceTracker<?, ?> _serviceTracker;
+
+	private static class KBUpgradeServiceModuleRelease
+		extends BaseUpgradeServiceModuleRelease {
+
+		@Override
+		protected String getNamespace() {
+			return "KB";
+		}
+
+		@Override
+		protected String getNewBundleSymbolicName() {
+			return "com.liferay.knowledge.base.service";
+		}
+
+		@Override
+		protected String getOldBundleSymbolicName() {
+			return "knowledge-base-portlet";
+		}
+
+	}
 
 }

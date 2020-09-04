@@ -38,10 +38,11 @@ public class SamlPersistenceServiceBundleActivator implements BundleActivator {
 				ServiceReference<CounterLocalService> serviceReference) {
 
 				try {
-					SamlServiceModuleRelease samlServiceModuleRelease =
-						new SamlServiceModuleRelease();
+					SamlUpgradeServiceModuleRelease
+						samlUpgradeServiceModuleRelease =
+							new SamlUpgradeServiceModuleRelease();
 
-					samlServiceModuleRelease.upgrade();
+					samlUpgradeServiceModuleRelease.upgrade();
 
 					return null;
 				}
@@ -62,7 +63,7 @@ public class SamlPersistenceServiceBundleActivator implements BundleActivator {
 
 	private ServiceTracker<?, ?> _serviceTracker;
 
-	private static class SamlServiceModuleRelease
+	private static class SamlUpgradeServiceModuleRelease
 		extends BaseUpgradeServiceModuleRelease {
 
 		@Override

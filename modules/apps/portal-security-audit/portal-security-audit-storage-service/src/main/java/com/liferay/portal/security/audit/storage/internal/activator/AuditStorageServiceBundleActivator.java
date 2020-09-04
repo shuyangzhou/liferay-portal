@@ -38,29 +38,11 @@ public class AuditStorageServiceBundleActivator implements BundleActivator {
 				ServiceReference<CounterLocalService> serviceReference) {
 
 				try {
-					BaseUpgradeServiceModuleRelease
-						baseUpgradeServiceModuleRelease =
-							new BaseUpgradeServiceModuleRelease() {
+					AuditUpgradeServiceModuleRelease
+						auditUpgradeServiceModuleRelease =
+							new AuditUpgradeServiceModuleRelease();
 
-								@Override
-								protected String getNamespace() {
-									return "Audit";
-								}
-
-								@Override
-								protected String getNewBundleSymbolicName() {
-									return "com.liferay.portal.security." +
-										"audit.storage.service";
-								}
-
-								@Override
-								protected String getOldBundleSymbolicName() {
-									return "audit-portlet";
-								}
-
-							};
-
-					baseUpgradeServiceModuleRelease.upgrade();
+					auditUpgradeServiceModuleRelease.upgrade();
 
 					return null;
 				}
@@ -80,5 +62,25 @@ public class AuditStorageServiceBundleActivator implements BundleActivator {
 	}
 
 	private ServiceTracker<?, ?> _serviceTracker;
+
+	private static class AuditUpgradeServiceModuleRelease
+		extends BaseUpgradeServiceModuleRelease {
+
+		@Override
+		protected String getNamespace() {
+			return "Audit";
+		}
+
+		@Override
+		protected String getNewBundleSymbolicName() {
+			return "com.liferay.portal.security.audit.storage.service";
+		}
+
+		@Override
+		protected String getOldBundleSymbolicName() {
+			return "audit-portlet";
+		}
+
+	}
 
 }

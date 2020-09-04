@@ -38,25 +38,10 @@ public class OAuthWebBundleActivator implements BundleActivator {
 				ServiceReference<CounterLocalService> serviceReference) {
 
 				try {
-					BaseUpgradeWebModuleRelease baseUpgradeWebModuleRelease =
-						new BaseUpgradeWebModuleRelease() {
+					OAuthUpgradeWebModuleRelease oAuthUpgradeWebModuleRelease =
+						new OAuthUpgradeWebModuleRelease();
 
-							@Override
-							protected String getBundleSymbolicName() {
-								return "com.liferay.oauth.web";
-							}
-
-							@Override
-							protected String[] getPortletIds() {
-								return new String[] {
-									"1_WAR_oauthportlet", "2_WAR_oauthportlet",
-									"3_WAR_oauthportlet"
-								};
-							}
-
-						};
-
-					baseUpgradeWebModuleRelease.upgrade();
+					oAuthUpgradeWebModuleRelease.upgrade();
 				}
 				catch (UpgradeException upgradeException) {
 					throw new RuntimeException(upgradeException);
@@ -76,5 +61,22 @@ public class OAuthWebBundleActivator implements BundleActivator {
 	}
 
 	private ServiceTracker<?, ?> _serviceTracker;
+
+	private static class OAuthUpgradeWebModuleRelease
+		extends BaseUpgradeWebModuleRelease {
+
+		@Override
+		protected String getBundleSymbolicName() {
+			return "com.liferay.oauth.web";
+		}
+
+		@Override
+		protected String[] getPortletIds() {
+			return new String[] {
+				"1_WAR_oauthportlet", "2_WAR_oauthportlet", "3_WAR_oauthportlet"
+			};
+		}
+
+	}
 
 }
