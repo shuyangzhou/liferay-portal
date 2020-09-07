@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * The cache model class for representing DispatchLog in entity cache.
  *
- * @author Alessio Antonio Rendina
+ * @author Matija Petanjek
  * @generated
  */
 public class DispatchLogCacheModel
@@ -93,8 +93,8 @@ public class DispatchLogCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", dispatchTriggerId=");
-		sb.append(dispatchTriggerId);
+		sb.append(", dispatchTaskId=");
+		sb.append(dispatchTaskId);
 		sb.append(", endDate=");
 		sb.append(endDate);
 		sb.append(", error=");
@@ -140,7 +140,7 @@ public class DispatchLogCacheModel
 			dispatchLogImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		dispatchLogImpl.setDispatchTriggerId(dispatchTriggerId);
+		dispatchLogImpl.setDispatchTaskId(dispatchTaskId);
 
 		if (endDate == Long.MIN_VALUE) {
 			dispatchLogImpl.setEndDate(null);
@@ -192,7 +192,7 @@ public class DispatchLogCacheModel
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		dispatchTriggerId = objectInput.readLong();
+		dispatchTaskId = objectInput.readLong();
 		endDate = objectInput.readLong();
 		error = (String)objectInput.readObject();
 		output = (String)objectInput.readObject();
@@ -221,7 +221,7 @@ public class DispatchLogCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(dispatchTriggerId);
+		objectOutput.writeLong(dispatchTaskId);
 		objectOutput.writeLong(endDate);
 
 		if (error == null) {
@@ -250,7 +250,7 @@ public class DispatchLogCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long dispatchTriggerId;
+	public long dispatchTaskId;
 	public long endDate;
 	public String error;
 	public String output;

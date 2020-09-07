@@ -26,7 +26,7 @@ import java.util.Map;
  * This class is a wrapper for {@link DispatchLog}.
  * </p>
  *
- * @author Alessio Antonio Rendina
+ * @author Matija Petanjek
  * @see DispatchLog
  * @generated
  */
@@ -49,7 +49,7 @@ public class DispatchLogWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("dispatchTriggerId", getDispatchTriggerId());
+		attributes.put("dispatchTaskId", getDispatchTaskId());
 		attributes.put("endDate", getEndDate());
 		attributes.put("error", getError());
 		attributes.put("output", getOutput());
@@ -103,10 +103,10 @@ public class DispatchLogWrapper
 			setModifiedDate(modifiedDate);
 		}
 
-		Long dispatchTriggerId = (Long)attributes.get("dispatchTriggerId");
+		Long dispatchTaskId = (Long)attributes.get("dispatchTaskId");
 
-		if (dispatchTriggerId != null) {
-			setDispatchTriggerId(dispatchTriggerId);
+		if (dispatchTaskId != null) {
+			setDispatchTaskId(dispatchTaskId);
 		}
 
 		Date endDate = (Date)attributes.get("endDate");
@@ -171,13 +171,13 @@ public class DispatchLogWrapper
 	}
 
 	/**
-	 * Returns the dispatch trigger ID of this dispatch log.
+	 * Returns the dispatch task ID of this dispatch log.
 	 *
-	 * @return the dispatch trigger ID of this dispatch log
+	 * @return the dispatch task ID of this dispatch log
 	 */
 	@Override
-	public long getDispatchTriggerId() {
-		return model.getDispatchTriggerId();
+	public long getDispatchTaskId() {
+		return model.getDispatchTaskId();
 	}
 
 	/**
@@ -326,13 +326,13 @@ public class DispatchLogWrapper
 	}
 
 	/**
-	 * Sets the dispatch trigger ID of this dispatch log.
+	 * Sets the dispatch task ID of this dispatch log.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID of this dispatch log
+	 * @param dispatchTaskId the dispatch task ID of this dispatch log
 	 */
 	@Override
-	public void setDispatchTriggerId(long dispatchTriggerId) {
-		model.setDispatchTriggerId(dispatchTriggerId);
+	public void setDispatchTaskId(long dispatchTaskId) {
+		model.setDispatchTaskId(dispatchTaskId);
 	}
 
 	/**

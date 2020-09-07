@@ -9,7 +9,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="dispatchTriggerId" type="long" />
+		<field name="dispatchTaskId" type="long" />
 		<field name="endDate" type="Date" />
 		<field name="error" type="String">
 			<hint-collection name="CLOB" />
@@ -20,23 +20,18 @@
 		<field name="startDate" type="Date" />
 		<field name="status" type="int" />
 	</model>
-	<model name="com.liferay.dispatch.model.DispatchTrigger">
+	<model name="com.liferay.dispatch.model.DispatchTask">
 		<field name="mvccVersion" type="long" />
-		<field name="dispatchTriggerId" type="long" />
+		<field name="dispatchTaskId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="active" type="boolean" />
-		<field name="cronExpression" type="String" />
-		<field name="endDate" type="Date" />
 		<field name="name" type="String" />
-		<field name="startDate" type="Date" />
 		<field name="system" type="boolean" />
 		<field name="type" type="String" />
-		<field name="typeSettings" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field name="typeSettings" type="String" />
 	</model>
 </model-hints>

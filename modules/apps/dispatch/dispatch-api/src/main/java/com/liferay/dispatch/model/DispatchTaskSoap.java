@@ -21,37 +21,36 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is used by SOAP remote services, specifically {@link com.liferay.dispatch.service.http.DispatchLogServiceSoap}.
+ * This class is used by SOAP remote services, specifically {@link com.liferay.dispatch.service.http.DispatchTaskServiceSoap}.
  *
  * @author Matija Petanjek
  * @deprecated As of Athanasius (7.3.x), with no direct replacement
  * @generated
  */
 @Deprecated
-public class DispatchLogSoap implements Serializable {
+public class DispatchTaskSoap implements Serializable {
 
-	public static DispatchLogSoap toSoapModel(DispatchLog model) {
-		DispatchLogSoap soapModel = new DispatchLogSoap();
+	public static DispatchTaskSoap toSoapModel(DispatchTask model) {
+		DispatchTaskSoap soapModel = new DispatchTaskSoap();
 
 		soapModel.setMvccVersion(model.getMvccVersion());
-		soapModel.setDispatchLogId(model.getDispatchLogId());
+		soapModel.setDispatchTaskId(model.getDispatchTaskId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setDispatchTaskId(model.getDispatchTaskId());
-		soapModel.setEndDate(model.getEndDate());
-		soapModel.setError(model.getError());
-		soapModel.setOutput(model.getOutput());
-		soapModel.setStartDate(model.getStartDate());
-		soapModel.setStatus(model.getStatus());
+		soapModel.setActive(model.isActive());
+		soapModel.setName(model.getName());
+		soapModel.setSystem(model.isSystem());
+		soapModel.setType(model.getType());
+		soapModel.setTypeSettings(model.getTypeSettings());
 
 		return soapModel;
 	}
 
-	public static DispatchLogSoap[] toSoapModels(DispatchLog[] models) {
-		DispatchLogSoap[] soapModels = new DispatchLogSoap[models.length];
+	public static DispatchTaskSoap[] toSoapModels(DispatchTask[] models) {
+		DispatchTaskSoap[] soapModels = new DispatchTaskSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -60,14 +59,14 @@ public class DispatchLogSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static DispatchLogSoap[][] toSoapModels(DispatchLog[][] models) {
-		DispatchLogSoap[][] soapModels = null;
+	public static DispatchTaskSoap[][] toSoapModels(DispatchTask[][] models) {
+		DispatchTaskSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new DispatchLogSoap[models.length][models[0].length];
+			soapModels = new DispatchTaskSoap[models.length][models[0].length];
 		}
 		else {
-			soapModels = new DispatchLogSoap[0][0];
+			soapModels = new DispatchTaskSoap[0][0];
 		}
 
 		for (int i = 0; i < models.length; i++) {
@@ -77,26 +76,26 @@ public class DispatchLogSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static DispatchLogSoap[] toSoapModels(List<DispatchLog> models) {
-		List<DispatchLogSoap> soapModels = new ArrayList<DispatchLogSoap>(
+	public static DispatchTaskSoap[] toSoapModels(List<DispatchTask> models) {
+		List<DispatchTaskSoap> soapModels = new ArrayList<DispatchTaskSoap>(
 			models.size());
 
-		for (DispatchLog model : models) {
+		for (DispatchTask model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new DispatchLogSoap[soapModels.size()]);
+		return soapModels.toArray(new DispatchTaskSoap[soapModels.size()]);
 	}
 
-	public DispatchLogSoap() {
+	public DispatchTaskSoap() {
 	}
 
 	public long getPrimaryKey() {
-		return _dispatchLogId;
+		return _dispatchTaskId;
 	}
 
 	public void setPrimaryKey(long pk) {
-		setDispatchLogId(pk);
+		setDispatchTaskId(pk);
 	}
 
 	public long getMvccVersion() {
@@ -107,12 +106,12 @@ public class DispatchLogSoap implements Serializable {
 		_mvccVersion = mvccVersion;
 	}
 
-	public long getDispatchLogId() {
-		return _dispatchLogId;
+	public long getDispatchTaskId() {
+		return _dispatchTaskId;
 	}
 
-	public void setDispatchLogId(long dispatchLogId) {
-		_dispatchLogId = dispatchLogId;
+	public void setDispatchTaskId(long dispatchTaskId) {
+		_dispatchTaskId = dispatchTaskId;
 	}
 
 	public long getCompanyId() {
@@ -155,66 +154,65 @@ public class DispatchLogSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
-	public long getDispatchTaskId() {
-		return _dispatchTaskId;
+	public boolean getActive() {
+		return _active;
 	}
 
-	public void setDispatchTaskId(long dispatchTaskId) {
-		_dispatchTaskId = dispatchTaskId;
+	public boolean isActive() {
+		return _active;
 	}
 
-	public Date getEndDate() {
-		return _endDate;
+	public void setActive(boolean active) {
+		_active = active;
 	}
 
-	public void setEndDate(Date endDate) {
-		_endDate = endDate;
+	public String getName() {
+		return _name;
 	}
 
-	public String getError() {
-		return _error;
+	public void setName(String name) {
+		_name = name;
 	}
 
-	public void setError(String error) {
-		_error = error;
+	public boolean getSystem() {
+		return _system;
 	}
 
-	public String getOutput() {
-		return _output;
+	public boolean isSystem() {
+		return _system;
 	}
 
-	public void setOutput(String output) {
-		_output = output;
+	public void setSystem(boolean system) {
+		_system = system;
 	}
 
-	public Date getStartDate() {
-		return _startDate;
+	public String getType() {
+		return _type;
 	}
 
-	public void setStartDate(Date startDate) {
-		_startDate = startDate;
+	public void setType(String type) {
+		_type = type;
 	}
 
-	public int getStatus() {
-		return _status;
+	public String getTypeSettings() {
+		return _typeSettings;
 	}
 
-	public void setStatus(int status) {
-		_status = status;
+	public void setTypeSettings(String typeSettings) {
+		_typeSettings = typeSettings;
 	}
 
 	private long _mvccVersion;
-	private long _dispatchLogId;
+	private long _dispatchTaskId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private long _dispatchTaskId;
-	private Date _endDate;
-	private String _error;
-	private String _output;
-	private Date _startDate;
-	private int _status;
+	private boolean _active;
+	private String _name;
+	private boolean _system;
+	private String _type;
+	private String _typeSettings;
 
 }

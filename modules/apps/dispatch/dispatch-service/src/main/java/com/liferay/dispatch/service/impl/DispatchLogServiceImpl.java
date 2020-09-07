@@ -28,7 +28,7 @@ import java.util.List;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Alessio Antonio Rendina
+ * @author Matija Petanjek
  */
 @Component(
 	property = {

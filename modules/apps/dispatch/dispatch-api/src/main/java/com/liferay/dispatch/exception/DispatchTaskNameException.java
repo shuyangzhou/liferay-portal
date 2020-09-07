@@ -11,28 +11,27 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-
 package com.liferay.dispatch.exception;
 
-import com.liferay.portal.kernel.exception.NoSuchModelException;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Matija Petanjek
  */
-public class NoSuchLogException extends NoSuchModelException {
+public class DispatchTaskNameException extends PortalException {
 
-	public NoSuchLogException() {
+	public DispatchTaskNameException() {
 	}
 
-	public NoSuchLogException(String msg) {
+	public DispatchTaskNameException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchLogException(String msg, Throwable throwable) {
+	public DispatchTaskNameException(String msg, Throwable throwable) {
 		super(msg, throwable);
 	}
 
-	public NoSuchLogException(Throwable throwable) {
+	public DispatchTaskNameException(Throwable throwable) {
 		super(throwable);
 	}
 

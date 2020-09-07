@@ -11,7 +11,6 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-
 package com.liferay.dispatch.exception;
 
 import com.liferay.portal.kernel.exception.NoSuchModelException;
@@ -19,20 +18,20 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
 /**
  * @author Matija Petanjek
  */
-public class NoSuchLogException extends NoSuchModelException {
+public class NoSuchTaskException extends NoSuchModelException {
 
-	public NoSuchLogException() {
+	public NoSuchTaskException() {
 	}
 
-	public NoSuchLogException(String msg) {
+	public NoSuchTaskException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchLogException(String msg, Throwable throwable) {
+	public NoSuchTaskException(String msg, Throwable throwable) {
 		super(msg, throwable);
 	}
 
-	public NoSuchLogException(Throwable throwable) {
+	public NoSuchTaskException(Throwable throwable) {
 		super(throwable);
 	}
 
