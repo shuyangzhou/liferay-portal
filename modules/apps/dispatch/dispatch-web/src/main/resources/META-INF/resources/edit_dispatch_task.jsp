@@ -17,14 +17,14 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+DispatchTaskDisplayContext dispatchTaskDisplayContext = (DispatchTaskDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
-DispatchTrigger dispatchTrigger = dispatchTriggerDisplayContext.getDispatchTrigger();
+DispatchTask dispatchTask = dispatchTaskDisplayContext.getDispatchTask();
 
-String title = LanguageUtil.get(request, "add-process");
+String title = LanguageUtil.get(request, "add-task");
 
-if (dispatchTrigger != null) {
-	title = dispatchTrigger.getName();
+if (dispatchTask != null) {
+	title = dispatchTask.getName();
 }
 
 portletDisplay.setShowBackIcon(true);
@@ -32,11 +32,11 @@ portletDisplay.setURLBack(backURL);
 portletDisplay.setTitle(title);
 %>
 
-<div id="<portlet:namespace />editProcessContainer">
+<div id="<portlet:namespace />editDispatchTaskContainer">
 	<liferay-frontend:screen-navigation
 		containerCssClass="col-md-10"
 		key="<%= DispatchConstants.SCREEN_NAVIGATION_KEY_DISPATCH_GENERAL %>"
-		modelBean="<%= dispatchTrigger %>"
+		modelBean="<%= dispatchTask %>"
 		navCssClass="col-md-2"
 		portletURL="<%= currentURLObj %>"
 	/>

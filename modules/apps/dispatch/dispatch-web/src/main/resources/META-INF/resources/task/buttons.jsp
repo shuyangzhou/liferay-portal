@@ -19,7 +19,7 @@
 <%
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
-DispatchTrigger dispatchTrigger = (DispatchTrigger)row.getObject();
+DispatchTask dispatchTask = (DispatchTask)row.getObject();
 
 String runNowButton = "runNowButton" + row.getRowId();
 %>
@@ -33,9 +33,9 @@ String runNowButton = "runNowButton" + row.getRowId();
 		event
 	) {
 		var data = {
-			<portlet:namespace/><%= Constants.CMD %>: 'runProcess',
-			<portlet:namespace/>dispatchTriggerId:
-				'<%= dispatchTrigger.getDispatchTriggerId() %>',
+			<portlet:namespace/><%= Constants.CMD %>: 'runTask',
+			<portlet:namespace/>dispatchTaskId:
+				'<%= dispatchTask.getDispatchTaskId() %>',
 		};
 
 		this.attr('disabled', true);
@@ -47,7 +47,7 @@ String runNowButton = "runNowButton" + row.getRowId();
 		iconSpinnerContainer.removeClass('hide');
 
 		A.io.request(
-			'<liferay-portlet:actionURL name="editDispatchTrigger" portletName="<%= portletDisplay.getPortletName() %>" />',
+			'<liferay-portlet:actionURL name="editDispatchTask" portletName="<%= portletDisplay.getPortletName() %>" />',
 			{
 				data: data,
 				on: {
