@@ -2,7 +2,7 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.3.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_3_0.dtd">
 
 <service-builder auto-namespace-tables="false" mvcc-enabled="true" package-path="com.liferay.dispatch">
-	<author>Alessio Antonio Rendina</author>
+	<author>Matija Petanjek</author>
 	<namespace>Dispatch</namespace>
 	<entity local-service="true" name="DispatchLog" remote-service="true">
 
@@ -20,7 +20,7 @@
 
 		<!-- Other fields -->
 
-		<column name="dispatchTriggerId" type="long" />
+		<column name="dispatchTaskId" type="long" />
 		<column name="endDate" type="Date" />
 		<column name="error" type="String" />
 		<column name="output" type="String" />
@@ -35,19 +35,19 @@
 
 		<!-- Finder methods -->
 
-		<finder name="DispatchTriggerId" return-type="Collection">
-			<finder-column name="dispatchTriggerId" />
+		<finder name="DispatchTaskId" return-type="Collection">
+			<finder-column name="dispatchTaskId" />
 		</finder>
 		<finder name="DTI_S" return-type="Collection">
-			<finder-column name="dispatchTriggerId" />
+			<finder-column name="dispatchTaskId" />
 			<finder-column name="status" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="DispatchTrigger" remote-service="true">
+	<entity local-service="true" name="DispatchTask" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="dispatchTriggerId" primary="true" type="long" />
+		<column name="dispatchTaskId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -61,9 +61,7 @@
 
 		<column name="active" type="boolean" />
 		<column name="cronExpression" type="String" />
-		<column name="endDate" type="Date" />
 		<column name="name" type="String" />
-		<column name="startDate" type="Date" />
 		<column name="system" type="boolean" />
 		<column name="type" type="String" />
 		<column name="typeSettings" type="String" />
@@ -79,7 +77,7 @@
 		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
-		<finder name="C_N" return-type="DispatchTrigger" unique="true">
+		<finder name="C_N" return-type="DispatchTask" unique="true">
 			<finder-column name="companyId" />
 			<finder-column name="name" />
 		</finder>
@@ -89,9 +87,9 @@
 		</finder>
 	</entity>
 	<exceptions>
-		<exception>DispatchTriggerEndDate</exception>
-		<exception>DispatchTriggerName</exception>
-		<exception>DispatchTriggerStartDate</exception>
-		<exception>DuplicateDispatchTrigger</exception>
+		<exception>DispatchTaskEndDate</exception>
+		<exception>DispatchTaskName</exception>
+		<exception>DispatchTaskStartDate</exception>
+		<exception>DuplicateDispatchTask</exception>
 	</exceptions>
 </service-builder>
