@@ -16,9 +16,9 @@ package com.liferay.dispatch.web.internal.portlet;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
 import com.liferay.dispatch.constants.DispatchWebKeys;
-import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.service.DispatchTriggerLocalService;
-import com.liferay.dispatch.web.internal.display.context.DispatchTriggerDisplayContext;
+import com.liferay.dispatch.model.DispatchTask;
+import com.liferay.dispatch.service.DispatchTaskLocalService;
+import com.liferay.dispatch.web.internal.display.context.DispatchTaskDisplayContext;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -67,33 +67,33 @@ public class DispatchPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		DispatchTrigger dispatchTrigger = null;
+		DispatchTask dispatchTask = null;
 
-		long dispatchTriggerId = ParamUtil.getLong(
-			renderRequest, "dispatchTriggerId");
+		long dispatchTaskId = ParamUtil.getLong(
+			renderRequest, "dispatchTaskId");
 
-		if (dispatchTriggerId > 0) {
-			dispatchTrigger = _dispatchTriggerLocalService.fetchDispatchTrigger(
-				dispatchTriggerId);
+		if (dispatchTaskId > 0) {
+			dispatchTask = _dispatchTaskLocalService.fetchDispatchTask(
+				dispatchTaskId);
 		}
 
-		if (dispatchTrigger != null) {
+		if (dispatchTask != null) {
 			renderRequest.setAttribute(
-				DispatchWebKeys.DISPATCH_TRIGGER, dispatchTrigger);
+				DispatchWebKeys.DISPATCH_TASK, dispatchTask);
 		}
 
-		DispatchTriggerDisplayContext dispatchTriggerDisplayContext =
-			new DispatchTriggerDisplayContext(
-				_dispatchTriggerLocalService, renderRequest);
+		DispatchTaskDisplayContext dispatchTaskDisplayContext =
+			new DispatchTaskDisplayContext(
+				_dispatchTaskLocalService, renderRequest);
 
 		renderRequest.setAttribute(
-			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTriggerDisplayContext);
+			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTaskDisplayContext);
 
 		super.render(renderRequest, renderResponse);
 	}
 
 	@Reference
-	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+	private DispatchTaskLocalService _dispatchTaskLocalService;
 
 	@Reference
 	private Portal _portal;

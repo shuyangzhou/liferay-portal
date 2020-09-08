@@ -15,7 +15,7 @@
 package com.liferay.dispatch.web.internal.servlet.taglib.ui;
 
 import com.liferay.dispatch.constants.DispatchConstants;
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.dispatch.service.DispatchLogService;
 import com.liferay.dispatch.web.internal.display.context.DispatchLogDisplayContext;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
@@ -51,8 +51,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = {ScreenNavigationCategory.class, ScreenNavigationEntry.class}
 )
 public class DispatchLogScreenNavigationCategory
-	implements ScreenNavigationCategory,
-			   ScreenNavigationEntry<DispatchTrigger> {
+	implements ScreenNavigationCategory, ScreenNavigationEntry<DispatchTask> {
 
 	@Override
 	public String getCategoryKey() {
@@ -78,8 +77,8 @@ public class DispatchLogScreenNavigationCategory
 	}
 
 	@Override
-	public boolean isVisible(User user, DispatchTrigger dispatchTrigger) {
-		if (dispatchTrigger == null) {
+	public boolean isVisible(User user, DispatchTask dispatchTask) {
+		if (dispatchTask == null) {
 			return false;
 		}
 
@@ -104,7 +103,7 @@ public class DispatchLogScreenNavigationCategory
 
 		_jspRenderer.renderJSP(
 			httpServletRequest, httpServletResponse,
-			"/process/process_logs.jsp");
+			"/task/dispatch_task_logs.jsp");
 	}
 
 	@Reference

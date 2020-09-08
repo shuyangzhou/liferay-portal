@@ -14,6 +14,13 @@
 
 package com.liferay.dispatch.model.impl;
 
+import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
+import com.liferay.portal.kernel.scheduler.SchedulerException;
+import com.liferay.portal.kernel.scheduler.StorageType;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+
+import java.util.Date;
+
 /**
  * The extended model implementation for the DispatchTask service. Represents a row in the &quot;DispatchTask&quot; database table, with each column mapped to a property of this class.
  *
@@ -25,12 +32,76 @@ package com.liferay.dispatch.model.impl;
  */
 public class DispatchTaskImpl extends DispatchTaskBaseImpl {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a dispatch task model instance should use the {@link com.liferay.dispatch.model.DispatchTask} interface instead.
-	 */
 	public DispatchTaskImpl() {
 	}
+
+	@Override
+	public Date getEndDate() throws SchedulerException {
+		if (_endDate == null) {
+			_endDate = SchedulerEngineHelperUtil.getEndTime(
+				String.format("DISPATCH_JOB_%07d", getDispatchTaskId()),
+				String.format("DISPATCH_GROUP_%07d", getDispatchTaskId()),
+				StorageType.PERSISTED);
+		}
+
+		return _endDate;
+	}
+
+	@Override
+	public Date getStartDate() throws SchedulerException {
+		if (_startDate == null) {
+			_startDate = SchedulerEngineHelperUtil.getStartTime(
+				String.format("DISPATCH_JOB_%07d", getDispatchTaskId()),
+				String.format("DISPATCH_GROUP_%07d", getDispatchTaskId()),
+				StorageType.PERSISTED);
+		}
+
+		return _startDate;
+	}
+
+	@Override
+	public UnicodeProperties getTypeSettingsProperties() {
+		if (_typeSettingsUnicodeProperties == null) {
+			_typeSettingsUnicodeProperties = new UnicodeProperties(true);
+
+			_typeSettingsUnicodeProperties.fastLoad(getTypeSettings());
+		}
+
+		return _typeSettingsUnicodeProperties;
+	}
+
+	@Override
+	public void setEndDate(Date endDate) {
+		_endDate = endDate;
+	}
+
+	@Override
+	public void setStartDate(Date startDate) {
+		_startDate = startDate;
+	}
+
+	@Override
+	public void setTypeSettings(String typeSettings) {
+		super.setTypeSettings(typeSettings);
+
+		_typeSettingsUnicodeProperties = null;
+	}
+
+	@Override
+	public void setTypeSettingsUnicodeProperties(
+		UnicodeProperties typeSettingsUnicodeProperties) {
+
+		_typeSettingsUnicodeProperties = typeSettingsUnicodeProperties;
+
+		if (_typeSettingsUnicodeProperties == null) {
+			_typeSettingsUnicodeProperties = new UnicodeProperties();
+		}
+
+		super.setTypeSettings(_typeSettingsUnicodeProperties.toString());
+	}
+
+	private Date _endDate;
+	private Date _startDate;
+	private transient UnicodeProperties _typeSettingsUnicodeProperties;
 
 }

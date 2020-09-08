@@ -37,7 +37,7 @@ public class DispatchLogLocalServiceImpl
 
 	@Override
 	public DispatchLog addDispatchLog(
-			long userId, long dispatchTriggerId, String error, String output,
+			long userId, long dispatchTaskId, String error, String output,
 			int status, Date startDate, Date endDate)
 		throws PortalException {
 
@@ -49,7 +49,7 @@ public class DispatchLogLocalServiceImpl
 		dispatchLog.setCompanyId(user.getCompanyId());
 		dispatchLog.setUserId(user.getUserId());
 		dispatchLog.setUserName(user.getFullName());
-		dispatchLog.setDispatchTriggerId(dispatchTriggerId);
+		dispatchLog.setDispatchTaskId(dispatchTaskId);
 		dispatchLog.setEndDate(endDate);
 		dispatchLog.setError(error);
 		dispatchLog.setOutput(output);
@@ -60,21 +60,20 @@ public class DispatchLogLocalServiceImpl
 	}
 
 	@Override
-	public void deleteDispatchLogs(long dispatchTriggerId) {
-		dispatchLogPersistence.removeByDispatchTriggerId(dispatchTriggerId);
+	public void deleteDispatchLogs(long dispatchTaskId) {
+		dispatchLogPersistence.removeByDispatchTaskId(dispatchTaskId);
 	}
 
 	@Override
 	public List<DispatchLog> getDispatchLogs(
-		long dispatchTriggerId, int start, int end) {
+		long dispatchTaskId, int start, int end) {
 
-		return dispatchLogPersistence.findByDispatchTriggerId(
-			dispatchTriggerId, start, end);
+		return dispatchLogPersistence.findByDispatchTaskId(
+			dispatchTaskId, start, end);
 	}
 
-	public int getDispatchLogsCount(long dispatchTriggerId) {
-		return dispatchLogPersistence.countByDispatchTriggerId(
-			dispatchTriggerId);
+	public int getDispatchLogsCount(long dispatchTaskId) {
+		return dispatchLogPersistence.countByDispatchTaskId(dispatchTaskId);
 	}
 
 	public DispatchLog updateDispatchLog(

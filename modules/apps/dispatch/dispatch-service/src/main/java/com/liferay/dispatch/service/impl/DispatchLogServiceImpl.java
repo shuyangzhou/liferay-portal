@@ -15,7 +15,7 @@
 package com.liferay.dispatch.service.impl;
 
 import com.liferay.dispatch.model.DispatchLog;
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.dispatch.service.base.DispatchLogServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -44,8 +44,8 @@ public class DispatchLogServiceImpl extends DispatchLogServiceBaseImpl {
 		DispatchLog dispatchLog = dispatchLogLocalService.getDispatchLog(
 			dispatchLogId);
 
-		_dispatchTriggerModelResourcePermission.check(
-			getPermissionChecker(), dispatchLog.getDispatchTriggerId(),
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchLog.getDispatchTaskId(),
 			ActionKeys.UPDATE);
 
 		dispatchLogLocalService.deleteDispatchLog(dispatchLog);
@@ -58,8 +58,8 @@ public class DispatchLogServiceImpl extends DispatchLogServiceBaseImpl {
 		DispatchLog dispatchLog = dispatchLogLocalService.getDispatchLog(
 			dispatchLogId);
 
-		_dispatchTriggerModelResourcePermission.check(
-			getPermissionChecker(), dispatchLog.getDispatchTriggerId(),
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchLog.getDispatchTaskId(),
 			ActionKeys.VIEW);
 
 		return dispatchLog;
@@ -67,31 +67,30 @@ public class DispatchLogServiceImpl extends DispatchLogServiceBaseImpl {
 
 	@Override
 	public List<DispatchLog> getDispatchLogs(
-			long dispatchTriggerId, int start, int end)
+			long dispatchTaskId, int start, int end)
 		throws PortalException {
 
-		_dispatchTriggerModelResourcePermission.check(
-			getPermissionChecker(), dispatchTriggerId, ActionKeys.VIEW);
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchTaskId, ActionKeys.VIEW);
 
 		return dispatchLogLocalService.getDispatchLogs(
-			dispatchTriggerId, start, end);
+			dispatchTaskId, start, end);
 	}
 
 	@Override
-	public int getDispatchLogsCount(long dispatchTriggerId)
+	public int getDispatchLogsCount(long dispatchTaskId)
 		throws PortalException {
 
-		_dispatchTriggerModelResourcePermission.check(
-			getPermissionChecker(), dispatchTriggerId, ActionKeys.VIEW);
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchTaskId, ActionKeys.VIEW);
 
-		return dispatchLogLocalService.getDispatchLogsCount(dispatchTriggerId);
+		return dispatchLogLocalService.getDispatchLogsCount(dispatchTaskId);
 	}
 
-	private static volatile ModelResourcePermission<DispatchTrigger>
-		_dispatchTriggerModelResourcePermission =
+	private static volatile ModelResourcePermission<DispatchTask>
+		_dispatchTaskModelResourcePermission =
 			ModelResourcePermissionFactory.getInstance(
-				DispatchTriggerServiceImpl.class,
-				"_dispatchTriggerModelResourcePermission",
-				DispatchTrigger.class);
+				DispatchTaskServiceImpl.class,
+				"_dispatchTaskModelResourcePermission", DispatchTask.class);
 
 }

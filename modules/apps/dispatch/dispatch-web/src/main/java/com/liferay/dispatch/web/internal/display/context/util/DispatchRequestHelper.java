@@ -15,7 +15,7 @@
 package com.liferay.dispatch.web.internal.display.context.util;
 
 import com.liferay.dispatch.constants.DispatchWebKeys;
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.portal.kernel.display.context.util.BaseRequestHelper;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -32,11 +32,11 @@ public class DispatchRequestHelper extends BaseRequestHelper {
 		super(PortalUtil.getHttpServletRequest(renderRequest));
 	}
 
-	public DispatchTrigger getDispatchTrigger() {
+	public DispatchTask getDispatchTask() {
 		HttpServletRequest httpServletRequest = getRequest();
 
-		return (DispatchTrigger)httpServletRequest.getAttribute(
-			DispatchWebKeys.DISPATCH_TRIGGER);
+		return (DispatchTask)httpServletRequest.getAttribute(
+			DispatchWebKeys.DISPATCH_TASK);
 	}
 
 }

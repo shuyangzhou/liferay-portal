@@ -15,8 +15,8 @@
 package com.liferay.dispatch.web.internal.portlet.action;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
-import com.liferay.dispatch.service.DispatchTriggerLocalService;
-import com.liferay.dispatch.web.internal.display.context.DispatchTriggerDisplayContext;
+import com.liferay.dispatch.service.DispatchTaskLocalService;
+import com.liferay.dispatch.web.internal.display.context.DispatchTaskDisplayContext;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -33,28 +33,28 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + DispatchPortletKeys.DISPATCH,
-		"mvc.command.name=editDispatchTrigger"
+		"mvc.command.name=editDispatchTask"
 	},
 	service = MVCRenderCommand.class
 )
-public class EditDispatchTriggerMVCRenderCommand implements MVCRenderCommand {
+public class EditDispatchTaskMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		DispatchTriggerDisplayContext dispatchTriggerDisplayContext =
-			new DispatchTriggerDisplayContext(
-				_dispatchTriggerLocalService, renderRequest);
+		DispatchTaskDisplayContext dispatchTaskDisplayContext =
+			new DispatchTaskDisplayContext(
+				_dispatchTaskLocalService, renderRequest);
 
 		renderRequest.setAttribute(
-			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTriggerDisplayContext);
+			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTaskDisplayContext);
 
-		return "/edit_process.jsp";
+		return "/edit_dispatch_task.jsp";
 	}
 
 	@Reference
-	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+	private DispatchTaskLocalService _dispatchTaskLocalService;
 
 }

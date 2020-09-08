@@ -14,7 +14,7 @@
 
 package com.liferay.dispatch.web.internal.security.permisison.resource;
 
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -26,38 +26,37 @@ import org.osgi.service.component.annotations.Reference;
  * @author Marco Leo
  */
 @Component(immediate = true, service = {})
-public class DispatchPermission {
+public class DispatchTaskPermission {
 
 	public static boolean contains(
-			PermissionChecker permissionChecker,
-			DispatchTrigger dispatchTrigger, String actionId)
-		throws PortalException {
-
-		return _dispatchTriggerModelResourcePermission.contains(
-			permissionChecker, dispatchTrigger.getDispatchTriggerId(),
-			actionId);
-	}
-
-	public static boolean contains(
-			PermissionChecker permissionChecker, long dispatchTriggerId,
+			PermissionChecker permissionChecker, DispatchTask dispatchTask,
 			String actionId)
 		throws PortalException {
 
-		return _dispatchTriggerModelResourcePermission.contains(
-			permissionChecker, dispatchTriggerId, actionId);
+		return _dispatchTaskModelResourcePermission.contains(
+			permissionChecker, dispatchTask.getDispatchTaskId(), actionId);
+	}
+
+	public static boolean contains(
+			PermissionChecker permissionChecker, long dispatchTaskId,
+			String actionId)
+		throws PortalException {
+
+		return _dispatchTaskModelResourcePermission.contains(
+			permissionChecker, dispatchTaskId, actionId);
 	}
 
 	@Reference(
-		target = "(model.class.name=com.liferay.dispatch.model.DispatchTrigger)",
+		target = "(model.class.name=com.liferay.dispatch.model.DispatchTask)",
 		unbind = "-"
 	)
 	protected void setModelResourcePermission(
-		ModelResourcePermission<DispatchTrigger> modelResourcePermission) {
+		ModelResourcePermission<DispatchTask> modelResourcePermission) {
 
-		_dispatchTriggerModelResourcePermission = modelResourcePermission;
+		_dispatchTaskModelResourcePermission = modelResourcePermission;
 	}
 
-	private static ModelResourcePermission<DispatchTrigger>
-		_dispatchTriggerModelResourcePermission;
+	private static ModelResourcePermission<DispatchTask>
+		_dispatchTaskModelResourcePermission;
 
 }
