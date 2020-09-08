@@ -16,6 +16,7 @@ package com.liferay.dispatch.web.internal.portlet;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
 import com.liferay.dispatch.constants.DispatchWebKeys;
+import com.liferay.dispatch.executor.type.DispatchTaskExecutorTypeRegistry;
 import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.dispatch.service.DispatchTaskLocalService;
 import com.liferay.dispatch.web.internal.display.context.DispatchTaskDisplayContext;
@@ -84,13 +85,17 @@ public class DispatchPortlet extends MVCPortlet {
 
 		DispatchTaskDisplayContext dispatchTaskDisplayContext =
 			new DispatchTaskDisplayContext(
-				_dispatchTaskLocalService, renderRequest);
+				_dispatchTaskExecutorTypeRegistry, _dispatchTaskLocalService,
+				renderRequest);
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTaskDisplayContext);
 
 		super.render(renderRequest, renderResponse);
 	}
+
+	@Reference
+	private DispatchTaskExecutorTypeRegistry _dispatchTaskExecutorTypeRegistry;
 
 	@Reference
 	private DispatchTaskLocalService _dispatchTaskLocalService;

@@ -21,11 +21,10 @@ import com.liferay.dispatch.service.DispatchTaskService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
@@ -51,6 +50,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alessio Antonio Rendina
  */
 @Component(
+	immediate = true,
 	property = {
 		"javax.portlet.name=" + DispatchPortletKeys.DISPATCH,
 		"mvc.command.name=editDispatchTask"
@@ -189,14 +189,12 @@ public class EditDispatchTaskMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private void _sendMessage(long dispatchTaskId) {
-		JSONObject payLoad = JSONUtil.put("dispatchTaskId", dispatchTaskId);
+		Message message = new Message();
 
-		SingleDestinationMessageSender messageSender =
-			_singleDestinationMessageSenderFactory.
-				createSingleDestinationMessageSender(
-					DispatchConstants.EXECUTOR_DESTINATION_NAME);
+		message.put("dispatchTaskId", dispatchTaskId);
 
-		messageSender.send(payLoad.toString());
+		_messageBus.sendMessage(
+			DispatchConstants.EXECUTOR_DESTINATION_NAME, message);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -209,10 +207,9 @@ public class EditDispatchTaskMVCActionCommand extends BaseMVCActionCommand {
 	private JSONFactory _jsonFactory;
 
 	@Reference
-	private Portal _portal;
+	private MessageBus _messageBus;
 
 	@Reference
-	private SingleDestinationMessageSenderFactory
-		_singleDestinationMessageSenderFactory;
+	private Portal _portal;
 
 }

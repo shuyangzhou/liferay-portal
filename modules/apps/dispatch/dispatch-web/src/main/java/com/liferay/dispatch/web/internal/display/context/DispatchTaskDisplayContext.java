@@ -14,6 +14,7 @@
 
 package com.liferay.dispatch.web.internal.display.context;
 
+import com.liferay.dispatch.executor.type.DispatchTaskExecutorTypeRegistry;
 import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.dispatch.service.DispatchTaskLocalService;
 import com.liferay.dispatch.web.internal.display.context.util.DispatchRequestHelper;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.text.Format;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +43,11 @@ import javax.portlet.RenderRequest;
 public class DispatchTaskDisplayContext {
 
 	public DispatchTaskDisplayContext(
+		DispatchTaskExecutorTypeRegistry dispatchTaskExecutorTypeRegistry,
 		DispatchTaskLocalService dispatchTaskLocalService,
 		RenderRequest renderRequest) {
 
+		_dispatchTaskExecutorTypeRegistry = dispatchTaskExecutorTypeRegistry;
 		_dispatchTaskLocalService = dispatchTaskLocalService;
 
 		_dispatchRequestHelper = new DispatchRequestHelper(renderRequest);
@@ -58,8 +60,8 @@ public class DispatchTaskDisplayContext {
 		return _dispatchRequestHelper.getDispatchTask();
 	}
 
-	public List<String> getDispatchTaskTypes() {
-		return Arrays.asList("111", "222", "333");
+	public List<String> getDispatchTaskExecutorTypes() {
+		return _dispatchTaskExecutorTypeRegistry.getDispatchTaskExecutorTypes();
 	}
 
 	public String getNextFireDate(long dispatchTaskId) {
@@ -151,6 +153,8 @@ public class DispatchTaskDisplayContext {
 
 	private final Format _dateFormatDateTime;
 	private final DispatchRequestHelper _dispatchRequestHelper;
+	private final DispatchTaskExecutorTypeRegistry
+		_dispatchTaskExecutorTypeRegistry;
 	private final DispatchTaskLocalService _dispatchTaskLocalService;
 	private RowChecker _rowChecker;
 	private SearchContainer<DispatchTask> _searchContainer;

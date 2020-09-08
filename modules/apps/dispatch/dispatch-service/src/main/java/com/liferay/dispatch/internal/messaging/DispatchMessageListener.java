@@ -15,8 +15,8 @@
 package com.liferay.dispatch.internal.messaging;
 
 import com.liferay.dispatch.constants.DispatchConstants;
+import com.liferay.dispatch.executor.DispatchTaskExecutor;
 import com.liferay.dispatch.model.DispatchTask;
-import com.liferay.dispatch.service.DispatchTaskExecutorService;
 import com.liferay.dispatch.service.DispatchTaskLocalService;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -62,11 +62,10 @@ public class DispatchMessageListener implements MessageListener {
 
 		long dispatchTaskId = payloadJSONObject.getLong("dispatchTaskId");
 
-		DispatchTaskExecutorService dispatchTaskExecutorService = null;
+		DispatchTaskExecutor dispatchTaskExecutor = null;
 
 		try {
-			dispatchTaskExecutorService = getScheduledTaskExecutorService(
-				dispatchTaskId);
+			dispatchTaskExecutor = getDispatchTaskExecutor(dispatchTaskId);
 		}
 		catch (PortalException portalException) {
 			if (_log.isDebugEnabled()) {
@@ -74,9 +73,9 @@ public class DispatchMessageListener implements MessageListener {
 			}
 		}
 
-		if (dispatchTaskExecutorService != null) {
+		if (dispatchTaskExecutor != null) {
 			try {
-				dispatchTaskExecutorService.run(dispatchTaskId);
+				dispatchTaskExecutor.execute(dispatchTaskId);
 			}
 			catch (Exception exception) {
 				if (_log.isDebugEnabled()) {
@@ -88,40 +87,39 @@ public class DispatchMessageListener implements MessageListener {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_dispatchTaskExecutorServiceTrackerMap =
+		_dispatchTaskExecutorTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DispatchTaskExecutorService.class,
-				"dispatch.executor.key");
+				bundleContext, DispatchTaskExecutor.class,
+				"dispatch.task.executor.type");
 	}
 
-	protected DispatchTaskExecutorService getScheduledTaskExecutorService(
-			long dispatchTaskId)
+	protected DispatchTaskExecutor getDispatchTaskExecutor(long dispatchTaskId)
 		throws PortalException {
 
-		DispatchTaskExecutorService scheduledTaskExecutorService = null;
+		DispatchTaskExecutor dispatchTaskExecutor = null;
 
-		if (_dispatchTaskExecutorServiceTrackerMap != null) {
+		if (_dispatchTaskExecutorTrackerMap != null) {
 			DispatchTask dispatchTask =
 				_dispatchTaskLocalService.getDispatchTask(dispatchTaskId);
 
-			for (String key : _dispatchTaskExecutorServiceTrackerMap.keySet()) {
+			for (String key : _dispatchTaskExecutorTrackerMap.keySet()) {
 				if (key.equals(dispatchTask.getType())) {
-					scheduledTaskExecutorService =
-						_dispatchTaskExecutorServiceTrackerMap.getService(key);
+					dispatchTaskExecutor =
+						_dispatchTaskExecutorTrackerMap.getService(key);
 
 					break;
 				}
 			}
 		}
 
-		return scheduledTaskExecutorService;
+		return dispatchTaskExecutor;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DispatchMessageListener.class);
 
-	private ServiceTrackerMap<String, DispatchTaskExecutorService>
-		_dispatchTaskExecutorServiceTrackerMap;
+	private ServiceTrackerMap<String, DispatchTaskExecutor>
+		_dispatchTaskExecutorTrackerMap;
 
 	@Reference
 	private DispatchTaskLocalService _dispatchTaskLocalService;
