@@ -41,6 +41,7 @@ public class DispatchTaskSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setActive(model.isActive());
+		soapModel.setCronExpression(model.getCronExpression());
 		soapModel.setName(model.getName());
 		soapModel.setSystem(model.isSystem());
 		soapModel.setType(model.getType());
@@ -166,6 +167,14 @@ public class DispatchTaskSoap implements Serializable {
 		_active = active;
 	}
 
+	public String getCronExpression() {
+		return _cronExpression;
+	}
+
+	public void setCronExpression(String cronExpression) {
+		_cronExpression = cronExpression;
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -210,6 +219,7 @@ public class DispatchTaskSoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _active;
+	private String _cronExpression;
 	private String _name;
 	private boolean _system;
 	private String _type;

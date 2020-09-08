@@ -47,18 +47,17 @@ public class DispatchLogServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.dispatch.model.DispatchLog>
-			getDispatchLogs(long dispatchTriggerId, int start, int end)
+			getDispatchLogs(long dispatchTaskId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _dispatchLogService.getDispatchLogs(
-			dispatchTriggerId, start, end);
+		return _dispatchLogService.getDispatchLogs(dispatchTaskId, start, end);
 	}
 
 	@Override
-	public int getDispatchLogsCount(long dispatchTriggerId)
+	public int getDispatchLogsCount(long dispatchTaskId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _dispatchLogService.getDispatchLogsCount(dispatchTriggerId);
+		return _dispatchLogService.getDispatchLogsCount(dispatchTaskId);
 	}
 
 	/**

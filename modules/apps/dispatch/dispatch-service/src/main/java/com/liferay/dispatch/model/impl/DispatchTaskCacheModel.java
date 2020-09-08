@@ -77,7 +77,7 @@ public class DispatchTaskCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -95,6 +95,8 @@ public class DispatchTaskCacheModel
 		sb.append(modifiedDate);
 		sb.append(", active=");
 		sb.append(active);
+		sb.append(", cronExpression=");
+		sb.append(cronExpression);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", system=");
@@ -140,6 +142,13 @@ public class DispatchTaskCacheModel
 
 		dispatchTaskImpl.setActive(active);
 
+		if (cronExpression == null) {
+			dispatchTaskImpl.setCronExpression("");
+		}
+		else {
+			dispatchTaskImpl.setCronExpression(cronExpression);
+		}
+
 		if (name == null) {
 			dispatchTaskImpl.setName("");
 		}
@@ -182,6 +191,7 @@ public class DispatchTaskCacheModel
 		modifiedDate = objectInput.readLong();
 
 		active = objectInput.readBoolean();
+		cronExpression = objectInput.readUTF();
 		name = objectInput.readUTF();
 
 		system = objectInput.readBoolean();
@@ -210,6 +220,13 @@ public class DispatchTaskCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		objectOutput.writeBoolean(active);
+
+		if (cronExpression == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(cronExpression);
+		}
 
 		if (name == null) {
 			objectOutput.writeUTF("");
@@ -243,6 +260,7 @@ public class DispatchTaskCacheModel
 	public long createDate;
 	public long modifiedDate;
 	public boolean active;
+	public String cronExpression;
 	public String name;
 	public boolean system;
 	public String type;

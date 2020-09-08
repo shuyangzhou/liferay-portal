@@ -59,12 +59,11 @@ public interface DispatchLogService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DispatchLog> getDispatchLogs(
-			long dispatchTriggerId, int start, int end)
+			long dispatchTaskId, int start, int end)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDispatchLogsCount(long dispatchTriggerId)
-		throws PortalException;
+	public int getDispatchLogsCount(long dispatchTaskId) throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.

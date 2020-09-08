@@ -50,6 +50,7 @@ public class DispatchTaskWrapper
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("active", isActive());
+		attributes.put("cronExpression", getCronExpression());
 		attributes.put("name", getName());
 		attributes.put("system", isSystem());
 		attributes.put("type", getType());
@@ -108,6 +109,12 @@ public class DispatchTaskWrapper
 			setActive(active);
 		}
 
+		String cronExpression = (String)attributes.get("cronExpression");
+
+		if (cronExpression != null) {
+			setCronExpression(cronExpression);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -164,6 +171,16 @@ public class DispatchTaskWrapper
 	}
 
 	/**
+	 * Returns the cron expression of this dispatch task.
+	 *
+	 * @return the cron expression of this dispatch task
+	 */
+	@Override
+	public String getCronExpression() {
+		return model.getCronExpression();
+	}
+
+	/**
 	 * Returns the dispatch task ID of this dispatch task.
 	 *
 	 * @return the dispatch task ID of this dispatch task
@@ -171,6 +188,13 @@ public class DispatchTaskWrapper
 	@Override
 	public long getDispatchTaskId() {
 		return model.getDispatchTaskId();
+	}
+
+	@Override
+	public Date getEndDate()
+		throws com.liferay.portal.kernel.scheduler.SchedulerException {
+
+		return model.getEndDate();
 	}
 
 	/**
@@ -213,6 +237,13 @@ public class DispatchTaskWrapper
 		return model.getPrimaryKey();
 	}
 
+	@Override
+	public Date getStartDate()
+		throws com.liferay.portal.kernel.scheduler.SchedulerException {
+
+		return model.getStartDate();
+	}
+
 	/**
 	 * Returns the system of this dispatch task.
 	 *
@@ -241,6 +272,13 @@ public class DispatchTaskWrapper
 	@Override
 	public String getTypeSettings() {
 		return model.getTypeSettings();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getTypeSettingsProperties() {
+
+		return model.getTypeSettingsProperties();
 	}
 
 	/**
@@ -329,6 +367,16 @@ public class DispatchTaskWrapper
 	}
 
 	/**
+	 * Sets the cron expression of this dispatch task.
+	 *
+	 * @param cronExpression the cron expression of this dispatch task
+	 */
+	@Override
+	public void setCronExpression(String cronExpression) {
+		model.setCronExpression(cronExpression);
+	}
+
+	/**
 	 * Sets the dispatch task ID of this dispatch task.
 	 *
 	 * @param dispatchTaskId the dispatch task ID of this dispatch task
@@ -336,6 +384,11 @@ public class DispatchTaskWrapper
 	@Override
 	public void setDispatchTaskId(long dispatchTaskId) {
 		model.setDispatchTaskId(dispatchTaskId);
+	}
+
+	@Override
+	public void setEndDate(Date endDate) {
+		model.setEndDate(endDate);
 	}
 
 	/**
@@ -378,6 +431,11 @@ public class DispatchTaskWrapper
 		model.setPrimaryKey(primaryKey);
 	}
 
+	@Override
+	public void setStartDate(Date startDate) {
+		model.setStartDate(startDate);
+	}
+
 	/**
 	 * Sets whether this dispatch task is system.
 	 *
@@ -406,6 +464,14 @@ public class DispatchTaskWrapper
 	@Override
 	public void setTypeSettings(String typeSettings) {
 		model.setTypeSettings(typeSettings);
+	}
+
+	@Override
+	public void setTypeSettingsUnicodeProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties
+			typeSettingsUnicodeProperties) {
+
+		model.setTypeSettingsUnicodeProperties(typeSettingsUnicodeProperties);
 	}
 
 	/**

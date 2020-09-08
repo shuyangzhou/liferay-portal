@@ -30,6 +30,24 @@ public class DispatchTaskServiceWrapper
 		_dispatchTaskService = dispatchTaskService;
 	}
 
+	@Override
+	public com.liferay.dispatch.model.DispatchTask addDispatchTask(
+			long userId, String name, String type,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTaskService.addDispatchTask(
+			userId, name, type, typeSettingsUnicodeProperties);
+	}
+
+	@Override
+	public void deleteDispatchTask(long dispatchTaskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_dispatchTaskService.deleteDispatchTask(dispatchTaskId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -38,6 +56,32 @@ public class DispatchTaskServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _dispatchTaskService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.dispatch.model.DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTaskService.updateDispatchTask(
+			dispatchTaskId, name, typeSettingsUnicodeProperties);
+	}
+
+	@Override
+	public com.liferay.dispatch.model.DispatchTask updateDispatchTaskTrigger(
+			long dispatchTaskId, boolean active, String cronExpression,
+			int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
+			int endDateMinute, boolean neverEnd, int startDateMonth,
+			int startDateDay, int startDateYear, int startDateHour,
+			int startDateMinute)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTaskService.updateDispatchTaskTrigger(
+			dispatchTaskId, active, cronExpression, endDateMonth, endDateDay,
+			endDateYear, endDateHour, endDateMinute, neverEnd, startDateMonth,
+			startDateDay, startDateYear, startDateHour, startDateMinute);
 	}
 
 	@Override

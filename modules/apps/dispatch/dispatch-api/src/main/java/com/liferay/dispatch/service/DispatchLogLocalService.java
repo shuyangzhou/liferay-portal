@@ -77,7 +77,7 @@ public interface DispatchLogLocalService
 	public DispatchLog addDispatchLog(DispatchLog dispatchLog);
 
 	public DispatchLog addDispatchLog(
-			long userId, long dispatchTriggerId, String error, String output,
+			long userId, long dispatchTaskId, String error, String output,
 			int status, Date startDate, Date endDate)
 		throws PortalException;
 
@@ -124,7 +124,7 @@ public interface DispatchLogLocalService
 	public DispatchLog deleteDispatchLog(long dispatchLogId)
 		throws PortalException;
 
-	public void deleteDispatchLogs(long dispatchTriggerId);
+	public void deleteDispatchLogs(long dispatchTaskId);
 
 	/**
 	 * @throws PortalException
@@ -235,7 +235,7 @@ public interface DispatchLogLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DispatchLog> getDispatchLogs(
-		long dispatchTriggerId, int start, int end);
+		long dispatchTaskId, int start, int end);
 
 	/**
 	 * Returns the number of dispatch logs.
@@ -246,7 +246,7 @@ public interface DispatchLogLocalService
 	public int getDispatchLogsCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDispatchLogsCount(long dispatchTriggerId);
+	public int getDispatchLogsCount(long dispatchTaskId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();

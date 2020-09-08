@@ -48,6 +48,9 @@ public class DispatchTaskTable extends BaseTable<DispatchTaskTable> {
 		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<DispatchTaskTable, Boolean> active = createColumn(
 		"active_", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
+	public final Column<DispatchTaskTable, String> cronExpression =
+		createColumn(
+			"cronExpression", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<DispatchTaskTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<DispatchTaskTable, Boolean> system = createColumn(

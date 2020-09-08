@@ -208,6 +208,21 @@ public interface DispatchTaskModel
 	public void setActive(boolean active);
 
 	/**
+	 * Returns the cron expression of this dispatch task.
+	 *
+	 * @return the cron expression of this dispatch task
+	 */
+	@AutoEscape
+	public String getCronExpression();
+
+	/**
+	 * Sets the cron expression of this dispatch task.
+	 *
+	 * @param cronExpression the cron expression of this dispatch task
+	 */
+	public void setCronExpression(String cronExpression);
+
+	/**
 	 * Returns the name of this dispatch task.
 	 *
 	 * @return the name of this dispatch task

@@ -23,6 +23,7 @@ create table DispatchTask (
 	createDate DATE null,
 	modifiedDate DATE null,
 	active_ BOOLEAN,
+	cronExpression VARCHAR(75) null,
 	name VARCHAR(75) null,
 	system_ BOOLEAN,
 	type_ VARCHAR(75) null,

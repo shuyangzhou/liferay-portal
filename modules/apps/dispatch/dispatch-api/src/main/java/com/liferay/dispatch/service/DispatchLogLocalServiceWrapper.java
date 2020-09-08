@@ -52,13 +52,12 @@ public class DispatchLogLocalServiceWrapper
 
 	@Override
 	public com.liferay.dispatch.model.DispatchLog addDispatchLog(
-			long userId, long dispatchTriggerId, String error, String output,
+			long userId, long dispatchTaskId, String error, String output,
 			int status, java.util.Date startDate, java.util.Date endDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dispatchLogLocalService.addDispatchLog(
-			userId, dispatchTriggerId, error, output, status, startDate,
-			endDate);
+			userId, dispatchTaskId, error, output, status, startDate, endDate);
 	}
 
 	/**
@@ -122,8 +121,8 @@ public class DispatchLogLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteDispatchLogs(long dispatchTriggerId) {
-		_dispatchLogLocalService.deleteDispatchLogs(dispatchTriggerId);
+	public void deleteDispatchLogs(long dispatchTaskId) {
+		_dispatchLogLocalService.deleteDispatchLogs(dispatchTaskId);
 	}
 
 	/**
@@ -281,10 +280,10 @@ public class DispatchLogLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.dispatch.model.DispatchLog>
-		getDispatchLogs(long dispatchTriggerId, int start, int end) {
+		getDispatchLogs(long dispatchTaskId, int start, int end) {
 
 		return _dispatchLogLocalService.getDispatchLogs(
-			dispatchTriggerId, start, end);
+			dispatchTaskId, start, end);
 	}
 
 	/**
@@ -298,8 +297,8 @@ public class DispatchLogLocalServiceWrapper
 	}
 
 	@Override
-	public int getDispatchLogsCount(long dispatchTriggerId) {
-		return _dispatchLogLocalService.getDispatchLogsCount(dispatchTriggerId);
+	public int getDispatchLogsCount(long dispatchTaskId) {
+		return _dispatchLogLocalService.getDispatchLogsCount(dispatchTaskId);
 	}
 
 	@Override

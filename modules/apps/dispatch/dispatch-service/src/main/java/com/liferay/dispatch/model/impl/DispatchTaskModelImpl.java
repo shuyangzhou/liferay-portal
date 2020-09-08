@@ -77,8 +77,9 @@ public class DispatchTaskModelImpl
 		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"active_", Types.BOOLEAN},
-		{"name", Types.VARCHAR}, {"system_", Types.BOOLEAN},
-		{"type_", Types.VARCHAR}, {"typeSettings", Types.VARCHAR}
+		{"cronExpression", Types.VARCHAR}, {"name", Types.VARCHAR},
+		{"system_", Types.BOOLEAN}, {"type_", Types.VARCHAR},
+		{"typeSettings", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -93,6 +94,7 @@ public class DispatchTaskModelImpl
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("cronExpression", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("system_", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
@@ -100,7 +102,7 @@ public class DispatchTaskModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DispatchTask (mvccVersion LONG default 0 not null,dispatchTaskId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,name VARCHAR(75) null,system_ BOOLEAN,type_ VARCHAR(75) null,typeSettings VARCHAR(75) null)";
+		"create table DispatchTask (mvccVersion LONG default 0 not null,dispatchTaskId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,cronExpression VARCHAR(75) null,name VARCHAR(75) null,system_ BOOLEAN,type_ VARCHAR(75) null,typeSettings VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table DispatchTask";
 
@@ -178,6 +180,7 @@ public class DispatchTaskModelImpl
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setActive(soapModel.isActive());
+		model.setCronExpression(soapModel.getCronExpression());
 		model.setName(soapModel.getName());
 		model.setSystem(soapModel.isSystem());
 		model.setType(soapModel.getType());
@@ -367,6 +370,11 @@ public class DispatchTaskModelImpl
 		attributeSetterBiConsumers.put(
 			"active",
 			(BiConsumer<DispatchTask, Boolean>)DispatchTask::setActive);
+		attributeGetterFunctions.put(
+			"cronExpression", DispatchTask::getCronExpression);
+		attributeSetterBiConsumers.put(
+			"cronExpression",
+			(BiConsumer<DispatchTask, String>)DispatchTask::setCronExpression);
 		attributeGetterFunctions.put("name", DispatchTask::getName);
 		attributeSetterBiConsumers.put(
 			"name", (BiConsumer<DispatchTask, String>)DispatchTask::setName);
@@ -554,6 +562,26 @@ public class DispatchTaskModelImpl
 
 	@JSON
 	@Override
+	public String getCronExpression() {
+		if (_cronExpression == null) {
+			return "";
+		}
+		else {
+			return _cronExpression;
+		}
+	}
+
+	@Override
+	public void setCronExpression(String cronExpression) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_cronExpression = cronExpression;
+	}
+
+	@JSON
+	@Override
 	public String getName() {
 		if (_name == null) {
 			return "";
@@ -713,6 +741,7 @@ public class DispatchTaskModelImpl
 		dispatchTaskImpl.setCreateDate(getCreateDate());
 		dispatchTaskImpl.setModifiedDate(getModifiedDate());
 		dispatchTaskImpl.setActive(isActive());
+		dispatchTaskImpl.setCronExpression(getCronExpression());
 		dispatchTaskImpl.setName(getName());
 		dispatchTaskImpl.setSystem(isSystem());
 		dispatchTaskImpl.setType(getType());
@@ -834,6 +863,14 @@ public class DispatchTaskModelImpl
 
 		dispatchTaskCacheModel.active = isActive();
 
+		dispatchTaskCacheModel.cronExpression = getCronExpression();
+
+		String cronExpression = dispatchTaskCacheModel.cronExpression;
+
+		if ((cronExpression != null) && (cronExpression.length() == 0)) {
+			dispatchTaskCacheModel.cronExpression = null;
+		}
+
 		dispatchTaskCacheModel.name = getName();
 
 		String name = dispatchTaskCacheModel.name;
@@ -942,6 +979,7 @@ public class DispatchTaskModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private boolean _active;
+	private String _cronExpression;
 	private String _name;
 	private boolean _system;
 	private String _type;
@@ -984,6 +1022,7 @@ public class DispatchTaskModelImpl
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("active_", _active);
+		_columnOriginalValues.put("cronExpression", _cronExpression);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("system_", _system);
 		_columnOriginalValues.put("type_", _type);
@@ -1029,13 +1068,15 @@ public class DispatchTaskModelImpl
 
 		columnBitmasks.put("active_", 128L);
 
-		columnBitmasks.put("name", 256L);
+		columnBitmasks.put("cronExpression", 256L);
 
-		columnBitmasks.put("system_", 512L);
+		columnBitmasks.put("name", 512L);
 
-		columnBitmasks.put("type_", 1024L);
+		columnBitmasks.put("system_", 1024L);
 
-		columnBitmasks.put("typeSettings", 2048L);
+		columnBitmasks.put("type_", 2048L);
+
+		columnBitmasks.put("typeSettings", 4096L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

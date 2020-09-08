@@ -95,13 +95,13 @@ public class DispatchLogServiceSoap {
 	}
 
 	public static com.liferay.dispatch.model.DispatchLogSoap[] getDispatchLogs(
-			long dispatchTriggerId, int start, int end)
+			long dispatchTaskId, int start, int end)
 		throws RemoteException {
 
 		try {
 			java.util.List<com.liferay.dispatch.model.DispatchLog> returnValue =
 				DispatchLogServiceUtil.getDispatchLogs(
-					dispatchTriggerId, start, end);
+					dispatchTaskId, start, end);
 
 			return com.liferay.dispatch.model.DispatchLogSoap.toSoapModels(
 				returnValue);
@@ -113,12 +113,12 @@ public class DispatchLogServiceSoap {
 		}
 	}
 
-	public static int getDispatchLogsCount(long dispatchTriggerId)
+	public static int getDispatchLogsCount(long dispatchTaskId)
 		throws RemoteException {
 
 		try {
 			int returnValue = DispatchLogServiceUtil.getDispatchLogsCount(
-				dispatchTriggerId);
+				dispatchTaskId);
 
 			return returnValue;
 		}

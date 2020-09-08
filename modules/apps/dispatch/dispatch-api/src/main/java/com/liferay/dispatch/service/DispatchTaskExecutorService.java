@@ -24,18 +24,17 @@ import java.io.IOException;
 public interface DispatchTaskExecutorService {
 
 	/**
-	 * This method returns the name of the process type
+	 * This method returns the name of the process task
 	 */
 	public String getName();
 
 	/**
-	 * This method execute the selected process
+	 * This method execute the selected task
 	 *
 	 * @param dispatchTaskId
 	 * @throws IOException
 	 * @throws PortalException
 	 */
-	public void run(long dispatchTaskId)
-		throws IOException, PortalException;
+	public void run(long dispatchTaskId) throws IOException, PortalException;
 
 }

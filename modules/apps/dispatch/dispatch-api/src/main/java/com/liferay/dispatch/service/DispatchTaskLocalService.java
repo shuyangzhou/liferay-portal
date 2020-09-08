@@ -23,17 +23,21 @@ import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -75,6 +79,11 @@ public interface DispatchTaskLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public DispatchTask addDispatchTask(DispatchTask dispatchTask);
 
+	public DispatchTask addDispatchTask(
+			long userId, String name, boolean system, String type,
+			UnicodeProperties typeSettingsUnicodeProperties)
+		throws PortalException;
+
 	/**
 	 * Creates a new dispatch task with the primary key. Does not add the dispatch task to the database.
 	 *
@@ -99,9 +108,12 @@ public interface DispatchTaskLocalService
 	 *
 	 * @param dispatchTask the dispatch task
 	 * @return the dispatch task that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public DispatchTask deleteDispatchTask(DispatchTask dispatchTask);
+	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
+	public DispatchTask deleteDispatchTask(DispatchTask dispatchTask)
+		throws PortalException;
 
 	/**
 	 * Deletes the dispatch task with the primary key from the database. Also notifies the appropriate model listeners.
@@ -198,6 +210,9 @@ public interface DispatchTaskLocalService
 	public DispatchTask fetchDispatchTask(long dispatchTaskId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DispatchTask fetchDispatchTask(long companyId, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	/**
@@ -225,6 +240,10 @@ public interface DispatchTaskLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DispatchTask> getDispatchTasks(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DispatchTask> getDispatchTasks(
+		long companyId, int start, int end);
+
 	/**
 	 * Returns the number of dispatch tasks.
 	 *
@@ -234,7 +253,13 @@ public interface DispatchTaskLocalService
 	public int getDispatchTasksCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDispatchTasksCount(long companyId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Date getNextFireDate(long dispatchTaskId);
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -251,6 +276,9 @@ public interface DispatchTaskLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Date getPreviousFireDate(long dispatchTaskId);
+
 	/**
 	 * Updates the dispatch task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -263,5 +291,18 @@ public interface DispatchTaskLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public DispatchTask updateDispatchTask(DispatchTask dispatchTask);
+
+	public DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			UnicodeProperties typeSettingsUnicodeProperties)
+		throws PortalException;
+
+	public DispatchTask updateDispatchTaskTrigger(
+			long dispatchTaskId, boolean active, String cronExpression,
+			int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
+			int endDateMinute, boolean neverEnd, int startDateMonth,
+			int startDateDay, int startDateYear, int startDateHour,
+			int startDateMinute)
+		throws PortalException;
 
 }

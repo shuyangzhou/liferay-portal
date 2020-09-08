@@ -130,10 +130,13 @@ public abstract class DispatchTaskLocalServiceBaseImpl
 	 *
 	 * @param dispatchTask the dispatch task
 	 * @return the dispatch task that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public DispatchTask deleteDispatchTask(DispatchTask dispatchTask) {
+	public DispatchTask deleteDispatchTask(DispatchTask dispatchTask)
+		throws PortalException {
+
 		return dispatchTaskPersistence.remove(dispatchTask);
 	}
 

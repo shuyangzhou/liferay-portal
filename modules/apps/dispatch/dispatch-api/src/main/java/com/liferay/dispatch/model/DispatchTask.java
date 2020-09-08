@@ -56,4 +56,21 @@ public interface DispatchTask extends DispatchTaskModel, PersistedModel {
 
 		};
 
+	public java.util.Date getEndDate()
+		throws com.liferay.portal.kernel.scheduler.SchedulerException;
+
+	public java.util.Date getStartDate()
+		throws com.liferay.portal.kernel.scheduler.SchedulerException;
+
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getTypeSettingsProperties();
+
+	public void setEndDate(java.util.Date endDate);
+
+	public void setStartDate(java.util.Date startDate);
+
+	public void setTypeSettingsUnicodeProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties
+			typeSettingsUnicodeProperties);
+
 }
