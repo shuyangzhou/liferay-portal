@@ -17,37 +17,63 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+DispatchTaskDisplayContext dispatchTaskDisplayContext = (DispatchTaskDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 %>
 
 <liferay-frontend:management-bar
 	includeCheckBox="<%= true %>"
-	searchContainerId='<%= ParamUtil.getString(request, "searchContainerId", "dispatchTrigger") %>'
+	searchContainerId='<%= ParamUtil.getString(request, "searchContainerId", "dispatchTask") %>'
 >
 	<liferay-frontend:management-bar-buttons>
 		<liferay-frontend:management-bar-display-buttons
 			displayViews='<%= new String[] {"list"} %>'
-			portletURL="<%= dispatchTriggerDisplayContext.getPortletURL() %>"
+			portletURL="<%= dispatchTaskDisplayContext.getPortletURL() %>"
 			selectedDisplayStyle="list"
 		/>
 
-		<liferay-portlet:renderURL var="addProcessURL">
+		<liferay-portlet:renderURL var="addDispatchTaskURL">
 			<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" />
-			<portlet:param name="mvcRenderCommandName" value="editDispatchTrigger" />
+			<portlet:param name="mvcRenderCommandName" value="editDispatchTask" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 		</liferay-portlet:renderURL>
+
+		<liferay-frontend:add-menu
+			inline="<%= true %>"
+		>
+
+			<%
+			for (String dispatchTaskType : dispatchTaskDisplayContext.getDispatchTaskExecutorTypes()) {
+			%>
+
+				<liferay-portlet:renderURL var="addDispatchTaskURL">
+					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" />
+					<portlet:param name="mvcRenderCommandName" value="editDispatchTask" />
+					<portlet:param name="backURL" value="<%= currentURL %>" />
+					<portlet:param name="dispatchTaskType" value="<%= dispatchTaskType %>" />
+				</liferay-portlet:renderURL>
+
+				<liferay-frontend:add-menu-item
+					title="<%= dispatchTaskType %>"
+					url="<%= addDispatchTaskURL %>"
+				/>
+
+			<%
+			}
+			%>
+
+		</liferay-frontend:add-menu>
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-filters>
 		<liferay-frontend:management-bar-navigation
 			navigationKeys='<%= new String[] {"all"} %>'
-			portletURL="<%= dispatchTriggerDisplayContext.getPortletURL() %>"
+			portletURL="<%= dispatchTaskDisplayContext.getPortletURL() %>"
 		/>
 	</liferay-frontend:management-bar-filters>
 
 	<liferay-frontend:management-bar-action-buttons>
 		<liferay-frontend:management-bar-button
-			href='<%= "javascript:" + liferayPortletResponse.getNamespace() + "deleteDispatchTrigger();" %>'
+			href='<%= "javascript:" + liferayPortletResponse.getNamespace() + "deleteDispatchTask();" %>'
 			icon="times"
 			label="delete"
 		/>
@@ -55,24 +81,24 @@ DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDi
 </liferay-frontend:management-bar>
 
 <aui:script>
-	function <portlet:namespace />deleteDispatchTrigger() {
+	function <portlet:namespace />deleteDispatchTask() {
 		if (
 			confirm(
-				'<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-trigger" />'
+				'<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-task" />'
 			)
 		) {
 			var form = AUI.$(document.<portlet:namespace />fm);
 
 			form.attr('method', 'post');
 			form.fm('<%= Constants.CMD %>').val('<%= Constants.DELETE %>');
-			form.fm('deleteDispatchTriggerIds').val(
+			form.fm('deleteDispatchTaskIds').val(
 				Liferay.Util.listCheckedExcept(
 					form,
 					'<portlet:namespace />allRowIds'
 				)
 			);
 
-			submitForm(form, '<portlet:actionURL name="editDispatchTrigger" />');
+			submitForm(form, '<portlet:actionURL name="editDispatchTask" />');
 		}
 	}
 </aui:script>

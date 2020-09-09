@@ -19,7 +19,7 @@
 <%
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
-DispatchTrigger dispatchTrigger = (DispatchTrigger)row.getObject();
+DispatchTask dispatchTask = (DispatchTask)row.getObject();
 %>
 
 <liferay-ui:icon-menu
@@ -29,11 +29,11 @@ DispatchTrigger dispatchTrigger = (DispatchTrigger)row.getObject();
 	message="<%= StringPool.BLANK %>"
 	showWhenSingleIcon="<%= true %>"
 >
-	<c:if test="<%= DispatchPermission.contains(permissionChecker, dispatchTrigger, ActionKeys.UPDATE) %>">
+	<c:if test="<%= DispatchTaskPermission.contains(permissionChecker, dispatchTask, ActionKeys.UPDATE) %>">
 		<portlet:renderURL var="editURL">
-			<portlet:param name="mvcRenderCommandName" value="editDispatchTrigger" />
+			<portlet:param name="mvcRenderCommandName" value="editDispatchTask" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="dispatchTriggerId" value="<%= String.valueOf(dispatchTrigger.getDispatchTriggerId()) %>" />
+			<portlet:param name="dispatchTaskId" value="<%= String.valueOf(dispatchTask.getDispatchTaskId()) %>" />
 		</portlet:renderURL>
 
 		<liferay-ui:icon
@@ -42,11 +42,11 @@ DispatchTrigger dispatchTrigger = (DispatchTrigger)row.getObject();
 		/>
 	</c:if>
 
-	<c:if test="<%= DispatchPermission.contains(permissionChecker, dispatchTrigger, ActionKeys.DELETE) && !dispatchTrigger.isSystem() %>">
-		<portlet:actionURL name="editDispatchTrigger" var="deleteURL">
+	<c:if test="<%= DispatchTaskPermission.contains(permissionChecker, dispatchTask, ActionKeys.DELETE) && !dispatchTask.isSystem() %>">
+		<portlet:actionURL name="editDispatchTask" var="deleteURL">
 			<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="dispatchTriggerId" value="<%= String.valueOf(dispatchTrigger.getDispatchTriggerId()) %>" />
+			<portlet:param name="dispatchTaskId" value="<%= String.valueOf(dispatchTask.getDispatchTaskId()) %>" />
 		</portlet:actionURL>
 
 		<liferay-ui:icon-delete

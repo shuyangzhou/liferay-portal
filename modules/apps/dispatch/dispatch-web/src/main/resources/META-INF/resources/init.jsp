@@ -28,12 +28,12 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.dispatch.constants.DispatchConstants" %><%@
 page import="com.liferay.dispatch.constants.DispatchWebKeys" %><%@
 page import="com.liferay.dispatch.exception.NoSuchLogException" %><%@
-page import="com.liferay.dispatch.exception.NoSuchTriggerException" %><%@
+page import="com.liferay.dispatch.exception.NoSuchTaskException" %><%@
 page import="com.liferay.dispatch.model.DispatchLog" %><%@
-page import="com.liferay.dispatch.model.DispatchTrigger" %><%@
+page import="com.liferay.dispatch.model.DispatchTask" %><%@
 page import="com.liferay.dispatch.web.internal.display.context.DispatchLogDisplayContext" %><%@
-page import="com.liferay.dispatch.web.internal.display.context.DispatchTriggerDisplayContext" %><%@
-page import="com.liferay.dispatch.web.internal.security.permisison.resource.DispatchPermission" %><%@
+page import="com.liferay.dispatch.web.internal.display.context.DispatchTaskDisplayContext" %><%@
+page import="com.liferay.dispatch.web.internal.security.permisison.resource.DispatchTaskPermission" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@

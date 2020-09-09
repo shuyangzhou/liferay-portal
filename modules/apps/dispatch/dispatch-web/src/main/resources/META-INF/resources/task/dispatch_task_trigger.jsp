@@ -17,25 +17,25 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DispatchTrigger dispatchTrigger = (DispatchTrigger)request.getAttribute(DispatchWebKeys.DISPATCH_TRIGGER);
+DispatchTask dispatchTask = (DispatchTask)request.getAttribute(DispatchWebKeys.DISPATCH_TASK);
 
 boolean neverEnd = ParamUtil.getBoolean(request, "neverEnd", true);
 
-if ((dispatchTrigger != null) && (dispatchTrigger.getEndDate() != null)) {
+if ((dispatchTask != null) && (dispatchTask.getEndDate() != null)) {
 	neverEnd = false;
 }
 %>
 
-<portlet:actionURL name="editDispatchTrigger" var="editDispatchTriggerActionURL" />
+<portlet:actionURL name="editDispatchTaskTrigger" var="editDispatchTaskTriggerActionURL" />
 
-<aui:form action="<%= editDispatchTriggerActionURL %>" cssClass="container-fluid-1280" method="post" name="fm">
+<aui:form action="<%= editDispatchTaskTriggerActionURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="schedule" />
-	<aui:input name="dispatchTriggerId" type="hidden" value="<%= String.valueOf(dispatchTrigger.getDispatchTriggerId()) %>" />
+	<aui:input name="dispatchTaskId" type="hidden" value="<%= String.valueOf(dispatchTask.getDispatchTaskId()) %>" />
 
 	<aui:fieldset-group markupView="lexicon">
 		<aui:fieldset>
-			<aui:model-context bean="<%= dispatchTrigger %>" model="<%= DispatchTrigger.class %>" />
+			<aui:model-context bean="<%= dispatchTask %>" model="<%= DispatchTask.class %>" />
 
 			<div class="lfr-form-content">
 				<aui:fieldset>

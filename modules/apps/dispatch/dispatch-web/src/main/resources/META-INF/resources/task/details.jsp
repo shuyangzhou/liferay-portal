@@ -17,44 +17,44 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+DispatchTaskDisplayContext dispatchTaskDisplayContext = (DispatchTaskDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
-long dispatchTriggerId = 0;
+long dispatchTaskId = 0;
 
-DispatchTrigger dispatchTrigger = dispatchTriggerDisplayContext.getDispatchTrigger();
+DispatchTask dispatchTask = dispatchTaskDisplayContext.getDispatchTask();
 
-String processType = ParamUtil.getString(request, "processType");
+String dispatchTaskType = ParamUtil.getString(request, "dispatchTaskType");
 
 String typeSettings = StringPool.BLANK;
 
-if (dispatchTrigger != null) {
-	dispatchTriggerId = dispatchTrigger.getDispatchTriggerId();
-	processType = dispatchTrigger.getType();
-	typeSettings = dispatchTrigger.getTypeSettings();
+if (dispatchTask != null) {
+	dispatchTaskId = dispatchTask.getDispatchTaskId();
+	dispatchTaskType = dispatchTask.getType();
+	typeSettings = dispatchTask.getTypeSettings();
 }
 %>
 
-<portlet:actionURL name="editDispatchTrigger" var="editDispatchTriggerActionURL" />
+<portlet:actionURL name="editDispatchTask" var="editDispatchTaskActionURL" />
 
-<div class="closed container-fluid-1280" id="<portlet:namespace />editDispatchTriggerId">
+<div class="closed container-fluid-1280" id="<portlet:namespace />editDispatchTaskId">
 	<div class="container main-content-body sheet">
 		<liferay-ui:error exception="<%= NoSuchLogException.class %>" message="the-log-could-not-be-found" />
-		<liferay-ui:error exception="<%= NoSuchTriggerException.class %>" message="the-process-could-not-be-found" />
+		<liferay-ui:error exception="<%= NoSuchTaskException.class %>" message="the-task-could-not-be-found" />
 
 		<liferay-ui:error-principal />
 
-		<aui:form action="<%= editDispatchTriggerActionURL %>" cssClass="container-fluid-1280" method="post" name="fm">
+		<aui:form action="<%= editDispatchTaskActionURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 			<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
-			<aui:input name="dispatchTriggerId" type="hidden" value="<%= String.valueOf(dispatchTriggerId) %>" />
-			<aui:input name="processType" type="hidden" value="<%= processType %>" />
+			<aui:input name="dispatchTaskId" type="hidden" value="<%= String.valueOf(dispatchTaskId) %>" />
+			<aui:input name="dispatchTaskType" type="hidden" value="<%= dispatchTaskType %>" />
 			<aui:input name="typeSettings" type="hidden" />
 
 			<div class="lfr-form-content">
-				<aui:model-context bean="<%= dispatchTrigger %>" model="<%= DispatchTrigger.class %>" />
+				<aui:model-context bean="<%= dispatchTask %>" model="<%= DispatchTask.class %>" />
 
 				<aui:fieldset>
-					<aui:input disabled="<%= (dispatchTrigger != null) && dispatchTrigger.isSystem() %>" name="name" required="<%= true %>" />
+					<aui:input disabled="<%= (dispatchTask != null) && dispatchTask.isSystem() %>" name="name" required="<%= true %>" />
 				</aui:fieldset>
 
 				<div id="<portlet:namespace />typeSettingsEditor"></div>
@@ -62,7 +62,7 @@ if (dispatchTrigger != null) {
 				<aui:button-row>
 
 					<%
-					String taglibSaveOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "saveProcess');";
+					String taglibSaveOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "saveTask');";
 					%>
 
 					<aui:button onClick="<%= taglibSaveOnClick %>" value="save" />
@@ -81,13 +81,13 @@ if (dispatchTrigger != null) {
 		function () {
 			var A = AUI();
 
-			var processType = A.one(<portlet:namespace />type).val();
+			var dispatchTaskType = A.one(<portlet:namespace />type).val();
 
 			var portletURL = new Liferay.PortletURL.createURL(
 				'<%= currentURLObj %>'
 			);
 
-			portletURL.setParameter('type', processType);
+			portletURL.setParameter('type', dispatchTaskType);
 
 			window.location.replace(portletURL.toString());
 		},
@@ -116,7 +116,7 @@ if (dispatchTrigger != null) {
 
 	contentEditor.set(STR_VALUE, content);
 
-	Liferay.on('<portlet:namespace />saveProcess', function (event) {
+	Liferay.on('<portlet:namespace />saveTask', function (event) {
 		var form = AUI.$('#<portlet:namespace />fm');
 
 		form.fm('typeSettings').val(contentEditor.get(STR_VALUE));

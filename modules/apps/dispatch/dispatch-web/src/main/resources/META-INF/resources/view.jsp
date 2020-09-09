@@ -17,45 +17,45 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+DispatchTaskDisplayContext dispatchTaskDisplayContext = (DispatchTaskDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
-PortletURL portletURL = dispatchTriggerDisplayContext.getPortletURL();
+PortletURL portletURL = dispatchTaskDisplayContext.getPortletURL();
 
-portletURL.setParameter("searchContainerId", "dispatchTriggers");
+portletURL.setParameter("searchContainerId", "dispatchTasks");
 
 request.setAttribute("view.jsp-portletURL", portletURL);
 %>
 
-<liferay-util:include page="/process_toolbar.jsp" servletContext="<%= application %>">
-	<liferay-util:param name="searchContainerId" value="dispatchTriggers" />
+<liferay-util:include page="/dispatch_task_toolbar.jsp" servletContext="<%= application %>">
+	<liferay-util:param name="searchContainerId" value="dispatchTasks" />
 </liferay-util:include>
 
-<div id="<portlet:namespace />processesContainer">
+<div id="<portlet:namespace />dispatchTasksContainer">
 	<div class="closed container-fluid-1280" id="<portlet:namespace />infoPanelId">
 		<div class="container">
 			<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
 				<aui:input name="<%= Constants.CMD %>" type="hidden" />
 				<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
-				<aui:input name="deleteDispatchTriggerIds" type="hidden" />
+				<aui:input name="deleteDispatchTaskIds" type="hidden" />
 
-				<div class="process-lists-container" id="<portlet:namespace />entriesContainer">
+				<div class="dispatch-task-lists-container" id="<portlet:namespace />entriesContainer">
 					<liferay-ui:search-container
-						id="dispatchTriggers"
-						searchContainer="<%= dispatchTriggerDisplayContext.getSearchContainer() %>"
+						id="dispatchTasks"
+						searchContainer="<%= dispatchTaskDisplayContext.getSearchContainer() %>"
 					>
 						<liferay-ui:search-container-row
-							className="com.liferay.dispatch.model.DispatchTrigger"
+							className="com.liferay.dispatch.model.DispatchTask"
 							cssClass="entry-display-style"
-							keyProperty="dispatchTriggerId"
-							modelVar="dispatchTrigger"
+							keyProperty="dispatchTaskId"
+							modelVar="dispatchTask"
 						>
 
 							<%
 							PortletURL rowURL = renderResponse.createRenderURL();
 
-							rowURL.setParameter("mvcRenderCommandName", "editDispatchTrigger");
+							rowURL.setParameter("mvcRenderCommandName", "editDispatchTask");
 							rowURL.setParameter("redirect", currentURL);
-							rowURL.setParameter("dispatchTriggerId", String.valueOf(dispatchTrigger.getDispatchTriggerId()));
+							rowURL.setParameter("dispatchTaskId", String.valueOf(dispatchTask.getDispatchTaskId()));
 							%>
 
 							<liferay-ui:search-container-column-text
@@ -72,23 +72,23 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 							<liferay-ui:search-container-column-text
 								cssClass="table-cell-content"
 								name="system"
-								value='<%= dispatchTrigger.isSystem() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>'
+								value='<%= dispatchTask.isSystem() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>'
 							/>
 
 							<liferay-ui:search-container-column-text
 								cssClass="table-cell-content"
 								name="next-fire-date"
-								value="<%= dispatchTriggerDisplayContext.getNextFireDate(dispatchTrigger.getDispatchTriggerId()) %>"
+								value="<%= dispatchTaskDisplayContext.getNextFireDate(dispatchTask.getDispatchTaskId()) %>"
 							/>
 
 							<liferay-ui:search-container-column-jsp
 								cssClass="table-cell-content"
-								path="/process/buttons.jsp"
+								path="/task/buttons.jsp"
 							/>
 
 							<liferay-ui:search-container-column-jsp
 								cssClass="entry-action-column"
-								path="/process_action.jsp"
+								path="/dispatch_task_action.jsp"
 							/>
 						</liferay-ui:search-container-row>
 
