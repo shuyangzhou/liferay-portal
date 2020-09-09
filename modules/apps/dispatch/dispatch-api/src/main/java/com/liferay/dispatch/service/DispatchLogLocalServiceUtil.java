@@ -55,13 +55,12 @@ public class DispatchLogLocalServiceUtil {
 	}
 
 	public static com.liferay.dispatch.model.DispatchLog addDispatchLog(
-			long userId, long dispatchTriggerId, String error, String output,
+			long userId, long dispatchTaskId, String error, String output,
 			int status, java.util.Date startDate, java.util.Date endDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addDispatchLog(
-			userId, dispatchTriggerId, error, output, status, startDate,
-			endDate);
+			userId, dispatchTaskId, error, output, status, startDate, endDate);
 	}
 
 	/**
@@ -120,8 +119,8 @@ public class DispatchLogLocalServiceUtil {
 		return getService().deleteDispatchLog(dispatchLogId);
 	}
 
-	public static void deleteDispatchLogs(long dispatchTriggerId) {
-		getService().deleteDispatchLogs(dispatchTriggerId);
+	public static void deleteDispatchLogs(long dispatchTaskId) {
+		getService().deleteDispatchLogs(dispatchTaskId);
 	}
 
 	/**
@@ -270,9 +269,9 @@ public class DispatchLogLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.dispatch.model.DispatchLog>
-		getDispatchLogs(long dispatchTriggerId, int start, int end) {
+		getDispatchLogs(long dispatchTaskId, int start, int end) {
 
-		return getService().getDispatchLogs(dispatchTriggerId, start, end);
+		return getService().getDispatchLogs(dispatchTaskId, start, end);
 	}
 
 	/**
@@ -284,8 +283,8 @@ public class DispatchLogLocalServiceUtil {
 		return getService().getDispatchLogsCount();
 	}
 
-	public static int getDispatchLogsCount(long dispatchTriggerId) {
-		return getService().getDispatchLogsCount(dispatchTriggerId);
+	public static int getDispatchLogsCount(long dispatchTaskId) {
+		return getService().getDispatchLogsCount(dispatchTaskId);
 	}
 
 	public static

@@ -37,6 +37,21 @@ public class DispatchTaskServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.dispatch.service.impl.DispatchTaskServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.dispatch.model.DispatchTask addDispatchTask(
+			long userId, String name, String type,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().addDispatchTask(
+			userId, name, type, typeSettingsUnicodeProperties);
+	}
+
+	public static void deleteDispatchTask(long dispatchTaskId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		getService().deleteDispatchTask(dispatchTaskId);
+	}
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -45,6 +60,31 @@ public class DispatchTaskServiceUtil {
 	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.dispatch.model.DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateDispatchTask(
+			dispatchTaskId, name, typeSettingsUnicodeProperties);
+	}
+
+	public static com.liferay.dispatch.model.DispatchTask
+			updateDispatchTaskTrigger(
+				long dispatchTaskId, boolean active, String cronExpression,
+				int endDateMonth, int endDateDay, int endDateYear,
+				int endDateHour, int endDateMinute, boolean neverEnd,
+				int startDateMonth, int startDateDay, int startDateYear,
+				int startDateHour, int startDateMinute)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateDispatchTaskTrigger(
+			dispatchTaskId, active, cronExpression, endDateMonth, endDateDay,
+			endDateYear, endDateHour, endDateMinute, neverEnd, startDateMonth,
+			startDateDay, startDateYear, startDateHour, startDateMinute);
 	}
 
 	public static DispatchTaskService getService() {

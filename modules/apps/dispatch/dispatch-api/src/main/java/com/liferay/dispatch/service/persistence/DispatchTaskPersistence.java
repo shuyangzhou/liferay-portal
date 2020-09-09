@@ -169,6 +169,62 @@ public interface DispatchTaskPersistence extends BasePersistence<DispatchTask> {
 		throws NoSuchTaskException;
 
 	/**
+	 * Returns all the dispatch tasks that the user has permission to view where companyId = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @return the matching dispatch tasks that the user has permission to view
+	 */
+	public java.util.List<DispatchTask> filterFindByCompanyId(long companyId);
+
+	/**
+	 * Returns a range of all the dispatch tasks that the user has permission to view where companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of dispatch tasks
+	 * @param end the upper bound of the range of dispatch tasks (not inclusive)
+	 * @return the range of matching dispatch tasks that the user has permission to view
+	 */
+	public java.util.List<DispatchTask> filterFindByCompanyId(
+		long companyId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the dispatch tasks that the user has permissions to view where companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of dispatch tasks
+	 * @param end the upper bound of the range of dispatch tasks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching dispatch tasks that the user has permission to view
+	 */
+	public java.util.List<DispatchTask> filterFindByCompanyId(
+		long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DispatchTask>
+			orderByComparator);
+
+	/**
+	 * Returns the dispatch tasks before and after the current dispatch task in the ordered set of dispatch tasks that the user has permission to view where companyId = &#63;.
+	 *
+	 * @param dispatchTaskId the primary key of the current dispatch task
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next dispatch task
+	 * @throws NoSuchTaskException if a dispatch task with the primary key could not be found
+	 */
+	public DispatchTask[] filterFindByCompanyId_PrevAndNext(
+			long dispatchTaskId, long companyId,
+			com.liferay.portal.kernel.util.OrderByComparator<DispatchTask>
+				orderByComparator)
+		throws NoSuchTaskException;
+
+	/**
 	 * Removes all the dispatch tasks where companyId = &#63; from the database.
 	 *
 	 * @param companyId the company ID
@@ -182,6 +238,14 @@ public interface DispatchTaskPersistence extends BasePersistence<DispatchTask> {
 	 * @return the number of matching dispatch tasks
 	 */
 	public int countByCompanyId(long companyId);
+
+	/**
+	 * Returns the number of dispatch tasks that the user has permission to view where companyId = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @return the number of matching dispatch tasks that the user has permission to view
+	 */
+	public int filterCountByCompanyId(long companyId);
 
 	/**
 	 * Returns the dispatch task where companyId = &#63; and name = &#63; or throws a <code>NoSuchTaskException</code> if it could not be found.
@@ -371,6 +435,67 @@ public interface DispatchTaskPersistence extends BasePersistence<DispatchTask> {
 		throws NoSuchTaskException;
 
 	/**
+	 * Returns all the dispatch tasks that the user has permission to view where companyId = &#63; and type = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param type the type
+	 * @return the matching dispatch tasks that the user has permission to view
+	 */
+	public java.util.List<DispatchTask> filterFindByC_T(
+		long companyId, String type);
+
+	/**
+	 * Returns a range of all the dispatch tasks that the user has permission to view where companyId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param type the type
+	 * @param start the lower bound of the range of dispatch tasks
+	 * @param end the upper bound of the range of dispatch tasks (not inclusive)
+	 * @return the range of matching dispatch tasks that the user has permission to view
+	 */
+	public java.util.List<DispatchTask> filterFindByC_T(
+		long companyId, String type, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the dispatch tasks that the user has permissions to view where companyId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param type the type
+	 * @param start the lower bound of the range of dispatch tasks
+	 * @param end the upper bound of the range of dispatch tasks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching dispatch tasks that the user has permission to view
+	 */
+	public java.util.List<DispatchTask> filterFindByC_T(
+		long companyId, String type, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DispatchTask>
+			orderByComparator);
+
+	/**
+	 * Returns the dispatch tasks before and after the current dispatch task in the ordered set of dispatch tasks that the user has permission to view where companyId = &#63; and type = &#63;.
+	 *
+	 * @param dispatchTaskId the primary key of the current dispatch task
+	 * @param companyId the company ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next dispatch task
+	 * @throws NoSuchTaskException if a dispatch task with the primary key could not be found
+	 */
+	public DispatchTask[] filterFindByC_T_PrevAndNext(
+			long dispatchTaskId, long companyId, String type,
+			com.liferay.portal.kernel.util.OrderByComparator<DispatchTask>
+				orderByComparator)
+		throws NoSuchTaskException;
+
+	/**
 	 * Removes all the dispatch tasks where companyId = &#63; and type = &#63; from the database.
 	 *
 	 * @param companyId the company ID
@@ -386,6 +511,15 @@ public interface DispatchTaskPersistence extends BasePersistence<DispatchTask> {
 	 * @return the number of matching dispatch tasks
 	 */
 	public int countByC_T(long companyId, String type);
+
+	/**
+	 * Returns the number of dispatch tasks that the user has permission to view where companyId = &#63; and type = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param type the type
+	 * @return the number of matching dispatch tasks that the user has permission to view
+	 */
+	public int filterCountByC_T(long companyId, String type);
 
 	/**
 	 * Caches the dispatch task in the entity cache if it is enabled.

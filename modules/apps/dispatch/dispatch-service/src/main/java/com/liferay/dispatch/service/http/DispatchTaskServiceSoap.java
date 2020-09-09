@@ -14,9 +14,15 @@
 
 package com.liferay.dispatch.service.http;
 
+import com.liferay.dispatch.service.DispatchTaskServiceUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * <code>com.liferay.dispatch.service.DispatchTaskServiceUtil</code> service
+ * <code>DispatchTaskServiceUtil</code> service
  * utility. The static methods of this class call the same methods of the
  * service utility. However, the signatures are different because it is
  * difficult for SOAP to support certain types.
@@ -56,4 +62,48 @@ package com.liferay.dispatch.service.http;
  */
 @Deprecated
 public class DispatchTaskServiceSoap {
+
+	public static void deleteDispatchTask(long dispatchTaskId)
+		throws RemoteException {
+
+		try {
+			DispatchTaskServiceUtil.deleteDispatchTask(dispatchTaskId);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.dispatch.model.DispatchTaskSoap
+			updateDispatchTaskTrigger(
+				long dispatchTaskId, boolean active, String cronExpression,
+				int endDateMonth, int endDateDay, int endDateYear,
+				int endDateHour, int endDateMinute, boolean neverEnd,
+				int startDateMonth, int startDateDay, int startDateYear,
+				int startDateHour, int startDateMinute)
+		throws RemoteException {
+
+		try {
+			com.liferay.dispatch.model.DispatchTask returnValue =
+				DispatchTaskServiceUtil.updateDispatchTaskTrigger(
+					dispatchTaskId, active, cronExpression, endDateMonth,
+					endDateDay, endDateYear, endDateHour, endDateMinute,
+					neverEnd, startDateMonth, startDateDay, startDateYear,
+					startDateHour, startDateMinute);
+
+			return com.liferay.dispatch.model.DispatchTaskSoap.toSoapModel(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(
+		DispatchTaskServiceSoap.class);
+
 }

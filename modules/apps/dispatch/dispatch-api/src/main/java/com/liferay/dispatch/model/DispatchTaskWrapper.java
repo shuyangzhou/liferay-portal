@@ -190,6 +190,13 @@ public class DispatchTaskWrapper
 		return model.getDispatchTaskId();
 	}
 
+	@Override
+	public Date getEndDate()
+		throws com.liferay.portal.kernel.scheduler.SchedulerException {
+
+		return model.getEndDate();
+	}
+
 	/**
 	 * Returns the modified date of this dispatch task.
 	 *
@@ -230,6 +237,13 @@ public class DispatchTaskWrapper
 		return model.getPrimaryKey();
 	}
 
+	@Override
+	public Date getStartDate()
+		throws com.liferay.portal.kernel.scheduler.SchedulerException {
+
+		return model.getStartDate();
+	}
+
 	/**
 	 * Returns the system of this dispatch task.
 	 *
@@ -258,6 +272,13 @@ public class DispatchTaskWrapper
 	@Override
 	public String getTypeSettings() {
 		return model.getTypeSettings();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getTypeSettingsProperties() {
+
+		return model.getTypeSettingsProperties();
 	}
 
 	/**
@@ -365,6 +386,11 @@ public class DispatchTaskWrapper
 		model.setDispatchTaskId(dispatchTaskId);
 	}
 
+	@Override
+	public void setEndDate(Date endDate) {
+		model.setEndDate(endDate);
+	}
+
 	/**
 	 * Sets the modified date of this dispatch task.
 	 *
@@ -405,6 +431,11 @@ public class DispatchTaskWrapper
 		model.setPrimaryKey(primaryKey);
 	}
 
+	@Override
+	public void setStartDate(Date startDate) {
+		model.setStartDate(startDate);
+	}
+
 	/**
 	 * Sets whether this dispatch task is system.
 	 *
@@ -433,6 +464,14 @@ public class DispatchTaskWrapper
 	@Override
 	public void setTypeSettings(String typeSettings) {
 		model.setTypeSettings(typeSettings);
+	}
+
+	@Override
+	public void setTypeSettingsUnicodeProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties
+			typeSettingsUnicodeProperties) {
+
+		model.setTypeSettingsUnicodeProperties(typeSettingsUnicodeProperties);
 	}
 
 	/**

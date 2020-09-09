@@ -129,7 +129,7 @@ public class DispatchLogServiceHttp {
 
 	public static java.util.List<com.liferay.dispatch.model.DispatchLog>
 			getDispatchLogs(
-				HttpPrincipal httpPrincipal, long dispatchTriggerId, int start,
+				HttpPrincipal httpPrincipal, long dispatchTaskId, int start,
 				int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -139,7 +139,7 @@ public class DispatchLogServiceHttp {
 				_getDispatchLogsParameterTypes2);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, dispatchTriggerId, start, end);
+				methodKey, dispatchTaskId, start, end);
 
 			Object returnObj = null;
 
@@ -171,7 +171,7 @@ public class DispatchLogServiceHttp {
 	}
 
 	public static int getDispatchLogsCount(
-			HttpPrincipal httpPrincipal, long dispatchTriggerId)
+			HttpPrincipal httpPrincipal, long dispatchTaskId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -180,7 +180,7 @@ public class DispatchLogServiceHttp {
 				_getDispatchLogsCountParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, dispatchTriggerId);
+				methodKey, dispatchTaskId);
 
 			Object returnObj = null;
 

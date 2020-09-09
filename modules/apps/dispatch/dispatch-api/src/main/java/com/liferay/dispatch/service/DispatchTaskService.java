@@ -14,6 +14,7 @@
 
 package com.liferay.dispatch.service;
 
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -21,6 +22,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -47,6 +49,12 @@ public interface DispatchTaskService extends BaseService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.dispatch.service.impl.DispatchTaskServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the dispatch task remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link DispatchTaskServiceUtil} if injection and service tracking are not available.
 	 */
+	public DispatchTask addDispatchTask(
+			long userId, String name, String type,
+			UnicodeProperties typeSettingsUnicodeProperties)
+		throws PortalException;
+
+	public void deleteDispatchTask(long dispatchTaskId) throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -54,5 +62,18 @@ public interface DispatchTaskService extends BaseService {
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
+
+	public DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			UnicodeProperties typeSettingsUnicodeProperties)
+		throws PortalException;
+
+	public DispatchTask updateDispatchTaskTrigger(
+			long dispatchTaskId, boolean active, String cronExpression,
+			int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
+			int endDateMinute, boolean neverEnd, int startDateMonth,
+			int startDateDay, int startDateYear, int startDateHour,
+			int startDateMinute)
+		throws PortalException;
 
 }

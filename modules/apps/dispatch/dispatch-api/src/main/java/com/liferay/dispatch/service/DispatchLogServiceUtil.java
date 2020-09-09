@@ -51,16 +51,16 @@ public class DispatchLogServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.dispatch.model.DispatchLog>
-			getDispatchLogs(long dispatchTriggerId, int start, int end)
+			getDispatchLogs(long dispatchTaskId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().getDispatchLogs(dispatchTriggerId, start, end);
+		return getService().getDispatchLogs(dispatchTaskId, start, end);
 	}
 
-	public static int getDispatchLogsCount(long dispatchTriggerId)
+	public static int getDispatchLogsCount(long dispatchTaskId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().getDispatchLogsCount(dispatchTriggerId);
+		return getService().getDispatchLogsCount(dispatchTaskId);
 	}
 
 	/**

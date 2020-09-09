@@ -50,6 +50,17 @@ public class DispatchTaskLocalServiceWrapper
 		return _dispatchTaskLocalService.addDispatchTask(dispatchTask);
 	}
 
+	@Override
+	public com.liferay.dispatch.model.DispatchTask addDispatchTask(
+			long userId, String name, boolean system, String type,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTaskLocalService.addDispatchTask(
+			userId, name, system, type, typeSettingsUnicodeProperties);
+	}
+
 	/**
 	 * Creates a new dispatch task with the primary key. Does not add the dispatch task to the database.
 	 *
@@ -83,10 +94,12 @@ public class DispatchTaskLocalServiceWrapper
 	 *
 	 * @param dispatchTask the dispatch task
 	 * @return the dispatch task that was removed
+	 * @throws PortalException
 	 */
 	@Override
 	public com.liferay.dispatch.model.DispatchTask deleteDispatchTask(
-		com.liferay.dispatch.model.DispatchTask dispatchTask) {
+			com.liferay.dispatch.model.DispatchTask dispatchTask)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dispatchTaskLocalService.deleteDispatchTask(dispatchTask);
 	}
@@ -224,6 +237,13 @@ public class DispatchTaskLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.dispatch.model.DispatchTask fetchDispatchTask(
+		long companyId, String name) {
+
+		return _dispatchTaskLocalService.fetchDispatchTask(companyId, name);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -263,6 +283,14 @@ public class DispatchTaskLocalServiceWrapper
 		return _dispatchTaskLocalService.getDispatchTasks(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.dispatch.model.DispatchTask>
+		getDispatchTasks(long companyId, int start, int end) {
+
+		return _dispatchTaskLocalService.getDispatchTasks(
+			companyId, start, end);
+	}
+
 	/**
 	 * Returns the number of dispatch tasks.
 	 *
@@ -274,10 +302,20 @@ public class DispatchTaskLocalServiceWrapper
 	}
 
 	@Override
+	public int getDispatchTasksCount(long companyId) {
+		return _dispatchTaskLocalService.getDispatchTasksCount(companyId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
 		return _dispatchTaskLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	@Override
+	public java.util.Date getNextFireDate(long dispatchTaskId) {
+		return _dispatchTaskLocalService.getNextFireDate(dispatchTaskId);
 	}
 
 	/**
@@ -301,6 +339,11 @@ public class DispatchTaskLocalServiceWrapper
 		return _dispatchTaskLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public java.util.Date getPreviousFireDate(long dispatchTaskId) {
+		return _dispatchTaskLocalService.getPreviousFireDate(dispatchTaskId);
+	}
+
 	/**
 	 * Updates the dispatch task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -316,6 +359,32 @@ public class DispatchTaskLocalServiceWrapper
 		com.liferay.dispatch.model.DispatchTask dispatchTask) {
 
 		return _dispatchTaskLocalService.updateDispatchTask(dispatchTask);
+	}
+
+	@Override
+	public com.liferay.dispatch.model.DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTaskLocalService.updateDispatchTask(
+			dispatchTaskId, name, typeSettingsUnicodeProperties);
+	}
+
+	@Override
+	public com.liferay.dispatch.model.DispatchTask updateDispatchTaskTrigger(
+			long dispatchTaskId, boolean active, String cronExpression,
+			int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
+			int endDateMinute, boolean neverEnd, int startDateMonth,
+			int startDateDay, int startDateYear, int startDateHour,
+			int startDateMinute)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTaskLocalService.updateDispatchTaskTrigger(
+			dispatchTaskId, active, cronExpression, endDateMonth, endDateDay,
+			endDateYear, endDateHour, endDateMinute, neverEnd, startDateMonth,
+			startDateDay, startDateYear, startDateHour, startDateMinute);
 	}
 
 	@Override

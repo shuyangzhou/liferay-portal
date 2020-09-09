@@ -54,6 +54,16 @@ public class DispatchTaskLocalServiceUtil {
 		return getService().addDispatchTask(dispatchTask);
 	}
 
+	public static com.liferay.dispatch.model.DispatchTask addDispatchTask(
+			long userId, String name, boolean system, String type,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().addDispatchTask(
+			userId, name, system, type, typeSettingsUnicodeProperties);
+	}
+
 	/**
 	 * Creates a new dispatch task with the primary key. Does not add the dispatch task to the database.
 	 *
@@ -85,9 +95,11 @@ public class DispatchTaskLocalServiceUtil {
 	 *
 	 * @param dispatchTask the dispatch task
 	 * @return the dispatch task that was removed
+	 * @throws PortalException
 	 */
 	public static com.liferay.dispatch.model.DispatchTask deleteDispatchTask(
-		com.liferay.dispatch.model.DispatchTask dispatchTask) {
+			com.liferay.dispatch.model.DispatchTask dispatchTask)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().deleteDispatchTask(dispatchTask);
 	}
@@ -218,6 +230,12 @@ public class DispatchTaskLocalServiceUtil {
 		return getService().fetchDispatchTask(dispatchTaskId);
 	}
 
+	public static com.liferay.dispatch.model.DispatchTask fetchDispatchTask(
+		long companyId, String name) {
+
+		return getService().fetchDispatchTask(companyId, name);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -255,6 +273,12 @@ public class DispatchTaskLocalServiceUtil {
 		return getService().getDispatchTasks(start, end);
 	}
 
+	public static java.util.List<com.liferay.dispatch.model.DispatchTask>
+		getDispatchTasks(long companyId, int start, int end) {
+
+		return getService().getDispatchTasks(companyId, start, end);
+	}
+
 	/**
 	 * Returns the number of dispatch tasks.
 	 *
@@ -264,11 +288,19 @@ public class DispatchTaskLocalServiceUtil {
 		return getService().getDispatchTasksCount();
 	}
 
+	public static int getDispatchTasksCount(long companyId) {
+		return getService().getDispatchTasksCount(companyId);
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {
 
 		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	public static java.util.Date getNextFireDate(long dispatchTaskId) {
+		return getService().getNextFireDate(dispatchTaskId);
 	}
 
 	/**
@@ -290,6 +322,10 @@ public class DispatchTaskLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static java.util.Date getPreviousFireDate(long dispatchTaskId) {
+		return getService().getPreviousFireDate(dispatchTaskId);
+	}
+
 	/**
 	 * Updates the dispatch task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -304,6 +340,31 @@ public class DispatchTaskLocalServiceUtil {
 		com.liferay.dispatch.model.DispatchTask dispatchTask) {
 
 		return getService().updateDispatchTask(dispatchTask);
+	}
+
+	public static com.liferay.dispatch.model.DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			com.liferay.portal.kernel.util.UnicodeProperties
+				typeSettingsUnicodeProperties)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateDispatchTask(
+			dispatchTaskId, name, typeSettingsUnicodeProperties);
+	}
+
+	public static com.liferay.dispatch.model.DispatchTask
+			updateDispatchTaskTrigger(
+				long dispatchTaskId, boolean active, String cronExpression,
+				int endDateMonth, int endDateDay, int endDateYear,
+				int endDateHour, int endDateMinute, boolean neverEnd,
+				int startDateMonth, int startDateDay, int startDateYear,
+				int startDateHour, int startDateMinute)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateDispatchTaskTrigger(
+			dispatchTaskId, active, cronExpression, endDateMonth, endDateDay,
+			endDateYear, endDateHour, endDateMinute, neverEnd, startDateMonth,
+			startDateDay, startDateYear, startDateHour, startDateMinute);
 	}
 
 	public static DispatchTaskLocalService getService() {
