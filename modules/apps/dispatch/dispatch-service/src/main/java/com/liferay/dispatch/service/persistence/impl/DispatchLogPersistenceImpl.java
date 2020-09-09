@@ -72,7 +72,7 @@ import org.osgi.service.component.annotations.Reference;
  * Caching information and settings can be found in <code>portal.properties</code>
  * </p>
  *
- * @author Alessio Antonio Rendina
+ * @author Matija Petanjek
  * @generated
  */
 @Component(service = DispatchLogPersistence.class)
@@ -96,71 +96,71 @@ public class DispatchLogPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByDispatchTriggerId;
-	private FinderPath _finderPathWithoutPaginationFindByDispatchTriggerId;
-	private FinderPath _finderPathCountByDispatchTriggerId;
+	private FinderPath _finderPathWithPaginationFindByDispatchTaskId;
+	private FinderPath _finderPathWithoutPaginationFindByDispatchTaskId;
+	private FinderPath _finderPathCountByDispatchTaskId;
 
 	/**
-	 * Returns all the dispatch logs where dispatchTriggerId = &#63;.
+	 * Returns all the dispatch logs where dispatchTaskId = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @return the matching dispatch logs
 	 */
 	@Override
-	public List<DispatchLog> findByDispatchTriggerId(long dispatchTriggerId) {
-		return findByDispatchTriggerId(
-			dispatchTriggerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<DispatchLog> findByDispatchTaskId(long dispatchTaskId) {
+		return findByDispatchTaskId(
+			dispatchTaskId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the dispatch logs where dispatchTriggerId = &#63;.
+	 * Returns a range of all the dispatch logs where dispatchTaskId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchLogModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param start the lower bound of the range of dispatch logs
 	 * @param end the upper bound of the range of dispatch logs (not inclusive)
 	 * @return the range of matching dispatch logs
 	 */
 	@Override
-	public List<DispatchLog> findByDispatchTriggerId(
-		long dispatchTriggerId, int start, int end) {
+	public List<DispatchLog> findByDispatchTaskId(
+		long dispatchTaskId, int start, int end) {
 
-		return findByDispatchTriggerId(dispatchTriggerId, start, end, null);
+		return findByDispatchTaskId(dispatchTaskId, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the dispatch logs where dispatchTriggerId = &#63;.
+	 * Returns an ordered range of all the dispatch logs where dispatchTaskId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchLogModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param start the lower bound of the range of dispatch logs
 	 * @param end the upper bound of the range of dispatch logs (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching dispatch logs
 	 */
 	@Override
-	public List<DispatchLog> findByDispatchTriggerId(
-		long dispatchTriggerId, int start, int end,
+	public List<DispatchLog> findByDispatchTaskId(
+		long dispatchTaskId, int start, int end,
 		OrderByComparator<DispatchLog> orderByComparator) {
 
-		return findByDispatchTriggerId(
-			dispatchTriggerId, start, end, orderByComparator, true);
+		return findByDispatchTaskId(
+			dispatchTaskId, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the dispatch logs where dispatchTriggerId = &#63;.
+	 * Returns an ordered range of all the dispatch logs where dispatchTaskId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchLogModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param start the lower bound of the range of dispatch logs
 	 * @param end the upper bound of the range of dispatch logs (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -168,8 +168,8 @@ public class DispatchLogPersistenceImpl
 	 * @return the ordered range of matching dispatch logs
 	 */
 	@Override
-	public List<DispatchLog> findByDispatchTriggerId(
-		long dispatchTriggerId, int start, int end,
+	public List<DispatchLog> findByDispatchTaskId(
+		long dispatchTaskId, int start, int end,
 		OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
@@ -180,15 +180,14 @@ public class DispatchLogPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath =
-					_finderPathWithoutPaginationFindByDispatchTriggerId;
-				finderArgs = new Object[] {dispatchTriggerId};
+				finderPath = _finderPathWithoutPaginationFindByDispatchTaskId;
+				finderArgs = new Object[] {dispatchTaskId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByDispatchTriggerId;
+			finderPath = _finderPathWithPaginationFindByDispatchTaskId;
 			finderArgs = new Object[] {
-				dispatchTriggerId, start, end, orderByComparator
+				dispatchTaskId, start, end, orderByComparator
 			};
 		}
 
@@ -200,9 +199,7 @@ public class DispatchLogPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DispatchLog dispatchLog : list) {
-					if (dispatchTriggerId !=
-							dispatchLog.getDispatchTriggerId()) {
-
+					if (dispatchTaskId != dispatchLog.getDispatchTaskId()) {
 						list = null;
 
 						break;
@@ -224,7 +221,7 @@ public class DispatchLogPersistenceImpl
 
 			sb.append(_SQL_SELECT_DISPATCHLOG_WHERE);
 
-			sb.append(_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2);
+			sb.append(_FINDER_COLUMN_DISPATCHTASKID_DISPATCHTASKID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -245,7 +242,7 @@ public class DispatchLogPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				queryPos.add(dispatchTriggerId);
+				queryPos.add(dispatchTaskId);
 
 				list = (List<DispatchLog>)QueryUtil.list(
 					query, getDialect(), start, end);
@@ -268,21 +265,21 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the first dispatch log in the ordered set where dispatchTriggerId = &#63;.
+	 * Returns the first dispatch log in the ordered set where dispatchTaskId = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching dispatch log
 	 * @throws NoSuchLogException if a matching dispatch log could not be found
 	 */
 	@Override
-	public DispatchLog findByDispatchTriggerId_First(
-			long dispatchTriggerId,
+	public DispatchLog findByDispatchTaskId_First(
+			long dispatchTaskId,
 			OrderByComparator<DispatchLog> orderByComparator)
 		throws NoSuchLogException {
 
-		DispatchLog dispatchLog = fetchByDispatchTriggerId_First(
-			dispatchTriggerId, orderByComparator);
+		DispatchLog dispatchLog = fetchByDispatchTaskId_First(
+			dispatchTaskId, orderByComparator);
 
 		if (dispatchLog != null) {
 			return dispatchLog;
@@ -292,8 +289,8 @@ public class DispatchLogPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dispatchTriggerId=");
-		sb.append(dispatchTriggerId);
+		sb.append("dispatchTaskId=");
+		sb.append(dispatchTaskId);
 
 		sb.append("}");
 
@@ -301,19 +298,18 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the first dispatch log in the ordered set where dispatchTriggerId = &#63;.
+	 * Returns the first dispatch log in the ordered set where dispatchTaskId = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching dispatch log, or <code>null</code> if a matching dispatch log could not be found
 	 */
 	@Override
-	public DispatchLog fetchByDispatchTriggerId_First(
-		long dispatchTriggerId,
-		OrderByComparator<DispatchLog> orderByComparator) {
+	public DispatchLog fetchByDispatchTaskId_First(
+		long dispatchTaskId, OrderByComparator<DispatchLog> orderByComparator) {
 
-		List<DispatchLog> list = findByDispatchTriggerId(
-			dispatchTriggerId, 0, 1, orderByComparator);
+		List<DispatchLog> list = findByDispatchTaskId(
+			dispatchTaskId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -323,21 +319,21 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the last dispatch log in the ordered set where dispatchTriggerId = &#63;.
+	 * Returns the last dispatch log in the ordered set where dispatchTaskId = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching dispatch log
 	 * @throws NoSuchLogException if a matching dispatch log could not be found
 	 */
 	@Override
-	public DispatchLog findByDispatchTriggerId_Last(
-			long dispatchTriggerId,
+	public DispatchLog findByDispatchTaskId_Last(
+			long dispatchTaskId,
 			OrderByComparator<DispatchLog> orderByComparator)
 		throws NoSuchLogException {
 
-		DispatchLog dispatchLog = fetchByDispatchTriggerId_Last(
-			dispatchTriggerId, orderByComparator);
+		DispatchLog dispatchLog = fetchByDispatchTaskId_Last(
+			dispatchTaskId, orderByComparator);
 
 		if (dispatchLog != null) {
 			return dispatchLog;
@@ -347,8 +343,8 @@ public class DispatchLogPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dispatchTriggerId=");
-		sb.append(dispatchTriggerId);
+		sb.append("dispatchTaskId=");
+		sb.append(dispatchTaskId);
 
 		sb.append("}");
 
@@ -356,25 +352,24 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the last dispatch log in the ordered set where dispatchTriggerId = &#63;.
+	 * Returns the last dispatch log in the ordered set where dispatchTaskId = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching dispatch log, or <code>null</code> if a matching dispatch log could not be found
 	 */
 	@Override
-	public DispatchLog fetchByDispatchTriggerId_Last(
-		long dispatchTriggerId,
-		OrderByComparator<DispatchLog> orderByComparator) {
+	public DispatchLog fetchByDispatchTaskId_Last(
+		long dispatchTaskId, OrderByComparator<DispatchLog> orderByComparator) {
 
-		int count = countByDispatchTriggerId(dispatchTriggerId);
+		int count = countByDispatchTaskId(dispatchTaskId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DispatchLog> list = findByDispatchTriggerId(
-			dispatchTriggerId, count - 1, count, orderByComparator);
+		List<DispatchLog> list = findByDispatchTaskId(
+			dispatchTaskId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -384,17 +379,17 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the dispatch logs before and after the current dispatch log in the ordered set where dispatchTriggerId = &#63;.
+	 * Returns the dispatch logs before and after the current dispatch log in the ordered set where dispatchTaskId = &#63;.
 	 *
 	 * @param dispatchLogId the primary key of the current dispatch log
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next dispatch log
 	 * @throws NoSuchLogException if a dispatch log with the primary key could not be found
 	 */
 	@Override
-	public DispatchLog[] findByDispatchTriggerId_PrevAndNext(
-			long dispatchLogId, long dispatchTriggerId,
+	public DispatchLog[] findByDispatchTaskId_PrevAndNext(
+			long dispatchLogId, long dispatchTaskId,
 			OrderByComparator<DispatchLog> orderByComparator)
 		throws NoSuchLogException {
 
@@ -407,15 +402,13 @@ public class DispatchLogPersistenceImpl
 
 			DispatchLog[] array = new DispatchLogImpl[3];
 
-			array[0] = getByDispatchTriggerId_PrevAndNext(
-				session, dispatchLog, dispatchTriggerId, orderByComparator,
-				true);
+			array[0] = getByDispatchTaskId_PrevAndNext(
+				session, dispatchLog, dispatchTaskId, orderByComparator, true);
 
 			array[1] = dispatchLog;
 
-			array[2] = getByDispatchTriggerId_PrevAndNext(
-				session, dispatchLog, dispatchTriggerId, orderByComparator,
-				false);
+			array[2] = getByDispatchTaskId_PrevAndNext(
+				session, dispatchLog, dispatchTaskId, orderByComparator, false);
 
 			return array;
 		}
@@ -427,8 +420,8 @@ public class DispatchLogPersistenceImpl
 		}
 	}
 
-	protected DispatchLog getByDispatchTriggerId_PrevAndNext(
-		Session session, DispatchLog dispatchLog, long dispatchTriggerId,
+	protected DispatchLog getByDispatchTaskId_PrevAndNext(
+		Session session, DispatchLog dispatchLog, long dispatchTaskId,
 		OrderByComparator<DispatchLog> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -444,7 +437,7 @@ public class DispatchLogPersistenceImpl
 
 		sb.append(_SQL_SELECT_DISPATCHLOG_WHERE);
 
-		sb.append(_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2);
+		sb.append(_FINDER_COLUMN_DISPATCHTASKID_DISPATCHTASKID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
@@ -515,7 +508,7 @@ public class DispatchLogPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		queryPos.add(dispatchTriggerId);
+		queryPos.add(dispatchTaskId);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
@@ -536,15 +529,15 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Removes all the dispatch logs where dispatchTriggerId = &#63; from the database.
+	 * Removes all the dispatch logs where dispatchTaskId = &#63; from the database.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 */
 	@Override
-	public void removeByDispatchTriggerId(long dispatchTriggerId) {
+	public void removeByDispatchTaskId(long dispatchTaskId) {
 		for (DispatchLog dispatchLog :
-				findByDispatchTriggerId(
-					dispatchTriggerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				findByDispatchTaskId(
+					dispatchTaskId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					null)) {
 
 			remove(dispatchLog);
@@ -552,16 +545,16 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the number of dispatch logs where dispatchTriggerId = &#63;.
+	 * Returns the number of dispatch logs where dispatchTaskId = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @return the number of matching dispatch logs
 	 */
 	@Override
-	public int countByDispatchTriggerId(long dispatchTriggerId) {
-		FinderPath finderPath = _finderPathCountByDispatchTriggerId;
+	public int countByDispatchTaskId(long dispatchTaskId) {
+		FinderPath finderPath = _finderPathCountByDispatchTaskId;
 
-		Object[] finderArgs = new Object[] {dispatchTriggerId};
+		Object[] finderArgs = new Object[] {dispatchTaskId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -570,7 +563,7 @@ public class DispatchLogPersistenceImpl
 
 			sb.append(_SQL_COUNT_DISPATCHLOG_WHERE);
 
-			sb.append(_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2);
+			sb.append(_FINDER_COLUMN_DISPATCHTASKID_DISPATCHTASKID_2);
 
 			String sql = sb.toString();
 
@@ -583,7 +576,7 @@ public class DispatchLogPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				queryPos.add(dispatchTriggerId);
+				queryPos.add(dispatchTaskId);
 
 				count = (Long)query.uniqueResult();
 
@@ -600,36 +593,34 @@ public class DispatchLogPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String
-		_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2 =
-			"dispatchLog.dispatchTriggerId = ?";
+	private static final String _FINDER_COLUMN_DISPATCHTASKID_DISPATCHTASKID_2 =
+		"dispatchLog.dispatchTaskId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDTI_S;
 	private FinderPath _finderPathWithoutPaginationFindByDTI_S;
 	private FinderPath _finderPathCountByDTI_S;
 
 	/**
-	 * Returns all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns all the dispatch logs where dispatchTaskId = &#63; and status = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @return the matching dispatch logs
 	 */
 	@Override
-	public List<DispatchLog> findByDTI_S(long dispatchTriggerId, int status) {
+	public List<DispatchLog> findByDTI_S(long dispatchTaskId, int status) {
 		return findByDTI_S(
-			dispatchTriggerId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+			dispatchTaskId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns a range of all the dispatch logs where dispatchTaskId = &#63; and status = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchLogModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param start the lower bound of the range of dispatch logs
 	 * @param end the upper bound of the range of dispatch logs (not inclusive)
@@ -637,19 +628,19 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public List<DispatchLog> findByDTI_S(
-		long dispatchTriggerId, int status, int start, int end) {
+		long dispatchTaskId, int status, int start, int end) {
 
-		return findByDTI_S(dispatchTriggerId, status, start, end, null);
+		return findByDTI_S(dispatchTaskId, status, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns an ordered range of all the dispatch logs where dispatchTaskId = &#63; and status = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchLogModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param start the lower bound of the range of dispatch logs
 	 * @param end the upper bound of the range of dispatch logs (not inclusive)
@@ -658,21 +649,21 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public List<DispatchLog> findByDTI_S(
-		long dispatchTriggerId, int status, int start, int end,
+		long dispatchTaskId, int status, int start, int end,
 		OrderByComparator<DispatchLog> orderByComparator) {
 
 		return findByDTI_S(
-			dispatchTriggerId, status, start, end, orderByComparator, true);
+			dispatchTaskId, status, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns an ordered range of all the dispatch logs where dispatchTaskId = &#63; and status = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DispatchLogModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param start the lower bound of the range of dispatch logs
 	 * @param end the upper bound of the range of dispatch logs (not inclusive)
@@ -682,7 +673,7 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public List<DispatchLog> findByDTI_S(
-		long dispatchTriggerId, int status, int start, int end,
+		long dispatchTaskId, int status, int start, int end,
 		OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
@@ -694,13 +685,13 @@ public class DispatchLogPersistenceImpl
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByDTI_S;
-				finderArgs = new Object[] {dispatchTriggerId, status};
+				finderArgs = new Object[] {dispatchTaskId, status};
 			}
 		}
 		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByDTI_S;
 			finderArgs = new Object[] {
-				dispatchTriggerId, status, start, end, orderByComparator
+				dispatchTaskId, status, start, end, orderByComparator
 			};
 		}
 
@@ -712,8 +703,7 @@ public class DispatchLogPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DispatchLog dispatchLog : list) {
-					if ((dispatchTriggerId !=
-							dispatchLog.getDispatchTriggerId()) ||
+					if ((dispatchTaskId != dispatchLog.getDispatchTaskId()) ||
 						(status != dispatchLog.getStatus())) {
 
 						list = null;
@@ -737,7 +727,7 @@ public class DispatchLogPersistenceImpl
 
 			sb.append(_SQL_SELECT_DISPATCHLOG_WHERE);
 
-			sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2);
+			sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTASKID_2);
 
 			sb.append(_FINDER_COLUMN_DTI_S_STATUS_2);
 
@@ -760,7 +750,7 @@ public class DispatchLogPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				queryPos.add(dispatchTriggerId);
+				queryPos.add(dispatchTaskId);
 
 				queryPos.add(status);
 
@@ -785,9 +775,9 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the first dispatch log in the ordered set where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns the first dispatch log in the ordered set where dispatchTaskId = &#63; and status = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching dispatch log
@@ -795,12 +785,12 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public DispatchLog findByDTI_S_First(
-			long dispatchTriggerId, int status,
+			long dispatchTaskId, int status,
 			OrderByComparator<DispatchLog> orderByComparator)
 		throws NoSuchLogException {
 
 		DispatchLog dispatchLog = fetchByDTI_S_First(
-			dispatchTriggerId, status, orderByComparator);
+			dispatchTaskId, status, orderByComparator);
 
 		if (dispatchLog != null) {
 			return dispatchLog;
@@ -810,8 +800,8 @@ public class DispatchLogPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dispatchTriggerId=");
-		sb.append(dispatchTriggerId);
+		sb.append("dispatchTaskId=");
+		sb.append(dispatchTaskId);
 
 		sb.append(", status=");
 		sb.append(status);
@@ -822,20 +812,20 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the first dispatch log in the ordered set where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns the first dispatch log in the ordered set where dispatchTaskId = &#63; and status = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching dispatch log, or <code>null</code> if a matching dispatch log could not be found
 	 */
 	@Override
 	public DispatchLog fetchByDTI_S_First(
-		long dispatchTriggerId, int status,
+		long dispatchTaskId, int status,
 		OrderByComparator<DispatchLog> orderByComparator) {
 
 		List<DispatchLog> list = findByDTI_S(
-			dispatchTriggerId, status, 0, 1, orderByComparator);
+			dispatchTaskId, status, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -845,9 +835,9 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the last dispatch log in the ordered set where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns the last dispatch log in the ordered set where dispatchTaskId = &#63; and status = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching dispatch log
@@ -855,12 +845,12 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public DispatchLog findByDTI_S_Last(
-			long dispatchTriggerId, int status,
+			long dispatchTaskId, int status,
 			OrderByComparator<DispatchLog> orderByComparator)
 		throws NoSuchLogException {
 
 		DispatchLog dispatchLog = fetchByDTI_S_Last(
-			dispatchTriggerId, status, orderByComparator);
+			dispatchTaskId, status, orderByComparator);
 
 		if (dispatchLog != null) {
 			return dispatchLog;
@@ -870,8 +860,8 @@ public class DispatchLogPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dispatchTriggerId=");
-		sb.append(dispatchTriggerId);
+		sb.append("dispatchTaskId=");
+		sb.append(dispatchTaskId);
 
 		sb.append(", status=");
 		sb.append(status);
@@ -882,26 +872,26 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the last dispatch log in the ordered set where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns the last dispatch log in the ordered set where dispatchTaskId = &#63; and status = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching dispatch log, or <code>null</code> if a matching dispatch log could not be found
 	 */
 	@Override
 	public DispatchLog fetchByDTI_S_Last(
-		long dispatchTriggerId, int status,
+		long dispatchTaskId, int status,
 		OrderByComparator<DispatchLog> orderByComparator) {
 
-		int count = countByDTI_S(dispatchTriggerId, status);
+		int count = countByDTI_S(dispatchTaskId, status);
 
 		if (count == 0) {
 			return null;
 		}
 
 		List<DispatchLog> list = findByDTI_S(
-			dispatchTriggerId, status, count - 1, count, orderByComparator);
+			dispatchTaskId, status, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -911,10 +901,10 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the dispatch logs before and after the current dispatch log in the ordered set where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns the dispatch logs before and after the current dispatch log in the ordered set where dispatchTaskId = &#63; and status = &#63;.
 	 *
 	 * @param dispatchLogId the primary key of the current dispatch log
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next dispatch log
@@ -922,7 +912,7 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public DispatchLog[] findByDTI_S_PrevAndNext(
-			long dispatchLogId, long dispatchTriggerId, int status,
+			long dispatchLogId, long dispatchTaskId, int status,
 			OrderByComparator<DispatchLog> orderByComparator)
 		throws NoSuchLogException {
 
@@ -936,14 +926,14 @@ public class DispatchLogPersistenceImpl
 			DispatchLog[] array = new DispatchLogImpl[3];
 
 			array[0] = getByDTI_S_PrevAndNext(
-				session, dispatchLog, dispatchTriggerId, status,
-				orderByComparator, true);
+				session, dispatchLog, dispatchTaskId, status, orderByComparator,
+				true);
 
 			array[1] = dispatchLog;
 
 			array[2] = getByDTI_S_PrevAndNext(
-				session, dispatchLog, dispatchTriggerId, status,
-				orderByComparator, false);
+				session, dispatchLog, dispatchTaskId, status, orderByComparator,
+				false);
 
 			return array;
 		}
@@ -956,7 +946,7 @@ public class DispatchLogPersistenceImpl
 	}
 
 	protected DispatchLog getByDTI_S_PrevAndNext(
-		Session session, DispatchLog dispatchLog, long dispatchTriggerId,
+		Session session, DispatchLog dispatchLog, long dispatchTaskId,
 		int status, OrderByComparator<DispatchLog> orderByComparator,
 		boolean previous) {
 
@@ -973,7 +963,7 @@ public class DispatchLogPersistenceImpl
 
 		sb.append(_SQL_SELECT_DISPATCHLOG_WHERE);
 
-		sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2);
+		sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTASKID_2);
 
 		sb.append(_FINDER_COLUMN_DTI_S_STATUS_2);
 
@@ -1046,7 +1036,7 @@ public class DispatchLogPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		queryPos.add(dispatchTriggerId);
+		queryPos.add(dispatchTaskId);
 
 		queryPos.add(status);
 
@@ -1069,16 +1059,16 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Removes all the dispatch logs where dispatchTriggerId = &#63; and status = &#63; from the database.
+	 * Removes all the dispatch logs where dispatchTaskId = &#63; and status = &#63; from the database.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 */
 	@Override
-	public void removeByDTI_S(long dispatchTriggerId, int status) {
+	public void removeByDTI_S(long dispatchTaskId, int status) {
 		for (DispatchLog dispatchLog :
 				findByDTI_S(
-					dispatchTriggerId, status, QueryUtil.ALL_POS,
+					dispatchTaskId, status, QueryUtil.ALL_POS,
 					QueryUtil.ALL_POS, null)) {
 
 			remove(dispatchLog);
@@ -1086,17 +1076,17 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Returns the number of dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
+	 * Returns the number of dispatch logs where dispatchTaskId = &#63; and status = &#63;.
 	 *
-	 * @param dispatchTriggerId the dispatch trigger ID
+	 * @param dispatchTaskId the dispatch task ID
 	 * @param status the status
 	 * @return the number of matching dispatch logs
 	 */
 	@Override
-	public int countByDTI_S(long dispatchTriggerId, int status) {
+	public int countByDTI_S(long dispatchTaskId, int status) {
 		FinderPath finderPath = _finderPathCountByDTI_S;
 
-		Object[] finderArgs = new Object[] {dispatchTriggerId, status};
+		Object[] finderArgs = new Object[] {dispatchTaskId, status};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -1105,7 +1095,7 @@ public class DispatchLogPersistenceImpl
 
 			sb.append(_SQL_COUNT_DISPATCHLOG_WHERE);
 
-			sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2);
+			sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTASKID_2);
 
 			sb.append(_FINDER_COLUMN_DTI_S_STATUS_2);
 
@@ -1120,7 +1110,7 @@ public class DispatchLogPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				queryPos.add(dispatchTriggerId);
+				queryPos.add(dispatchTaskId);
 
 				queryPos.add(status);
 
@@ -1139,8 +1129,8 @@ public class DispatchLogPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2 =
-		"dispatchLog.dispatchTriggerId = ? AND ";
+	private static final String _FINDER_COLUMN_DTI_S_DISPATCHTASKID_2 =
+		"dispatchLog.dispatchTaskId = ? AND ";
 
 	private static final String _FINDER_COLUMN_DTI_S_STATUS_2 =
 		"dispatchLog.status = ?";
@@ -1691,23 +1681,23 @@ public class DispatchLogPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
-		_finderPathWithPaginationFindByDispatchTriggerId = _createFinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDispatchTriggerId",
+		_finderPathWithPaginationFindByDispatchTaskId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDispatchTaskId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"dispatchTriggerId"}, true);
+			new String[] {"dispatchTaskId"}, true);
 
-		_finderPathWithoutPaginationFindByDispatchTriggerId = _createFinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByDispatchTriggerId", new String[] {Long.class.getName()},
-			new String[] {"dispatchTriggerId"}, true);
+		_finderPathWithoutPaginationFindByDispatchTaskId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDispatchTaskId",
+			new String[] {Long.class.getName()},
+			new String[] {"dispatchTaskId"}, true);
 
-		_finderPathCountByDispatchTriggerId = _createFinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByDispatchTriggerId", new String[] {Long.class.getName()},
-			new String[] {"dispatchTriggerId"}, false);
+		_finderPathCountByDispatchTaskId = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDispatchTaskId",
+			new String[] {Long.class.getName()},
+			new String[] {"dispatchTaskId"}, false);
 
 		_finderPathWithPaginationFindByDTI_S = _createFinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDTI_S",
@@ -1716,17 +1706,17 @@ public class DispatchLogPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"dispatchTriggerId", "status"}, true);
+			new String[] {"dispatchTaskId", "status"}, true);
 
 		_finderPathWithoutPaginationFindByDTI_S = _createFinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDTI_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"dispatchTriggerId", "status"}, true);
+			new String[] {"dispatchTaskId", "status"}, true);
 
 		_finderPathCountByDTI_S = _createFinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDTI_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"dispatchTriggerId", "status"}, false);
+			new String[] {"dispatchTaskId", "status"}, false);
 	}
 
 	@Deactivate

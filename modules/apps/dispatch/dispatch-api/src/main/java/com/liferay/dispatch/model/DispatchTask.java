@@ -21,27 +21,27 @@ import com.liferay.portal.kernel.util.Accessor;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * The extended model interface for the DispatchLog service. Represents a row in the &quot;DispatchLog&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the DispatchTask service. Represents a row in the &quot;DispatchTask&quot; database table, with each column mapped to a property of this class.
  *
  * @author Matija Petanjek
- * @see DispatchLogModel
+ * @see DispatchTaskModel
  * @generated
  */
-@ImplementationClassName("com.liferay.dispatch.model.impl.DispatchLogImpl")
+@ImplementationClassName("com.liferay.dispatch.model.impl.DispatchTaskImpl")
 @ProviderType
-public interface DispatchLog extends DispatchLogModel, PersistedModel {
+public interface DispatchTask extends DispatchTaskModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.dispatch.model.impl.DispatchLogImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.dispatch.model.impl.DispatchTaskImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DispatchLog, Long> DISPATCH_LOG_ID_ACCESSOR =
-		new Accessor<DispatchLog, Long>() {
+	public static final Accessor<DispatchTask, Long> DISPATCH_TASK_ID_ACCESSOR =
+		new Accessor<DispatchTask, Long>() {
 
 			@Override
-			public Long get(DispatchLog dispatchLog) {
-				return dispatchLog.getDispatchLogId();
+			public Long get(DispatchTask dispatchTask) {
+				return dispatchTask.getDispatchTaskId();
 			}
 
 			@Override
@@ -50,8 +50,8 @@ public interface DispatchLog extends DispatchLogModel, PersistedModel {
 			}
 
 			@Override
-			public Class<DispatchLog> getTypeClass() {
-				return DispatchLog.class;
+			public Class<DispatchTask> getTypeClass() {
+				return DispatchTask.class;
 			}
 
 		};

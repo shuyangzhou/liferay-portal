@@ -25,7 +25,7 @@ import java.util.Date;
 /**
  * The table class for the &quot;DispatchLog&quot; database table.
  *
- * @author Alessio Antonio Rendina
+ * @author Matija Petanjek
  * @see DispatchLog
  * @generated
  */
@@ -47,9 +47,8 @@ public class DispatchLogTable extends BaseTable<DispatchLogTable> {
 		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<DispatchLogTable, Date> modifiedDate = createColumn(
 		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
-	public final Column<DispatchLogTable, Long> dispatchTriggerId =
-		createColumn(
-			"dispatchTriggerId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<DispatchLogTable, Long> dispatchTaskId = createColumn(
+		"dispatchTaskId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<DispatchLogTable, Date> endDate = createColumn(
 		"endDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<DispatchLogTable, Clob> error = createColumn(
