@@ -33,6 +33,7 @@ import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.view.count.model.ViewCountEntry;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
 import com.liferay.view.count.service.persistence.ViewCountEntryFinder;
@@ -48,6 +49,7 @@ import org.apache.log4j.Level;
 
 import org.hibernate.util.JDBCExceptionReporter;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -71,6 +73,15 @@ public class ViewCountEntryLocalServiceTest {
 	public void setUp() {
 		_className = _classNameLocalService.getClassName(
 			ViewCountEntryLocalServiceTest.class.getName());
+
+		_originalViewCountEnabled = PropsValues.VIEW_COUNTS_ENABLED;
+
+		PropsValues.VIEW_COUNTS_ENABLED = true;
+	}
+
+	@After
+	public void tearDown() {
+		PropsValues.VIEW_COUNTS_ENABLED = _originalViewCountEnabled;
 	}
 
 	@Test
@@ -185,6 +196,8 @@ public class ViewCountEntryLocalServiceTest {
 
 	@Inject
 	private static ViewCountEntryLocalService _viewCountEntryLocalService;
+
+	private boolean _originalViewCountEnabled;
 
 	@DeleteAfterTestRun
 	private ViewCountEntry _viewCountEntry;

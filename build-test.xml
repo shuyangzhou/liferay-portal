@@ -8455,8 +8455,6 @@ browser.launcher.url=
 
 setup.wizard.enabled=false
 
-buffered.increment.enabled=false
-
 mail.send.blacklist=
 
 mail.session.jndi.name=
@@ -8480,7 +8478,9 @@ admin.email.from.address=test@liferay.com
 
 announcements.email.to.address=noreply@liferay.com
 
-login.secure.forgot.password=false</echo>
+login.secure.forgot.password=false
+
+view.counts.enabled=false</echo>
 
 		<if>
 			<equals arg1="${database.type}" arg2="oracle" />

@@ -3015,7 +3015,7 @@ public class PropsValues {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.VERIFY_PROCESS_CONCURRENCY_THRESHOLD));
 
-	public static final boolean VIEW_COUNTS_ENABLED = GetterUtil.getBoolean(
+	public static boolean VIEW_COUNTS_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.VIEW_COUNTS_ENABLED));
 
 	public static final String VIRTUAL_HOSTS_DEFAULT_SITE_NAME = PropsUtil.get(
