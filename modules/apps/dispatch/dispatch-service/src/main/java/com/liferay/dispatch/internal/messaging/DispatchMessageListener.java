@@ -15,8 +15,8 @@
 package com.liferay.dispatch.internal.messaging;
 
 import com.liferay.dispatch.constants.DispatchConstants;
-import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.service.DispatchTriggerLocalService;
+import com.liferay.dispatch.model.DispatchTask;
+import com.liferay.dispatch.service.DispatchTaskLocalService;
 import com.liferay.dispatch.service.ScheduledTaskExecutorService;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -58,18 +58,17 @@ public class DispatchMessageListener implements MessageListener {
 			throw new MessageListenerException(jsonException);
 		}
 
-		long dispatchTriggerId = jsonObject.getLong("dispatchTriggerId");
+		long dispatchTaskId = jsonObject.getLong("dispatchTaskId");
 
 		try {
-			DispatchTrigger dispatchTrigger =
-				_dispatchTriggerLocalService.getDispatchTrigger(
-					dispatchTriggerId);
+			DispatchTask dispatchTask =
+				_dispatchTaskLocalService.getDispatchTask(dispatchTaskId);
 
 			ScheduledTaskExecutorService scheduledTaskExecutorService =
 				_scheduledTaskExecutorServiceTrackerMap.getService(
-					dispatchTrigger.getType());
+					dispatchTask.getType());
 
-			scheduledTaskExecutorService.runProcess(dispatchTriggerId);
+			scheduledTaskExecutorService.runProcess(dispatchTaskId);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -95,7 +94,7 @@ public class DispatchMessageListener implements MessageListener {
 		DispatchMessageListener.class);
 
 	@Reference
-	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+	private DispatchTaskLocalService _dispatchTaskLocalService;
 
 	private ServiceTrackerMap<String, ScheduledTaskExecutorService>
 		_scheduledTaskExecutorServiceTrackerMap;

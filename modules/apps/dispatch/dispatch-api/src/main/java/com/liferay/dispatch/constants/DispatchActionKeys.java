@@ -19,6 +19,6 @@ package com.liferay.dispatch.constants;
  */
 public class DispatchActionKeys {
 
-	public static final String ADD_DISPATCH_TRIGGER = "ADD_DISPATCH_TRIGGER";
+	public static final String ADD_DISPATCH_TASK = "ADD_DISPATCH_TASK";
 
 }

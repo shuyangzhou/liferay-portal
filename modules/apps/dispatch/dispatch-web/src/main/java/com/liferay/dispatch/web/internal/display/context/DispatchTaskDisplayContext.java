@@ -14,8 +14,8 @@
 
 package com.liferay.dispatch.web.internal.display.context;
 
-import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.service.DispatchTriggerLocalService;
+import com.liferay.dispatch.model.DispatchTask;
+import com.liferay.dispatch.service.DispatchTaskLocalService;
 import com.liferay.dispatch.web.internal.display.context.util.DispatchRequestHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.text.Format;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,13 +40,13 @@ import javax.portlet.RenderRequest;
  * @author guywandji
  * @author Alessio Antonio Rendina
  */
-public class DispatchTriggerDisplayContext {
+public class DispatchTaskDisplayContext {
 
-	public DispatchTriggerDisplayContext(
-		DispatchTriggerLocalService dispatchTriggerLocalService,
+	public DispatchTaskDisplayContext(
+		DispatchTaskLocalService dispatchTaskLocalService,
 		RenderRequest renderRequest) {
 
-		_dispatchTriggerLocalService = dispatchTriggerLocalService;
+		_dispatchTaskLocalService = dispatchTaskLocalService;
 
 		_dispatchRequestHelper = new DispatchRequestHelper(renderRequest);
 
@@ -53,13 +54,17 @@ public class DispatchTriggerDisplayContext {
 			_dispatchRequestHelper.getLocale());
 	}
 
-	public DispatchTrigger getDispatchTrigger() {
-		return _dispatchRequestHelper.getDispatchTrigger();
+	public DispatchTask getDispatchTask() {
+		return _dispatchRequestHelper.getDispatchTask();
 	}
 
-	public String getNextFireDate(long dispatchTriggerId) {
-		Date nextRunDate = _dispatchTriggerLocalService.getNextFireDate(
-			dispatchTriggerId);
+	public List<String> getDispatchTaskTypes() {
+		return Arrays.asList("111", "222", "333");
+	}
+
+	public String getNextFireDate(long dispatchTaskId) {
+		Date nextRunDate = _dispatchTaskLocalService.getNextFireDate(
+			dispatchTaskId);
 
 		if (nextRunDate != null) {
 			return _dateFormatDateTime.format(nextRunDate);
@@ -112,7 +117,7 @@ public class DispatchTriggerDisplayContext {
 		return _rowChecker;
 	}
 
-	public SearchContainer<DispatchTrigger> getSearchContainer()
+	public SearchContainer<DispatchTask> getSearchContainer()
 		throws PortalException {
 
 		if (_searchContainer != null) {
@@ -130,15 +135,14 @@ public class DispatchTriggerDisplayContext {
 		_searchContainer.setOrderByType(getOrderByType());
 		_searchContainer.setRowChecker(getRowChecker());
 
-		int total = _dispatchTriggerLocalService.getDispatchTriggersCount(
+		int total = _dispatchTaskLocalService.getDispatchTasksCount(
 			_dispatchRequestHelper.getCompanyId());
 
 		_searchContainer.setTotal(total);
 
-		List<DispatchTrigger> results =
-			_dispatchTriggerLocalService.getDispatchTriggers(
-				_dispatchRequestHelper.getCompanyId(),
-				_searchContainer.getStart(), _searchContainer.getEnd());
+		List<DispatchTask> results = _dispatchTaskLocalService.getDispatchTasks(
+			_dispatchRequestHelper.getCompanyId(), _searchContainer.getStart(),
+			_searchContainer.getEnd());
 
 		_searchContainer.setResults(results);
 
@@ -147,8 +151,8 @@ public class DispatchTriggerDisplayContext {
 
 	private final Format _dateFormatDateTime;
 	private final DispatchRequestHelper _dispatchRequestHelper;
-	private final DispatchTriggerLocalService _dispatchTriggerLocalService;
+	private final DispatchTaskLocalService _dispatchTaskLocalService;
 	private RowChecker _rowChecker;
-	private SearchContainer<DispatchTrigger> _searchContainer;
+	private SearchContainer<DispatchTask> _searchContainer;
 
 }

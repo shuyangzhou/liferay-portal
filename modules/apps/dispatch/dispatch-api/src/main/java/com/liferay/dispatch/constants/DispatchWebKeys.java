@@ -20,6 +20,6 @@ package com.liferay.dispatch.constants;
  */
 public class DispatchWebKeys {
 
-	public static final String DISPATCH_TRIGGER = "DISPATCH_TRIGGER";
+	public static final String DISPATCH_TASK = "DISPATCH_TASK";
 
 }

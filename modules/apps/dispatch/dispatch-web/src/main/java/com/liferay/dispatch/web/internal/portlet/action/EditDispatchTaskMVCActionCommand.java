@@ -16,8 +16,8 @@ package com.liferay.dispatch.web.internal.portlet.action;
 
 import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.constants.DispatchPortletKeys;
-import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.service.DispatchTriggerService;
+import com.liferay.dispatch.model.DispatchTask;
+import com.liferay.dispatch.service.DispatchTaskService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -39,8 +39,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.io.IOException;
 
-import java.util.Calendar;
-
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
@@ -55,32 +53,31 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + DispatchPortletKeys.DISPATCH,
-		"mvc.command.name=editDispatchTrigger"
+		"mvc.command.name=editDispatchTask"
 	},
 	service = MVCActionCommand.class
 )
-public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
+public class EditDispatchTaskMVCActionCommand extends BaseMVCActionCommand {
 
-	protected void deleteDispatchTrigger(ActionRequest actionRequest)
+	protected void deleteDispatchTask(ActionRequest actionRequest)
 		throws PortalException {
 
-		long[] deleteDispatchTriggerIds = null;
+		long[] deleteDispatchTaskIds = null;
 
-		long dispatchTriggerId = ParamUtil.getLong(
-			actionRequest, "dispatchTriggerId");
+		long dispatchTaskId = ParamUtil.getLong(
+			actionRequest, "dispatchTaskId");
 
-		if (dispatchTriggerId > 0) {
-			deleteDispatchTriggerIds = new long[] {dispatchTriggerId};
+		if (dispatchTaskId > 0) {
+			deleteDispatchTaskIds = new long[] {dispatchTaskId};
 		}
 		else {
-			deleteDispatchTriggerIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "deleteDispatchTriggerIds"),
+			deleteDispatchTaskIds = StringUtil.split(
+				ParamUtil.getString(actionRequest, "deleteDispatchTaskIds"),
 				0L);
 		}
 
-		for (long deleteDispatchTriggerId : deleteDispatchTriggerIds) {
-			_dispatchTriggerService.deleteDispatchTrigger(
-				deleteDispatchTriggerId);
+		for (long deleteDispatchTaskId : deleteDispatchTaskIds) {
+			_dispatchTaskService.deleteDispatchTask(deleteDispatchTaskId);
 		}
 	}
 
@@ -93,22 +90,19 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			if (cmd.equals(Constants.ADD) || cmd.equals(Constants.UPDATE)) {
-				updateDispatchTrigger(actionRequest, actionResponse);
+				updateDispatchTask(actionRequest, actionResponse);
 			}
 			else if (cmd.equals(Constants.DELETE)) {
-				deleteDispatchTrigger(actionRequest);
+				deleteDispatchTask(actionRequest);
 			}
-			else if (cmd.equals("schedule")) {
-				scheduleDispatchTrigger(actionRequest);
-			}
-			else if (cmd.equals("runProcess")) {
+			else if (cmd.equals("runTask")) {
 				HttpServletResponse httpServletResponse =
 					_portal.getHttpServletResponse(actionResponse);
 
 				httpServletResponse.setContentType(
 					ContentTypes.APPLICATION_JSON);
 
-				writeJSON(actionResponse, runProcess(actionRequest));
+				writeJSON(actionResponse, runTask(actionRequest));
 
 				hideDefaultSuccessMessage(actionRequest);
 			}
@@ -120,14 +114,14 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	protected JSONObject runProcess(ActionRequest actionRequest) {
+	protected JSONObject runTask(ActionRequest actionRequest) {
 		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
-		long dispatchTriggerId = ParamUtil.getLong(
-			actionRequest, "dispatchTriggerId");
+		long dispatchTaskId = ParamUtil.getLong(
+			actionRequest, "dispatchTaskId");
 
 		try {
-			_sendMessage(dispatchTriggerId);
+			_sendMessage(dispatchTaskId);
 		}
 		catch (Exception exception) {
 			hideDefaultErrorMessage(actionRequest);
@@ -146,62 +140,17 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 		return jsonObject;
 	}
 
-	protected void scheduleDispatchTrigger(ActionRequest actionRequest)
-		throws PortalException {
-
-		long dispatchTriggerId = ParamUtil.getLong(
-			actionRequest, "dispatchTriggerId");
-
-		String cronExpression = ParamUtil.getString(
-			actionRequest, "cronExpression");
-		boolean active = ParamUtil.getBoolean(actionRequest, "active");
-
-		int startDateMonth = ParamUtil.getInteger(
-			actionRequest, "startDateMonth");
-		int startDateDay = ParamUtil.getInteger(actionRequest, "startDateDay");
-		int startDateYear = ParamUtil.getInteger(
-			actionRequest, "startDateYear");
-		int startDateHour = ParamUtil.getInteger(
-			actionRequest, "startDateHour");
-		int startDateMinute = ParamUtil.getInteger(
-			actionRequest, "startDateMinute");
-		int startDateAmPm = ParamUtil.getInteger(
-			actionRequest, "startDateAmPm");
-
-		if (startDateAmPm == Calendar.PM) {
-			startDateHour += 12;
-		}
-
-		int endDateMonth = ParamUtil.getInteger(actionRequest, "endDateMonth");
-		int endDateDay = ParamUtil.getInteger(actionRequest, "endDateDay");
-		int endDateYear = ParamUtil.getInteger(actionRequest, "endDateYear");
-		int endDateHour = ParamUtil.getInteger(actionRequest, "endDateHour");
-		int endDateMinute = ParamUtil.getInteger(
-			actionRequest, "endDateMinute");
-		int endDateAmPm = ParamUtil.getInteger(actionRequest, "endDateAmPm");
-
-		if (endDateAmPm == Calendar.PM) {
-			endDateHour += 12;
-		}
-
-		boolean neverEnd = ParamUtil.getBoolean(actionRequest, "neverEnd");
-
-		_dispatchTriggerService.updateDispatchTrigger(
-			dispatchTriggerId, active, cronExpression, endDateMonth, endDateDay,
-			endDateYear, endDateHour, endDateMinute, neverEnd, startDateMonth,
-			startDateDay, startDateYear, startDateHour, startDateMinute);
-	}
-
-	protected DispatchTrigger updateDispatchTrigger(
+	protected DispatchTask updateDispatchTask(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long dispatchTriggerId = ParamUtil.getLong(
-			actionRequest, "dispatchTriggerId");
+		long dispatchTaskId = ParamUtil.getLong(
+			actionRequest, "dispatchTaskId");
 
 		String name = ParamUtil.getString(actionRequest, "name");
 
-		String processType = ParamUtil.getString(actionRequest, "processType");
+		String dispatchTaskType = ParamUtil.getString(
+			actionRequest, "dispatchTaskType");
 
 		UnicodeProperties typeSettingsUnicodeProperties = new UnicodeProperties(
 			true);
@@ -209,19 +158,19 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 		typeSettingsUnicodeProperties.fastLoad(
 			ParamUtil.getString(actionRequest, "typeSettings"));
 
-		DispatchTrigger dispatchTrigger = null;
+		DispatchTask dispatchTask = null;
 
-		if (dispatchTriggerId > 0) {
-			dispatchTrigger = _dispatchTriggerService.updateDispatchTrigger(
-				dispatchTriggerId, name, typeSettingsUnicodeProperties);
+		if (dispatchTaskId > 0) {
+			dispatchTask = _dispatchTaskService.updateDispatchTask(
+				dispatchTaskId, name, typeSettingsUnicodeProperties);
 		}
 		else {
-			dispatchTrigger = _dispatchTriggerService.addDispatchTrigger(
-				_portal.getUserId(actionRequest), name, processType,
+			dispatchTask = _dispatchTaskService.addDispatchTask(
+				_portal.getUserId(actionRequest), name, dispatchTaskType,
 				typeSettingsUnicodeProperties);
 		}
 
-		return dispatchTrigger;
+		return dispatchTask;
 	}
 
 	protected void writeJSON(ActionResponse actionResponse, Object object)
@@ -237,17 +186,16 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 		httpServletResponse.flushBuffer();
 	}
 
-	private void _sendMessage(long dispatchTriggerId) {
+	private void _sendMessage(long dispatchTaskId) {
 		Message message = new Message();
 
-		message.setPayload(
-			JSONUtil.put("dispatchTriggerId", dispatchTriggerId));
+		message.setPayload(JSONUtil.put("dispatchTaskId", dispatchTaskId));
 
 		_destination.send(message);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EditDispatchTriggerMVCActionCommand.class);
+		EditDispatchTaskMVCActionCommand.class);
 
 	@Reference(
 		target = "(destination.name= " + DispatchConstants.EXECUTOR_DESTINATION_NAME + ")"
@@ -255,7 +203,7 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 	private Destination _destination;
 
 	@Reference
-	private DispatchTriggerService _dispatchTriggerService;
+	private DispatchTaskService _dispatchTaskService;
 
 	@Reference
 	private JSONFactory _jsonFactory;

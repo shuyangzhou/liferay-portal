@@ -14,8 +14,16 @@
 
 package com.liferay.dispatch.service.impl;
 
+import com.liferay.dispatch.constants.DispatchActionKeys;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.dispatch.service.base.DispatchTaskServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
+import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -41,9 +49,62 @@ import org.osgi.service.component.annotations.Component;
 )
 public class DispatchTaskServiceImpl extends DispatchTaskServiceBaseImpl {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use <code>com.liferay.dispatch.service.DispatchTaskServiceUtil</code> to access the dispatch task remote service.
-	 */
+	@Override
+	public DispatchTask addDispatchTask(
+			long userId, String name, String type,
+			UnicodeProperties typeSettingsUnicodeProperties)
+		throws PortalException {
+
+		PortalPermissionUtil.check(
+			getPermissionChecker(), DispatchActionKeys.ADD_DISPATCH_TASK);
+
+		return dispatchTaskLocalService.addDispatchTask(
+			userId, name, false, type, typeSettingsUnicodeProperties);
+	}
+
+	@Override
+	public void deleteDispatchTask(long dispatchTaskId) throws PortalException {
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchTaskId, ActionKeys.DELETE);
+
+		dispatchTaskLocalService.deleteDispatchTask(dispatchTaskId);
+	}
+
+	@Override
+	public DispatchTask updateDispatchTask(
+			long dispatchTaskId, String name,
+			UnicodeProperties typeSettingsUnicodeProperties)
+		throws PortalException {
+
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchTaskId, ActionKeys.UPDATE);
+
+		return dispatchTaskLocalService.updateDispatchTask(
+			dispatchTaskId, name, typeSettingsUnicodeProperties);
+	}
+
+	@Override
+	public DispatchTask updateDispatchTaskTrigger(
+			long dispatchTaskId, boolean active, String cronExpression,
+			int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
+			int endDateMinute, boolean neverEnd, int startDateMonth,
+			int startDateDay, int startDateYear, int startDateHour,
+			int startDateMinute)
+		throws PortalException {
+
+		_dispatchTaskModelResourcePermission.check(
+			getPermissionChecker(), dispatchTaskId, ActionKeys.UPDATE);
+
+		return dispatchTaskLocalService.updateDispatchTaskTrigger(
+			dispatchTaskId, active, cronExpression, endDateMonth, endDateDay,
+			endDateYear, endDateHour, endDateMinute, neverEnd, startDateMonth,
+			startDateDay, startDateYear, startDateHour, startDateMinute);
+	}
+
+	private static volatile ModelResourcePermission<DispatchTask>
+		_dispatchTaskModelResourcePermission =
+			ModelResourcePermissionFactory.getInstance(
+				DispatchTaskServiceImpl.class,
+				"_dispatchTaskModelResourcePermission", DispatchTask.class);
+
 }

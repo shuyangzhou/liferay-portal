@@ -15,7 +15,7 @@
 package com.liferay.dispatch.web.internal.servlet.taglib.ui;
 
 import com.liferay.dispatch.constants.DispatchConstants;
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -46,13 +46,12 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = {ScreenNavigationCategory.class, ScreenNavigationEntry.class}
 )
-public class DispatchTriggerScreenNavigationCategory
-	implements ScreenNavigationCategory,
-			   ScreenNavigationEntry<DispatchTrigger> {
+public class DispatchTaskTriggerScreenNavigationCategory
+	implements ScreenNavigationCategory, ScreenNavigationEntry<DispatchTask> {
 
 	@Override
 	public String getCategoryKey() {
-		return DispatchConstants.CATEGORY_KEY_DISPATCH_TASK;
+		return DispatchConstants.CATEGORY_KEY_DISPATCH_TASK_TRIGGER;
 	}
 
 	@Override
@@ -74,8 +73,8 @@ public class DispatchTriggerScreenNavigationCategory
 	}
 
 	@Override
-	public boolean isVisible(User user, DispatchTrigger dispatchTrigger) {
-		if (dispatchTrigger == null) {
+	public boolean isVisible(User user, DispatchTask dispatchTask) {
+		if (dispatchTask == null) {
 			return false;
 		}
 
@@ -89,14 +88,15 @@ public class DispatchTriggerScreenNavigationCategory
 		throws IOException {
 
 		_jspRenderer.renderJSP(
-			httpServletRequest, httpServletResponse, "/process/trigger.jsp");
+			httpServletRequest, httpServletResponse,
+			"/task/dispatch_task_trigger.jsp");
 	}
 
 	@Reference(
-		target = "(model.class.name=com.liferay.dispatch.model.DispatchTrigger)"
+		target = "(model.class.name=com.liferay.dispatch.model.DispatchTask)"
 	)
-	private ModelResourcePermission<DispatchTrigger>
-		_dispatchTriggerModelResourcePermission;
+	private ModelResourcePermission<DispatchTask>
+		_dispatchTaskModelResourcePermission;
 
 	@Reference
 	private JSPRenderer _jspRenderer;

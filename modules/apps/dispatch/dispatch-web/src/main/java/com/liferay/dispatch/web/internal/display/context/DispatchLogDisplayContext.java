@@ -15,7 +15,7 @@
 package com.liferay.dispatch.web.internal.display.context;
 
 import com.liferay.dispatch.model.DispatchLog;
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.dispatch.service.DispatchLogService;
 import com.liferay.dispatch.web.internal.display.context.util.DispatchRequestHelper;
 import com.liferay.petra.string.StringPool;
@@ -65,8 +65,8 @@ public class DispatchLogDisplayContext {
 		return _dispatchLogService.getDispatchLog(dispatchLogId);
 	}
 
-	public DispatchTrigger getDispatchTrigger() {
-		return _dispatchRequestHelper.getDispatchTrigger();
+	public DispatchTask getDispatchTask() {
+		return _dispatchRequestHelper.getDispatchTask();
 	}
 
 	public String getFormattedDate(Date date) {
@@ -128,7 +128,7 @@ public class DispatchLogDisplayContext {
 			return _searchContainer;
 		}
 
-		DispatchTrigger dispatchTrigger = getDispatchTrigger();
+		DispatchTask dispatchTask = getDispatchTask();
 
 		_searchContainer = new SearchContainer<>(
 			_dispatchRequestHelper.getLiferayPortletRequest(), getPortletURL(),
@@ -141,12 +141,12 @@ public class DispatchLogDisplayContext {
 		_searchContainer.setRowChecker(getRowChecker());
 
 		int total = _dispatchLogService.getDispatchLogsCount(
-			dispatchTrigger.getDispatchTriggerId());
+			dispatchTask.getDispatchTaskId());
 
 		_searchContainer.setTotal(total);
 
 		List<DispatchLog> results = _dispatchLogService.getDispatchLogs(
-			dispatchTrigger.getDispatchTriggerId(), _searchContainer.getStart(),
+			dispatchTask.getDispatchTaskId(), _searchContainer.getStart(),
 			_searchContainer.getEnd());
 
 		_searchContainer.setResults(results);

@@ -15,7 +15,7 @@
 package com.liferay.dispatch.web.internal.servlet.taglib.ui;
 
 import com.liferay.dispatch.constants.DispatchConstants;
-import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.model.DispatchTask;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -43,13 +43,12 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = {ScreenNavigationCategory.class, ScreenNavigationEntry.class}
 )
-public class DispatchDetailsScreenNavigationCategory
-	implements ScreenNavigationCategory,
-			   ScreenNavigationEntry<DispatchTrigger> {
+public class DispatchTaskDetailsScreenNavigationCategory
+	implements ScreenNavigationCategory, ScreenNavigationEntry<DispatchTask> {
 
 	@Override
 	public String getCategoryKey() {
-		return DispatchConstants.CATEGORY_KEY_DISPATCH_DETAILS;
+		return DispatchConstants.CATEGORY_KEY_DISPATCH_TASK_DETAILS;
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class DispatchDetailsScreenNavigationCategory
 		throws IOException {
 
 		_jspRenderer.renderJSP(
-			httpServletRequest, httpServletResponse, "/process/details.jsp");
+			httpServletRequest, httpServletResponse, "/task/details.jsp");
 	}
 
 	@Reference
