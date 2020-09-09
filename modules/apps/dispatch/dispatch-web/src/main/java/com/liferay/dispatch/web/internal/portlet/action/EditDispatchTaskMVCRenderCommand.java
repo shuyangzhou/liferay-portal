@@ -15,6 +15,7 @@
 package com.liferay.dispatch.web.internal.portlet.action;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
+import com.liferay.dispatch.executor.type.DispatchTaskExecutorTypeRegistry;
 import com.liferay.dispatch.service.DispatchTaskLocalService;
 import com.liferay.dispatch.web.internal.display.context.DispatchTaskDisplayContext;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
@@ -31,6 +32,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alessio Antonio Rendina
  */
 @Component(
+	immediate = true,
 	property = {
 		"javax.portlet.name=" + DispatchPortletKeys.DISPATCH,
 		"mvc.command.name=editDispatchTask"
@@ -46,13 +48,17 @@ public class EditDispatchTaskMVCRenderCommand implements MVCRenderCommand {
 
 		DispatchTaskDisplayContext dispatchTaskDisplayContext =
 			new DispatchTaskDisplayContext(
-				_dispatchTaskLocalService, renderRequest);
+				_dispatchTaskExecutorTypeRegistry, _dispatchTaskLocalService,
+				renderRequest);
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTaskDisplayContext);
 
 		return "/edit_dispatch_task.jsp";
 	}
+
+	@Reference
+	private DispatchTaskExecutorTypeRegistry _dispatchTaskExecutorTypeRegistry;
 
 	@Reference
 	private DispatchTaskLocalService _dispatchTaskLocalService;
