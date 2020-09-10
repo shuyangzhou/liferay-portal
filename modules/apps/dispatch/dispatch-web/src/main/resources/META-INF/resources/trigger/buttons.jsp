@@ -33,7 +33,7 @@ String runNowButton = "runNowButton" + row.getRowId();
 		event
 	) {
 		var data = {
-			<portlet:namespace/><%= Constants.CMD %>: 'runProcess',
+			<portlet:namespace/><%= Constants.CMD %>: 'runTask',
 			<portlet:namespace/>dispatchTriggerId:
 				'<%= dispatchTrigger.getDispatchTriggerId() %>',
 		};
