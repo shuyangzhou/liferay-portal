@@ -89,7 +89,8 @@ public class DispatchTriggerScreenNavigationCategory
 		throws IOException {
 
 		_jspRenderer.renderJSP(
-			httpServletRequest, httpServletResponse, "/process/trigger.jsp");
+			httpServletRequest, httpServletResponse,
+			"/trigger/dispatch_trigger.jsp");
 	}
 
 	@Reference(
