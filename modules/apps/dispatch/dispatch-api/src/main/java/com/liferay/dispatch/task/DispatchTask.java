@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dispatch.service;
+package com.liferay.dispatch.task;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -21,21 +21,20 @@ import java.io.IOException;
 /**
  * @author Matija Petanjek
  */
-public interface ScheduledTaskExecutorService {
+public interface DispatchTask {
 
 	/**
-	 * This method returns the name of the process type
+	 * This method returns the name of the dispatch task
 	 */
 	public String getName();
 
 	/**
-	 * This method execute the selected process
+	 * This method run the selected task
 	 *
 	 * @param dispatchTriggerId
 	 * @throws IOException
 	 * @throws PortalException
 	 */
-	public void runProcess(long dispatchTriggerId)
-		throws IOException, PortalException;
+	public void run(long dispatchTriggerId) throws IOException, PortalException;
 
 }

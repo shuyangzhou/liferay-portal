@@ -17,7 +17,7 @@ package com.liferay.dispatch.internal.messaging;
 import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
-import com.liferay.dispatch.service.ScheduledTaskExecutorService;
+import com.liferay.dispatch.task.DispatchTask;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.json.JSONException;
@@ -65,11 +65,10 @@ public class DispatchMessageListener implements MessageListener {
 				_dispatchTriggerLocalService.getDispatchTrigger(
 					dispatchTriggerId);
 
-			ScheduledTaskExecutorService scheduledTaskExecutorService =
-				_scheduledTaskExecutorServiceTrackerMap.getService(
-					dispatchTrigger.getType());
+			DispatchTask dispatchTask = _dispatchTaskTrackerMap.getService(
+				dispatchTrigger.getType());
 
-			scheduledTaskExecutorService.runProcess(dispatchTriggerId);
+			dispatchTask.run(dispatchTriggerId);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -80,24 +79,21 @@ public class DispatchMessageListener implements MessageListener {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_scheduledTaskExecutorServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ScheduledTaskExecutorService.class,
-				"dispatch.executor.key");
+		_dispatchTaskTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, DispatchTask.class, "dispatch.task.type");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_scheduledTaskExecutorServiceTrackerMap.close();
+		_dispatchTaskTrackerMap.close();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DispatchMessageListener.class);
 
+	private ServiceTrackerMap<String, DispatchTask> _dispatchTaskTrackerMap;
+
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
-
-	private ServiceTrackerMap<String, ScheduledTaskExecutorService>
-		_scheduledTaskExecutorServiceTrackerMap;
 
 }
