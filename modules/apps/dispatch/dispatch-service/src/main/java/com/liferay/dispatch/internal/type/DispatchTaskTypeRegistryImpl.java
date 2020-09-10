@@ -16,8 +16,6 @@ package com.liferay.dispatch.internal.type;
 
 import com.liferay.dispatch.task.DispatchTask;
 import com.liferay.dispatch.task.type.DispatchTaskTypeRegistry;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
@@ -44,9 +42,7 @@ public class DispatchTaskTypeRegistryImpl implements DispatchTaskTypeRegistry {
 	protected void activate(BundleContext bundleContext) {
 		_dispatchTaskServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, DispatchTask.class, "dispatch.task.type",
-				ServiceTrackerCustomizerFactory.<DispatchTask>serviceWrapper(
-					bundleContext));
+				bundleContext, DispatchTask.class, "dispatch.task.type");
 	}
 
 	@Deactivate
@@ -54,7 +50,7 @@ public class DispatchTaskTypeRegistryImpl implements DispatchTaskTypeRegistry {
 		_dispatchTaskServiceTrackerMap.close();
 	}
 
-	private ServiceTrackerMap<String, ServiceWrapper<DispatchTask>>
+	private ServiceTrackerMap<String, DispatchTask>
 		_dispatchTaskServiceTrackerMap;
 
 }
