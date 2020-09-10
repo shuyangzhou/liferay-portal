@@ -71,9 +71,7 @@ public class DispatchMessageListener implements MessageListener {
 			dispatchTask.run(dispatchTriggerId);
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
+			_log.error(exception, exception);
 		}
 	}
 
