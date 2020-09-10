@@ -5,5 +5,8 @@ Export-Package:\
 	com.liferay.dispatch.constants,\
 	com.liferay.dispatch.exception,\
 	com.liferay.dispatch.model,\
+	com.liferay.dispatch.security.permission,\
 	com.liferay.dispatch.service,\
-	com.liferay.dispatch.service.persistence
+	com.liferay.dispatch.service.persistence,\
+	com.liferay.dispatch.task,\
+	com.liferay.dispatch.task.type
