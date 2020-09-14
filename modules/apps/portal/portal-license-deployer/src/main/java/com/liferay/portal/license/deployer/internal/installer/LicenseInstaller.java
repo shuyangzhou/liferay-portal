@@ -18,6 +18,7 @@ import com.liferay.portal.file.install.FileInstaller;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -27,9 +28,13 @@ import java.io.File;
 
 import java.net.URL;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Amos Fong
  */
+@Component(immediate = true, service = FileInstaller.class)
 public class LicenseInstaller implements FileInstaller {
 
 	@Override
@@ -74,6 +79,11 @@ public class LicenseInstaller implements FileInstaller {
 
 	@Override
 	public void uninstall(File file) {
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 }

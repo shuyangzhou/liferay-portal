@@ -20,13 +20,20 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ThrowableCollector;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
@@ -51,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -143,6 +151,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			if (lpkgBundle != null) {
 				return Collections.emptyList();
 			}
+
+			_deployLicense(lpkgFile);
 
 			List<Bundle> bundles = new ArrayList<>();
 
@@ -358,6 +368,63 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		_installOverrideJars(bundleContext, jarFiles);
 
 		_installOverrideWars(bundleContext, warFiles);
+	}
+
+	private void _deployLicense(File file) {
+		try (ZipFile zipFile = new ZipFile(file)) {
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+
+			while (enumeration.hasMoreElements()) {
+				ZipEntry zipEntry = enumeration.nextElement();
+
+				String zipEntryName = zipEntry.getName();
+
+				if (!zipEntryName.endsWith(".xml")) {
+					continue;
+				}
+
+				Path tempFilePath = Files.createTempFile(null, ".xml");
+
+				try (InputStream inputStream = zipFile.getInputStream(
+						zipEntry)) {
+
+					Files.copy(
+						inputStream, tempFilePath,
+						StandardCopyOption.REPLACE_EXISTING);
+
+					File tempFile = tempFilePath.toFile();
+
+					try {
+						String content = FileUtil.read(tempFile);
+
+						Document document = SAXReaderUtil.read(content);
+
+						Element rootElement = document.getRootElement();
+
+						String rootElementName = rootElement.getName();
+
+						if (!rootElementName.equals("license") &&
+							!rootElementName.equals("licenses")) {
+
+							continue;
+						}
+
+						JSONObject jsonObject = JSONUtil.put(
+							"licenseXML", content);
+
+						LicenseManagerUtil.registerLicense(jsonObject);
+					}
+					catch (Exception exception) {
+					}
+				}
+				finally {
+					Files.delete(tempFilePath);
+				}
+			}
+		}
+		catch (Exception exception) {
+			_log.error("Unable to register license", exception);
+		}
 	}
 
 	private Path _getDeploymentDirPath(BundleContext bundleContext)
