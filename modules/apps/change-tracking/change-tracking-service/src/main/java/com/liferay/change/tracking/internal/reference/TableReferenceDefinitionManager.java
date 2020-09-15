@@ -45,16 +45,20 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(immediate = true, service = TableReferenceDefinitionManager.class)
 public class TableReferenceDefinitionManager {
 
-	public long getClassNameId(Table<?> table) {
+	public long getClassNameId(String tableName) {
 		TableReferenceInfo<?> tableReferenceInfo = _tableReferenceInfos.get(
-			table);
+			tableName);
 
 		if (tableReferenceInfo == null) {
 			throw new IllegalStateException(
-				"No table reference definition for " + table);
+				"No table reference definition for " + tableName);
 		}
 
 		return tableReferenceInfo.getClassNameId();
+	}
+
+	public long getClassNameId(Table<?> table) {
+		return getClassNameId(table.getTableName());
 	}
 
 	public Map<Long, TableReferenceInfo<?>> getCombinedTableReferenceInfos() {
@@ -248,7 +252,7 @@ public class TableReferenceDefinitionManager {
 	private volatile Map<Long, TableReferenceInfo<?>>
 		_combinedTableReferenceInfos;
 	private ServiceTracker<?, ?> _serviceTracker;
-	private final Map<Table<?>, TableReferenceInfo<?>> _tableReferenceInfos =
+	private final Map<String, TableReferenceInfo<?>> _tableReferenceInfos =
 		new ConcurrentHashMap<>();
 
 	private class TableReferenceDefinitionServiceTrackerCustomizer
@@ -276,12 +280,13 @@ public class TableReferenceDefinitionManager {
 			ServiceReference<TableReferenceDefinition<?>> serviceReference,
 			TableReferenceInfo<?> tableReferenceInfo) {
 
-			synchronized (TableReferenceDefinitionManager.this) {
-				TableReferenceDefinition<?> tableReferenceDefinition =
-					tableReferenceInfo.getTableReferenceDefinition();
+			TableReferenceDefinition<?> tableReferenceDefinition =
+				tableReferenceInfo.getTableReferenceDefinition();
 
-				_tableReferenceInfos.remove(
-					tableReferenceDefinition.getTable());
+			Table<?> table = tableReferenceDefinition.getTable();
+
+			synchronized (TableReferenceDefinitionManager.this) {
+				_tableReferenceInfos.remove(table.getTableName());
 
 				_combinedTableReferenceInfos = null;
 			}
@@ -320,9 +325,11 @@ public class TableReferenceDefinitionManager {
 				TableReferenceInfoFactory.create(
 					tableReferenceDefinition, classNameId, primaryKeyColumn);
 
+			Table<?> table = tableReferenceDefinition.getTable();
+
 			synchronized (TableReferenceDefinitionManager.this) {
 				_tableReferenceInfos.put(
-					tableReferenceDefinition.getTable(), tableReferenceInfo);
+					table.getTableName(), tableReferenceInfo);
 
 				_combinedTableReferenceInfos = null;
 			}
