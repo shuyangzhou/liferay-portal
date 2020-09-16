@@ -97,7 +97,7 @@ provide the suitable JDBC driver for your Liferay database:
 
 ```gradle
 dependencies {
-	dbSupport group: "mysql", name: "mysql-connector-java", version: "5.1.23"
+	dbSupport group: "mysql", name: "mysql-connector-java", version: "5.1.48"
 	dbSupport group: "org.mariadb.jdbc", name: "mariadb-java-client", version: "1.1.9"
 	dbSupport group: "org.postgresql", name: "postgresql", version: "9.4-1201-jdbc41"
 }
