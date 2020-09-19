@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Dispatch Talend
+Bundle-SymbolicName: com.liferay.dispatch.talend
+Bundle-Version: 1.0.0
+Web-ContextPath: /dispatch-talend
