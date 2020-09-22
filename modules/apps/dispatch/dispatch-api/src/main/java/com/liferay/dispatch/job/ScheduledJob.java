@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dispatch.executor;
+package com.liferay.dispatch.job;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -21,10 +21,10 @@ import java.io.IOException;
 /**
  * @author Matija Petanjek
  */
-public interface ScheduledTaskExecutor {
+public interface ScheduledJob {
 
 	/**
-	 * This method execute the scheduled task
+	 * This method execute the scheduled job
 	 *
 	 * @param dispatchTriggerId
 	 * @throws IOException
@@ -34,7 +34,7 @@ public interface ScheduledTaskExecutor {
 		throws IOException, PortalException;
 
 	/**
-	 * This method returns the name of the scheduled task
+	 * This method returns the name of the scheduled job
 	 */
 	public String getName();
 
