@@ -25,36 +25,36 @@ public class DispatchTriggerImpl extends DispatchTriggerBaseImpl {
 	}
 
 	@Override
-	public UnicodeProperties getTypeSettingsProperties() {
-		if (_typeSettingsUnicodeProperties == null) {
-			_typeSettingsUnicodeProperties = new UnicodeProperties(true);
+	public UnicodeProperties getJobUnicodeProperties() {
+		if (_jobUnicodeProperties == null) {
+			_jobUnicodeProperties = new UnicodeProperties(true);
 
-			_typeSettingsUnicodeProperties.fastLoad(getTypeSettings());
+			_jobUnicodeProperties.fastLoad(getJobProperties());
 		}
 
-		return _typeSettingsUnicodeProperties;
+		return _jobUnicodeProperties;
 	}
 
 	@Override
-	public void setTypeSettings(String typeSettings) {
-		super.setTypeSettings(typeSettings);
+	public void setJobProperties(String jobProperties) {
+		super.setJobProperties(jobProperties);
 
-		_typeSettingsUnicodeProperties = null;
+		_jobUnicodeProperties = null;
 	}
 
 	@Override
-	public void setTypeSettingsProperties(
-		UnicodeProperties typeSettingsUnicodeProperties) {
+	public void setJobUnicodeProperties(
+		UnicodeProperties jobUnicodeProperties) {
 
-		_typeSettingsUnicodeProperties = typeSettingsUnicodeProperties;
+		_jobUnicodeProperties = jobUnicodeProperties;
 
-		if (_typeSettingsUnicodeProperties == null) {
-			_typeSettingsUnicodeProperties = new UnicodeProperties();
+		if (_jobUnicodeProperties == null) {
+			_jobUnicodeProperties = new UnicodeProperties();
 		}
 
-		super.setTypeSettings(_typeSettingsUnicodeProperties.toString());
+		super.setJobProperties(_jobUnicodeProperties.toString());
 	}
 
-	private transient UnicodeProperties _typeSettingsUnicodeProperties;
+	private transient UnicodeProperties _jobUnicodeProperties;
 
 }

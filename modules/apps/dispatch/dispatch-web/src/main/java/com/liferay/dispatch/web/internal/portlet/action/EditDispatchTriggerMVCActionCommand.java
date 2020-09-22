@@ -200,25 +200,25 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 		long dispatchTriggerId = ParamUtil.getLong(
 			actionRequest, "dispatchTriggerId");
 
+		String jobType = ParamUtil.getString(actionRequest, "jobType");
+
+		UnicodeProperties jobUnicodeProperties = new UnicodeProperties(true);
+
+		jobUnicodeProperties.fastLoad(
+			ParamUtil.getString(actionRequest, "jobProperties"));
+
 		String name = ParamUtil.getString(actionRequest, "name");
-		String type = ParamUtil.getString(actionRequest, "type");
-
-		UnicodeProperties typeSettingsUnicodeProperties = new UnicodeProperties(
-			true);
-
-		typeSettingsUnicodeProperties.fastLoad(
-			ParamUtil.getString(actionRequest, "typeSettings"));
 
 		DispatchTrigger dispatchTrigger = null;
 
 		if (dispatchTriggerId > 0) {
 			dispatchTrigger = _dispatchTriggerService.updateDispatchTrigger(
-				dispatchTriggerId, name, typeSettingsUnicodeProperties);
+				dispatchTriggerId, jobUnicodeProperties, name);
 		}
 		else {
 			dispatchTrigger = _dispatchTriggerService.addDispatchTrigger(
-				_portal.getUserId(actionRequest), name, type,
-				typeSettingsUnicodeProperties);
+				_portal.getUserId(actionRequest), jobUnicodeProperties, jobType,
+				name);
 		}
 
 		return dispatchTrigger;
