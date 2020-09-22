@@ -4,7 +4,7 @@ Bundle-Version: 1.0.2
 Export-Package:\
 	com.liferay.dispatch.constants,\
 	com.liferay.dispatch.exception,\
-	com.liferay.dispatch.executor,\
+	com.liferay.dispatch.job,\
 	com.liferay.dispatch.model,\
 	com.liferay.dispatch.security.permission,\
 	com.liferay.dispatch.service,\
