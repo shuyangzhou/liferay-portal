@@ -62,11 +62,11 @@
 		<column name="active" type="boolean" />
 		<column name="cronExpression" type="String" />
 		<column name="endDate" type="Date" />
+		<column name="jobProperties" type="String" />
+		<column name="jobType" type="String" />
 		<column name="name" type="String" />
 		<column name="startDate" type="Date" />
 		<column name="system" type="boolean" />
-		<column name="type" type="String" />
-		<column name="typeSettings" type="String" />
 
 		<!-- Order -->
 
@@ -79,13 +79,13 @@
 		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
+		<finder name="C_J" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="jobType" />
+		</finder>
 		<finder name="C_N" return-type="DispatchTrigger" unique="true">
 			<finder-column name="companyId" />
 			<finder-column name="name" />
-		</finder>
-		<finder name="C_T" return-type="Collection">
-			<finder-column name="companyId" />
-			<finder-column name="type" />
 		</finder>
 	</entity>
 	<exceptions>
