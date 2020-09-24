@@ -88,7 +88,7 @@ public class DispatchPortlet extends MVCPortlet {
 
 		DispatchTriggerDisplayContext dispatchTriggerDisplayContext =
 			new DispatchTriggerDisplayContext(
-				_scheduledTaskExecutorServiceTrackerMap.keySet(),
+				_scheduledJobServiceTrackerMap.keySet(),
 				_dispatchTriggerLocalService, renderRequest);
 
 		renderRequest.setAttribute(
@@ -99,14 +99,14 @@ public class DispatchPortlet extends MVCPortlet {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_scheduledTaskExecutorServiceTrackerMap =
+		_scheduledJobServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, ScheduledJob.class, "scheduled.job.type");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_scheduledTaskExecutorServiceTrackerMap.close();
+		_scheduledJobServiceTrackerMap.close();
 	}
 
 	@Reference
@@ -116,6 +116,6 @@ public class DispatchPortlet extends MVCPortlet {
 	private Portal _portal;
 
 	private ServiceTrackerMap<String, ScheduledJob>
-		_scheduledTaskExecutorServiceTrackerMap;
+		_scheduledJobServiceTrackerMap;
 
 }

@@ -42,18 +42,18 @@ DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDi
 		>
 
 			<%
-			for (String scheduledTaskExecutorServiceType : dispatchTriggerDisplayContext.getScheduledTaskExecutorServiceTypes()) {
+			for (String scheduledJobType : dispatchTriggerDisplayContext.getScheduledJobTypes()) {
 			%>
 
 				<liferay-portlet:renderURL var="addDispatchTriggerURL">
 					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" />
 					<portlet:param name="mvcRenderCommandName" value="editDispatchTrigger" />
 					<portlet:param name="backURL" value="<%= currentURL %>" />
-					<portlet:param name="jobType" value="<%= scheduledTaskExecutorServiceType %>" />
+					<portlet:param name="jobType" value="<%= scheduledJobType %>" />
 				</liferay-portlet:renderURL>
 
 				<liferay-frontend:add-menu-item
-					title="<%= scheduledTaskExecutorServiceType %>"
+					title="<%= scheduledJobType %>"
 					url="<%= addDispatchTriggerURL %>"
 				/>
 

@@ -43,11 +43,11 @@ import javax.portlet.RenderRequest;
 public class DispatchTriggerDisplayContext {
 
 	public DispatchTriggerDisplayContext(
-		Set<String> scheduledTaskExecutorServiceTypes,
+		Set<String> scheduledJobTypes,
 		DispatchTriggerLocalService dispatchTriggerLocalService,
 		RenderRequest renderRequest) {
 
-		_scheduledTaskExecutorServiceTypes = scheduledTaskExecutorServiceTypes;
+		_scheduledJobTypes = scheduledJobTypes;
 		_dispatchTriggerLocalService = dispatchTriggerLocalService;
 
 		_dispatchRequestHelper = new DispatchRequestHelper(renderRequest);
@@ -115,8 +115,8 @@ public class DispatchTriggerDisplayContext {
 		return _rowChecker;
 	}
 
-	public Set<String> getScheduledTaskExecutorServiceTypes() {
-		return _scheduledTaskExecutorServiceTypes;
+	public Set<String> getScheduledJobTypes() {
+		return _scheduledJobTypes;
 	}
 
 	public SearchContainer<DispatchTrigger> getSearchContainer()
@@ -156,7 +156,7 @@ public class DispatchTriggerDisplayContext {
 	private final DispatchRequestHelper _dispatchRequestHelper;
 	private final DispatchTriggerLocalService _dispatchTriggerLocalService;
 	private RowChecker _rowChecker;
-	private final Set<String> _scheduledTaskExecutorServiceTypes;
+	private final Set<String> _scheduledJobTypes;
 	private SearchContainer<DispatchTrigger> _searchContainer;
 
 }
