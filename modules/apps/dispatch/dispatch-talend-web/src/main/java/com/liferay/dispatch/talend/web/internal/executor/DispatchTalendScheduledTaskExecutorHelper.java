@@ -126,8 +126,7 @@ public class DispatchTalendScheduledTaskExecutorHelper {
 		return PortletFileRepositoryUtil.addPortletFolder(
 			userId, repository.getRepositoryId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			DispatchTalendScheduledTaskExecutor.
-				SCHEDULED_TASK_EXECUTOR_TYPE_TALEND,
+			DispatchTalendScheduledTaskExecutor.SCHEDULED_JOB_TYPE_TALEND,
 			serviceContext);
 	}
 

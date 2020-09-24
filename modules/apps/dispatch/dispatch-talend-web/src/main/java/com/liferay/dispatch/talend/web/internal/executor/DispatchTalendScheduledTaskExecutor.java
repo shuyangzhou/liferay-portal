@@ -14,7 +14,7 @@
 
 package com.liferay.dispatch.talend.web.internal.executor;
 
-import com.liferay.dispatch.executor.ScheduledTaskExecutor;
+import com.liferay.dispatch.job.ScheduledJob;
 import com.liferay.dispatch.model.DispatchLog;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchLogLocalService;
@@ -54,13 +54,12 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "scheduled.task.executor.type=" + DispatchTalendScheduledTaskExecutor.SCHEDULED_TASK_EXECUTOR_TYPE_TALEND,
-	service = ScheduledTaskExecutor.class
+	property = "scheduled.job.type=" + DispatchTalendScheduledTaskExecutor.SCHEDULED_JOB_TYPE_TALEND,
+	service = ScheduledJob.class
 )
-public class DispatchTalendScheduledTaskExecutor
-	implements ScheduledTaskExecutor {
+public class DispatchTalendScheduledTaskExecutor implements ScheduledJob {
 
-	public static final String SCHEDULED_TASK_EXECUTOR_TYPE_TALEND = "talend";
+	public static final String SCHEDULED_JOB_TYPE_TALEND = "talend";
 
 	@Override
 	public void execute(long dispatchTriggerId) throws PortalException {
@@ -131,7 +130,7 @@ public class DispatchTalendScheduledTaskExecutor
 
 	@Override
 	public String getName() {
-		return SCHEDULED_TASK_EXECUTOR_TYPE_TALEND;
+		return SCHEDULED_JOB_TYPE_TALEND;
 	}
 
 	private void _addExecutePermission(String shFileName)
@@ -167,12 +166,12 @@ public class DispatchTalendScheduledTaskExecutor
 
 		arguments.add("--context_param jobWorkDirectory=" + rootDirectoryName);
 
-		UnicodeProperties typeSettingsUnicodeProperties =
-			dispatchTrigger.getTypeSettingsProperties();
+		UnicodeProperties jobUnicodeProperties =
+			dispatchTrigger.getJobUnicodeProperties();
 
-		if (typeSettingsUnicodeProperties != null) {
+		if (jobUnicodeProperties != null) {
 			for (Map.Entry<String, String> propEntry :
-					typeSettingsUnicodeProperties.entrySet()) {
+					jobUnicodeProperties.entrySet()) {
 
 				StringBundler contextSB = new StringBundler(4);
 

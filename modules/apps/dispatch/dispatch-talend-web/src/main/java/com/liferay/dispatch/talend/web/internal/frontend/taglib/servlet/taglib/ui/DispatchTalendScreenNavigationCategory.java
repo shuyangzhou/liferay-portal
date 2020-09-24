@@ -53,8 +53,7 @@ public class DispatchTalendScreenNavigationCategory
 
 	@Override
 	public String getCategoryKey() {
-		return DispatchTalendScheduledTaskExecutor.
-			SCHEDULED_TASK_EXECUTOR_TYPE_TALEND;
+		return DispatchTalendScheduledTaskExecutor.SCHEDULED_JOB_TYPE_TALEND;
 	}
 
 	@Override
@@ -81,11 +80,11 @@ public class DispatchTalendScreenNavigationCategory
 			return false;
 		}
 
-		String scheduledTaskExecutorType = dispatchTrigger.getType();
+		String scheduledJobType = dispatchTrigger.getJobType();
 
-		if (scheduledTaskExecutorType.equals(
+		if (scheduledJobType.equals(
 				DispatchTalendScheduledTaskExecutor.
-					SCHEDULED_TASK_EXECUTOR_TYPE_TALEND) &&
+					SCHEDULED_JOB_TYPE_TALEND) &&
 			!dispatchTrigger.isSystem()) {
 
 			return true;
