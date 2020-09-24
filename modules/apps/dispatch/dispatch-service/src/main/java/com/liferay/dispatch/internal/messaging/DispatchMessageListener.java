@@ -65,7 +65,7 @@ public class DispatchMessageListener implements MessageListener {
 					dispatchTriggerId);
 
 			ScheduledJob scheduledJob =
-				_scheduledTaskExecutorServiceTrackerMap.getService(
+				_scheduledJobServiceTrackerMap.getService(
 					dispatchTrigger.getJobType());
 
 			scheduledJob.execute(dispatchTriggerId);
@@ -77,14 +77,14 @@ public class DispatchMessageListener implements MessageListener {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_scheduledTaskExecutorServiceTrackerMap =
+		_scheduledJobServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, ScheduledJob.class, "scheduled.job.type");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_scheduledTaskExecutorServiceTrackerMap.close();
+		_scheduledJobServiceTrackerMap.close();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -94,6 +94,6 @@ public class DispatchMessageListener implements MessageListener {
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
 
 	private ServiceTrackerMap<String, ScheduledJob>
-		_scheduledTaskExecutorServiceTrackerMap;
+		_scheduledJobServiceTrackerMap;
 
 }
