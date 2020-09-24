@@ -15,7 +15,7 @@
 package com.liferay.dispatch.talend.web.internal.portlet.action;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
-import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledJobHelper;
+import com.liferay.dispatch.talend.web.internal.job.DispatchTalendScheduledJobHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

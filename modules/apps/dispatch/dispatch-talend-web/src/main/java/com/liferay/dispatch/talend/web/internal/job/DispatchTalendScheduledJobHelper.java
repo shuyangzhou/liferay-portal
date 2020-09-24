@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dispatch.talend.web.internal.executor;
+package com.liferay.dispatch.talend.web.internal.job;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
 import com.liferay.dispatch.model.DispatchTrigger;

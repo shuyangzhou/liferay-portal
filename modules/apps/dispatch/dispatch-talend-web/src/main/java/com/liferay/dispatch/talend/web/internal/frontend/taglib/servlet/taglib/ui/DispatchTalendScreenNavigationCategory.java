@@ -16,8 +16,8 @@ package com.liferay.dispatch.talend.web.internal.frontend.taglib.servlet.taglib.
 
 import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledJob;
-import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledJobHelper;
+import com.liferay.dispatch.talend.web.internal.job.DispatchTalendScheduledJob;
+import com.liferay.dispatch.talend.web.internal.job.DispatchTalendScheduledJobHelper;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
