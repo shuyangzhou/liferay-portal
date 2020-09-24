@@ -54,10 +54,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "scheduled.job.type=" + DispatchTalendScheduledTaskExecutor.SCHEDULED_JOB_TYPE_TALEND,
+	property = "scheduled.job.type=" + DispatchTalendScheduledJob.SCHEDULED_JOB_TYPE_TALEND,
 	service = ScheduledJob.class
 )
-public class DispatchTalendScheduledTaskExecutor implements ScheduledJob {
+public class DispatchTalendScheduledJob implements ScheduledJob {
 
 	public static final String SCHEDULED_JOB_TYPE_TALEND = "talend";
 
@@ -74,7 +74,7 @@ public class DispatchTalendScheduledTaskExecutor implements ScheduledJob {
 
 		try {
 			FileEntry fileEntry =
-				_dispatchTalendScheduledTaskExecutorHelper.getFileEntry(
+				_dispatchTalendScheduledJobHelper.getFileEntry(
 					dispatchTriggerId);
 
 			InputStream inputStream = fileEntry.getContentStream();
@@ -194,14 +194,14 @@ public class DispatchTalendScheduledTaskExecutor implements ScheduledJob {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DispatchTalendScheduledTaskExecutor.class);
+		DispatchTalendScheduledJob.class);
 
 	@Reference
 	private DispatchLogLocalService _dispatchLogLocalService;
 
 	@Reference
-	private DispatchTalendScheduledTaskExecutorHelper
-		_dispatchTalendScheduledTaskExecutorHelper;
+	private DispatchTalendScheduledJobHelper
+		_dispatchTalendScheduledJobHelper;
 
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
