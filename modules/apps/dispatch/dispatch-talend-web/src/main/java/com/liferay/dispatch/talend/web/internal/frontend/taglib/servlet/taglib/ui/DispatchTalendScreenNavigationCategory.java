@@ -16,8 +16,8 @@ package com.liferay.dispatch.talend.web.internal.frontend.taglib.servlet.taglib.
 
 import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledTaskExecutor;
-import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledTaskExecutorHelper;
+import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledJob;
+import com.liferay.dispatch.talend.web.internal.executor.DispatchTalendScheduledJobHelper;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -53,7 +53,7 @@ public class DispatchTalendScreenNavigationCategory
 
 	@Override
 	public String getCategoryKey() {
-		return DispatchTalendScheduledTaskExecutor.SCHEDULED_JOB_TYPE_TALEND;
+		return DispatchTalendScheduledJob.SCHEDULED_JOB_TYPE_TALEND;
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class DispatchTalendScreenNavigationCategory
 		String scheduledJobType = dispatchTrigger.getJobType();
 
 		if (scheduledJobType.equals(
-				DispatchTalendScheduledTaskExecutor.
+				DispatchTalendScheduledJob.
 					SCHEDULED_JOB_TYPE_TALEND) &&
 			!dispatchTrigger.isSystem()) {
 
@@ -101,7 +101,7 @@ public class DispatchTalendScreenNavigationCategory
 
 		httpServletRequest.setAttribute(
 			"dispatchTalendScheduledTaskExecutorHelper",
-			_dispatchTalendScheduledTaskExecutorHelper);
+			_dispatchTalendScheduledJobHelper);
 
 		_jspRenderer.renderJSP(
 			_servletContext, httpServletRequest, httpServletResponse,
@@ -109,8 +109,8 @@ public class DispatchTalendScreenNavigationCategory
 	}
 
 	@Reference
-	private DispatchTalendScheduledTaskExecutorHelper
-		_dispatchTalendScheduledTaskExecutorHelper;
+	private DispatchTalendScheduledJobHelper
+		_dispatchTalendScheduledJobHelper;
 
 	@Reference
 	private JSPRenderer _jspRenderer;
