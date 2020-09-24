@@ -15,7 +15,7 @@
 package com.liferay.dispatch.internal.messaging;
 
 import com.liferay.dispatch.constants.DispatchConstants;
-import com.liferay.dispatch.executor.ScheduledTaskExecutor;
+import com.liferay.dispatch.job.ScheduledJob;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -64,11 +64,11 @@ public class DispatchMessageListener implements MessageListener {
 				_dispatchTriggerLocalService.getDispatchTrigger(
 					dispatchTriggerId);
 
-			ScheduledTaskExecutor scheduledTaskExecutor =
+			ScheduledJob scheduledJob =
 				_scheduledTaskExecutorServiceTrackerMap.getService(
 					dispatchTrigger.getJobType());
 
-			scheduledTaskExecutor.execute(dispatchTriggerId);
+			scheduledJob.execute(dispatchTriggerId);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -79,7 +79,7 @@ public class DispatchMessageListener implements MessageListener {
 	protected void activate(BundleContext bundleContext) {
 		_scheduledTaskExecutorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ScheduledTaskExecutor.class,
+				bundleContext, ScheduledJob.class,
 				"scheduled.task.executor.type");
 	}
 
@@ -94,7 +94,7 @@ public class DispatchMessageListener implements MessageListener {
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
 
-	private ServiceTrackerMap<String, ScheduledTaskExecutor>
+	private ServiceTrackerMap<String, ScheduledJob>
 		_scheduledTaskExecutorServiceTrackerMap;
 
 }
