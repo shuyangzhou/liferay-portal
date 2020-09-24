@@ -101,8 +101,7 @@ public class DispatchPortlet extends MVCPortlet {
 	protected void activate(BundleContext bundleContext) {
 		_scheduledTaskExecutorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ScheduledJob.class,
-				"scheduled.task.executor.type");
+				bundleContext, ScheduledJob.class, "scheduled.job.type");
 	}
 
 	@Deactivate

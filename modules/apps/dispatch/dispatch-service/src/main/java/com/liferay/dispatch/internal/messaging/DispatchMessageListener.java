@@ -79,8 +79,7 @@ public class DispatchMessageListener implements MessageListener {
 	protected void activate(BundleContext bundleContext) {
 		_scheduledTaskExecutorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ScheduledJob.class,
-				"scheduled.task.executor.type");
+				bundleContext, ScheduledJob.class, "scheduled.job.type");
 	}
 
 	@Deactivate
