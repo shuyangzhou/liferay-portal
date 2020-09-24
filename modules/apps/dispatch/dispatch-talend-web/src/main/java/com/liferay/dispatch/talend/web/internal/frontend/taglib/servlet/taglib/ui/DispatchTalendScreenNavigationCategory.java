@@ -99,7 +99,7 @@ public class DispatchTalendScreenNavigationCategory
 		throws IOException {
 
 		httpServletRequest.setAttribute(
-			"dispatchTalendScheduledTaskExecutorHelper",
+			"dispatchTalendScheduledJobHelper",
 			_dispatchTalendScheduledJobHelper);
 
 		_jspRenderer.renderJSP(
