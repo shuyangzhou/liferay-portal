@@ -200,8 +200,7 @@ public class DispatchTalendScheduledJob implements ScheduledJob {
 	private DispatchLogLocalService _dispatchLogLocalService;
 
 	@Reference
-	private DispatchTalendScheduledJobHelper
-		_dispatchTalendScheduledJobHelper;
+	private DispatchTalendScheduledJobHelper _dispatchTalendScheduledJobHelper;
 
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;

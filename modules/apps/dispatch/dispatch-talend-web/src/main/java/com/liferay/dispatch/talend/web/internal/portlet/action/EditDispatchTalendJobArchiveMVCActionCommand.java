@@ -76,8 +76,7 @@ public class EditDispatchTalendJobArchiveMVCActionCommand
 		EditDispatchTalendJobArchiveMVCActionCommand.class);
 
 	@Reference
-	private DispatchTalendScheduledJobHelper
-		_dispatchTalendScheduledJobHelper;
+	private DispatchTalendScheduledJobHelper _dispatchTalendScheduledJobHelper;
 
 	@Reference
 	private Portal _portal;

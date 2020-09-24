@@ -83,8 +83,7 @@ public class DispatchTalendScreenNavigationCategory
 		String scheduledJobType = dispatchTrigger.getJobType();
 
 		if (scheduledJobType.equals(
-				DispatchTalendScheduledJob.
-					SCHEDULED_JOB_TYPE_TALEND) &&
+				DispatchTalendScheduledJob.SCHEDULED_JOB_TYPE_TALEND) &&
 			!dispatchTrigger.isSystem()) {
 
 			return true;
@@ -109,8 +108,7 @@ public class DispatchTalendScreenNavigationCategory
 	}
 
 	@Reference
-	private DispatchTalendScheduledJobHelper
-		_dispatchTalendScheduledJobHelper;
+	private DispatchTalendScheduledJobHelper _dispatchTalendScheduledJobHelper;
 
 	@Reference
 	private JSPRenderer _jspRenderer;
