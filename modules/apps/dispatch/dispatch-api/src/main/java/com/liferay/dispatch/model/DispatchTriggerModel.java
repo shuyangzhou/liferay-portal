@@ -223,6 +223,50 @@ public interface DispatchTriggerModel
 	public void setCronExpression(String cronExpression);
 
 	/**
+	 * Returns the end date of this dispatch trigger.
+	 *
+	 * @return the end date of this dispatch trigger
+	 */
+	public Date getEndDate();
+
+	/**
+	 * Sets the end date of this dispatch trigger.
+	 *
+	 * @param endDate the end date of this dispatch trigger
+	 */
+	public void setEndDate(Date endDate);
+
+	/**
+	 * Returns the job properties of this dispatch trigger.
+	 *
+	 * @return the job properties of this dispatch trigger
+	 */
+	@AutoEscape
+	public String getJobProperties();
+
+	/**
+	 * Sets the job properties of this dispatch trigger.
+	 *
+	 * @param jobProperties the job properties of this dispatch trigger
+	 */
+	public void setJobProperties(String jobProperties);
+
+	/**
+	 * Returns the job type of this dispatch trigger.
+	 *
+	 * @return the job type of this dispatch trigger
+	 */
+	@AutoEscape
+	public String getJobType();
+
+	/**
+	 * Sets the job type of this dispatch trigger.
+	 *
+	 * @param jobType the job type of this dispatch trigger
+	 */
+	public void setJobType(String jobType);
+
+	/**
 	 * Returns the name of this dispatch trigger.
 	 *
 	 * @return the name of this dispatch trigger
@@ -236,6 +280,20 @@ public interface DispatchTriggerModel
 	 * @param name the name of this dispatch trigger
 	 */
 	public void setName(String name);
+
+	/**
+	 * Returns the start date of this dispatch trigger.
+	 *
+	 * @return the start date of this dispatch trigger
+	 */
+	public Date getStartDate();
+
+	/**
+	 * Sets the start date of this dispatch trigger.
+	 *
+	 * @param startDate the start date of this dispatch trigger
+	 */
+	public void setStartDate(Date startDate);
 
 	/**
 	 * Returns the system of this dispatch trigger.
@@ -257,35 +315,5 @@ public interface DispatchTriggerModel
 	 * @param system the system of this dispatch trigger
 	 */
 	public void setSystem(boolean system);
-
-	/**
-	 * Returns the type of this dispatch trigger.
-	 *
-	 * @return the type of this dispatch trigger
-	 */
-	@AutoEscape
-	public String getType();
-
-	/**
-	 * Sets the type of this dispatch trigger.
-	 *
-	 * @param type the type of this dispatch trigger
-	 */
-	public void setType(String type);
-
-	/**
-	 * Returns the type settings of this dispatch trigger.
-	 *
-	 * @return the type settings of this dispatch trigger
-	 */
-	@AutoEscape
-	public String getTypeSettings();
-
-	/**
-	 * Sets the type settings of this dispatch trigger.
-	 *
-	 * @param typeSettings the type settings of this dispatch trigger
-	 */
-	public void setTypeSettings(String typeSettings);
 
 }

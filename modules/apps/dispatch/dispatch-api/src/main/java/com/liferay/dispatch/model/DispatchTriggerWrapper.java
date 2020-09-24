@@ -51,10 +51,12 @@ public class DispatchTriggerWrapper
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("active", isActive());
 		attributes.put("cronExpression", getCronExpression());
+		attributes.put("endDate", getEndDate());
+		attributes.put("jobProperties", getJobProperties());
+		attributes.put("jobType", getJobType());
 		attributes.put("name", getName());
+		attributes.put("startDate", getStartDate());
 		attributes.put("system", isSystem());
-		attributes.put("type", getType());
-		attributes.put("typeSettings", getTypeSettings());
 
 		return attributes;
 	}
@@ -115,28 +117,40 @@ public class DispatchTriggerWrapper
 			setCronExpression(cronExpression);
 		}
 
+		Date endDate = (Date)attributes.get("endDate");
+
+		if (endDate != null) {
+			setEndDate(endDate);
+		}
+
+		String jobProperties = (String)attributes.get("jobProperties");
+
+		if (jobProperties != null) {
+			setJobProperties(jobProperties);
+		}
+
+		String jobType = (String)attributes.get("jobType");
+
+		if (jobType != null) {
+			setJobType(jobType);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
 			setName(name);
 		}
 
+		Date startDate = (Date)attributes.get("startDate");
+
+		if (startDate != null) {
+			setStartDate(startDate);
+		}
+
 		Boolean system = (Boolean)attributes.get("system");
 
 		if (system != null) {
 			setSystem(system);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
 		}
 	}
 
@@ -190,11 +204,41 @@ public class DispatchTriggerWrapper
 		return model.getDispatchTriggerId();
 	}
 
+	/**
+	 * Returns the end date of this dispatch trigger.
+	 *
+	 * @return the end date of this dispatch trigger
+	 */
 	@Override
-	public Date getEndDate()
-		throws com.liferay.portal.kernel.scheduler.SchedulerException {
-
+	public Date getEndDate() {
 		return model.getEndDate();
+	}
+
+	/**
+	 * Returns the job properties of this dispatch trigger.
+	 *
+	 * @return the job properties of this dispatch trigger
+	 */
+	@Override
+	public String getJobProperties() {
+		return model.getJobProperties();
+	}
+
+	/**
+	 * Returns the job type of this dispatch trigger.
+	 *
+	 * @return the job type of this dispatch trigger
+	 */
+	@Override
+	public String getJobType() {
+		return model.getJobType();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getJobUnicodeProperties() {
+
+		return model.getJobUnicodeProperties();
 	}
 
 	/**
@@ -237,10 +281,13 @@ public class DispatchTriggerWrapper
 		return model.getPrimaryKey();
 	}
 
+	/**
+	 * Returns the start date of this dispatch trigger.
+	 *
+	 * @return the start date of this dispatch trigger
+	 */
 	@Override
-	public Date getStartDate()
-		throws com.liferay.portal.kernel.scheduler.SchedulerException {
-
+	public Date getStartDate() {
 		return model.getStartDate();
 	}
 
@@ -252,33 +299,6 @@ public class DispatchTriggerWrapper
 	@Override
 	public boolean getSystem() {
 		return model.getSystem();
-	}
-
-	/**
-	 * Returns the type of this dispatch trigger.
-	 *
-	 * @return the type of this dispatch trigger
-	 */
-	@Override
-	public String getType() {
-		return model.getType();
-	}
-
-	/**
-	 * Returns the type settings of this dispatch trigger.
-	 *
-	 * @return the type settings of this dispatch trigger
-	 */
-	@Override
-	public String getTypeSettings() {
-		return model.getTypeSettings();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.util.UnicodeProperties
-		getTypeSettingsProperties() {
-
-		return model.getTypeSettingsProperties();
 	}
 
 	/**
@@ -386,9 +406,41 @@ public class DispatchTriggerWrapper
 		model.setDispatchTriggerId(dispatchTriggerId);
 	}
 
+	/**
+	 * Sets the end date of this dispatch trigger.
+	 *
+	 * @param endDate the end date of this dispatch trigger
+	 */
 	@Override
 	public void setEndDate(Date endDate) {
 		model.setEndDate(endDate);
+	}
+
+	/**
+	 * Sets the job properties of this dispatch trigger.
+	 *
+	 * @param jobProperties the job properties of this dispatch trigger
+	 */
+	@Override
+	public void setJobProperties(String jobProperties) {
+		model.setJobProperties(jobProperties);
+	}
+
+	/**
+	 * Sets the job type of this dispatch trigger.
+	 *
+	 * @param jobType the job type of this dispatch trigger
+	 */
+	@Override
+	public void setJobType(String jobType) {
+		model.setJobType(jobType);
+	}
+
+	@Override
+	public void setJobUnicodeProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties jobUnicodeProperties) {
+
+		model.setJobUnicodeProperties(jobUnicodeProperties);
 	}
 
 	/**
@@ -431,6 +483,11 @@ public class DispatchTriggerWrapper
 		model.setPrimaryKey(primaryKey);
 	}
 
+	/**
+	 * Sets the start date of this dispatch trigger.
+	 *
+	 * @param startDate the start date of this dispatch trigger
+	 */
 	@Override
 	public void setStartDate(Date startDate) {
 		model.setStartDate(startDate);
@@ -444,34 +501,6 @@ public class DispatchTriggerWrapper
 	@Override
 	public void setSystem(boolean system) {
 		model.setSystem(system);
-	}
-
-	/**
-	 * Sets the type of this dispatch trigger.
-	 *
-	 * @param type the type of this dispatch trigger
-	 */
-	@Override
-	public void setType(String type) {
-		model.setType(type);
-	}
-
-	/**
-	 * Sets the type settings of this dispatch trigger.
-	 *
-	 * @param typeSettings the type settings of this dispatch trigger
-	 */
-	@Override
-	public void setTypeSettings(String typeSettings) {
-		model.setTypeSettings(typeSettings);
-	}
-
-	@Override
-	public void setTypeSettingsProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties
-			typeSettingsUnicodeProperties) {
-
-		model.setTypeSettingsProperties(typeSettingsUnicodeProperties);
 	}
 
 	/**

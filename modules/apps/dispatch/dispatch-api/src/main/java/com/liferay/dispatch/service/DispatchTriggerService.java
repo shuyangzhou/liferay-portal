@@ -50,8 +50,8 @@ public interface DispatchTriggerService extends BaseService {
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.dispatch.service.impl.DispatchTriggerServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the dispatch trigger remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link DispatchTriggerServiceUtil} if injection and service tracking are not available.
 	 */
 	public DispatchTrigger addDispatchTrigger(
-			long userId, String name, String type,
-			UnicodeProperties typeSettingsUnicodeProperties)
+			long userId, UnicodeProperties jobUnicodeProperties, String jobType,
+			String name)
 		throws PortalException;
 
 	public void deleteDispatchTrigger(long dispatchTriggerId)
@@ -73,8 +73,8 @@ public interface DispatchTriggerService extends BaseService {
 		throws PortalException;
 
 	public DispatchTrigger updateDispatchTrigger(
-			long dispatchTriggerId, String name,
-			UnicodeProperties typeSettingsUnicodeProperties)
+			long dispatchTriggerId, UnicodeProperties jobUnicodeProperties,
+			String name)
 		throws PortalException;
 
 }

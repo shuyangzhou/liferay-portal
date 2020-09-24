@@ -78,7 +78,7 @@ public class DispatchTriggerCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -98,14 +98,18 @@ public class DispatchTriggerCacheModel
 		sb.append(active);
 		sb.append(", cronExpression=");
 		sb.append(cronExpression);
+		sb.append(", endDate=");
+		sb.append(endDate);
+		sb.append(", jobProperties=");
+		sb.append(jobProperties);
+		sb.append(", jobType=");
+		sb.append(jobType);
 		sb.append(", name=");
 		sb.append(name);
+		sb.append(", startDate=");
+		sb.append(startDate);
 		sb.append(", system=");
 		sb.append(system);
-		sb.append(", type=");
-		sb.append(type);
-		sb.append(", typeSettings=");
-		sb.append(typeSettings);
 		sb.append("}");
 
 		return sb.toString();
@@ -150,6 +154,27 @@ public class DispatchTriggerCacheModel
 			dispatchTriggerImpl.setCronExpression(cronExpression);
 		}
 
+		if (endDate == Long.MIN_VALUE) {
+			dispatchTriggerImpl.setEndDate(null);
+		}
+		else {
+			dispatchTriggerImpl.setEndDate(new Date(endDate));
+		}
+
+		if (jobProperties == null) {
+			dispatchTriggerImpl.setJobProperties("");
+		}
+		else {
+			dispatchTriggerImpl.setJobProperties(jobProperties);
+		}
+
+		if (jobType == null) {
+			dispatchTriggerImpl.setJobType("");
+		}
+		else {
+			dispatchTriggerImpl.setJobType(jobType);
+		}
+
 		if (name == null) {
 			dispatchTriggerImpl.setName("");
 		}
@@ -157,21 +182,14 @@ public class DispatchTriggerCacheModel
 			dispatchTriggerImpl.setName(name);
 		}
 
+		if (startDate == Long.MIN_VALUE) {
+			dispatchTriggerImpl.setStartDate(null);
+		}
+		else {
+			dispatchTriggerImpl.setStartDate(new Date(startDate));
+		}
+
 		dispatchTriggerImpl.setSystem(system);
-
-		if (type == null) {
-			dispatchTriggerImpl.setType("");
-		}
-		else {
-			dispatchTriggerImpl.setType(type);
-		}
-
-		if (typeSettings == null) {
-			dispatchTriggerImpl.setTypeSettings("");
-		}
-		else {
-			dispatchTriggerImpl.setTypeSettings(typeSettings);
-		}
 
 		dispatchTriggerImpl.resetOriginalValues();
 
@@ -179,9 +197,7 @@ public class DispatchTriggerCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		dispatchTriggerId = objectInput.readLong();
@@ -195,11 +211,13 @@ public class DispatchTriggerCacheModel
 
 		active = objectInput.readBoolean();
 		cronExpression = objectInput.readUTF();
+		endDate = objectInput.readLong();
+		jobProperties = objectInput.readUTF();
+		jobType = objectInput.readUTF();
 		name = objectInput.readUTF();
+		startDate = objectInput.readLong();
 
 		system = objectInput.readBoolean();
-		type = objectInput.readUTF();
-		typeSettings = (String)objectInput.readObject();
 	}
 
 	@Override
@@ -231,6 +249,22 @@ public class DispatchTriggerCacheModel
 			objectOutput.writeUTF(cronExpression);
 		}
 
+		objectOutput.writeLong(endDate);
+
+		if (jobProperties == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(jobProperties);
+		}
+
+		if (jobType == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(jobType);
+		}
+
 		if (name == null) {
 			objectOutput.writeUTF("");
 		}
@@ -238,21 +272,9 @@ public class DispatchTriggerCacheModel
 			objectOutput.writeUTF(name);
 		}
 
+		objectOutput.writeLong(startDate);
+
 		objectOutput.writeBoolean(system);
-
-		if (type == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(type);
-		}
-
-		if (typeSettings == null) {
-			objectOutput.writeObject("");
-		}
-		else {
-			objectOutput.writeObject(typeSettings);
-		}
 	}
 
 	public long mvccVersion;
@@ -264,9 +286,11 @@ public class DispatchTriggerCacheModel
 	public long modifiedDate;
 	public boolean active;
 	public String cronExpression;
+	public long endDate;
+	public String jobProperties;
+	public String jobType;
 	public String name;
+	public long startDate;
 	public boolean system;
-	public String type;
-	public String typeSettings;
 
 }
