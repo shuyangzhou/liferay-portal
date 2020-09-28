@@ -86,6 +86,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.FutureTask;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletMode;
@@ -247,7 +248,20 @@ public class PortletTracker
 		_serviceTracker = new ServiceTracker<>(
 			_bundleContext, Portlet.class, this);
 
-		_serviceTracker.open();
+		_futureTask = new FutureTask<>(
+			() -> {
+				_serviceTracker.open();
+
+				return null;
+			});
+
+		Thread serviceTrackerOpenerThread = new Thread(
+			_futureTask,
+			PortletTracker.class.getName() + "-ServiceTrackerOpener");
+
+		serviceTrackerOpenerThread.setDaemon(true);
+
+		serviceTrackerOpenerThread.start();
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Activated");
@@ -1217,6 +1231,14 @@ public class PortletTracker
 
 	@Deactivate
 	protected void deactivate() {
+		try {
+			_futureTask.get();
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to stop service tracker opener thread", exception);
+		}
+
 		_serviceTracker.close();
 
 		if (_log.isInfoEnabled()) {
@@ -1369,6 +1391,7 @@ public class PortletTracker
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
+	private FutureTask<Void> _futureTask;
 	private String _httpServiceEndpoint = StringPool.BLANK;
 
 	@Reference(
