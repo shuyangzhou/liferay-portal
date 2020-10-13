@@ -14,7 +14,6 @@
 
 package com.liferay.portal.upgrade.internal.registry;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.SafeClosable;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -58,9 +57,11 @@ public class UpgradeStepRegistratorTracker {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_serviceTracker = ServiceTrackerFactory.open(
+		_serviceTracker = new ServiceTracker(
 			bundleContext, UpgradeStepRegistrator.class,
 			new UpgradeStepRegistratorServiceTrackerCustomizer());
+
+		_serviceTracker.open();
 	}
 
 	@Deactivate
