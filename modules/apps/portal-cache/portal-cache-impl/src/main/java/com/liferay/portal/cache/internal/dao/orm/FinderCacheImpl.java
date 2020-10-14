@@ -14,8 +14,7 @@
 
 package com.liferay.portal.cache.internal.dao.orm;
 
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.servlet.filters.threadlocal.ThreadLocalFilterThreadLocal;
 
 import java.io.Serializable;
@@ -50,10 +50,13 @@ import java.util.concurrent.ConcurrentMap;
 import org.apache.commons.collections.map.LRUMap;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Brian Wing Shun Chan
@@ -370,6 +373,8 @@ public class FinderCacheImpl
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		_valueObjectFinderCacheEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_ENABLED));
 		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
@@ -397,20 +402,19 @@ public class FinderCacheImpl
 
 		portalCacheManager.registerPortalCacheManagerListener(this);
 
-		_finderPathServiceTrackerMap =
-			ServiceTrackerMapFactory.openMultiValueMap(
-				bundleContext, FinderPath.class, "cache.name");
-		_argumentsResolverServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ArgumentsResolver.class,
-				"model.impl.class.name");
+		_finderPathServiceTracker = ServiceTrackerFactory.open(
+			bundleContext, FinderPath.class,
+			new FinderPathServiceTrackerCustomizer());
+		_argumentsResolverServiceTracker = ServiceTrackerFactory.open(
+			bundleContext, ArgumentsResolver.class,
+			new ArgumentsResolverServiceTrackerCustomizer());
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_finderPathServiceTrackerMap.close();
+		_finderPathServiceTracker.close();
 
-		_argumentsResolverServiceTrackerMap.close();
+		_argumentsResolverServiceTracker.close();
 	}
 
 	private void _clearCache(String cacheName) {
@@ -423,8 +427,8 @@ public class FinderCacheImpl
 		FinderPath finderPath, String className, BaseModel<?> baseModel,
 		boolean checkColumn, boolean original) {
 
-		ArgumentsResolver argumentsResolver =
-			_argumentsResolverServiceTrackerMap.getService(className);
+		ArgumentsResolver argumentsResolver = _argumentsResolverMap.get(
+			className);
 
 		return argumentsResolver.getArguments(
 			finderPath, baseModel, checkColumn, original);
@@ -438,12 +442,11 @@ public class FinderCacheImpl
 		return cacheName.concat(".List1");
 	}
 
-	private List<FinderPath> _getFinderPaths(String cacheName) {
-		List<FinderPath> finderPaths = _finderPathServiceTrackerMap.getService(
-			cacheName);
+	private Set<FinderPath> _getFinderPaths(String cacheName) {
+		Set<FinderPath> finderPaths = _finderPathSetMap.get(cacheName);
 
 		if (finderPaths == null) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 
 		return finderPaths;
@@ -506,10 +509,14 @@ public class FinderCacheImpl
 	private static final String _GROUP_KEY_PREFIX =
 		FinderCache.class.getName() + StringPool.PERIOD;
 
-	private ServiceTrackerMap<String, ArgumentsResolver>
-		_argumentsResolverServiceTrackerMap;
-	private ServiceTrackerMap<String, List<FinderPath>>
-		_finderPathServiceTrackerMap;
+	private final Map<String, ArgumentsResolver> _argumentsResolverMap =
+		new ConcurrentHashMap<>();
+	private ServiceTracker<ArgumentsResolver, String>
+		_argumentsResolverServiceTracker;
+	private BundleContext _bundleContext;
+	private ServiceTracker<FinderPath, FinderPath> _finderPathServiceTracker;
+	private final Map<String, Set<FinderPath>> _finderPathSetMap =
+		new ConcurrentHashMap<>();
 	private ThreadLocal<LRUMap> _localCache;
 
 	@Reference
@@ -551,6 +558,104 @@ public class FinderCacheImpl
 
 		private final Serializable _cacheKey;
 		private final String _className;
+
+	}
+
+	private class ArgumentsResolverServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<ArgumentsResolver, String> {
+
+		@Override
+		public String addingService(
+			ServiceReference<ArgumentsResolver> serviceReference) {
+
+			String modelImplClassName = (String)serviceReference.getProperty(
+				"model.impl.class.name");
+
+			if (Validator.isNull(modelImplClassName)) {
+				return null;
+			}
+
+			_argumentsResolverMap.put(
+				modelImplClassName,
+				_bundleContext.getService(serviceReference));
+
+			return modelImplClassName;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<ArgumentsResolver> serviceReference,
+			String modelImplClassName) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<ArgumentsResolver> serviceReference,
+			String modelImplClassName) {
+
+			_argumentsResolverMap.remove(modelImplClassName);
+
+			_bundleContext.ungetService(serviceReference);
+		}
+
+	}
+
+	private class FinderPathServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<FinderPath, FinderPath> {
+
+		@Override
+		public FinderPath addingService(
+			ServiceReference<FinderPath> serviceReference) {
+
+			String cacheName = (String)serviceReference.getProperty(
+				"cache.name");
+
+			if (Validator.isNull(cacheName)) {
+				return null;
+			}
+
+			FinderPath finderPath = _bundleContext.getService(serviceReference);
+
+			_finderPathSetMap.compute(
+				cacheName,
+				(key, value) -> {
+					if (value == null) {
+						value = new HashSet<>();
+					}
+
+					value.add(finderPath);
+
+					return value;
+				});
+
+			return finderPath;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<FinderPath> serviceReference,
+			FinderPath finderPath) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<FinderPath> serviceReference,
+			FinderPath finderPath) {
+
+			_finderPathSetMap.computeIfPresent(
+				(String)serviceReference.getProperty("cache.name"),
+				(key, value) -> {
+					value.remove(finderPath);
+
+					if (value.isEmpty()) {
+						return null;
+					}
+
+					return value;
+				});
+
+			_bundleContext.ungetService(serviceReference);
+		}
 
 	}
 
