@@ -290,16 +290,18 @@ public class FinderCacheImpl
 	public void removeByEntityCache(Class<?> clazz, BaseModel<?> baseModel) {
 		clearLocalCache();
 
-		String cacheName = clazz.getName();
+		String className = clazz.getName();
 
-		_clearCache(_getCacheNameWithPagination(cacheName));
-		_clearCache(_getCacheNameWithoutPagination(cacheName));
+		_clearCache(_getCacheNameWithPagination(className));
+		_clearCache(_getCacheNameWithoutPagination(className));
 
-		for (FinderPath finderPath : _getFinderPaths(cacheName)) {
+		for (FinderPath finderPath : _getFinderPaths(className)) {
 			removeResult(
-				finderPath, _getArguments(finderPath, baseModel, false, false));
+				finderPath,
+				_getArguments(finderPath, className, baseModel, false, false));
 			removeResult(
-				finderPath, _getArguments(finderPath, baseModel, true, true));
+				finderPath,
+				_getArguments(finderPath, className, baseModel, true, true));
 		}
 	}
 
@@ -334,31 +336,35 @@ public class FinderCacheImpl
 
 		clearLocalCache();
 
-		String cacheName = clazz.getName();
+		String className = clazz.getName();
 
-		_clearCache(_getCacheNameWithPagination(cacheName));
+		_clearCache(_getCacheNameWithPagination(className));
 
 		for (FinderPath finderPath :
-				_getFinderPaths(_getCacheNameWithoutPagination(cacheName))) {
+				_getFinderPaths(_getCacheNameWithoutPagination(className))) {
 
 			if (baseModel.isNew()) {
 				_removeResult(
 					finderPath,
-					_getArguments(finderPath, baseModel, false, false));
+					_getArguments(
+						finderPath, className, baseModel, false, false));
 			}
 			else {
 				_removeResult(
 					finderPath,
-					_getArguments(finderPath, baseModel, true, false));
+					_getArguments(
+						finderPath, className, baseModel, true, false));
 				_removeResult(
 					finderPath,
-					_getArguments(finderPath, baseModel, true, true));
+					_getArguments(
+						finderPath, className, baseModel, true, true));
 			}
 		}
 
-		for (FinderPath finderPath : _getFinderPaths(cacheName)) {
+		for (FinderPath finderPath : _getFinderPaths(className)) {
 			_removeResult(
-				finderPath, _getArguments(finderPath, baseModel, true, true));
+				finderPath,
+				_getArguments(finderPath, className, baseModel, true, true));
 		}
 	}
 
@@ -396,7 +402,8 @@ public class FinderCacheImpl
 				bundleContext, FinderPath.class, "cache.name");
 		_argumentsResolverServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ArgumentsResolver.class, "model.class.name");
+				bundleContext, ArgumentsResolver.class,
+				"model.impl.class.name");
 	}
 
 	@Deactivate
@@ -413,12 +420,11 @@ public class FinderCacheImpl
 	}
 
 	private Object[] _getArguments(
-		FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
-		boolean original) {
+		FinderPath finderPath, String className, BaseModel<?> baseModel,
+		boolean checkColumn, boolean original) {
 
 		ArgumentsResolver argumentsResolver =
-			_argumentsResolverServiceTrackerMap.getService(
-				baseModel.getModelClassName());
+			_argumentsResolverServiceTrackerMap.getService(className);
 
 		return argumentsResolver.getArguments(
 			finderPath, baseModel, checkColumn, original);
