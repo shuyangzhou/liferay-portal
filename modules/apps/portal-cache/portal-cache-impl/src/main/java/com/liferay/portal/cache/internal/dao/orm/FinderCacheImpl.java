@@ -89,6 +89,8 @@ public class FinderCacheImpl
 		_clearCache(className);
 		_clearCache(_getCacheNameWithPagination(className));
 		_clearCache(_getCacheNameWithoutPagination(className));
+
+		_clearDSLQueryCache(className);
 	}
 
 	/**
@@ -298,6 +300,8 @@ public class FinderCacheImpl
 		_clearCache(_getCacheNameWithPagination(className));
 		_clearCache(_getCacheNameWithoutPagination(className));
 
+		_clearDSLQueryCache(className);
+
 		for (FinderPath finderPath : _getFinderPaths(className)) {
 			removeResult(
 				finderPath,
@@ -321,6 +325,15 @@ public class FinderCacheImpl
 		removeCache(cacheName);
 		removeCache(_getCacheNameWithPagination(cacheName));
 		removeCache(_getCacheNameWithoutPagination(cacheName));
+
+		Set<String> dslQueryCacheNames = _dslQueryCacheNameSetMap.get(
+			cacheName);
+
+		if (dslQueryCacheNames != null) {
+			for (String dslQueryCacheName : dslQueryCacheNames) {
+				removeCache(dslQueryCacheName);
+			}
+		}
 	}
 
 	@Override
@@ -342,6 +355,8 @@ public class FinderCacheImpl
 		String className = clazz.getName();
 
 		_clearCache(_getCacheNameWithPagination(className));
+
+		_clearDSLQueryCache(className);
 
 		for (FinderPath finderPath :
 				_getFinderPaths(_getCacheNameWithoutPagination(className))) {
@@ -421,6 +436,17 @@ public class FinderCacheImpl
 		PortalCache<?, ?> portalCache = _getPortalCache(cacheName);
 
 		portalCache.removeAll();
+	}
+
+	private void _clearDSLQueryCache(String className) {
+		Set<String> dslQueryCacheNames = _dslQueryCacheNameSetMap.get(
+			className);
+
+		if (dslQueryCacheNames != null) {
+			for (String dslQueryCacheName : dslQueryCacheNames) {
+				_clearCache(dslQueryCacheName);
+			}
+		}
 	}
 
 	private Object[] _getArguments(
@@ -514,10 +540,14 @@ public class FinderCacheImpl
 	private ServiceTracker<ArgumentsResolver, String>
 		_argumentsResolverServiceTracker;
 	private BundleContext _bundleContext;
+	private final Map<String, Set<String>> _dslQueryCacheNameSetMap =
+		new ConcurrentHashMap<>();
 	private ServiceTracker<FinderPath, FinderPath> _finderPathServiceTracker;
 	private final Map<String, Set<FinderPath>> _finderPathSetMap =
 		new ConcurrentHashMap<>();
 	private ThreadLocal<LRUMap> _localCache;
+	private final Map<String, String> _modelImplClassNameMap =
+		new ConcurrentHashMap<>();
 
 	@Reference
 	private MultiVMPool _multiVMPool;
@@ -579,6 +609,13 @@ public class FinderCacheImpl
 				modelImplClassName,
 				_bundleContext.getService(serviceReference));
 
+			String tableName = (String)serviceReference.getProperty(
+				"table.name");
+
+			if (Validator.isNotNull(tableName)) {
+				_modelImplClassNameMap.put(tableName, modelImplClassName);
+			}
+
 			return modelImplClassName;
 		}
 
@@ -594,6 +631,13 @@ public class FinderCacheImpl
 			String modelImplClassName) {
 
 			_argumentsResolverMap.remove(modelImplClassName);
+
+			String tableName = (String)serviceReference.getProperty(
+				"table.name");
+
+			if (Validator.isNotNull(tableName)) {
+				_modelImplClassNameMap.remove(tableName);
+			}
 
 			_bundleContext.ungetService(serviceReference);
 		}
@@ -612,6 +656,34 @@ public class FinderCacheImpl
 
 			if (Validator.isNull(cacheName)) {
 				return null;
+			}
+
+			String[] tableNames = (String[])serviceReference.getProperty(
+				"table.names");
+
+			if (tableNames != null) {
+				for (String tableName : tableNames) {
+					String modelImplClassName = _modelImplClassNameMap.get(
+						tableName);
+
+					if (Validator.isNull(modelImplClassName)) {
+						throw new IllegalArgumentException(
+							"Unable to find corresponding model impl class " +
+								"for table " + tableName);
+					}
+
+					_dslQueryCacheNameSetMap.compute(
+						modelImplClassName,
+						(key, value) -> {
+							if (value == null) {
+								value = new HashSet<>();
+							}
+
+							value.add(cacheName);
+
+							return value;
+						});
+				}
 			}
 
 			FinderPath finderPath = _bundleContext.getService(serviceReference);
@@ -642,8 +714,11 @@ public class FinderCacheImpl
 			ServiceReference<FinderPath> serviceReference,
 			FinderPath finderPath) {
 
+			String cacheName = (String)serviceReference.getProperty(
+				"cache.name");
+
 			_finderPathSetMap.computeIfPresent(
-				(String)serviceReference.getProperty("cache.name"),
+				cacheName,
 				(key, value) -> {
 					value.remove(finderPath);
 
@@ -653,6 +728,32 @@ public class FinderCacheImpl
 
 					return value;
 				});
+
+			String[] tableNames = (String[])serviceReference.getProperty(
+				"table.names");
+
+			if (tableNames != null) {
+				for (String tableName : tableNames) {
+					String modelImplClassName = _modelImplClassNameMap.get(
+						tableName);
+
+					if (Validator.isNull(modelImplClassName)) {
+						continue;
+					}
+
+					_dslQueryCacheNameSetMap.computeIfPresent(
+						modelImplClassName,
+						(key, value) -> {
+							value.remove(cacheName);
+
+							if (value.isEmpty()) {
+								return null;
+							}
+
+							return value;
+						});
+				}
+			}
 
 			_bundleContext.ungetService(serviceReference);
 		}

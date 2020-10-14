@@ -107,6 +107,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -2260,13 +2261,17 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 				_argumentsResolverServiceRegistration = _bundleContext.registerService(
 					ArgumentsResolver.class, new ${entity.name}ModelArgumentsResolver(),
-					MapUtil.singletonDictionary(
-						<#if serviceBuilder.isVersionGTE_7_4_0()>
-							"model.impl.class.name", ${entity.name}Impl.class.getName()
-						<#else>
-							"model.class.name", ${entity.name}.class.getName()
-						</#if>
-					));
+					<#if serviceBuilder.isVersionGTE_7_4_0()>
+						new HashMapDictionary() {
+							{
+								put("model.impl.class.name", ${entity.name}Impl.class.getName());
+								put("table.name", ${entity.name}Table.INSTANCE.getTableName());
+							}
+						}
+					<#else>
+						MapUtil.singletonDictionary("model.class.name", ${entity.name}.class.getName())
+					</#if>
+					);
 			<#else>
 				Registry registry = RegistryUtil.getRegistry();
 
@@ -2274,7 +2279,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					ArgumentsResolver.class, new ${entity.name}ModelArgumentsResolver(),
 					HashMapBuilder.<String, Object>put(
 						<#if serviceBuilder.isVersionGTE_7_4_0()>
-							"model.impl.class.name", ${entity.name}Impl.class.getName()
+								"model.impl.class.name", ${entity.name}Impl.class.getName()
+							).put(
+								"table.name", ${entity.name}Table.INSTANCE.getTableName()
 						<#else>
 							"model.class.name", ${entity.name}.class.getName()
 						</#if>
@@ -2847,26 +2854,75 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		}
 	</#if>
 
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		@Override
+		protected FinderCache getFinderCache() {
+			<#if !entity.isCacheEnabled()>
+				return dummyFinderCache;
+			<#elseif osgiModule>
+				return finderCache;
+			<#else>
+				return FinderCacheUtil.getFinderCache();
+			</#if>
+		}
+
+		@Override
+		protected FinderPath getDSLQueryFinderPath(
+			String sql, String cacheName, String[] params, String[] tableNames, boolean baseModelResult) {
+
+			return _dslQueryFinderPathMap.computeIfAbsent(
+				sql, key -> _createFinderPath(cacheName, "dslQuery", params, new String[0], tableNames, baseModelResult));
+		}
+
+		private Map<String, FinderPath> _dslQueryFinderPathMap = new ConcurrentHashMap();
+	</#if>
+
 	<#if serviceBuilder.isVersionGTE_7_3_0()>
 		private FinderPath _createFinderPath(
 			String cacheName, String methodName, String[] params,
 			String[] columnNames, boolean baseModelResult) {
 
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+				return _createFinderPath(cacheName, methodName, params, columnNames, new String[0], baseModelResult);
+			}
+
+			private FinderPath _createFinderPath(
+				String cacheName, String methodName, String[] params,
+				String[] columnNames, String[] tableNames, boolean baseModelResult) {
+		</#if>
+
 			FinderPath finderPath = new FinderPath(cacheName, methodName, params, columnNames, baseModelResult);
 
 			if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
-				<#if osgiModule>
-					_serviceRegistrations.add(_bundleContext.registerService(FinderPath.class, finderPath, MapUtil.singletonDictionary("cache.name", cacheName)));
-				<#else>
-					Registry registry = RegistryUtil.getRegistry();
+			<#if osgiModule>
+				_serviceRegistrations.add(
+					_bundleContext.registerService(
+						FinderPath.class, finderPath,
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							new HashMapDictionary() {
+								{
+									put("cache.name", cacheName);
+									put("table.names", tableNames);
+								}
+							}
+						<#else>
+							MapUtil.singletonDictionary("cache.name", cacheName)
+						</#if>
+					));
+			<#else>
+				Registry registry = RegistryUtil.getRegistry();
 
-					_serviceRegistrations.add(
-						registry.registerService(
-							FinderPath.class, finderPath,
-							HashMapBuilder.<String, Object>put(
-								"cache.name", cacheName
-							).build()));
-				</#if>
+				_serviceRegistrations.add(
+					registry.registerService(
+						FinderPath.class, finderPath,
+						HashMapBuilder.<String, Object>put(
+							"cache.name", cacheName
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							).put(
+								"table.names", tableNames
+						</#if>
+						).build()));
+			</#if>
 			}
 
 			return finderPath;
