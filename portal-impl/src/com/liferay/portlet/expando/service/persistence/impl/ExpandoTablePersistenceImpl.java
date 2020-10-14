@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -991,7 +992,7 @@ public class ExpandoTablePersistenceImpl
 	 * Clears the cache for all expando tables.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1005,7 +1006,7 @@ public class ExpandoTablePersistenceImpl
 	 * Clears the cache for the expando table.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1653,7 +1654,9 @@ public class ExpandoTablePersistenceImpl
 		_argumentsResolverServiceRegistration = registry.registerService(
 			ArgumentsResolver.class, new ExpandoTableModelArgumentsResolver(),
 			HashMapBuilder.<String, Object>put(
-				"model.class.name", ExpandoTable.class.getName()
+				"model.impl.class.name", ExpandoTableImpl.class.getName()
+			).put(
+				"table.name", ExpandoTableTable.INSTANCE.getTableName()
 			).build());
 
 		_finderPathWithPaginationFindAll = _createFinderPath(
@@ -1739,9 +1742,38 @@ public class ExpandoTablePersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExpandoTablePersistenceImpl.class);
 
+	@Override
+	protected FinderCache getFinderCache() {
+		return FinderCacheUtil.getFinderCache();
+	}
+
+	@Override
+	protected FinderPath getDSLQueryFinderPath(
+		String sql, String cacheName, String[] params, String[] tableNames,
+		boolean baseModelResult) {
+
+		return _dslQueryFinderPathMap.computeIfAbsent(
+			sql,
+			key -> _createFinderPath(
+				cacheName, "dslQuery", params, new String[0], tableNames,
+				baseModelResult));
+	}
+
+	private Map<String, FinderPath> _dslQueryFinderPathMap =
+		new ConcurrentHashMap();
+
 	private FinderPath _createFinderPath(
 		String cacheName, String methodName, String[] params,
 		String[] columnNames, boolean baseModelResult) {
+
+		return _createFinderPath(
+			cacheName, methodName, params, columnNames, new String[0],
+			baseModelResult);
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String methodName, String[] params,
+		String[] columnNames, String[] tableNames, boolean baseModelResult) {
 
 		FinderPath finderPath = new FinderPath(
 			cacheName, methodName, params, columnNames, baseModelResult);
@@ -1754,6 +1786,8 @@ public class ExpandoTablePersistenceImpl
 					FinderPath.class, finderPath,
 					HashMapBuilder.<String, Object>put(
 						"cache.name", cacheName
+					).put(
+						"table.names", tableNames
 					).build()));
 		}
 

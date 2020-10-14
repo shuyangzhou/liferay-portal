@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -5392,7 +5393,7 @@ public class LayoutFriendlyURLPersistenceImpl
 	 * Clears the cache for all layout friendly urls.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5406,7 +5407,7 @@ public class LayoutFriendlyURLPersistenceImpl
 	 * Clears the cache for the layout friendly url.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -6148,7 +6149,9 @@ public class LayoutFriendlyURLPersistenceImpl
 			ArgumentsResolver.class,
 			new LayoutFriendlyURLModelArgumentsResolver(),
 			HashMapBuilder.<String, Object>put(
-				"model.class.name", LayoutFriendlyURL.class.getName()
+				"model.impl.class.name", LayoutFriendlyURLImpl.class.getName()
+			).put(
+				"table.name", LayoutFriendlyURLTable.INSTANCE.getTableName()
 			).build());
 
 		_finderPathWithPaginationFindAll = _createFinderPath(
@@ -6396,9 +6399,38 @@ public class LayoutFriendlyURLPersistenceImpl
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
+	@Override
+	protected FinderCache getFinderCache() {
+		return FinderCacheUtil.getFinderCache();
+	}
+
+	@Override
+	protected FinderPath getDSLQueryFinderPath(
+		String sql, String cacheName, String[] params, String[] tableNames,
+		boolean baseModelResult) {
+
+		return _dslQueryFinderPathMap.computeIfAbsent(
+			sql,
+			key -> _createFinderPath(
+				cacheName, "dslQuery", params, new String[0], tableNames,
+				baseModelResult));
+	}
+
+	private Map<String, FinderPath> _dslQueryFinderPathMap =
+		new ConcurrentHashMap();
+
 	private FinderPath _createFinderPath(
 		String cacheName, String methodName, String[] params,
 		String[] columnNames, boolean baseModelResult) {
+
+		return _createFinderPath(
+			cacheName, methodName, params, columnNames, new String[0],
+			baseModelResult);
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String methodName, String[] params,
+		String[] columnNames, String[] tableNames, boolean baseModelResult) {
 
 		FinderPath finderPath = new FinderPath(
 			cacheName, methodName, params, columnNames, baseModelResult);
@@ -6411,6 +6443,8 @@ public class LayoutFriendlyURLPersistenceImpl
 					FinderPath.class, finderPath,
 					HashMapBuilder.<String, Object>put(
 						"cache.name", cacheName
+					).put(
+						"table.names", tableNames
 					).build()));
 		}
 

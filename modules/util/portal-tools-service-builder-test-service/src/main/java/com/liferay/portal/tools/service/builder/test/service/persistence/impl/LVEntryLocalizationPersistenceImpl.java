@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -1602,8 +1602,16 @@ public class LVEntryLocalizationPersistenceImpl
 		_argumentsResolverServiceRegistration = _bundleContext.registerService(
 			ArgumentsResolver.class,
 			new LVEntryLocalizationModelArgumentsResolver(),
-			MapUtil.singletonDictionary(
-				"model.class.name", LVEntryLocalization.class.getName()));
+			new HashMapDictionary() {
+				{
+					put(
+						"model.impl.class.name",
+						LVEntryLocalizationImpl.class.getName());
+					put(
+						"table.name",
+						LVEntryLocalizationTable.INSTANCE.getTableName());
+				}
+			});
 
 		_finderPathWithPaginationFindAll = _createFinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
@@ -1699,9 +1707,38 @@ public class LVEntryLocalizationPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		LVEntryLocalizationPersistenceImpl.class);
 
+	@Override
+	protected FinderCache getFinderCache() {
+		return finderCache;
+	}
+
+	@Override
+	protected FinderPath getDSLQueryFinderPath(
+		String sql, String cacheName, String[] params, String[] tableNames,
+		boolean baseModelResult) {
+
+		return _dslQueryFinderPathMap.computeIfAbsent(
+			sql,
+			key -> _createFinderPath(
+				cacheName, "dslQuery", params, new String[0], tableNames,
+				baseModelResult));
+	}
+
+	private Map<String, FinderPath> _dslQueryFinderPathMap =
+		new ConcurrentHashMap();
+
 	private FinderPath _createFinderPath(
 		String cacheName, String methodName, String[] params,
 		String[] columnNames, boolean baseModelResult) {
+
+		return _createFinderPath(
+			cacheName, methodName, params, columnNames, new String[0],
+			baseModelResult);
+	}
+
+	private FinderPath _createFinderPath(
+		String cacheName, String methodName, String[] params,
+		String[] columnNames, String[] tableNames, boolean baseModelResult) {
 
 		FinderPath finderPath = new FinderPath(
 			cacheName, methodName, params, columnNames, baseModelResult);
@@ -1710,7 +1747,12 @@ public class LVEntryLocalizationPersistenceImpl
 			_serviceRegistrations.add(
 				_bundleContext.registerService(
 					FinderPath.class, finderPath,
-					MapUtil.singletonDictionary("cache.name", cacheName)));
+					new HashMapDictionary() {
+						{
+							put("cache.name", cacheName);
+							put("table.names", tableNames);
+						}
+					}));
 		}
 
 		return finderPath;
