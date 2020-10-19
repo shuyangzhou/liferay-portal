@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.jdbc;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.dao.jdbc.pool.metrics.C3P0ConnectionPoolMetrics;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -54,16 +56,21 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.Closeable;
 
+import java.lang.reflect.Field;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import java.nio.file.Paths;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -73,6 +80,9 @@ import javax.management.ObjectName;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 
 import javax.sql.DataSource;
 
@@ -130,6 +140,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		String jndiName = properties.getProperty("jndi.name");
 
 		if (Validator.isNotNull(jndiName)) {
+			_makeMySQLDriverCompatibleWithIBMJvmCipherNames();
+
 			Thread currentThread = Thread.currentThread();
 
 			ClassLoader classLoader = currentThread.getContextClassLoader();
@@ -154,6 +166,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 		else {
 			testDatabaseClass(properties);
+
+			_makeMySQLDriverCompatibleWithIBMJvmCipherNames();
 
 			_waitForJDBCConnection(properties);
 		}
@@ -591,6 +605,71 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 					exception);
 
 				throw classNotFoundException;
+			}
+		}
+	}
+
+	private void _makeMySQLDriverCompatibleWithIBMJvmCipherNames() {
+
+		// https://issues.liferay.com/browse/LPS-120753
+
+		if (JavaDetector.isIBM()) {
+			boolean hasMysqlDriver = false;
+
+			Enumeration<Driver> enumeration = DriverManager.getDrivers();
+
+			while (enumeration.hasMoreElements()) {
+				Driver driver = enumeration.nextElement();
+
+				Class<?> clazz = driver.getClass();
+
+				String driverName = clazz.getName();
+
+				if (driverName.equals("com.mysql.cj.jdbc.Driver")) {
+					hasMysqlDriver = true;
+
+					break;
+				}
+			}
+
+			if (hasMysqlDriver) {
+				try {
+					SSLContext sslContext = SSLContext.getDefault();
+
+					SSLEngine engine = sslContext.createSSLEngine();
+
+					String[] ibmSupportedCipherSuites =
+						engine.getSupportedCipherSuites();
+
+					if ((ibmSupportedCipherSuites != null) &&
+						(ibmSupportedCipherSuites.length > 0)) {
+
+						Field allowedCiphersField =
+							ReflectionUtil.getDeclaredField(
+								Class.forName(
+									"com.mysql.cj.protocol.ExportControlled"),
+								"ALLOWED_CIPHERS");
+
+						List<String> allowedCiphers =
+							(List<String>)allowedCiphersField.get(null);
+
+						if (allowedCiphers.contains(
+								ibmSupportedCipherSuites[0])) {
+
+							return;
+						}
+
+						Collections.addAll(
+							allowedCiphers, ibmSupportedCipherSuites);
+					}
+				}
+				catch (Exception exception) {
+					_log.error(
+						"Unable to populate IBM JDK TLS cipher suite into " +
+							"MySQL Connector/J's allowed cipher list, " +
+								"consider disable SSL for connection",
+						exception);
+				}
 			}
 		}
 	}
