@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.security.permission.contributor.RoleCollection;
 import com.liferay.portal.kernel.security.permission.contributor.RoleContributor;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.segments.constants.SegmentsWebKeys;
 import com.liferay.segments.context.RequestContextMapper;
 import com.liferay.segments.model.SegmentsEntryRole;
 import com.liferay.segments.provider.SegmentsEntryProviderRegistry;
@@ -59,18 +60,23 @@ public class SegmentsEntryRoleContributor implements RoleContributor {
 	}
 
 	private long[] _getSegmentsEntryIds(RoleCollection roleCollection) {
-		long[] segmentsEntryIds = new long[0];
-
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
 		if (serviceContext == null) {
-			return segmentsEntryIds;
+			return new long[0];
 		}
 
 		HttpServletRequest httpServletRequest = serviceContext.getRequest();
 
 		if (httpServletRequest == null) {
+			return new long[0];
+		}
+
+		long[] segmentsEntryIds = (long[])httpServletRequest.getAttribute(
+			SegmentsWebKeys.SEGMENTS_ENTRY_IDS);
+
+		if (segmentsEntryIds != null) {
 			return segmentsEntryIds;
 		}
 
@@ -105,6 +111,9 @@ public class SegmentsEntryRoleContributor implements RoleContributor {
 					user.getUserId(), " in group ",
 					roleCollection.getGroupId()));
 		}
+
+		httpServletRequest.setAttribute(
+			SegmentsWebKeys.SEGMENTS_ENTRY_IDS, segmentsEntryIds);
 
 		return segmentsEntryIds;
 	}
