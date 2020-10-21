@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
+import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
+import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -34,6 +36,7 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.servlet.filters.threadlocal.ThreadLocalFilterThreadLocal;
 
 import java.io.Serializable;
@@ -128,7 +131,7 @@ public class FinderCacheImpl
 			return null;
 		}
 
-		Serializable cacheKey = finderPath.encodeCacheKey(args);
+		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 		Serializable cacheValue = null;
 		Map<LocalCacheKey, Serializable> localCache = null;
 		LocalCacheKey localCacheKey = null;
@@ -265,7 +268,7 @@ public class FinderCacheImpl
 			}
 		}
 
-		Serializable cacheKey = finderPath.encodeCacheKey(args);
+		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
 		if (_isLocalCacheEnabled()) {
 			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
@@ -386,6 +389,12 @@ public class FinderCacheImpl
 			_localCache = null;
 		}
 
+		_baseModelCacheKeyGenerator =
+			CacheKeyGeneratorUtil.getCacheKeyGenerator(
+				_BASE_MODEL_CACHE_KEY_GENERATOR_NAME);
+		_cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
+			FinderCache.class.getName());
+
 		PortalCacheManager<? extends Serializable, ? extends Serializable>
 			portalCacheManager = _multiVMPool.getPortalCacheManager();
 
@@ -410,6 +419,31 @@ public class FinderCacheImpl
 		PortalCache<?, ?> portalCache = _getPortalCache(cacheName);
 
 		portalCache.removeAll();
+	}
+
+	private Serializable _encodeCacheKey(
+		FinderPath finderPath, Object[] arguments) {
+
+		CacheKeyGenerator cacheKeyGenerator = _cacheKeyGenerator;
+
+		if (finderPath.isBaseModelResult()) {
+			cacheKeyGenerator = _baseModelCacheKeyGenerator;
+		}
+
+		String[] keys = new String[arguments.length * 2];
+
+		for (int i = 0; i < arguments.length; i++) {
+			int index = i * 2;
+
+			keys[index] = StringPool.PERIOD;
+			keys[index + 1] = StringUtil.toHexString(arguments[i]);
+		}
+
+		return cacheKeyGenerator.getCacheKey(
+			new String[] {
+				finderPath.getCacheKeyPrefix(),
+				StringUtil.toHexString(cacheKeyGenerator.getCacheKey(keys))
+			});
 	}
 
 	private Object[] _getArguments(
@@ -482,7 +516,7 @@ public class FinderCacheImpl
 			return;
 		}
 
-		Serializable cacheKey = finderPath.encodeCacheKey(args);
+		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
 		if (_isLocalCacheEnabled()) {
 			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
@@ -497,11 +531,16 @@ public class FinderCacheImpl
 		portalCache.remove(cacheKey);
 	}
 
+	private static final String _BASE_MODEL_CACHE_KEY_GENERATOR_NAME =
+		FinderCache.class.getName() + "#BaseModel";
+
 	private static final String _GROUP_KEY_PREFIX =
 		FinderCache.class.getName() + StringPool.PERIOD;
 
 	private ServiceTrackerMap<String, ArgumentsResolver>
 		_argumentsResolverServiceTrackerMap;
+	private CacheKeyGenerator _baseModelCacheKeyGenerator;
+	private CacheKeyGenerator _cacheKeyGenerator;
 	private ServiceTrackerMap<String, List<FinderPath>>
 		_finderPathServiceTrackerMap;
 	private ThreadLocal<LRUMap> _localCache;
