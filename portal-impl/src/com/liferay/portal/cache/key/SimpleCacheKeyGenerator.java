@@ -22,6 +22,10 @@ import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
  */
 public class SimpleCacheKeyGenerator extends BaseCacheKeyGenerator {
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public CacheKeyGenerator clone() {
 		return new SimpleCacheKeyGenerator();
