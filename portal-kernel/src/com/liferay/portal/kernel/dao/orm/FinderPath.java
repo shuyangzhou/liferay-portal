@@ -125,7 +125,7 @@ public class FinderPath {
 			keys[index + 1] = StringUtil.toHexString(arguments[i]);
 		}
 
-		return StringUtil.toHexString(_getCacheKey(keys));
+		return StringUtil.toHexString(_cacheKeyGenerator.getCacheKey(keys));
 	}
 
 	public Serializable encodeCacheKey(Object[] arguments) {
@@ -151,7 +151,8 @@ public class FinderPath {
 	 */
 	@Deprecated
 	public Serializable encodeCacheKey(String encodedArguments) {
-		return _getCacheKey(new String[] {_cacheKeyPrefix, encodedArguments});
+		return _cacheKeyGenerator.getCacheKey(
+			new String[] {_cacheKeyPrefix, encodedArguments});
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class FinderPath {
 	 */
 	@Deprecated
 	public Serializable encodeLocalCacheKey(String encodedArguments) {
-		return _getCacheKey(
+		return _cacheKeyGenerator.getCacheKey(
 			new String[] {
 				StringBundler.concat(
 					_cacheName, StringPool.PERIOD, _cacheKeyPrefix),
@@ -231,10 +232,6 @@ public class FinderPath {
 		).put(
 			String.class.getName(), String.class.getSimpleName()
 		).build();
-	}
-
-	private Serializable _getCacheKey(String[] keys) {
-		return _cacheKeyGenerator.getCacheKey(keys);
 	}
 
 	private void _initCacheKeyPrefix(String methodName, String[] params) {
