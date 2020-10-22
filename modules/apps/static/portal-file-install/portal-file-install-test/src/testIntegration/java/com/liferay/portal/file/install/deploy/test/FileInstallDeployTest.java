@@ -272,8 +272,8 @@ public class FileInstallDeployTest {
 			dummyCountDownLatch.await();
 
 			Assert.assertFalse(
-				"FAILED, bundle is attempting to re-install" +
-					"after changing its modifiedDate",
+				"FAILED, bundle is attempting to re-install after changing " +
+					"its modifiedDate",
 				bundleStoppedAtomicBoolean.get());
 		}
 		finally {
