@@ -31,23 +31,20 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.RegistryUtil;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Filter;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Filter;
 
 /**
  * @author Preston Crary
@@ -137,7 +134,7 @@ public class FinderCacheImplTest {
 
 		// Empty list
 
-		finderCache.putResult(finderPath, _KEY1, Collections.emptyList(), true);
+		finderCache.putResult(finderPath, _KEY1, Collections.emptyList());
 
 		Assert.assertSame(
 			Collections.emptyList(),
@@ -147,7 +144,7 @@ public class FinderCacheImplTest {
 
 		List<Long> list = Collections.singletonList(1L);
 
-		finderCache.putResult(finderPath, _KEY1, list, true);
+		finderCache.putResult(finderPath, _KEY1, list);
 
 		Assert.assertSame(list, finderCache.getResult(finderPath, _KEY1, null));
 	}
@@ -176,7 +173,7 @@ public class FinderCacheImplTest {
 
 		List<TestBaseModel> values = new ArrayList<>(map.values());
 
-		finderCache.putResult(_finderPath, _KEY1, values, true);
+		finderCache.putResult(_finderPath, _KEY1, values);
 
 		Object result = finderCache.getResult(
 			_finderPath, _KEY1, new TestBasePersistence(map));
@@ -186,7 +183,7 @@ public class FinderCacheImplTest {
 		map.put("c", new TestBaseModel("c"));
 
 		finderCache.putResult(
-			_finderPath, _KEY1, new ArrayList<>(map.values()), true);
+			_finderPath, _KEY1, new ArrayList<>(map.values()));
 
 		result = finderCache.getResult(
 			_finderPath, _KEY1, new TestBasePersistence(null));
@@ -220,8 +217,7 @@ public class FinderCacheImplTest {
 	private void _assertPutEmptyListInvalid(MultiVMPool multiVMPool) {
 		FinderCache finderCache = _activateFinderCache(multiVMPool);
 
-		finderCache.putResult(
-			_finderPath, _KEY1, Collections.emptyList(), true);
+		finderCache.putResult(_finderPath, _KEY1, Collections.emptyList());
 
 		Assert.assertNull(finderCache.getResult(_finderPath, _KEY2, null));
 	}
@@ -229,8 +225,7 @@ public class FinderCacheImplTest {
 	private void _assertPutEmptyListValid(MultiVMPool multiVMPool) {
 		FinderCache finderCache = _activateFinderCache(multiVMPool);
 
-		finderCache.putResult(
-			_finderPath, _KEY1, Collections.emptyList(), true);
+		finderCache.putResult(_finderPath, _KEY1, Collections.emptyList());
 
 		Assert.assertSame(
 			Collections.emptyList(),
