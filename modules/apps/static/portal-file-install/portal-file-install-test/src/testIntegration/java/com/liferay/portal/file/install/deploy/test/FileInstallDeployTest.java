@@ -199,8 +199,6 @@ public class FileInstallDeployTest {
 		Path dummyPath = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, dummyJarName);
 
-		Version baseVersion = new Version(1, 0, 0);
-
 		CountDownLatch dummyCountDownLatch = new CountDownLatch(1);
 		CountDownLatch installCountDownLatch = new CountDownLatch(1);
 
@@ -255,7 +253,10 @@ public class FileInstallDeployTest {
 		_bundleContext.addBundleListener(dummyBundleListener);
 
 		try {
-			_createJAR(path, _TEST_JAR_SYMBOLIC_NAME, baseVersion, null);
+			JarBuilder jarBuilder = new JarBuilder(
+				path, _TEST_JAR_SYMBOLIC_NAME);
+
+			jarBuilder.build();
 
 			installCountDownLatch.await();
 
@@ -264,7 +265,9 @@ public class FileInstallDeployTest {
 			Files.setLastModifiedTime(
 				path, FileTime.fromMillis(System.currentTimeMillis()));
 
-			_createJAR(dummyPath, dummyJarSymbolicName, baseVersion, null);
+			jarBuilder = new JarBuilder(dummyPath, dummyJarSymbolicName);
+
+			jarBuilder.build();
 
 			dummyCountDownLatch.await();
 
