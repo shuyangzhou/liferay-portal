@@ -68,7 +68,6 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -656,11 +655,15 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				List<String> allowedCiphers =
 					(List<String>)allowedCiphersField.get(null);
 
-				if (allowedCiphers.contains(ibmSupportedCipherSuites[0])) {
-					return;
-				}
+				for (String ibmSupportedCipherSuite :
+						ibmSupportedCipherSuites) {
 
-				Collections.addAll(allowedCiphers, ibmSupportedCipherSuites);
+					if (allowedCiphers.contains(ibmSupportedCipherSuite)) {
+						continue;
+					}
+
+					allowedCiphers.add(ibmSupportedCipherSuite);
+				}
 			}
 		}
 		catch (Exception exception) {
