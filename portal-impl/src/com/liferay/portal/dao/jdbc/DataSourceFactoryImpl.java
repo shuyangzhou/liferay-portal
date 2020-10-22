@@ -144,7 +144,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 				// https://issues.liferay.com/browse/LPS-120753
 
-				_makeMySQLDriverCompatibleWithIBMJvmCipherNames();
+				_populateIBMCipherSuites();
 			}
 
 			Thread currentThread = Thread.currentThread();
@@ -176,7 +176,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 				// https://issues.liferay.com/browse/LPS-120753
 
-				_makeMySQLDriverCompatibleWithIBMJvmCipherNames();
+				_populateIBMCipherSuites();
 			}
 
 			_waitForJDBCConnection(properties);
@@ -637,7 +637,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		return false;
 	}
 
-	private void _makeMySQLDriverCompatibleWithIBMJvmCipherNames() {
+	private void _populateIBMCipherSuites() {
 		try {
 			SSLContext sslContext = SSLContext.getDefault();
 
