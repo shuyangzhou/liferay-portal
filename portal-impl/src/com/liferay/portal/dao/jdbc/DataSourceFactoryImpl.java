@@ -625,7 +625,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 				String driverName = clazz.getName();
 
-				if (driverName.equals("com.mysql.cj.jdbc.Driver")) {
+				if (driverName.startsWith("com.mysql.")) {
 					hasMysqlDriver = true;
 
 					break;
