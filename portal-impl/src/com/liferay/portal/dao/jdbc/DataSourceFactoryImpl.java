@@ -623,23 +623,21 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			String[] ibmSupportedCipherSuites =
 				sslEngine.getSupportedCipherSuites();
 
-			if ((ibmSupportedCipherSuites != null) &&
-				(ibmSupportedCipherSuites.length > 0)) {
+			if ((ibmSupportedCipherSuites == null) ||
+				(ibmSupportedCipherSuites.length == 0)) {
 
-				Field allowedCiphersField = ReflectionUtil.getDeclaredField(
-					Class.forName("com.mysql.cj.protocol.ExportControlled"),
-					"ALLOWED_CIPHERS");
+				return;
+			}
 
-				List<String> allowedCiphers =
-					(List<String>)allowedCiphersField.get(null);
+			Field allowedCiphersField = ReflectionUtil.getDeclaredField(
+				Class.forName("com.mysql.cj.protocol.ExportControlled"),
+				"ALLOWED_CIPHERS");
 
-				for (String ibmSupportedCipherSuite :
-						ibmSupportedCipherSuites) {
+			List<String> allowedCiphers = (List<String>)allowedCiphersField.get(
+				null);
 
-					if (allowedCiphers.contains(ibmSupportedCipherSuite)) {
-						continue;
-					}
-
+			for (String ibmSupportedCipherSuite : ibmSupportedCipherSuites) {
+				if (!allowedCiphers.contains(ibmSupportedCipherSuite)) {
 					allowedCiphers.add(ibmSupportedCipherSuite);
 				}
 			}
