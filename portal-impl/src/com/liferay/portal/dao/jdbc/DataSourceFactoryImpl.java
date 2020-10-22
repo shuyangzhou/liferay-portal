@@ -64,7 +64,6 @@ import java.net.URLClassLoader;
 import java.nio.file.Paths;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -136,11 +135,15 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
-		if (JavaDetector.isIBM() && _isMySQLDriverPresent()) {
+		if (JavaDetector.isIBM()) {
+			String driverClassName = properties.getProperty("driverClassName");
 
-			// https://issues.liferay.com/browse/LPS-120753
+			if (driverClassName.startsWith("com.mysql.cj")) {
 
-			_populateIBMCipherSuites();
+				// https://issues.liferay.com/browse/LPS-120753
+
+				_populateIBMCipherSuites();
+			}
 		}
 
 		String jndiName = properties.getProperty("jndi.name");
@@ -609,24 +612,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				throw classNotFoundException;
 			}
 		}
-	}
-
-	private boolean _isMySQLDriverPresent() {
-		Enumeration<Driver> enumeration = DriverManager.getDrivers();
-
-		while (enumeration.hasMoreElements()) {
-			Driver driver = enumeration.nextElement();
-
-			Class<?> clazz = driver.getClass();
-
-			String driverName = clazz.getName();
-
-			if (driverName.startsWith("com.mysql.")) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private void _populateIBMCipherSuites() {
