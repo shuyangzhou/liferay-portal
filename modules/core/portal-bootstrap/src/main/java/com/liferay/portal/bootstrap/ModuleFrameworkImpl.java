@@ -783,25 +783,12 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		return properties;
 	}
 
-	private long _calculateChecksum(File file) {
+	private long _calculateChecksum(File file) throws IOException {
 		CRC32 crc32 = new CRC32();
 
-		String fileName = file.getName();
-
-		crc32.update(fileName.getBytes());
-
-		_calculateChecksum(file.lastModified(), crc32);
-		_calculateChecksum(file.length(), crc32);
+		crc32.update(Files.readAllBytes(file.toPath()));
 
 		return crc32.getValue();
-	}
-
-	private void _calculateChecksum(long l, CRC32 crc) {
-		for (int i = 0; i < 8; i++) {
-			crc.update((int)(l & 0xFF));
-
-			l >>= 8;
-		}
 	}
 
 	private void _checkPermission() throws PrincipalException {

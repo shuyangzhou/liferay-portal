@@ -15,6 +15,8 @@
 package com.liferay.portal.file.install.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -108,13 +110,13 @@ public class Scanner {
 	}
 
 	private static void _checksum(File file, CRC32 crc32) {
-		String name = file.getName();
-
-		crc32.update(name.getBytes());
-
 		if (file.isFile()) {
-			_checksum(file.lastModified(), crc32);
-			_checksum(file.length(), crc32);
+			try {
+				crc32.update(Files.readAllBytes(file.toPath()));
+			}
+			catch (IOException ioException) {
+				_log.error("Unable to read bytes for " + file, ioException);
+			}
 		}
 		else if (file.isDirectory()) {
 			File[] children = file.listFiles();
@@ -124,14 +126,6 @@ public class Scanner {
 					_checksum(child, crc32);
 				}
 			}
-		}
-	}
-
-	private static void _checksum(long l, CRC32 crc32) {
-		for (int i = 0; i < 8; i++) {
-			crc32.update((int)(l & 0x000000ff));
-
-			l >>= 8;
 		}
 	}
 
@@ -252,6 +246,8 @@ public class Scanner {
 
 		return files;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(Scanner.class);
 
 	private final FilenameFilter _filenameFilter;
 	private final Map<File, Long> _lastChecksums = new HashMap<>();
