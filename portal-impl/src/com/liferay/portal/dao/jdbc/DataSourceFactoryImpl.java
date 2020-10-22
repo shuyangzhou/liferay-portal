@@ -609,67 +609,61 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 	}
 
+	private boolean _isMySQLDriverPresent() {
+		Enumeration<Driver> enumeration = DriverManager.getDrivers();
+
+		while (enumeration.hasMoreElements()) {
+			Driver driver = enumeration.nextElement();
+
+			Class<?> clazz = driver.getClass();
+
+			String driverName = clazz.getName();
+
+			if (driverName.startsWith("com.mysql.")) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private void _makeMySQLDriverCompatibleWithIBMJvmCipherNames() {
 
 		// https://issues.liferay.com/browse/LPS-120753
 
-		if (JavaDetector.isIBM()) {
-			boolean hasMysqlDriver = false;
+		if (JavaDetector.isIBM() && _isMySQLDriverPresent()) {
+			try {
+				SSLContext sslContext = SSLContext.getDefault();
 
-			Enumeration<Driver> enumeration = DriverManager.getDrivers();
+				SSLEngine engine = sslContext.createSSLEngine();
 
-			while (enumeration.hasMoreElements()) {
-				Driver driver = enumeration.nextElement();
+				String[] ibmSupportedCipherSuites =
+					engine.getSupportedCipherSuites();
 
-				Class<?> clazz = driver.getClass();
+				if ((ibmSupportedCipherSuites != null) &&
+					(ibmSupportedCipherSuites.length > 0)) {
 
-				String driverName = clazz.getName();
+					Field allowedCiphersField = ReflectionUtil.getDeclaredField(
+						Class.forName("com.mysql.cj.protocol.ExportControlled"),
+						"ALLOWED_CIPHERS");
 
-				if (driverName.startsWith("com.mysql.")) {
-					hasMysqlDriver = true;
+					List<String> allowedCiphers =
+						(List<String>)allowedCiphersField.get(null);
 
-					break;
+					if (allowedCiphers.contains(ibmSupportedCipherSuites[0])) {
+						return;
+					}
+
+					Collections.addAll(
+						allowedCiphers, ibmSupportedCipherSuites);
 				}
 			}
-
-			if (hasMysqlDriver) {
-				try {
-					SSLContext sslContext = SSLContext.getDefault();
-
-					SSLEngine engine = sslContext.createSSLEngine();
-
-					String[] ibmSupportedCipherSuites =
-						engine.getSupportedCipherSuites();
-
-					if ((ibmSupportedCipherSuites != null) &&
-						(ibmSupportedCipherSuites.length > 0)) {
-
-						Field allowedCiphersField =
-							ReflectionUtil.getDeclaredField(
-								Class.forName(
-									"com.mysql.cj.protocol.ExportControlled"),
-								"ALLOWED_CIPHERS");
-
-						List<String> allowedCiphers =
-							(List<String>)allowedCiphersField.get(null);
-
-						if (allowedCiphers.contains(
-								ibmSupportedCipherSuites[0])) {
-
-							return;
-						}
-
-						Collections.addAll(
-							allowedCiphers, ibmSupportedCipherSuites);
-					}
-				}
-				catch (Exception exception) {
-					_log.error(
-						"Unable to populate IBM JDK TLS cipher suite into " +
-							"MySQL Connector/J's allowed cipher list, " +
-								"consider disable SSL for connection",
-						exception);
-				}
+			catch (Exception exception) {
+				_log.error(
+					"Unable to populate IBM JDK TLS cipher suite into MySQL " +
+						"Connector/J's allowed cipher list, consider disable " +
+							"SSL for connection",
+					exception);
 			}
 		}
 	}
