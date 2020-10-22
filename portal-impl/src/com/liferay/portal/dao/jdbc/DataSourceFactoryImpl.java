@@ -136,16 +136,16 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
+		if (JavaDetector.isIBM() && _isMySQLDriverPresent()) {
+
+			// https://issues.liferay.com/browse/LPS-120753
+
+			_populateIBMCipherSuites();
+		}
+
 		String jndiName = properties.getProperty("jndi.name");
 
 		if (Validator.isNotNull(jndiName)) {
-			if (JavaDetector.isIBM() && _isMySQLDriverPresent()) {
-
-				// https://issues.liferay.com/browse/LPS-120753
-
-				_populateIBMCipherSuites();
-			}
-
 			Thread currentThread = Thread.currentThread();
 
 			ClassLoader classLoader = currentThread.getContextClassLoader();
@@ -170,13 +170,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 		else {
 			testDatabaseClass(properties);
-
-			if (JavaDetector.isIBM() && _isMySQLDriverPresent()) {
-
-				// https://issues.liferay.com/browse/LPS-120753
-
-				_populateIBMCipherSuites();
-			}
 
 			_waitForJDBCConnection(properties);
 		}
