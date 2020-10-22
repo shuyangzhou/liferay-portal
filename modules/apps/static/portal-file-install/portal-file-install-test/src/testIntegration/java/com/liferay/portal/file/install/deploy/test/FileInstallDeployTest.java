@@ -221,9 +221,7 @@ public class FileInstallDeployTest {
 				if (type == BundleEvent.STARTED) {
 					installCountDownLatch.countDown();
 				}
-				else if ((type == BundleEvent.STOPPING) ||
-						 (type == BundleEvent.STOPPED)) {
-
+				else if (type == BundleEvent.STOPPED) {
 					bundleStoppedAtomicBoolean.set(true);
 				}
 			}
