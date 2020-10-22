@@ -618,10 +618,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		try {
 			SSLContext sslContext = SSLContext.getDefault();
 
-			SSLEngine engine = sslContext.createSSLEngine();
+			SSLEngine sslEngine = sslContext.createSSLEngine();
 
 			String[] ibmSupportedCipherSuites =
-				engine.getSupportedCipherSuites();
+				sslEngine.getSupportedCipherSuites();
 
 			if ((ibmSupportedCipherSuites != null) &&
 				(ibmSupportedCipherSuites.length > 0)) {
