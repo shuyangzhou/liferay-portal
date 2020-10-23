@@ -276,7 +276,7 @@ public class FileInstallDeployTest {
 		}
 		finally {
 			_bundleContext.removeBundleListener(bundleListener);
-			_bundleContext.addBundleListener(dummyBundleListener);
+			_bundleContext.removeBundleListener(dummyBundleListener);
 
 			Files.deleteIfExists(dummyPath);
 			Files.deleteIfExists(path);
