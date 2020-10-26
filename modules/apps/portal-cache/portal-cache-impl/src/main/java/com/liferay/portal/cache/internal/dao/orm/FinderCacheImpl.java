@@ -270,58 +270,37 @@ public class FinderCacheImpl
 		String cacheName = finderPath.getCacheName();
 		String cacheKeyPrefix = finderPath.getCacheKeyPrefix();
 
-		Map<String, FinderPath> finderPaths = _finderPathsMap.get(cacheName);
+		Map<String, FinderPath> finderPaths = _finderPathsMap.computeIfAbsent(
+			cacheName, key -> new ConcurrentHashMap<>());
 
-		if (finderPaths == null) {
-			finderPaths = new ConcurrentHashMap<>();
+		finderPaths.computeIfAbsent(
+			cacheKeyPrefix,
+			cacheKey -> {
+				if (cacheKey.startsWith("dslQuery")) {
+					for (String tableName :
+							FinderPath.decodeDSLQueryCacheName(cacheName)) {
 
-			Map<String, FinderPath> originalFinderPaths =
-				_finderPathsMap.putIfAbsent(cacheName, finderPaths);
+						String modelImplClassName = _modelImplClassNameMap.get(
+							tableName);
 
-			if (originalFinderPaths != null) {
-				finderPaths = originalFinderPaths;
-			}
-		}
-
-		if (!finderPaths.containsKey(cacheKeyPrefix)) {
-			FinderPath originalFinderPath = finderPaths.putIfAbsent(
-				cacheKeyPrefix, finderPath);
-
-			if ((originalFinderPath == null) &&
-				cacheKeyPrefix.startsWith("dslQuery")) {
-
-				for (String tableName :
-						FinderPath.decodeDSLQueryCacheName(cacheName)) {
-
-					String modelImplClassName = _modelImplClassNameMap.get(
-						tableName);
-
-					if (Validator.isNull(modelImplClassName)) {
-						throw new IllegalArgumentException(
-							"Unable to find corresponding model impl class " +
-								"for table " + tableName);
-					}
-
-					Set<String> dslQueryCacheNames =
-						_dslQueryCacheNameSetMap.get(modelImplClassName);
-
-					if (dslQueryCacheNames == null) {
-						dslQueryCacheNames = Collections.newSetFromMap(
-							new ConcurrentHashMap<>());
-
-						Set<String> originalDSLQueryCacheNames =
-							_dslQueryCacheNameSetMap.putIfAbsent(
-								modelImplClassName, dslQueryCacheNames);
-
-						if (originalDSLQueryCacheNames != null) {
-							dslQueryCacheNames = originalDSLQueryCacheNames;
+						if (Validator.isNull(modelImplClassName)) {
+							throw new IllegalArgumentException(
+								"Unable to find corresponding model impl " +
+									"class for table " + tableName);
 						}
-					}
 
-					dslQueryCacheNames.add(cacheName);
+						Set<String> dslQueryCacheNames =
+							_dslQueryCacheNameSetMap.computeIfAbsent(
+								modelImplClassName,
+								key -> Collections.newSetFromMap(
+									new ConcurrentHashMap<>()));
+
+						dslQueryCacheNames.add(cacheName);
+					}
 				}
-			}
-		}
+
+				return finderPath;
+			});
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
