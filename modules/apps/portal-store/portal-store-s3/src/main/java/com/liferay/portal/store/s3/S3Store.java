@@ -47,6 +47,7 @@ import com.liferay.document.library.kernel.exception.AccessDeniedException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
+import com.liferay.petra.io.AutoDeleteFileInputStream;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -167,6 +168,12 @@ public class S3Store implements Store {
 				companyId, repositoryId, fileName, versionLabel);
 
 			File file = _s3FileCache.getCacheFile(s3Object, fileName);
+
+			String filePath = file.toString();
+
+			if (filePath.contains("temp")) {
+				return new AutoDeleteFileInputStream(file);
+			}
 
 			return new FileInputStream(file);
 		}
