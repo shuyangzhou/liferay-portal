@@ -14,10 +14,10 @@
 
 package com.liferay.portal.upgrade.internal.registry;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.SafeClosable;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.FutureTask;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -58,9 +59,27 @@ public class UpgradeStepRegistratorTracker {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_serviceTracker = ServiceTrackerFactory.open(
+		_serviceTracker = new ServiceTracker(
 			bundleContext, UpgradeStepRegistrator.class,
 			new UpgradeStepRegistratorServiceTrackerCustomizer());
+
+		FutureTask<Void> futureTask = new FutureTask<>(
+			() -> {
+				_serviceTracker.open();
+
+				return null;
+			});
+
+		DependencyManagerSyncUtil.registerSyncFuture(futureTask);
+
+		Thread serviceTrackerOpenerThread = new Thread(
+			futureTask,
+			UpgradeStepRegistratorTracker.class.getName() +
+				"-ServiceTrackerOpener");
+
+		serviceTrackerOpenerThread.setDaemon(true);
+
+		serviceTrackerOpenerThread.start();
 	}
 
 	@Deactivate
