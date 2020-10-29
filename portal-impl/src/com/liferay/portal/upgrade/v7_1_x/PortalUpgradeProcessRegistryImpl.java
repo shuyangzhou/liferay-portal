@@ -51,6 +51,17 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(2, 0, 3), new UpgradePortalPreferences());
 
 		upgradeProcesses.put(new Version(2, 0, 4), new UpgradeUserGroup());
+
+		upgradeProcesses.put(
+			new Version(2, 0, 5), new UpgradeAnnouncementsPortletPreferences());
+
+		upgradeProcesses.put(
+			new Version(2, 0, 6),
+			new UpgradeCalendarTimeFormatPortletPreferences());
+
+		upgradeProcesses.put(
+			new Version(2, 0, 7),
+			new UpgradeCalendarClassNameIdsPortletPreferences());
 	}
 
 }
