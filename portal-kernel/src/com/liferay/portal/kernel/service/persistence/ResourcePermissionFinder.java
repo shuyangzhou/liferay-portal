@@ -29,11 +29,6 @@ public interface ResourcePermissionFinder {
 		long companyId, String name, int scope, String primKey, long[] roleIds,
 		long actionId);
 
-	public java.util.Map
-		<java.io.Serializable,
-		 com.liferay.portal.kernel.model.ResourcePermission> fetchByPrimaryKeys(
-			java.util.Set<java.io.Serializable> primaryKeys);
-
 	public java.util.List<com.liferay.portal.kernel.model.ResourcePermission>
 		findByResource(
 			long companyId, long groupId, String name, String primKey);
