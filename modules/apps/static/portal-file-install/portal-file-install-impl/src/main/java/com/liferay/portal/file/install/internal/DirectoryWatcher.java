@@ -613,7 +613,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				Artifact artifact = new Artifact();
 
 				artifact.setBundleId(bundle.getBundleId());
-				artifact.setChecksum(_loadChecksum(bundle, _bundleContext));
+				artifact.setChecksum(_loadChecksum(bundle));
 				artifact.setFile(new File(path));
 
 				_setArtifact(new File(path), artifact);
@@ -706,12 +706,10 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 		Bundle bundle = _bundleContext.getBundle(location);
 
-		if ((bundle != null) &&
-			(_loadChecksum(bundle, _bundleContext) != checksum)) {
-
+		if ((bundle != null) && (_loadChecksum(bundle) != checksum)) {
 			bundle.update(bufferedInputStream);
 
-			_storeChecksum(bundle, checksum, _bundleContext);
+			_storeChecksum(bundle, checksum);
 
 			return bundle;
 		}
@@ -765,9 +763,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 					if (version.equals(currentVersion)) {
 						bufferedInputStream.reset();
 
-						if (_loadChecksum(currentBundle, _bundleContext) !=
-								checksum) {
-
+						if (_loadChecksum(currentBundle) != checksum) {
 							if (_log.isWarnEnabled()) {
 								_log.warn(
 									StringBundler.concat(
@@ -780,8 +776,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 							_stopTransient(currentBundle);
 
-							_storeChecksum(
-								currentBundle, checksum, _bundleContext);
+							_storeChecksum(currentBundle, checksum);
 
 							currentBundle.update(bufferedInputStream);
 
@@ -808,7 +803,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				return bundle;
 			}
 
-			_storeChecksum(bundle, checksum, _bundleContext);
+			_storeChecksum(bundle, checksum);
 
 			modified.set(true);
 
@@ -844,10 +839,10 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		return _stateChanged.get();
 	}
 
-	private long _loadChecksum(Bundle bundle, BundleContext bundleContext) {
+	private long _loadChecksum(Bundle bundle) {
 		String key = _getBundleKey(bundle);
 
-		File file = bundleContext.getDataFile(key.concat(_CHECKSUM_SUFFIX));
+		File file = _bundleContext.getDataFile(key.concat(_CHECKSUM_SUFFIX));
 
 		if (!file.exists()) {
 			return Long.MIN_VALUE;
@@ -1200,12 +1195,10 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		}
 	}
 
-	private void _storeChecksum(
-		Bundle bundle, long checksum, BundleContext bundleContext) {
-
+	private void _storeChecksum(Bundle bundle, long checksum) {
 		String key = _getBundleKey(bundle);
 
-		File file = bundleContext.getDataFile(key.concat(_CHECKSUM_SUFFIX));
+		File file = _bundleContext.getDataFile(key.concat(_CHECKSUM_SUFFIX));
 
 		try (OutputStream outputStream = new FileOutputStream(file);
 			DataOutputStream dataOutputStream = new DataOutputStream(
@@ -1341,7 +1334,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 			_stopTransient(bundle);
 
-			_storeChecksum(bundle, artifact.getChecksum(), _bundleContext);
+			_storeChecksum(bundle, artifact.getChecksum());
 
 			try (InputStream inputStream = url.openStream()) {
 				bundle.update(inputStream);
