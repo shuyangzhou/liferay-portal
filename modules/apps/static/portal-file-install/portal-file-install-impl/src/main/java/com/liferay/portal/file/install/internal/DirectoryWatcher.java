@@ -1252,6 +1252,13 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 							StringPool.CLOSE_PARENTHESIS));
 				}
 
+				String key = _getBundleKey(bundle);
+
+				File dataFile = _bundleContext.getDataFile(
+					key.concat(_CHECKSUM_SUFFIX));
+
+				dataFile.delete();
+
 				bundle.uninstall();
 
 				return bundle;
