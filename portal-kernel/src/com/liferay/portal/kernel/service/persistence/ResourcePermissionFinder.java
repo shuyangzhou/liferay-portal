@@ -29,6 +29,10 @@ public interface ResourcePermissionFinder {
 		long companyId, String name, int scope, String primKey, long[] roleIds,
 		long actionId);
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public java.util.Map
 		<java.io.Serializable,
 		 com.liferay.portal.kernel.model.ResourcePermission> fetchByPrimaryKeys(

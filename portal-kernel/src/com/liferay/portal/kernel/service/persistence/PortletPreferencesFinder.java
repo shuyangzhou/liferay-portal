@@ -31,6 +31,10 @@ public interface PortletPreferencesFinder {
 		long ownerId, int ownerType, long plid, String portletId,
 		boolean excludeDefaultPreferences);
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public java.util.Map
 		<java.io.Serializable,
 		 com.liferay.portal.kernel.model.PortletPreferences> fetchByPrimaryKeys(

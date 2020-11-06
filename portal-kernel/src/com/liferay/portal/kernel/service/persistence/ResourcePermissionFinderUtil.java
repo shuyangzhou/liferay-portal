@@ -34,6 +34,10 @@ public class ResourcePermissionFinderUtil {
 			companyId, name, scope, primKey, roleIds, actionId);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public static java.util.Map
 		<java.io.Serializable,
 		 com.liferay.portal.kernel.model.ResourcePermission> fetchByPrimaryKeys(
