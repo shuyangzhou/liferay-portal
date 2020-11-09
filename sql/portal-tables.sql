@@ -972,6 +972,20 @@ create table PortletItem (
 	classNameId LONG
 );
 
+create table PortletPreferenceValue (
+	mvccVersion LONG default 0 not null,
+	ctCollectionId LONG default 0 not null,
+	portletPreferenceValueId LONG not null,
+	companyId LONG,
+	portletPreferencesId LONG,
+	name VARCHAR(255) null,
+	index_ INTEGER,
+	smallValue VARCHAR(255) null,
+	largeValue TEXT null,
+	readOnly BOOLEAN,
+	primary key (portletPreferenceValueId, ctCollectionId)
+);
+
 create table PortletPreferences (
 	mvccVersion LONG default 0 not null,
 	ctCollectionId LONG default 0 not null,
@@ -981,7 +995,6 @@ create table PortletPreferences (
 	ownerType INTEGER,
 	plid LONG,
 	portletId VARCHAR(200) null,
-	preferences TEXT null,
 	primary key (portletPreferencesId, ctCollectionId)
 );
 
