@@ -1,5 +1,6 @@
 package ${configYAML.apiPackagePath}.internal.resource.${escapedVersion};
 
+import com.liferay.portal.vulcan.jaxrs.resource.JAXRSResource;
 import com.liferay.portal.vulcan.resource.OpenAPIResource;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -29,7 +30,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/${escapedVersion}/openapi.properties",
-	service = OpenAPIResourceImpl.class
+	service = {JAXRSResource.class, OpenAPIResourceImpl.class}
 )
 @Generated("")
 @OpenAPIDefinition(
@@ -45,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 	)
 )
 @Path("/${openAPIYAML.info.version}")
-public class OpenAPIResourceImpl {
+public class OpenAPIResourceImpl implements JAXRSResource {
 
 	@GET
 	@Path("/openapi.{type:json|yaml}")
