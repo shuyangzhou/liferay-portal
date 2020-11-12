@@ -25,6 +25,7 @@ import com.liferay.portal.vulcan.fields.NestedFieldId;
 import com.liferay.portal.vulcan.fields.NestedFieldsContext;
 import com.liferay.portal.vulcan.fields.NestedFieldsContextThreadLocal;
 import com.liferay.portal.vulcan.internal.fields.servlet.NestedFieldsHttpServletRequestWrapper;
+import com.liferay.portal.vulcan.jaxrs.resource.JAXRSResource;
 import com.liferay.portal.vulcan.pagination.Page;
 
 import java.io.IOException;
@@ -62,7 +63,6 @@ import org.apache.cxf.jaxrs.provider.ProviderFactory;
 import org.apache.cxf.message.Message;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceObjects;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -122,16 +122,9 @@ public class NestedFieldsWriterInterceptor implements WriterInterceptor {
 		_nestedFieldServiceTrackerCustomizer =
 			nestedFieldServiceTrackerCustomizer;
 
-		try {
-			_serviceTracker = new ServiceTracker<>(
-				bundleContext,
-				bundleContext.createFilter(
-					"(&(api.version=*)(osgi.jaxrs.resource=true))"),
-				_nestedFieldServiceTrackerCustomizer);
-		}
-		catch (InvalidSyntaxException invalidSyntaxException) {
-			throw new RuntimeException(invalidSyntaxException);
-		}
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, JAXRSResource.class.getName(),
+			_nestedFieldServiceTrackerCustomizer);
 
 		_serviceTracker.open();
 	}
