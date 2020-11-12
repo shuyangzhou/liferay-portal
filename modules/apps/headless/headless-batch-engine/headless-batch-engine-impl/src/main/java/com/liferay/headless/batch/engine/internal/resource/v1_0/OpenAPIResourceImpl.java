@@ -14,6 +14,7 @@
 
 package com.liferay.headless.batch.engine.internal.resource.v1_0;
 
+import com.liferay.portal.vulcan.jaxrs.resource.JAXRSResource;
 import com.liferay.portal.vulcan.resource.OpenAPIResource;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -43,14 +44,14 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/openapi.properties",
-	service = OpenAPIResourceImpl.class
+	service = {JAXRSResource.class, OpenAPIResourceImpl.class}
 )
 @Generated("")
 @OpenAPIDefinition(
 	info = @Info(description = "", license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), title = "Headless Batch Engine", version = "v1.0")
 )
 @Path("/v1.0")
-public class OpenAPIResourceImpl {
+public class OpenAPIResourceImpl implements JAXRSResource {
 
 	@GET
 	@Path("/openapi.{type:json|yaml}")

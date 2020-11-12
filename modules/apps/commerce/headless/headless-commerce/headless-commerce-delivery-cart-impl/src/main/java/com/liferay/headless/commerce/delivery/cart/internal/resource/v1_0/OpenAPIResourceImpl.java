@@ -14,6 +14,7 @@
 
 package com.liferay.headless.commerce.delivery.cart.internal.resource.v1_0;
 
+import com.liferay.portal.vulcan.jaxrs.resource.JAXRSResource;
 import com.liferay.portal.vulcan.resource.OpenAPIResource;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -43,14 +44,14 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/openapi.properties",
-	service = OpenAPIResourceImpl.class
+	service = {JAXRSResource.class, OpenAPIResourceImpl.class}
 )
 @Generated("")
 @OpenAPIDefinition(
 	info = @Info(description = "Headless Delivery Commerce Cart API. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.headless.commerce.delivery.cart.client', and version '4.0.0'.", license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), title = "Headless Delivery Commerce Cart API", version = "v1.0")
 )
 @Path("/v1.0")
-public class OpenAPIResourceImpl {
+public class OpenAPIResourceImpl implements JAXRSResource {
 
 	@GET
 	@Path("/openapi.{type:json|yaml}")
