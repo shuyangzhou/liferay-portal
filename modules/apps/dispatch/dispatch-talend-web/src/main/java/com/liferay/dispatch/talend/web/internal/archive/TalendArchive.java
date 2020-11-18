@@ -49,19 +49,26 @@ public interface TalendArchive {
 
 				@Override
 				public String getClasspath() {
-					StringBundler sb = new StringBundler(
-						(_classpathEntries.size() * 2) + 1);
+					String parentDirectory = StringPool.PERIOD;
 
-					sb.append(StringPool.PERIOD);
+					if (Validator.isNotNull(_jobDirectory)) {
+						parentDirectory = _jobDirectory;
+					}
+
+					StringBundler sb = new StringBundler(
+						(_classpathEntries.size() * 3) + 4);
+
+					sb.append(parentDirectory);
 					sb.append(File.pathSeparatorChar);
 
 					for (String classpathEntry : _classpathEntries) {
-						sb.append(StringPool.PERIOD);
+						sb.append(parentDirectory);
 						sb.append(classpathEntry);
 						sb.append(File.pathSeparatorChar);
 					}
 
-					sb.append(getJobJARPath());
+					sb.append(parentDirectory);
+					sb.append(_jobJARPath);
 
 					return sb.toString();
 				}
