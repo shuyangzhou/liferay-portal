@@ -15,21 +15,27 @@
 package com.liferay.portal.security.auth.verifier.internal;
 
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
+import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierConfiguration;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.security.auth.AuthVerifierPipeline;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 
 /**
  * @author Tomas Polesovsky
+ * @author Arthur Chan
  */
-public abstract class BaseAuthVerifierPublisher {
+public abstract class BaseAuthVerifierPipelineConfigurator {
 
+	@Activate
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
@@ -39,35 +45,37 @@ public abstract class BaseAuthVerifierPublisher {
 			return;
 		}
 
-		AuthVerifier authVerifier = getAuthVerifierInstance();
-
-		Class<?> clazz = authVerifier.getClass();
+		Class<?> clazz = getAuthVerifierClass();
 
 		String authVerifierPropertyName =
 			AuthVerifierPipeline.getAuthVerifierPropertyName(clazz.getName());
 
-		Dictionary<String, Object> authVerifierProperties = new Hashtable<>();
+		Properties translatedProperties = new Properties();
 
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
-			String key = translateKey(authVerifierPropertyName, entry.getKey());
-
-			authVerifierProperties.put(key, entry.getValue());
+			translatedProperties.setProperty(
+				translateKey(authVerifierPropertyName, entry.getKey()),
+				String.valueOf(entry.getValue()));
 		}
 
-		_authVerifierRegistration = bundleContext.registerService(
-			AuthVerifier.class, authVerifier, authVerifierProperties);
+		_authVerifierConfiguration = new AuthVerifierConfiguration();
+
+		_authVerifierConfiguration.setAuthVerifierClassName(clazz.getName());
+		_authVerifierConfiguration.setProperties(translatedProperties);
+
+		_serviceRegistration = bundleContext.registerService(
+			AuthVerifierConfiguration.class, _authVerifierConfiguration,
+			new HashMapDictionary<>());
 	}
 
+	@Deactivate
 	protected void deactivate() {
-		if (_authVerifierRegistration != null) {
-			_authVerifierRegistration.unregister();
-
-			_authVerifierRegistration = null;
-		}
+		_serviceRegistration.unregister();
 	}
 
-	protected abstract AuthVerifier getAuthVerifierInstance();
+	protected abstract Class<? extends AuthVerifier> getAuthVerifierClass();
 
+	@Modified
 	protected void modified(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
@@ -87,9 +95,10 @@ public abstract class BaseAuthVerifierPublisher {
 			key = "urls.includes";
 		}
 
-		return authVerifierPropertyName + key;
+		return key;
 	}
 
-	private ServiceRegistration<AuthVerifier> _authVerifierRegistration;
+	private AuthVerifierConfiguration _authVerifierConfiguration;
+	private ServiceRegistration<AuthVerifierConfiguration> _serviceRegistration;
 
 }

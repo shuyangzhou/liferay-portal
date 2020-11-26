@@ -15,7 +15,7 @@
 package com.liferay.portal.security.auth.verifier.internal.portal.session;
 
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
-import com.liferay.portal.security.auth.verifier.internal.BaseAuthVerifierPublisher;
+import com.liferay.portal.security.auth.verifier.internal.BaseAuthVerifierPipelineConfigurator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +24,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
 
 /**
  * @author Tomas Polesovsky
@@ -34,8 +32,8 @@ import org.osgi.service.component.annotations.Modified;
 	configurationPid = "com.liferay.portal.security.auth.verifier.internal.portal.session.configuration.PortalSessionAuthVerifierConfiguration",
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, service = {}
 )
-public class PortalSessionAuthVerifierPublisher
-	extends BaseAuthVerifierPublisher {
+public class PortalSessionAuthVerifierPipelineConfigurator
+	extends BaseAuthVerifierPipelineConfigurator {
 
 	@Activate
 	@Override
@@ -51,23 +49,9 @@ public class PortalSessionAuthVerifierPublisher
 		super.activate(bundleContext, properties);
 	}
 
-	@Deactivate
 	@Override
-	protected void deactivate() {
-		super.deactivate();
-	}
-
-	@Override
-	protected AuthVerifier getAuthVerifierInstance() {
-		return _authVerifier;
-	}
-
-	@Modified
-	@Override
-	protected void modified(
-		BundleContext bundleContext, Map<String, Object> properties) {
-
-		super.modified(bundleContext, properties);
+	protected Class<? extends AuthVerifier> getAuthVerifierClass() {
+		return PortalSessionAuthVerifier.class;
 	}
 
 	@Override
@@ -78,7 +62,5 @@ public class PortalSessionAuthVerifierPublisher
 
 		return super.translateKey(authVerifierPropertyName, key);
 	}
-
-	private final AuthVerifier _authVerifier = new PortalSessionAuthVerifier();
 
 }
