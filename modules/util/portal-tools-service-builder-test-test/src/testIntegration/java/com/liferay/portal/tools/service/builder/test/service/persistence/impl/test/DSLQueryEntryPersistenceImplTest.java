@@ -84,6 +84,22 @@ public class DSLQueryEntryPersistenceImplTest {
 				_testDSLQueryEntry2.getName(), _testDSLQueryEntry3.getName()),
 			_dslQueryEntryPersistence.dslQuery(dslQuery));
 
+		DSLQuery reverseDSLQuery = DSLQueryFactoryUtil.select(
+			DSLQueryEntryTable.INSTANCE.name
+		).from(
+			DSLQueryEntryTable.INSTANCE
+		).where(
+			DSLQueryEntryTable.INSTANCE.dslQueryEntryId.neq(
+				_testDSLQueryEntry1.getDslQueryEntryId())
+		).orderBy(
+			DSLQueryEntryTable.INSTANCE.dslQueryEntryId.descending()
+		);
+
+		Assert.assertEquals(
+			Arrays.asList(
+				_testDSLQueryEntry3.getName(), _testDSLQueryEntry2.getName()),
+			_dslQueryEntryPersistence.dslQuery(reverseDSLQuery));
+
 		_dslQueryEntryPersistence.remove(_testDSLQueryEntry2);
 
 		Assert.assertEquals(
