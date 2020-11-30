@@ -21,6 +21,7 @@ import com.liferay.petra.sql.dsl.ast.ASTNode;
 import com.liferay.petra.sql.dsl.expression.Alias;
 import com.liferay.petra.sql.dsl.expression.Expression;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.petra.sql.dsl.spi.ast.BaseASTNode;
 import com.liferay.petra.sql.dsl.spi.ast.DefaultASTNodeListener;
 import com.liferay.petra.sql.dsl.spi.expression.AggregateExpression;
@@ -196,15 +197,20 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 			tableNames, select.getExpressions());
 
 		List<Object> scalarValues = defaultASTNodeListener.getScalarValues();
+		OrderByExpression[] orderByExpressions =
+			defaultASTNodeListener.getOrderByExpressions();
+		int start = defaultASTNodeListener.getStart();
+		int end = defaultASTNodeListener.getEnd();
 
 		FinderCache finderCache = getFinderCache();
 
 		FinderPath finderPath = new FinderPath(
 			FinderPath.encodeDSLQueryCacheName(tableNames), "dslQuery",
-			_getClassNames(scalarValues), new String[0],
-			projectionType == ProjectionType.MODELS);
+			_getClassNames(scalarValues, start, end, orderByExpressions),
+			new String[0], projectionType == ProjectionType.MODELS);
 
-		Object[] arguments = _getArguments(scalarValues);
+		Object[] arguments = _getArguments(
+			scalarValues, start, end, orderByExpressions);
 
 		Object cacheResult = finderCache.getResult(finderPath, arguments);
 
@@ -949,7 +955,10 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	@Deprecated
 	protected boolean finderCacheEnabled = true;
 
-	private Object[] _getArguments(List<Object> objects) {
+	private Object[] _getArguments(
+		List<Object> objects, int start, int end,
+		OrderByExpression[] orderByExpressions) {
+
 		List<Object> arguments = new ArrayList<>();
 
 		for (Object object : objects) {
@@ -963,20 +972,37 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 			}
 		}
 
+		if ((start != QueryUtil.ALL_POS) || (end != QueryUtil.ALL_POS) ||
+			(orderByExpressions != null)) {
+
+			arguments.add(start);
+			arguments.add(end);
+			arguments.add(orderByExpressions);
+		}
+
 		return arguments.toArray(new Object[0]);
 	}
 
-	private String[] _getClassNames(List<Object> objects) {
-		if ((objects == null) || objects.isEmpty()) {
-			return new String[0];
-		}
+	private String[] _getClassNames(
+		List<Object> objects, int start, int end,
+		OrderByExpression[] orderByExpressions) {
 
 		List<String> types = new ArrayList<>();
 
-		for (Object object : objects) {
-			Class<?> clazz = object.getClass();
+		if (objects != null) {
+			for (Object object : objects) {
+				Class<?> clazz = object.getClass();
 
-			types.add(clazz.getName());
+				types.add(clazz.getName());
+			}
+		}
+
+		if ((start != QueryUtil.ALL_POS) || (end != QueryUtil.ALL_POS) ||
+			(orderByExpressions != null)) {
+
+			types.add(Integer.class.getName());
+			types.add(Integer.class.getName());
+			types.add(OrderByExpression[].class.getName());
 		}
 
 		return types.toArray(new String[0]);
