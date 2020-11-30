@@ -33,6 +33,7 @@ public class ServiceTrackerCustomizerFactory {
 
 		return b -> new ServiceTrackerCustomizer<S, T>() {
 
+			@Override
 			public T addingService(ServiceReference<S> serviceReference) {
 				S service = b.getService(serviceReference);
 
@@ -46,6 +47,7 @@ public class ServiceTrackerCustomizerFactory {
 				}
 			}
 
+			@Override
 			public void modifiedService(
 				ServiceReference<S> serviceReference, T t) {
 
@@ -54,6 +56,7 @@ public class ServiceTrackerCustomizerFactory {
 				addingService(serviceReference);
 			}
 
+			@Override
 			public void removedService(
 				ServiceReference<S> serviceReference, T t) {
 
@@ -94,8 +97,8 @@ public class ServiceTrackerCustomizerFactory {
 				ServiceReference<S> serviceReference,
 				ServiceWrapper<S> serviceWrapper) {
 
-				ServiceWrapperImpl serviceWrapperImpl =
-					(ServiceWrapperImpl)serviceWrapper;
+				ServiceWrapperImpl<S> serviceWrapperImpl =
+					(ServiceWrapperImpl<S>)serviceWrapper;
 
 				serviceWrapperImpl._setProperties(
 					_getProperties(serviceReference));
@@ -137,11 +140,6 @@ public class ServiceTrackerCustomizerFactory {
 
 	private static class ServiceWrapperImpl<S> implements ServiceWrapper<S> {
 
-		public ServiceWrapperImpl(Map<String, Object> properties, S service) {
-			_properties = properties;
-			_service = service;
-		}
-
 		@Override
 		public Map<String, Object> getProperties() {
 			return _properties;
@@ -150,6 +148,11 @@ public class ServiceTrackerCustomizerFactory {
 		@Override
 		public S getService() {
 			return _service;
+		}
+
+		private ServiceWrapperImpl(Map<String, Object> properties, S service) {
+			_properties = properties;
+			_service = service;
 		}
 
 		private void _setProperties(Map<String, Object> properties) {
