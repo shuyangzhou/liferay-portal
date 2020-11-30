@@ -17,9 +17,11 @@ package com.liferay.petra.sql.dsl.spi.ast;
 import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.sql.dsl.ast.ASTNode;
 import com.liferay.petra.sql.dsl.ast.ASTNodeListener;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.petra.sql.dsl.spi.expression.Scalar;
 import com.liferay.petra.sql.dsl.spi.expression.ScalarList;
 import com.liferay.petra.sql.dsl.spi.query.Limit;
+import com.liferay.petra.sql.dsl.spi.query.OrderBy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +36,10 @@ public class DefaultASTNodeListener implements ASTNodeListener {
 
 	public int getEnd() {
 		return _end;
+	}
+
+	public OrderByExpression[] getOrderByExpressions() {
+		return _orderByExpressions;
 	}
 
 	public List<Object> getScalarValues() {
@@ -75,9 +81,15 @@ public class DefaultASTNodeListener implements ASTNodeListener {
 				_tableNames.add(tableName);
 			}
 		}
+		else if (astNode instanceof OrderBy) {
+			OrderBy orderBy = (OrderBy)astNode;
+
+			_orderByExpressions = orderBy.getOrderByExpressions();
+		}
 	}
 
 	private int _end = -1;
+	private OrderByExpression[] _orderByExpressions;
 	private final List<Object> _scalarValues = new ArrayList<>();
 	private int _start = -1;
 	private final Set<String> _tableNames = new LinkedHashSet<>();
