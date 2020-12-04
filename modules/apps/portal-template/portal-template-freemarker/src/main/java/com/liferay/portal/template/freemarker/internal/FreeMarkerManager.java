@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.JSPSupportServlet;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -490,6 +492,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		return _noticeableExecutorService;
 	}
 
+	protected PermissionCheckerFactory getPermissionCheckerFactory() {
+		return _permissionCheckerFactory;
+	}
+
 	protected ServletContextHashModel getServletContextHashModel(
 		ServletContext servletContext, ObjectWrapper objectWrapper) {
 
@@ -510,6 +516,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	protected AtomicInteger getTimeoutCounter(String templateId) {
 		return _timeoutTemplateCounters.computeIfAbsent(
 			templateId, key -> new AtomicInteger(0));
+	}
+
+	protected UserLocalService getUserLocalService() {
+		return _userLocalService;
 	}
 
 	protected boolean isEnableDebuggerService() {
@@ -581,6 +591,9 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	private NoticeableExecutorService _noticeableExecutorService;
 
 	@Reference
+	private PermissionCheckerFactory _permissionCheckerFactory;
+
+	@Reference
 	private PortalExecutorManager _portalExecutorManager;
 
 	private BeansWrapper _restrictedBeanWrapper;
@@ -591,6 +604,9 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	private final Map<String, TemplateModel> _templateModels =
 		new ConcurrentHashMap<>();
 	private Map<String, AtomicInteger> _timeoutTemplateCounters;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 	private class ServletContextInvocationHandler implements InvocationHandler {
 

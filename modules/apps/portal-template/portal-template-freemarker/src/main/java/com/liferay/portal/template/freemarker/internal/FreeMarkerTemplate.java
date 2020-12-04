@@ -16,7 +16,10 @@ package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.petra.concurrent.NoticeableExecutorService;
 import com.liferay.petra.concurrent.NoticeableFuture;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
+import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.StringTemplateResource;
@@ -179,9 +182,28 @@ public class FreeMarkerTemplate extends BaseTemplate {
 		NoticeableExecutorService noticeableExecutorService =
 			_freeMarkerManager.getNoticeableExecutorService();
 
+		Map<String, Object> threadLocals =
+			FreemarkerThreadLocalUtil.collectThreadLocals();
+
+		Thread currentThread = Thread.currentThread();
+
 		NoticeableFuture<?> noticeableFuture = noticeableExecutorService.submit(
 			(Callable<Void>)() -> {
-				_processTemplate(templateResource, writer);
+				try {
+					FreemarkerThreadLocalUtil.populateThreadLocals(
+						threadLocals,
+						_freeMarkerManager.getPermissionCheckerFactory(),
+						_freeMarkerManager.getUserLocalService());
+
+					_processTemplate(templateResource, writer);
+				}
+				finally {
+					if (Thread.currentThread() != currentThread) {
+						ThreadLocalCacheManager.clearAll(Lifecycle.REQUEST);
+
+						CentralizedThreadLocal.clearShortLivedThreadLocals();
+					}
+				}
 
 				return null;
 			});
