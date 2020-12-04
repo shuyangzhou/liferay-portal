@@ -15,6 +15,8 @@
 package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
+import com.liferay.petra.concurrent.NoticeableExecutorService;
+import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -74,6 +76,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import javax.servlet.GenericServlet;
@@ -374,6 +377,14 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		_bundleTracker.open();
 
 		WriterFactoryUtil.setWriterFactory(new UnsyncStringWriterFactory());
+
+		if (_freeMarkerEngineConfiguration.threadPoolEnabled()) {
+			_noticeableExecutorService =
+				_portalExecutorManager.getPortalExecutor(
+					FreeMarkerManager.class.getName());
+
+			_timeoutTemplateCounters = new ConcurrentHashMap<>();
+		}
 	}
 
 	protected void addTaglibSupport(
@@ -471,6 +482,14 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		}
 	}
 
+	protected FreeMarkerEngineConfiguration getFreeMarkerEngineConfiguration() {
+		return _freeMarkerEngineConfiguration;
+	}
+
+	protected NoticeableExecutorService getNoticeableExecutorService() {
+		return _noticeableExecutorService;
+	}
+
 	protected ServletContextHashModel getServletContextHashModel(
 		ServletContext servletContext, ObjectWrapper objectWrapper) {
 
@@ -486,6 +505,11 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		return _servletContextProxyProviderFunction.apply(
 			new ServletContextInvocationHandler(
 				servletContext, freeMarkerBundleClassloader));
+	}
+
+	protected AtomicInteger getTimeoutCounter(String templateId) {
+		return _timeoutTemplateCounters.computeIfAbsent(
+			templateId, key -> new AtomicInteger(0));
 	}
 
 	protected boolean isEnableDebuggerService() {
@@ -554,6 +578,11 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	@Reference
 	private FreeMarkerTemplateResourceCache _freeMarkerTemplateResourceCache;
 
+	private NoticeableExecutorService _noticeableExecutorService;
+
+	@Reference
+	private PortalExecutorManager _portalExecutorManager;
+
 	private BeansWrapper _restrictedBeanWrapper;
 	private SingleVMPool _singleVMPool;
 	private final Map<String, String> _taglibMappings =
@@ -561,6 +590,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	private TemplateClassResolver _templateClassResolver;
 	private final Map<String, TemplateModel> _templateModels =
 		new ConcurrentHashMap<>();
+	private Map<String, AtomicInteger> _timeoutTemplateCounters;
 
 	private class ServletContextInvocationHandler implements InvocationHandler {
 

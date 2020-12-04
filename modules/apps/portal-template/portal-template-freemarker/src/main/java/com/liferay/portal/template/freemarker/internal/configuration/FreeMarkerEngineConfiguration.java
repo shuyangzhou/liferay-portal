@@ -52,6 +52,17 @@ public interface FreeMarkerEngineConfiguration {
 	)
 	public String[] restrictedMethods();
 
+	@Meta.AD(deflt = "false", name = "thread-pool-enabled", required = false)
+	public boolean threadPoolEnabled();
+
+	@Meta.AD(deflt = "0", name = "thread-pool-timeout", required = false)
+	public long threadPoolTimeout();
+
+	@Meta.AD(
+		deflt = "10", name = "thread-pool-timeout-threshold", required = false
+	)
+	public int threadPoolTimeoutThreshold();
+
 	@Meta.AD(
 		deflt = "httpUtilUnsafe|objectUtil|serviceLocator|staticFieldGetter|staticUtil|utilLocator",
 		name = "restricted-variables", required = false

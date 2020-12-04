@@ -14,6 +14,9 @@
 
 package com.liferay.portal.template.freemarker.internal;
 
+import com.liferay.petra.concurrent.NoticeableExecutorService;
+import com.liferay.petra.concurrent.NoticeableFuture;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.StringTemplateResource;
@@ -24,6 +27,7 @@ import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.template.BaseTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
 import com.liferay.portal.template.TemplateResourceThreadLocal;
+import com.liferay.portal.template.freemarker.internal.configuration.FreeMarkerEngineConfiguration;
 
 import freemarker.core.ParseException;
 
@@ -49,6 +53,10 @@ import java.io.Writer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,22 +149,63 @@ public class FreeMarkerTemplate extends BaseTemplate {
 			TemplateResource templateResource, Writer writer)
 		throws Exception {
 
-		TemplateResourceThreadLocal.setTemplateResource(
-			TemplateConstants.LANG_TYPE_FTL, templateResource);
+		FreeMarkerEngineConfiguration freeMarkerEngineConfiguration =
+			_freeMarkerManager.getFreeMarkerEngineConfiguration();
+
+		if (!freeMarkerEngineConfiguration.threadPoolEnabled()) {
+			_processTemplate(templateResource, writer);
+
+			return;
+		}
+
+		long timeout = freeMarkerEngineConfiguration.threadPoolTimeout();
+
+		AtomicInteger timeoutCounter = _freeMarkerManager.getTimeoutCounter(
+			templateResource.getTemplateId());
+
+		if ((timeout > 0) &&
+			(timeoutCounter.get() >=
+				freeMarkerEngineConfiguration.threadPoolTimeoutThreshold())) {
+
+			throw new IllegalStateException(
+				StringBundler.concat(
+					"Skip processing freemarker template ",
+					templateResource.getTemplateId(),
+					" as it had been timed out ",
+					freeMarkerEngineConfiguration.threadPoolTimeoutThreshold(),
+					" times"));
+		}
+
+		NoticeableExecutorService noticeableExecutorService =
+			_freeMarkerManager.getNoticeableExecutorService();
+
+		NoticeableFuture<?> noticeableFuture = noticeableExecutorService.submit(
+			(Callable<Void>)() -> {
+				_processTemplate(templateResource, writer);
+
+				return null;
+			});
+
+		if (timeout == 0) {
+			noticeableFuture.get();
+
+			return;
+		}
 
 		try {
-			Template template = _configuration.getTemplate(
-				getTemplateResourceUUID(templateResource),
-				TemplateConstants.DEFAUT_ENCODING);
-
-			template.setObjectWrapper(_beansWrapper);
-
-			template.process(
-				new CachableDefaultMapAdapter(context, _beansWrapper), writer);
+			noticeableFuture.get(timeout, TimeUnit.MILLISECONDS);
 		}
-		finally {
-			TemplateResourceThreadLocal.setTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL, null);
+		catch (TimeoutException timeoutException) {
+			timeoutCounter.incrementAndGet();
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Freemarker template ",
+						templateResource.getTemplateId(),
+						" processing timeout"),
+					timeoutException);
+			}
 		}
 	}
 
@@ -176,6 +225,29 @@ public class FreeMarkerTemplate extends BaseTemplate {
 			}
 
 			return null;
+		}
+	}
+
+	private void _processTemplate(
+			TemplateResource templateResource, Writer writer)
+		throws Exception {
+
+		TemplateResourceThreadLocal.setTemplateResource(
+			TemplateConstants.LANG_TYPE_FTL, templateResource);
+
+		try {
+			Template template = _configuration.getTemplate(
+				getTemplateResourceUUID(templateResource),
+				TemplateConstants.DEFAUT_ENCODING);
+
+			template.setObjectWrapper(_beansWrapper);
+
+			template.process(
+				new CachableDefaultMapAdapter(context, _beansWrapper), writer);
+		}
+		finally {
+			TemplateResourceThreadLocal.setTemplateResource(
+				TemplateConstants.LANG_TYPE_FTL, null);
 		}
 	}
 
