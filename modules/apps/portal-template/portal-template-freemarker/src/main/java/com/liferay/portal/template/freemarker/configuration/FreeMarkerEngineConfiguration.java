@@ -52,6 +52,9 @@ public interface FreeMarkerEngineConfiguration {
 	)
 	public String[] restrictedMethods();
 
+	@Meta.AD(deflt = "0", name = "loop-size-threshold", required = false)
+	public int loopSizeThreshold();
+
 	@Meta.AD(
 		deflt = "httpUtilUnsafe|objectUtil|serviceLocator|staticFieldGetter|staticUtil|utilLocator",
 		name = "restricted-variables", required = false
