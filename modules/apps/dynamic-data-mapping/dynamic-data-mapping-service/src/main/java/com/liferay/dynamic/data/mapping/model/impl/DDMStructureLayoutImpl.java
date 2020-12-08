@@ -17,8 +17,8 @@ package com.liferay.dynamic.data.mapping.model.impl;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
-import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalServiceUtil;
-import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalServiceUtil;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,12 +29,24 @@ import com.liferay.portal.kernel.model.cache.CacheField;
  */
 public class DDMStructureLayoutImpl extends DDMStructureLayoutBaseImpl {
 
+	public static void setDDMStructureLayoutLocalService(
+		DDMStructureLayoutLocalService ddmStructureLayoutLocalService) {
+
+		_ddmStructureLayoutLocalService = ddmStructureLayoutLocalService;
+	}
+
+	public static void setDDMStructureVersionLocalService(
+		DDMStructureVersionLocalService ddmStructureVersionLocalService) {
+
+		_ddmStructureVersionLocalService = ddmStructureVersionLocalService;
+	}
+
 	@Override
 	public DDMFormLayout getDDMFormLayout() {
 		if (_ddmFormLayout == null) {
 			try {
 				_ddmFormLayout =
-					DDMStructureLayoutLocalServiceUtil.
+					_ddmStructureLayoutLocalService.
 						getStructureLayoutDDMFormLayout(this);
 			}
 			catch (Exception exception) {
@@ -50,7 +62,7 @@ public class DDMStructureLayoutImpl extends DDMStructureLayoutBaseImpl {
 	@Override
 	public DDMStructure getDDMStructure() throws PortalException {
 		DDMStructureVersion ddmStructureVersion =
-			DDMStructureVersionLocalServiceUtil.getDDMStructureVersion(
+			_ddmStructureVersionLocalService.getDDMStructureVersion(
 				getStructureVersionId());
 
 		return ddmStructureVersion.getStructure();
@@ -58,13 +70,20 @@ public class DDMStructureLayoutImpl extends DDMStructureLayoutBaseImpl {
 
 	@Override
 	public long getDDMStructureId() throws PortalException {
-		DDMStructure ddmStructure = getDDMStructure();
+		DDMStructureVersion ddmStructureVersion =
+			_ddmStructureVersionLocalService.getDDMStructureVersion(
+				getStructureVersionId());
 
-		return ddmStructure.getStructureId();
+		return ddmStructureVersion.getStructureId();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureLayoutImpl.class);
+
+	private static DDMStructureLayoutLocalService
+		_ddmStructureLayoutLocalService;
+	private static DDMStructureVersionLocalService
+		_ddmStructureVersionLocalService;
 
 	@CacheField(methodName = "DDMFormLayout", propagateToInterface = true)
 	private DDMFormLayout _ddmFormLayout;

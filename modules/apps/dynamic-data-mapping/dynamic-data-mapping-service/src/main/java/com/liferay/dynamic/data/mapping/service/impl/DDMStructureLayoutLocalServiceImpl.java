@@ -24,6 +24,8 @@ import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeRespo
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
+import com.liferay.dynamic.data.mapping.model.impl.DDMStructureLayoutImpl;
+import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalService;
 import com.liferay.dynamic.data.mapping.service.base.DDMStructureLayoutLocalServiceBaseImpl;
 import com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidator;
 import com.liferay.petra.string.StringPool;
@@ -47,7 +49,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -319,6 +323,17 @@ public class DDMStructureLayoutLocalServiceImpl
 	}
 
 	@Override
+	public void setAopProxy(Object aopProxy) {
+		super.setAopProxy(aopProxy);
+
+		DDMStructureLayoutImpl.setDDMStructureLayoutLocalService(
+			ddmStructureLayoutLocalService);
+
+		DDMStructureLayoutImpl.setDDMStructureVersionLocalService(
+			_ddmStructureVersionLocalService);
+	}
+
+	@Override
 	public DDMStructureLayout updateStructureLayout(
 			long structureLayoutId, DDMFormLayout ddmFormLayout,
 			ServiceContext serviceContext)
@@ -354,6 +369,13 @@ public class DDMStructureLayoutLocalServiceImpl
 		return ddmStructureLayoutPersistence.update(structureLayout);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		DDMStructureLayoutImpl.setDDMStructureLayoutLocalService(null);
+
+		DDMStructureLayoutImpl.setDDMStructureVersionLocalService(null);
+	}
+
 	protected String serialize(DDMFormLayout ddmFormLayout) {
 		DDMFormLayoutSerializerSerializeRequest.Builder builder =
 			DDMFormLayoutSerializerSerializeRequest.Builder.newBuilder(
@@ -377,6 +399,9 @@ public class DDMStructureLayoutLocalServiceImpl
 
 	@Reference
 	private DDMSearchHelper _ddmSearchHelper;
+
+	@Reference
+	private DDMStructureVersionLocalService _ddmStructureVersionLocalService;
 
 	@Reference(target = "(ddm.form.layout.deserializer.type=json)")
 	private DDMFormLayoutDeserializer _jsonDDMFormLayoutDeserializer;
