@@ -395,6 +395,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		try {
 			_threadLocalsField = ReflectionUtil.getDeclaredField(
 				Thread.class, "threadLocals");
+			_createInheritedMapMethod = ReflectionUtil.getDeclaredMethod(
+				ThreadLocal.class, "createInheritedMap");
+			_tableField = ReflectionUtil.getDeclaredField(
+				_threadLocalsField.getType(), "table");
 		}
 		catch (Exception exception) {
 			throw new IllegalStateException(
@@ -560,7 +564,8 @@ public class FreeMarkerManager extends BaseTemplateManager {
 					" times"));
 		}
 
-		Object threadLocals = _threadLocalsField.get(Thread.currentThread());
+		Object threadLocals = _createInheritedMapMethod.invoke(
+			null, _threadLocalsField.get(Thread.currentThread()));
 
 		NoticeableFuture<?> noticeableFuture =
 			_noticeableExecutorService.submit(
@@ -594,6 +599,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 						" processing timeout"),
 					timeoutException);
 			}
+
+			Array
+
+			_tableField.set(threadLocals, null);
 		}
 	}
 
@@ -645,6 +654,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 	private volatile int _bundleTrackingCount = -2;
 	private Configuration _configuration;
+	private Method _createInheritedMapMethod;
 	private BeansWrapper _defaultBeanWrapper;
 	private volatile FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 	private volatile FreeMarkerEngineConfiguration
@@ -660,6 +670,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 	private BeansWrapper _restrictedBeanWrapper;
 	private SingleVMPool _singleVMPool;
+	private Field _tableField;
 	private final Map<String, String> _taglibMappings =
 		new ConcurrentHashMap<>();
 	private TemplateClassResolver _templateClassResolver;
