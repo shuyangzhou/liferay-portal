@@ -789,7 +789,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.document.library.google.docs.jar!org.freemarker.jar</file-name>
-				<version>2.3.29.LIFERAY-PATCHED-1</version>
+				<version>2.3.29.LIFERAY-PATCHED-2</version>
 				<project-name>org.freemarker.freemarker</project-name>
 				<licenses>
 					<license>
@@ -3698,7 +3698,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.template.freemarker.jar!org.freemarker.jar</file-name>
-				<version>2.3.29.LIFERAY-PATCHED-1</version>
+				<version>2.3.29.LIFERAY-PATCHED-2</version>
 				<project-name>org.freemarker.freemarker</project-name>
 				<licenses>
 					<license>
@@ -4394,18 +4394,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.push.notifications.sender.sms.jar!guava.jar</file-name>
-				<version>18.0</version>
-				<project-name>Guava: Google Core Libraries for Java</project-name>
-				<project-url>https://guava-libraries.googlecode.com/</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>com.liferay.push.notifications.sender.sms.jar!httpclient.jar</file-name>
 				<version>4.5.12</version>
 				<project-name>Apache HttpClient</project-name>
@@ -4430,45 +4418,10 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.push.notifications.sender.sms.jar!jjwt.jar</file-name>
-				<version>0.4</version>
-				<project-name>JSON Web Token support for the JVM</project-name>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.push.notifications.sender.sms.jar!joda-convert.jar</file-name>
-				<version>1.9.2</version>
-				<project-name>Joda-Convert</project-name>
-				<project-url>http://www.joda.org/joda-convert/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.push.notifications.sender.sms.jar!joda-time.jar</file-name>
-				<version>2.10.6</version>
-				<project-name>Joda-Time</project-name>
-				<project-url>https://www.joda.org/joda-time/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.push.notifications.sender.sms.jar!json-simple.jar</file-name>
-				<version>1.1</version>
-				<project-name>JSON.simple</project-name>
-				<project-url>http://code.google.com/p/json-simple/</project-url>
+				<file-name>com.liferay.push.notifications.sender.sms.jar!jackson-datatype-jsr310.jar</file-name>
+				<version>2.11.3</version>
+				<project-name>Jackson datatype: JSR310</project-name>
+				<project-url>https://github.com/FasterXML/jackson-modules-java8/jackson-datatype-jsr310</project-url>
 				<licenses>
 					<license>
 						<license-name>The Apache Software License, Version 2.0</license-name>
@@ -4477,8 +4430,44 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.push.notifications.sender.sms.jar!jjwt-api.jar</file-name>
+				<version>0.11.2</version>
+				<project-name>JJWT :: API</project-name>
+				<project-url>https://github.com/jwtk/jjwt</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.push.notifications.sender.sms.jar!jjwt-impl.jar</file-name>
+				<version>0.11.2</version>
+				<project-name>JJWT :: Impl</project-name>
+				<project-url>https://github.com/jwtk/jjwt</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.push.notifications.sender.sms.jar!jjwt-jackson.jar</file-name>
+				<version>0.11.2</version>
+				<project-name>JJWT :: Extensions :: Jackson</project-name>
+				<project-url>https://github.com/jwtk/jjwt</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.push.notifications.sender.sms.jar!twilio.jar</file-name>
-				<version>6.6.10</version>
+				<version>8.3.0</version>
 				<project-name>twilio</project-name>
 				<project-url>https://www.twilio.com</project-url>
 				<licenses>
@@ -4955,6 +4944,17 @@
 				<file-name>lib/development/com.liferay.jenkins.results.parser.jar</file-name>
 				<version>1.0.712</version>
 				<project-name>Liferay Jenkins Results Parser</project-name>
+				<licenses>
+					<license>
+						<license-name>LGPL 2.1</license-name>
+						<license-url>http://www.gnu.org/licenses/lgpl-2.1.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>lib/development/com.liferay.poshi.core.jar</file-name>
+				<version>1.0.10</version>
+				<project-name>Liferay Poshi Core</project-name>
 				<licenses>
 					<license>
 						<license-name>LGPL 2.1</license-name>
@@ -6401,7 +6401,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/daisydiff.jar</file-name>
-				<version>1.2</version>
+				<version>1.2.0-atlassian-hosted</version>
 				<project-name>DaisyDiff</project-name>
 				<project-url>http://code.google.com/p/daisydiff</project-url>
 				<licenses>
@@ -6410,7 +6410,7 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
-				<comments>This was recompiled for compatibility with JDK 5. Removed org.apache.*, org.cyberneko.*, and org.w3c.* because it conflicts with nekohtml.jar and xercesImpl.jar.</comments>
+				<comments>Removed org.apache.*, org.cyberneko.*, and org.w3c.* because it conflicts with nekohtml.jar and xercesImpl.jar.</comments>
 			</library>
 			<library>
 				<file-name>lib/portal/displaytag.jar</file-name>
@@ -6620,18 +6620,6 @@
 						<license-name>LGPL 2.1</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl-2.1.html</license-url>
 						<copyright-notice>Copyright (c) Bernhard Bablok 2008-2010</copyright-notice>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/portal/isoparser.jar</file-name>
-				<version>1.9.41.2</version>
-				<project-name>ISO Parser</project-name>
-				<project-url>https://github.com/tballison/mp4parser</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -7351,6 +7339,18 @@
 					<license>
 						<license-name>LGPL 3.0</license-name>
 						<license-url>https://www.gnu.org/licenses/lgpl-3.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/mp4parser.jar</file-name>
+				<version>1.9.41.2.LIFERAY-PATCHED-1</version>
+				<project-name>ISO Parser</project-name>
+				<project-url>https://github.com/tballison/mp4parser</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
