@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.tax.engine.fixed.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceTaxFixedRate. This utility wraps
  * <code>com.liferay.commerce.tax.engine.fixed.service.impl.CommerceTaxFixedRateLocalServiceImpl</code> and
@@ -364,7 +360,7 @@ public class CommerceTaxFixedRateLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -408,29 +404,10 @@ public class CommerceTaxFixedRateLocalServiceUtil {
 	}
 
 	public static CommerceTaxFixedRateLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceTaxFixedRateLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceTaxFixedRateLocalService, CommerceTaxFixedRateLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceTaxFixedRateLocalService.class);
-
-		ServiceTracker
-			<CommerceTaxFixedRateLocalService, CommerceTaxFixedRateLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceTaxFixedRateLocalService,
-						 CommerceTaxFixedRateLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceTaxFixedRateLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceTaxFixedRateLocalService
+		_commerceTaxFixedRateLocalService;
 
 }

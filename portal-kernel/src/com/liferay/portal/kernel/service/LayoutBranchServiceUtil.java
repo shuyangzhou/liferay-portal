@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for LayoutBranch. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutBranchServiceImpl</code> and is an
@@ -36,8 +34,9 @@ public class LayoutBranchServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.LayoutBranchServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
-			long layoutRevisionId, String name, String description,
-			boolean master, ServiceContext serviceContext)
+			long layoutRevisionId, java.lang.String name,
+			java.lang.String description, boolean master,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addLayoutBranch(
@@ -55,14 +54,14 @@ public class LayoutBranchServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.model.LayoutBranch
 			updateLayoutBranch(
-				long layoutBranchId, String name, String description,
-				ServiceContext serviceContext)
+				long layoutBranchId, java.lang.String name,
+				java.lang.String description, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutBranch(
@@ -70,14 +69,9 @@ public class LayoutBranchServiceUtil {
 	}
 
 	public static LayoutBranchService getService() {
-		if (_service == null) {
-			_service = (LayoutBranchService)PortalBeanLocatorUtil.locate(
-				LayoutBranchService.class.getName());
-		}
-
-		return _service;
+		return _layoutBranchService;
 	}
 
-	private static LayoutBranchService _service;
+	private static volatile LayoutBranchService _layoutBranchService;
 
 }

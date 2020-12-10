@@ -14,10 +14,6 @@
 
 package com.liferay.change.tracking.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CTMessage. This utility wraps
  * <code>com.liferay.change.tracking.service.impl.CTMessageLocalServiceImpl</code> and
@@ -289,7 +285,7 @@ public class CTMessageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -320,25 +316,9 @@ public class CTMessageLocalServiceUtil {
 	}
 
 	public static CTMessageLocalService getService() {
-		return _serviceTracker.getService();
+		return _ctMessageLocalService;
 	}
 
-	private static ServiceTracker<CTMessageLocalService, CTMessageLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CTMessageLocalService.class);
-
-		ServiceTracker<CTMessageLocalService, CTMessageLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CTMessageLocalService, CTMessageLocalService>(
-						bundle.getBundleContext(), CTMessageLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CTMessageLocalService _ctMessageLocalService;
 
 }

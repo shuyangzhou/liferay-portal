@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for DLFileVersion. This utility wraps
  * <code>com.liferay.portlet.documentlibrary.service.impl.DLFileVersionLocalServiceImpl</code> and
@@ -228,7 +226,8 @@ public class DLFileVersionLocalServiceUtil {
 	 * @return the matching document library file version, or <code>null</code> if a matching document library file version could not be found
 	 */
 	public static com.liferay.document.library.kernel.model.DLFileVersion
-		fetchDLFileVersionByUuidAndGroupId(String uuid, long groupId) {
+		fetchDLFileVersionByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchDLFileVersionByUuidAndGroupId(uuid, groupId);
 	}
@@ -269,7 +268,8 @@ public class DLFileVersionLocalServiceUtil {
 	 * @throws PortalException if a matching document library file version could not be found
 	 */
 	public static com.liferay.document.library.kernel.model.DLFileVersion
-			getDLFileVersionByUuidAndGroupId(String uuid, long groupId)
+			getDLFileVersionByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDLFileVersionByUuidAndGroupId(uuid, groupId);
@@ -302,7 +302,8 @@ public class DLFileVersionLocalServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.document.library.kernel.model.DLFileVersion>
-			getDLFileVersionsByUuidAndCompanyId(String uuid, long companyId) {
+			getDLFileVersionsByUuidAndCompanyId(
+				java.lang.String uuid, long companyId) {
 
 		return getService().getDLFileVersionsByUuidAndCompanyId(
 			uuid, companyId);
@@ -321,7 +322,7 @@ public class DLFileVersionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.document.library.kernel.model.DLFileVersion>
 			getDLFileVersionsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.document.library.kernel.model.DLFileVersion>
 						orderByComparator) {
@@ -355,14 +356,14 @@ public class DLFileVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileVersion
-			getFileVersion(long fileEntryId, String version)
+			getFileVersion(long fileEntryId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFileVersion(fileEntryId, version);
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileVersion
-		getFileVersionByUuidAndGroupId(String uuid, long groupId) {
+		getFileVersionByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().getFileVersionByUuidAndGroupId(uuid, groupId);
 	}
@@ -405,7 +406,7 @@ public class DLFileVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -425,7 +426,7 @@ public class DLFileVersionLocalServiceUtil {
 		getService().rebuildTree(companyId);
 	}
 
-	public static void setTreePaths(long folderId, String treePath)
+	public static void setTreePaths(long folderId, java.lang.String treePath)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().setTreePaths(folderId, treePath);
@@ -450,14 +451,10 @@ public class DLFileVersionLocalServiceUtil {
 	}
 
 	public static DLFileVersionLocalService getService() {
-		if (_service == null) {
-			_service = (DLFileVersionLocalService)PortalBeanLocatorUtil.locate(
-				DLFileVersionLocalService.class.getName());
-		}
-
-		return _service;
+		return _dlFileVersionLocalService;
 	}
 
-	private static DLFileVersionLocalService _service;
+	private static volatile DLFileVersionLocalService
+		_dlFileVersionLocalService;
 
 }

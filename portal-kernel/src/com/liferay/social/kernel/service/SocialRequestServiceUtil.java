@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for SocialRequest. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialRequestServiceImpl</code> and is an
@@ -41,7 +39,7 @@ public class SocialRequestServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -54,14 +52,9 @@ public class SocialRequestServiceUtil {
 	}
 
 	public static SocialRequestService getService() {
-		if (_service == null) {
-			_service = (SocialRequestService)PortalBeanLocatorUtil.locate(
-				SocialRequestService.class.getName());
-		}
-
-		return _service;
+		return _socialRequestService;
 	}
 
-	private static SocialRequestService _service;
+	private static volatile SocialRequestService _socialRequestService;
 
 }

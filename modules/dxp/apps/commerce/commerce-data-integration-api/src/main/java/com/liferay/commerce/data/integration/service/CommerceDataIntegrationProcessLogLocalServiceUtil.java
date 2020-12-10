@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.data.integration.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceDataIntegrationProcessLog. This utility wraps
  * <code>com.liferay.commerce.data.integration.service.impl.CommerceDataIntegrationProcessLogLocalServiceImpl</code> and
@@ -61,7 +57,7 @@ public class CommerceDataIntegrationProcessLogLocalServiceUtil {
 	public static com.liferay.commerce.data.integration.model.
 		CommerceDataIntegrationProcessLog addCommerceDataIntegrationProcessLog(
 				long userId, long commerceDataIntegrationProcessId,
-				String error, String output, int status,
+				java.lang.String error, java.lang.String output, int status,
 				java.util.Date startDate, java.util.Date endDate)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -334,7 +330,7 @@ public class CommerceDataIntegrationProcessLogLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -372,8 +368,8 @@ public class CommerceDataIntegrationProcessLogLocalServiceUtil {
 	public static com.liferay.commerce.data.integration.model.
 		CommerceDataIntegrationProcessLog
 				updateCommerceDataIntegrationProcessLog(
-					long cDataIntegrationProcessLogId, String error,
-					String output, int status, java.util.Date endDate)
+					long cDataIntegrationProcessLogId, java.lang.String error,
+					java.lang.String output, int status, java.util.Date endDate)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceDataIntegrationProcessLog(
@@ -381,30 +377,10 @@ public class CommerceDataIntegrationProcessLogLocalServiceUtil {
 	}
 
 	public static CommerceDataIntegrationProcessLogLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceDataIntegrationProcessLogLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceDataIntegrationProcessLogLocalService,
-		 CommerceDataIntegrationProcessLogLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDataIntegrationProcessLogLocalService.class);
-
-		ServiceTracker
-			<CommerceDataIntegrationProcessLogLocalService,
-			 CommerceDataIntegrationProcessLogLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceDataIntegrationProcessLogLocalService,
-					 CommerceDataIntegrationProcessLogLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceDataIntegrationProcessLogLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDataIntegrationProcessLogLocalService
+		_commerceDataIntegrationProcessLogLocalService;
 
 }

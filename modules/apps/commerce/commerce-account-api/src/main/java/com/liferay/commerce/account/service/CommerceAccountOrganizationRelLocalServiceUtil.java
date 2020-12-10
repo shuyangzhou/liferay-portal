@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAccountOrganizationRel. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountOrganizationRelLocalServiceImpl</code> and
@@ -391,7 +387,7 @@ public class CommerceAccountOrganizationRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -427,30 +423,10 @@ public class CommerceAccountOrganizationRelLocalServiceUtil {
 	}
 
 	public static CommerceAccountOrganizationRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountOrganizationRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountOrganizationRelLocalService,
-		 CommerceAccountOrganizationRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountOrganizationRelLocalService.class);
-
-		ServiceTracker
-			<CommerceAccountOrganizationRelLocalService,
-			 CommerceAccountOrganizationRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceAccountOrganizationRelLocalService,
-					 CommerceAccountOrganizationRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceAccountOrganizationRelLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountOrganizationRelLocalService
+		_commerceAccountOrganizationRelLocalService;
 
 }

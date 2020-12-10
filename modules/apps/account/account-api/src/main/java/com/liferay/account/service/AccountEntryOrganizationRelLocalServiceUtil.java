@@ -14,10 +14,6 @@
 
 package com.liferay.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AccountEntryOrganizationRel. This utility wraps
  * <code>com.liferay.account.service.impl.AccountEntryOrganizationRelLocalServiceImpl</code> and
@@ -344,7 +340,7 @@ public class AccountEntryOrganizationRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -404,29 +400,10 @@ public class AccountEntryOrganizationRelLocalServiceUtil {
 	}
 
 	public static AccountEntryOrganizationRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _accountEntryOrganizationRelLocalService;
 	}
 
-	private static ServiceTracker
-		<AccountEntryOrganizationRelLocalService,
-		 AccountEntryOrganizationRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEntryOrganizationRelLocalService.class);
-
-		ServiceTracker
-			<AccountEntryOrganizationRelLocalService,
-			 AccountEntryOrganizationRelLocalService> serviceTracker =
-				new ServiceTracker
-					<AccountEntryOrganizationRelLocalService,
-					 AccountEntryOrganizationRelLocalService>(
-						 bundle.getBundleContext(),
-						 AccountEntryOrganizationRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEntryOrganizationRelLocalService
+		_accountEntryOrganizationRelLocalService;
 
 }

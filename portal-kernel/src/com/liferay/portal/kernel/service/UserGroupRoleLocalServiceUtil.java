@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for UserGroupRole. This utility wraps
  * <code>com.liferay.portal.service.impl.UserGroupRoleLocalServiceImpl</code> and
@@ -301,7 +299,7 @@ public class UserGroupRoleLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -409,14 +407,15 @@ public class UserGroupRoleLocalServiceUtil {
 	}
 
 	public static boolean hasUserGroupRole(
-			long userId, long groupId, String roleName)
+			long userId, long groupId, java.lang.String roleName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().hasUserGroupRole(userId, groupId, roleName);
 	}
 
 	public static boolean hasUserGroupRole(
-			long userId, long groupId, String roleName, boolean inherit)
+			long userId, long groupId, java.lang.String roleName,
+			boolean inherit)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().hasUserGroupRole(
@@ -441,14 +440,10 @@ public class UserGroupRoleLocalServiceUtil {
 	}
 
 	public static UserGroupRoleLocalService getService() {
-		if (_service == null) {
-			_service = (UserGroupRoleLocalService)PortalBeanLocatorUtil.locate(
-				UserGroupRoleLocalService.class.getName());
-		}
-
-		return _service;
+		return _userGroupRoleLocalService;
 	}
 
-	private static UserGroupRoleLocalService _service;
+	private static volatile UserGroupRoleLocalService
+		_userGroupRoleLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPSpecificationOption. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPSpecificationOptionLocalServiceImpl</code> and
@@ -59,9 +55,10 @@ public class CPSpecificationOptionLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPSpecificationOption
 			addCPSpecificationOption(
 				long userId, long cpOptionCategoryId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				boolean facetable, String key,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				boolean facetable, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -247,7 +244,7 @@ public class CPSpecificationOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPSpecificationOption
-		fetchCPSpecificationOption(long companyId, String key) {
+		fetchCPSpecificationOption(long companyId, java.lang.String key) {
 
 		return getService().fetchCPSpecificationOption(companyId, key);
 	}
@@ -261,7 +258,7 @@ public class CPSpecificationOptionLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPSpecificationOption
 		fetchCPSpecificationOptionByUuidAndCompanyId(
-			String uuid, long companyId) {
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCPSpecificationOptionByUuidAndCompanyId(
 			uuid, companyId);
@@ -288,7 +285,7 @@ public class CPSpecificationOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPSpecificationOption
-			getCPSpecificationOption(long companyId, String key)
+			getCPSpecificationOption(long companyId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPSpecificationOption(companyId, key);
@@ -304,7 +301,7 @@ public class CPSpecificationOptionLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPSpecificationOption
 			getCPSpecificationOptionByUuidAndCompanyId(
-				String uuid, long companyId)
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPSpecificationOptionByUuidAndCompanyId(
@@ -358,7 +355,7 @@ public class CPSpecificationOptionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -375,8 +372,8 @@ public class CPSpecificationOptionLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPSpecificationOption>
 				searchCPSpecificationOptions(
-					long companyId, Boolean facetable, String keywords,
-					int start, int end,
+					long companyId, java.lang.Boolean facetable,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -414,9 +411,10 @@ public class CPSpecificationOptionLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPSpecificationOption
 			updateCPSpecificationOption(
 				long cpSpecificationOptionId, long cpOptionCategoryId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				boolean facetable, String key,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				boolean facetable, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -426,29 +424,10 @@ public class CPSpecificationOptionLocalServiceUtil {
 	}
 
 	public static CPSpecificationOptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpSpecificationOptionLocalService;
 	}
 
-	private static ServiceTracker
-		<CPSpecificationOptionLocalService, CPSpecificationOptionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPSpecificationOptionLocalService.class);
-
-		ServiceTracker
-			<CPSpecificationOptionLocalService,
-			 CPSpecificationOptionLocalService> serviceTracker =
-				new ServiceTracker
-					<CPSpecificationOptionLocalService,
-					 CPSpecificationOptionLocalService>(
-						 bundle.getBundleContext(),
-						 CPSpecificationOptionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPSpecificationOptionLocalService
+		_cpSpecificationOptionLocalService;
 
 }

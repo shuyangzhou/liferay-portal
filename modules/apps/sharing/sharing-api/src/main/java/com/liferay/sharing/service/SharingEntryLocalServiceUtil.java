@@ -14,10 +14,6 @@
 
 package com.liferay.sharing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SharingEntry. This utility wraps
  * <code>com.liferay.sharing.service.impl.SharingEntryLocalServiceImpl</code> and
@@ -369,7 +365,7 @@ public class SharingEntryLocalServiceUtil {
 	 * @return the matching sharing entry, or <code>null</code> if a matching sharing entry could not be found
 	 */
 	public static com.liferay.sharing.model.SharingEntry
-		fetchSharingEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchSharingEntryByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchSharingEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -460,7 +456,7 @@ public class SharingEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -530,7 +526,8 @@ public class SharingEntryLocalServiceUtil {
 	 * @return the matching sharing entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.sharing.model.SharingEntry>
-		getSharingEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getSharingEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getSharingEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -548,7 +545,7 @@ public class SharingEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.sharing.model.SharingEntry>
 		getSharingEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.sharing.model.SharingEntry> orderByComparator) {
 
@@ -619,7 +616,7 @@ public class SharingEntryLocalServiceUtil {
 	 * @throws PortalException if a matching sharing entry could not be found
 	 */
 	public static com.liferay.sharing.model.SharingEntry
-			getSharingEntryByUuidAndGroupId(String uuid, long groupId)
+			getSharingEntryByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSharingEntryByUuidAndGroupId(uuid, groupId);
@@ -838,25 +835,9 @@ public class SharingEntryLocalServiceUtil {
 	}
 
 	public static SharingEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _sharingEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<SharingEntryLocalService, SharingEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SharingEntryLocalService.class);
-
-		ServiceTracker<SharingEntryLocalService, SharingEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<SharingEntryLocalService, SharingEntryLocalService>(
-						bundle.getBundleContext(),
-						SharingEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SharingEntryLocalService _sharingEntryLocalService;
 
 }

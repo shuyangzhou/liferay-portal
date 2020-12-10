@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPInstanceOptionValueRel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPInstanceOptionValueRelLocalServiceImpl</code> and
@@ -248,7 +244,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPInstanceOptionValueRel
 		fetchCPInstanceOptionValueRelByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCPInstanceOptionValueRelByUuidAndGroupId(
 			uuid, groupId);
@@ -319,7 +315,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPInstanceOptionValueRel
 			getCPInstanceOptionValueRelByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPInstanceOptionValueRelByUuidAndGroupId(
@@ -354,7 +350,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPInstanceOptionValueRel>
 			getCPInstanceOptionValueRelsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCPInstanceOptionValueRelsByUuidAndCompanyId(
 			uuid, companyId);
@@ -373,7 +369,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPInstanceOptionValueRel>
 			getCPInstanceOptionValueRelsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.
 						CPInstanceOptionValueRel> orderByComparator) {
@@ -411,7 +407,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -462,7 +458,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 
 	public static boolean matchesCPInstanceOptionValueRels(
 		long cpInstanceId,
-		java.util.Map<Long, java.util.List<Long>>
+		java.util.Map<java.lang.Long, java.util.List<java.lang.Long>>
 			cpDefinitionOptionRelIdsCPDefinitionOptionValueRelIds) {
 
 		return getService().matchesCPInstanceOptionValueRels(
@@ -491,7 +487,7 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 
 	public static void updateCPInstanceOptionValueRels(
 			long groupId, long companyId, long userId, long cpInstanceId,
-			java.util.Map<Long, java.util.List<Long>>
+			java.util.Map<java.lang.Long, java.util.List<java.lang.Long>>
 				cpDefinitionOptionRelIdCPDefinitionOptionValueRelIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -501,29 +497,10 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 	}
 
 	public static CPInstanceOptionValueRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpInstanceOptionValueRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CPInstanceOptionValueRelLocalService,
-		 CPInstanceOptionValueRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPInstanceOptionValueRelLocalService.class);
-
-		ServiceTracker
-			<CPInstanceOptionValueRelLocalService,
-			 CPInstanceOptionValueRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CPInstanceOptionValueRelLocalService,
-					 CPInstanceOptionValueRelLocalService>(
-						 bundle.getBundleContext(),
-						 CPInstanceOptionValueRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPInstanceOptionValueRelLocalService
+		_cpInstanceOptionValueRelLocalService;
 
 }

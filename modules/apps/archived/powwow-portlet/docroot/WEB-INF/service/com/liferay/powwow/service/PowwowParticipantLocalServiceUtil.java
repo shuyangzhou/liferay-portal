@@ -14,8 +14,6 @@
 
 package com.liferay.powwow.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PowwowParticipant. This utility wraps
  * <code>com.liferay.powwow.service.impl.PowwowParticipantLocalServiceImpl</code> and
@@ -37,9 +35,9 @@ public class PowwowParticipantLocalServiceUtil {
 	 */
 	public static com.liferay.powwow.model.PowwowParticipant
 			addPowwowParticipant(
-				long userId, long groupId, long powwowMeetingId, String name,
-				long participantUserId, String emailAddress, int type,
-				int status,
+				long userId, long groupId, long powwowMeetingId,
+				java.lang.String name, long participantUserId,
+				java.lang.String emailAddress, int type, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -238,7 +236,8 @@ public class PowwowParticipantLocalServiceUtil {
 	}
 
 	public static com.liferay.powwow.model.PowwowParticipant
-		fetchPowwowParticipant(long powwowMeetingId, String emailAddress) {
+		fetchPowwowParticipant(
+			long powwowMeetingId, java.lang.String emailAddress) {
 
 		return getService().fetchPowwowParticipant(
 			powwowMeetingId, emailAddress);
@@ -262,7 +261,7 @@ public class PowwowParticipantLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -340,9 +339,9 @@ public class PowwowParticipantLocalServiceUtil {
 
 	public static com.liferay.powwow.model.PowwowParticipant
 			updatePowwowParticipant(
-				long powwowParticipantId, long powwowMeetingId, String name,
-				long participantUserId, String emailAddress, int type,
-				int status,
+				long powwowParticipantId, long powwowMeetingId,
+				java.lang.String name, long participantUserId,
+				java.lang.String emailAddress, int type, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -376,20 +375,14 @@ public class PowwowParticipantLocalServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_powwowParticipantLocalService = null;
 	}
 
 	public static PowwowParticipantLocalService getService() {
-		if (_service == null) {
-			_service =
-				(PowwowParticipantLocalService)PortletBeanLocatorUtil.locate(
-					ServletContextUtil.getServletContextName(),
-					PowwowParticipantLocalService.class.getName());
-		}
-
-		return _service;
+		return _powwowParticipantLocalService;
 	}
 
-	private static PowwowParticipantLocalService _service;
+	private static volatile PowwowParticipantLocalService
+		_powwowParticipantLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.change.tracking.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CTProcess. This utility wraps
  * <code>com.liferay.change.tracking.service.impl.CTProcessLocalServiceImpl</code> and
@@ -295,7 +291,7 @@ public class CTProcessLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -326,25 +322,9 @@ public class CTProcessLocalServiceUtil {
 	}
 
 	public static CTProcessLocalService getService() {
-		return _serviceTracker.getService();
+		return _ctProcessLocalService;
 	}
 
-	private static ServiceTracker<CTProcessLocalService, CTProcessLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CTProcessLocalService.class);
-
-		ServiceTracker<CTProcessLocalService, CTProcessLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CTProcessLocalService, CTProcessLocalService>(
-						bundle.getBundleContext(), CTProcessLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CTProcessLocalService _ctProcessLocalService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialActivityLimit. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialActivityLimitLocalServiceImpl</code> and
@@ -38,7 +36,8 @@ public class SocialActivityLimitLocalServiceUtil {
 	public static com.liferay.social.kernel.model.SocialActivityLimit
 			addActivityLimit(
 				long userId, long groupId, long classNameId, long classPK,
-				int activityType, String activityCounterName, int limitPeriod)
+				int activityType, java.lang.String activityCounterName,
+				int limitPeriod)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addActivityLimit(
@@ -227,7 +226,7 @@ public class SocialActivityLimitLocalServiceUtil {
 	public static com.liferay.social.kernel.model.SocialActivityLimit
 		fetchActivityLimit(
 			long groupId, long userId, long classNameId, long classPK,
-			int activityType, String activityCounterName) {
+			int activityType, java.lang.String activityCounterName) {
 
 		return getService().fetchActivityLimit(
 			groupId, userId, classNameId, classPK, activityType,
@@ -258,7 +257,7 @@ public class SocialActivityLimitLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -332,15 +331,10 @@ public class SocialActivityLimitLocalServiceUtil {
 	}
 
 	public static SocialActivityLimitLocalService getService() {
-		if (_service == null) {
-			_service =
-				(SocialActivityLimitLocalService)PortalBeanLocatorUtil.locate(
-					SocialActivityLimitLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialActivityLimitLocalService;
 	}
 
-	private static SocialActivityLimitLocalService _service;
+	private static volatile SocialActivityLimitLocalService
+		_socialActivityLimitLocalService;
 
 }

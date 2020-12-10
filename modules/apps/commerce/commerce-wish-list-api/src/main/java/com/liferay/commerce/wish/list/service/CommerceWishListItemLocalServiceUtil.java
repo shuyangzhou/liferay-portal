@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.wish.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceWishListItem. This utility wraps
  * <code>com.liferay.commerce.wish.list.service.impl.CommerceWishListItemLocalServiceImpl</code> and
@@ -63,7 +59,7 @@ public class CommerceWishListItemLocalServiceUtil {
 	public static com.liferay.commerce.wish.list.model.CommerceWishListItem
 			addCommerceWishListItem(
 				long commerceWishListId, long cpDefinitionId, long cpInstanceId,
-				String json,
+				java.lang.String json,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -74,8 +70,8 @@ public class CommerceWishListItemLocalServiceUtil {
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishListItem
 			addCommerceWishListItem(
-				long commerceWishListId, long cProductId, String cpInstanceUuid,
-				String json,
+				long commerceWishListId, long cProductId,
+				java.lang.String cpInstanceUuid, java.lang.String json,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -297,7 +293,8 @@ public class CommerceWishListItemLocalServiceUtil {
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishListItem
 			getCommerceWishListItem(
-				long commerceWishListId, String cpInstanceUuid, long cProductId)
+				long commerceWishListId, java.lang.String cpInstanceUuid,
+				long cProductId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceWishListItem(
@@ -305,7 +302,7 @@ public class CommerceWishListItemLocalServiceUtil {
 	}
 
 	public static int getCommerceWishListItemByContainsCPInstanceCount(
-		long commerceWishListId, String cpInstanceUuid) {
+		long commerceWishListId, java.lang.String cpInstanceUuid) {
 
 		return getService().getCommerceWishListItemByContainsCPInstanceCount(
 			commerceWishListId, cpInstanceUuid);
@@ -373,7 +370,7 @@ public class CommerceWishListItemLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -406,29 +403,10 @@ public class CommerceWishListItemLocalServiceUtil {
 	}
 
 	public static CommerceWishListItemLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceWishListItemLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceWishListItemLocalService, CommerceWishListItemLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceWishListItemLocalService.class);
-
-		ServiceTracker
-			<CommerceWishListItemLocalService, CommerceWishListItemLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceWishListItemLocalService,
-						 CommerceWishListItemLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceWishListItemLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceWishListItemLocalService
+		_commerceWishListItemLocalService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for User. This utility wraps
  * <code>com.liferay.portal.service.impl.UserServiceImpl</code> and is an
@@ -145,13 +143,15 @@ public class UserServiceUtil {
 	 * @return the new user
 	 */
 	public static com.liferay.portal.kernel.model.User addUser(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, java.util.Locale locale, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
-			long[] roleIds, long[] userGroupIds, boolean sendEmail,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			java.util.Locale locale, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String jobTitle,
+			long[] groupIds, long[] organizationIds, long[] roleIds,
+			long[] userGroupIds, boolean sendEmail,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -212,13 +212,15 @@ public class UserServiceUtil {
 	 * @return the new user
 	 */
 	public static com.liferay.portal.kernel.model.User addUser(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, java.util.Locale locale, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
-			long[] roleIds, long[] userGroupIds,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			java.util.Locale locale, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String jobTitle,
+			long[] groupIds, long[] organizationIds, long[] roleIds,
+			long[] userGroupIds,
 			java.util.List<com.liferay.portal.kernel.model.Address> addresses,
 			java.util.List<com.liferay.portal.kernel.model.EmailAddress>
 				emailAddresses,
@@ -291,13 +293,14 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User addUser(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, long facebookId, String openId,
-			java.util.Locale locale, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			long facebookId, java.lang.String openId, java.util.Locale locale,
+			java.lang.String firstName, java.lang.String middleName,
+			java.lang.String lastName, long prefixId, long suffixId,
+			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 			long[] roleIds, long[] userGroupIds, boolean sendEmail,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -367,13 +370,14 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User addUser(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, long facebookId, String openId,
-			java.util.Locale locale, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			long facebookId, java.lang.String openId, java.util.Locale locale,
+			java.lang.String firstName, java.lang.String middleName,
+			java.lang.String lastName, long prefixId, long suffixId,
+			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 			long[] roleIds, long[] userGroupIds,
 			java.util.List<com.liferay.portal.kernel.model.Address> addresses,
 			java.util.List<com.liferay.portal.kernel.model.EmailAddress>
@@ -451,13 +455,15 @@ public class UserServiceUtil {
 	 * @return the new user
 	 */
 	public static com.liferay.portal.kernel.model.User addUserWithWorkflow(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, java.util.Locale locale, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
-			long[] roleIds, long[] userGroupIds, boolean sendEmail,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			java.util.Locale locale, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String jobTitle,
+			long[] groupIds, long[] organizationIds, long[] roleIds,
+			long[] userGroupIds, boolean sendEmail,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -518,13 +524,15 @@ public class UserServiceUtil {
 	 * @return the new user
 	 */
 	public static com.liferay.portal.kernel.model.User addUserWithWorkflow(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, java.util.Locale locale, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
-			long[] roleIds, long[] userGroupIds,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			java.util.Locale locale, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String jobTitle,
+			long[] groupIds, long[] organizationIds, long[] roleIds,
+			long[] userGroupIds,
 			java.util.List<com.liferay.portal.kernel.model.Address> addresses,
 			java.util.List<com.liferay.portal.kernel.model.EmailAddress>
 				emailAddresses,
@@ -597,13 +605,14 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User addUserWithWorkflow(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, long facebookId, String openId,
-			java.util.Locale locale, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			long facebookId, java.lang.String openId, java.util.Locale locale,
+			java.lang.String firstName, java.lang.String middleName,
+			java.lang.String lastName, long prefixId, long suffixId,
+			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 			long[] roleIds, long[] userGroupIds, boolean sendEmail,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -674,13 +683,14 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User addUserWithWorkflow(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, long facebookId, String openId,
-			java.util.Locale locale, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			long facebookId, java.lang.String openId, java.util.Locale locale,
+			java.lang.String firstName, java.lang.String middleName,
+			java.lang.String lastName, long prefixId, long suffixId,
+			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 			long[] roleIds, long[] userGroupIds,
 			java.util.List<com.liferay.portal.kernel.model.Address> addresses,
 			java.util.List<com.liferay.portal.kernel.model.EmailAddress>
@@ -950,7 +960,7 @@ public class UserServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -974,7 +984,7 @@ public class UserServiceUtil {
 	 * @return the user with the email address
 	 */
 	public static com.liferay.portal.kernel.model.User getUserByEmailAddress(
-			long companyId, String emailAddress)
+			long companyId, java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserByEmailAddress(companyId, emailAddress);
@@ -1000,7 +1010,7 @@ public class UserServiceUtil {
 	 * @return the user with the screen name
 	 */
 	public static com.liferay.portal.kernel.model.User getUserByScreenName(
-			long companyId, String screenName)
+			long companyId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserByScreenName(companyId, screenName);
@@ -1028,7 +1038,7 @@ public class UserServiceUtil {
 	 * @return the primary key of the user with the email address
 	 */
 	public static long getUserIdByEmailAddress(
-			long companyId, String emailAddress)
+			long companyId, java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserIdByEmailAddress(companyId, emailAddress);
@@ -1041,7 +1051,8 @@ public class UserServiceUtil {
 	 * @param screenName the user's screen name
 	 * @return the primary key of the user with the screen name
 	 */
-	public static long getUserIdByScreenName(long companyId, String screenName)
+	public static long getUserIdByScreenName(
+			long companyId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserIdByScreenName(companyId, screenName);
@@ -1089,7 +1100,8 @@ public class UserServiceUtil {
 	 otherwise
 	 */
 	public static boolean hasRoleUser(
-			long companyId, String name, long userId, boolean inherited)
+			long companyId, java.lang.String name, long userId,
+			boolean inherited)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().hasRoleUser(companyId, name, userId, inherited);
@@ -1116,7 +1128,7 @@ public class UserServiceUtil {
 	 contains a reset link
 	 */
 	public static boolean sendPasswordByEmailAddress(
-			long companyId, String emailAddress)
+			long companyId, java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().sendPasswordByEmailAddress(companyId, emailAddress);
@@ -1142,7 +1154,7 @@ public class UserServiceUtil {
 	 contains a reset link
 	 */
 	public static boolean sendPasswordByScreenName(
-			long companyId, String screenName)
+			long companyId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().sendPasswordByScreenName(companyId, screenName);
@@ -1315,8 +1327,9 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updateEmailAddress(
-			long userId, String password, String emailAddress1,
-			String emailAddress2, ServiceContext serviceContext)
+			long userId, java.lang.String password,
+			java.lang.String emailAddress1, java.lang.String emailAddress2,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateEmailAddress(
@@ -1358,12 +1371,14 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updateIncompleteUser(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, java.util.Locale locale, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, boolean updateUserInformation, boolean sendEmail,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			java.util.Locale locale, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String jobTitle,
+			boolean updateUserInformation, boolean sendEmail,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -1418,14 +1433,15 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User updateIncompleteUser(
-			long companyId, boolean autoPassword, String password1,
-			String password2, boolean autoScreenName, String screenName,
-			String emailAddress, long facebookId, String openId,
-			java.util.Locale locale, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, boolean updateUserInformation, boolean sendEmail,
-			ServiceContext serviceContext)
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			long facebookId, java.lang.String openId, java.util.Locale locale,
+			java.lang.String firstName, java.lang.String middleName,
+			java.lang.String lastName, long prefixId, long suffixId,
+			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
+			java.lang.String jobTitle, boolean updateUserInformation,
+			boolean sendEmail, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateIncompleteUser(
@@ -1460,7 +1476,7 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User updateOpenId(
-			long userId, String openId)
+			long userId, java.lang.String openId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateOpenId(userId, openId);
@@ -1494,7 +1510,7 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updatePassword(
-			long userId, String password1, String password2,
+			long userId, java.lang.String password1, java.lang.String password2,
 			boolean passwordReset)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -1525,7 +1541,7 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updateReminderQuery(
-			long userId, String question, String answer)
+			long userId, java.lang.String question, java.lang.String answer)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateReminderQuery(userId, question, answer);
@@ -1539,7 +1555,7 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updateScreenName(
-			long userId, String screenName)
+			long userId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateScreenName(userId, screenName);
@@ -1616,17 +1632,21 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updateUser(
-			long userId, String oldPassword, String newPassword1,
-			String newPassword2, boolean passwordReset,
-			String reminderQueryQuestion, String reminderQueryAnswer,
-			String screenName, String emailAddress, boolean hasPortrait,
-			byte[] portraitBytes, String languageId, String timeZoneId,
-			String greeting, String comments, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String smsSn, String facebookSn, String jabberSn, String skypeSn,
-			String twitterSn, String jobTitle, long[] groupIds,
-			long[] organizationIds, long[] roleIds,
+			long userId, java.lang.String oldPassword,
+			java.lang.String newPassword1, java.lang.String newPassword2,
+			boolean passwordReset, java.lang.String reminderQueryQuestion,
+			java.lang.String reminderQueryAnswer, java.lang.String screenName,
+			java.lang.String emailAddress, boolean hasPortrait,
+			byte[] portraitBytes, java.lang.String languageId,
+			java.lang.String timeZoneId, java.lang.String greeting,
+			java.lang.String comments, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String smsSn,
+			java.lang.String facebookSn, java.lang.String jabberSn,
+			java.lang.String skypeSn, java.lang.String twitterSn,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
+			long[] roleIds,
 			java.util.List<com.liferay.portal.kernel.model.UserGroupRole>
 				userGroupRoles,
 			long[] userGroupIds,
@@ -1715,18 +1735,21 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User updateUser(
-			long userId, String oldPassword, String newPassword1,
-			String newPassword2, boolean passwordReset,
-			String reminderQueryQuestion, String reminderQueryAnswer,
-			String screenName, String emailAddress, long facebookId,
-			String openId, boolean hasPortrait, byte[] portraitBytes,
-			String languageId, String timeZoneId, String greeting,
-			String comments, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear, String smsSn,
-			String facebookSn, String jabberSn, String skypeSn,
-			String twitterSn, String jobTitle, long[] groupIds,
-			long[] organizationIds, long[] roleIds,
+			long userId, java.lang.String oldPassword,
+			java.lang.String newPassword1, java.lang.String newPassword2,
+			boolean passwordReset, java.lang.String reminderQueryQuestion,
+			java.lang.String reminderQueryAnswer, java.lang.String screenName,
+			java.lang.String emailAddress, long facebookId,
+			java.lang.String openId, boolean hasPortrait, byte[] portraitBytes,
+			java.lang.String languageId, java.lang.String timeZoneId,
+			java.lang.String greeting, java.lang.String comments,
+			java.lang.String firstName, java.lang.String middleName,
+			java.lang.String lastName, long prefixId, long suffixId,
+			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
+			java.lang.String smsSn, java.lang.String facebookSn,
+			java.lang.String jabberSn, java.lang.String skypeSn,
+			java.lang.String twitterSn, java.lang.String jobTitle,
+			long[] groupIds, long[] organizationIds, long[] roleIds,
 			java.util.List<com.liferay.portal.kernel.model.UserGroupRole>
 				userGroupRoles,
 			long[] userGroupIds,
@@ -1807,17 +1830,21 @@ public class UserServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.User updateUser(
-			long userId, String oldPassword, String newPassword1,
-			String newPassword2, boolean passwordReset,
-			String reminderQueryQuestion, String reminderQueryAnswer,
-			String screenName, String emailAddress, long facebookId,
-			String openId, String languageId, String timeZoneId,
-			String greeting, String comments, String firstName,
-			String middleName, String lastName, long prefixId, long suffixId,
-			boolean male, int birthdayMonth, int birthdayDay, int birthdayYear,
-			String smsSn, String facebookSn, String jabberSn, String skypeSn,
-			String twitterSn, String jobTitle, long[] groupIds,
-			long[] organizationIds, long[] roleIds,
+			long userId, java.lang.String oldPassword,
+			java.lang.String newPassword1, java.lang.String newPassword2,
+			boolean passwordReset, java.lang.String reminderQueryQuestion,
+			java.lang.String reminderQueryAnswer, java.lang.String screenName,
+			java.lang.String emailAddress, long facebookId,
+			java.lang.String openId, java.lang.String languageId,
+			java.lang.String timeZoneId, java.lang.String greeting,
+			java.lang.String comments, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String smsSn,
+			java.lang.String facebookSn, java.lang.String jabberSn,
+			java.lang.String skypeSn, java.lang.String twitterSn,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
+			long[] roleIds,
 			java.util.List<com.liferay.portal.kernel.model.UserGroupRole>
 				userGroupRoles,
 			long[] userGroupIds, ServiceContext serviceContext)
@@ -1880,16 +1907,20 @@ public class UserServiceUtil {
 	 * @return the user
 	 */
 	public static com.liferay.portal.kernel.model.User updateUser(
-			long userId, String oldPassword, String newPassword1,
-			String newPassword2, boolean passwordReset,
-			String reminderQueryQuestion, String reminderQueryAnswer,
-			String screenName, String emailAddress, String languageId,
-			String timeZoneId, String greeting, String comments,
-			String firstName, String middleName, String lastName, long prefixId,
-			long suffixId, boolean male, int birthdayMonth, int birthdayDay,
-			int birthdayYear, String smsSn, String facebookSn, String jabberSn,
-			String skypeSn, String twitterSn, String jobTitle, long[] groupIds,
-			long[] organizationIds, long[] roleIds,
+			long userId, java.lang.String oldPassword,
+			java.lang.String newPassword1, java.lang.String newPassword2,
+			boolean passwordReset, java.lang.String reminderQueryQuestion,
+			java.lang.String reminderQueryAnswer, java.lang.String screenName,
+			java.lang.String emailAddress, java.lang.String languageId,
+			java.lang.String timeZoneId, java.lang.String greeting,
+			java.lang.String comments, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String smsSn,
+			java.lang.String facebookSn, java.lang.String jabberSn,
+			java.lang.String skypeSn, java.lang.String twitterSn,
+			java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
+			long[] roleIds,
 			java.util.List<com.liferay.portal.kernel.model.UserGroupRole>
 				userGroupRoles,
 			long[] userGroupIds, ServiceContext serviceContext)
@@ -1906,14 +1937,9 @@ public class UserServiceUtil {
 	}
 
 	public static UserService getService() {
-		if (_service == null) {
-			_service = (UserService)PortalBeanLocatorUtil.locate(
-				UserService.class.getName());
-		}
-
-		return _service;
+		return _userService;
 	}
 
-	private static UserService _service;
+	private static volatile UserService _userService;
 
 }

@@ -26,7 +26,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.UADPartialEntry;
 import com.liferay.portal.tools.service.builder.test.service.UADPartialEntryService;
+import com.liferay.portal.tools.service.builder.test.service.UADPartialEntryServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.UADPartialEntryPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -48,7 +51,7 @@ public abstract class UADPartialEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UADPartialEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.UADPartialEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UADPartialEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UADPartialEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -138,9 +141,11 @@ public abstract class UADPartialEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(uadPartialEntryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -182,6 +187,22 @@ public abstract class UADPartialEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		UADPartialEntryService uadPartialEntryService) {
+
+		try {
+			Field field = UADPartialEntryServiceUtil.class.getDeclaredField(
+				"_uadPartialEntryService");
+
+			field.setAccessible(true);
+
+			field.set(null, uadPartialEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

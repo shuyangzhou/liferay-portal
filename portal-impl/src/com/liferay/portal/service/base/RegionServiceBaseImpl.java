@@ -24,11 +24,14 @@ import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.RegionService;
+import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.RegionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -49,7 +52,7 @@ public abstract class RegionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RegionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RegionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RegionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RegionServiceUtil</code>.
 	 */
 
 	/**
@@ -276,9 +279,11 @@ public abstract class RegionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(regionService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -320,6 +325,20 @@ public abstract class RegionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(RegionService regionService) {
+		try {
+			Field field = RegionServiceUtil.class.getDeclaredField(
+				"_regionService");
+
+			field.setAccessible(true);
+
+			field.set(null, regionService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

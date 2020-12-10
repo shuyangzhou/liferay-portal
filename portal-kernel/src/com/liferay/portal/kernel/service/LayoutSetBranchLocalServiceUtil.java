@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for LayoutSetBranch. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutSetBranchLocalServiceImpl</code> and
@@ -55,8 +53,9 @@ public class LayoutSetBranchLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.model.LayoutSetBranch
 			addLayoutSetBranch(
-				long userId, long groupId, boolean privateLayout, String name,
-				String description, boolean master, long copyLayoutSetBranchId,
+				long userId, long groupId, boolean privateLayout,
+				java.lang.String name, java.lang.String description,
+				boolean master, long copyLayoutSetBranchId,
 				ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -278,7 +277,8 @@ public class LayoutSetBranchLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.LayoutSetBranch
-		fetchLayoutSetBranch(long groupId, boolean privateLayout, String name) {
+		fetchLayoutSetBranch(
+			long groupId, boolean privateLayout, java.lang.String name) {
 
 		return getService().fetchLayoutSetBranch(groupId, privateLayout, name);
 	}
@@ -311,7 +311,8 @@ public class LayoutSetBranchLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.LayoutSetBranch
-			getLayoutSetBranch(long groupId, boolean privateLayout, String name)
+			getLayoutSetBranch(
+				long groupId, boolean privateLayout, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutSetBranch(groupId, privateLayout, name);
@@ -363,7 +364,7 @@ public class LayoutSetBranchLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -416,8 +417,8 @@ public class LayoutSetBranchLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.model.LayoutSetBranch
 			updateLayoutSetBranch(
-				long layoutSetBranchId, String name, String description,
-				ServiceContext serviceContext)
+				long layoutSetBranchId, java.lang.String name,
+				java.lang.String description, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutSetBranch(
@@ -425,15 +426,10 @@ public class LayoutSetBranchLocalServiceUtil {
 	}
 
 	public static LayoutSetBranchLocalService getService() {
-		if (_service == null) {
-			_service =
-				(LayoutSetBranchLocalService)PortalBeanLocatorUtil.locate(
-					LayoutSetBranchLocalService.class.getName());
-		}
-
-		return _service;
+		return _layoutSetBranchLocalService;
 	}
 
-	private static LayoutSetBranchLocalService _service;
+	private static volatile LayoutSetBranchLocalService
+		_layoutSetBranchLocalService;
 
 }

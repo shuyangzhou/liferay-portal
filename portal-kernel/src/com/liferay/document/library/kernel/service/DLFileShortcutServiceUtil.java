@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for DLFileShortcut. This utility wraps
  * <code>com.liferay.portlet.documentlibrary.service.impl.DLFileShortcutServiceImpl</code> and is an
@@ -64,7 +62,7 @@ public class DLFileShortcutServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -88,14 +86,9 @@ public class DLFileShortcutServiceUtil {
 	}
 
 	public static DLFileShortcutService getService() {
-		if (_service == null) {
-			_service = (DLFileShortcutService)PortalBeanLocatorUtil.locate(
-				DLFileShortcutService.class.getName());
-		}
-
-		return _service;
+		return _dlFileShortcutService;
 	}
 
-	private static DLFileShortcutService _service;
+	private static volatile DLFileShortcutService _dlFileShortcutService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.document.library.opener.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DLOpenerFileEntryReference. This utility wraps
  * <code>com.liferay.document.library.opener.service.impl.DLOpenerFileEntryReferenceLocalServiceImpl</code> and
@@ -67,7 +63,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 				addDLOpenerFileEntryReference(
-					long userId, String referenceKey,
+					long userId, java.lang.String referenceKey,
 					com.liferay.portal.kernel.repository.model.FileEntry
 						fileEntry,
 					int type)
@@ -80,7 +76,8 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 				addDLOpenerFileEntryReference(
-					long userId, String referenceKey, String referenceType,
+					long userId, java.lang.String referenceKey,
+					java.lang.String referenceType,
 					com.liferay.portal.kernel.repository.model.FileEntry
 						fileEntry,
 					int type)
@@ -112,7 +109,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 				addPlaceholderDLOpenerFileEntryReference(
-					long userId, String referenceType,
+					long userId, java.lang.String referenceType,
 					com.liferay.portal.kernel.repository.model.FileEntry
 						fileEntry,
 					int type)
@@ -201,7 +198,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	}
 
 	public static void deleteDLOpenerFileEntryReference(
-			String referenceType,
+			java.lang.String referenceType,
 			com.liferay.portal.kernel.repository.model.FileEntry fileEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -335,7 +332,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 			fetchDLOpenerFileEntryReference(
-				String referenceKey,
+				java.lang.String referenceKey,
 				com.liferay.portal.kernel.repository.model.FileEntry
 					fileEntry) {
 
@@ -383,7 +380,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 				getDLOpenerFileEntryReference(
-					String referenceType,
+					java.lang.String referenceType,
 					com.liferay.portal.kernel.repository.model.FileEntry
 						fileEntry)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -431,7 +428,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -473,7 +470,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 			updateDLOpenerFileEntryReference(
-				String referenceKey,
+				java.lang.String referenceKey,
 				com.liferay.portal.kernel.repository.model.FileEntry
 					fileEntry) {
 
@@ -484,7 +481,7 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	public static
 		com.liferay.document.library.opener.model.DLOpenerFileEntryReference
 			updateDLOpenerFileEntryReference(
-				String referenceKey, String referenceType,
+				java.lang.String referenceKey, java.lang.String referenceType,
 				com.liferay.portal.kernel.repository.model.FileEntry
 					fileEntry) {
 
@@ -493,29 +490,10 @@ public class DLOpenerFileEntryReferenceLocalServiceUtil {
 	}
 
 	public static DLOpenerFileEntryReferenceLocalService getService() {
-		return _serviceTracker.getService();
+		return _dlOpenerFileEntryReferenceLocalService;
 	}
 
-	private static ServiceTracker
-		<DLOpenerFileEntryReferenceLocalService,
-		 DLOpenerFileEntryReferenceLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DLOpenerFileEntryReferenceLocalService.class);
-
-		ServiceTracker
-			<DLOpenerFileEntryReferenceLocalService,
-			 DLOpenerFileEntryReferenceLocalService> serviceTracker =
-				new ServiceTracker
-					<DLOpenerFileEntryReferenceLocalService,
-					 DLOpenerFileEntryReferenceLocalService>(
-						 bundle.getBundleContext(),
-						 DLOpenerFileEntryReferenceLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DLOpenerFileEntryReferenceLocalService
+		_dlOpenerFileEntryReferenceLocalService;
 
 }

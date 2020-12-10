@@ -14,10 +14,6 @@
 
 package com.liferay.multi.factor.authentication.email.otp.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MFAEmailOTPEntry. This utility wraps
  * <code>com.liferay.multi.factor.authentication.email.otp.service.impl.MFAEmailOTPEntryLocalServiceImpl</code> and
@@ -301,7 +297,7 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -325,7 +321,8 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 
 	public static
 		com.liferay.multi.factor.authentication.email.otp.model.MFAEmailOTPEntry
-				updateAttempts(long userId, String ip, boolean success)
+				updateAttempts(
+					long userId, java.lang.String ip, boolean success)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAttempts(userId, ip, success);
@@ -351,29 +348,10 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 	}
 
 	public static MFAEmailOTPEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _mfaEmailOTPEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<MFAEmailOTPEntryLocalService, MFAEmailOTPEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			MFAEmailOTPEntryLocalService.class);
-
-		ServiceTracker
-			<MFAEmailOTPEntryLocalService, MFAEmailOTPEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<MFAEmailOTPEntryLocalService,
-						 MFAEmailOTPEntryLocalService>(
-							 bundle.getBundleContext(),
-							 MFAEmailOTPEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MFAEmailOTPEntryLocalService
+		_mfaEmailOTPEntryLocalService;
 
 }

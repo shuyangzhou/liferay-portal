@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SegmentsExperience. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsExperienceLocalServiceImpl</code> and
@@ -40,7 +36,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	public static com.liferay.segments.model.SegmentsExperience
 			addSegmentsExperience(
 				long segmentsEntryId, long classNameId, long classPK,
-				java.util.Map<java.util.Locale, String> nameMap, boolean active,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -52,8 +49,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	public static com.liferay.segments.model.SegmentsExperience
 			addSegmentsExperience(
 				long segmentsEntryId, long classNameId, long classPK,
-				java.util.Map<java.util.Locale, String> nameMap, int priority,
-				boolean active,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				int priority, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -270,7 +267,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsExperience
-		fetchSegmentsExperience(long groupId, String segmentsExperienceKey) {
+		fetchSegmentsExperience(
+			long groupId, java.lang.String segmentsExperienceKey) {
 
 		return getService().fetchSegmentsExperience(
 			groupId, segmentsExperienceKey);
@@ -284,7 +282,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	 * @return the matching segments experience, or <code>null</code> if a matching segments experience could not be found
 	 */
 	public static com.liferay.segments.model.SegmentsExperience
-		fetchSegmentsExperienceByUuidAndGroupId(String uuid, long groupId) {
+		fetchSegmentsExperienceByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchSegmentsExperienceByUuidAndGroupId(
 			uuid, groupId);
@@ -316,7 +315,7 @@ public class SegmentsExperienceLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -345,7 +344,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsExperience
-			getSegmentsExperience(long groupId, String segmentsExperienceKey)
+			getSegmentsExperience(
+				long groupId, java.lang.String segmentsExperienceKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSegmentsExperience(
@@ -361,7 +361,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	 * @throws PortalException if a matching segments experience could not be found
 	 */
 	public static com.liferay.segments.model.SegmentsExperience
-			getSegmentsExperienceByUuidAndGroupId(String uuid, long groupId)
+			getSegmentsExperienceByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSegmentsExperienceByUuidAndGroupId(
@@ -444,7 +445,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	 * @return the matching segments experiences, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.segments.model.SegmentsExperience>
-		getSegmentsExperiencesByUuidAndCompanyId(String uuid, long companyId) {
+		getSegmentsExperiencesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getSegmentsExperiencesByUuidAndCompanyId(
 			uuid, companyId);
@@ -462,7 +464,7 @@ public class SegmentsExperienceLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.segments.model.SegmentsExperience>
 		getSegmentsExperiencesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.segments.model.SegmentsExperience>
 					orderByComparator) {
@@ -497,7 +499,8 @@ public class SegmentsExperienceLocalServiceUtil {
 	public static com.liferay.segments.model.SegmentsExperience
 			updateSegmentsExperience(
 				long segmentsExperienceId, long segmentsEntryId,
-				java.util.Map<java.util.Locale, String> nameMap, boolean active)
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateSegmentsExperience(
@@ -540,29 +543,10 @@ public class SegmentsExperienceLocalServiceUtil {
 	}
 
 	public static SegmentsExperienceLocalService getService() {
-		return _serviceTracker.getService();
+		return _segmentsExperienceLocalService;
 	}
 
-	private static ServiceTracker
-		<SegmentsExperienceLocalService, SegmentsExperienceLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SegmentsExperienceLocalService.class);
-
-		ServiceTracker
-			<SegmentsExperienceLocalService, SegmentsExperienceLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SegmentsExperienceLocalService,
-						 SegmentsExperienceLocalService>(
-							 bundle.getBundleContext(),
-							 SegmentsExperienceLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsExperienceLocalService
+		_segmentsExperienceLocalService;
 
 }

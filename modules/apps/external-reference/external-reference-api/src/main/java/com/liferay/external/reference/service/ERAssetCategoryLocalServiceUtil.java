@@ -14,10 +14,6 @@
 
 package com.liferay.external.reference.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ERAssetCategory. This utility wraps
  * <code>com.liferay.external.reference.service.impl.ERAssetCategoryLocalServiceImpl</code> and
@@ -39,11 +35,12 @@ public class ERAssetCategoryLocalServiceUtil {
 	 */
 	public static com.liferay.asset.kernel.model.AssetCategory
 			addOrUpdateCategory(
-				String externalReferenceCode, long userId, long groupId,
-				long parentCategoryId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long vocabularyId, String[] categoryProperties,
+				java.lang.String externalReferenceCode, long userId,
+				long groupId, long parentCategoryId,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long vocabularyId, java.lang.String[] categoryProperties,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -57,32 +54,15 @@ public class ERAssetCategoryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ERAssetCategoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _erAssetCategoryLocalService;
 	}
 
-	private static ServiceTracker
-		<ERAssetCategoryLocalService, ERAssetCategoryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ERAssetCategoryLocalService.class);
-
-		ServiceTracker<ERAssetCategoryLocalService, ERAssetCategoryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ERAssetCategoryLocalService, ERAssetCategoryLocalService>(
-						bundle.getBundleContext(),
-						ERAssetCategoryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ERAssetCategoryLocalService
+		_erAssetCategoryLocalService;
 
 }

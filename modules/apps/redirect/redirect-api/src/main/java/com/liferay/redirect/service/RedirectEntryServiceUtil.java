@@ -14,10 +14,6 @@
 
 package com.liferay.redirect.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for RedirectEntry. This utility wraps
  * <code>com.liferay.redirect.service.impl.RedirectEntryServiceImpl</code> and is an
@@ -38,8 +34,9 @@ public class RedirectEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.redirect.service.impl.RedirectEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.redirect.model.RedirectEntry addRedirectEntry(
-			long groupId, String destinationURL, java.util.Date expirationDate,
-			boolean permanent, String sourceURL,
+			long groupId, java.lang.String destinationURL,
+			java.util.Date expirationDate, boolean permanent,
+			java.lang.String sourceURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -49,8 +46,9 @@ public class RedirectEntryServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry addRedirectEntry(
-			long groupId, String destinationURL, java.util.Date expirationDate,
-			String groupBaseURL, boolean permanent, String sourceURL,
+			long groupId, java.lang.String destinationURL,
+			java.util.Date expirationDate, java.lang.String groupBaseURL,
+			boolean permanent, java.lang.String sourceURL,
 			boolean updateChainedRedirectEntries,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -79,7 +77,7 @@ public class RedirectEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -102,8 +100,9 @@ public class RedirectEntryServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry updateRedirectEntry(
-			long redirectEntryId, String destinationURL,
-			java.util.Date expirationDate, boolean permanent, String sourceURL)
+			long redirectEntryId, java.lang.String destinationURL,
+			java.util.Date expirationDate, boolean permanent,
+			java.lang.String sourceURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateRedirectEntry(
@@ -112,9 +111,9 @@ public class RedirectEntryServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry updateRedirectEntry(
-			long redirectEntryId, String destinationURL,
-			java.util.Date expirationDate, String groupBaseURL,
-			boolean permanent, String sourceURL,
+			long redirectEntryId, java.lang.String destinationURL,
+			java.util.Date expirationDate, java.lang.String groupBaseURL,
+			boolean permanent, java.lang.String sourceURL,
 			boolean updateChainedRedirectEntries)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -124,24 +123,9 @@ public class RedirectEntryServiceUtil {
 	}
 
 	public static RedirectEntryService getService() {
-		return _serviceTracker.getService();
+		return _redirectEntryService;
 	}
 
-	private static ServiceTracker<RedirectEntryService, RedirectEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(RedirectEntryService.class);
-
-		ServiceTracker<RedirectEntryService, RedirectEntryService>
-			serviceTracker =
-				new ServiceTracker<RedirectEntryService, RedirectEntryService>(
-					bundle.getBundleContext(), RedirectEntryService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile RedirectEntryService _redirectEntryService;
 
 }

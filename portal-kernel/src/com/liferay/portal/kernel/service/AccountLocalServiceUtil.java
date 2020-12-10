@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Account. This utility wraps
  * <code>com.liferay.portal.service.impl.AccountLocalServiceImpl</code> and
@@ -281,7 +279,7 @@ public class AccountLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -312,14 +310,9 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static AccountLocalService getService() {
-		if (_service == null) {
-			_service = (AccountLocalService)PortalBeanLocatorUtil.locate(
-				AccountLocalService.class.getName());
-		}
-
-		return _service;
+		return _accountLocalService;
 	}
 
-	private static AccountLocalService _service;
+	private static volatile AccountLocalService _accountLocalService;
 
 }

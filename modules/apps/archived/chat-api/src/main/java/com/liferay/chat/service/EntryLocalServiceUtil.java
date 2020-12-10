@@ -14,10 +14,6 @@
 
 package com.liferay.chat.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for Entry. This utility wraps
  * <code>com.liferay.chat.service.impl.EntryLocalServiceImpl</code> and
@@ -55,13 +51,14 @@ public class EntryLocalServiceUtil {
 	}
 
 	public static com.liferay.chat.model.Entry addEntry(
-		long createDate, long fromUserId, long toUserId, String content) {
+		long createDate, long fromUserId, long toUserId,
+		java.lang.String content) {
 
 		return getService().addEntry(createDate, fromUserId, toUserId, content);
 	}
 
 	public static com.liferay.chat.model.Entry addEntry(
-		long fromUserId, long toUserId, String content) {
+		long fromUserId, long toUserId, java.lang.String content) {
 
 		return getService().addEntry(fromUserId, toUserId, content);
 	}
@@ -298,7 +295,7 @@ public class EntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -329,22 +326,9 @@ public class EntryLocalServiceUtil {
 	}
 
 	public static EntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _entryLocalService;
 	}
 
-	private static ServiceTracker<EntryLocalService, EntryLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(EntryLocalService.class);
-
-		ServiceTracker<EntryLocalService, EntryLocalService> serviceTracker =
-			new ServiceTracker<EntryLocalService, EntryLocalService>(
-				bundle.getBundleContext(), EntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EntryLocalService _entryLocalService;
 
 }

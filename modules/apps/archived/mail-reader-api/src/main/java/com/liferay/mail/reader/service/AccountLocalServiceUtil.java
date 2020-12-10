@@ -14,10 +14,6 @@
 
 package com.liferay.mail.reader.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for Account. This utility wraps
  * <code>com.liferay.mail.reader.service.impl.AccountLocalServiceImpl</code> and
@@ -55,13 +51,16 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static com.liferay.mail.reader.model.Account addAccount(
-			long userId, String address, String personalName, String protocol,
-			String incomingHostName, int incomingPort, boolean incomingSecure,
-			String outgoingHostName, int outgoingPort, boolean outgoingSecure,
-			String login, String password, boolean savePassword,
-			String signature, boolean useSignature, String folderPrefix,
-			long inboxFolderId, long draftFolderId, long sentFolderId,
-			long trashFolderId, boolean defaultSender)
+			long userId, java.lang.String address,
+			java.lang.String personalName, java.lang.String protocol,
+			java.lang.String incomingHostName, int incomingPort,
+			boolean incomingSecure, java.lang.String outgoingHostName,
+			int outgoingPort, boolean outgoingSecure, java.lang.String login,
+			java.lang.String password, boolean savePassword,
+			java.lang.String signature, boolean useSignature,
+			java.lang.String folderPrefix, long inboxFolderId,
+			long draftFolderId, long sentFolderId, long trashFolderId,
+			boolean defaultSender)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccount(
@@ -259,7 +258,7 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static com.liferay.mail.reader.model.Account getAccount(
-			long userId, String address)
+			long userId, java.lang.String address)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAccount(userId, address);
@@ -315,7 +314,7 @@ public class AccountLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -346,9 +345,10 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static com.liferay.mail.reader.model.Account updateAccount(
-			long accountId, String personalName, String password,
-			boolean savePassword, String signature, boolean useSignature,
-			String folderPrefix, boolean defaultSender)
+			long accountId, java.lang.String personalName,
+			java.lang.String password, boolean savePassword,
+			java.lang.String signature, boolean useSignature,
+			java.lang.String folderPrefix, boolean defaultSender)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAccount(
@@ -367,23 +367,9 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static AccountLocalService getService() {
-		return _serviceTracker.getService();
+		return _accountLocalService;
 	}
 
-	private static ServiceTracker<AccountLocalService, AccountLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountLocalService.class);
-
-		ServiceTracker<AccountLocalService, AccountLocalService>
-			serviceTracker =
-				new ServiceTracker<AccountLocalService, AccountLocalService>(
-					bundle.getBundleContext(), AccountLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountLocalService _accountLocalService;
 
 }

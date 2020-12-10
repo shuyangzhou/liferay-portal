@@ -14,10 +14,6 @@
 
 package com.liferay.layout.page.template.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LayoutPageTemplateStructure. This utility wraps
  * <code>com.liferay.layout.page.template.service.impl.LayoutPageTemplateStructureLocalServiceImpl</code> and
@@ -68,7 +64,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				addLayoutPageTemplateStructure(
 					long userId, long groupId, long classNameId, long classPK,
-					String data,
+					java.lang.String data,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -80,7 +76,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				addLayoutPageTemplateStructure(
-					long userId, long groupId, long plid, String data,
+					long userId, long groupId, long plid, java.lang.String data,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -346,7 +342,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 			fetchLayoutPageTemplateStructureByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutPageTemplateStructureByUuidAndGroupId(
 			uuid, groupId);
@@ -401,7 +397,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				getLayoutPageTemplateStructureByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutPageTemplateStructureByUuidAndGroupId(
@@ -436,7 +432,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateStructure>
 			getLayoutPageTemplateStructuresByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getLayoutPageTemplateStructuresByUuidAndCompanyId(
 			uuid, companyId);
@@ -455,7 +451,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateStructure>
 			getLayoutPageTemplateStructuresByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateStructure> orderByComparator) {
@@ -478,7 +474,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -545,7 +541,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				updateLayoutPageTemplateStructure(
 					long groupId, long classNameId, long classPK,
-					long segmentsExperienceId, String data)
+					long segmentsExperienceId, java.lang.String data)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateStructure(
@@ -560,7 +556,8 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				updateLayoutPageTemplateStructure(
-					long groupId, long classNameId, long classPK, String data)
+					long groupId, long classNameId, long classPK,
+					java.lang.String data)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateStructure(
@@ -571,7 +568,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				updateLayoutPageTemplateStructureData(
 					long groupId, long plid, long segmentsExperienceId,
-					String data)
+					java.lang.String data)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateStructureData(
@@ -581,7 +578,7 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
 				updateLayoutPageTemplateStructureData(
-					long groupId, long plid, String data)
+					long groupId, long plid, java.lang.String data)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateStructureData(
@@ -589,29 +586,10 @@ public class LayoutPageTemplateStructureLocalServiceUtil {
 	}
 
 	public static LayoutPageTemplateStructureLocalService getService() {
-		return _serviceTracker.getService();
+		return _layoutPageTemplateStructureLocalService;
 	}
 
-	private static ServiceTracker
-		<LayoutPageTemplateStructureLocalService,
-		 LayoutPageTemplateStructureLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutPageTemplateStructureLocalService.class);
-
-		ServiceTracker
-			<LayoutPageTemplateStructureLocalService,
-			 LayoutPageTemplateStructureLocalService> serviceTracker =
-				new ServiceTracker
-					<LayoutPageTemplateStructureLocalService,
-					 LayoutPageTemplateStructureLocalService>(
-						 bundle.getBundleContext(),
-						 LayoutPageTemplateStructureLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutPageTemplateStructureLocalService
+		_layoutPageTemplateStructureLocalService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialRelation. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialRelationLocalServiceImpl</code> and
@@ -301,7 +299,8 @@ public class SocialRelationLocalServiceUtil {
 	 * @return the matching social relation, or <code>null</code> if a matching social relation could not be found
 	 */
 	public static com.liferay.social.kernel.model.SocialRelation
-		fetchSocialRelationByUuidAndCompanyId(String uuid, long companyId) {
+		fetchSocialRelationByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchSocialRelationByUuidAndCompanyId(
 			uuid, companyId);
@@ -363,7 +362,7 @@ public class SocialRelationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -502,7 +501,8 @@ public class SocialRelationLocalServiceUtil {
 	 * @throws PortalException if a matching social relation could not be found
 	 */
 	public static com.liferay.social.kernel.model.SocialRelation
-			getSocialRelationByUuidAndCompanyId(String uuid, long companyId)
+			getSocialRelationByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSocialRelationByUuidAndCompanyId(
@@ -591,14 +591,10 @@ public class SocialRelationLocalServiceUtil {
 	}
 
 	public static SocialRelationLocalService getService() {
-		if (_service == null) {
-			_service = (SocialRelationLocalService)PortalBeanLocatorUtil.locate(
-				SocialRelationLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialRelationLocalService;
 	}
 
-	private static SocialRelationLocalService _service;
+	private static volatile SocialRelationLocalService
+		_socialRelationLocalService;
 
 }

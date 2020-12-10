@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceChannelRel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CommerceChannelRelLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class CommerceChannelRelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannelRel
 			addCommerceChannelRel(
-				String className, long classPK, long commerceChannelId,
+				java.lang.String className, long classPK,
+				long commerceChannelId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -129,7 +126,7 @@ public class CommerceChannelRelLocalServiceUtil {
 	}
 
 	public static void deleteCommerceChannelRels(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		getService().deleteCommerceChannelRels(className, classPK);
 	}
@@ -244,7 +241,7 @@ public class CommerceChannelRelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannelRel
 		fetchCommerceChannelRel(
-			String className, long classPK, long commerceChannelId) {
+			java.lang.String className, long classPK, long commerceChannelId) {
 
 		return getService().fetchCommerceChannelRel(
 			className, classPK, commerceChannelId);
@@ -303,7 +300,7 @@ public class CommerceChannelRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannelRel>
 			getCommerceChannelRels(
-				String className, long classPK, int start, int end,
+				java.lang.String className, long classPK, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.CommerceChannelRel>
 						orderByComparator) {
@@ -315,8 +312,8 @@ public class CommerceChannelRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannelRel>
 			getCommerceChannelRels(
-				String className, long classPK, String name, int start,
-				int end) {
+				java.lang.String className, long classPK, java.lang.String name,
+				int start, int end) {
 
 		return getService().getCommerceChannelRels(
 			className, classPK, name, start, end);
@@ -336,13 +333,13 @@ public class CommerceChannelRelLocalServiceUtil {
 	}
 
 	public static int getCommerceChannelRelsCount(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().getCommerceChannelRelsCount(className, classPK);
 	}
 
 	public static int getCommerceChannelRelsCount(
-		String className, long classPK, String name) {
+		java.lang.String className, long classPK, java.lang.String name) {
 
 		return getService().getCommerceChannelRelsCount(
 			className, classPK, name);
@@ -360,7 +357,7 @@ public class CommerceChannelRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -393,29 +390,10 @@ public class CommerceChannelRelLocalServiceUtil {
 	}
 
 	public static CommerceChannelRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceChannelRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceChannelRelLocalService, CommerceChannelRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceChannelRelLocalService.class);
-
-		ServiceTracker
-			<CommerceChannelRelLocalService, CommerceChannelRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceChannelRelLocalService,
-						 CommerceChannelRelLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceChannelRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceChannelRelLocalService
+		_commerceChannelRelLocalService;
 
 }

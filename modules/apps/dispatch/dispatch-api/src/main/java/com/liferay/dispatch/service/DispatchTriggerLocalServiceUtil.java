@@ -14,10 +14,6 @@
 
 package com.liferay.dispatch.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DispatchTrigger. This utility wraps
  * <code>com.liferay.dispatch.service.impl.DispatchTriggerLocalServiceImpl</code> and
@@ -55,7 +51,8 @@ public class DispatchTriggerLocalServiceUtil {
 	}
 
 	public static com.liferay.dispatch.model.DispatchTrigger addDispatchTrigger(
-			long userId, String name, boolean system, String taskExecutorType,
+			long userId, java.lang.String name, boolean system,
+			java.lang.String taskExecutorType,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				taskSettingsUnicodeProperties)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -233,7 +230,7 @@ public class DispatchTriggerLocalServiceUtil {
 	}
 
 	public static com.liferay.dispatch.model.DispatchTrigger
-		fetchDispatchTrigger(long companyId, String name) {
+		fetchDispatchTrigger(long companyId, java.lang.String name) {
 
 		return getService().fetchDispatchTrigger(companyId, name);
 	}
@@ -326,7 +323,7 @@ public class DispatchTriggerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -379,11 +376,12 @@ public class DispatchTriggerLocalServiceUtil {
 
 	public static com.liferay.dispatch.model.DispatchTrigger
 			updateDispatchTrigger(
-				long dispatchTriggerId, boolean active, String cronExpression,
-				int endDateMonth, int endDateDay, int endDateYear,
-				int endDateHour, int endDateMinute, boolean neverEnd,
-				boolean overlapAllowed, int startDateMonth, int startDateDay,
-				int startDateYear, int startDateHour, int startDateMinute,
+				long dispatchTriggerId, boolean active,
+				java.lang.String cronExpression, int endDateMonth,
+				int endDateDay, int endDateYear, int endDateHour,
+				int endDateMinute, boolean neverEnd, boolean overlapAllowed,
+				int startDateMonth, int startDateDay, int startDateYear,
+				int startDateHour, int startDateMinute,
 				com.liferay.dispatch.executor.DispatchTaskClusterMode
 					dispatchTaskClusterMode)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -397,7 +395,7 @@ public class DispatchTriggerLocalServiceUtil {
 
 	public static com.liferay.dispatch.model.DispatchTrigger
 			updateDispatchTrigger(
-				long dispatchTriggerId, String name,
+				long dispatchTriggerId, java.lang.String name,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					taskSettingsUnicodeProperties)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -407,27 +405,10 @@ public class DispatchTriggerLocalServiceUtil {
 	}
 
 	public static DispatchTriggerLocalService getService() {
-		return _serviceTracker.getService();
+		return _dispatchTriggerLocalService;
 	}
 
-	private static ServiceTracker
-		<DispatchTriggerLocalService, DispatchTriggerLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DispatchTriggerLocalService.class);
-
-		ServiceTracker<DispatchTriggerLocalService, DispatchTriggerLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DispatchTriggerLocalService, DispatchTriggerLocalService>(
-						bundle.getBundleContext(),
-						DispatchTriggerLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DispatchTriggerLocalService
+		_dispatchTriggerLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.asset.display.page.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for AssetDisplayPageEntry. This utility wraps
  * <code>com.liferay.asset.display.page.service.impl.AssetDisplayPageEntryServiceImpl</code> and is an
@@ -42,7 +38,7 @@ public class AssetDisplayPageEntryServiceUtil {
 				long userId, long groupId, long classNameId, long classPK,
 				long layoutPageTemplateEntryId, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().addAssetDisplayPageEntry(
 			userId, groupId, classNameId, classPK, layoutPageTemplateEntryId,
@@ -54,7 +50,7 @@ public class AssetDisplayPageEntryServiceUtil {
 				long userId, long groupId, long classNameId, long classPK,
 				long layoutPageTemplateEntryId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().addAssetDisplayPageEntry(
 			userId, groupId, classNameId, classPK, layoutPageTemplateEntryId,
@@ -63,7 +59,7 @@ public class AssetDisplayPageEntryServiceUtil {
 
 	public static void deleteAssetDisplayPageEntry(
 			long groupId, long classNameId, long classPK)
-		throws Exception {
+		throws java.lang.Exception {
 
 		getService().deleteAssetDisplayPageEntry(groupId, classNameId, classPK);
 	}
@@ -71,7 +67,7 @@ public class AssetDisplayPageEntryServiceUtil {
 	public static com.liferay.asset.display.page.model.AssetDisplayPageEntry
 			fetchAssetDisplayPageEntry(
 				long groupId, long classNameId, long classPK)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().fetchAssetDisplayPageEntry(
 			groupId, classNameId, classPK);
@@ -138,7 +134,7 @@ public class AssetDisplayPageEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -146,36 +142,17 @@ public class AssetDisplayPageEntryServiceUtil {
 			updateAssetDisplayPageEntry(
 				long assetDisplayPageEntryId, long layoutPageTemplateEntryId,
 				int type)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().updateAssetDisplayPageEntry(
 			assetDisplayPageEntryId, layoutPageTemplateEntryId, type);
 	}
 
 	public static AssetDisplayPageEntryService getService() {
-		return _serviceTracker.getService();
+		return _assetDisplayPageEntryService;
 	}
 
-	private static ServiceTracker
-		<AssetDisplayPageEntryService, AssetDisplayPageEntryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetDisplayPageEntryService.class);
-
-		ServiceTracker
-			<AssetDisplayPageEntryService, AssetDisplayPageEntryService>
-				serviceTracker =
-					new ServiceTracker
-						<AssetDisplayPageEntryService,
-						 AssetDisplayPageEntryService>(
-							 bundle.getBundleContext(),
-							 AssetDisplayPageEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetDisplayPageEntryService
+		_assetDisplayPageEntryService;
 
 }

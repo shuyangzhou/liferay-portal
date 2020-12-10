@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPAttachmentFileEntry. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPAttachmentFileEntryServiceImpl</code> and is an
@@ -45,8 +41,8 @@ public class CPAttachmentFileEntryServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,7 +62,7 @@ public class CPAttachmentFileEntryServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPAttachmentFileEntry
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -125,7 +121,7 @@ public class CPAttachmentFileEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -137,8 +133,8 @@ public class CPAttachmentFileEntryServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -186,8 +182,9 @@ public class CPAttachmentFileEntryServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -208,8 +205,9 @@ public class CPAttachmentFileEntryServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -223,29 +221,10 @@ public class CPAttachmentFileEntryServiceUtil {
 	}
 
 	public static CPAttachmentFileEntryService getService() {
-		return _serviceTracker.getService();
+		return _cpAttachmentFileEntryService;
 	}
 
-	private static ServiceTracker
-		<CPAttachmentFileEntryService, CPAttachmentFileEntryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPAttachmentFileEntryService.class);
-
-		ServiceTracker
-			<CPAttachmentFileEntryService, CPAttachmentFileEntryService>
-				serviceTracker =
-					new ServiceTracker
-						<CPAttachmentFileEntryService,
-						 CPAttachmentFileEntryService>(
-							 bundle.getBundleContext(),
-							 CPAttachmentFileEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPAttachmentFileEntryService
+		_cpAttachmentFileEntryService;
 
 }

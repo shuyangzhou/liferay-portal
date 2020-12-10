@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Group. This utility wraps
  * <code>com.liferay.portal.service.impl.GroupServiceImpl</code> and is an
@@ -37,10 +35,10 @@ public class GroupServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Group addGroup(
 			long parentGroupId, long liveGroupId,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int type,
-			boolean manualMembership, int membershipRestriction,
-			String friendlyURL, boolean site, boolean inheritContent,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			int type, boolean manualMembership, int membershipRestriction,
+			java.lang.String friendlyURL, boolean site, boolean inheritContent,
 			boolean active, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -52,10 +50,10 @@ public class GroupServiceUtil {
 
 	public static com.liferay.portal.kernel.model.Group addGroup(
 			long parentGroupId, long liveGroupId,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int type,
-			boolean manualMembership, int membershipRestriction,
-			String friendlyURL, boolean site, boolean active,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			int type, boolean manualMembership, int membershipRestriction,
+			java.lang.String friendlyURL, boolean site, boolean active,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -158,7 +156,7 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.model.Group getGroup(
-			long companyId, String groupKey)
+			long companyId, java.lang.String groupKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGroup(companyId, groupKey);
@@ -175,7 +173,7 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a group with the primary key could not be
 	 found or if a portal exception occurred
 	 */
-	public static String getGroupDisplayURL(
+	public static java.lang.String getGroupDisplayURL(
 			long groupId, boolean privateLayout, boolean secureConnection)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -224,8 +222,8 @@ public class GroupServiceUtil {
 
 	public static java.util.List<com.liferay.portal.kernel.model.Group>
 			getGroups(
-				long companyId, long parentGroupId, String name, boolean site,
-				int start, int end)
+				long companyId, long parentGroupId, java.lang.String name,
+				boolean site, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGroups(
@@ -249,7 +247,8 @@ public class GroupServiceUtil {
 	}
 
 	public static int getGroupsCount(
-			long companyId, long parentGroupId, String name, boolean site)
+			long companyId, long parentGroupId, java.lang.String name,
+			boolean site)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGroupsCount(
@@ -266,7 +265,7 @@ public class GroupServiceUtil {
 	 * @return the number of matching groups
 	 */
 	public static int getGroupsCount(
-			long companyId, String className, long parentGroupId)
+			long companyId, java.lang.String className, long parentGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGroupsCount(companyId, className, parentGroupId);
@@ -324,7 +323,7 @@ public class GroupServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -436,7 +435,8 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserSitesGroups(long userId, String[] classNames, int max)
+			getUserSitesGroups(
+				long userId, java.lang.String[] classNames, int max)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserSitesGroups(userId, classNames, max);
@@ -475,7 +475,7 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserSitesGroups(String[] classNames, int max)
+			getUserSitesGroups(java.lang.String[] classNames, int max)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserSitesGroups(classNames, max);
@@ -514,8 +514,9 @@ public class GroupServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
-			long companyId, long[] classNameIds, String keywords,
-			java.util.LinkedHashMap<String, Object> params, int start, int end,
+			long companyId, long[] classNameIds, java.lang.String keywords,
+			java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.portal.kernel.model.Group> orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -526,8 +527,9 @@ public class GroupServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
-			long companyId, long[] classNameIds, String name,
-			String description, java.util.LinkedHashMap<String, Object> params,
+			long companyId, long[] classNameIds, java.lang.String name,
+			java.lang.String description,
+			java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 			boolean andOperator, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.portal.kernel.model.Group> orderByComparator)
@@ -570,8 +572,8 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
-			long companyId, String name, String description, String[] params,
-			int start, int end)
+			long companyId, java.lang.String name, java.lang.String description,
+			java.lang.String[] params, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().search(
@@ -579,8 +581,8 @@ public class GroupServiceUtil {
 	}
 
 	public static int searchCount(
-		long companyId, long[] classNameIds, String keywords,
-		java.util.LinkedHashMap<String, Object> params) {
+		long companyId, long[] classNameIds, java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 
 		return getService().searchCount(
 			companyId, classNameIds, keywords, params);
@@ -604,7 +606,8 @@ public class GroupServiceUtil {
 	 * @return the number of matching groups
 	 */
 	public static int searchCount(
-		long companyId, String name, String description, String[] params) {
+		long companyId, java.lang.String name, java.lang.String description,
+		java.lang.String[] params) {
 
 		return getService().searchCount(companyId, name, description, params);
 	}
@@ -646,7 +649,7 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.model.Group updateFriendlyURL(
-			long groupId, String friendlyURL)
+			long groupId, java.lang.String friendlyURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFriendlyURL(groupId, friendlyURL);
@@ -654,11 +657,11 @@ public class GroupServiceUtil {
 
 	public static com.liferay.portal.kernel.model.Group updateGroup(
 			long groupId, long parentGroupId,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int type,
-			boolean manualMembership, int membershipRestriction,
-			String friendlyURL, boolean inheritContent, boolean active,
-			ServiceContext serviceContext)
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			int type, boolean manualMembership, int membershipRestriction,
+			java.lang.String friendlyURL, boolean inheritContent,
+			boolean active, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateGroup(
@@ -677,28 +680,24 @@ public class GroupServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.model.Group updateGroup(
-			long groupId, String typeSettings)
+			long groupId, java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateGroup(groupId, typeSettings);
 	}
 
 	public static void updateStagedPortlets(
-			long groupId, java.util.Map<String, String> stagedPortletIds)
+			long groupId,
+			java.util.Map<java.lang.String, java.lang.String> stagedPortletIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateStagedPortlets(groupId, stagedPortletIds);
 	}
 
 	public static GroupService getService() {
-		if (_service == null) {
-			_service = (GroupService)PortalBeanLocatorUtil.locate(
-				GroupService.class.getName());
-		}
-
-		return _service;
+		return _groupService;
 	}
 
-	private static GroupService _service;
+	private static volatile GroupService _groupService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.payment.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePaymentMethodGroupRel. This utility wraps
  * <code>com.liferay.commerce.payment.service.impl.CommercePaymentMethodGroupRelServiceImpl</code> and is an
@@ -64,10 +60,11 @@ public class CommercePaymentMethodGroupRelServiceUtil {
 		com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel
 				addCommercePaymentMethodGroupRel(
 					long userId, long groupId,
-					java.util.Map<java.util.Locale, String> nameMap,
-					java.util.Map<java.util.Locale, String> descriptionMap,
-					java.io.File imageFile, String engineKey, double priority,
-					boolean active)
+					java.util.Map<java.util.Locale, java.lang.String> nameMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						descriptionMap,
+					java.io.File imageFile, java.lang.String engineKey,
+					double priority, boolean active)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommercePaymentMethodGroupRel(
@@ -102,7 +99,7 @@ public class CommercePaymentMethodGroupRelServiceUtil {
 	public static
 		com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel
 				fetchCommercePaymentMethodGroupRel(
-					long groupId, String engineKey)
+					long groupId, java.lang.String engineKey)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommercePaymentMethodGroupRel(
@@ -140,7 +137,8 @@ public class CommercePaymentMethodGroupRelServiceUtil {
 
 	public static
 		com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel
-				getCommercePaymentMethodGroupRel(long groupId, String engineKey)
+				getCommercePaymentMethodGroupRel(
+					long groupId, java.lang.String engineKey)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommercePaymentMethodGroupRel(
@@ -228,7 +226,7 @@ public class CommercePaymentMethodGroupRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -244,8 +242,9 @@ public class CommercePaymentMethodGroupRelServiceUtil {
 		com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel
 				updateCommercePaymentMethodGroupRel(
 					long commercePaymentMethodGroupRelId,
-					java.util.Map<java.util.Locale, String> nameMap,
-					java.util.Map<java.util.Locale, String> descriptionMap,
+					java.util.Map<java.util.Locale, java.lang.String> nameMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						descriptionMap,
 					java.io.File imageFile, double priority, boolean active)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -255,29 +254,10 @@ public class CommercePaymentMethodGroupRelServiceUtil {
 	}
 
 	public static CommercePaymentMethodGroupRelService getService() {
-		return _serviceTracker.getService();
+		return _commercePaymentMethodGroupRelService;
 	}
 
-	private static ServiceTracker
-		<CommercePaymentMethodGroupRelService,
-		 CommercePaymentMethodGroupRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePaymentMethodGroupRelService.class);
-
-		ServiceTracker
-			<CommercePaymentMethodGroupRelService,
-			 CommercePaymentMethodGroupRelService> serviceTracker =
-				new ServiceTracker
-					<CommercePaymentMethodGroupRelService,
-					 CommercePaymentMethodGroupRelService>(
-						 bundle.getBundleContext(),
-						 CommercePaymentMethodGroupRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePaymentMethodGroupRelService
+		_commercePaymentMethodGroupRelService;
 
 }

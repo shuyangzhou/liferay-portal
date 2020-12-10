@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceSubscriptionEntry. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceSubscriptionEntryLocalServiceImpl</code> and
@@ -64,7 +60,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static com.liferay.commerce.model.CommerceSubscriptionEntry
 			addCommerceSubscriptionEntry(
 				long userId, long groupId, long commerceOrderItemId,
-				int subscriptionLength, String subscriptionType,
+				int subscriptionLength, java.lang.String subscriptionType,
 				long maxSubscriptionCycles,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					subscriptionTypeSettingsUnicodeProperties)
@@ -79,11 +75,12 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static com.liferay.commerce.model.CommerceSubscriptionEntry
 			addCommerceSubscriptionEntry(
 				long userId, long groupId, long commerceOrderItemId,
-				int subscriptionLength, String subscriptionType,
+				int subscriptionLength, java.lang.String subscriptionType,
 				long maxSubscriptionCycles,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					subscriptionTypeSettingsUnicodeProperties,
-				int deliverySubscriptionLength, String deliverySubscriptionType,
+				int deliverySubscriptionLength,
+				java.lang.String deliverySubscriptionType,
 				long deliveryMaxSubscriptionCycles,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					deliverySubscriptionTypeSettingsUnicodeProperties)
@@ -289,7 +286,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceSubscriptionEntry
 		fetchCommerceSubscriptionEntryByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCommerceSubscriptionEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -379,7 +376,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.model.CommerceSubscriptionEntry>
 			getCommerceSubscriptionEntriesByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCommerceSubscriptionEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -398,7 +395,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.model.CommerceSubscriptionEntry>
 			getCommerceSubscriptionEntriesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.model.CommerceSubscriptionEntry>
 						orderByComparator) {
@@ -466,7 +463,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceSubscriptionEntry
 			getCommerceSubscriptionEntryByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceSubscriptionEntryByUuidAndGroupId(
@@ -493,7 +490,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -532,9 +529,10 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceSubscriptionEntry>
 				searchCommerceSubscriptionEntries(
-					long companyId, Long maxSubscriptionCycles,
-					Integer subscriptionStatus, String keywords, int start,
-					int end, com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.Long maxSubscriptionCycles,
+					java.lang.Integer subscriptionStatus,
+					java.lang.String keywords, int start, int end,
+					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceSubscriptionEntries(
@@ -545,9 +543,11 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceSubscriptionEntry>
 				searchCommerceSubscriptionEntries(
-					long companyId, long[] groupIds, Long maxSubscriptionCycles,
-					Integer subscriptionStatus, String keywords, int start,
-					int end, com.liferay.portal.kernel.search.Sort sort)
+					long companyId, long[] groupIds,
+					java.lang.Long maxSubscriptionCycles,
+					java.lang.Integer subscriptionStatus,
+					java.lang.String keywords, int start, int end,
+					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceSubscriptionEntries(
@@ -581,7 +581,7 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static com.liferay.commerce.model.CommerceSubscriptionEntry
 			updateCommerceSubscriptionEntry(
 				long commerceSubscriptionEntryId, int subscriptionLength,
-				String subscriptionType,
+				java.lang.String subscriptionType,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					subscriptionTypeSettingsUnicodeProperties,
 				long maxSubscriptionCycles, int subscriptionStatus,
@@ -601,14 +601,14 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	public static com.liferay.commerce.model.CommerceSubscriptionEntry
 			updateCommerceSubscriptionEntry(
 				long commerceSubscriptionEntryId, int subscriptionLength,
-				String subscriptionType,
+				java.lang.String subscriptionType,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					subscriptionTypeSettingsUnicodeProperties,
 				long maxSubscriptionCycles, int subscriptionStatus,
 				int nextIterationDateMonth, int nextIterationDateDay,
 				int nextIterationDateYear, int nextIterationDateHour,
 				int nextIterationDateMinute, int deliverySubscriptionLength,
-				String deliverySubscriptionType,
+				java.lang.String deliverySubscriptionType,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					deliverySubscriptionTypeSettingsUnicodeProperties,
 				long deliveryMaxSubscriptionCycles,
@@ -667,29 +667,10 @@ public class CommerceSubscriptionEntryLocalServiceUtil {
 	}
 
 	public static CommerceSubscriptionEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceSubscriptionEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceSubscriptionEntryLocalService,
-		 CommerceSubscriptionEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceSubscriptionEntryLocalService.class);
-
-		ServiceTracker
-			<CommerceSubscriptionEntryLocalService,
-			 CommerceSubscriptionEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceSubscriptionEntryLocalService,
-					 CommerceSubscriptionEntryLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceSubscriptionEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceSubscriptionEntryLocalService
+		_commerceSubscriptionEntryLocalService;
 
 }

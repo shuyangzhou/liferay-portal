@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.discount.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceDiscountCommerceAccountGroupRel. This utility wraps
  * <code>com.liferay.commerce.discount.service.impl.CommerceDiscountCommerceAccountGroupRelLocalServiceImpl</code> and
@@ -353,7 +349,8 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceUtil {
 		<com.liferay.commerce.discount.model.
 			CommerceDiscountCommerceAccountGroupRel>
 				getCommerceDiscountCommerceAccountGroupRels(
-					long commerceDiscountId, String name, int start, int end) {
+					long commerceDiscountId, java.lang.String name, int start,
+					int end) {
 
 		return getService().getCommerceDiscountCommerceAccountGroupRels(
 			commerceDiscountId, name, start, end);
@@ -376,7 +373,7 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceUtil {
 	}
 
 	public static int getCommerceDiscountCommerceAccountGroupRelsCount(
-		long commerceDiscountId, String name) {
+		long commerceDiscountId, java.lang.String name) {
 
 		return getService().getCommerceDiscountCommerceAccountGroupRelsCount(
 			commerceDiscountId, name);
@@ -394,7 +391,7 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -433,31 +430,10 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceUtil {
 	public static CommerceDiscountCommerceAccountGroupRelLocalService
 		getService() {
 
-		return _serviceTracker.getService();
+		return _commerceDiscountCommerceAccountGroupRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceDiscountCommerceAccountGroupRelLocalService,
-		 CommerceDiscountCommerceAccountGroupRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDiscountCommerceAccountGroupRelLocalService.class);
-
-		ServiceTracker
-			<CommerceDiscountCommerceAccountGroupRelLocalService,
-			 CommerceDiscountCommerceAccountGroupRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceDiscountCommerceAccountGroupRelLocalService,
-						 CommerceDiscountCommerceAccountGroupRelLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceDiscountCommerceAccountGroupRelLocalService.class,
-							 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDiscountCommerceAccountGroupRelLocalService
+		_commerceDiscountCommerceAccountGroupRelLocalService;
 
 }

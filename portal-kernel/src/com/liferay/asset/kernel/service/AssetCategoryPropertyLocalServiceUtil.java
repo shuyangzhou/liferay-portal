@@ -14,8 +14,6 @@
 
 package com.liferay.asset.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for AssetCategoryProperty. This utility wraps
  * <code>com.liferay.portlet.asset.service.impl.AssetCategoryPropertyLocalServiceImpl</code> and
@@ -59,7 +57,8 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryProperty
 			addCategoryProperty(
-				long userId, long categoryId, String key, String value)
+				long userId, long categoryId, java.lang.String key,
+				java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCategoryProperty(userId, categoryId, key, value);
@@ -316,7 +315,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetCategoryProperty
-			getCategoryProperty(long categoryId, String key)
+			getCategoryProperty(long categoryId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCategoryProperty(categoryId, key);
@@ -324,7 +323,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.asset.kernel.model.AssetCategoryProperty>
-			getCategoryPropertyValues(long groupId, String key) {
+			getCategoryPropertyValues(long groupId, java.lang.String key) {
 
 		return getService().getCategoryPropertyValues(groupId, key);
 	}
@@ -341,7 +340,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -375,7 +374,8 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryProperty
 			updateCategoryProperty(
-				long userId, long categoryPropertyId, String key, String value)
+				long userId, long categoryPropertyId, java.lang.String key,
+				java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCategoryProperty(
@@ -384,7 +384,8 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryProperty
 			updateCategoryProperty(
-				long categoryPropertyId, String key, String value)
+				long categoryPropertyId, java.lang.String key,
+				java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCategoryProperty(
@@ -392,15 +393,10 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	}
 
 	public static AssetCategoryPropertyLocalService getService() {
-		if (_service == null) {
-			_service =
-				(AssetCategoryPropertyLocalService)PortalBeanLocatorUtil.locate(
-					AssetCategoryPropertyLocalService.class.getName());
-		}
-
-		return _service;
+		return _assetCategoryPropertyLocalService;
 	}
 
-	private static AssetCategoryPropertyLocalService _service;
+	private static volatile AssetCategoryPropertyLocalService
+		_assetCategoryPropertyLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.polls.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for PollsChoice. This utility wraps
  * <code>com.liferay.polls.service.impl.PollsChoiceLocalServiceImpl</code> and
@@ -38,7 +34,8 @@ public class PollsChoiceLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.polls.service.impl.PollsChoiceLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.polls.model.PollsChoice addChoice(
-			long userId, long questionId, String name, String description,
+			long userId, long questionId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -234,7 +231,7 @@ public class PollsChoiceLocalServiceUtil {
 	 * @return the matching polls choice, or <code>null</code> if a matching polls choice could not be found
 	 */
 	public static com.liferay.polls.model.PollsChoice
-		fetchPollsChoiceByUuidAndGroupId(String uuid, long groupId) {
+		fetchPollsChoiceByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchPollsChoiceByUuidAndGroupId(uuid, groupId);
 	}
@@ -281,7 +278,7 @@ public class PollsChoiceLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -318,7 +315,7 @@ public class PollsChoiceLocalServiceUtil {
 	 * @throws PortalException if a matching polls choice could not be found
 	 */
 	public static com.liferay.polls.model.PollsChoice
-			getPollsChoiceByUuidAndGroupId(String uuid, long groupId)
+			getPollsChoiceByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPollsChoiceByUuidAndGroupId(uuid, groupId);
@@ -349,7 +346,8 @@ public class PollsChoiceLocalServiceUtil {
 	 * @return the matching polls choices, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.polls.model.PollsChoice>
-		getPollsChoicesByUuidAndCompanyId(String uuid, long companyId) {
+		getPollsChoicesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getPollsChoicesByUuidAndCompanyId(uuid, companyId);
 	}
@@ -366,7 +364,7 @@ public class PollsChoiceLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.polls.model.PollsChoice>
 		getPollsChoicesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.polls.model.PollsChoice> orderByComparator) {
 
@@ -384,7 +382,8 @@ public class PollsChoiceLocalServiceUtil {
 	}
 
 	public static com.liferay.polls.model.PollsChoice updateChoice(
-			long choiceId, long questionId, String name, String description,
+			long choiceId, long questionId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -409,25 +408,9 @@ public class PollsChoiceLocalServiceUtil {
 	}
 
 	public static PollsChoiceLocalService getService() {
-		return _serviceTracker.getService();
+		return _pollsChoiceLocalService;
 	}
 
-	private static ServiceTracker
-		<PollsChoiceLocalService, PollsChoiceLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(PollsChoiceLocalService.class);
-
-		ServiceTracker<PollsChoiceLocalService, PollsChoiceLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<PollsChoiceLocalService, PollsChoiceLocalService>(
-						bundle.getBundleContext(),
-						PollsChoiceLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile PollsChoiceLocalService _pollsChoiceLocalService;
 
 }

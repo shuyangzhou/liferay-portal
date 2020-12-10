@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialActivityInterpreter. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialActivityInterpreterLocalServiceImpl</code> and
@@ -61,7 +59,7 @@ public class SocialActivityInterpreterLocalServiceUtil {
 	}
 
 	public static java.util.Map
-		<String,
+		<java.lang.String,
 		 java.util.List
 			 <com.liferay.social.kernel.model.SocialActivityInterpreter>>
 				getActivityInterpreters() {
@@ -71,7 +69,7 @@ public class SocialActivityInterpreterLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.social.kernel.model.SocialActivityInterpreter>
-			getActivityInterpreters(String selector) {
+			getActivityInterpreters(java.lang.String selector) {
 
 		return getService().getActivityInterpreters(selector);
 	}
@@ -81,7 +79,7 @@ public class SocialActivityInterpreterLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -104,7 +102,7 @@ public class SocialActivityInterpreterLocalServiceUtil {
 	 */
 	public static com.liferay.social.kernel.model.SocialActivityFeedEntry
 		interpret(
-			String selector,
+			java.lang.String selector,
 			com.liferay.social.kernel.model.SocialActivity activity,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
@@ -113,7 +111,7 @@ public class SocialActivityInterpreterLocalServiceUtil {
 
 	public static com.liferay.social.kernel.model.SocialActivityFeedEntry
 		interpret(
-			String selector,
+			java.lang.String selector,
 			com.liferay.social.kernel.model.SocialActivitySet activitySet,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
@@ -127,16 +125,10 @@ public class SocialActivityInterpreterLocalServiceUtil {
 	}
 
 	public static SocialActivityInterpreterLocalService getService() {
-		if (_service == null) {
-			_service =
-				(SocialActivityInterpreterLocalService)
-					PortalBeanLocatorUtil.locate(
-						SocialActivityInterpreterLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialActivityInterpreterLocalService;
 	}
 
-	private static SocialActivityInterpreterLocalService _service;
+	private static volatile SocialActivityInterpreterLocalService
+		_socialActivityInterpreterLocalService;
 
 }

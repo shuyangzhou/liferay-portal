@@ -14,8 +14,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for AnnouncementsEntry. This utility wraps
  * <code>com.liferay.portlet.announcements.service.impl.AnnouncementsEntryLocalServiceImpl</code> and
@@ -56,8 +54,9 @@ public class AnnouncementsEntryLocalServiceUtil {
 
 	public static com.liferay.announcements.kernel.model.AnnouncementsEntry
 			addEntry(
-				long userId, long classNameId, long classPK, String title,
-				String content, String url, String type,
+				long userId, long classNameId, long classPK,
+				java.lang.String title, java.lang.String content,
+				java.lang.String url, java.lang.String type,
 				java.util.Date displayDate, java.util.Date expirationDate,
 				int priority, boolean alert)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -284,7 +283,8 @@ public class AnnouncementsEntryLocalServiceUtil {
 	 * @return the matching announcements entry, or <code>null</code> if a matching announcements entry could not be found
 	 */
 	public static com.liferay.announcements.kernel.model.AnnouncementsEntry
-		fetchAnnouncementsEntryByUuidAndCompanyId(String uuid, long companyId) {
+		fetchAnnouncementsEntryByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchAnnouncementsEntryByUuidAndCompanyId(
 			uuid, companyId);
@@ -346,7 +346,8 @@ public class AnnouncementsEntryLocalServiceUtil {
 	 * @throws PortalException if a matching announcements entry could not be found
 	 */
 	public static com.liferay.announcements.kernel.model.AnnouncementsEntry
-			getAnnouncementsEntryByUuidAndCompanyId(String uuid, long companyId)
+			getAnnouncementsEntryByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAnnouncementsEntryByUuidAndCompanyId(
@@ -355,7 +356,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
-			long userId, java.util.LinkedHashMap<Long, long[]> scopes,
+			long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 			boolean alert, int flagValue, int start, int end) {
 
 		return getService().getEntries(
@@ -364,7 +365,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.announcements.kernel.model.AnnouncementsEntry> getEntries(
-			long userId, java.util.LinkedHashMap<Long, long[]> scopes,
+			long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 			int displayDateMonth, int displayDateDay, int displayDateYear,
 			int displayDateHour, int displayDateMinute, int expirationDateMonth,
 			int expirationDateDay, int expirationDateYear,
@@ -405,14 +406,14 @@ public class AnnouncementsEntryLocalServiceUtil {
 	}
 
 	public static int getEntriesCount(
-		long userId, java.util.LinkedHashMap<Long, long[]> scopes,
+		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		boolean alert, int flagValue) {
 
 		return getService().getEntriesCount(userId, scopes, alert, flagValue);
 	}
 
 	public static int getEntriesCount(
-		long userId, java.util.LinkedHashMap<Long, long[]> scopes,
+		long userId, java.util.LinkedHashMap<java.lang.Long, long[]> scopes,
 		int displayDateMonth, int displayDateDay, int displayDateYear,
 		int displayDateHour, int displayDateMinute, int expirationDateMonth,
 		int expirationDateDay, int expirationDateYear, int expirationDateHour,
@@ -481,7 +482,7 @@ public class AnnouncementsEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -526,9 +527,10 @@ public class AnnouncementsEntryLocalServiceUtil {
 
 	public static com.liferay.announcements.kernel.model.AnnouncementsEntry
 			updateEntry(
-				long entryId, String title, String content, String url,
-				String type, java.util.Date displayDate,
-				java.util.Date expirationDate, int priority)
+				long entryId, java.lang.String title, java.lang.String content,
+				java.lang.String url, java.lang.String type,
+				java.util.Date displayDate, java.util.Date expirationDate,
+				int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateEntry(
@@ -537,15 +539,10 @@ public class AnnouncementsEntryLocalServiceUtil {
 	}
 
 	public static AnnouncementsEntryLocalService getService() {
-		if (_service == null) {
-			_service =
-				(AnnouncementsEntryLocalService)PortalBeanLocatorUtil.locate(
-					AnnouncementsEntryLocalService.class.getName());
-		}
-
-		return _service;
+		return _announcementsEntryLocalService;
 	}
 
-	private static AnnouncementsEntryLocalService _service;
+	private static volatile AnnouncementsEntryLocalService
+		_announcementsEntryLocalService;
 
 }

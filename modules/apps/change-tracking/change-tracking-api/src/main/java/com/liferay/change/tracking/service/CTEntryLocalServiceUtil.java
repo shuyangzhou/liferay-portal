@@ -14,10 +14,6 @@
 
 package com.liferay.change.tracking.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CTEntry. This utility wraps
  * <code>com.liferay.change.tracking.service.impl.CTEntryLocalServiceImpl</code> and
@@ -316,7 +312,7 @@ public class CTEntryLocalServiceUtil {
 		return getService().getCTRowCTCollectionId(ctEntry);
 	}
 
-	public static java.util.List<Long> getExclusiveModelClassPKs(
+	public static java.util.List<java.lang.Long> getExclusiveModelClassPKs(
 		long ctCollectionId, long modelClassNameId) {
 
 		return getService().getExclusiveModelClassPKs(
@@ -335,7 +331,7 @@ public class CTEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -372,23 +368,9 @@ public class CTEntryLocalServiceUtil {
 	}
 
 	public static CTEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _ctEntryLocalService;
 	}
 
-	private static ServiceTracker<CTEntryLocalService, CTEntryLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CTEntryLocalService.class);
-
-		ServiceTracker<CTEntryLocalService, CTEntryLocalService>
-			serviceTracker =
-				new ServiceTracker<CTEntryLocalService, CTEntryLocalService>(
-					bundle.getBundleContext(), CTEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CTEntryLocalService _ctEntryLocalService;
 
 }

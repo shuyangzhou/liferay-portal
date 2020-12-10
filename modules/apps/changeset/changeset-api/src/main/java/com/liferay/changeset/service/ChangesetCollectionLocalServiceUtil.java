@@ -14,10 +14,6 @@
 
 package com.liferay.changeset.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ChangesetCollection. This utility wraps
  * <code>com.liferay.changeset.service.impl.ChangesetCollectionLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class ChangesetCollectionLocalServiceUtil {
 
 	public static com.liferay.changeset.model.ChangesetCollection
 			addChangesetCollection(
-				long userId, long groupId, String name, String description)
+				long userId, long groupId, java.lang.String name,
+				java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addChangesetCollection(
@@ -232,13 +229,13 @@ public class ChangesetCollectionLocalServiceUtil {
 	}
 
 	public static com.liferay.changeset.model.ChangesetCollection
-		fetchChangesetCollection(long groupId, String name) {
+		fetchChangesetCollection(long groupId, java.lang.String name) {
 
 		return getService().fetchChangesetCollection(groupId, name);
 	}
 
 	public static com.liferay.changeset.model.ChangesetCollection
-			fetchOrAddChangesetCollection(long groupId, String name)
+			fetchOrAddChangesetCollection(long groupId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchOrAddChangesetCollection(groupId, name);
@@ -265,7 +262,7 @@ public class ChangesetCollectionLocalServiceUtil {
 	}
 
 	public static com.liferay.changeset.model.ChangesetCollection
-			getChangesetCollection(long groupId, String name)
+			getChangesetCollection(long groupId, java.lang.String name)
 		throws com.liferay.changeset.exception.NoSuchCollectionException {
 
 		return getService().getChangesetCollection(groupId, name);
@@ -310,7 +307,7 @@ public class ChangesetCollectionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -343,29 +340,10 @@ public class ChangesetCollectionLocalServiceUtil {
 	}
 
 	public static ChangesetCollectionLocalService getService() {
-		return _serviceTracker.getService();
+		return _changesetCollectionLocalService;
 	}
 
-	private static ServiceTracker
-		<ChangesetCollectionLocalService, ChangesetCollectionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ChangesetCollectionLocalService.class);
-
-		ServiceTracker
-			<ChangesetCollectionLocalService, ChangesetCollectionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<ChangesetCollectionLocalService,
-						 ChangesetCollectionLocalService>(
-							 bundle.getBundleContext(),
-							 ChangesetCollectionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ChangesetCollectionLocalService
+		_changesetCollectionLocalService;
 
 }

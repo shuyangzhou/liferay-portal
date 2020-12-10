@@ -14,10 +14,6 @@
 
 package com.liferay.depot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DepotEntry. This utility wraps
  * <code>com.liferay.depot.service.impl.DepotEntryServiceImpl</code> and is an
@@ -38,8 +34,8 @@ public class DepotEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.depot.service.impl.DepotEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.depot.model.DepotEntry addDepotEntry(
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -96,14 +92,16 @@ public class DepotEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.depot.model.DepotEntry updateDepotEntry(
-			long depotEntryId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<String, Boolean> depotAppCustomizationMap,
+			long depotEntryId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.util.Map<java.lang.String, java.lang.Boolean>
+				depotAppCustomizationMap,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -115,22 +113,9 @@ public class DepotEntryServiceUtil {
 	}
 
 	public static DepotEntryService getService() {
-		return _serviceTracker.getService();
+		return _depotEntryService;
 	}
 
-	private static ServiceTracker<DepotEntryService, DepotEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DepotEntryService.class);
-
-		ServiceTracker<DepotEntryService, DepotEntryService> serviceTracker =
-			new ServiceTracker<DepotEntryService, DepotEntryService>(
-				bundle.getBundleContext(), DepotEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DepotEntryService _depotEntryService;
 
 }

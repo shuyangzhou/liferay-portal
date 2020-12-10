@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for DLTrash. This utility wraps
  * <code>com.liferay.portlet.documentlibrary.service.impl.DLTrashServiceImpl</code> and is an
@@ -41,7 +39,7 @@ public class DLTrashServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -173,14 +171,9 @@ public class DLTrashServiceUtil {
 	}
 
 	public static DLTrashService getService() {
-		if (_service == null) {
-			_service = (DLTrashService)PortalBeanLocatorUtil.locate(
-				DLTrashService.class.getName());
-		}
-
-		return _service;
+		return _dlTrashService;
 	}
 
-	private static DLTrashService _service;
+	private static volatile DLTrashService _dlTrashService;
 
 }

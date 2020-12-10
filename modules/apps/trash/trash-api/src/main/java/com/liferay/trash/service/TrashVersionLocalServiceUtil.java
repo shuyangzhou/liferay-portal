@@ -14,10 +14,6 @@
 
 package com.liferay.trash.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for TrashVersion. This utility wraps
  * <code>com.liferay.trash.service.impl.TrashVersionLocalServiceImpl</code> and
@@ -38,7 +34,7 @@ public class TrashVersionLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.trash.service.impl.TrashVersionLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.trash.model.TrashVersion addTrashVersion(
-		long trashEntryId, String className, long classPK, int status,
+		long trashEntryId, java.lang.String className, long classPK, int status,
 		com.liferay.portal.kernel.util.UnicodeProperties
 			typeSettingsUnicodeProperties) {
 
@@ -115,7 +111,7 @@ public class TrashVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.trash.model.TrashVersion deleteTrashVersion(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().deleteTrashVersion(className, classPK);
 	}
@@ -234,7 +230,7 @@ public class TrashVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.trash.model.TrashVersion fetchVersion(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().fetchVersion(className, classPK);
 	}
@@ -257,7 +253,7 @@ public class TrashVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -318,7 +314,7 @@ public class TrashVersionLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.trash.model.TrashVersion>
-		getVersions(long entryId, String className) {
+		getVersions(long entryId, java.lang.String className) {
 
 		return getService().getVersions(entryId, className);
 	}
@@ -340,25 +336,9 @@ public class TrashVersionLocalServiceUtil {
 	}
 
 	public static TrashVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _trashVersionLocalService;
 	}
 
-	private static ServiceTracker
-		<TrashVersionLocalService, TrashVersionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TrashVersionLocalService.class);
-
-		ServiceTracker<TrashVersionLocalService, TrashVersionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TrashVersionLocalService, TrashVersionLocalService>(
-						bundle.getBundleContext(),
-						TrashVersionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TrashVersionLocalService _trashVersionLocalService;
 
 }

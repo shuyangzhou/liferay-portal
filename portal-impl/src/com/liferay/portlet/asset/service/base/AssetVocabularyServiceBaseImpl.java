@@ -16,6 +16,7 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyService;
+import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryFinder;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetVocabularyFinder;
@@ -33,6 +34,8 @@ import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -54,7 +57,7 @@ public abstract class AssetVocabularyServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetVocabularyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetVocabularyServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetVocabularyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetVocabularyServiceUtil</code>.
 	 */
 
 	/**
@@ -429,9 +432,11 @@ public abstract class AssetVocabularyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(assetVocabularyService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -473,6 +478,22 @@ public abstract class AssetVocabularyServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		AssetVocabularyService assetVocabularyService) {
+
+		try {
+			Field field = AssetVocabularyServiceUtil.class.getDeclaredField(
+				"_assetVocabularyService");
+
+			field.setAccessible(true);
+
+			field.set(null, assetVocabularyService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

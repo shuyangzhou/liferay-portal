@@ -14,10 +14,6 @@
 
 package com.liferay.mobile.device.rules.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for MDRRuleGroupInstance. This utility wraps
  * <code>com.liferay.mobile.device.rules.service.impl.MDRRuleGroupInstanceServiceImpl</code> and is an
@@ -39,8 +35,8 @@ public class MDRRuleGroupInstanceServiceUtil {
 	 */
 	public static com.liferay.mobile.device.rules.model.MDRRuleGroupInstance
 			addRuleGroupInstance(
-				long groupId, String className, long classPK, long ruleGroupId,
-				int priority,
+				long groupId, java.lang.String className, long classPK,
+				long ruleGroupId, int priority,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -50,7 +46,8 @@ public class MDRRuleGroupInstanceServiceUtil {
 
 	public static com.liferay.mobile.device.rules.model.MDRRuleGroupInstance
 			addRuleGroupInstance(
-				long groupId, String className, long classPK, long ruleGroupId,
+				long groupId, java.lang.String className, long classPK,
+				long ruleGroupId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -69,14 +66,14 @@ public class MDRRuleGroupInstanceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.mobile.device.rules.model.MDRRuleGroupInstance>
 			getRuleGroupInstances(
-				String className, long classPK, int start, int end,
+				java.lang.String className, long classPK, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.mobile.device.rules.model.MDRRuleGroupInstance>
 						orderByComparator) {
@@ -86,7 +83,7 @@ public class MDRRuleGroupInstanceServiceUtil {
 	}
 
 	public static int getRuleGroupInstancesCount(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().getRuleGroupInstancesCount(className, classPK);
 	}
@@ -100,27 +97,10 @@ public class MDRRuleGroupInstanceServiceUtil {
 	}
 
 	public static MDRRuleGroupInstanceService getService() {
-		return _serviceTracker.getService();
+		return _mdrRuleGroupInstanceService;
 	}
 
-	private static ServiceTracker
-		<MDRRuleGroupInstanceService, MDRRuleGroupInstanceService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			MDRRuleGroupInstanceService.class);
-
-		ServiceTracker<MDRRuleGroupInstanceService, MDRRuleGroupInstanceService>
-			serviceTracker =
-				new ServiceTracker
-					<MDRRuleGroupInstanceService, MDRRuleGroupInstanceService>(
-						bundle.getBundleContext(),
-						MDRRuleGroupInstanceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MDRRuleGroupInstanceService
+		_mdrRuleGroupInstanceService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.translation.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for TranslationEntry. This utility wraps
  * <code>com.liferay.translation.service.impl.TranslationEntryServiceImpl</code> and is an
@@ -41,7 +37,7 @@ public class TranslationEntryServiceUtil {
 			addOrUpdateTranslationEntry(
 				long groupId,
 				com.liferay.info.item.InfoItemReference infoItemReference,
-				String content, String contentType,
+				java.lang.String content, java.lang.String contentType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -51,7 +47,7 @@ public class TranslationEntryServiceUtil {
 
 	public static com.liferay.translation.model.TranslationEntry
 			addOrUpdateTranslationEntry(
-				long groupId, String languageId,
+				long groupId, java.lang.String languageId,
 				com.liferay.info.item.InfoItemReference infoItemReference,
 				com.liferay.info.item.InfoItemFieldValues infoItemFieldValues,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -74,30 +70,14 @@ public class TranslationEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static TranslationEntryService getService() {
-		return _serviceTracker.getService();
+		return _translationEntryService;
 	}
 
-	private static ServiceTracker
-		<TranslationEntryService, TranslationEntryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TranslationEntryService.class);
-
-		ServiceTracker<TranslationEntryService, TranslationEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<TranslationEntryService, TranslationEntryService>(
-						bundle.getBundleContext(),
-						TranslationEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TranslationEntryService _translationEntryService;
 
 }

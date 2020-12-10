@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialActivityCounter. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialActivityCounterLocalServiceImpl</code> and
@@ -68,9 +66,9 @@ public class SocialActivityCounterLocalServiceUtil {
 	 */
 	public static com.liferay.social.kernel.model.SocialActivityCounter
 			addActivityCounter(
-				long groupId, long classNameId, long classPK, String name,
-				int ownerType, int totalValue, long previousActivityCounterId,
-				int periodLength)
+				long groupId, long classNameId, long classPK,
+				java.lang.String name, int ownerType, int totalValue,
+				long previousActivityCounterId, int periodLength)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addActivityCounter(
@@ -183,7 +181,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	 * @param className the entity's class name
 	 * @param classPK the primary key of the entity
 	 */
-	public static void deleteActivityCounters(String className, long classPK)
+	public static void deleteActivityCounters(
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteActivityCounters(className, classPK);
@@ -266,7 +265,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	 * @param className the asset's class name
 	 * @param classPK the primary key of the asset
 	 */
-	public static void disableActivityCounters(String className, long classPK)
+	public static void disableActivityCounters(
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().disableActivityCounters(className, classPK);
@@ -393,7 +393,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	 * @param className the asset's class name
 	 * @param classPK the primary key of the asset
 	 */
-	public static void enableActivityCounters(String className, long classPK)
+	public static void enableActivityCounters(
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().enableActivityCounters(className, classPK);
@@ -413,7 +414,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	 */
 	public static com.liferay.social.kernel.model.SocialActivityCounter
 		fetchActivityCounterByEndPeriod(
-			long groupId, long classNameId, long classPK, String name,
+			long groupId, long classNameId, long classPK, java.lang.String name,
 			int ownerType, int endPeriod) {
 
 		return getService().fetchActivityCounterByEndPeriod(
@@ -434,7 +435,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	 */
 	public static com.liferay.social.kernel.model.SocialActivityCounter
 		fetchActivityCounterByStartPeriod(
-			long groupId, long classNameId, long classPK, String name,
+			long groupId, long classNameId, long classPK, java.lang.String name,
 			int ownerType, int startPeriod) {
 
 		return getService().fetchActivityCounterByStartPeriod(
@@ -454,7 +455,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	 */
 	public static com.liferay.social.kernel.model.SocialActivityCounter
 		fetchLatestActivityCounter(
-			long groupId, long classNameId, long classPK, String name,
+			long groupId, long classNameId, long classPK, java.lang.String name,
 			int ownerType) {
 
 		return getService().fetchLatestActivityCounter(
@@ -497,7 +498,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.social.kernel.model.SocialActivityCounter>
 			getOffsetActivityCounters(
-				long groupId, String name, int startOffset, int endOffset) {
+				long groupId, java.lang.String name, int startOffset,
+				int endOffset) {
 
 		return getService().getOffsetActivityCounters(
 			groupId, name, startOffset, endOffset);
@@ -523,7 +525,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.social.kernel.model.SocialActivityCounter>
 			getOffsetDistributionActivityCounters(
-				long groupId, String name, int startOffset, int endOffset) {
+				long groupId, java.lang.String name, int startOffset,
+				int endOffset) {
 
 		return getService().getOffsetDistributionActivityCounters(
 			groupId, name, startOffset, endOffset);
@@ -534,7 +537,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -556,7 +559,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.social.kernel.model.SocialActivityCounter>
 			getPeriodActivityCounters(
-				long groupId, String name, int startPeriod, int endPeriod) {
+				long groupId, java.lang.String name, int startPeriod,
+				int endPeriod) {
 
 		return getService().getPeriodActivityCounters(
 			groupId, name, startPeriod, endPeriod);
@@ -582,7 +586,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.social.kernel.model.SocialActivityCounter>
 			getPeriodDistributionActivityCounters(
-				long groupId, String name, int startPeriod, int endPeriod) {
+				long groupId, java.lang.String name, int startPeriod,
+				int endPeriod) {
 
 		return getService().getPeriodDistributionActivityCounters(
 			groupId, name, startPeriod, endPeriod);
@@ -668,8 +673,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.portal.kernel.util.Tuple>
 		getUserActivityCounters(
-			long groupId, String[] rankingNames, String[] selectedNames,
-			int start, int end) {
+			long groupId, java.lang.String[] rankingNames,
+			java.lang.String[] selectedNames, int start, int end) {
 
 		return getService().getUserActivityCounters(
 			groupId, rankingNames, selectedNames, start, end);
@@ -683,7 +688,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	 * @return the number of matching users
 	 */
 	public static int getUserActivityCountersCount(
-		long groupId, String[] rankingNames) {
+		long groupId, java.lang.String[] rankingNames) {
 
 		return getService().getUserActivityCountersCount(groupId, rankingNames);
 	}
@@ -725,15 +730,10 @@ public class SocialActivityCounterLocalServiceUtil {
 	}
 
 	public static SocialActivityCounterLocalService getService() {
-		if (_service == null) {
-			_service =
-				(SocialActivityCounterLocalService)PortalBeanLocatorUtil.locate(
-					SocialActivityCounterLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialActivityCounterLocalService;
 	}
 
-	private static SocialActivityCounterLocalService _service;
+	private static volatile SocialActivityCounterLocalService
+		_socialActivityCounterLocalService;
 
 }

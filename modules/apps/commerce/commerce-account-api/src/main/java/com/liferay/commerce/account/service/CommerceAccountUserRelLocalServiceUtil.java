@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAccountUserRel. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountUserRelLocalServiceImpl</code> and
@@ -78,8 +74,8 @@ public class CommerceAccountUserRelLocalServiceUtil {
 	}
 
 	public static void addCommerceAccountUserRels(
-			long commerceAccountId, long[] userIds, String[] emailAddresses,
-			long[] roleIds,
+			long commerceAccountId, long[] userIds,
+			java.lang.String[] emailAddresses, long[] roleIds,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -381,7 +377,7 @@ public class CommerceAccountUserRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -397,8 +393,8 @@ public class CommerceAccountUserRelLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountUserRel
 			inviteUser(
-				long commerceAccountId, String emailAddress, long[] roleIds,
-				String userExternalReferenceCode,
+				long commerceAccountId, java.lang.String emailAddress,
+				long[] roleIds, java.lang.String userExternalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -427,29 +423,10 @@ public class CommerceAccountUserRelLocalServiceUtil {
 	}
 
 	public static CommerceAccountUserRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountUserRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountUserRelLocalService, CommerceAccountUserRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountUserRelLocalService.class);
-
-		ServiceTracker
-			<CommerceAccountUserRelLocalService,
-			 CommerceAccountUserRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceAccountUserRelLocalService,
-					 CommerceAccountUserRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceAccountUserRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountUserRelLocalService
+		_commerceAccountUserRelLocalService;
 
 }

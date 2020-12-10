@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Team. This utility wraps
  * <code>com.liferay.portal.service.impl.TeamServiceImpl</code> and is an
@@ -36,7 +34,7 @@ public class TeamServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.TeamServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Team addTeam(
-			long groupId, String name, String description,
+			long groupId, java.lang.String name, java.lang.String description,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -61,7 +59,7 @@ public class TeamServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -72,7 +70,7 @@ public class TeamServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Team getTeam(
-			long groupId, String name)
+			long groupId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getTeam(groupId, name);
@@ -99,8 +97,9 @@ public class TeamServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Team> search(
-		long groupId, String name, String description,
-		java.util.LinkedHashMap<String, Object> params, int start, int end,
+		long groupId, java.lang.String name, java.lang.String description,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator
 			<com.liferay.portal.kernel.model.Team> orderByComparator) {
 
@@ -109,28 +108,23 @@ public class TeamServiceUtil {
 	}
 
 	public static int searchCount(
-		long groupId, String name, String description,
-		java.util.LinkedHashMap<String, Object> params) {
+		long groupId, java.lang.String name, java.lang.String description,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 
 		return getService().searchCount(groupId, name, description, params);
 	}
 
 	public static com.liferay.portal.kernel.model.Team updateTeam(
-			long teamId, String name, String description)
+			long teamId, java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateTeam(teamId, name, description);
 	}
 
 	public static TeamService getService() {
-		if (_service == null) {
-			_service = (TeamService)PortalBeanLocatorUtil.locate(
-				TeamService.class.getName());
-		}
-
-		return _service;
+		return _teamService;
 	}
 
-	private static TeamService _service;
+	private static volatile TeamService _teamService;
 
 }

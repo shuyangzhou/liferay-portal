@@ -14,10 +14,6 @@
 
 package com.liferay.oauth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for OAuthApplication. This utility wraps
  * <code>com.liferay.oauth.service.impl.OAuthApplicationLocalServiceImpl</code> and
@@ -45,8 +41,9 @@ public class OAuthApplicationLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.oauth.model.OAuthApplication addOAuthApplication(
-			long userId, String name, String description, int accessLevel,
-			boolean shareableAccessToken, String callbackURI, String websiteURL,
+			long userId, java.lang.String name, java.lang.String description,
+			int accessLevel, boolean shareableAccessToken,
+			java.lang.String callbackURI, java.lang.String websiteURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -56,9 +53,10 @@ public class OAuthApplicationLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth.model.OAuthApplication addOAuthApplication(
-			long userId, String name, String description, String token,
-			int accessLevel, boolean shareableAccessToken, String callbackURI,
-			String websiteURL,
+			long userId, java.lang.String name, java.lang.String description,
+			java.lang.String token, int accessLevel,
+			boolean shareableAccessToken, java.lang.String callbackURI,
+			java.lang.String websiteURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -257,7 +255,7 @@ public class OAuthApplicationLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth.model.OAuthApplication
-		fetchOAuthApplication(String consumerKey) {
+		fetchOAuthApplication(java.lang.String consumerKey) {
 
 		return getService().fetchOAuthApplication(consumerKey);
 	}
@@ -290,7 +288,7 @@ public class OAuthApplicationLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth.model.OAuthApplication getOAuthApplication(
-			String consumerKey)
+			java.lang.String consumerKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getOAuthApplication(consumerKey);
@@ -341,7 +339,7 @@ public class OAuthApplicationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -357,8 +355,9 @@ public class OAuthApplicationLocalServiceUtil {
 
 	public static java.util.List<com.liferay.oauth.model.OAuthApplication>
 		search(
-			long companyId, String keywords,
-			java.util.LinkedHashMap<String, Object> params, int start, int end,
+			long companyId, java.lang.String keywords,
+			java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.oauth.model.OAuthApplication> orderByComparator) {
 
@@ -367,8 +366,8 @@ public class OAuthApplicationLocalServiceUtil {
 	}
 
 	public static int searchCount(
-		long companyId, String keywords,
-		java.util.LinkedHashMap<String, Object> params) {
+		long companyId, java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 
 		return getService().searchCount(companyId, keywords, params);
 	}
@@ -382,9 +381,9 @@ public class OAuthApplicationLocalServiceUtil {
 
 	public static com.liferay.oauth.model.OAuthApplication
 			updateOAuthApplication(
-				long oAuthApplicationId, String name, String description,
-				boolean shareableAccessToken, String callbackURI,
-				String websiteURL,
+				long oAuthApplicationId, java.lang.String name,
+				java.lang.String description, boolean shareableAccessToken,
+				java.lang.String callbackURI, java.lang.String websiteURL,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -411,29 +410,10 @@ public class OAuthApplicationLocalServiceUtil {
 	}
 
 	public static OAuthApplicationLocalService getService() {
-		return _serviceTracker.getService();
+		return _oAuthApplicationLocalService;
 	}
 
-	private static ServiceTracker
-		<OAuthApplicationLocalService, OAuthApplicationLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			OAuthApplicationLocalService.class);
-
-		ServiceTracker
-			<OAuthApplicationLocalService, OAuthApplicationLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<OAuthApplicationLocalService,
-						 OAuthApplicationLocalService>(
-							 bundle.getBundleContext(),
-							 OAuthApplicationLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuthApplicationLocalService
+		_oAuthApplicationLocalService;
 
 }

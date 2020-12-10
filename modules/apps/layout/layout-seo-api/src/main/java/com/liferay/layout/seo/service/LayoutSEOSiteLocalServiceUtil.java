@@ -14,10 +14,6 @@
 
 package com.liferay.layout.seo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LayoutSEOSite. This utility wraps
  * <code>com.liferay.layout.seo.service.impl.LayoutSEOSiteLocalServiceImpl</code> and
@@ -233,7 +229,8 @@ public class LayoutSEOSiteLocalServiceUtil {
 	 * @return the matching layout seo site, or <code>null</code> if a matching layout seo site could not be found
 	 */
 	public static com.liferay.layout.seo.model.LayoutSEOSite
-		fetchLayoutSEOSiteByUuidAndGroupId(String uuid, long groupId) {
+		fetchLayoutSEOSiteByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutSEOSiteByUuidAndGroupId(uuid, groupId);
 	}
@@ -282,7 +279,8 @@ public class LayoutSEOSiteLocalServiceUtil {
 	 * @throws PortalException if a matching layout seo site could not be found
 	 */
 	public static com.liferay.layout.seo.model.LayoutSEOSite
-			getLayoutSEOSiteByUuidAndGroupId(String uuid, long groupId)
+			getLayoutSEOSiteByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutSEOSiteByUuidAndGroupId(uuid, groupId);
@@ -313,7 +311,8 @@ public class LayoutSEOSiteLocalServiceUtil {
 	 * @return the matching layout seo sites, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.layout.seo.model.LayoutSEOSite>
-		getLayoutSEOSitesByUuidAndCompanyId(String uuid, long companyId) {
+		getLayoutSEOSitesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getLayoutSEOSitesByUuidAndCompanyId(
 			uuid, companyId);
@@ -331,7 +330,7 @@ public class LayoutSEOSiteLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.layout.seo.model.LayoutSEOSite>
 		getLayoutSEOSitesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.layout.seo.model.LayoutSEOSite>
 					orderByComparator) {
@@ -354,7 +353,7 @@ public class LayoutSEOSiteLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -388,7 +387,8 @@ public class LayoutSEOSiteLocalServiceUtil {
 	public static com.liferay.layout.seo.model.LayoutSEOSite
 			updateLayoutSEOSite(
 				long userId, long groupId, boolean openGraphEnabled,
-				java.util.Map<java.util.Locale, String> openGraphImageAltMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphImageAltMap,
 				long openGraphImageFileEntryId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -399,26 +399,10 @@ public class LayoutSEOSiteLocalServiceUtil {
 	}
 
 	public static LayoutSEOSiteLocalService getService() {
-		return _serviceTracker.getService();
+		return _layoutSEOSiteLocalService;
 	}
 
-	private static ServiceTracker
-		<LayoutSEOSiteLocalService, LayoutSEOSiteLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutSEOSiteLocalService.class);
-
-		ServiceTracker<LayoutSEOSiteLocalService, LayoutSEOSiteLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LayoutSEOSiteLocalService, LayoutSEOSiteLocalService>(
-						bundle.getBundleContext(),
-						LayoutSEOSiteLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutSEOSiteLocalService
+		_layoutSEOSiteLocalService;
 
 }

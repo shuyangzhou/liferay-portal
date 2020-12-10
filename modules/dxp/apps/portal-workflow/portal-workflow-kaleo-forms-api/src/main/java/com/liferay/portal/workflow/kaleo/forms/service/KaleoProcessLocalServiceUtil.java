@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoProcess. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.forms.service.impl.KaleoProcessLocalServiceImpl</code> and
@@ -82,9 +78,10 @@ public class KaleoProcessLocalServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess
 			addKaleoProcess(
 				long userId, long groupId, long ddmStructureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long ddmTemplateId, String workflowDefinitionName,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long ddmTemplateId, java.lang.String workflowDefinitionName,
 				int workflowDefinitionVersion,
 				com.liferay.portal.workflow.kaleo.forms.model.KaleoTaskFormPairs
 					kaleoTaskFormPairs,
@@ -273,7 +270,7 @@ public class KaleoProcessLocalServiceUtil {
 	 * @return the matching kaleo process, or <code>null</code> if a matching kaleo process could not be found
 	 */
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess
-		fetchKaleoProcessByUuidAndGroupId(String uuid, long groupId) {
+		fetchKaleoProcessByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchKaleoProcessByUuidAndGroupId(uuid, groupId);
 	}
@@ -337,7 +334,7 @@ public class KaleoProcessLocalServiceUtil {
 	 * @throws PortalException if a matching kaleo process could not be found
 	 */
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess
-			getKaleoProcessByUuidAndGroupId(String uuid, long groupId)
+			getKaleoProcessByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKaleoProcessByUuidAndGroupId(uuid, groupId);
@@ -414,7 +411,8 @@ public class KaleoProcessLocalServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess>
-			getKaleoProcessesByUuidAndCompanyId(String uuid, long companyId) {
+			getKaleoProcessesByUuidAndCompanyId(
+				java.lang.String uuid, long companyId) {
 
 		return getService().getKaleoProcessesByUuidAndCompanyId(
 			uuid, companyId);
@@ -433,7 +431,7 @@ public class KaleoProcessLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess>
 			getKaleoProcessesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess>
 						orderByComparator) {
@@ -466,7 +464,7 @@ public class KaleoProcessLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -523,9 +521,10 @@ public class KaleoProcessLocalServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess
 			updateKaleoProcess(
 				long kaleoProcessId, long ddmStructureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long ddmTemplateId, String workflowDefinitionName,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long ddmTemplateId, java.lang.String workflowDefinitionName,
 				int workflowDefinitionVersion,
 				com.liferay.portal.workflow.kaleo.forms.model.KaleoTaskFormPairs
 					kaleoTaskFormPairs,
@@ -539,25 +538,9 @@ public class KaleoProcessLocalServiceUtil {
 	}
 
 	public static KaleoProcessLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoProcessLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoProcessLocalService, KaleoProcessLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KaleoProcessLocalService.class);
-
-		ServiceTracker<KaleoProcessLocalService, KaleoProcessLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoProcessLocalService, KaleoProcessLocalService>(
-						bundle.getBundleContext(),
-						KaleoProcessLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoProcessLocalService _kaleoProcessLocalService;
 
 }

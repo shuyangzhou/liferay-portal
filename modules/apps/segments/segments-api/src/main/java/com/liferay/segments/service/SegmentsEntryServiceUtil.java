@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SegmentsEntry. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsEntryServiceImpl</code> and is an
@@ -38,10 +34,10 @@ public class SegmentsEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.segments.service.impl.SegmentsEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.segments.model.SegmentsEntry addSegmentsEntry(
-			String segmentsEntryKey,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			boolean active, String criteria, String type,
+			java.lang.String segmentsEntryKey,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			boolean active, java.lang.String criteria, java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -51,10 +47,11 @@ public class SegmentsEntryServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsEntry addSegmentsEntry(
-			String segmentsEntryKey,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			boolean active, String criteria, String source, String type,
+			java.lang.String segmentsEntryKey,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			boolean active, java.lang.String criteria, java.lang.String source,
+			java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -91,7 +88,7 @@ public class SegmentsEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -131,7 +128,7 @@ public class SegmentsEntryServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.segments.model.SegmentsEntry> searchSegmentsEntries(
-				long companyId, long groupId, String keywords,
+				long companyId, long groupId, java.lang.String keywords,
 				boolean includeAncestorSegmentsEntries, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -142,10 +139,10 @@ public class SegmentsEntryServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsEntry updateSegmentsEntry(
-			long segmentsEntryId, String segmentsEntryKey,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			boolean active, String criteria,
+			long segmentsEntryId, java.lang.String segmentsEntryKey,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			boolean active, java.lang.String criteria,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -155,24 +152,9 @@ public class SegmentsEntryServiceUtil {
 	}
 
 	public static SegmentsEntryService getService() {
-		return _serviceTracker.getService();
+		return _segmentsEntryService;
 	}
 
-	private static ServiceTracker<SegmentsEntryService, SegmentsEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SegmentsEntryService.class);
-
-		ServiceTracker<SegmentsEntryService, SegmentsEntryService>
-			serviceTracker =
-				new ServiceTracker<SegmentsEntryService, SegmentsEntryService>(
-					bundle.getBundleContext(), SegmentsEntryService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsEntryService _segmentsEntryService;
 
 }

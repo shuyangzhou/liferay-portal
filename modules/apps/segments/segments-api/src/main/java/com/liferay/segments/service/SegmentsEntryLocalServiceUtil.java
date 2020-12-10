@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SegmentsEntry. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsEntryLocalServiceImpl</code> and
@@ -55,10 +51,10 @@ public class SegmentsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsEntry addSegmentsEntry(
-			String segmentsEntryKey,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			boolean active, String criteria, String type,
+			java.lang.String segmentsEntryKey,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			boolean active, java.lang.String criteria, java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -68,10 +64,11 @@ public class SegmentsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsEntry addSegmentsEntry(
-			String segmentsEntryKey,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			boolean active, String criteria, String source, String type,
+			java.lang.String segmentsEntryKey,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			boolean active, java.lang.String criteria, java.lang.String source,
+			java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -128,7 +125,7 @@ public class SegmentsEntryLocalServiceUtil {
 		getService().deleteSegmentsEntries(groupId);
 	}
 
-	public static void deleteSegmentsEntries(String source)
+	public static void deleteSegmentsEntries(java.lang.String source)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteSegmentsEntries(source);
@@ -275,7 +272,7 @@ public class SegmentsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsEntry fetchSegmentsEntry(
-		long groupId, String segmentsEntryKey,
+		long groupId, java.lang.String segmentsEntryKey,
 		boolean includeAncestorSegmentsEntries) {
 
 		return getService().fetchSegmentsEntry(
@@ -290,7 +287,8 @@ public class SegmentsEntryLocalServiceUtil {
 	 * @return the matching segments entry, or <code>null</code> if a matching segments entry could not be found
 	 */
 	public static com.liferay.segments.model.SegmentsEntry
-		fetchSegmentsEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchSegmentsEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchSegmentsEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -321,7 +319,7 @@ public class SegmentsEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -366,7 +364,8 @@ public class SegmentsEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.segments.model.SegmentsEntry>
 		getSegmentsEntries(
-			long groupId, boolean active, String type, int start, int end,
+			long groupId, boolean active, java.lang.String type, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.segments.model.SegmentsEntry> orderByComparator) {
 
@@ -376,8 +375,8 @@ public class SegmentsEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.segments.model.SegmentsEntry>
 		getSegmentsEntries(
-			long groupId, boolean active, String source, String type, int start,
-			int end,
+			long groupId, boolean active, java.lang.String source,
+			java.lang.String type, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.segments.model.SegmentsEntry> orderByComparator) {
 
@@ -387,7 +386,7 @@ public class SegmentsEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.segments.model.SegmentsEntry>
 		getSegmentsEntriesBySource(
-			String source, int start, int end,
+			java.lang.String source, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.segments.model.SegmentsEntry> orderByComparator) {
 
@@ -403,7 +402,8 @@ public class SegmentsEntryLocalServiceUtil {
 	 * @return the matching segments entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.segments.model.SegmentsEntry>
-		getSegmentsEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getSegmentsEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getSegmentsEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -421,7 +421,7 @@ public class SegmentsEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.segments.model.SegmentsEntry>
 		getSegmentsEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.segments.model.SegmentsEntry> orderByComparator) {
 
@@ -468,7 +468,8 @@ public class SegmentsEntryLocalServiceUtil {
 	 * @throws PortalException if a matching segments entry could not be found
 	 */
 	public static com.liferay.segments.model.SegmentsEntry
-			getSegmentsEntryByUuidAndGroupId(String uuid, long groupId)
+			getSegmentsEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSegmentsEntryByUuidAndGroupId(uuid, groupId);
@@ -482,7 +483,7 @@ public class SegmentsEntryLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.segments.model.SegmentsEntry> searchSegmentsEntries(
-				long companyId, long groupId, String keywords,
+				long companyId, long groupId, java.lang.String keywords,
 				boolean includeAncestorSegmentsEntries, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -494,10 +495,11 @@ public class SegmentsEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.segments.model.SegmentsEntry> searchSegmentsEntries(
-				long companyId, long groupId, String keywords,
+				long companyId, long groupId, java.lang.String keywords,
 				boolean includeAncestorSegmentsEntries,
-				java.util.LinkedHashMap<String, Object> params, int start,
-				int end, com.liferay.portal.kernel.search.Sort sort)
+				java.util.LinkedHashMap<java.lang.String, java.lang.Object>
+					params,
+				int start, int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchSegmentsEntries(
@@ -514,10 +516,10 @@ public class SegmentsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsEntry updateSegmentsEntry(
-			long segmentsEntryId, String segmentsEntryKey,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			boolean active, String criteria,
+			long segmentsEntryId, java.lang.String segmentsEntryKey,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			boolean active, java.lang.String criteria,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -543,26 +545,10 @@ public class SegmentsEntryLocalServiceUtil {
 	}
 
 	public static SegmentsEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _segmentsEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<SegmentsEntryLocalService, SegmentsEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SegmentsEntryLocalService.class);
-
-		ServiceTracker<SegmentsEntryLocalService, SegmentsEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<SegmentsEntryLocalService, SegmentsEntryLocalService>(
-						bundle.getBundleContext(),
-						SegmentsEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsEntryLocalService
+		_segmentsEntryLocalService;
 
 }

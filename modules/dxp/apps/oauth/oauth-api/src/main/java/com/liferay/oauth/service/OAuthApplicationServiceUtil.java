@@ -14,10 +14,6 @@
 
 package com.liferay.oauth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for OAuthApplication. This utility wraps
  * <code>com.liferay.oauth.service.impl.OAuthApplicationServiceImpl</code> and is an
@@ -38,8 +34,9 @@ public class OAuthApplicationServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.oauth.service.impl.OAuthApplicationServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.oauth.model.OAuthApplication addOAuthApplication(
-			String name, String description, int accessLevel,
-			boolean shareableAccessToken, String callbackURI, String websiteURL,
+			java.lang.String name, java.lang.String description,
+			int accessLevel, boolean shareableAccessToken,
+			java.lang.String callbackURI, java.lang.String websiteURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,7 +63,7 @@ public class OAuthApplicationServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -79,9 +76,9 @@ public class OAuthApplicationServiceUtil {
 
 	public static com.liferay.oauth.model.OAuthApplication
 			updateOAuthApplication(
-				long oAuthApplicationId, String name, String description,
-				boolean shareableAccessToken, String callbackURI,
-				String websiteURL,
+				long oAuthApplicationId, java.lang.String name,
+				java.lang.String description, boolean shareableAccessToken,
+				java.lang.String callbackURI, java.lang.String websiteURL,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -91,25 +88,9 @@ public class OAuthApplicationServiceUtil {
 	}
 
 	public static OAuthApplicationService getService() {
-		return _serviceTracker.getService();
+		return _oAuthApplicationService;
 	}
 
-	private static ServiceTracker
-		<OAuthApplicationService, OAuthApplicationService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(OAuthApplicationService.class);
-
-		ServiceTracker<OAuthApplicationService, OAuthApplicationService>
-			serviceTracker =
-				new ServiceTracker
-					<OAuthApplicationService, OAuthApplicationService>(
-						bundle.getBundleContext(),
-						OAuthApplicationService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuthApplicationService _oAuthApplicationService;
 
 }

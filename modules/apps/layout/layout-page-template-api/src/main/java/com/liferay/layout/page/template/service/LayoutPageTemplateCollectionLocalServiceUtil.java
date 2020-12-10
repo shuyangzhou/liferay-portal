@@ -14,10 +14,6 @@
 
 package com.liferay.layout.page.template.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LayoutPageTemplateCollection. This utility wraps
  * <code>com.liferay.layout.page.template.service.impl.LayoutPageTemplateCollectionLocalServiceImpl</code> and
@@ -61,7 +57,8 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateCollection
 				addLayoutPageTemplateCollection(
-					long userId, long groupId, String name, String description,
+					long userId, long groupId, java.lang.String name,
+					java.lang.String description,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -253,7 +250,8 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateCollection
 			fetchLayoutPageTemplateCollection(
-				long groupId, String layoutPageTemplateCollectionKey) {
+				long groupId,
+				java.lang.String layoutPageTemplateCollectionKey) {
 
 		return getService().fetchLayoutPageTemplateCollection(
 			groupId, layoutPageTemplateCollectionKey);
@@ -269,7 +267,7 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateCollection
 			fetchLayoutPageTemplateCollectionByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutPageTemplateCollectionByUuidAndGroupId(
 			uuid, groupId);
@@ -324,7 +322,7 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateCollection
 				getLayoutPageTemplateCollectionByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutPageTemplateCollectionByUuidAndGroupId(
@@ -372,7 +370,7 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateCollection>
 			getLayoutPageTemplateCollections(
-				long groupId, String name, int start, int end,
+				long groupId, java.lang.String name, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateCollection> orderByComparator) {
@@ -391,7 +389,7 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateCollection>
 			getLayoutPageTemplateCollectionsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getLayoutPageTemplateCollectionsByUuidAndCompanyId(
 			uuid, companyId);
@@ -410,7 +408,7 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateCollection>
 			getLayoutPageTemplateCollectionsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateCollection> orderByComparator) {
@@ -433,7 +431,7 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -470,8 +468,8 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateCollection
 				updateLayoutPageTemplateCollection(
-					long layoutPageTemplateCollectionId, String name,
-					String description)
+					long layoutPageTemplateCollectionId, java.lang.String name,
+					java.lang.String description)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateCollection(
@@ -479,29 +477,10 @@ public class LayoutPageTemplateCollectionLocalServiceUtil {
 	}
 
 	public static LayoutPageTemplateCollectionLocalService getService() {
-		return _serviceTracker.getService();
+		return _layoutPageTemplateCollectionLocalService;
 	}
 
-	private static ServiceTracker
-		<LayoutPageTemplateCollectionLocalService,
-		 LayoutPageTemplateCollectionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutPageTemplateCollectionLocalService.class);
-
-		ServiceTracker
-			<LayoutPageTemplateCollectionLocalService,
-			 LayoutPageTemplateCollectionLocalService> serviceTracker =
-				new ServiceTracker
-					<LayoutPageTemplateCollectionLocalService,
-					 LayoutPageTemplateCollectionLocalService>(
-						 bundle.getBundleContext(),
-						 LayoutPageTemplateCollectionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutPageTemplateCollectionLocalService
+		_layoutPageTemplateCollectionLocalService;
 
 }

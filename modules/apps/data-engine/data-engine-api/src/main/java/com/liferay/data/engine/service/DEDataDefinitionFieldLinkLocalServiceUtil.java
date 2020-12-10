@@ -14,10 +14,6 @@
 
 package com.liferay.data.engine.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DEDataDefinitionFieldLink. This utility wraps
  * <code>com.liferay.data.engine.service.impl.DEDataDefinitionFieldLinkLocalServiceImpl</code> and
@@ -60,7 +56,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static com.liferay.data.engine.model.DEDataDefinitionFieldLink
 			addDEDataDefinitionFieldLink(
 				long groupId, long classNameId, long classPK,
-				long ddmStructureId, String fieldName)
+				long ddmStructureId, java.lang.String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addDEDataDefinitionFieldLink(
@@ -70,7 +66,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static com.liferay.data.engine.model.DEDataDefinitionFieldLink
 			addDEDataDefinitionFieldLink(
 				long groupId, long classNameId, long classPK,
-				long ddmStructureId, String fieldName,
+				long ddmStructureId, java.lang.String fieldName,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -157,14 +153,14 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void deleteDEDataDefinitionFieldLinks(
-		long classNameId, long ddmStructureId, String fieldName) {
+		long classNameId, long ddmStructureId, java.lang.String fieldName) {
 
 		getService().deleteDEDataDefinitionFieldLinks(
 			classNameId, ddmStructureId, fieldName);
 	}
 
 	public static void deleteDEDataDefinitionFieldLinks(
-		long classNameId, long ddmStructureId, String[] fieldNames) {
+		long classNameId, long ddmStructureId, java.lang.String[] fieldNames) {
 
 		getService().deleteDEDataDefinitionFieldLinks(
 			classNameId, ddmStructureId, fieldNames);
@@ -288,7 +284,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	 */
 	public static com.liferay.data.engine.model.DEDataDefinitionFieldLink
 		fetchDEDataDefinitionFieldLinkByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchDEDataDefinitionFieldLinkByUuidAndGroupId(
 			uuid, groupId);
@@ -297,7 +293,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static com.liferay.data.engine.model.DEDataDefinitionFieldLink
 		fetchDEDataDefinitionFieldLinks(
 			long classNameId, long classPK, long ddmStructureId,
-			String fieldName) {
+			java.lang.String fieldName) {
 
 		return getService().fetchDEDataDefinitionFieldLinks(
 			classNameId, classPK, ddmStructureId, fieldName);
@@ -334,7 +330,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	 */
 	public static com.liferay.data.engine.model.DEDataDefinitionFieldLink
 			getDEDataDefinitionFieldLinkByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDEDataDefinitionFieldLinkByUuidAndGroupId(
@@ -384,7 +380,8 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.data.engine.model.DEDataDefinitionFieldLink>
 			getDEDataDefinitionFieldLinks(
-				long classNameId, long ddmStructureId, String fieldName) {
+				long classNameId, long ddmStructureId,
+				java.lang.String fieldName) {
 
 		return getService().getDEDataDefinitionFieldLinks(
 			classNameId, ddmStructureId, fieldName);
@@ -393,7 +390,8 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.data.engine.model.DEDataDefinitionFieldLink>
 			getDEDataDefinitionFieldLinks(
-				long classNameId, long ddmStructureId, String[] fieldNames) {
+				long classNameId, long ddmStructureId,
+				java.lang.String[] fieldNames) {
 
 		return getService().getDEDataDefinitionFieldLinks(
 			classNameId, ddmStructureId, fieldNames);
@@ -402,7 +400,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.data.engine.model.DEDataDefinitionFieldLink>
 			getDEDataDefinitionFieldLinks(
-				long ddmStructureId, String[] fieldNames) {
+				long ddmStructureId, java.lang.String[] fieldNames) {
 
 		return getService().getDEDataDefinitionFieldLinks(
 			ddmStructureId, fieldNames);
@@ -418,7 +416,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.data.engine.model.DEDataDefinitionFieldLink>
 			getDEDataDefinitionFieldLinksByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getDEDataDefinitionFieldLinksByUuidAndCompanyId(
 			uuid, companyId);
@@ -437,7 +435,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.data.engine.model.DEDataDefinitionFieldLink>
 			getDEDataDefinitionFieldLinksByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.data.engine.model.DEDataDefinitionFieldLink>
 						orderByComparator) {
@@ -475,7 +473,7 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -509,29 +507,10 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	}
 
 	public static DEDataDefinitionFieldLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _deDataDefinitionFieldLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<DEDataDefinitionFieldLinkLocalService,
-		 DEDataDefinitionFieldLinkLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DEDataDefinitionFieldLinkLocalService.class);
-
-		ServiceTracker
-			<DEDataDefinitionFieldLinkLocalService,
-			 DEDataDefinitionFieldLinkLocalService> serviceTracker =
-				new ServiceTracker
-					<DEDataDefinitionFieldLinkLocalService,
-					 DEDataDefinitionFieldLinkLocalService>(
-						 bundle.getBundleContext(),
-						 DEDataDefinitionFieldLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DEDataDefinitionFieldLinkLocalService
+		_deDataDefinitionFieldLinkLocalService;
 
 }

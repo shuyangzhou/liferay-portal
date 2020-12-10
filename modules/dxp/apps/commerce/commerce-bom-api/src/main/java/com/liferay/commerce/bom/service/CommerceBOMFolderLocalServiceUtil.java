@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.bom.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceBOMFolder. This utility wraps
  * <code>com.liferay.commerce.bom.service.impl.CommerceBOMFolderLocalServiceImpl</code> and
@@ -58,8 +54,8 @@ public class CommerceBOMFolderLocalServiceUtil {
 
 	public static com.liferay.commerce.bom.model.CommerceBOMFolder
 			addCommerceBOMFolder(
-				long userId, long parentCommerceBOMFolderId, String name,
-				boolean logo, byte[] logoBytes)
+				long userId, long parentCommerceBOMFolderId,
+				java.lang.String name, boolean logo, byte[] logoBytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceBOMFolder(
@@ -299,7 +295,7 @@ public class CommerceBOMFolderLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -333,7 +329,7 @@ public class CommerceBOMFolderLocalServiceUtil {
 
 	public static com.liferay.commerce.bom.model.CommerceBOMFolder
 			updateCommerceBOMFolder(
-				long commerceBOMFolderId, String name, boolean logo,
+				long commerceBOMFolderId, java.lang.String name, boolean logo,
 				byte[] logoBytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -342,29 +338,10 @@ public class CommerceBOMFolderLocalServiceUtil {
 	}
 
 	public static CommerceBOMFolderLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceBOMFolderLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceBOMFolderLocalService, CommerceBOMFolderLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceBOMFolderLocalService.class);
-
-		ServiceTracker
-			<CommerceBOMFolderLocalService, CommerceBOMFolderLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceBOMFolderLocalService,
-						 CommerceBOMFolderLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceBOMFolderLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceBOMFolderLocalService
+		_commerceBOMFolderLocalService;
 
 }

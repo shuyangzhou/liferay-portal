@@ -14,8 +14,6 @@
 
 package com.liferay.ratings.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for RatingsEntry. This utility wraps
  * <code>com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl</code> and
@@ -74,7 +72,8 @@ public class RatingsEntryLocalServiceUtil {
 		return getService().createRatingsEntry(entryId);
 	}
 
-	public static void deleteEntry(long userId, String className, long classPK)
+	public static void deleteEntry(
+			long userId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteEntry(userId, className, classPK);
@@ -82,7 +81,7 @@ public class RatingsEntryLocalServiceUtil {
 
 	public static void deleteEntry(
 			com.liferay.ratings.kernel.model.RatingsEntry entry, long userId,
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteEntry(entry, userId, className, classPK);
@@ -226,7 +225,7 @@ public class RatingsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.ratings.kernel.model.RatingsEntry fetchEntry(
-		long userId, String className, long classPK) {
+		long userId, java.lang.String className, long classPK) {
 
 		return getService().fetchEntry(userId, className, classPK);
 	}
@@ -245,7 +244,8 @@ public class RatingsEntryLocalServiceUtil {
 	 * @return the matching ratings entry, or <code>null</code> if a matching ratings entry could not be found
 	 */
 	public static com.liferay.ratings.kernel.model.RatingsEntry
-		fetchRatingsEntryByUuidAndCompanyId(String uuid, long companyId) {
+		fetchRatingsEntryByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchRatingsEntryByUuidAndCompanyId(
 			uuid, companyId);
@@ -258,32 +258,33 @@ public class RatingsEntryLocalServiceUtil {
 	}
 
 	public static java.util.Map
-		<Long, com.liferay.ratings.kernel.model.RatingsEntry> getEntries(
-			long userId, String className, long[] classPKs) {
+		<java.lang.Long, com.liferay.ratings.kernel.model.RatingsEntry>
+			getEntries(
+				long userId, java.lang.String className, long[] classPKs) {
 
 		return getService().getEntries(userId, className, classPKs);
 	}
 
 	public static java.util.List<com.liferay.ratings.kernel.model.RatingsEntry>
-		getEntries(String className, long classPK) {
+		getEntries(java.lang.String className, long classPK) {
 
 		return getService().getEntries(className, classPK);
 	}
 
 	public static java.util.List<com.liferay.ratings.kernel.model.RatingsEntry>
-		getEntries(String className, long classPK, double score) {
+		getEntries(java.lang.String className, long classPK, double score) {
 
 		return getService().getEntries(className, classPK, score);
 	}
 
 	public static int getEntriesCount(
-		String className, long classPK, double score) {
+		java.lang.String className, long classPK, double score) {
 
 		return getService().getEntriesCount(className, classPK, score);
 	}
 
 	public static com.liferay.ratings.kernel.model.RatingsEntry getEntry(
-			long userId, String className, long classPK)
+			long userId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(userId, className, classPK);
@@ -309,7 +310,7 @@ public class RatingsEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -372,14 +373,15 @@ public class RatingsEntryLocalServiceUtil {
 	 * @throws PortalException if a matching ratings entry could not be found
 	 */
 	public static com.liferay.ratings.kernel.model.RatingsEntry
-			getRatingsEntryByUuidAndCompanyId(String uuid, long companyId)
+			getRatingsEntryByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRatingsEntryByUuidAndCompanyId(uuid, companyId);
 	}
 
 	public static com.liferay.ratings.kernel.model.RatingsEntry updateEntry(
-			long userId, String className, long classPK, double score,
+			long userId, java.lang.String className, long classPK, double score,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -405,14 +407,9 @@ public class RatingsEntryLocalServiceUtil {
 	}
 
 	public static RatingsEntryLocalService getService() {
-		if (_service == null) {
-			_service = (RatingsEntryLocalService)PortalBeanLocatorUtil.locate(
-				RatingsEntryLocalService.class.getName());
-		}
-
-		return _service;
+		return _ratingsEntryLocalService;
 	}
 
-	private static RatingsEntryLocalService _service;
+	private static volatile RatingsEntryLocalService _ratingsEntryLocalService;
 
 }

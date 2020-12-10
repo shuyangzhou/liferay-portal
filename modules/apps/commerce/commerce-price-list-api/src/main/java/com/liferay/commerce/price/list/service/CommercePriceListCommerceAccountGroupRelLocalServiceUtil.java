@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.price.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommercePriceListCommerceAccountGroupRel. This utility wraps
  * <code>com.liferay.commerce.price.list.service.impl.CommercePriceListCommerceAccountGroupRelLocalServiceImpl</code> and
@@ -288,7 +284,7 @@ public class CommercePriceListCommerceAccountGroupRelLocalServiceUtil {
 	public static com.liferay.commerce.price.list.model.
 		CommercePriceListCommerceAccountGroupRel
 			fetchCommercePriceListCommerceAccountGroupRelByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().
 			fetchCommercePriceListCommerceAccountGroupRelByUuidAndCompanyId(
@@ -329,7 +325,7 @@ public class CommercePriceListCommerceAccountGroupRelLocalServiceUtil {
 	public static com.liferay.commerce.price.list.model.
 		CommercePriceListCommerceAccountGroupRel
 				getCommercePriceListCommerceAccountGroupRelByUuidAndCompanyId(
-					String uuid, long companyId)
+					java.lang.String uuid, long companyId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
@@ -386,7 +382,8 @@ public class CommercePriceListCommerceAccountGroupRelLocalServiceUtil {
 		<com.liferay.commerce.price.list.model.
 			CommercePriceListCommerceAccountGroupRel>
 				getCommercePriceListCommerceAccountGroupRels(
-					long commercePriceListId, String name, int start, int end) {
+					long commercePriceListId, java.lang.String name, int start,
+					int end) {
 
 		return getService().getCommercePriceListCommerceAccountGroupRels(
 			commercePriceListId, name, start, end);
@@ -409,7 +406,7 @@ public class CommercePriceListCommerceAccountGroupRelLocalServiceUtil {
 	}
 
 	public static int getCommercePriceListCommerceAccountGroupRelsCount(
-		long commercePriceListId, String name) {
+		long commercePriceListId, java.lang.String name) {
 
 		return getService().getCommercePriceListCommerceAccountGroupRelsCount(
 			commercePriceListId, name);
@@ -435,7 +432,7 @@ public class CommercePriceListCommerceAccountGroupRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -485,31 +482,10 @@ public class CommercePriceListCommerceAccountGroupRelLocalServiceUtil {
 	public static CommercePriceListCommerceAccountGroupRelLocalService
 		getService() {
 
-		return _serviceTracker.getService();
+		return _commercePriceListCommerceAccountGroupRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceListCommerceAccountGroupRelLocalService,
-		 CommercePriceListCommerceAccountGroupRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceListCommerceAccountGroupRelLocalService.class);
-
-		ServiceTracker
-			<CommercePriceListCommerceAccountGroupRelLocalService,
-			 CommercePriceListCommerceAccountGroupRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommercePriceListCommerceAccountGroupRelLocalService,
-						 CommercePriceListCommerceAccountGroupRelLocalService>(
-							 bundle.getBundleContext(),
-							 CommercePriceListCommerceAccountGroupRelLocalService.class,
-							 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceListCommerceAccountGroupRelLocalService
+		_commercePriceListCommerceAccountGroupRelLocalService;
 
 }

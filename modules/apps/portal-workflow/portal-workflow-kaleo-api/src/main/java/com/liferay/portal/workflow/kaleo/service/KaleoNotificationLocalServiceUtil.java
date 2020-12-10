@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoNotification. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoNotificationLocalServiceImpl</code> and
@@ -58,9 +54,9 @@ public class KaleoNotificationLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoNotification
 			addKaleoNotification(
-				String kaleoClassName, long kaleoClassPK,
+				java.lang.String kaleoClassName, long kaleoClassPK,
 				long kaleoDefinitionId, long kaleoDefinitionVersionId,
-				String kaleoNodeName,
+				java.lang.String kaleoNodeName,
 				com.liferay.portal.workflow.kaleo.definition.Notification
 					notification,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -296,7 +292,8 @@ public class KaleoNotificationLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoNotification>
-			getKaleoNotifications(String kaleoClassName, long kaleoClassPK) {
+			getKaleoNotifications(
+				java.lang.String kaleoClassName, long kaleoClassPK) {
 
 		return getService().getKaleoNotifications(kaleoClassName, kaleoClassPK);
 	}
@@ -304,8 +301,8 @@ public class KaleoNotificationLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoNotification>
 			getKaleoNotifications(
-				String kaleoClassName, long kaleoClassPK,
-				String executionType) {
+				java.lang.String kaleoClassName, long kaleoClassPK,
+				java.lang.String executionType) {
 
 		return getService().getKaleoNotifications(
 			kaleoClassName, kaleoClassPK, executionType);
@@ -325,7 +322,7 @@ public class KaleoNotificationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -358,29 +355,10 @@ public class KaleoNotificationLocalServiceUtil {
 	}
 
 	public static KaleoNotificationLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoNotificationLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoNotificationLocalService, KaleoNotificationLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoNotificationLocalService.class);
-
-		ServiceTracker
-			<KaleoNotificationLocalService, KaleoNotificationLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<KaleoNotificationLocalService,
-						 KaleoNotificationLocalService>(
-							 bundle.getBundleContext(),
-							 KaleoNotificationLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoNotificationLocalService
+		_kaleoNotificationLocalService;
 
 }

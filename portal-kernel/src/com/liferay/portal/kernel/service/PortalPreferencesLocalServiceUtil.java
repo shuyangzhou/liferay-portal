@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PortalPreferences. This utility wraps
  * <code>com.liferay.portal.service.impl.PortalPreferencesLocalServiceImpl</code> and
@@ -37,7 +35,7 @@ public class PortalPreferencesLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.PortalPreferences
 		addPortalPreferences(
-			long ownerId, int ownerType, String defaultPreferences) {
+			long ownerId, int ownerType, java.lang.String defaultPreferences) {
 
 		return getService().addPortalPreferences(
 			ownerId, ownerType, defaultPreferences);
@@ -251,7 +249,7 @@ public class PortalPreferencesLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -313,7 +311,7 @@ public class PortalPreferencesLocalServiceUtil {
 	}
 
 	public static javax.portlet.PortletPreferences getPreferences(
-		long ownerId, int ownerType, String defaultPreferences) {
+		long ownerId, int ownerType, java.lang.String defaultPreferences) {
 
 		return getService().getPreferences(
 			ownerId, ownerType, defaultPreferences);
@@ -348,21 +346,16 @@ public class PortalPreferencesLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PortalPreferences
-		updatePreferences(long ownerId, int ownerType, String xml) {
+		updatePreferences(long ownerId, int ownerType, java.lang.String xml) {
 
 		return getService().updatePreferences(ownerId, ownerType, xml);
 	}
 
 	public static PortalPreferencesLocalService getService() {
-		if (_service == null) {
-			_service =
-				(PortalPreferencesLocalService)PortalBeanLocatorUtil.locate(
-					PortalPreferencesLocalService.class.getName());
-		}
-
-		return _service;
+		return _portalPreferencesLocalService;
 	}
 
-	private static PortalPreferencesLocalService _service;
+	private static volatile PortalPreferencesLocalService
+		_portalPreferencesLocalService;
 
 }

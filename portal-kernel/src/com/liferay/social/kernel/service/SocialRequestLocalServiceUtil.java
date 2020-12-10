@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialRequest. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialRequestLocalServiceImpl</code> and
@@ -57,8 +55,8 @@ public class SocialRequestLocalServiceUtil {
 	 * @return the social request
 	 */
 	public static com.liferay.social.kernel.model.SocialRequest addRequest(
-			long userId, long groupId, String className, long classPK, int type,
-			String extraData, long receiverUserId)
+			long userId, long groupId, java.lang.String className, long classPK,
+			int type, java.lang.String extraData, long receiverUserId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addRequest(
@@ -301,7 +299,8 @@ public class SocialRequestLocalServiceUtil {
 	 * @return the matching social request, or <code>null</code> if a matching social request could not be found
 	 */
 	public static com.liferay.social.kernel.model.SocialRequest
-		fetchSocialRequestByUuidAndGroupId(String uuid, long groupId) {
+		fetchSocialRequestByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchSocialRequestByUuidAndGroupId(uuid, groupId);
 	}
@@ -324,7 +323,7 @@ public class SocialRequestLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -438,7 +437,8 @@ public class SocialRequestLocalServiceUtil {
 	 * @throws PortalException if a matching social request could not be found
 	 */
 	public static com.liferay.social.kernel.model.SocialRequest
-			getSocialRequestByUuidAndGroupId(String uuid, long groupId)
+			getSocialRequestByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSocialRequestByUuidAndGroupId(uuid, groupId);
@@ -469,7 +469,8 @@ public class SocialRequestLocalServiceUtil {
 	 * @return the matching social requests, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.social.kernel.model.SocialRequest>
-		getSocialRequestsByUuidAndCompanyId(String uuid, long companyId) {
+		getSocialRequestsByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getSocialRequestsByUuidAndCompanyId(
 			uuid, companyId);
@@ -487,7 +488,7 @@ public class SocialRequestLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.social.kernel.model.SocialRequest>
 		getSocialRequestsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.social.kernel.model.SocialRequest>
 					orderByComparator) {
@@ -592,7 +593,8 @@ public class SocialRequestLocalServiceUtil {
 	 otherwise
 	 */
 	public static boolean hasRequest(
-		long userId, String className, long classPK, int type, int status) {
+		long userId, java.lang.String className, long classPK, int type,
+		int status) {
 
 		return getService().hasRequest(
 			userId, className, classPK, type, status);
@@ -614,7 +616,7 @@ public class SocialRequestLocalServiceUtil {
 	 <code>false</code> otherwise
 	 */
 	public static boolean hasRequest(
-		long userId, String className, long classPK, int type,
+		long userId, java.lang.String className, long classPK, int type,
 		long receiverUserId, int status) {
 
 		return getService().hasRequest(
@@ -665,14 +667,10 @@ public class SocialRequestLocalServiceUtil {
 	}
 
 	public static SocialRequestLocalService getService() {
-		if (_service == null) {
-			_service = (SocialRequestLocalService)PortalBeanLocatorUtil.locate(
-				SocialRequestLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialRequestLocalService;
 	}
 
-	private static SocialRequestLocalService _service;
+	private static volatile SocialRequestLocalService
+		_socialRequestLocalService;
 
 }

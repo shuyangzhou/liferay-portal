@@ -14,10 +14,6 @@
 
 package com.liferay.change.tracking.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CTProcess. This utility wraps
  * <code>com.liferay.change.tracking.service.impl.CTProcessServiceImpl</code> and is an
@@ -39,8 +35,8 @@ public class CTProcessServiceUtil {
 	 */
 	public static java.util.List<com.liferay.change.tracking.model.CTProcess>
 		getCTProcesses(
-			long companyId, long userId, String keywords, int status, int start,
-			int end,
+			long companyId, long userId, java.lang.String keywords, int status,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.change.tracking.model.CTProcess>
 					orderByComparator) {
@@ -54,27 +50,14 @@ public class CTProcessServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CTProcessService getService() {
-		return _serviceTracker.getService();
+		return _ctProcessService;
 	}
 
-	private static ServiceTracker<CTProcessService, CTProcessService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CTProcessService.class);
-
-		ServiceTracker<CTProcessService, CTProcessService> serviceTracker =
-			new ServiceTracker<CTProcessService, CTProcessService>(
-				bundle.getBundleContext(), CTProcessService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CTProcessService _ctProcessService;
 
 }

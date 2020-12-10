@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LVEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.LVEntryLocalServiceImpl</code> and
@@ -345,14 +341,15 @@ public class LVEntryLocalServiceUtil {
 
 	public static
 		com.liferay.portal.tools.service.builder.test.model.LVEntryLocalization
-			fetchLVEntryLocalization(long lvEntryId, String languageId) {
+			fetchLVEntryLocalization(
+				long lvEntryId, java.lang.String languageId) {
 
 		return getService().fetchLVEntryLocalization(lvEntryId, languageId);
 	}
 
 	public static com.liferay.portal.tools.service.builder.test.model.
 		LVEntryLocalizationVersion fetchLVEntryLocalizationVersion(
-			long lvEntryId, String languageId, int version) {
+			long lvEntryId, java.lang.String languageId, int version) {
 
 		return getService().fetchLVEntryLocalizationVersion(
 			lvEntryId, languageId, version);
@@ -486,7 +483,8 @@ public class LVEntryLocalServiceUtil {
 
 	public static
 		com.liferay.portal.tools.service.builder.test.model.LVEntryLocalization
-				getLVEntryLocalization(long lvEntryId, String languageId)
+				getLVEntryLocalization(
+					long lvEntryId, java.lang.String languageId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLVEntryLocalization(lvEntryId, languageId);
@@ -510,7 +508,7 @@ public class LVEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.tools.service.builder.test.model.
 			LVEntryLocalizationVersion> getLVEntryLocalizationVersions(
-					long lvEntryId, String languageId)
+					long lvEntryId, java.lang.String languageId)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLVEntryLocalizationVersions(
@@ -522,7 +520,7 @@ public class LVEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -633,7 +631,8 @@ public class LVEntryLocalServiceUtil {
 				updateLVEntryLocalization(
 					com.liferay.portal.tools.service.builder.test.model.LVEntry
 						draftLVEntry,
-					String languageId, String title, String content)
+					java.lang.String languageId, java.lang.String title,
+					java.lang.String content)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLVEntryLocalization(
@@ -645,8 +644,9 @@ public class LVEntryLocalServiceUtil {
 			LVEntryLocalization> updateLVEntryLocalizations(
 					com.liferay.portal.tools.service.builder.test.model.LVEntry
 						draftLVEntry,
-					java.util.Map<String, String> titleMap,
-					java.util.Map<String, String> contentMap)
+					java.util.Map<java.lang.String, java.lang.String> titleMap,
+					java.util.Map<java.lang.String, java.lang.String>
+						contentMap)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLVEntryLocalizations(
@@ -654,23 +654,9 @@ public class LVEntryLocalServiceUtil {
 	}
 
 	public static LVEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _lvEntryLocalService;
 	}
 
-	private static ServiceTracker<LVEntryLocalService, LVEntryLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LVEntryLocalService.class);
-
-		ServiceTracker<LVEntryLocalService, LVEntryLocalService>
-			serviceTracker =
-				new ServiceTracker<LVEntryLocalService, LVEntryLocalService>(
-					bundle.getBundleContext(), LVEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LVEntryLocalService _lvEntryLocalService;
 
 }

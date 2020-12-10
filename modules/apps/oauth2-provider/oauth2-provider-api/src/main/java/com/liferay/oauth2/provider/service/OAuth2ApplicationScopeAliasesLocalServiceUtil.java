@@ -14,10 +14,6 @@
 
 package com.liferay.oauth2.provider.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for OAuth2ApplicationScopeAliases. This utility wraps
  * <code>com.liferay.oauth2.provider.service.impl.OAuth2ApplicationScopeAliasesLocalServiceImpl</code> and
@@ -40,7 +36,7 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 	public static
 		com.liferay.oauth2.provider.model.OAuth2ApplicationScopeAliases
 				addOAuth2ApplicationScopeAliases(
-					long companyId, long userId, String userName,
+					long companyId, long userId, java.lang.String userName,
 					long oAuth2ApplicationId,
 					java.util.function.Consumer
 						<com.liferay.oauth2.provider.util.builder.
@@ -54,9 +50,9 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 	public static
 		com.liferay.oauth2.provider.model.OAuth2ApplicationScopeAliases
 				addOAuth2ApplicationScopeAliases(
-					long companyId, long userId, String userName,
+					long companyId, long userId, java.lang.String userName,
 					long oAuth2ApplicationId,
-					java.util.List<String> scopeAliasesList)
+					java.util.List<java.lang.String> scopeAliasesList)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addOAuth2ApplicationScopeAliases(
@@ -264,7 +260,7 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 		com.liferay.oauth2.provider.model.OAuth2ApplicationScopeAliases
 			fetchOAuth2ApplicationScopeAliases(
 				long oAuth2ApplicationId,
-				java.util.List<String> scopeAliasesList) {
+				java.util.List<java.lang.String> scopeAliasesList) {
 
 		return getService().fetchOAuth2ApplicationScopeAliases(
 			oAuth2ApplicationId, scopeAliasesList);
@@ -344,7 +340,7 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -358,7 +354,7 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List<String> getScopeAliasesList(
+	public static java.util.List<java.lang.String> getScopeAliasesList(
 		long oAuth2ApplicationScopeAliasesId) {
 
 		return getService().getScopeAliasesList(
@@ -386,29 +382,10 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 	}
 
 	public static OAuth2ApplicationScopeAliasesLocalService getService() {
-		return _serviceTracker.getService();
+		return _oAuth2ApplicationScopeAliasesLocalService;
 	}
 
-	private static ServiceTracker
-		<OAuth2ApplicationScopeAliasesLocalService,
-		 OAuth2ApplicationScopeAliasesLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			OAuth2ApplicationScopeAliasesLocalService.class);
-
-		ServiceTracker
-			<OAuth2ApplicationScopeAliasesLocalService,
-			 OAuth2ApplicationScopeAliasesLocalService> serviceTracker =
-				new ServiceTracker
-					<OAuth2ApplicationScopeAliasesLocalService,
-					 OAuth2ApplicationScopeAliasesLocalService>(
-						 bundle.getBundleContext(),
-						 OAuth2ApplicationScopeAliasesLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuth2ApplicationScopeAliasesLocalService
+		_oAuth2ApplicationScopeAliasesLocalService;
 
 }

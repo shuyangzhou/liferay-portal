@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.price.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePriceListChannelRel. This utility wraps
  * <code>com.liferay.commerce.price.list.service.impl.CommercePriceListChannelRelServiceImpl</code> and is an
@@ -102,7 +98,8 @@ public class CommercePriceListChannelRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.price.list.model.CommercePriceListChannelRel>
 			getCommercePriceListChannelRels(
-				long commercePriceListId, String name, int start, int end) {
+				long commercePriceListId, java.lang.String name, int start,
+				int end) {
 
 		return getService().getCommercePriceListChannelRels(
 			commercePriceListId, name, start, end);
@@ -117,7 +114,7 @@ public class CommercePriceListChannelRelServiceUtil {
 	}
 
 	public static int getCommercePriceListChannelRelsCount(
-		long commercePriceListId, String name) {
+		long commercePriceListId, java.lang.String name) {
 
 		return getService().getCommercePriceListChannelRelsCount(
 			commercePriceListId, name);
@@ -128,34 +125,15 @@ public class CommercePriceListChannelRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommercePriceListChannelRelService getService() {
-		return _serviceTracker.getService();
+		return _commercePriceListChannelRelService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceListChannelRelService, CommercePriceListChannelRelService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceListChannelRelService.class);
-
-		ServiceTracker
-			<CommercePriceListChannelRelService,
-			 CommercePriceListChannelRelService> serviceTracker =
-				new ServiceTracker
-					<CommercePriceListChannelRelService,
-					 CommercePriceListChannelRelService>(
-						 bundle.getBundleContext(),
-						 CommercePriceListChannelRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceListChannelRelService
+		_commercePriceListChannelRelService;
 
 }

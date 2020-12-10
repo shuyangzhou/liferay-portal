@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for LayoutRevision. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutRevisionServiceImpl</code> and is an
@@ -39,11 +37,13 @@ public class LayoutRevisionServiceUtil {
 			addLayoutRevision(
 				long userId, long layoutSetBranchId, long layoutBranchId,
 				long parentLayoutRevisionId, boolean head, long plid,
-				long portletPreferencesPlid, boolean privateLayout, String name,
-				String title, String description, String keywords,
-				String robots, String typeSettings, boolean iconImage,
-				long iconImageId, String themeId, String colorSchemeId,
-				String css, ServiceContext serviceContext)
+				long portletPreferencesPlid, boolean privateLayout,
+				java.lang.String name, java.lang.String title,
+				java.lang.String description, java.lang.String keywords,
+				java.lang.String robots, java.lang.String typeSettings,
+				boolean iconImage, long iconImageId, java.lang.String themeId,
+				java.lang.String colorSchemeId, java.lang.String css,
+				ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addLayoutRevision(
@@ -58,19 +58,14 @@ public class LayoutRevisionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static LayoutRevisionService getService() {
-		if (_service == null) {
-			_service = (LayoutRevisionService)PortalBeanLocatorUtil.locate(
-				LayoutRevisionService.class.getName());
-		}
-
-		return _service;
+		return _layoutRevisionService;
 	}
 
-	private static LayoutRevisionService _service;
+	private static volatile LayoutRevisionService _layoutRevisionService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.bookmarks.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for BookmarksEntry. This utility wraps
  * <code>com.liferay.bookmarks.service.impl.BookmarksEntryLocalServiceImpl</code> and
@@ -55,8 +51,8 @@ public class BookmarksEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.bookmarks.model.BookmarksEntry addEntry(
-			long userId, long groupId, long folderId, String name, String url,
-			String description,
+			long userId, long groupId, long folderId, java.lang.String name,
+			java.lang.String url, java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -264,7 +260,8 @@ public class BookmarksEntryLocalServiceUtil {
 	 * @return the matching bookmarks entry, or <code>null</code> if a matching bookmarks entry could not be found
 	 */
 	public static com.liferay.bookmarks.model.BookmarksEntry
-		fetchBookmarksEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchBookmarksEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchBookmarksEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -300,7 +297,8 @@ public class BookmarksEntryLocalServiceUtil {
 	 * @return the matching bookmarks entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.bookmarks.model.BookmarksEntry>
-		getBookmarksEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getBookmarksEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getBookmarksEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -318,7 +316,7 @@ public class BookmarksEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.bookmarks.model.BookmarksEntry>
 		getBookmarksEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.bookmarks.model.BookmarksEntry>
 					orderByComparator) {
@@ -359,7 +357,8 @@ public class BookmarksEntryLocalServiceUtil {
 	 * @throws PortalException if a matching bookmarks entry could not be found
 	 */
 	public static com.liferay.bookmarks.model.BookmarksEntry
-			getBookmarksEntryByUuidAndGroupId(String uuid, long groupId)
+			getBookmarksEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getBookmarksEntryByUuidAndGroupId(uuid, groupId);
@@ -424,7 +423,7 @@ public class BookmarksEntryLocalServiceUtil {
 	}
 
 	public static int getFoldersEntriesCount(
-		long groupId, java.util.List<Long> folderIds) {
+		long groupId, java.util.List<java.lang.Long> folderIds) {
 
 		return getService().getFoldersEntriesCount(groupId, folderIds);
 	}
@@ -461,7 +460,7 @@ public class BookmarksEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -533,7 +532,7 @@ public class BookmarksEntryLocalServiceUtil {
 	}
 
 	public static void setTreePaths(
-			long folderId, String treePath, boolean reindex)
+			long folderId, java.lang.String treePath, boolean reindex)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().setTreePaths(folderId, treePath, reindex);
@@ -553,8 +552,8 @@ public class BookmarksEntryLocalServiceUtil {
 
 	public static void updateAsset(
 			long userId, com.liferay.bookmarks.model.BookmarksEntry entry,
-			long[] assetCategoryIds, String[] assetTagNames,
-			long[] assetLinkEntryIds, Double priority)
+			long[] assetCategoryIds, java.lang.String[] assetTagNames,
+			long[] assetLinkEntryIds, java.lang.Double priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateAsset(
@@ -580,8 +579,9 @@ public class BookmarksEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.bookmarks.model.BookmarksEntry updateEntry(
-			long userId, long entryId, long groupId, long folderId, String name,
-			String url, String description,
+			long userId, long entryId, long groupId, long folderId,
+			java.lang.String name, java.lang.String url,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -599,27 +599,10 @@ public class BookmarksEntryLocalServiceUtil {
 	}
 
 	public static BookmarksEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _bookmarksEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<BookmarksEntryLocalService, BookmarksEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			BookmarksEntryLocalService.class);
-
-		ServiceTracker<BookmarksEntryLocalService, BookmarksEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<BookmarksEntryLocalService, BookmarksEntryLocalService>(
-						bundle.getBundleContext(),
-						BookmarksEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BookmarksEntryLocalService
+		_bookmarksEntryLocalService;
 
 }

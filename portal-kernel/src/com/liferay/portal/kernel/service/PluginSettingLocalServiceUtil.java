@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PluginSetting. This utility wraps
  * <code>com.liferay.portal.service.impl.PluginSettingLocalServiceImpl</code> and
@@ -54,7 +52,7 @@ public class PluginSettingLocalServiceUtil {
 	}
 
 	public static void checkPermission(
-			long userId, String pluginId, String pluginType)
+			long userId, java.lang.String pluginId, java.lang.String pluginType)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().checkPermission(userId, pluginId, pluginType);
@@ -249,7 +247,7 @@ public class PluginSettingLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -278,7 +276,9 @@ public class PluginSettingLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PluginSetting
-		getPluginSetting(long companyId, String pluginId, String pluginType) {
+		getPluginSetting(
+			long companyId, java.lang.String pluginId,
+			java.lang.String pluginType) {
 
 		return getService().getPluginSetting(companyId, pluginId, pluginType);
 	}
@@ -310,14 +310,15 @@ public class PluginSettingLocalServiceUtil {
 	}
 
 	public static boolean hasPermission(
-		long userId, String pluginId, String pluginType) {
+		long userId, java.lang.String pluginId, java.lang.String pluginType) {
 
 		return getService().hasPermission(userId, pluginId, pluginType);
 	}
 
 	public static com.liferay.portal.kernel.model.PluginSetting
 		updatePluginSetting(
-			long companyId, String pluginId, String pluginType, String roles,
+			long companyId, java.lang.String pluginId,
+			java.lang.String pluginType, java.lang.String roles,
 			boolean active) {
 
 		return getService().updatePluginSetting(
@@ -342,14 +343,10 @@ public class PluginSettingLocalServiceUtil {
 	}
 
 	public static PluginSettingLocalService getService() {
-		if (_service == null) {
-			_service = (PluginSettingLocalService)PortalBeanLocatorUtil.locate(
-				PluginSettingLocalService.class.getName());
-		}
-
-		return _service;
+		return _pluginSettingLocalService;
 	}
 
-	private static PluginSettingLocalService _service;
+	private static volatile PluginSettingLocalService
+		_pluginSettingLocalService;
 
 }

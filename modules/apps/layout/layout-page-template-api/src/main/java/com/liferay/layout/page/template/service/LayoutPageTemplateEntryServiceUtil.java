@@ -14,10 +14,6 @@
 
 package com.liferay.layout.page.template.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for LayoutPageTemplateEntry. This utility wraps
  * <code>com.liferay.layout.page.template.service.impl.LayoutPageTemplateEntryServiceImpl</code> and is an
@@ -47,7 +43,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			addLayoutPageTemplateEntry(
 				long groupId, long layoutPageTemplateCollectionId,
-				long classNameId, long classTypeId, String name, int status,
+				long classNameId, long classTypeId, java.lang.String name,
+				int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -59,7 +56,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			addLayoutPageTemplateEntry(
 				long groupId, long layoutPageTemplateCollectionId,
-				long classNameId, long classTypeId, String name,
+				long classNameId, long classTypeId, java.lang.String name,
 				long masterLayoutPlid, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -77,8 +74,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	@Deprecated
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			addLayoutPageTemplateEntry(
-				long groupId, long layoutPageTemplateCollectionId, String name,
-				int type, int status,
+				long groupId, long layoutPageTemplateCollectionId,
+				java.lang.String name, int type, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -89,8 +86,9 @@ public class LayoutPageTemplateEntryServiceUtil {
 
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			addLayoutPageTemplateEntry(
-				long groupId, long layoutPageTemplateCollectionId, String name,
-				int type, long masterLayoutPlid, int status,
+				long groupId, long layoutPageTemplateCollectionId,
+				java.lang.String name, int type, long masterLayoutPlid,
+				int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -107,8 +105,9 @@ public class LayoutPageTemplateEntryServiceUtil {
 	@Deprecated
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			addLayoutPageTemplateEntry(
-				long groupId, long layoutPageTemplateCollectionId, String name,
-				int status, long classNameId, long classTypeId,
+				long groupId, long layoutPageTemplateCollectionId,
+				java.lang.String name, int status, long classNameId,
+				long classTypeId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -171,7 +170,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 		fetchLayoutPageTemplateEntryByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutPageTemplateEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -309,8 +308,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateEntry>
 			getLayoutPageTemplateEntries(
-				long groupId, long classNameId, long classTypeId, String name,
-				int type, int status, int start, int end,
+				long groupId, long classNameId, long classTypeId,
+				java.lang.String name, int type, int status, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateEntry> orderByComparator) {
@@ -323,8 +322,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateEntry>
 			getLayoutPageTemplateEntries(
-				long groupId, long classNameId, long classTypeId, String name,
-				int type, int start, int end,
+				long groupId, long classNameId, long classTypeId,
+				java.lang.String name, int type, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateEntry> orderByComparator) {
@@ -337,8 +336,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateEntry>
 			getLayoutPageTemplateEntries(
-				long groupId, long layoutPageTemplateCollectionId, String name,
-				int status, int start, int end,
+				long groupId, long layoutPageTemplateCollectionId,
+				java.lang.String name, int status, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateEntry> orderByComparator) {
@@ -351,8 +350,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateEntry>
 			getLayoutPageTemplateEntries(
-				long groupId, long layoutPageTemplateCollectionId, String name,
-				int start, int end,
+				long groupId, long layoutPageTemplateCollectionId,
+				java.lang.String name, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateEntry> orderByComparator) {
@@ -365,8 +364,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateEntry>
 			getLayoutPageTemplateEntries(
-				long groupId, String name, int type, int status, int start,
-				int end,
+				long groupId, java.lang.String name, int type, int status,
+				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateEntry> orderByComparator) {
@@ -378,7 +377,8 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateEntry>
 			getLayoutPageTemplateEntries(
-				long groupId, String name, int type, int start, int end,
+				long groupId, java.lang.String name, int type, int start,
+				int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateEntry> orderByComparator) {
@@ -444,7 +444,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		long groupId, long classNameId, long classTypeId, String name,
+		long groupId, long classNameId, long classTypeId, java.lang.String name,
 		int type) {
 
 		return getService().getLayoutPageTemplateEntriesCount(
@@ -452,37 +452,38 @@ public class LayoutPageTemplateEntryServiceUtil {
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		long groupId, long classNameId, long classTypeId, String name, int type,
-		int status) {
+		long groupId, long classNameId, long classTypeId, java.lang.String name,
+		int type, int status) {
 
 		return getService().getLayoutPageTemplateEntriesCount(
 			groupId, classNameId, classTypeId, name, type, status);
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		long groupId, long layoutPageTemplateCollectionId, String name) {
+		long groupId, long layoutPageTemplateCollectionId,
+		java.lang.String name) {
 
 		return getService().getLayoutPageTemplateEntriesCount(
 			groupId, layoutPageTemplateCollectionId, name);
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		long groupId, long layoutPageTemplateCollectionId, String name,
-		int status) {
+		long groupId, long layoutPageTemplateCollectionId,
+		java.lang.String name, int status) {
 
 		return getService().getLayoutPageTemplateEntriesCount(
 			groupId, layoutPageTemplateCollectionId, name, status);
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		long groupId, String name, int type) {
+		long groupId, java.lang.String name, int type) {
 
 		return getService().getLayoutPageTemplateEntriesCount(
 			groupId, name, type);
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		long groupId, String name, int type, int status) {
+		long groupId, java.lang.String name, int type, int status) {
 
 		return getService().getLayoutPageTemplateEntriesCount(
 			groupId, name, type, status);
@@ -500,7 +501,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -525,7 +526,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			updateLayoutPageTemplateEntry(
 				long layoutPageTemplateEntryId, long[] fragmentEntryIds,
-				String editableValues,
+				java.lang.String editableValues,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -536,7 +537,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			updateLayoutPageTemplateEntry(
-				long layoutPageTemplateEntryId, String name)
+				long layoutPageTemplateEntryId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateEntry(
@@ -545,7 +546,7 @@ public class LayoutPageTemplateEntryServiceUtil {
 
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 			updateLayoutPageTemplateEntry(
-				long layoutPageTemplateEntryId, String name,
+				long layoutPageTemplateEntryId, java.lang.String name,
 				long[] fragmentEntryIds,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -562,29 +563,10 @@ public class LayoutPageTemplateEntryServiceUtil {
 	}
 
 	public static LayoutPageTemplateEntryService getService() {
-		return _serviceTracker.getService();
+		return _layoutPageTemplateEntryService;
 	}
 
-	private static ServiceTracker
-		<LayoutPageTemplateEntryService, LayoutPageTemplateEntryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutPageTemplateEntryService.class);
-
-		ServiceTracker
-			<LayoutPageTemplateEntryService, LayoutPageTemplateEntryService>
-				serviceTracker =
-					new ServiceTracker
-						<LayoutPageTemplateEntryService,
-						 LayoutPageTemplateEntryService>(
-							 bundle.getBundleContext(),
-							 LayoutPageTemplateEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutPageTemplateEntryService
+		_layoutPageTemplateEntryService;
 
 }

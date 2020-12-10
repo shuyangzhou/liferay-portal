@@ -14,10 +14,6 @@
 
 package com.liferay.asset.entry.rel.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetEntryAssetCategoryRel. This utility wraps
  * <code>com.liferay.asset.entry.rel.service.impl.AssetEntryAssetCategoryRelLocalServiceImpl</code> and
@@ -402,7 +398,7 @@ public class AssetEntryAssetCategoryRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -436,29 +432,10 @@ public class AssetEntryAssetCategoryRelLocalServiceUtil {
 	}
 
 	public static AssetEntryAssetCategoryRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetEntryAssetCategoryRelLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetEntryAssetCategoryRelLocalService,
-		 AssetEntryAssetCategoryRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetEntryAssetCategoryRelLocalService.class);
-
-		ServiceTracker
-			<AssetEntryAssetCategoryRelLocalService,
-			 AssetEntryAssetCategoryRelLocalService> serviceTracker =
-				new ServiceTracker
-					<AssetEntryAssetCategoryRelLocalService,
-					 AssetEntryAssetCategoryRelLocalService>(
-						 bundle.getBundleContext(),
-						 AssetEntryAssetCategoryRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetEntryAssetCategoryRelLocalService
+		_assetEntryAssetCategoryRelLocalService;
 
 }

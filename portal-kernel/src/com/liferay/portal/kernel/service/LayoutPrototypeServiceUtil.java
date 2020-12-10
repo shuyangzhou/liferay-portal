@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for LayoutPrototype. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutPrototypeServiceImpl</code> and is an
@@ -37,8 +35,9 @@ public class LayoutPrototypeServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.LayoutPrototype
 			addLayoutPrototype(
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				boolean active, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -71,13 +70,13 @@ public class LayoutPrototypeServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.portal.kernel.model.LayoutPrototype> search(
-				long companyId, Boolean active,
+				long companyId, java.lang.Boolean active,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.kernel.model.LayoutPrototype>
 						orderByComparator)
@@ -89,8 +88,9 @@ public class LayoutPrototypeServiceUtil {
 	public static com.liferay.portal.kernel.model.LayoutPrototype
 			updateLayoutPrototype(
 				long layoutPrototypeId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				boolean active, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -99,14 +99,9 @@ public class LayoutPrototypeServiceUtil {
 	}
 
 	public static LayoutPrototypeService getService() {
-		if (_service == null) {
-			_service = (LayoutPrototypeService)PortalBeanLocatorUtil.locate(
-				LayoutPrototypeService.class.getName());
-		}
-
-		return _service;
+		return _layoutPrototypeService;
 	}
 
-	private static LayoutPrototypeService _service;
+	private static volatile LayoutPrototypeService _layoutPrototypeService;
 
 }

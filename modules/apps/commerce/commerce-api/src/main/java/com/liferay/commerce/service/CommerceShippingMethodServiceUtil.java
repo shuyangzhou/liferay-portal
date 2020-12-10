@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceShippingMethod. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceShippingMethodServiceImpl</code> and is an
@@ -64,10 +60,11 @@ public class CommerceShippingMethodServiceUtil {
 	public static com.liferay.commerce.model.CommerceShippingMethod
 			addCommerceShippingMethod(
 				long userId, long groupId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				java.io.File imageFile, String engineKey, double priority,
-				boolean active)
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.io.File imageFile, java.lang.String engineKey,
+				double priority, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceShippingMethod(
@@ -107,7 +104,8 @@ public class CommerceShippingMethodServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceShippingMethod
-			fetchCommerceShippingMethod(long groupId, String engineKey)
+			fetchCommerceShippingMethod(
+				long groupId, java.lang.String engineKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommerceShippingMethod(groupId, engineKey);
@@ -179,7 +177,7 @@ public class CommerceShippingMethodServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -193,8 +191,9 @@ public class CommerceShippingMethodServiceUtil {
 	public static com.liferay.commerce.model.CommerceShippingMethod
 			updateCommerceShippingMethod(
 				long commerceShippingMethodId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				java.io.File imageFile, double priority, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -204,29 +203,10 @@ public class CommerceShippingMethodServiceUtil {
 	}
 
 	public static CommerceShippingMethodService getService() {
-		return _serviceTracker.getService();
+		return _commerceShippingMethodService;
 	}
 
-	private static ServiceTracker
-		<CommerceShippingMethodService, CommerceShippingMethodService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceShippingMethodService.class);
-
-		ServiceTracker
-			<CommerceShippingMethodService, CommerceShippingMethodService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceShippingMethodService,
-						 CommerceShippingMethodService>(
-							 bundle.getBundleContext(),
-							 CommerceShippingMethodService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceShippingMethodService
+		_commerceShippingMethodService;
 
 }

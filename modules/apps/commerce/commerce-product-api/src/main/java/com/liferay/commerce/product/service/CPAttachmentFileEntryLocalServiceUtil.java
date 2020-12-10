@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPAttachmentFileEntry. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPAttachmentFileEntryLocalServiceImpl</code> and
@@ -68,8 +64,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -89,8 +85,9 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -141,7 +138,7 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	}
 
 	public static void deleteCPAttachmentFileEntries(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteCPAttachmentFileEntries(className, classPK);
@@ -290,7 +287,7 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPAttachmentFileEntry
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -311,7 +308,7 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPAttachmentFileEntry
 		fetchCPAttachmentFileEntryByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCPAttachmentFileEntryByReferenceCode(
 			companyId, externalReferenceCode);
@@ -325,7 +322,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	 * @return the matching cp attachment file entry, or <code>null</code> if a matching cp attachment file entry could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPAttachmentFileEntry
-		fetchCPAttachmentFileEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchCPAttachmentFileEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCPAttachmentFileEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -339,7 +337,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.repository.model.Folder
 			getAttachmentsFolder(
-				long userId, long groupId, String className, long classPK)
+				long userId, long groupId, java.lang.String className,
+				long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAttachmentsFolder(
@@ -392,9 +391,10 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPAttachmentFileEntry>
 				getCPAttachmentFileEntries(
-					long cpDefinitionId, String serializedDDMFormValues,
-					int type, int start, int end)
-			throws Exception {
+					long cpDefinitionId,
+					java.lang.String serializedDDMFormValues, int type,
+					int start, int end)
+			throws java.lang.Exception {
 
 		return getService().getCPAttachmentFileEntries(
 			cpDefinitionId, serializedDDMFormValues, type, start, end);
@@ -410,7 +410,7 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPAttachmentFileEntry>
 			getCPAttachmentFileEntriesByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCPAttachmentFileEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -429,7 +429,7 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPAttachmentFileEntry>
 			getCPAttachmentFileEntriesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.CPAttachmentFileEntry>
 						orderByComparator) {
@@ -477,7 +477,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	 * @throws PortalException if a matching cp attachment file entry could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPAttachmentFileEntry
-			getCPAttachmentFileEntryByUuidAndGroupId(String uuid, long groupId)
+			getCPAttachmentFileEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPAttachmentFileEntryByUuidAndGroupId(
@@ -504,7 +505,7 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -544,8 +545,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -565,8 +566,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -582,7 +583,8 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 			updateStatus(
 				long userId, long cpAttachmentFileEntryId, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext,
-				java.util.Map<String, java.io.Serializable> workflowContext)
+				java.util.Map<java.lang.String, java.io.Serializable>
+					workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStatus(
@@ -626,8 +628,9 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -648,8 +651,9 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 				int expirationDateMonth, int expirationDateDay,
 				int expirationDateYear, int expirationDateHour,
 				int expirationDateMinute, boolean neverExpire,
-				java.util.Map<java.util.Locale, String> titleMap, String json,
-				double priority, int type, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.lang.String json, double priority, int type,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -663,29 +667,10 @@ public class CPAttachmentFileEntryLocalServiceUtil {
 	}
 
 	public static CPAttachmentFileEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpAttachmentFileEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CPAttachmentFileEntryLocalService, CPAttachmentFileEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPAttachmentFileEntryLocalService.class);
-
-		ServiceTracker
-			<CPAttachmentFileEntryLocalService,
-			 CPAttachmentFileEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<CPAttachmentFileEntryLocalService,
-					 CPAttachmentFileEntryLocalService>(
-						 bundle.getBundleContext(),
-						 CPAttachmentFileEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPAttachmentFileEntryLocalService
+		_cpAttachmentFileEntryLocalService;
 
 }

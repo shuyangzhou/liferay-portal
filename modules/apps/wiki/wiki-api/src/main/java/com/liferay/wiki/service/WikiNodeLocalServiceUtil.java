@@ -14,10 +14,6 @@
 
 package com.liferay.wiki.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for WikiNode. This utility wraps
  * <code>com.liferay.wiki.service.impl.WikiNodeLocalServiceImpl</code> and
@@ -46,7 +42,7 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static com.liferay.wiki.model.WikiNode addNode(
-			long userId, String name, String description,
+			long userId, java.lang.String name, java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -270,13 +266,13 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static com.liferay.wiki.model.WikiNode fetchNode(
-		long groupId, String name) {
+		long groupId, java.lang.String name) {
 
 		return getService().fetchNode(groupId, name);
 	}
 
 	public static com.liferay.wiki.model.WikiNode fetchNodeByUuidAndGroupId(
-		String uuid, long groupId) {
+		java.lang.String uuid, long groupId) {
 
 		return getService().fetchNodeByUuidAndGroupId(uuid, groupId);
 	}
@@ -293,7 +289,7 @@ public class WikiNodeLocalServiceUtil {
 	 * @return the matching wiki node, or <code>null</code> if a matching wiki node could not be found
 	 */
 	public static com.liferay.wiki.model.WikiNode fetchWikiNodeByUuidAndGroupId(
-		String uuid, long groupId) {
+		java.lang.String uuid, long groupId) {
 
 		return getService().fetchWikiNodeByUuidAndGroupId(uuid, groupId);
 	}
@@ -346,7 +342,7 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static com.liferay.wiki.model.WikiNode getNode(
-			long groupId, String nodeName)
+			long groupId, java.lang.String nodeName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getNode(groupId, nodeName);
@@ -393,7 +389,7 @@ public class WikiNodeLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -429,7 +425,7 @@ public class WikiNodeLocalServiceUtil {
 	 * @throws PortalException if a matching wiki node could not be found
 	 */
 	public static com.liferay.wiki.model.WikiNode getWikiNodeByUuidAndGroupId(
-			String uuid, long groupId)
+			java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getWikiNodeByUuidAndGroupId(uuid, groupId);
@@ -460,7 +456,7 @@ public class WikiNodeLocalServiceUtil {
 	 * @return the matching wiki nodes, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.wiki.model.WikiNode>
-		getWikiNodesByUuidAndCompanyId(String uuid, long companyId) {
+		getWikiNodesByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().getWikiNodesByUuidAndCompanyId(uuid, companyId);
 	}
@@ -477,7 +473,7 @@ public class WikiNodeLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.wiki.model.WikiNode>
 		getWikiNodesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.wiki.model.WikiNode> orderByComparator) {
 
@@ -495,9 +491,9 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static void importPages(
-			long userId, long nodeId, String importer,
+			long userId, long nodeId, java.lang.String importer,
 			java.io.InputStream[] inputStreams,
-			java.util.Map<String, String[]> options)
+			java.util.Map<java.lang.String, java.lang.String[]> options)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().importPages(
@@ -538,7 +534,7 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static com.liferay.wiki.model.WikiNode updateNode(
-			long nodeId, String name, String description,
+			long nodeId, java.lang.String name, java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -571,24 +567,9 @@ public class WikiNodeLocalServiceUtil {
 	}
 
 	public static WikiNodeLocalService getService() {
-		return _serviceTracker.getService();
+		return _wikiNodeLocalService;
 	}
 
-	private static ServiceTracker<WikiNodeLocalService, WikiNodeLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WikiNodeLocalService.class);
-
-		ServiceTracker<WikiNodeLocalService, WikiNodeLocalService>
-			serviceTracker =
-				new ServiceTracker<WikiNodeLocalService, WikiNodeLocalService>(
-					bundle.getBundleContext(), WikiNodeLocalService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WikiNodeLocalService _wikiNodeLocalService;
 
 }

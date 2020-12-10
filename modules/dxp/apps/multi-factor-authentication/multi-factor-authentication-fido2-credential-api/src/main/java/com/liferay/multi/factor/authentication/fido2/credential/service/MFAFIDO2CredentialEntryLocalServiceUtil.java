@@ -14,10 +14,6 @@
 
 package com.liferay.multi.factor.authentication.fido2.credential.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MFAFIDO2CredentialEntry. This utility wraps
  * <code>com.liferay.multi.factor.authentication.fido2.credential.service.impl.MFAFIDO2CredentialEntryLocalServiceImpl</code> and
@@ -40,8 +36,8 @@ public class MFAFIDO2CredentialEntryLocalServiceUtil {
 	public static
 		com.liferay.multi.factor.authentication.fido2.credential.model.
 			MFAFIDO2CredentialEntry addMFAFIDO2CredentialEntry(
-					long userId, String credentialKey, int credentialType,
-					String publicKeyCOSE)
+					long userId, java.lang.String credentialKey,
+					int credentialType, java.lang.String publicKeyCOSE)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addMFAFIDO2CredentialEntry(
@@ -248,7 +244,7 @@ public class MFAFIDO2CredentialEntryLocalServiceUtil {
 		com.liferay.multi.factor.authentication.fido2.credential.model.
 			MFAFIDO2CredentialEntry
 				fetchMFAFIDO2CredentialEntryByUserIdAndCredentialKey(
-					long userId, String credentialKey) {
+					long userId, java.lang.String credentialKey) {
 
 		return getService().
 			fetchMFAFIDO2CredentialEntryByUserIdAndCredentialKey(
@@ -291,7 +287,7 @@ public class MFAFIDO2CredentialEntryLocalServiceUtil {
 		<com.liferay.multi.factor.authentication.fido2.credential.model.
 			MFAFIDO2CredentialEntry>
 				getMFAFIDO2CredentialEntriesByCredentialKey(
-					String credentialKey) {
+					java.lang.String credentialKey) {
 
 		return getService().getMFAFIDO2CredentialEntriesByCredentialKey(
 			credentialKey);
@@ -336,7 +332,7 @@ public class MFAFIDO2CredentialEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -353,7 +349,8 @@ public class MFAFIDO2CredentialEntryLocalServiceUtil {
 	public static
 		com.liferay.multi.factor.authentication.fido2.credential.model.
 			MFAFIDO2CredentialEntry updateAttempts(
-					long userId, String credentialKey, long signatureCount)
+					long userId, java.lang.String credentialKey,
+					long signatureCount)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAttempts(
@@ -381,29 +378,10 @@ public class MFAFIDO2CredentialEntryLocalServiceUtil {
 	}
 
 	public static MFAFIDO2CredentialEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _mfaFIDO2CredentialEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<MFAFIDO2CredentialEntryLocalService,
-		 MFAFIDO2CredentialEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			MFAFIDO2CredentialEntryLocalService.class);
-
-		ServiceTracker
-			<MFAFIDO2CredentialEntryLocalService,
-			 MFAFIDO2CredentialEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<MFAFIDO2CredentialEntryLocalService,
-					 MFAFIDO2CredentialEntryLocalService>(
-						 bundle.getBundleContext(),
-						 MFAFIDO2CredentialEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MFAFIDO2CredentialEntryLocalService
+		_mfaFIDO2CredentialEntryLocalService;
 
 }

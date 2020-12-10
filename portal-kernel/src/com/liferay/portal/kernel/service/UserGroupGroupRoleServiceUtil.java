@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for UserGroupGroupRole. This utility wraps
  * <code>com.liferay.portal.service.impl.UserGroupGroupRoleServiceImpl</code> and is an
@@ -68,19 +66,15 @@ public class UserGroupGroupRoleServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static UserGroupGroupRoleService getService() {
-		if (_service == null) {
-			_service = (UserGroupGroupRoleService)PortalBeanLocatorUtil.locate(
-				UserGroupGroupRoleService.class.getName());
-		}
-
-		return _service;
+		return _userGroupGroupRoleService;
 	}
 
-	private static UserGroupGroupRoleService _service;
+	private static volatile UserGroupGroupRoleService
+		_userGroupGroupRoleService;
 
 }

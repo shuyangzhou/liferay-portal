@@ -14,10 +14,6 @@
 
 package com.liferay.document.library.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DLFileVersionPreview. This utility wraps
  * <code>com.liferay.document.library.service.impl.DLFileVersionPreviewLocalServiceImpl</code> and
@@ -331,7 +327,7 @@ public class DLFileVersionPreviewLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -379,29 +375,10 @@ public class DLFileVersionPreviewLocalServiceUtil {
 	}
 
 	public static DLFileVersionPreviewLocalService getService() {
-		return _serviceTracker.getService();
+		return _dlFileVersionPreviewLocalService;
 	}
 
-	private static ServiceTracker
-		<DLFileVersionPreviewLocalService, DLFileVersionPreviewLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DLFileVersionPreviewLocalService.class);
-
-		ServiceTracker
-			<DLFileVersionPreviewLocalService, DLFileVersionPreviewLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DLFileVersionPreviewLocalService,
-						 DLFileVersionPreviewLocalService>(
-							 bundle.getBundleContext(),
-							 DLFileVersionPreviewLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DLFileVersionPreviewLocalService
+		_dlFileVersionPreviewLocalService;
 
 }

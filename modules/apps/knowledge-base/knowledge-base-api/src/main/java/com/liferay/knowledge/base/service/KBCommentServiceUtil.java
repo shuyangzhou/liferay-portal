@@ -14,10 +14,6 @@
 
 package com.liferay.knowledge.base.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for KBComment. This utility wraps
  * <code>com.liferay.knowledge.base.service.impl.KBCommentServiceImpl</code> and is an
@@ -91,8 +87,8 @@ public class KBCommentServiceUtil {
 
 	public static java.util.List<com.liferay.knowledge.base.model.KBComment>
 			getKBComments(
-				long groupId, String className, long classPK, int status,
-				int start, int end)
+				long groupId, java.lang.String className, long classPK,
+				int status, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKBComments(
@@ -101,8 +97,8 @@ public class KBCommentServiceUtil {
 
 	public static java.util.List<com.liferay.knowledge.base.model.KBComment>
 			getKBComments(
-				long groupId, String className, long classPK, int status,
-				int start, int end,
+				long groupId, java.lang.String className, long classPK,
+				int status, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.knowledge.base.model.KBComment>
 						orderByComparator)
@@ -114,8 +110,8 @@ public class KBCommentServiceUtil {
 
 	public static java.util.List<com.liferay.knowledge.base.model.KBComment>
 			getKBComments(
-				long groupId, String className, long classPK, int start,
-				int end,
+				long groupId, java.lang.String className, long classPK,
+				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.knowledge.base.model.KBComment>
 						orderByComparator)
@@ -138,14 +134,14 @@ public class KBCommentServiceUtil {
 	}
 
 	public static int getKBCommentsCount(
-			long groupId, String className, long classPK)
+			long groupId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKBCommentsCount(groupId, className, classPK);
 	}
 
 	public static int getKBCommentsCount(
-			long groupId, String className, long classPK, int status)
+			long groupId, java.lang.String className, long classPK, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKBCommentsCount(
@@ -157,13 +153,13 @@ public class KBCommentServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.knowledge.base.model.KBComment updateKBComment(
-			long kbCommentId, long classNameId, long classPK, String content,
-			int status,
+			long kbCommentId, long classNameId, long classPK,
+			java.lang.String content, int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -172,7 +168,8 @@ public class KBCommentServiceUtil {
 	}
 
 	public static com.liferay.knowledge.base.model.KBComment updateKBComment(
-			long kbCommentId, long classNameId, long classPK, String content,
+			long kbCommentId, long classNameId, long classPK,
+			java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -189,22 +186,9 @@ public class KBCommentServiceUtil {
 	}
 
 	public static KBCommentService getService() {
-		return _serviceTracker.getService();
+		return _kbCommentService;
 	}
 
-	private static ServiceTracker<KBCommentService, KBCommentService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KBCommentService.class);
-
-		ServiceTracker<KBCommentService, KBCommentService> serviceTracker =
-			new ServiceTracker<KBCommentService, KBCommentService>(
-				bundle.getBundleContext(), KBCommentService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KBCommentService _kbCommentService;
 
 }

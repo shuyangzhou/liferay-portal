@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceAccountGroupCommerceAccountRel. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountGroupCommerceAccountRelServiceImpl</code> and is an
@@ -93,35 +89,15 @@ public class CommerceAccountGroupCommerceAccountRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceAccountGroupCommerceAccountRelService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountGroupCommerceAccountRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountGroupCommerceAccountRelService,
-		 CommerceAccountGroupCommerceAccountRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountGroupCommerceAccountRelService.class);
-
-		ServiceTracker
-			<CommerceAccountGroupCommerceAccountRelService,
-			 CommerceAccountGroupCommerceAccountRelService> serviceTracker =
-				new ServiceTracker
-					<CommerceAccountGroupCommerceAccountRelService,
-					 CommerceAccountGroupCommerceAccountRelService>(
-						 bundle.getBundleContext(),
-						 CommerceAccountGroupCommerceAccountRelService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountGroupCommerceAccountRelService
+		_commerceAccountGroupCommerceAccountRelService;
 
 }

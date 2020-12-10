@@ -14,10 +14,6 @@
 
 package com.liferay.invitation.invite.members.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MemberRequest. This utility wraps
  * <code>com.liferay.invitation.invite.members.service.impl.MemberRequestLocalServiceImpl</code> and
@@ -40,7 +36,7 @@ public class MemberRequestLocalServiceUtil {
 	public static com.liferay.invitation.invite.members.model.MemberRequest
 			addMemberRequest(
 				long userId, long groupId, long receiverUserId,
-				String receiverEmailAddress, long invitedRoleId,
+				java.lang.String receiverEmailAddress, long invitedRoleId,
 				long invitedTeamId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -80,7 +76,7 @@ public class MemberRequestLocalServiceUtil {
 	}
 
 	public static void addMemberRequests(
-			long userId, long groupId, String[] emailAddresses,
+			long userId, long groupId, java.lang.String[] emailAddresses,
 			long invitedRoleId, long invitedTeamId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -322,7 +318,7 @@ public class MemberRequestLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -372,7 +368,7 @@ public class MemberRequestLocalServiceUtil {
 
 	public static com.liferay.invitation.invite.members.model.MemberRequest
 			updateMemberRequest(long userId, long memberRequestId, int status)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().updateMemberRequest(
 			userId, memberRequestId, status);
@@ -397,33 +393,17 @@ public class MemberRequestLocalServiceUtil {
 	}
 
 	public static com.liferay.invitation.invite.members.model.MemberRequest
-			updateMemberRequest(String key, long receiverUserId)
+			updateMemberRequest(java.lang.String key, long receiverUserId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateMemberRequest(key, receiverUserId);
 	}
 
 	public static MemberRequestLocalService getService() {
-		return _serviceTracker.getService();
+		return _memberRequestLocalService;
 	}
 
-	private static ServiceTracker
-		<MemberRequestLocalService, MemberRequestLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			MemberRequestLocalService.class);
-
-		ServiceTracker<MemberRequestLocalService, MemberRequestLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<MemberRequestLocalService, MemberRequestLocalService>(
-						bundle.getBundleContext(),
-						MemberRequestLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MemberRequestLocalService
+		_memberRequestLocalService;
 
 }

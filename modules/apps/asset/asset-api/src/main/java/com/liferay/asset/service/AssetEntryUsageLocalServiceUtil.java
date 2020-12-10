@@ -14,10 +14,6 @@
 
 package com.liferay.asset.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetEntryUsage. This utility wraps
  * <code>com.liferay.asset.service.impl.AssetEntryUsageLocalServiceImpl</code> and
@@ -59,7 +55,7 @@ public class AssetEntryUsageLocalServiceUtil {
 
 	public static com.liferay.asset.model.AssetEntryUsage addAssetEntryUsage(
 		long groupId, long assetEntryId, long containerType,
-		String containerKey, long plid,
+		java.lang.String containerKey, long plid,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().addAssetEntryUsage(
@@ -137,7 +133,7 @@ public class AssetEntryUsageLocalServiceUtil {
 	}
 
 	public static void deleteAssetEntryUsages(
-		long containerType, String containerKey, long plid) {
+		long containerType, java.lang.String containerKey, long plid) {
 
 		getService().deleteAssetEntryUsages(containerType, containerKey, plid);
 	}
@@ -255,7 +251,8 @@ public class AssetEntryUsageLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.model.AssetEntryUsage fetchAssetEntryUsage(
-		long assetEntryId, long containerType, String containerKey, long plid) {
+		long assetEntryId, long containerType, java.lang.String containerKey,
+		long plid) {
 
 		return getService().fetchAssetEntryUsage(
 			assetEntryId, containerType, containerKey, plid);
@@ -269,7 +266,8 @@ public class AssetEntryUsageLocalServiceUtil {
 	 * @return the matching asset entry usage, or <code>null</code> if a matching asset entry usage could not be found
 	 */
 	public static com.liferay.asset.model.AssetEntryUsage
-		fetchAssetEntryUsageByUuidAndGroupId(String uuid, long groupId) {
+		fetchAssetEntryUsageByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAssetEntryUsageByUuidAndGroupId(uuid, groupId);
 	}
@@ -303,7 +301,8 @@ public class AssetEntryUsageLocalServiceUtil {
 	 * @throws PortalException if a matching asset entry usage could not be found
 	 */
 	public static com.liferay.asset.model.AssetEntryUsage
-			getAssetEntryUsageByUuidAndGroupId(String uuid, long groupId)
+			getAssetEntryUsageByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetEntryUsageByUuidAndGroupId(uuid, groupId);
@@ -366,7 +365,8 @@ public class AssetEntryUsageLocalServiceUtil {
 	 * @return the matching asset entry usages, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.asset.model.AssetEntryUsage>
-		getAssetEntryUsagesByUuidAndCompanyId(String uuid, long companyId) {
+		getAssetEntryUsagesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getAssetEntryUsagesByUuidAndCompanyId(
 			uuid, companyId);
@@ -384,7 +384,7 @@ public class AssetEntryUsageLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.asset.model.AssetEntryUsage>
 		getAssetEntryUsagesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.model.AssetEntryUsage> orderByComparator) {
 
@@ -429,7 +429,7 @@ public class AssetEntryUsageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -468,27 +468,10 @@ public class AssetEntryUsageLocalServiceUtil {
 	}
 
 	public static AssetEntryUsageLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetEntryUsageLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetEntryUsageLocalService, AssetEntryUsageLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetEntryUsageLocalService.class);
-
-		ServiceTracker<AssetEntryUsageLocalService, AssetEntryUsageLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AssetEntryUsageLocalService, AssetEntryUsageLocalService>(
-						bundle.getBundleContext(),
-						AssetEntryUsageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetEntryUsageLocalService
+		_assetEntryUsageLocalService;
 
 }

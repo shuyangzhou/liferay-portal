@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Phone. This utility wraps
  * <code>com.liferay.portal.service.impl.PhoneServiceImpl</code> and is an
@@ -36,8 +34,9 @@ public class PhoneServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.PhoneServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Phone addPhone(
-			String className, long classPK, String number, String extension,
-			long typeId, boolean primary, ServiceContext serviceContext)
+			java.lang.String className, long classPK, java.lang.String number,
+			java.lang.String extension, long typeId, boolean primary,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addPhone(
@@ -56,7 +55,7 @@ public class PhoneServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -67,15 +66,15 @@ public class PhoneServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Phone>
-			getPhones(String className, long classPK)
+			getPhones(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPhones(className, classPK);
 	}
 
 	public static com.liferay.portal.kernel.model.Phone updatePhone(
-			long phoneId, String number, String extension, long typeId,
-			boolean primary)
+			long phoneId, java.lang.String number, java.lang.String extension,
+			long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updatePhone(
@@ -83,14 +82,9 @@ public class PhoneServiceUtil {
 	}
 
 	public static PhoneService getService() {
-		if (_service == null) {
-			_service = (PhoneService)PortalBeanLocatorUtil.locate(
-				PhoneService.class.getName());
-		}
-
-		return _service;
+		return _phoneService;
 	}
 
-	private static PhoneService _service;
+	private static volatile PhoneService _phoneService;
 
 }

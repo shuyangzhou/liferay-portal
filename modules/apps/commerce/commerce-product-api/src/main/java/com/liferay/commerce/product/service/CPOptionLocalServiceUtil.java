@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPOption. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPOptionLocalServiceImpl</code> and
@@ -55,10 +51,12 @@ public class CPOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption addCPOption(
-			long userId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String ddmFormFieldTypeName, boolean facetable, boolean required,
-			boolean skuContributor, String key, String externalReferenceCode,
+			long userId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String ddmFormFieldTypeName, boolean facetable,
+			boolean required, boolean skuContributor, java.lang.String key,
+			java.lang.String externalReferenceCode,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -236,7 +234,7 @@ public class CPOptionLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPOption
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -249,7 +247,7 @@ public class CPOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption fetchCPOption(
-			long companyId, String key)
+			long companyId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCPOption(companyId, key);
@@ -264,7 +262,7 @@ public class CPOptionLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPOption
 		fetchCPOptionByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCPOptionByReferenceCode(
 			companyId, externalReferenceCode);
@@ -278,7 +276,7 @@ public class CPOptionLocalServiceUtil {
 	 * @return the matching cp option, or <code>null</code> if a matching cp option could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPOption
-		fetchCPOptionByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCPOptionByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().fetchCPOptionByUuidAndCompanyId(uuid, companyId);
 	}
@@ -315,7 +313,7 @@ public class CPOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption getCPOption(
-			long companyId, String key)
+			long companyId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPOption(companyId, key);
@@ -330,7 +328,7 @@ public class CPOptionLocalServiceUtil {
 	 * @throws PortalException if a matching cp option could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPOption
-			getCPOptionByUuidAndCompanyId(String uuid, long companyId)
+			getCPOptionByUuidAndCompanyId(java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPOptionByUuidAndCompanyId(uuid, companyId);
@@ -386,7 +384,7 @@ public class CPOptionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -402,7 +400,7 @@ public class CPOptionLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPOption> searchCPOptions(
-				long companyId, String keywords, int start, int end,
+				long companyId, java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -427,10 +425,11 @@ public class CPOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption updateCPOption(
-			long cpOptionId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String ddmFormFieldTypeName, boolean facetable, boolean required,
-			boolean skuContributor, String key,
+			long cpOptionId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String ddmFormFieldTypeName, boolean facetable,
+			boolean required, boolean skuContributor, java.lang.String key,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -440,10 +439,12 @@ public class CPOptionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption upsertCPOption(
-			long userId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String ddmFormFieldTypeName, boolean facetable, boolean required,
-			boolean skuContributor, String key, String externalReferenceCode,
+			long userId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String ddmFormFieldTypeName, boolean facetable,
+			boolean required, boolean skuContributor, java.lang.String key,
+			java.lang.String externalReferenceCode,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -454,24 +455,9 @@ public class CPOptionLocalServiceUtil {
 	}
 
 	public static CPOptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpOptionLocalService;
 	}
 
-	private static ServiceTracker<CPOptionLocalService, CPOptionLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CPOptionLocalService.class);
-
-		ServiceTracker<CPOptionLocalService, CPOptionLocalService>
-			serviceTracker =
-				new ServiceTracker<CPOptionLocalService, CPOptionLocalService>(
-					bundle.getBundleContext(), CPOptionLocalService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPOptionLocalService _cpOptionLocalService;
 
 }

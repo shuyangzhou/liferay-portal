@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPDefinitionLink. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDefinitionLinkLocalServiceImpl</code> and
@@ -63,7 +59,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionLink
 			addCPDefinitionLink(
 				long cpDefinitionId1, long cpDefinitionId2, double priority,
-				String type,
+				java.lang.String type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -74,7 +70,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionLink
 			addCPDefinitionLinkByCProductId(
 				long cpDefinitionId, long cProductId, double priority,
-				String type,
+				java.lang.String type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -281,7 +277,8 @@ public class CPDefinitionLinkLocalServiceUtil {
 	 * @return the matching cp definition link, or <code>null</code> if a matching cp definition link could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPDefinitionLink
-		fetchCPDefinitionLinkByUuidAndGroupId(String uuid, long groupId) {
+		fetchCPDefinitionLinkByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCPDefinitionLinkByUuidAndGroupId(
 			uuid, groupId);
@@ -316,7 +313,8 @@ public class CPDefinitionLinkLocalServiceUtil {
 	 * @throws PortalException if a matching cp definition link could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPDefinitionLink
-			getCPDefinitionLinkByUuidAndGroupId(String uuid, long groupId)
+			getCPDefinitionLinkByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDefinitionLinkByUuidAndGroupId(uuid, groupId);
@@ -356,7 +354,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
-			getCPDefinitionLinks(long cpDefinitionId, String type) {
+			getCPDefinitionLinks(long cpDefinitionId, java.lang.String type) {
 
 		return getService().getCPDefinitionLinks(cpDefinitionId, type);
 	}
@@ -364,7 +362,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
 			getCPDefinitionLinks(
-				long cpDefinitionId, String type, int start, int end,
+				long cpDefinitionId, java.lang.String type, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.CPDefinitionLink>
 						orderByComparator) {
@@ -383,7 +381,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
 			getCPDefinitionLinksByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCPDefinitionLinksByUuidAndCompanyId(
 			uuid, companyId);
@@ -402,7 +400,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
 			getCPDefinitionLinksByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.CPDefinitionLink>
 						orderByComparator) {
@@ -425,7 +423,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	}
 
 	public static int getCPDefinitionLinksCount(
-		long cpDefinitionId, String type) {
+		long cpDefinitionId, java.lang.String type) {
 
 		return getService().getCPDefinitionLinksCount(cpDefinitionId, type);
 	}
@@ -450,7 +448,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -466,7 +464,8 @@ public class CPDefinitionLinkLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
-			getReverseCPDefinitionLinks(long cProductId, String type) {
+			getReverseCPDefinitionLinks(
+				long cProductId, java.lang.String type) {
 
 		return getService().getReverseCPDefinitionLinks(cProductId, type);
 	}
@@ -500,7 +499,7 @@ public class CPDefinitionLinkLocalServiceUtil {
 	}
 
 	public static void updateCPDefinitionLinkCProductIds(
-			long cpDefinitionId, long[] cProductIds, String type,
+			long cpDefinitionId, long[] cProductIds, java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -513,7 +512,8 @@ public class CPDefinitionLinkLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void updateCPDefinitionLinks(
-			long cpDefinitionId1, long[] cpDefinitionIds2, String type,
+			long cpDefinitionId1, long[] cpDefinitionIds2,
+			java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -522,29 +522,10 @@ public class CPDefinitionLinkLocalServiceUtil {
 	}
 
 	public static CPDefinitionLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionLinkLocalService, CPDefinitionLinkLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionLinkLocalService.class);
-
-		ServiceTracker
-			<CPDefinitionLinkLocalService, CPDefinitionLinkLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CPDefinitionLinkLocalService,
-						 CPDefinitionLinkLocalService>(
-							 bundle.getBundleContext(),
-							 CPDefinitionLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionLinkLocalService
+		_cpDefinitionLinkLocalService;
 
 }

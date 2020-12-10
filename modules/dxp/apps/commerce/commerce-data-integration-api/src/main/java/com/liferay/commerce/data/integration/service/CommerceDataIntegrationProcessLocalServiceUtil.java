@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.data.integration.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceDataIntegrationProcess. This utility wraps
  * <code>com.liferay.commerce.data.integration.service.impl.CommerceDataIntegrationProcessLocalServiceImpl</code> and
@@ -62,7 +58,7 @@ public class CommerceDataIntegrationProcessLocalServiceUtil {
 	public static
 		com.liferay.commerce.data.integration.model.
 			CommerceDataIntegrationProcess addCommerceDataIntegrationProcess(
-					long userId, String name, String type,
+					long userId, java.lang.String name, java.lang.String type,
 					com.liferay.portal.kernel.util.UnicodeProperties
 						typeSettingsUnicodeProperties,
 					boolean system)
@@ -255,7 +251,7 @@ public class CommerceDataIntegrationProcessLocalServiceUtil {
 	public static
 		com.liferay.commerce.data.integration.model.
 			CommerceDataIntegrationProcess fetchCommerceDataIntegrationProcess(
-				long companyId, String name) {
+				long companyId, java.lang.String name) {
 
 		return getService().fetchCommerceDataIntegrationProcess(
 			companyId, name);
@@ -337,7 +333,7 @@ public class CommerceDataIntegrationProcessLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -375,7 +371,8 @@ public class CommerceDataIntegrationProcessLocalServiceUtil {
 	public static
 		com.liferay.commerce.data.integration.model.
 			CommerceDataIntegrationProcess updateCommerceDataIntegrationProcess(
-					long commerceDataIntegrationProcessId, String name,
+					long commerceDataIntegrationProcessId,
+					java.lang.String name,
 					com.liferay.portal.kernel.util.UnicodeProperties
 						typeSettingsUnicodeProperties)
 				throws com.liferay.portal.kernel.exception.PortalException {
@@ -390,7 +387,7 @@ public class CommerceDataIntegrationProcessLocalServiceUtil {
 			CommerceDataIntegrationProcess
 					updateCommerceDataIntegrationProcessTrigger(
 						long commerceDataIntegrationProcessId, boolean active,
-						String cronExpression, int startDateMonth,
+						java.lang.String cronExpression, int startDateMonth,
 						int startDateDay, int startDateYear, int startDateHour,
 						int startDateMinute, int endDateMonth, int endDateDay,
 						int endDateYear, int endDateHour, int endDateMinute,
@@ -405,30 +402,10 @@ public class CommerceDataIntegrationProcessLocalServiceUtil {
 	}
 
 	public static CommerceDataIntegrationProcessLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceDataIntegrationProcessLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceDataIntegrationProcessLocalService,
-		 CommerceDataIntegrationProcessLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDataIntegrationProcessLocalService.class);
-
-		ServiceTracker
-			<CommerceDataIntegrationProcessLocalService,
-			 CommerceDataIntegrationProcessLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceDataIntegrationProcessLocalService,
-					 CommerceDataIntegrationProcessLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceDataIntegrationProcessLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDataIntegrationProcessLocalService
+		_commerceDataIntegrationProcessLocalService;
 
 }

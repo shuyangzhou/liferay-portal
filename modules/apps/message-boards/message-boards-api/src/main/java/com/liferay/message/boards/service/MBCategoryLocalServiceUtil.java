@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MBCategory. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBCategoryLocalServiceImpl</code> and
@@ -38,7 +34,8 @@ public class MBCategoryLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.message.boards.service.impl.MBCategoryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.message.boards.model.MBCategory addCategory(
-			long userId, long parentCategoryId, String name, String description,
+			long userId, long parentCategoryId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -47,13 +44,15 @@ public class MBCategoryLocalServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBCategory addCategory(
-			long userId, long parentCategoryId, String name, String description,
-			String displayStyle, String emailAddress, String inProtocol,
-			String inServerName, int inServerPort, boolean inUseSSL,
-			String inUserName, String inPassword, int inReadInterval,
-			String outEmailAddress, boolean outCustom, String outServerName,
-			int outServerPort, boolean outUseSSL, String outUserName,
-			String outPassword, boolean allowAnonymous,
+			long userId, long parentCategoryId, java.lang.String name,
+			java.lang.String description, java.lang.String displayStyle,
+			java.lang.String emailAddress, java.lang.String inProtocol,
+			java.lang.String inServerName, int inServerPort, boolean inUseSSL,
+			java.lang.String inUserName, java.lang.String inPassword,
+			int inReadInterval, java.lang.String outEmailAddress,
+			boolean outCustom, java.lang.String outServerName,
+			int outServerPort, boolean outUseSSL, java.lang.String outUserName,
+			java.lang.String outPassword, boolean allowAnonymous,
 			boolean mailingListActive,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -317,7 +316,7 @@ public class MBCategoryLocalServiceUtil {
 	 * @return the matching message boards category, or <code>null</code> if a matching message boards category could not be found
 	 */
 	public static com.liferay.message.boards.model.MBCategory
-		fetchMBCategoryByUuidAndGroupId(String uuid, long groupId) {
+		fetchMBCategoryByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchMBCategoryByUuidAndGroupId(uuid, groupId);
 	}
@@ -392,20 +391,20 @@ public class MBCategoryLocalServiceUtil {
 			end);
 	}
 
-	public static java.util.List<Object> getCategoriesAndThreads(
+	public static java.util.List<java.lang.Object> getCategoriesAndThreads(
 		long groupId, long categoryId) {
 
 		return getService().getCategoriesAndThreads(groupId, categoryId);
 	}
 
-	public static java.util.List<Object> getCategoriesAndThreads(
+	public static java.util.List<java.lang.Object> getCategoriesAndThreads(
 		long groupId, long categoryId, int status) {
 
 		return getService().getCategoriesAndThreads(
 			groupId, categoryId, status);
 	}
 
-	public static java.util.List<Object> getCategoriesAndThreads(
+	public static java.util.List<java.lang.Object> getCategoriesAndThreads(
 		long groupId, long categoryId, int status, int start, int end) {
 
 		return getService().getCategoriesAndThreads(
@@ -530,7 +529,8 @@ public class MBCategoryLocalServiceUtil {
 	 * @return the matching message boards categories, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBCategory>
-		getMBCategoriesByUuidAndCompanyId(String uuid, long companyId) {
+		getMBCategoriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getMBCategoriesByUuidAndCompanyId(uuid, companyId);
 	}
@@ -547,7 +547,7 @@ public class MBCategoryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBCategory>
 		getMBCategoriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.message.boards.model.MBCategory>
 					orderByComparator) {
@@ -588,7 +588,7 @@ public class MBCategoryLocalServiceUtil {
 	 * @throws PortalException if a matching message boards category could not be found
 	 */
 	public static com.liferay.message.boards.model.MBCategory
-			getMBCategoryByUuidAndGroupId(String uuid, long groupId)
+			getMBCategoryByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMBCategoryByUuidAndGroupId(uuid, groupId);
@@ -599,7 +599,7 @@ public class MBCategoryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -613,8 +613,9 @@ public class MBCategoryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List<Long> getSubcategoryIds(
-		java.util.List<Long> categoryIds, long groupId, long categoryId) {
+	public static java.util.List<java.lang.Long> getSubcategoryIds(
+		java.util.List<java.lang.Long> categoryIds, long groupId,
+		long categoryId) {
 
 		return getService().getSubcategoryIds(categoryIds, groupId, categoryId);
 	}
@@ -682,13 +683,15 @@ public class MBCategoryLocalServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBCategory updateCategory(
-			long categoryId, long parentCategoryId, String name,
-			String description, String displayStyle, String emailAddress,
-			String inProtocol, String inServerName, int inServerPort,
-			boolean inUseSSL, String inUserName, String inPassword,
-			int inReadInterval, String outEmailAddress, boolean outCustom,
-			String outServerName, int outServerPort, boolean outUseSSL,
-			String outUserName, String outPassword, boolean allowAnonymous,
+			long categoryId, long parentCategoryId, java.lang.String name,
+			java.lang.String description, java.lang.String displayStyle,
+			java.lang.String emailAddress, java.lang.String inProtocol,
+			java.lang.String inServerName, int inServerPort, boolean inUseSSL,
+			java.lang.String inUserName, java.lang.String inPassword,
+			int inReadInterval, java.lang.String outEmailAddress,
+			boolean outCustom, java.lang.String outServerName,
+			int outServerPort, boolean outUseSSL, java.lang.String outUserName,
+			java.lang.String outPassword, boolean allowAnonymous,
 			boolean mailingListActive, boolean mergeWithParentCategory,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -726,25 +729,9 @@ public class MBCategoryLocalServiceUtil {
 	}
 
 	public static MBCategoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _mbCategoryLocalService;
 	}
 
-	private static ServiceTracker
-		<MBCategoryLocalService, MBCategoryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBCategoryLocalService.class);
-
-		ServiceTracker<MBCategoryLocalService, MBCategoryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<MBCategoryLocalService, MBCategoryLocalService>(
-						bundle.getBundleContext(), MBCategoryLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBCategoryLocalService _mbCategoryLocalService;
 
 }

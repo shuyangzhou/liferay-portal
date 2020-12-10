@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for UserNotificationDelivery. This utility wraps
  * <code>com.liferay.portal.service.impl.UserNotificationDeliveryLocalServiceImpl</code> and
@@ -37,7 +35,7 @@ public class UserNotificationDeliveryLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.UserNotificationDelivery
 			addUserNotificationDelivery(
-				long userId, String portletId, long classNameId,
+				long userId, java.lang.String portletId, long classNameId,
 				int notificationType, int deliveryType, boolean deliver)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -123,8 +121,8 @@ public class UserNotificationDeliveryLocalServiceUtil {
 	}
 
 	public static void deleteUserNotificationDelivery(
-		long userId, String portletId, long classNameId, int notificationType,
-		int deliveryType) {
+		long userId, java.lang.String portletId, long classNameId,
+		int notificationType, int deliveryType) {
 
 		getService().deleteUserNotificationDelivery(
 			userId, portletId, classNameId, notificationType, deliveryType);
@@ -249,7 +247,7 @@ public class UserNotificationDeliveryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.model.UserNotificationDelivery
 		fetchUserNotificationDelivery(
-			long userId, String portletId, long classNameId,
+			long userId, java.lang.String portletId, long classNameId,
 			int notificationType, int deliveryType) {
 
 		return getService().fetchUserNotificationDelivery(
@@ -274,7 +272,7 @@ public class UserNotificationDeliveryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -332,7 +330,7 @@ public class UserNotificationDeliveryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.model.UserNotificationDelivery
 			getUserNotificationDelivery(
-				long userId, String portletId, long classNameId,
+				long userId, java.lang.String portletId, long classNameId,
 				int notificationType, int deliveryType, boolean deliver)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -369,16 +367,10 @@ public class UserNotificationDeliveryLocalServiceUtil {
 	}
 
 	public static UserNotificationDeliveryLocalService getService() {
-		if (_service == null) {
-			_service =
-				(UserNotificationDeliveryLocalService)
-					PortalBeanLocatorUtil.locate(
-						UserNotificationDeliveryLocalService.class.getName());
-		}
-
-		return _service;
+		return _userNotificationDeliveryLocalService;
 	}
 
-	private static UserNotificationDeliveryLocalService _service;
+	private static volatile UserNotificationDeliveryLocalService
+		_userNotificationDeliveryLocalService;
 
 }

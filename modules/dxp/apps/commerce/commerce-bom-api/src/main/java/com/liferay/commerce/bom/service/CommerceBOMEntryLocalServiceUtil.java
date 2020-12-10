@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.bom.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceBOMEntry. This utility wraps
  * <code>com.liferay.commerce.bom.service.impl.CommerceBOMEntryLocalServiceImpl</code> and
@@ -57,8 +53,8 @@ public class CommerceBOMEntryLocalServiceUtil {
 
 	public static com.liferay.commerce.bom.model.CommerceBOMEntry
 			addCommerceBOMEntry(
-				long userId, int number, String cpInstanceUuid, long cProductId,
-				long commerceBOMDefinitionId, double positionX,
+				long userId, int number, java.lang.String cpInstanceUuid,
+				long cProductId, long commerceBOMDefinitionId, double positionX,
 				double positionY, double radius)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -303,7 +299,7 @@ public class CommerceBOMEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -336,9 +332,9 @@ public class CommerceBOMEntryLocalServiceUtil {
 
 	public static com.liferay.commerce.bom.model.CommerceBOMEntry
 			updateCommerceBOMEntry(
-				long commerceBOMEntryId, int number, String cpInstanceUuid,
-				long cProductId, double positionX, double positionY,
-				double radius)
+				long commerceBOMEntryId, int number,
+				java.lang.String cpInstanceUuid, long cProductId,
+				double positionX, double positionY, double radius)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceBOMEntry(
@@ -347,29 +343,10 @@ public class CommerceBOMEntryLocalServiceUtil {
 	}
 
 	public static CommerceBOMEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceBOMEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceBOMEntryLocalService, CommerceBOMEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceBOMEntryLocalService.class);
-
-		ServiceTracker
-			<CommerceBOMEntryLocalService, CommerceBOMEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceBOMEntryLocalService,
-						 CommerceBOMEntryLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceBOMEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceBOMEntryLocalService
+		_commerceBOMEntryLocalService;
 
 }

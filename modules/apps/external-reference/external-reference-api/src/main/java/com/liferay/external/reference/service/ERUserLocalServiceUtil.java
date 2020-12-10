@@ -14,10 +14,6 @@
 
 package com.liferay.external.reference.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ERUser. This utility wraps
  * <code>com.liferay.external.reference.service.impl.ERUserLocalServiceImpl</code> and
@@ -38,14 +34,15 @@ public class ERUserLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.external.reference.service.impl.ERUserLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.User addOrUpdateUser(
-			String externalReferenceCode, long creatorUserId, long companyId,
-			boolean autoPassword, String password1, String password2,
-			boolean autoScreenName, String screenName, String emailAddress,
-			java.util.Locale locale, String firstName, String middleName,
-			String lastName, long prefixId, long suffixId, boolean male,
-			int birthdayMonth, int birthdayDay, int birthdayYear,
-			String jobTitle, long[] groupIds, long[] organizationIds,
-			long[] roleIds,
+			java.lang.String externalReferenceCode, long creatorUserId,
+			long companyId, boolean autoPassword, java.lang.String password1,
+			java.lang.String password2, boolean autoScreenName,
+			java.lang.String screenName, java.lang.String emailAddress,
+			java.util.Locale locale, java.lang.String firstName,
+			java.lang.String middleName, java.lang.String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, java.lang.String jobTitle,
+			long[] groupIds, long[] organizationIds, long[] roleIds,
 			java.util.List<com.liferay.portal.kernel.model.UserGroupRole>
 				userGroupRoles,
 			long[] userGroupIds, boolean sendEmail,
@@ -66,27 +63,14 @@ public class ERUserLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ERUserLocalService getService() {
-		return _serviceTracker.getService();
+		return _erUserLocalService;
 	}
 
-	private static ServiceTracker<ERUserLocalService, ERUserLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ERUserLocalService.class);
-
-		ServiceTracker<ERUserLocalService, ERUserLocalService> serviceTracker =
-			new ServiceTracker<ERUserLocalService, ERUserLocalService>(
-				bundle.getBundleContext(), ERUserLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ERUserLocalService _erUserLocalService;
 
 }

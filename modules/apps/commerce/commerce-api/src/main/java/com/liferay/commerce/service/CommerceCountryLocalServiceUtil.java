@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceCountry. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceCountryLocalServiceImpl</code> and
@@ -55,11 +51,11 @@ public class CommerceCountryLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceCountry addCommerceCountry(
-			java.util.Map<java.util.Locale, String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
 			boolean billingAllowed, boolean shippingAllowed,
-			String twoLettersISOCode, String threeLettersISOCode,
-			int numericISOCode, boolean subjectToVAT, double priority,
-			boolean active,
+			java.lang.String twoLettersISOCode,
+			java.lang.String threeLettersISOCode, int numericISOCode,
+			boolean subjectToVAT, double priority, boolean active,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -250,7 +246,8 @@ public class CommerceCountryLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceCountry
-		fetchCommerceCountry(long companyId, String twoLettersISOCode) {
+		fetchCommerceCountry(
+			long companyId, java.lang.String twoLettersISOCode) {
 
 		return getService().fetchCommerceCountry(companyId, twoLettersISOCode);
 	}
@@ -263,7 +260,8 @@ public class CommerceCountryLocalServiceUtil {
 	 * @return the matching commerce country, or <code>null</code> if a matching commerce country could not be found
 	 */
 	public static com.liferay.commerce.model.CommerceCountry
-		fetchCommerceCountryByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCommerceCountryByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommerceCountryByUuidAndCompanyId(
 			uuid, companyId);
@@ -370,7 +368,7 @@ public class CommerceCountryLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceCountry getCommerceCountry(
-			long companyId, String twoLettersISOCode)
+			long companyId, java.lang.String twoLettersISOCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceCountry(companyId, twoLettersISOCode);
@@ -385,7 +383,8 @@ public class CommerceCountryLocalServiceUtil {
 	 * @throws PortalException if a matching commerce country could not be found
 	 */
 	public static com.liferay.commerce.model.CommerceCountry
-			getCommerceCountryByUuidAndCompanyId(String uuid, long companyId)
+			getCommerceCountryByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceCountryByUuidAndCompanyId(
@@ -412,7 +411,7 @@ public class CommerceCountryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -450,15 +449,16 @@ public class CommerceCountryLocalServiceUtil {
 
 	public static void importDefaultCountries(
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws Exception {
+		throws java.lang.Exception {
 
 		getService().importDefaultCountries(serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceCountry> searchCommerceCountries(
-				long companyId, Boolean active, String keywords, int start,
-				int end, com.liferay.portal.kernel.search.Sort sort)
+				long companyId, java.lang.Boolean active,
+				java.lang.String keywords, int start, int end,
+				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceCountries(
@@ -504,11 +504,11 @@ public class CommerceCountryLocalServiceUtil {
 	public static com.liferay.commerce.model.CommerceCountry
 			updateCommerceCountry(
 				long commerceCountryId,
-				java.util.Map<java.util.Locale, String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
 				boolean billingAllowed, boolean shippingAllowed,
-				String twoLettersISOCode, String threeLettersISOCode,
-				int numericISOCode, boolean subjectToVAT, double priority,
-				boolean active,
+				java.lang.String twoLettersISOCode,
+				java.lang.String threeLettersISOCode, int numericISOCode,
+				boolean subjectToVAT, double priority, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -528,27 +528,10 @@ public class CommerceCountryLocalServiceUtil {
 	}
 
 	public static CommerceCountryLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceCountryLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceCountryLocalService, CommerceCountryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceCountryLocalService.class);
-
-		ServiceTracker<CommerceCountryLocalService, CommerceCountryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceCountryLocalService, CommerceCountryLocalService>(
-						bundle.getBundleContext(),
-						CommerceCountryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceCountryLocalService
+		_commerceCountryLocalService;
 
 }

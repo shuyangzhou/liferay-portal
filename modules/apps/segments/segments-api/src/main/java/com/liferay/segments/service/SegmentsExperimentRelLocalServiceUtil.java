@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SegmentsExperimentRel. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsExperimentRelLocalServiceImpl</code> and
@@ -279,7 +275,7 @@ public class SegmentsExperimentRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -371,7 +367,7 @@ public class SegmentsExperimentRelLocalServiceUtil {
 
 	public static com.liferay.segments.model.SegmentsExperimentRel
 			updateSegmentsExperimentRel(
-				long segmentsExperimentRelId, String name,
+				long segmentsExperimentRelId, java.lang.String name,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -398,29 +394,10 @@ public class SegmentsExperimentRelLocalServiceUtil {
 	}
 
 	public static SegmentsExperimentRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _segmentsExperimentRelLocalService;
 	}
 
-	private static ServiceTracker
-		<SegmentsExperimentRelLocalService, SegmentsExperimentRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SegmentsExperimentRelLocalService.class);
-
-		ServiceTracker
-			<SegmentsExperimentRelLocalService,
-			 SegmentsExperimentRelLocalService> serviceTracker =
-				new ServiceTracker
-					<SegmentsExperimentRelLocalService,
-					 SegmentsExperimentRelLocalService>(
-						 bundle.getBundleContext(),
-						 SegmentsExperimentRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsExperimentRelLocalService
+		_segmentsExperimentRelLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.screens.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ScreensDDMStructureVersion. This utility wraps
  * <code>com.liferay.screens.service.impl.ScreensDDMStructureVersionServiceImpl</code> and is an
@@ -49,34 +45,15 @@ public class ScreensDDMStructureVersionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ScreensDDMStructureVersionService getService() {
-		return _serviceTracker.getService();
+		return _screensDDMStructureVersionService;
 	}
 
-	private static ServiceTracker
-		<ScreensDDMStructureVersionService, ScreensDDMStructureVersionService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ScreensDDMStructureVersionService.class);
-
-		ServiceTracker
-			<ScreensDDMStructureVersionService,
-			 ScreensDDMStructureVersionService> serviceTracker =
-				new ServiceTracker
-					<ScreensDDMStructureVersionService,
-					 ScreensDDMStructureVersionService>(
-						 bundle.getBundleContext(),
-						 ScreensDDMStructureVersionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ScreensDDMStructureVersionService
+		_screensDDMStructureVersionService;
 
 }

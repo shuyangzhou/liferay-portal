@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.type.grouped.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPDefinitionGroupedEntry. This utility wraps
  * <code>com.liferay.commerce.product.type.grouped.service.impl.CPDefinitionGroupedEntryLocalServiceImpl</code> and
@@ -329,7 +325,7 @@ public class CPDefinitionGroupedEntryLocalServiceUtil {
 	public static
 		com.liferay.commerce.product.type.grouped.model.CPDefinitionGroupedEntry
 			fetchCPDefinitionGroupedEntryByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchCPDefinitionGroupedEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -401,7 +397,7 @@ public class CPDefinitionGroupedEntryLocalServiceUtil {
 		<com.liferay.commerce.product.type.grouped.model.
 			CPDefinitionGroupedEntry>
 				getCPDefinitionGroupedEntriesByUuidAndCompanyId(
-					String uuid, long companyId) {
+					java.lang.String uuid, long companyId) {
 
 		return getService().getCPDefinitionGroupedEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -421,7 +417,7 @@ public class CPDefinitionGroupedEntryLocalServiceUtil {
 		<com.liferay.commerce.product.type.grouped.model.
 			CPDefinitionGroupedEntry>
 				getCPDefinitionGroupedEntriesByUuidAndCompanyId(
-					String uuid, long companyId, int start, int end,
+					java.lang.String uuid, long companyId, int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.commerce.product.type.grouped.model.
 							CPDefinitionGroupedEntry> orderByComparator) {
@@ -470,7 +466,7 @@ public class CPDefinitionGroupedEntryLocalServiceUtil {
 	public static
 		com.liferay.commerce.product.type.grouped.model.CPDefinitionGroupedEntry
 				getCPDefinitionGroupedEntryByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDefinitionGroupedEntryByUuidAndGroupId(
@@ -497,7 +493,7 @@ public class CPDefinitionGroupedEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -543,29 +539,10 @@ public class CPDefinitionGroupedEntryLocalServiceUtil {
 	}
 
 	public static CPDefinitionGroupedEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionGroupedEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionGroupedEntryLocalService,
-		 CPDefinitionGroupedEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionGroupedEntryLocalService.class);
-
-		ServiceTracker
-			<CPDefinitionGroupedEntryLocalService,
-			 CPDefinitionGroupedEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<CPDefinitionGroupedEntryLocalService,
-					 CPDefinitionGroupedEntryLocalService>(
-						 bundle.getBundleContext(),
-						 CPDefinitionGroupedEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionGroupedEntryLocalService
+		_cpDefinitionGroupedEntryLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.asset.display.page.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetDisplayPageEntry. This utility wraps
  * <code>com.liferay.asset.display.page.service.impl.AssetDisplayPageEntryLocalServiceImpl</code> and
@@ -271,7 +267,8 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	 * @return the matching asset display page entry, or <code>null</code> if a matching asset display page entry could not be found
 	 */
 	public static com.liferay.asset.display.page.model.AssetDisplayPageEntry
-		fetchAssetDisplayPageEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchAssetDisplayPageEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAssetDisplayPageEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -349,7 +346,7 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.asset.display.page.model.AssetDisplayPageEntry>
 			getAssetDisplayPageEntriesByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getAssetDisplayPageEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -368,7 +365,7 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.asset.display.page.model.AssetDisplayPageEntry>
 			getAssetDisplayPageEntriesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.asset.display.page.model.AssetDisplayPageEntry>
 						orderByComparator) {
@@ -427,7 +424,8 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	 * @throws PortalException if a matching asset display page entry could not be found
 	 */
 	public static com.liferay.asset.display.page.model.AssetDisplayPageEntry
-			getAssetDisplayPageEntryByUuidAndGroupId(String uuid, long groupId)
+			getAssetDisplayPageEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetDisplayPageEntryByUuidAndGroupId(
@@ -454,7 +452,7 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -497,29 +495,10 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	}
 
 	public static AssetDisplayPageEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetDisplayPageEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetDisplayPageEntryLocalService, AssetDisplayPageEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetDisplayPageEntryLocalService.class);
-
-		ServiceTracker
-			<AssetDisplayPageEntryLocalService,
-			 AssetDisplayPageEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<AssetDisplayPageEntryLocalService,
-					 AssetDisplayPageEntryLocalService>(
-						 bundle.getBundleContext(),
-						 AssetDisplayPageEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetDisplayPageEntryLocalService
+		_assetDisplayPageEntryLocalService;
 
 }

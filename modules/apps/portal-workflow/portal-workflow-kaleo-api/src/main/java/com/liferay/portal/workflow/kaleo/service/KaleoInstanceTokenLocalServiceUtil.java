@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoInstanceToken. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoInstanceTokenLocalServiceImpl</code> and
@@ -61,7 +57,8 @@ public class KaleoInstanceTokenLocalServiceUtil {
 				long currentKaleoNodeId, long kaleoDefinitionId,
 				long kaleoDefinitionVersionId, long kaleoInstanceId,
 				long parentKaleoInstanceTokenId,
-				java.util.Map<String, java.io.Serializable> workflowContext,
+				java.util.Map<java.lang.String, java.io.Serializable>
+					workflowContext,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -74,7 +71,8 @@ public class KaleoInstanceTokenLocalServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken
 			addKaleoInstanceToken(
 				long parentKaleoInstanceTokenId,
-				java.util.Map<String, java.io.Serializable> workflowContext,
+				java.util.Map<java.lang.String, java.io.Serializable>
+					workflowContext,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -369,7 +367,7 @@ public class KaleoInstanceTokenLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -386,7 +384,8 @@ public class KaleoInstanceTokenLocalServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken
 			getRootKaleoInstanceToken(
 				long kaleoInstanceId,
-				java.util.Map<String, java.io.Serializable> workflowContext,
+				java.util.Map<java.lang.String, java.io.Serializable>
+					workflowContext,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -395,10 +394,11 @@ public class KaleoInstanceTokenLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		Long userId, String assetClassName, String assetTitle,
-		String assetDescription, String currentKaleoNodeName,
-		String kaleoDefinitionName, Boolean completed, int start, int end,
-		com.liferay.portal.kernel.search.Sort[] sorts,
+		java.lang.Long userId, java.lang.String assetClassName,
+		java.lang.String assetTitle, java.lang.String assetDescription,
+		java.lang.String currentKaleoNodeName,
+		java.lang.String kaleoDefinitionName, java.lang.Boolean completed,
+		int start, int end, com.liferay.portal.kernel.search.Sort[] sorts,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().search(
@@ -408,9 +408,10 @@ public class KaleoInstanceTokenLocalServiceUtil {
 	}
 
 	public static int searchCount(
-		Long userId, String assetClassName, String assetTitle,
-		String assetDescription, String currentKaleoNodeName,
-		String kaleoDefinitionName, Boolean completed,
+		java.lang.Long userId, java.lang.String assetClassName,
+		java.lang.String assetTitle, java.lang.String assetDescription,
+		java.lang.String currentKaleoNodeName,
+		java.lang.String kaleoDefinitionName, java.lang.Boolean completed,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().searchCount(
@@ -447,29 +448,10 @@ public class KaleoInstanceTokenLocalServiceUtil {
 	}
 
 	public static KaleoInstanceTokenLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoInstanceTokenLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoInstanceTokenLocalService, KaleoInstanceTokenLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoInstanceTokenLocalService.class);
-
-		ServiceTracker
-			<KaleoInstanceTokenLocalService, KaleoInstanceTokenLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<KaleoInstanceTokenLocalService,
-						 KaleoInstanceTokenLocalService>(
-							 bundle.getBundleContext(),
-							 KaleoInstanceTokenLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoInstanceTokenLocalService
+		_kaleoInstanceTokenLocalService;
 
 }

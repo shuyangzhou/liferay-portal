@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoCondition. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoConditionLocalServiceImpl</code> and
@@ -313,7 +309,7 @@ public class KaleoConditionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -346,27 +342,10 @@ public class KaleoConditionLocalServiceUtil {
 	}
 
 	public static KaleoConditionLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoConditionLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoConditionLocalService, KaleoConditionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoConditionLocalService.class);
-
-		ServiceTracker<KaleoConditionLocalService, KaleoConditionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoConditionLocalService, KaleoConditionLocalService>(
-						bundle.getBundleContext(),
-						KaleoConditionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoConditionLocalService
+		_kaleoConditionLocalService;
 
 }

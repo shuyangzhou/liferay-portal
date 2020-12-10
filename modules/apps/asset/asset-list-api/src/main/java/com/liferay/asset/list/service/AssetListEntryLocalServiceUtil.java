@@ -14,10 +14,6 @@
 
 package com.liferay.asset.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetListEntry. This utility wraps
  * <code>com.liferay.asset.list.service.impl.AssetListEntryLocalServiceImpl</code> and
@@ -72,7 +68,7 @@ public class AssetListEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry addAssetListEntry(
-			long userId, long groupId, String title, int type,
+			long userId, long groupId, java.lang.String title, int type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -81,8 +77,8 @@ public class AssetListEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry addAssetListEntry(
-			long userId, long groupId, String title, int type,
-			String typeSettings,
+			long userId, long groupId, java.lang.String title, int type,
+			java.lang.String typeSettings,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -92,7 +88,8 @@ public class AssetListEntryLocalServiceUtil {
 
 	public static com.liferay.asset.list.model.AssetListEntry
 			addDynamicAssetListEntry(
-				long userId, long groupId, String title, String typeSettings,
+				long userId, long groupId, java.lang.String title,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -102,7 +99,8 @@ public class AssetListEntryLocalServiceUtil {
 
 	public static com.liferay.asset.list.model.AssetListEntry
 			addManualAssetListEntry(
-				long userId, long groupId, String title, long[] assetEntryIds,
+				long userId, long groupId, java.lang.String title,
+				long[] assetEntryIds,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -301,7 +299,8 @@ public class AssetListEntryLocalServiceUtil {
 	 * @return the matching asset list entry, or <code>null</code> if a matching asset list entry could not be found
 	 */
 	public static com.liferay.asset.list.model.AssetListEntry
-		fetchAssetListEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchAssetListEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAssetListEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -343,7 +342,8 @@ public class AssetListEntryLocalServiceUtil {
 	 * @return the matching asset list entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
-		getAssetListEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getAssetListEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getAssetListEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -361,7 +361,7 @@ public class AssetListEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -394,7 +394,7 @@ public class AssetListEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry getAssetListEntry(
-			long groupId, String assetListEntryKey)
+			long groupId, java.lang.String assetListEntryKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetListEntry(groupId, assetListEntryKey);
@@ -409,7 +409,8 @@ public class AssetListEntryLocalServiceUtil {
 	 * @throws PortalException if a matching asset list entry could not be found
 	 */
 	public static com.liferay.asset.list.model.AssetListEntry
-			getAssetListEntryByUuidAndGroupId(String uuid, long groupId)
+			getAssetListEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetListEntryByUuidAndGroupId(uuid, groupId);
@@ -435,7 +436,7 @@ public class AssetListEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -478,7 +479,7 @@ public class AssetListEntryLocalServiceUtil {
 	public static com.liferay.asset.list.model.AssetListEntry
 			updateAssetListEntry(
 				long assetListEntryId, long segmentsEntryId,
-				String typeSettings,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -487,14 +488,15 @@ public class AssetListEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry
-			updateAssetListEntry(long assetListEntryId, String title)
+			updateAssetListEntry(long assetListEntryId, java.lang.String title)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAssetListEntry(assetListEntryId, title);
 	}
 
 	public static void updateAssetListEntryTypeSettings(
-			long assetListEntryId, long segmentsEntryId, String typeSettings)
+			long assetListEntryId, long segmentsEntryId,
+			java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateAssetListEntryTypeSettings(
@@ -502,27 +504,10 @@ public class AssetListEntryLocalServiceUtil {
 	}
 
 	public static AssetListEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetListEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetListEntryLocalService, AssetListEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetListEntryLocalService.class);
-
-		ServiceTracker<AssetListEntryLocalService, AssetListEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AssetListEntryLocalService, AssetListEntryLocalService>(
-						bundle.getBundleContext(),
-						AssetListEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetListEntryLocalService
+		_assetListEntryLocalService;
 
 }

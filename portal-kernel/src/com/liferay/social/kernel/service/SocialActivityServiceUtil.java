@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for SocialActivity. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialActivityServiceImpl</code> and is an
@@ -115,7 +113,7 @@ public class SocialActivityServiceUtil {
 	 */
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivity>
 			getActivities(
-				long mirrorActivityId, String className, long classPK,
+				long mirrorActivityId, java.lang.String className, long classPK,
 				int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -142,7 +140,7 @@ public class SocialActivityServiceUtil {
 	 * @return the range of matching activities
 	 */
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivity>
-			getActivities(String className, int start, int end)
+			getActivities(java.lang.String className, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getActivities(className, start, end);
@@ -187,7 +185,7 @@ public class SocialActivityServiceUtil {
 	 * @return the number of matching activities
 	 */
 	public static int getActivitiesCount(
-		long mirrorActivityId, String className, long classPK) {
+		long mirrorActivityId, java.lang.String className, long classPK) {
 
 		return getService().getActivitiesCount(
 			mirrorActivityId, className, classPK);
@@ -199,7 +197,7 @@ public class SocialActivityServiceUtil {
 	 * @param className the target asset's class name
 	 * @return the number of matching activities
 	 */
-	public static int getActivitiesCount(String className) {
+	public static int getActivitiesCount(java.lang.String className) {
 		return getService().getActivitiesCount(className);
 	}
 
@@ -402,7 +400,7 @@ public class SocialActivityServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -630,14 +628,9 @@ public class SocialActivityServiceUtil {
 	}
 
 	public static SocialActivityService getService() {
-		if (_service == null) {
-			_service = (SocialActivityService)PortalBeanLocatorUtil.locate(
-				SocialActivityService.class.getName());
-		}
-
-		return _service;
+		return _socialActivityService;
 	}
 
-	private static SocialActivityService _service;
+	private static volatile SocialActivityService _socialActivityService;
 
 }

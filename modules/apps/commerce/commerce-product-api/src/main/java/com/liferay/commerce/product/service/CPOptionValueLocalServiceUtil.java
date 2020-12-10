@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPOptionValue. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPOptionValueLocalServiceImpl</code> and
@@ -58,8 +54,8 @@ public class CPOptionValueLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionValue
 			addCPOptionValue(
 				long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -70,8 +66,9 @@ public class CPOptionValueLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionValue
 			addCPOptionValue(
 				long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -249,7 +246,7 @@ public class CPOptionValueLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPOptionValue
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -270,7 +267,7 @@ public class CPOptionValueLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPOptionValue
 		fetchCPOptionValueByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCPOptionValueByReferenceCode(
 			companyId, externalReferenceCode);
@@ -284,7 +281,8 @@ public class CPOptionValueLocalServiceUtil {
 	 * @return the matching cp option value, or <code>null</code> if a matching cp option value could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPOptionValue
-		fetchCPOptionValueByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCPOptionValueByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCPOptionValueByUuidAndCompanyId(
 			uuid, companyId);
@@ -311,7 +309,7 @@ public class CPOptionValueLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOptionValue
-			getCPOptionValue(long cpOptionId, String key)
+			getCPOptionValue(long cpOptionId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPOptionValue(cpOptionId, key);
@@ -326,7 +324,8 @@ public class CPOptionValueLocalServiceUtil {
 	 * @throws PortalException if a matching cp option value could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPOptionValue
-			getCPOptionValueByUuidAndCompanyId(String uuid, long companyId)
+			getCPOptionValueByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPOptionValueByUuidAndCompanyId(uuid, companyId);
@@ -401,7 +400,7 @@ public class CPOptionValueLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -423,8 +422,9 @@ public class CPOptionValueLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPOptionValue> searchCPOptionValues(
-				long companyId, long groupId, long cpOptionId, String keywords,
-				int start, int end, com.liferay.portal.kernel.search.Sort sort)
+				long companyId, long groupId, long cpOptionId,
+				java.lang.String keywords, int start, int end,
+				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCPOptionValues(
@@ -451,8 +451,8 @@ public class CPOptionValueLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionValue
 			updateCPOptionValue(
 				long cpOptionValueId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -463,8 +463,9 @@ public class CPOptionValueLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionValue
 			upsertCPOptionValue(
 				long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -474,26 +475,10 @@ public class CPOptionValueLocalServiceUtil {
 	}
 
 	public static CPOptionValueLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpOptionValueLocalService;
 	}
 
-	private static ServiceTracker
-		<CPOptionValueLocalService, CPOptionValueLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPOptionValueLocalService.class);
-
-		ServiceTracker<CPOptionValueLocalService, CPOptionValueLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CPOptionValueLocalService, CPOptionValueLocalService>(
-						bundle.getBundleContext(),
-						CPOptionValueLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPOptionValueLocalService
+		_cpOptionValueLocalService;
 
 }

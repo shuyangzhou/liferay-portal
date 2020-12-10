@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for MBThread. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBThreadServiceImpl</code> and is an
@@ -134,7 +130,7 @@ public class MBThreadServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -221,7 +217,7 @@ public class MBThreadServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBThread splitThread(
-			long messageId, String subject,
+			long messageId, java.lang.String subject,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -235,22 +231,9 @@ public class MBThreadServiceUtil {
 	}
 
 	public static MBThreadService getService() {
-		return _serviceTracker.getService();
+		return _mbThreadService;
 	}
 
-	private static ServiceTracker<MBThreadService, MBThreadService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBThreadService.class);
-
-		ServiceTracker<MBThreadService, MBThreadService> serviceTracker =
-			new ServiceTracker<MBThreadService, MBThreadService>(
-				bundle.getBundleContext(), MBThreadService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBThreadService _mbThreadService;
 
 }

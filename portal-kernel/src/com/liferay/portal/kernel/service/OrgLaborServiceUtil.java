@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for OrgLabor. This utility wraps
  * <code>com.liferay.portal.service.impl.OrgLaborServiceImpl</code> and is an
@@ -73,7 +71,7 @@ public class OrgLaborServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -91,14 +89,9 @@ public class OrgLaborServiceUtil {
 	}
 
 	public static OrgLaborService getService() {
-		if (_service == null) {
-			_service = (OrgLaborService)PortalBeanLocatorUtil.locate(
-				OrgLaborService.class.getName());
-		}
-
-		return _service;
+		return _orgLaborService;
 	}
 
-	private static OrgLaborService _service;
+	private static volatile OrgLaborService _orgLaborService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceInventoryAudit. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryAuditLocalServiceImpl</code> and
@@ -58,8 +54,8 @@ public class CommerceInventoryAuditLocalServiceUtil {
 
 	public static com.liferay.commerce.inventory.model.CommerceInventoryAudit
 			addCommerceInventoryAudit(
-				long userId, String sku, String logType, String logTypeSettings,
-				int quantity)
+				long userId, java.lang.String sku, java.lang.String logType,
+				java.lang.String logTypeSettings, int quantity)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceInventoryAudit(
@@ -281,7 +277,7 @@ public class CommerceInventoryAuditLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryAudit>
 			getCommerceInventoryAudits(
-				long companyId, String sku, int start, int end) {
+				long companyId, java.lang.String sku, int start, int end) {
 
 		return getService().getCommerceInventoryAudits(
 			companyId, sku, start, end);
@@ -297,7 +293,7 @@ public class CommerceInventoryAuditLocalServiceUtil {
 	}
 
 	public static int getCommerceInventoryAuditsCount(
-		long companyId, String sku) {
+		long companyId, java.lang.String sku) {
 
 		return getService().getCommerceInventoryAuditsCount(companyId, sku);
 	}
@@ -314,7 +310,7 @@ public class CommerceInventoryAuditLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -348,29 +344,10 @@ public class CommerceInventoryAuditLocalServiceUtil {
 	}
 
 	public static CommerceInventoryAuditLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryAuditLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryAuditLocalService, CommerceInventoryAuditLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryAuditLocalService.class);
-
-		ServiceTracker
-			<CommerceInventoryAuditLocalService,
-			 CommerceInventoryAuditLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceInventoryAuditLocalService,
-					 CommerceInventoryAuditLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceInventoryAuditLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryAuditLocalService
+		_commerceInventoryAuditLocalService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Website. This utility wraps
  * <code>com.liferay.portal.service.impl.WebsiteServiceImpl</code> and is an
@@ -36,8 +34,8 @@ public class WebsiteServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.WebsiteServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Website addWebsite(
-			String className, long classPK, String url, long typeId,
-			boolean primary, ServiceContext serviceContext)
+			java.lang.String className, long classPK, java.lang.String url,
+			long typeId, boolean primary, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addWebsite(
@@ -55,7 +53,7 @@ public class WebsiteServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -67,28 +65,23 @@ public class WebsiteServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Website>
-			getWebsites(String className, long classPK)
+			getWebsites(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getWebsites(className, classPK);
 	}
 
 	public static com.liferay.portal.kernel.model.Website updateWebsite(
-			long websiteId, String url, long typeId, boolean primary)
+			long websiteId, java.lang.String url, long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateWebsite(websiteId, url, typeId, primary);
 	}
 
 	public static WebsiteService getService() {
-		if (_service == null) {
-			_service = (WebsiteService)PortalBeanLocatorUtil.locate(
-				WebsiteService.class.getName());
-		}
-
-		return _service;
+		return _websiteService;
 	}
 
-	private static WebsiteService _service;
+	private static volatile WebsiteService _websiteService;
 
 }

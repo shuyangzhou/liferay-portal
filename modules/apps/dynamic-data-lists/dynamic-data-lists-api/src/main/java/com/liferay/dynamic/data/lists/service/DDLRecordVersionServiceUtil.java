@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.lists.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDLRecordVersion. This utility wraps
  * <code>com.liferay.dynamic.data.lists.service.impl.DDLRecordVersionServiceImpl</code> and is an
@@ -43,7 +39,7 @@ public class DDLRecordVersionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -73,7 +69,7 @@ public class DDLRecordVersionServiceUtil {
 	 user do not have the required permission to access the record set
 	 */
 	public static com.liferay.dynamic.data.lists.model.DDLRecordVersion
-			getRecordVersion(long recordId, String version)
+			getRecordVersion(long recordId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRecordVersion(recordId, version);
@@ -142,25 +138,9 @@ public class DDLRecordVersionServiceUtil {
 	}
 
 	public static DDLRecordVersionService getService() {
-		return _serviceTracker.getService();
+		return _ddlRecordVersionService;
 	}
 
-	private static ServiceTracker
-		<DDLRecordVersionService, DDLRecordVersionService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDLRecordVersionService.class);
-
-		ServiceTracker<DDLRecordVersionService, DDLRecordVersionService>
-			serviceTracker =
-				new ServiceTracker
-					<DDLRecordVersionService, DDLRecordVersionService>(
-						bundle.getBundleContext(),
-						DDLRecordVersionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDLRecordVersionService _ddlRecordVersionService;
 
 }

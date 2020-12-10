@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPDAvailabilityEstimate. This utility wraps
  * <code>com.liferay.commerce.service.impl.CPDAvailabilityEstimateLocalServiceImpl</code> and
@@ -277,7 +273,7 @@ public class CPDAvailabilityEstimateLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CPDAvailabilityEstimate
 		fetchCPDAvailabilityEstimateByUuidAndCompanyId(
-			String uuid, long companyId) {
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCPDAvailabilityEstimateByUuidAndCompanyId(
 			uuid, companyId);
@@ -314,7 +310,7 @@ public class CPDAvailabilityEstimateLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CPDAvailabilityEstimate
 			getCPDAvailabilityEstimateByUuidAndCompanyId(
-				String uuid, long companyId)
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDAvailabilityEstimateByUuidAndCompanyId(
@@ -368,7 +364,7 @@ public class CPDAvailabilityEstimateLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -430,29 +426,10 @@ public class CPDAvailabilityEstimateLocalServiceUtil {
 	}
 
 	public static CPDAvailabilityEstimateLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpdAvailabilityEstimateLocalService;
 	}
 
-	private static ServiceTracker
-		<CPDAvailabilityEstimateLocalService,
-		 CPDAvailabilityEstimateLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDAvailabilityEstimateLocalService.class);
-
-		ServiceTracker
-			<CPDAvailabilityEstimateLocalService,
-			 CPDAvailabilityEstimateLocalService> serviceTracker =
-				new ServiceTracker
-					<CPDAvailabilityEstimateLocalService,
-					 CPDAvailabilityEstimateLocalService>(
-						 bundle.getBundleContext(),
-						 CPDAvailabilityEstimateLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDAvailabilityEstimateLocalService
+		_cpdAvailabilityEstimateLocalService;
 
 }

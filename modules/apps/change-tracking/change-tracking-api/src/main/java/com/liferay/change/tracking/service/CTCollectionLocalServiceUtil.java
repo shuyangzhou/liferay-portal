@@ -14,10 +14,6 @@
 
 package com.liferay.change.tracking.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CTCollection. This utility wraps
  * <code>com.liferay.change.tracking.service.impl.CTCollectionLocalServiceImpl</code> and
@@ -57,7 +53,8 @@ public class CTCollectionLocalServiceUtil {
 
 	public static com.liferay.change.tracking.model.CTCollection
 			addCTCollection(
-				long companyId, long userId, String name, String description)
+				long companyId, long userId, java.lang.String name,
+				java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCTCollection(
@@ -65,7 +62,7 @@ public class CTCollectionLocalServiceUtil {
 	}
 
 	public static java.util.Map
-		<Long,
+		<java.lang.Long,
 		 java.util.List<com.liferay.change.tracking.conflict.ConflictInfo>>
 				checkConflicts(
 					com.liferay.change.tracking.model.CTCollection ctCollection)
@@ -328,7 +325,7 @@ public class CTCollectionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -351,8 +348,8 @@ public class CTCollectionLocalServiceUtil {
 
 	public static com.liferay.change.tracking.model.CTCollection
 			undoCTCollection(
-				long ctCollectionId, long userId, String name,
-				String description)
+				long ctCollectionId, long userId, java.lang.String name,
+				java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().undoCTCollection(
@@ -378,8 +375,8 @@ public class CTCollectionLocalServiceUtil {
 
 	public static com.liferay.change.tracking.model.CTCollection
 			updateCTCollection(
-				long userId, long ctCollectionId, String name,
-				String description)
+				long userId, long ctCollectionId, java.lang.String name,
+				java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCTCollection(
@@ -387,25 +384,9 @@ public class CTCollectionLocalServiceUtil {
 	}
 
 	public static CTCollectionLocalService getService() {
-		return _serviceTracker.getService();
+		return _ctCollectionLocalService;
 	}
 
-	private static ServiceTracker
-		<CTCollectionLocalService, CTCollectionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CTCollectionLocalService.class);
-
-		ServiceTracker<CTCollectionLocalService, CTCollectionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CTCollectionLocalService, CTCollectionLocalService>(
-						bundle.getBundleContext(),
-						CTCollectionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CTCollectionLocalService _ctCollectionLocalService;
 
 }

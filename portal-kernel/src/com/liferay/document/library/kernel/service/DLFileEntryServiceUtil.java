@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for DLFileEntry. This utility wraps
  * <code>com.liferay.portlet.documentlibrary.service.impl.DLFileEntryServiceImpl</code> and is an
@@ -38,10 +36,11 @@ public class DLFileEntryServiceUtil {
 	public static com.liferay.document.library.kernel.model.DLFileEntry
 			addFileEntry(
 				long groupId, long repositoryId, long folderId,
-				String sourceFileName, String mimeType, String title,
-				String description, String changeLog, long fileEntryTypeId,
+				java.lang.String sourceFileName, java.lang.String mimeType,
+				java.lang.String title, java.lang.String description,
+				java.lang.String changeLog, long fileEntryTypeId,
 				java.util.Map
-					<String,
+					<java.lang.String,
 					 com.liferay.dynamic.data.mapping.kernel.DDMFormValues>
 						ddmFormValuesMap,
 				java.io.File file, java.io.InputStream inputStream, long size,
@@ -65,7 +64,7 @@ public class DLFileEntryServiceUtil {
 			long fileEntryId,
 			com.liferay.document.library.kernel.model.DLVersionNumberIncrease
 				dlVersionNumberIncrease,
-			String changeLog,
+			java.lang.String changeLog,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -74,7 +73,7 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static void checkInFileEntry(
-			long fileEntryId, String lockUuid,
+			long fileEntryId, java.lang.String lockUuid,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -92,7 +91,7 @@ public class DLFileEntryServiceUtil {
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry
 			checkOutFileEntry(
-				long fileEntryId, String owner, long expirationTime,
+				long fileEntryId, java.lang.String owner, long expirationTime,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -118,13 +117,14 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static void deleteFileEntry(
-			long groupId, long folderId, String title)
+			long groupId, long folderId, java.lang.String title)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteFileEntry(groupId, folderId, title);
 	}
 
-	public static void deleteFileVersion(long fileEntryId, String version)
+	public static void deleteFileVersion(
+			long fileEntryId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteFileVersion(fileEntryId, version);
@@ -138,14 +138,15 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static java.io.InputStream getFileAsStream(
-			long fileEntryId, String version)
+			long fileEntryId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFileAsStream(fileEntryId, version);
 	}
 
 	public static java.io.InputStream getFileAsStream(
-			long fileEntryId, String version, boolean incrementCounter)
+			long fileEntryId, java.lang.String version,
+			boolean incrementCounter)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFileAsStream(
@@ -191,8 +192,8 @@ public class DLFileEntryServiceUtil {
 
 	public static java.util.List
 		<com.liferay.document.library.kernel.model.DLFileEntry> getFileEntries(
-				long groupId, long folderId, String[] mimeTypes, int status,
-				int start, int end,
+				long groupId, long folderId, java.lang.String[] mimeTypes,
+				int status, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.document.library.kernel.model.DLFileEntry>
 						orderByComparator)
@@ -205,8 +206,8 @@ public class DLFileEntryServiceUtil {
 
 	public static java.util.List
 		<com.liferay.document.library.kernel.model.DLFileEntry> getFileEntries(
-				long groupId, long folderId, String[] mimeTypes, int start,
-				int end,
+				long groupId, long folderId, java.lang.String[] mimeTypes,
+				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.document.library.kernel.model.DLFileEntry>
 						orderByComparator)
@@ -234,13 +235,13 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static int getFileEntriesCount(
-		long groupId, long folderId, String[] mimeTypes) {
+		long groupId, long folderId, java.lang.String[] mimeTypes) {
 
 		return getService().getFileEntriesCount(groupId, folderId, mimeTypes);
 	}
 
 	public static int getFileEntriesCount(
-		long groupId, long folderId, String[] mimeTypes, int status) {
+		long groupId, long folderId, java.lang.String[] mimeTypes, int status) {
 
 		return getService().getFileEntriesCount(
 			groupId, folderId, mimeTypes, status);
@@ -254,21 +255,22 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry
-			getFileEntry(long groupId, long folderId, String title)
+			getFileEntry(long groupId, long folderId, java.lang.String title)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFileEntry(groupId, folderId, title);
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry
-			getFileEntryByFileName(long groupId, long folderId, String fileName)
+			getFileEntryByFileName(
+				long groupId, long folderId, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFileEntryByFileName(groupId, folderId, fileName);
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry
-			getFileEntryByUuidAndGroupId(String uuid, long groupId)
+			getFileEntryByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFileEntryByUuidAndGroupId(uuid, groupId);
@@ -281,7 +283,7 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static int getFoldersFileEntriesCount(
-		long groupId, java.util.List<Long> folderIds, int status) {
+		long groupId, java.util.List<java.lang.Long> folderIds, int status) {
 
 		return getService().getFoldersFileEntriesCount(
 			groupId, folderIds, status);
@@ -305,7 +307,7 @@ public class DLFileEntryServiceUtil {
 		<com.liferay.document.library.kernel.model.DLFileEntry>
 				getGroupFileEntries(
 					long groupId, long userId, long repositoryId,
-					long rootFolderId, String[] mimeTypes, int status,
+					long rootFolderId, java.lang.String[] mimeTypes, int status,
 					int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.document.library.kernel.model.DLFileEntry>
@@ -321,7 +323,8 @@ public class DLFileEntryServiceUtil {
 		<com.liferay.document.library.kernel.model.DLFileEntry>
 				getGroupFileEntries(
 					long groupId, long userId, long rootFolderId,
-					String[] mimeTypes, int status, int start, int end,
+					java.lang.String[] mimeTypes, int status, int start,
+					int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.document.library.kernel.model.DLFileEntry>
 							orderByComparator)
@@ -342,7 +345,7 @@ public class DLFileEntryServiceUtil {
 
 	public static int getGroupFileEntriesCount(
 			long groupId, long userId, long repositoryId, long rootFolderId,
-			String[] mimeTypes, int status)
+			java.lang.String[] mimeTypes, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGroupFileEntriesCount(
@@ -350,8 +353,8 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static int getGroupFileEntriesCount(
-			long groupId, long userId, long rootFolderId, String[] mimeTypes,
-			int status)
+			long groupId, long userId, long rootFolderId,
+			java.lang.String[] mimeTypes, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGroupFileEntriesCount(
@@ -363,7 +366,7 @@ public class DLFileEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -390,7 +393,7 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.lock.Lock refreshFileEntryLock(
-			String lockUuid, long companyId, long expirationTime)
+			java.lang.String lockUuid, long companyId, long expirationTime)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().refreshFileEntryLock(
@@ -398,7 +401,7 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static void revertFileEntry(
-			long fileEntryId, String version,
+			long fileEntryId, java.lang.String version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -413,8 +416,8 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-			long groupId, long creatorUserId, long folderId, String[] mimeTypes,
-			int status, int start, int end)
+			long groupId, long creatorUserId, long folderId,
+			java.lang.String[] mimeTypes, int status, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().search(
@@ -423,13 +426,14 @@ public class DLFileEntryServiceUtil {
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry
 			updateFileEntry(
-				long fileEntryId, String sourceFileName, String mimeType,
-				String title, String description, String changeLog,
+				long fileEntryId, java.lang.String sourceFileName,
+				java.lang.String mimeType, java.lang.String title,
+				java.lang.String description, java.lang.String changeLog,
 				com.liferay.document.library.kernel.model.
 					DLVersionNumberIncrease dlVersionNumberIncrease,
 				long fileEntryTypeId,
 				java.util.Map
-					<String,
+					<java.lang.String,
 					 com.liferay.dynamic.data.mapping.kernel.DDMFormValues>
 						ddmFormValuesMap,
 				java.io.File file, java.io.InputStream inputStream, long size,
@@ -446,7 +450,8 @@ public class DLFileEntryServiceUtil {
 			updateStatus(
 				long userId, long fileVersionId, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext,
-				java.util.Map<String, java.io.Serializable> workflowContext)
+				java.util.Map<java.lang.String, java.io.Serializable>
+					workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStatus(
@@ -454,27 +459,23 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static boolean verifyFileEntryCheckOut(
-			long fileEntryId, String lockUuid)
+			long fileEntryId, java.lang.String lockUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().verifyFileEntryCheckOut(fileEntryId, lockUuid);
 	}
 
-	public static boolean verifyFileEntryLock(long fileEntryId, String lockUuid)
+	public static boolean verifyFileEntryLock(
+			long fileEntryId, java.lang.String lockUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().verifyFileEntryLock(fileEntryId, lockUuid);
 	}
 
 	public static DLFileEntryService getService() {
-		if (_service == null) {
-			_service = (DLFileEntryService)PortalBeanLocatorUtil.locate(
-				DLFileEntryService.class.getName());
-		}
-
-		return _service;
+		return _dlFileEntryService;
 	}
 
-	private static DLFileEntryService _service;
+	private static volatile DLFileEntryService _dlFileEntryService;
 
 }

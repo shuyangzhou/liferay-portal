@@ -14,8 +14,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for AnnouncementsFlag. This utility wraps
  * <code>com.liferay.portlet.announcements.service.impl.AnnouncementsFlagServiceImpl</code> and is an
@@ -59,19 +57,14 @@ public class AnnouncementsFlagServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static AnnouncementsFlagService getService() {
-		if (_service == null) {
-			_service = (AnnouncementsFlagService)PortalBeanLocatorUtil.locate(
-				AnnouncementsFlagService.class.getName());
-		}
-
-		return _service;
+		return _announcementsFlagService;
 	}
 
-	private static AnnouncementsFlagService _service;
+	private static volatile AnnouncementsFlagService _announcementsFlagService;
 
 }

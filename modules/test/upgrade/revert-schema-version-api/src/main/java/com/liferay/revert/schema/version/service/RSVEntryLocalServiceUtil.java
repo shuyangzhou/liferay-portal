@@ -14,10 +14,6 @@
 
 package com.liferay.revert.schema.version.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for RSVEntry. This utility wraps
  * <code>com.liferay.revert.schema.version.service.impl.RSVEntryLocalServiceImpl</code> and
@@ -237,7 +233,7 @@ public class RSVEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -310,24 +306,9 @@ public class RSVEntryLocalServiceUtil {
 	}
 
 	public static RSVEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _rsvEntryLocalService;
 	}
 
-	private static ServiceTracker<RSVEntryLocalService, RSVEntryLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(RSVEntryLocalService.class);
-
-		ServiceTracker<RSVEntryLocalService, RSVEntryLocalService>
-			serviceTracker =
-				new ServiceTracker<RSVEntryLocalService, RSVEntryLocalService>(
-					bundle.getBundleContext(), RSVEntryLocalService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile RSVEntryLocalService _rsvEntryLocalService;
 
 }

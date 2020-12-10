@@ -14,10 +14,6 @@
 
 package com.liferay.fragment.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for FragmentComposition. This utility wraps
  * <code>com.liferay.fragment.service.impl.FragmentCompositionServiceImpl</code> and is an
@@ -40,8 +36,9 @@ public class FragmentCompositionServiceUtil {
 	public static com.liferay.fragment.model.FragmentComposition
 			addFragmentComposition(
 				long groupId, long fragmentCollectionId,
-				String fragmentCompositionKey, String name, String description,
-				String data, long previewFileEntryId, int status,
+				java.lang.String fragmentCompositionKey, java.lang.String name,
+				java.lang.String description, java.lang.String data,
+				long previewFileEntryId, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -64,7 +61,8 @@ public class FragmentCompositionServiceUtil {
 	}
 
 	public static com.liferay.fragment.model.FragmentComposition
-		fetchFragmentComposition(long groupId, String fragmentCompositionKey) {
+		fetchFragmentComposition(
+			long groupId, java.lang.String fragmentCompositionKey) {
 
 		return getService().fetchFragmentComposition(
 			groupId, fragmentCompositionKey);
@@ -104,8 +102,8 @@ public class FragmentCompositionServiceUtil {
 
 	public static java.util.List<com.liferay.fragment.model.FragmentComposition>
 		getFragmentCompositions(
-			long groupId, long fragmentCollectionId, String name, int start,
-			int end,
+			long groupId, long fragmentCollectionId, java.lang.String name,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.fragment.model.FragmentComposition>
 					orderByComparator) {
@@ -123,7 +121,7 @@ public class FragmentCompositionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -148,8 +146,8 @@ public class FragmentCompositionServiceUtil {
 	public static com.liferay.fragment.model.FragmentComposition
 			updateFragmentComposition(
 				long fragmentCompositionId, long fragmentCollectionId,
-				String name, String description, String data,
-				long previewFileEntryId, int status)
+				java.lang.String name, java.lang.String description,
+				java.lang.String data, long previewFileEntryId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFragmentComposition(
@@ -158,7 +156,8 @@ public class FragmentCompositionServiceUtil {
 	}
 
 	public static com.liferay.fragment.model.FragmentComposition
-			updateFragmentComposition(long fragmentCompositionId, String name)
+			updateFragmentComposition(
+				long fragmentCompositionId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFragmentComposition(
@@ -167,8 +166,9 @@ public class FragmentCompositionServiceUtil {
 
 	public static com.liferay.fragment.model.FragmentComposition
 			updateFragmentComposition(
-				long fragmentCompositionId, String name, String description,
-				String data, long previewFileEntryId, int status)
+				long fragmentCompositionId, java.lang.String name,
+				java.lang.String description, java.lang.String data,
+				long previewFileEntryId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFragmentComposition(
@@ -177,27 +177,10 @@ public class FragmentCompositionServiceUtil {
 	}
 
 	public static FragmentCompositionService getService() {
-		return _serviceTracker.getService();
+		return _fragmentCompositionService;
 	}
 
-	private static ServiceTracker
-		<FragmentCompositionService, FragmentCompositionService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			FragmentCompositionService.class);
-
-		ServiceTracker<FragmentCompositionService, FragmentCompositionService>
-			serviceTracker =
-				new ServiceTracker
-					<FragmentCompositionService, FragmentCompositionService>(
-						bundle.getBundleContext(),
-						FragmentCompositionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile FragmentCompositionService
+		_fragmentCompositionService;
 
 }

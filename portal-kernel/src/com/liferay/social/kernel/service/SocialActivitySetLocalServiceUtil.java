@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialActivitySet. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialActivitySetLocalServiceImpl</code> and
@@ -294,7 +292,7 @@ public class SocialActivitySetLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -444,15 +442,10 @@ public class SocialActivitySetLocalServiceUtil {
 	}
 
 	public static SocialActivitySetLocalService getService() {
-		if (_service == null) {
-			_service =
-				(SocialActivitySetLocalService)PortalBeanLocatorUtil.locate(
-					SocialActivitySetLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialActivitySetLocalService;
 	}
 
-	private static SocialActivitySetLocalService _service;
+	private static volatile SocialActivitySetLocalService
+		_socialActivitySetLocalService;
 
 }

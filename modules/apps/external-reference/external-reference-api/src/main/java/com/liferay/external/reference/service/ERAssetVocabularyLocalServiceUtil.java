@@ -14,10 +14,6 @@
 
 package com.liferay.external.reference.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ERAssetVocabulary. This utility wraps
  * <code>com.liferay.external.reference.service.impl.ERAssetVocabularyLocalServiceImpl</code> and
@@ -39,10 +35,12 @@ public class ERAssetVocabularyLocalServiceUtil {
 	 */
 	public static com.liferay.asset.kernel.model.AssetVocabulary
 			addOrUpdateVocabulary(
-				String externalReferenceCode, long userId, long groupId,
-				String title, java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String settings,
+				java.lang.String externalReferenceCode, long userId,
+				long groupId, java.lang.String title,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String settings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -56,34 +54,15 @@ public class ERAssetVocabularyLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ERAssetVocabularyLocalService getService() {
-		return _serviceTracker.getService();
+		return _erAssetVocabularyLocalService;
 	}
 
-	private static ServiceTracker
-		<ERAssetVocabularyLocalService, ERAssetVocabularyLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ERAssetVocabularyLocalService.class);
-
-		ServiceTracker
-			<ERAssetVocabularyLocalService, ERAssetVocabularyLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<ERAssetVocabularyLocalService,
-						 ERAssetVocabularyLocalService>(
-							 bundle.getBundleContext(),
-							 ERAssetVocabularyLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ERAssetVocabularyLocalService
+		_erAssetVocabularyLocalService;
 
 }

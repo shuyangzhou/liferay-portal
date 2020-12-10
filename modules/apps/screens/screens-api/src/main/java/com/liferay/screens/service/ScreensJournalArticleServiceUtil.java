@@ -14,10 +14,6 @@
 
 package com.liferay.screens.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ScreensJournalArticle. This utility wraps
  * <code>com.liferay.screens.service.impl.ScreensJournalArticleServiceImpl</code> and is an
@@ -37,14 +33,14 @@ public class ScreensJournalArticleServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.screens.service.impl.ScreensJournalArticleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static String getJournalArticleContent(
+	public static java.lang.String getJournalArticleContent(
 			long classPK, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getJournalArticleContent(classPK, locale);
 	}
 
-	public static String getJournalArticleContent(
+	public static java.lang.String getJournalArticleContent(
 			long classPK, long ddmTemplateId, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -52,8 +48,8 @@ public class ScreensJournalArticleServiceUtil {
 			classPK, ddmTemplateId, locale);
 	}
 
-	public static String getJournalArticleContent(
-			long groupId, String articleId, long ddmTemplateId,
+	public static java.lang.String getJournalArticleContent(
+			long groupId, java.lang.String articleId, long ddmTemplateId,
 			java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,34 +62,15 @@ public class ScreensJournalArticleServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ScreensJournalArticleService getService() {
-		return _serviceTracker.getService();
+		return _screensJournalArticleService;
 	}
 
-	private static ServiceTracker
-		<ScreensJournalArticleService, ScreensJournalArticleService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ScreensJournalArticleService.class);
-
-		ServiceTracker
-			<ScreensJournalArticleService, ScreensJournalArticleService>
-				serviceTracker =
-					new ServiceTracker
-						<ScreensJournalArticleService,
-						 ScreensJournalArticleService>(
-							 bundle.getBundleContext(),
-							 ScreensJournalArticleService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ScreensJournalArticleService
+		_screensJournalArticleService;
 
 }

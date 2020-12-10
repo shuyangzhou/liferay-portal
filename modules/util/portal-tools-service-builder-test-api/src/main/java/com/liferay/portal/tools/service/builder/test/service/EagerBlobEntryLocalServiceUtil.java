@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for EagerBlobEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.EagerBlobEntryLocalServiceImpl</code> and
@@ -236,7 +232,8 @@ public class EagerBlobEntryLocalServiceUtil {
 	 */
 	public static
 		com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry
-			fetchEagerBlobEntryByUuidAndGroupId(String uuid, long groupId) {
+			fetchEagerBlobEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchEagerBlobEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -299,7 +296,8 @@ public class EagerBlobEntryLocalServiceUtil {
 	 */
 	public static
 		com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry
-				getEagerBlobEntryByUuidAndGroupId(String uuid, long groupId)
+				getEagerBlobEntryByUuidAndGroupId(
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEagerBlobEntryByUuidAndGroupId(uuid, groupId);
@@ -317,7 +315,7 @@ public class EagerBlobEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -351,27 +349,10 @@ public class EagerBlobEntryLocalServiceUtil {
 	}
 
 	public static EagerBlobEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _eagerBlobEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<EagerBlobEntryLocalService, EagerBlobEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			EagerBlobEntryLocalService.class);
-
-		ServiceTracker<EagerBlobEntryLocalService, EagerBlobEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<EagerBlobEntryLocalService, EagerBlobEntryLocalService>(
-						bundle.getBundleContext(),
-						EagerBlobEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EagerBlobEntryLocalService
+		_eagerBlobEntryLocalService;
 
 }

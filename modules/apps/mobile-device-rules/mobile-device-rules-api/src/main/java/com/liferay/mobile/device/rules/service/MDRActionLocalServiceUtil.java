@@ -14,10 +14,6 @@
 
 package com.liferay.mobile.device.rules.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MDRAction. This utility wraps
  * <code>com.liferay.mobile.device.rules.service.impl.MDRActionLocalServiceImpl</code> and
@@ -39,9 +35,9 @@ public class MDRActionLocalServiceUtil {
 	 */
 	public static com.liferay.mobile.device.rules.model.MDRAction addAction(
 			long ruleGroupInstanceId,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
-			String typeSettings,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type, java.lang.String typeSettings,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -52,8 +48,9 @@ public class MDRActionLocalServiceUtil {
 
 	public static com.liferay.mobile.device.rules.model.MDRAction addAction(
 			long ruleGroupInstanceId,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -273,7 +270,7 @@ public class MDRActionLocalServiceUtil {
 	 * @return the matching mdr action, or <code>null</code> if a matching mdr action could not be found
 	 */
 	public static com.liferay.mobile.device.rules.model.MDRAction
-		fetchMDRActionByUuidAndGroupId(String uuid, long groupId) {
+		fetchMDRActionByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchMDRActionByUuidAndGroupId(uuid, groupId);
 	}
@@ -358,7 +355,7 @@ public class MDRActionLocalServiceUtil {
 	 * @throws PortalException if a matching mdr action could not be found
 	 */
 	public static com.liferay.mobile.device.rules.model.MDRAction
-			getMDRActionByUuidAndGroupId(String uuid, long groupId)
+			getMDRActionByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMDRActionByUuidAndGroupId(uuid, groupId);
@@ -391,7 +388,8 @@ public class MDRActionLocalServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.mobile.device.rules.model.MDRAction>
-			getMDRActionsByUuidAndCompanyId(String uuid, long companyId) {
+			getMDRActionsByUuidAndCompanyId(
+				java.lang.String uuid, long companyId) {
 
 		return getService().getMDRActionsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -409,7 +407,7 @@ public class MDRActionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.mobile.device.rules.model.MDRAction>
 			getMDRActionsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.mobile.device.rules.model.MDRAction>
 						orderByComparator) {
@@ -432,7 +430,7 @@ public class MDRActionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -447,9 +445,10 @@ public class MDRActionLocalServiceUtil {
 	}
 
 	public static com.liferay.mobile.device.rules.model.MDRAction updateAction(
-			long actionId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
-			String typeSettings,
+			long actionId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type, java.lang.String typeSettings,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -459,8 +458,10 @@ public class MDRActionLocalServiceUtil {
 	}
 
 	public static com.liferay.mobile.device.rules.model.MDRAction updateAction(
-			long actionId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
+			long actionId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -489,25 +490,9 @@ public class MDRActionLocalServiceUtil {
 	}
 
 	public static MDRActionLocalService getService() {
-		return _serviceTracker.getService();
+		return _mdrActionLocalService;
 	}
 
-	private static ServiceTracker<MDRActionLocalService, MDRActionLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MDRActionLocalService.class);
-
-		ServiceTracker<MDRActionLocalService, MDRActionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<MDRActionLocalService, MDRActionLocalService>(
-						bundle.getBundleContext(), MDRActionLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MDRActionLocalService _mdrActionLocalService;
 
 }

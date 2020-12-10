@@ -14,10 +14,6 @@
 
 package com.liferay.screens.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ScreensDDLRecord. This utility wraps
  * <code>com.liferay.screens.service.impl.ScreensDDLRecordServiceImpl</code> and is an
@@ -84,30 +80,14 @@ public class ScreensDDLRecordServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ScreensDDLRecordService getService() {
-		return _serviceTracker.getService();
+		return _screensDDLRecordService;
 	}
 
-	private static ServiceTracker
-		<ScreensDDLRecordService, ScreensDDLRecordService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ScreensDDLRecordService.class);
-
-		ServiceTracker<ScreensDDLRecordService, ScreensDDLRecordService>
-			serviceTracker =
-				new ServiceTracker
-					<ScreensDDLRecordService, ScreensDDLRecordService>(
-						bundle.getBundleContext(),
-						ScreensDDLRecordService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ScreensDDLRecordService _screensDDLRecordService;
 
 }

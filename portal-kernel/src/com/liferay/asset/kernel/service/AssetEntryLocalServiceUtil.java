@@ -14,8 +14,6 @@
 
 package com.liferay.asset.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for AssetEntry. This utility wraps
  * <code>com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl</code> and
@@ -169,7 +167,7 @@ public class AssetEntryLocalServiceUtil {
 		getService().deleteEntry(entryId);
 	}
 
-	public static void deleteEntry(String className, long classPK)
+	public static void deleteEntry(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteEntry(className, classPK);
@@ -302,13 +300,13 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry fetchEntry(
-		long groupId, String classUuid) {
+		long groupId, java.lang.String classUuid) {
 
 		return getService().fetchEntry(groupId, classUuid);
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry fetchEntry(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().fetchEntry(className, classPK);
 	}
@@ -430,10 +428,12 @@ public class AssetEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry>
 		getEntries(
 			long[] groupIds, long[] classNameIds, long[] classTypeIds,
-			String keywords, String userName, String title, String description,
-			Boolean listable, boolean advancedSearch, boolean andOperator,
-			int start, int end, String orderByCol1, String orderByCol2,
-			String orderByType1, String orderByType2) {
+			java.lang.String keywords, java.lang.String userName,
+			java.lang.String title, java.lang.String description,
+			java.lang.Boolean listable, boolean advancedSearch,
+			boolean andOperator, int start, int end,
+			java.lang.String orderByCol1, java.lang.String orderByCol2,
+			java.lang.String orderByType1, java.lang.String orderByType2) {
 
 		return getService().getEntries(
 			groupIds, classNameIds, classTypeIds, keywords, userName, title,
@@ -443,11 +443,12 @@ public class AssetEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry>
 		getEntries(
-			long[] groupIds, long[] classNameIds, String keywords,
-			String userName, String title, String description, Boolean listable,
+			long[] groupIds, long[] classNameIds, java.lang.String keywords,
+			java.lang.String userName, java.lang.String title,
+			java.lang.String description, java.lang.Boolean listable,
 			boolean advancedSearch, boolean andOperator, int start, int end,
-			String orderByCol1, String orderByCol2, String orderByType1,
-			String orderByType2) {
+			java.lang.String orderByCol1, java.lang.String orderByCol2,
+			java.lang.String orderByType1, java.lang.String orderByType2) {
 
 		return getService().getEntries(
 			groupIds, classNameIds, keywords, userName, title, description,
@@ -464,8 +465,10 @@ public class AssetEntryLocalServiceUtil {
 
 	public static int getEntriesCount(
 		long[] groupIds, long[] classNameIds, long[] classTypeIds,
-		String keywords, String userName, String title, String description,
-		Boolean listable, boolean advancedSearch, boolean andOperator) {
+		java.lang.String keywords, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.Boolean listable, boolean advancedSearch,
+		boolean andOperator) {
 
 		return getService().getEntriesCount(
 			groupIds, classNameIds, classTypeIds, keywords, userName, title,
@@ -473,8 +476,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static int getEntriesCount(
-		long[] groupIds, long[] classNameIds, String keywords, String userName,
-		String title, String description, Boolean listable,
+		long[] groupIds, long[] classNameIds, java.lang.String keywords,
+		java.lang.String userName, java.lang.String title,
+		java.lang.String description, java.lang.Boolean listable,
 		boolean advancedSearch, boolean andOperator) {
 
 		return getService().getEntriesCount(
@@ -490,14 +494,14 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry getEntry(
-			long groupId, String classUuid)
+			long groupId, java.lang.String classUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(groupId, classUuid);
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry getEntry(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(className, classPK);
@@ -507,7 +511,9 @@ public class AssetEntryLocalServiceUtil {
 		return getService().getEntryPriority(classNameId, classPK);
 	}
 
-	public static double getEntryPriority(String className, long classPK) {
+	public static double getEntryPriority(
+		java.lang.String className, long classPK) {
+
 		return getService().getEntryPriority(className, classPK);
 	}
 
@@ -536,7 +542,7 @@ public class AssetEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -565,14 +571,15 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry>
-		getTopViewedEntries(String className, boolean asc, int start, int end) {
+		getTopViewedEntries(
+			java.lang.String className, boolean asc, int start, int end) {
 
 		return getService().getTopViewedEntries(className, asc, start, end);
 	}
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry>
 		getTopViewedEntries(
-			String[] className, boolean asc, int start, int end) {
+			java.lang.String[] className, boolean asc, int start, int end) {
 
 		return getService().getTopViewedEntries(className, asc, start, end);
 	}
@@ -594,7 +601,8 @@ public class AssetEntryLocalServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetEntry
 			incrementViewCounter(
-				long companyId, long userId, String className, long classPK)
+				long companyId, long userId, java.lang.String className,
+				long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().incrementViewCounter(
@@ -602,7 +610,7 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static void incrementViewCounter(
-		long companyId, long userId, String className, long classPK,
+		long companyId, long userId, java.lang.String className, long classPK,
 		int increment) {
 
 		getService().incrementViewCounter(
@@ -618,7 +626,7 @@ public class AssetEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.Hits search(
 		long companyId, long[] groupIds, long userId, long[] classNameIds,
-		long classTypeId, String keywords, boolean showNonindexable,
+		long classTypeId, java.lang.String keywords, boolean showNonindexable,
 		int[] statuses, int start, int end,
 		com.liferay.portal.kernel.search.Sort sort) {
 
@@ -628,9 +636,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String keywords, boolean showNonindexable, int status,
-		int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String keywords,
+		boolean showNonindexable, int status, int start, int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, classTypeId, keywords,
@@ -638,9 +646,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String keywords, boolean showNonindexable,
-		int[] statuses, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String keywords,
+		boolean showNonindexable, int[] statuses, int start, int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, classTypeId, keywords,
@@ -648,9 +656,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String keywords, boolean showNonindexable,
-		int[] statuses, int start, int end,
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String keywords,
+		boolean showNonindexable, int[] statuses, int start, int end,
 		com.liferay.portal.kernel.search.Sort sort) {
 
 		return getService().search(
@@ -659,8 +667,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String keywords, int status, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String keywords,
+		int status, int start, int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, classTypeId, keywords,
@@ -668,10 +677,12 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String userName, String title, String description,
-		String assetCategoryIds, String assetTagNames, boolean showNonindexable,
-		int status, boolean andSearch, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		boolean showNonindexable, int status, boolean andSearch, int start,
+		int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, classTypeId, userName,
@@ -680,10 +691,12 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String userName, String title, String description,
-		String assetCategoryIds, String assetTagNames, boolean showNonindexable,
-		int[] statuses, boolean andSearch, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		boolean showNonindexable, int[] statuses, boolean andSearch, int start,
+		int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, classTypeId, userName,
@@ -692,10 +705,11 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String userName, String title, String description,
-		String assetCategoryIds, String assetTagNames, int status,
-		boolean andSearch, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		int status, boolean andSearch, int start, int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, classTypeId, userName,
@@ -704,8 +718,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		String keywords, int status, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, java.lang.String keywords, int status,
+		int start, int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, keywords, status, start,
@@ -713,10 +728,11 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long[] groupIds, long userId, String className,
-		String userName, String title, String description,
-		String assetCategoryIds, String assetTagNames, int status,
-		boolean andSearch, int start, int end) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		int status, boolean andSearch, int start, int end) {
 
 		return getService().search(
 			companyId, groupIds, userId, className, userName, title,
@@ -726,7 +742,7 @@ public class AssetEntryLocalServiceUtil {
 
 	public static long searchCount(
 		long companyId, long[] groupIds, long userId, long[] classNameIds,
-		long classTypeId, String keywords, boolean showNonindexable,
+		long classTypeId, java.lang.String keywords, boolean showNonindexable,
 		int[] statuses) {
 
 		return getService().searchCount(
@@ -735,9 +751,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static long searchCount(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String keywords, boolean showNonindexable,
-		int[] statuses) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String keywords,
+		boolean showNonindexable, int[] statuses) {
 
 		return getService().searchCount(
 			companyId, groupIds, userId, className, classTypeId, keywords,
@@ -745,10 +761,11 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static long searchCount(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String keywords, String assetCategoryIds,
-		String assetTagNames, boolean showInvisible, boolean showNonindexable,
-		int[] statuses, boolean andSearch) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String keywords,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		boolean showInvisible, boolean showNonindexable, int[] statuses,
+		boolean andSearch) {
 
 		return getService().searchCount(
 			companyId, groupIds, userId, className, classTypeId, keywords,
@@ -757,10 +774,12 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static long searchCount(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String userName, String title, String description,
-		String assetCategoryIds, String assetTagNames, boolean showInvisible,
-		boolean showNonindexable, int[] statuses, boolean andSearch) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		boolean showInvisible, boolean showNonindexable, int[] statuses,
+		boolean andSearch) {
 
 		return getService().searchCount(
 			companyId, groupIds, userId, className, classTypeId, userName,
@@ -769,10 +788,11 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static long searchCount(
-		long companyId, long[] groupIds, long userId, String className,
-		long classTypeId, String userName, String title, String description,
-		String assetCategoryIds, String assetTagNames, boolean showNonindexable,
-		int[] statuses, boolean andSearch) {
+		long companyId, long[] groupIds, long userId,
+		java.lang.String className, long classTypeId, java.lang.String userName,
+		java.lang.String title, java.lang.String description,
+		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		boolean showNonindexable, int[] statuses, boolean andSearch) {
 
 		return getService().searchCount(
 			companyId, groupIds, userId, className, classTypeId, userName,
@@ -802,14 +822,15 @@ public class AssetEntryLocalServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
 			long userId, long groupId, java.util.Date createDate,
-			java.util.Date modifiedDate, String className, long classPK,
-			String classUuid, long classTypeId, long[] categoryIds,
-			String[] tagNames, boolean listable, boolean visible,
-			java.util.Date startDate, java.util.Date endDate,
+			java.util.Date modifiedDate, java.lang.String className,
+			long classPK, java.lang.String classUuid, long classTypeId,
+			long[] categoryIds, java.lang.String[] tagNames, boolean listable,
+			boolean visible, java.util.Date startDate, java.util.Date endDate,
 			java.util.Date publishDate, java.util.Date expirationDate,
-			String mimeType, String title, String description, String summary,
-			String url, String layoutUuid, int height, int width,
-			Double priority)
+			java.lang.String mimeType, java.lang.String title,
+			java.lang.String description, java.lang.String summary,
+			java.lang.String url, java.lang.String layoutUuid, int height,
+			int width, java.lang.Double priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateEntry(
@@ -820,8 +841,8 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
-			long userId, long groupId, String className, long classPK,
-			long[] categoryIds, String[] tagNames)
+			long userId, long groupId, java.lang.String className, long classPK,
+			long[] categoryIds, java.lang.String[] tagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateEntry(
@@ -829,8 +850,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
-			String className, long classPK, java.util.Date publishDate,
-			java.util.Date expirationDate, boolean listable, boolean visible)
+			java.lang.String className, long classPK,
+			java.util.Date publishDate, java.util.Date expirationDate,
+			boolean listable, boolean visible)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateEntry(
@@ -845,15 +867,15 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry updateVisible(
-			String className, long classPK, boolean visible)
+			java.lang.String className, long classPK, boolean visible)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateVisible(className, classPK, visible);
 	}
 
 	public static void validate(
-			long groupId, String className, long classPK, long classTypePK,
-			long[] categoryIds, String[] tagNames)
+			long groupId, java.lang.String className, long classPK,
+			long classTypePK, long[] categoryIds, java.lang.String[] tagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().validate(
@@ -861,8 +883,8 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static void validate(
-			long groupId, String className, long classTypePK,
-			long[] categoryIds, String[] tagNames)
+			long groupId, java.lang.String className, long classTypePK,
+			long[] categoryIds, java.lang.String[] tagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().validate(
@@ -870,14 +892,9 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static AssetEntryLocalService getService() {
-		if (_service == null) {
-			_service = (AssetEntryLocalService)PortalBeanLocatorUtil.locate(
-				AssetEntryLocalService.class.getName());
-		}
-
-		return _service;
+		return _assetEntryLocalService;
 	}
 
-	private static AssetEntryLocalService _service;
+	private static volatile AssetEntryLocalService _assetEntryLocalService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for UserTracker. This utility wraps
  * <code>com.liferay.portal.service.impl.UserTrackerLocalServiceImpl</code> and
@@ -37,8 +35,8 @@ public class UserTrackerLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.UserTracker addUserTracker(
 		long companyId, long userId, java.util.Date modifiedDate,
-		String sessionId, String remoteAddr, String remoteHost,
-		String userAgent,
+		java.lang.String sessionId, java.lang.String remoteAddr,
+		java.lang.String remoteHost, java.lang.String userAgent,
 		java.util.List<com.liferay.portal.kernel.model.UserTrackerPath>
 			userTrackerPaths) {
 
@@ -245,7 +243,7 @@ public class UserTrackerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -322,14 +320,9 @@ public class UserTrackerLocalServiceUtil {
 	}
 
 	public static UserTrackerLocalService getService() {
-		if (_service == null) {
-			_service = (UserTrackerLocalService)PortalBeanLocatorUtil.locate(
-				UserTrackerLocalService.class.getName());
-		}
-
-		return _service;
+		return _userTrackerLocalService;
 	}
 
-	private static UserTrackerLocalService _service;
+	private static volatile UserTrackerLocalService _userTrackerLocalService;
 
 }

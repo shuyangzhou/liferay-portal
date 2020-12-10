@@ -14,8 +14,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for AnnouncementsDelivery. This utility wraps
  * <code>com.liferay.portlet.announcements.service.impl.AnnouncementsDeliveryLocalServiceImpl</code> and
@@ -55,7 +53,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 	}
 
 	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery
-			addUserDelivery(long userId, String type)
+			addUserDelivery(long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addUserDelivery(userId, type);
@@ -135,7 +133,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 		getService().deleteDelivery(deliveryId);
 	}
 
-	public static void deleteDelivery(long userId, String type) {
+	public static void deleteDelivery(long userId, java.lang.String type) {
 		getService().deleteDelivery(userId, type);
 	}
 
@@ -313,7 +311,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -336,7 +334,7 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 	}
 
 	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery
-			getUserDelivery(long userId, String type)
+			getUserDelivery(long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserDelivery(userId, type);
@@ -361,22 +359,18 @@ public class AnnouncementsDeliveryLocalServiceUtil {
 	}
 
 	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery
-			updateDelivery(long userId, String type, boolean email, boolean sms)
+			updateDelivery(
+				long userId, java.lang.String type, boolean email, boolean sms)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateDelivery(userId, type, email, sms);
 	}
 
 	public static AnnouncementsDeliveryLocalService getService() {
-		if (_service == null) {
-			_service =
-				(AnnouncementsDeliveryLocalService)PortalBeanLocatorUtil.locate(
-					AnnouncementsDeliveryLocalService.class.getName());
-		}
-
-		return _service;
+		return _announcementsDeliveryLocalService;
 	}
 
-	private static AnnouncementsDeliveryLocalService _service;
+	private static volatile AnnouncementsDeliveryLocalService
+		_announcementsDeliveryLocalService;
 
 }

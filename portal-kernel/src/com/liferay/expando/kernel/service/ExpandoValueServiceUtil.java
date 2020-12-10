@@ -14,8 +14,6 @@
 
 package com.liferay.expando.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for ExpandoValue. This utility wraps
  * <code>com.liferay.portlet.expando.service.impl.ExpandoValueServiceImpl</code> and is an
@@ -36,8 +34,9 @@ public class ExpandoValueServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portlet.expando.service.impl.ExpandoValueServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.expando.kernel.model.ExpandoValue addValue(
-			long companyId, String className, String tableName,
-			String columnName, long classPK, Object data)
+			long companyId, java.lang.String className,
+			java.lang.String tableName, java.lang.String columnName,
+			long classPK, java.lang.Object data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addValue(
@@ -45,8 +44,9 @@ public class ExpandoValueServiceUtil {
 	}
 
 	public static com.liferay.expando.kernel.model.ExpandoValue addValue(
-			long companyId, String className, String tableName,
-			String columnName, long classPK, String data)
+			long companyId, java.lang.String className,
+			java.lang.String tableName, java.lang.String columnName,
+			long classPK, java.lang.String data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addValue(
@@ -54,17 +54,20 @@ public class ExpandoValueServiceUtil {
 	}
 
 	public static void addValues(
-			long companyId, String className, String tableName, long classPK,
-			java.util.Map<String, java.io.Serializable> attributeValues)
+			long companyId, java.lang.String className,
+			java.lang.String tableName, long classPK,
+			java.util.Map<java.lang.String, java.io.Serializable>
+				attributeValues)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().addValues(
 			companyId, className, tableName, classPK, attributeValues);
 	}
 
-	public static java.util.Map<String, java.io.Serializable> getData(
-			long companyId, String className, String tableName,
-			java.util.Collection<String> columnNames, long classPK)
+	public static java.util.Map<java.lang.String, java.io.Serializable> getData(
+			long companyId, java.lang.String className,
+			java.lang.String tableName,
+			java.util.Collection<java.lang.String> columnNames, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getData(
@@ -72,8 +75,9 @@ public class ExpandoValueServiceUtil {
 	}
 
 	public static java.io.Serializable getData(
-			long companyId, String className, String tableName,
-			String columnName, long classPK)
+			long companyId, java.lang.String className,
+			java.lang.String tableName, java.lang.String columnName,
+			long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getData(
@@ -81,8 +85,9 @@ public class ExpandoValueServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject getJSONData(
-			long companyId, String className, String tableName,
-			String columnName, long classPK)
+			long companyId, java.lang.String className,
+			java.lang.String tableName, java.lang.String columnName,
+			long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getJSONData(
@@ -94,19 +99,14 @@ public class ExpandoValueServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ExpandoValueService getService() {
-		if (_service == null) {
-			_service = (ExpandoValueService)PortalBeanLocatorUtil.locate(
-				ExpandoValueService.class.getName());
-		}
-
-		return _service;
+		return _expandoValueService;
 	}
 
-	private static ExpandoValueService _service;
+	private static volatile ExpandoValueService _expandoValueService;
 
 }

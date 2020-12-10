@@ -14,10 +14,6 @@
 
 package com.liferay.asset.category.property.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetCategoryProperty. This utility wraps
  * <code>com.liferay.asset.category.property.service.impl.AssetCategoryPropertyLocalServiceImpl</code> and
@@ -60,7 +56,8 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	public static
 		com.liferay.asset.category.property.model.AssetCategoryProperty
 				addCategoryProperty(
-					long userId, long categoryId, String key, String value)
+					long userId, long categoryId, java.lang.String key,
+					java.lang.String value)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCategoryProperty(userId, categoryId, key, value);
@@ -255,7 +252,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static
 		com.liferay.asset.category.property.model.AssetCategoryProperty
-			fetchCategoryProperty(long categoryId, String key) {
+			fetchCategoryProperty(long categoryId, java.lang.String key) {
 
 		return getService().fetchCategoryProperty(categoryId, key);
 	}
@@ -332,7 +329,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static
 		com.liferay.asset.category.property.model.AssetCategoryProperty
-				getCategoryProperty(long categoryId, String key)
+				getCategoryProperty(long categoryId, java.lang.String key)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCategoryProperty(categoryId, key);
@@ -340,7 +337,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.asset.category.property.model.AssetCategoryProperty>
-			getCategoryPropertyValues(long groupId, String key) {
+			getCategoryPropertyValues(long groupId, java.lang.String key) {
 
 		return getService().getCategoryPropertyValues(groupId, key);
 	}
@@ -357,7 +354,7 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -393,8 +390,8 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	public static
 		com.liferay.asset.category.property.model.AssetCategoryProperty
 				updateCategoryProperty(
-					long userId, long categoryPropertyId, String key,
-					String value)
+					long userId, long categoryPropertyId, java.lang.String key,
+					java.lang.String value)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCategoryProperty(
@@ -404,7 +401,8 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	public static
 		com.liferay.asset.category.property.model.AssetCategoryProperty
 				updateCategoryProperty(
-					long categoryPropertyId, String key, String value)
+					long categoryPropertyId, java.lang.String key,
+					java.lang.String value)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCategoryProperty(
@@ -412,29 +410,10 @@ public class AssetCategoryPropertyLocalServiceUtil {
 	}
 
 	public static AssetCategoryPropertyLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetCategoryPropertyLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetCategoryPropertyLocalService, AssetCategoryPropertyLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetCategoryPropertyLocalService.class);
-
-		ServiceTracker
-			<AssetCategoryPropertyLocalService,
-			 AssetCategoryPropertyLocalService> serviceTracker =
-				new ServiceTracker
-					<AssetCategoryPropertyLocalService,
-					 AssetCategoryPropertyLocalService>(
-						 bundle.getBundleContext(),
-						 AssetCategoryPropertyLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetCategoryPropertyLocalService
+		_assetCategoryPropertyLocalService;
 
 }

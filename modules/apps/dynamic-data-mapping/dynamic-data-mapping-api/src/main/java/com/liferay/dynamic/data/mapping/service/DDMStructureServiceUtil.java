@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMStructure. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMStructureServiceImpl</code> and is an
@@ -40,13 +36,14 @@ public class DDMStructureServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			addStructure(
 				long groupId, long parentStructureId, long classNameId,
-				String structureKey,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.lang.String structureKey,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
-				String storageType, int type,
+				java.lang.String storageType, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -59,12 +56,13 @@ public class DDMStructureServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			addStructure(
 				long groupId, long classNameId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
-				String storageType,
+				java.lang.String storageType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -75,14 +73,15 @@ public class DDMStructureServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			addStructure(
-				long groupId, String parentStructureKey, long classNameId,
-				String structureKey,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				long groupId, java.lang.String parentStructureKey,
+				long classNameId, java.lang.String structureKey,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
-				String storageType, int type,
+				java.lang.String storageType, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -109,8 +108,9 @@ public class DDMStructureServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			copyStructure(
 				long structureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -155,7 +155,8 @@ public class DDMStructureServiceUtil {
 	 structure could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
-			fetchStructure(long groupId, long classNameId, String structureKey)
+			fetchStructure(
+				long groupId, long classNameId, java.lang.String structureKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchStructure(groupId, classNameId, structureKey);
@@ -163,7 +164,7 @@ public class DDMStructureServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			fetchStructure(
-				long groupId, long classNameId, String structureKey,
+				long groupId, long classNameId, java.lang.String structureKey,
 				boolean includeAncestorStructures)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -176,7 +177,7 @@ public class DDMStructureServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -204,7 +205,8 @@ public class DDMStructureServiceUtil {
 	 * @return the matching structure
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
-			getStructure(long groupId, long classNameId, String structureKey)
+			getStructure(
+				long groupId, long classNameId, java.lang.String structureKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getStructure(groupId, classNameId, structureKey);
@@ -233,7 +235,7 @@ public class DDMStructureServiceUtil {
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			getStructure(
-				long groupId, long classNameId, String structureKey,
+				long groupId, long classNameId, java.lang.String structureKey,
 				boolean includeAncestorStructures)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -276,8 +278,8 @@ public class DDMStructureServiceUtil {
 
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure> getStructures(
-			long companyId, long[] groupIds, long classNameId, String keywords,
-			int status, int start, int end,
+			long companyId, long[] groupIds, long classNameId,
+			java.lang.String keywords, int status, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMStructure>
 					orderByComparator) {
@@ -295,15 +297,15 @@ public class DDMStructureServiceUtil {
 	}
 
 	public static int getStructuresCount(
-		long companyId, long[] groupIds, long classNameId, String keywords,
-		int status) {
+		long companyId, long[] groupIds, long classNameId,
+		java.lang.String keywords, int status) {
 
 		return getService().getStructuresCount(
 			companyId, groupIds, classNameId, keywords, status);
 	}
 
 	public static void revertStructure(
-			long structureId, String version,
+			long structureId, java.lang.String version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -342,8 +344,8 @@ public class DDMStructureServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure> search(
-			long companyId, long[] groupIds, long classNameId, String keywords,
-			int type, int status, int start, int end,
+			long companyId, long[] groupIds, long classNameId,
+			java.lang.String keywords, int type, int status, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMStructure>
 					orderByComparator) {
@@ -383,8 +385,8 @@ public class DDMStructureServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure> search(
-			long companyId, long[] groupIds, long classNameId, String keywords,
-			int status, int start, int end,
+			long companyId, long[] groupIds, long classNameId,
+			java.lang.String keywords, int status, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMStructure>
 					orderByComparator) {
@@ -430,8 +432,9 @@ public class DDMStructureServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure> search(
-			long companyId, long[] groupIds, long classNameId, String name,
-			String description, String storageType, int type, int status,
+			long companyId, long[] groupIds, long classNameId,
+			java.lang.String name, java.lang.String description,
+			java.lang.String storageType, int type, int status,
 			boolean andOperator, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMStructure>
@@ -456,8 +459,8 @@ public class DDMStructureServiceUtil {
 	 * @return the number of matching structures
 	 */
 	public static int searchCount(
-		long companyId, long[] groupIds, long classNameId, String keywords,
-		int status) {
+		long companyId, long[] groupIds, long classNameId,
+		java.lang.String keywords, int status) {
 
 		return getService().searchCount(
 			companyId, groupIds, classNameId, keywords, status);
@@ -479,8 +482,8 @@ public class DDMStructureServiceUtil {
 	 * @return the number of matching structures
 	 */
 	public static int searchCount(
-		long companyId, long[] groupIds, long classNameId, String keywords,
-		int type, int status) {
+		long companyId, long[] groupIds, long classNameId,
+		java.lang.String keywords, int type, int status) {
 
 		return getService().searchCount(
 			companyId, groupIds, classNameId, keywords, type, status);
@@ -506,8 +509,9 @@ public class DDMStructureServiceUtil {
 	 * @return the number of matching structures
 	 */
 	public static int searchCount(
-		long companyId, long[] groupIds, long classNameId, String name,
-		String description, String storageType, int type, int status,
+		long companyId, long[] groupIds, long classNameId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String storageType, int type, int status,
 		boolean andOperator) {
 
 		return getService().searchCount(
@@ -518,9 +522,10 @@ public class DDMStructureServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			updateStructure(
 				long groupId, long parentStructureId, long classNameId,
-				String structureKey,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.lang.String structureKey,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
@@ -535,8 +540,9 @@ public class DDMStructureServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructure
 			updateStructure(
 				long structureId, long parentStructureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
@@ -549,23 +555,9 @@ public class DDMStructureServiceUtil {
 	}
 
 	public static DDMStructureService getService() {
-		return _serviceTracker.getService();
+		return _ddmStructureService;
 	}
 
-	private static ServiceTracker<DDMStructureService, DDMStructureService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDMStructureService.class);
-
-		ServiceTracker<DDMStructureService, DDMStructureService>
-			serviceTracker =
-				new ServiceTracker<DDMStructureService, DDMStructureService>(
-					bundle.getBundleContext(), DDMStructureService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMStructureService _ddmStructureService;
 
 }

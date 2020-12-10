@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.lists.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDLRecordSetVersion. This utility wraps
  * <code>com.liferay.dynamic.data.lists.service.impl.DDLRecordSetVersionLocalServiceImpl</code> and
@@ -292,7 +288,7 @@ public class DDLRecordSetVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -314,7 +310,7 @@ public class DDLRecordSetVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.lists.model.DDLRecordSetVersion
-			getRecordSetVersion(long recordSetId, String version)
+			getRecordSetVersion(long recordSetId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRecordSetVersion(recordSetId, version);
@@ -362,29 +358,10 @@ public class DDLRecordSetVersionLocalServiceUtil {
 	}
 
 	public static DDLRecordSetVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddlRecordSetVersionLocalService;
 	}
 
-	private static ServiceTracker
-		<DDLRecordSetVersionLocalService, DDLRecordSetVersionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDLRecordSetVersionLocalService.class);
-
-		ServiceTracker
-			<DDLRecordSetVersionLocalService, DDLRecordSetVersionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DDLRecordSetVersionLocalService,
-						 DDLRecordSetVersionLocalService>(
-							 bundle.getBundleContext(),
-							 DDLRecordSetVersionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDLRecordSetVersionLocalService
+		_ddlRecordSetVersionLocalService;
 
 }

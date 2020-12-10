@@ -14,10 +14,6 @@
 
 package com.liferay.portal.security.wedeploy.auth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for WeDeployAuthApp. This utility wraps
  * <code>com.liferay.portal.security.wedeploy.auth.service.impl.WeDeployAuthAppLocalServiceImpl</code> and
@@ -40,7 +36,8 @@ public class WeDeployAuthAppLocalServiceUtil {
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
 				addWeDeployAuthApp(
-					long userId, String name, String redirectURI,
+					long userId, java.lang.String name,
+					java.lang.String redirectURI,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -240,7 +237,8 @@ public class WeDeployAuthAppLocalServiceUtil {
 
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
-			fetchWeDeployAuthApp(String redirectURI, String clientId) {
+			fetchWeDeployAuthApp(
+				java.lang.String redirectURI, java.lang.String clientId) {
 
 		return getService().fetchWeDeployAuthApp(redirectURI, clientId);
 	}
@@ -263,7 +261,7 @@ public class WeDeployAuthAppLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -339,27 +337,10 @@ public class WeDeployAuthAppLocalServiceUtil {
 	}
 
 	public static WeDeployAuthAppLocalService getService() {
-		return _serviceTracker.getService();
+		return _weDeployAuthAppLocalService;
 	}
 
-	private static ServiceTracker
-		<WeDeployAuthAppLocalService, WeDeployAuthAppLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WeDeployAuthAppLocalService.class);
-
-		ServiceTracker<WeDeployAuthAppLocalService, WeDeployAuthAppLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WeDeployAuthAppLocalService, WeDeployAuthAppLocalService>(
-						bundle.getBundleContext(),
-						WeDeployAuthAppLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WeDeployAuthAppLocalService
+		_weDeployAuthAppLocalService;
 
 }

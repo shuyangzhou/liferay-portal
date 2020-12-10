@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LazyBlobEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.LazyBlobEntryLocalServiceImpl</code> and
@@ -246,7 +242,8 @@ public class LazyBlobEntryLocalServiceUtil {
 	 */
 	public static
 		com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry
-			fetchLazyBlobEntryByUuidAndGroupId(String uuid, long groupId) {
+			fetchLazyBlobEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchLazyBlobEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -330,7 +327,8 @@ public class LazyBlobEntryLocalServiceUtil {
 	 */
 	public static
 		com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry
-				getLazyBlobEntryByUuidAndGroupId(String uuid, long groupId)
+				getLazyBlobEntryByUuidAndGroupId(
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLazyBlobEntryByUuidAndGroupId(uuid, groupId);
@@ -341,7 +339,7 @@ public class LazyBlobEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -387,26 +385,10 @@ public class LazyBlobEntryLocalServiceUtil {
 	}
 
 	public static LazyBlobEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _lazyBlobEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<LazyBlobEntryLocalService, LazyBlobEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LazyBlobEntryLocalService.class);
-
-		ServiceTracker<LazyBlobEntryLocalService, LazyBlobEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LazyBlobEntryLocalService, LazyBlobEntryLocalService>(
-						bundle.getBundleContext(),
-						LazyBlobEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LazyBlobEntryLocalService
+		_lazyBlobEntryLocalService;
 
 }

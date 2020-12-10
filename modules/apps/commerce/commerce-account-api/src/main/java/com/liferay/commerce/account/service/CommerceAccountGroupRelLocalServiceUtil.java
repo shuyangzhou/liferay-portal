@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAccountGroupRel. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountGroupRelLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class CommerceAccountGroupRelLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountGroupRel
 			addCommerceAccountGroupRel(
-				String className, long classPK, long commerceAccountGroupId,
+				java.lang.String className, long classPK,
+				long commerceAccountGroupId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -134,7 +131,7 @@ public class CommerceAccountGroupRelLocalServiceUtil {
 	}
 
 	public static void deleteCommerceAccountGroupRels(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		getService().deleteCommerceAccountGroupRels(className, classPK);
 	}
@@ -302,7 +299,7 @@ public class CommerceAccountGroupRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.account.model.CommerceAccountGroupRel>
 			getCommerceAccountGroupRels(
-				String className, long classPK, int start, int end,
+				java.lang.String className, long classPK, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.account.model.CommerceAccountGroupRel>
 						orderByComparator) {
@@ -328,7 +325,7 @@ public class CommerceAccountGroupRelLocalServiceUtil {
 	}
 
 	public static int getCommerceAccountGroupRelsCount(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().getCommerceAccountGroupRelsCount(
 			className, classPK);
@@ -346,7 +343,7 @@ public class CommerceAccountGroupRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -380,29 +377,10 @@ public class CommerceAccountGroupRelLocalServiceUtil {
 	}
 
 	public static CommerceAccountGroupRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountGroupRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountGroupRelLocalService,
-		 CommerceAccountGroupRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountGroupRelLocalService.class);
-
-		ServiceTracker
-			<CommerceAccountGroupRelLocalService,
-			 CommerceAccountGroupRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceAccountGroupRelLocalService,
-					 CommerceAccountGroupRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceAccountGroupRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountGroupRelLocalService
+		_commerceAccountGroupRelLocalService;
 
 }

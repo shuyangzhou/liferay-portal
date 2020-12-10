@@ -14,8 +14,6 @@
 
 package com.liferay.asset.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for AssetCategory. This utility wraps
  * <code>com.liferay.portlet.asset.service.impl.AssetCategoryServiceImpl</code> and is an
@@ -37,9 +35,9 @@ public class AssetCategoryServiceUtil {
 	 */
 	public static com.liferay.asset.kernel.model.AssetCategory addCategory(
 			long groupId, long parentCategoryId,
-			java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			long vocabularyId, String[] categoryProperties,
+			java.util.Map<java.util.Locale, java.lang.String> titleMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			long vocabularyId, java.lang.String[] categoryProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -49,7 +47,7 @@ public class AssetCategoryServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetCategory addCategory(
-			long groupId, String title, long vocabularyId,
+			long groupId, java.lang.String title, long vocabularyId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -93,7 +91,7 @@ public class AssetCategoryServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetCategory>
-			getCategories(String className, long classPK)
+			getCategories(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCategories(className, classPK);
@@ -118,7 +116,7 @@ public class AssetCategoryServiceUtil {
 		return getService().getCategory(categoryId);
 	}
 
-	public static String getCategoryPath(long categoryId)
+	public static java.lang.String getCategoryPath(long categoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCategoryPath(categoryId);
@@ -171,7 +169,7 @@ public class AssetCategoryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -214,7 +212,8 @@ public class AssetCategoryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetCategory>
 		getVocabularyCategories(
-			long groupId, String name, long vocabularyId, int start, int end,
+			long groupId, java.lang.String name, long vocabularyId, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.kernel.model.AssetCategory>
 					orderByComparator) {
@@ -237,7 +236,7 @@ public class AssetCategoryServiceUtil {
 	}
 
 	public static int getVocabularyCategoriesCount(
-		long groupId, String name, long vocabularyId) {
+		long groupId, java.lang.String name, long vocabularyId) {
 
 		return getService().getVocabularyCategoriesCount(
 			groupId, name, vocabularyId);
@@ -257,8 +256,8 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			getVocabularyCategoriesDisplay(
-				long groupId, String name, long vocabularyId, int start,
-				int end,
+				long groupId, java.lang.String name, long vocabularyId,
+				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.asset.kernel.model.AssetCategory>
 						orderByComparator)
@@ -297,8 +296,8 @@ public class AssetCategoryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetCategory>
 		search(
-			long groupId, String keywords, long vocabularyId, int start,
-			int end,
+			long groupId, java.lang.String keywords, long vocabularyId,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.kernel.model.AssetCategory>
 					orderByComparator) {
@@ -308,8 +307,8 @@ public class AssetCategoryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray search(
-			long groupId, String name, String[] categoryProperties, int start,
-			int end)
+			long groupId, java.lang.String name,
+			java.lang.String[] categoryProperties, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().search(
@@ -317,8 +316,8 @@ public class AssetCategoryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray search(
-			long[] groupIds, String name, long[] vocabularyIds, int start,
-			int end)
+			long[] groupIds, java.lang.String name, long[] vocabularyIds,
+			int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().search(groupIds, name, vocabularyIds, start, end);
@@ -326,8 +325,8 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			searchCategoriesDisplay(
-				long groupId, String title, long vocabularyId, int start,
-				int end)
+				long groupId, java.lang.String title, long vocabularyId,
+				int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCategoriesDisplay(
@@ -336,7 +335,7 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			searchCategoriesDisplay(
-				long groupId, String title, long parentCategoryId,
+				long groupId, java.lang.String title, long parentCategoryId,
 				long vocabularyId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -346,7 +345,7 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			searchCategoriesDisplay(
-				long groupId, String title, long vocabularyId,
+				long groupId, java.lang.String title, long vocabularyId,
 				long parentCategoryId, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -357,8 +356,8 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			searchCategoriesDisplay(
-				long[] groupIds, String title, long[] vocabularyIds, int start,
-				int end)
+				long[] groupIds, java.lang.String title, long[] vocabularyIds,
+				int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCategoriesDisplay(
@@ -367,8 +366,9 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			searchCategoriesDisplay(
-				long[] groupIds, String title, long[] parentCategoryIds,
-				long[] vocabularyIds, int start, int end)
+				long[] groupIds, java.lang.String title,
+				long[] parentCategoryIds, long[] vocabularyIds, int start,
+				int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCategoriesDisplay(
@@ -377,7 +377,7 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategoryDisplay
 			searchCategoriesDisplay(
-				long[] groupIds, String title, long[] vocabularyIds,
+				long[] groupIds, java.lang.String title, long[] vocabularyIds,
 				long[] parentCategoryIds, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -389,9 +389,9 @@ public class AssetCategoryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetCategory updateCategory(
 			long categoryId, long parentCategoryId,
-			java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			long vocabularyId, String[] categoryProperties,
+			java.util.Map<java.util.Locale, java.lang.String> titleMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			long vocabularyId, java.lang.String[] categoryProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -401,14 +401,9 @@ public class AssetCategoryServiceUtil {
 	}
 
 	public static AssetCategoryService getService() {
-		if (_service == null) {
-			_service = (AssetCategoryService)PortalBeanLocatorUtil.locate(
-				AssetCategoryService.class.getName());
-		}
-
-		return _service;
+		return _assetCategoryService;
 	}
 
-	private static AssetCategoryService _service;
+	private static volatile AssetCategoryService _assetCategoryService;
 
 }

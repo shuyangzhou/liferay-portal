@@ -14,10 +14,6 @@
 
 package com.liferay.akismet.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AkismetEntry. This utility wraps
  * <code>com.liferay.akismet.service.impl.AkismetEntryLocalServiceImpl</code> and
@@ -114,7 +110,8 @@ public class AkismetEntryLocalServiceUtil {
 		return getService().deleteAkismetEntry(akismetEntryId);
 	}
 
-	public static void deleteAkismetEntry(String className, long classPK)
+	public static void deleteAkismetEntry(
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteAkismetEntry(className, classPK);
@@ -229,7 +226,7 @@ public class AkismetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.akismet.model.AkismetEntry fetchAkismetEntry(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().fetchAkismetEntry(className, classPK);
 	}
@@ -292,7 +289,7 @@ public class AkismetEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -323,8 +320,10 @@ public class AkismetEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.akismet.model.AkismetEntry updateAkismetEntry(
-		String className, long classPK, String type, String permalink,
-		String referrer, String userAgent, String userIP, String userURL) {
+		java.lang.String className, long classPK, java.lang.String type,
+		java.lang.String permalink, java.lang.String referrer,
+		java.lang.String userAgent, java.lang.String userIP,
+		java.lang.String userURL) {
 
 		return getService().updateAkismetEntry(
 			className, classPK, type, permalink, referrer, userAgent, userIP,
@@ -332,25 +331,9 @@ public class AkismetEntryLocalServiceUtil {
 	}
 
 	public static AkismetEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _akismetEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<AkismetEntryLocalService, AkismetEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AkismetEntryLocalService.class);
-
-		ServiceTracker<AkismetEntryLocalService, AkismetEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AkismetEntryLocalService, AkismetEntryLocalService>(
-						bundle.getBundleContext(),
-						AkismetEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AkismetEntryLocalService _akismetEntryLocalService;
 
 }

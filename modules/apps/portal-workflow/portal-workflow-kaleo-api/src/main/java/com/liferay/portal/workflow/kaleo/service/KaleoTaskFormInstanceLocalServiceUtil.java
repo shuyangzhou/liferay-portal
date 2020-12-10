@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoTaskFormInstance. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTaskFormInstanceLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class KaleoTaskFormInstanceLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoTaskFormInstance
 			addKaleoTaskFormInstance(
-				long groupId, long kaleoTaskFormId, String formValues,
+				long groupId, long kaleoTaskFormId, java.lang.String formValues,
 				com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken
 					kaleoTaskInstanceToken,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -349,7 +345,7 @@ public class KaleoTaskFormInstanceLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -382,29 +378,10 @@ public class KaleoTaskFormInstanceLocalServiceUtil {
 	}
 
 	public static KaleoTaskFormInstanceLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoTaskFormInstanceLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoTaskFormInstanceLocalService, KaleoTaskFormInstanceLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoTaskFormInstanceLocalService.class);
-
-		ServiceTracker
-			<KaleoTaskFormInstanceLocalService,
-			 KaleoTaskFormInstanceLocalService> serviceTracker =
-				new ServiceTracker
-					<KaleoTaskFormInstanceLocalService,
-					 KaleoTaskFormInstanceLocalService>(
-						 bundle.getBundleContext(),
-						 KaleoTaskFormInstanceLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoTaskFormInstanceLocalService
+		_kaleoTaskFormInstanceLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMTemplateVersion. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMTemplateVersionLocalServiceImpl</code> and
@@ -292,7 +288,7 @@ public class DDMTemplateVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -314,7 +310,7 @@ public class DDMTemplateVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMTemplateVersion
-			getTemplateVersion(long templateId, String version)
+			getTemplateVersion(long templateId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getTemplateVersion(templateId, version);
@@ -362,29 +358,10 @@ public class DDMTemplateVersionLocalServiceUtil {
 	}
 
 	public static DDMTemplateVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmTemplateVersionLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMTemplateVersionLocalService, DDMTemplateVersionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMTemplateVersionLocalService.class);
-
-		ServiceTracker
-			<DDMTemplateVersionLocalService, DDMTemplateVersionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DDMTemplateVersionLocalService,
-						 DDMTemplateVersionLocalService>(
-							 bundle.getBundleContext(),
-							 DDMTemplateVersionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMTemplateVersionLocalService
+		_ddmTemplateVersionLocalService;
 
 }

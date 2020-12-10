@@ -14,10 +14,6 @@
 
 package com.liferay.blogs.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for BlogsEntry. This utility wraps
  * <code>com.liferay.blogs.service.impl.BlogsEntryServiceImpl</code> and is an
@@ -45,11 +41,12 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			String title, String subtitle, String description, String content,
+			java.lang.String title, java.lang.String subtitle,
+			java.lang.String description, java.lang.String content,
 			int displayDateMonth, int displayDateDay, int displayDateYear,
 			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			boolean allowTrackbacks, java.lang.String[] trackbacks,
+			java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -65,11 +62,12 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			String title, String subtitle, String urlTitle, String description,
-			String content, int displayDateMonth, int displayDateDay,
+			java.lang.String title, java.lang.String subtitle,
+			java.lang.String urlTitle, java.lang.String description,
+			java.lang.String content, int displayDateMonth, int displayDateDay,
 			int displayDateYear, int displayDateHour, int displayDateMinute,
 			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
+			java.lang.String[] trackbacks, java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -99,10 +97,11 @@ public class BlogsEntryServiceUtil {
 			companyId, displayDate, status, max);
 	}
 
-	public static String getCompanyEntriesRSS(
+	public static java.lang.String getCompanyEntriesRSS(
 			long companyId, java.util.Date displayDate, int status, int max,
-			String type, double version, String displayStyle, String feedURL,
-			String entryURL,
+			java.lang.String type, double version,
+			java.lang.String displayStyle, java.lang.String feedURL,
+			java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -125,7 +124,7 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry getEntry(
-			long groupId, String urlTitle)
+			long groupId, java.lang.String urlTitle)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(groupId, urlTitle);
@@ -179,10 +178,11 @@ public class BlogsEntryServiceUtil {
 		return getService().getGroupEntriesCount(groupId, status);
 	}
 
-	public static String getGroupEntriesRSS(
+	public static java.lang.String getGroupEntriesRSS(
 			long groupId, java.util.Date displayDate, int status, int max,
-			String type, double version, String displayStyle, String feedURL,
-			String entryURL,
+			java.lang.String type, double version,
+			java.lang.String displayStyle, java.lang.String feedURL,
+			java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -243,10 +243,11 @@ public class BlogsEntryServiceUtil {
 			organizationId, displayDate, status, max);
 	}
 
-	public static String getOrganizationEntriesRSS(
+	public static java.lang.String getOrganizationEntriesRSS(
 			long organizationId, java.util.Date displayDate, int status,
-			int max, String type, double version, String displayStyle,
-			String feedURL, String entryURL,
+			int max, java.lang.String type, double version,
+			java.lang.String displayStyle, java.lang.String feedURL,
+			java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -260,7 +261,7 @@ public class BlogsEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -290,11 +291,12 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long entryId, String title, String subtitle, String description,
-			String content, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
+			long entryId, java.lang.String title, java.lang.String subtitle,
+			java.lang.String description, java.lang.String content,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
+			boolean allowTrackbacks, java.lang.String[] trackbacks,
+			java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -310,12 +312,12 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long entryId, String title, String subtitle, String urlTitle,
-			String description, String content, int displayDateMonth,
-			int displayDateDay, int displayDateYear, int displayDateHour,
-			int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			long entryId, java.lang.String title, java.lang.String subtitle,
+			java.lang.String urlTitle, java.lang.String description,
+			java.lang.String content, int displayDateMonth, int displayDateDay,
+			int displayDateYear, int displayDateHour, int displayDateMinute,
+			boolean allowPingbacks, boolean allowTrackbacks,
+			java.lang.String[] trackbacks, java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -332,22 +334,9 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static BlogsEntryService getService() {
-		return _serviceTracker.getService();
+		return _blogsEntryService;
 	}
 
-	private static ServiceTracker<BlogsEntryService, BlogsEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(BlogsEntryService.class);
-
-		ServiceTracker<BlogsEntryService, BlogsEntryService> serviceTracker =
-			new ServiceTracker<BlogsEntryService, BlogsEntryService>(
-				bundle.getBundleContext(), BlogsEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BlogsEntryService _blogsEntryService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceRegion. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceRegionLocalServiceImpl</code> and
@@ -55,8 +51,8 @@ public class CommerceRegionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceRegion addCommerceRegion(
-			long commerceCountryId, String name, String code, double priority,
-			boolean active,
+			long commerceCountryId, java.lang.String name,
+			java.lang.String code, double priority, boolean active,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -245,7 +241,8 @@ public class CommerceRegionLocalServiceUtil {
 	 * @return the matching commerce region, or <code>null</code> if a matching commerce region could not be found
 	 */
 	public static com.liferay.commerce.model.CommerceRegion
-		fetchCommerceRegionByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCommerceRegionByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommerceRegionByUuidAndCompanyId(
 			uuid, companyId);
@@ -272,7 +269,7 @@ public class CommerceRegionLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceRegion getCommerceRegion(
-			long commerceCountryId, String code)
+			long commerceCountryId, java.lang.String code)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceRegion(commerceCountryId, code);
@@ -287,7 +284,8 @@ public class CommerceRegionLocalServiceUtil {
 	 * @throws PortalException if a matching commerce region could not be found
 	 */
 	public static com.liferay.commerce.model.CommerceRegion
-			getCommerceRegionByUuidAndCompanyId(String uuid, long companyId)
+			getCommerceRegionByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceRegionByUuidAndCompanyId(
@@ -339,7 +337,8 @@ public class CommerceRegionLocalServiceUtil {
 
 	public static java.util.List<com.liferay.commerce.model.CommerceRegion>
 			getCommerceRegions(
-				long companyId, String countryTwoLettersISOCode, boolean active)
+				long companyId, java.lang.String countryTwoLettersISOCode,
+				boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceRegions(
@@ -385,7 +384,7 @@ public class CommerceRegionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -425,8 +424,8 @@ public class CommerceRegionLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceRegion
 			updateCommerceRegion(
-				long commerceRegionId, String name, String code,
-				double priority, boolean active,
+				long commerceRegionId, java.lang.String name,
+				java.lang.String code, double priority, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -435,27 +434,10 @@ public class CommerceRegionLocalServiceUtil {
 	}
 
 	public static CommerceRegionLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceRegionLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceRegionLocalService, CommerceRegionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceRegionLocalService.class);
-
-		ServiceTracker<CommerceRegionLocalService, CommerceRegionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceRegionLocalService, CommerceRegionLocalService>(
-						bundle.getBundleContext(),
-						CommerceRegionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceRegionLocalService
+		_commerceRegionLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMContent. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMContentLocalServiceImpl</code> and
@@ -41,8 +37,8 @@ public class DDMContentLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.dynamic.data.mapping.service.impl.DDMContentLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMContent addContent(
-			long userId, long groupId, String name, String description,
-			String data,
+			long userId, long groupId, java.lang.String name,
+			java.lang.String description, java.lang.String data,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -250,7 +246,7 @@ public class DDMContentLocalServiceUtil {
 	 * @return the matching ddm content, or <code>null</code> if a matching ddm content could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMContent
-		fetchDDMContentByUuidAndGroupId(String uuid, long groupId) {
+		fetchDDMContentByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchDDMContentByUuidAndGroupId(uuid, groupId);
 	}
@@ -315,7 +311,7 @@ public class DDMContentLocalServiceUtil {
 	 * @throws PortalException if a matching ddm content could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMContent
-			getDDMContentByUuidAndGroupId(String uuid, long groupId)
+			getDDMContentByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDDMContentByUuidAndGroupId(uuid, groupId);
@@ -348,7 +344,8 @@ public class DDMContentLocalServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMContent>
-			getDDMContentsByUuidAndCompanyId(String uuid, long companyId) {
+			getDDMContentsByUuidAndCompanyId(
+				java.lang.String uuid, long companyId) {
 
 		return getService().getDDMContentsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -366,7 +363,7 @@ public class DDMContentLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMContent>
 			getDDMContentsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.dynamic.data.mapping.model.DDMContent>
 						orderByComparator) {
@@ -404,7 +401,7 @@ public class DDMContentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -420,7 +417,8 @@ public class DDMContentLocalServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMContent
 			updateContent(
-				long contentId, String name, String description, String data,
+				long contentId, java.lang.String name,
+				java.lang.String description, java.lang.String data,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -446,25 +444,9 @@ public class DDMContentLocalServiceUtil {
 	}
 
 	public static DDMContentLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmContentLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMContentLocalService, DDMContentLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDMContentLocalService.class);
-
-		ServiceTracker<DDMContentLocalService, DDMContentLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DDMContentLocalService, DDMContentLocalService>(
-						bundle.getBundleContext(), DDMContentLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMContentLocalService _ddmContentLocalService;
 
 }

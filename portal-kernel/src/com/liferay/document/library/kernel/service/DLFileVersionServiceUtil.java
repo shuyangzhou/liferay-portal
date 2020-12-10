@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for DLFileVersion. This utility wraps
  * <code>com.liferay.portlet.documentlibrary.service.impl.DLFileVersionServiceImpl</code> and is an
@@ -76,19 +74,14 @@ public class DLFileVersionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static DLFileVersionService getService() {
-		if (_service == null) {
-			_service = (DLFileVersionService)PortalBeanLocatorUtil.locate(
-				DLFileVersionService.class.getName());
-		}
-
-		return _service;
+		return _dlFileVersionService;
 	}
 
-	private static DLFileVersionService _service;
+	private static volatile DLFileVersionService _dlFileVersionService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.app.builder.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AppBuilderAppDataRecordLink. This utility wraps
  * <code>com.liferay.app.builder.service.impl.AppBuilderAppDataRecordLinkLocalServiceImpl</code> and
@@ -343,7 +339,7 @@ public class AppBuilderAppDataRecordLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -377,29 +373,10 @@ public class AppBuilderAppDataRecordLinkLocalServiceUtil {
 	}
 
 	public static AppBuilderAppDataRecordLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _appBuilderAppDataRecordLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<AppBuilderAppDataRecordLinkLocalService,
-		 AppBuilderAppDataRecordLinkLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AppBuilderAppDataRecordLinkLocalService.class);
-
-		ServiceTracker
-			<AppBuilderAppDataRecordLinkLocalService,
-			 AppBuilderAppDataRecordLinkLocalService> serviceTracker =
-				new ServiceTracker
-					<AppBuilderAppDataRecordLinkLocalService,
-					 AppBuilderAppDataRecordLinkLocalService>(
-						 bundle.getBundleContext(),
-						 AppBuilderAppDataRecordLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppBuilderAppDataRecordLinkLocalService
+		_appBuilderAppDataRecordLinkLocalService;
 
 }

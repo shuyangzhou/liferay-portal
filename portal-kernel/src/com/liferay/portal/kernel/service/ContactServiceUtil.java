@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Contact. This utility wraps
  * <code>com.liferay.portal.service.impl.ContactServiceImpl</code> and is an
@@ -75,19 +73,14 @@ public class ContactServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ContactService getService() {
-		if (_service == null) {
-			_service = (ContactService)PortalBeanLocatorUtil.locate(
-				ContactService.class.getName());
-		}
-
-		return _service;
+		return _contactService;
 	}
 
-	private static ContactService _service;
+	private static volatile ContactService _contactService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.translation.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for TranslationEntry. This utility wraps
  * <code>com.liferay.translation.service.impl.TranslationEntryLocalServiceImpl</code> and
@@ -39,7 +35,7 @@ public class TranslationEntryLocalServiceUtil {
 	 */
 	public static com.liferay.translation.model.TranslationEntry
 			addOrUpdateTranslationEntry(
-				long groupId, String languageId,
+				long groupId, java.lang.String languageId,
 				com.liferay.info.item.InfoItemReference infoItemReference,
 				com.liferay.info.item.InfoItemFieldValues infoItemFieldValues,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -52,8 +48,9 @@ public class TranslationEntryLocalServiceUtil {
 
 	public static com.liferay.translation.model.TranslationEntry
 			addOrUpdateTranslationEntry(
-				long groupId, String className, long classPK, String content,
-				String contentType, String languageId,
+				long groupId, java.lang.String className, long classPK,
+				java.lang.String content, java.lang.String contentType,
+				java.lang.String languageId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -246,7 +243,8 @@ public class TranslationEntryLocalServiceUtil {
 
 	public static com.liferay.translation.model.TranslationEntry
 		fetchTranslationEntry(
-			String className, long classPK, String languageId) {
+			java.lang.String className, long classPK,
+			java.lang.String languageId) {
 
 		return getService().fetchTranslationEntry(
 			className, classPK, languageId);
@@ -260,7 +258,8 @@ public class TranslationEntryLocalServiceUtil {
 	 * @return the matching translation entry, or <code>null</code> if a matching translation entry could not be found
 	 */
 	public static com.liferay.translation.model.TranslationEntry
-		fetchTranslationEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchTranslationEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchTranslationEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -289,7 +288,8 @@ public class TranslationEntryLocalServiceUtil {
 
 	public static com.liferay.info.item.InfoItemFieldValues
 			getInfoItemFieldValues(
-				long groupId, String className, long classPK, String content)
+				long groupId, java.lang.String className, long classPK,
+				java.lang.String content)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getInfoItemFieldValues(
@@ -301,7 +301,7 @@ public class TranslationEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -340,7 +340,8 @@ public class TranslationEntryLocalServiceUtil {
 	 * @return the matching translation entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.translation.model.TranslationEntry>
-		getTranslationEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getTranslationEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getTranslationEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -358,7 +359,7 @@ public class TranslationEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.translation.model.TranslationEntry>
 		getTranslationEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.translation.model.TranslationEntry>
 					orderByComparator) {
@@ -399,7 +400,8 @@ public class TranslationEntryLocalServiceUtil {
 	 * @throws PortalException if a matching translation entry could not be found
 	 */
 	public static com.liferay.translation.model.TranslationEntry
-			getTranslationEntryByUuidAndGroupId(String uuid, long groupId)
+			getTranslationEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getTranslationEntryByUuidAndGroupId(uuid, groupId);
@@ -408,7 +410,8 @@ public class TranslationEntryLocalServiceUtil {
 	public static com.liferay.translation.model.TranslationEntry updateStatus(
 			long userId, long translationEntryId, int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext,
-			java.util.Map<String, java.io.Serializable> workflowContext)
+			java.util.Map<java.lang.String, java.io.Serializable>
+				workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStatus(
@@ -434,29 +437,10 @@ public class TranslationEntryLocalServiceUtil {
 	}
 
 	public static TranslationEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _translationEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<TranslationEntryLocalService, TranslationEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TranslationEntryLocalService.class);
-
-		ServiceTracker
-			<TranslationEntryLocalService, TranslationEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<TranslationEntryLocalService,
-						 TranslationEntryLocalService>(
-							 bundle.getBundleContext(),
-							 TranslationEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TranslationEntryLocalService
+		_translationEntryLocalService;
 
 }

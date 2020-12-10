@@ -14,10 +14,6 @@
 
 package com.liferay.layout.page.template.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LayoutPageTemplateStructureRel. This utility wraps
  * <code>com.liferay.layout.page.template.service.impl.LayoutPageTemplateStructureRelLocalServiceImpl</code> and
@@ -64,7 +60,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 				addLayoutPageTemplateStructureRel(
 					long userId, long groupId,
 					long layoutPageTemplateStructureId,
-					long segmentsExperienceId, String data,
+					long segmentsExperienceId, java.lang.String data,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -298,7 +294,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
 			fetchLayoutPageTemplateStructureRelByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutPageTemplateStructureRelByUuidAndGroupId(
 			uuid, groupId);
@@ -353,7 +349,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	public static
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
 				getLayoutPageTemplateStructureRelByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutPageTemplateStructureRelByUuidAndGroupId(
@@ -407,7 +403,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
 			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().
 			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
@@ -427,7 +423,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
 			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.page.template.model.
 						LayoutPageTemplateStructureRel> orderByComparator) {
@@ -451,7 +447,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -490,7 +486,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
 				updateLayoutPageTemplateStructureRel(
 					long layoutPageTemplateStructureId,
-					long segmentsExperienceId, String data)
+					long segmentsExperienceId, java.lang.String data)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutPageTemplateStructureRel(
@@ -498,30 +494,10 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	}
 
 	public static LayoutPageTemplateStructureRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _layoutPageTemplateStructureRelLocalService;
 	}
 
-	private static ServiceTracker
-		<LayoutPageTemplateStructureRelLocalService,
-		 LayoutPageTemplateStructureRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutPageTemplateStructureRelLocalService.class);
-
-		ServiceTracker
-			<LayoutPageTemplateStructureRelLocalService,
-			 LayoutPageTemplateStructureRelLocalService> serviceTracker =
-				new ServiceTracker
-					<LayoutPageTemplateStructureRelLocalService,
-					 LayoutPageTemplateStructureRelLocalService>(
-						 bundle.getBundleContext(),
-						 LayoutPageTemplateStructureRelLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutPageTemplateStructureRelLocalService
+		_layoutPageTemplateStructureRelLocalService;
 
 }

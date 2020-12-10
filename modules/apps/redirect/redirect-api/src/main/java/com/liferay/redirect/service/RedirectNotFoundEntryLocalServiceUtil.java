@@ -14,10 +14,6 @@
 
 package com.liferay.redirect.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for RedirectNotFoundEntry. This utility wraps
  * <code>com.liferay.redirect.service.impl.RedirectNotFoundEntryLocalServiceImpl</code> and
@@ -39,7 +35,7 @@ public class RedirectNotFoundEntryLocalServiceUtil {
 	 */
 	public static com.liferay.redirect.model.RedirectNotFoundEntry
 		addOrUpdateRedirectNotFoundEntry(
-			com.liferay.portal.kernel.model.Group group, String url) {
+			com.liferay.portal.kernel.model.Group group, java.lang.String url) {
 
 		return getService().addOrUpdateRedirectNotFoundEntry(group, url);
 	}
@@ -231,7 +227,7 @@ public class RedirectNotFoundEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectNotFoundEntry
-		fetchRedirectNotFoundEntry(long groupId, String url) {
+		fetchRedirectNotFoundEntry(long groupId, java.lang.String url) {
 
 		return getService().fetchRedirectNotFoundEntry(groupId, url);
 	}
@@ -254,7 +250,7 @@ public class RedirectNotFoundEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -289,8 +285,8 @@ public class RedirectNotFoundEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.redirect.model.RedirectNotFoundEntry>
 			getRedirectNotFoundEntries(
-				long groupId, Boolean ignored, java.util.Date minModifiedDate,
-				int start, int end,
+				long groupId, java.lang.Boolean ignored,
+				java.util.Date minModifiedDate, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.redirect.model.RedirectNotFoundEntry>
 						orderByComparator) {
@@ -338,7 +334,8 @@ public class RedirectNotFoundEntryLocalServiceUtil {
 	}
 
 	public static int getRedirectNotFoundEntriesCount(
-		long groupId, Boolean ignored, java.util.Date minModifiedDate) {
+		long groupId, java.lang.Boolean ignored,
+		java.util.Date minModifiedDate) {
 
 		return getService().getRedirectNotFoundEntriesCount(
 			groupId, ignored, minModifiedDate);
@@ -393,29 +390,10 @@ public class RedirectNotFoundEntryLocalServiceUtil {
 	}
 
 	public static RedirectNotFoundEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _redirectNotFoundEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<RedirectNotFoundEntryLocalService, RedirectNotFoundEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			RedirectNotFoundEntryLocalService.class);
-
-		ServiceTracker
-			<RedirectNotFoundEntryLocalService,
-			 RedirectNotFoundEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<RedirectNotFoundEntryLocalService,
-					 RedirectNotFoundEntryLocalService>(
-						 bundle.getBundleContext(),
-						 RedirectNotFoundEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile RedirectNotFoundEntryLocalService
+		_redirectNotFoundEntryLocalService;
 
 }

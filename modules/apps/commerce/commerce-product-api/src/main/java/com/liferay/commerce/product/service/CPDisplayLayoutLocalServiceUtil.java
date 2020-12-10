@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPDisplayLayout. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDisplayLayoutLocalServiceImpl</code> and
@@ -44,7 +40,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.commerce.product.model.CPDisplayLayout
 			addCPDisplayLayout(
-				Class<?> clazz, long classPK, String layoutUuid,
+				java.lang.Class<?> clazz, long classPK,
+				java.lang.String layoutUuid,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -72,8 +69,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPDisplayLayout
 			addCPDisplayLayout(
-				long userId, long groupId, Class<?> clazz, long classPK,
-				String layoutUuid)
+				long userId, long groupId, java.lang.Class<?> clazz,
+				long classPK, java.lang.String layoutUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCPDisplayLayout(
@@ -103,7 +100,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPDisplayLayout
-		deleteCPDisplayLayout(Class<?> clazz, long classPK) {
+		deleteCPDisplayLayout(java.lang.Class<?> clazz, long classPK) {
 
 		return getService().deleteCPDisplayLayout(clazz, classPK);
 	}
@@ -149,7 +146,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void deleteCPDisplayLayoutByGroupIdAndLayoutUuid(
-		long groupId, String layoutUuid) {
+		long groupId, java.lang.String layoutUuid) {
 
 		getService().deleteCPDisplayLayoutByGroupIdAndLayoutUuid(
 			groupId, layoutUuid);
@@ -258,7 +255,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPDisplayLayout
-		fetchCPDisplayLayout(Class<?> clazz, long classPK) {
+		fetchCPDisplayLayout(java.lang.Class<?> clazz, long classPK) {
 
 		return getService().fetchCPDisplayLayout(clazz, classPK);
 	}
@@ -272,7 +269,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDisplayLayout>
 			fetchCPDisplayLayoutByGroupIdAndLayoutUuid(
-				long groupId, String layoutUuid) {
+				long groupId, java.lang.String layoutUuid) {
 
 		return getService().fetchCPDisplayLayoutByGroupIdAndLayoutUuid(
 			groupId, layoutUuid);
@@ -281,7 +278,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDisplayLayout>
 			fetchCPDisplayLayoutByGroupIdAndLayoutUuid(
-				long groupId, String layoutUuid, int start, int end) {
+				long groupId, java.lang.String layoutUuid, int start, int end) {
 
 		return getService().fetchCPDisplayLayoutByGroupIdAndLayoutUuid(
 			groupId, layoutUuid, start, end);
@@ -295,7 +292,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 	 * @return the matching cp display layout, or <code>null</code> if a matching cp display layout could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPDisplayLayout
-		fetchCPDisplayLayoutByUuidAndGroupId(String uuid, long groupId) {
+		fetchCPDisplayLayoutByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCPDisplayLayoutByUuidAndGroupId(uuid, groupId);
 	}
@@ -329,7 +327,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 	 * @throws PortalException if a matching cp display layout could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPDisplayLayout
-			getCPDisplayLayoutByUuidAndGroupId(String uuid, long groupId)
+			getCPDisplayLayoutByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDisplayLayoutByUuidAndGroupId(uuid, groupId);
@@ -362,7 +361,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDisplayLayout>
-			getCPDisplayLayoutsByUuidAndCompanyId(String uuid, long companyId) {
+			getCPDisplayLayoutsByUuidAndCompanyId(
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCPDisplayLayoutsByUuidAndCompanyId(
 			uuid, companyId);
@@ -381,7 +381,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDisplayLayout>
 			getCPDisplayLayoutsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.CPDisplayLayout>
 						orderByComparator) {
@@ -419,7 +419,7 @@ public class CPDisplayLayoutLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -436,8 +436,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPDisplayLayout>
 				searchCPDisplayLayout(
-					long companyId, long groupId, String className,
-					String keywords, int start, int end,
+					long companyId, long groupId, java.lang.String className,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -464,7 +464,8 @@ public class CPDisplayLayoutLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPDisplayLayout
-			updateCPDisplayLayout(long cpDisplayLayoutId, String layoutUuid)
+			updateCPDisplayLayout(
+				long cpDisplayLayoutId, java.lang.String layoutUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCPDisplayLayout(
@@ -472,27 +473,10 @@ public class CPDisplayLayoutLocalServiceUtil {
 	}
 
 	public static CPDisplayLayoutLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpDisplayLayoutLocalService;
 	}
 
-	private static ServiceTracker
-		<CPDisplayLayoutLocalService, CPDisplayLayoutLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDisplayLayoutLocalService.class);
-
-		ServiceTracker<CPDisplayLayoutLocalService, CPDisplayLayoutLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CPDisplayLayoutLocalService, CPDisplayLayoutLocalService>(
-						bundle.getBundleContext(),
-						CPDisplayLayoutLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDisplayLayoutLocalService
+		_cpDisplayLayoutLocalService;
 
 }

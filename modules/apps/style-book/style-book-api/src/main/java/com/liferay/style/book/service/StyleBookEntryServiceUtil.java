@@ -14,10 +14,6 @@
 
 package com.liferay.style.book.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for StyleBookEntry. This utility wraps
  * <code>com.liferay.style.book.service.impl.StyleBookEntryServiceImpl</code> and is an
@@ -38,7 +34,8 @@ public class StyleBookEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.style.book.service.impl.StyleBookEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.style.book.model.StyleBookEntry addStyleBookEntry(
-			long groupId, String name, String styleBookEntryKey,
+			long groupId, java.lang.String name,
+			java.lang.String styleBookEntryKey,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -47,8 +44,8 @@ public class StyleBookEntryServiceUtil {
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntry addStyleBookEntry(
-			long groupId, String frontendTokensValues, String name,
-			String styleBookEntryKey,
+			long groupId, java.lang.String frontendTokensValues,
+			java.lang.String name, java.lang.String styleBookEntryKey,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -94,7 +91,7 @@ public class StyleBookEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -116,7 +113,7 @@ public class StyleBookEntryServiceUtil {
 
 	public static com.liferay.style.book.model.StyleBookEntry
 			updateFrontendTokensValues(
-				long styleBookEntryId, String frontendTokensValues)
+				long styleBookEntryId, java.lang.String frontendTokensValues)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFrontendTokensValues(
@@ -124,7 +121,7 @@ public class StyleBookEntryServiceUtil {
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntry updateName(
-			long styleBookEntryId, String name)
+			long styleBookEntryId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateName(styleBookEntryId, name);
@@ -141,7 +138,8 @@ public class StyleBookEntryServiceUtil {
 
 	public static com.liferay.style.book.model.StyleBookEntry
 			updateStyleBookEntry(
-				long styleBookEntryId, String frontendTokensValues, String name)
+				long styleBookEntryId, java.lang.String frontendTokensValues,
+				java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStyleBookEntry(
@@ -149,25 +147,9 @@ public class StyleBookEntryServiceUtil {
 	}
 
 	public static StyleBookEntryService getService() {
-		return _serviceTracker.getService();
+		return _styleBookEntryService;
 	}
 
-	private static ServiceTracker<StyleBookEntryService, StyleBookEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(StyleBookEntryService.class);
-
-		ServiceTracker<StyleBookEntryService, StyleBookEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<StyleBookEntryService, StyleBookEntryService>(
-						bundle.getBundleContext(), StyleBookEntryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile StyleBookEntryService _styleBookEntryService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for MembershipRequest. This utility wraps
  * <code>com.liferay.portal.service.impl.MembershipRequestLocalServiceImpl</code> and
@@ -37,7 +35,7 @@ public class MembershipRequestLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.MembershipRequest
 			addMembershipRequest(
-				long userId, long groupId, String comments,
+				long userId, long groupId, java.lang.String comments,
 				ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -307,7 +305,7 @@ public class MembershipRequestLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -368,9 +366,9 @@ public class MembershipRequestLocalServiceUtil {
 	}
 
 	public static void updateStatus(
-			long replierUserId, long membershipRequestId, String replyComments,
-			long statusId, boolean addUserToGroup,
-			ServiceContext serviceContext)
+			long replierUserId, long membershipRequestId,
+			java.lang.String replyComments, long statusId,
+			boolean addUserToGroup, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateStatus(
@@ -379,15 +377,10 @@ public class MembershipRequestLocalServiceUtil {
 	}
 
 	public static MembershipRequestLocalService getService() {
-		if (_service == null) {
-			_service =
-				(MembershipRequestLocalService)PortalBeanLocatorUtil.locate(
-					MembershipRequestLocalService.class.getName());
-		}
-
-		return _service;
+		return _membershipRequestLocalService;
 	}
 
-	private static MembershipRequestLocalService _service;
+	private static volatile MembershipRequestLocalService
+		_membershipRequestLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.layout.seo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LayoutSEOEntry. This utility wraps
  * <code>com.liferay.layout.seo.service.impl.LayoutSEOEntryLocalServiceImpl</code> and
@@ -118,7 +114,7 @@ public class LayoutSEOEntryLocalServiceUtil {
 		getService().deleteLayoutSEOEntry(groupId, privateLayout, layoutId);
 	}
 
-	public static void deleteLayoutSEOEntry(String uuid, long groupId)
+	public static void deleteLayoutSEOEntry(java.lang.String uuid, long groupId)
 		throws com.liferay.layout.seo.exception.NoSuchEntryException {
 
 		getService().deleteLayoutSEOEntry(uuid, groupId);
@@ -248,7 +244,8 @@ public class LayoutSEOEntryLocalServiceUtil {
 	 * @return the matching layout seo entry, or <code>null</code> if a matching layout seo entry could not be found
 	 */
 	public static com.liferay.layout.seo.model.LayoutSEOEntry
-		fetchLayoutSEOEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchLayoutSEOEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutSEOEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -299,7 +296,8 @@ public class LayoutSEOEntryLocalServiceUtil {
 	 * @return the matching layout seo entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.layout.seo.model.LayoutSEOEntry>
-		getLayoutSEOEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getLayoutSEOEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getLayoutSEOEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -317,7 +315,7 @@ public class LayoutSEOEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.layout.seo.model.LayoutSEOEntry>
 		getLayoutSEOEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.layout.seo.model.LayoutSEOEntry>
 					orderByComparator) {
@@ -358,7 +356,8 @@ public class LayoutSEOEntryLocalServiceUtil {
 	 * @throws PortalException if a matching layout seo entry could not be found
 	 */
 	public static com.liferay.layout.seo.model.LayoutSEOEntry
-			getLayoutSEOEntryByUuidAndGroupId(String uuid, long groupId)
+			getLayoutSEOEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutSEOEntryByUuidAndGroupId(uuid, groupId);
@@ -369,7 +368,7 @@ public class LayoutSEOEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -404,12 +403,16 @@ public class LayoutSEOEntryLocalServiceUtil {
 			updateLayoutSEOEntry(
 				long userId, long groupId, boolean privateLayout, long layoutId,
 				boolean canonicalURLEnabled,
-				java.util.Map<java.util.Locale, String> canonicalURLMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					canonicalURLMap,
 				boolean openGraphDescriptionEnabled,
-				java.util.Map<java.util.Locale, String> openGraphDescriptionMap,
-				java.util.Map<java.util.Locale, String> openGraphImageAltMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphDescriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphImageAltMap,
 				long openGraphImageFileEntryId, boolean openGraphTitleEnabled,
-				java.util.Map<java.util.Locale, String> openGraphTitleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphTitleMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -425,7 +428,8 @@ public class LayoutSEOEntryLocalServiceUtil {
 			updateLayoutSEOEntry(
 				long userId, long groupId, boolean privateLayout, long layoutId,
 				boolean canonicalURLEnabled,
-				java.util.Map<java.util.Locale, String> canonicalURLMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					canonicalURLMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -435,27 +439,10 @@ public class LayoutSEOEntryLocalServiceUtil {
 	}
 
 	public static LayoutSEOEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _layoutSEOEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<LayoutSEOEntryLocalService, LayoutSEOEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutSEOEntryLocalService.class);
-
-		ServiceTracker<LayoutSEOEntryLocalService, LayoutSEOEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LayoutSEOEntryLocalService, LayoutSEOEntryLocalService>(
-						bundle.getBundleContext(),
-						LayoutSEOEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutSEOEntryLocalService
+		_layoutSEOEntryLocalService;
 
 }

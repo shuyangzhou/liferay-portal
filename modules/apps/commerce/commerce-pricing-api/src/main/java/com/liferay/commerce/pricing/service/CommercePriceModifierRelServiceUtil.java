@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.pricing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePriceModifierRel. This utility wraps
  * <code>com.liferay.commerce.pricing.service.impl.CommercePriceModifierRelServiceImpl</code> and is an
@@ -39,7 +35,8 @@ public class CommercePriceModifierRelServiceUtil {
 	 */
 	public static com.liferay.commerce.pricing.model.CommercePriceModifierRel
 			addCommercePriceModifierRel(
-				long commercePriceModifierId, String className, long classPK,
+				long commercePriceModifierId, java.lang.String className,
+				long classPK,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -56,7 +53,8 @@ public class CommercePriceModifierRelServiceUtil {
 
 	public static com.liferay.commerce.pricing.model.CommercePriceModifierRel
 			fetchCommercePriceModifierRel(
-				long commercePriceModifierId, String className, long classPK)
+				long commercePriceModifierId, java.lang.String className,
+				long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommercePriceModifierRel(
@@ -66,21 +64,22 @@ public class CommercePriceModifierRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifierRel>
 			getCategoriesCommercePriceModifierRels(
-				long commercePriceModifierId, String name, int start, int end) {
+				long commercePriceModifierId, java.lang.String name, int start,
+				int end) {
 
 		return getService().getCategoriesCommercePriceModifierRels(
 			commercePriceModifierId, name, start, end);
 	}
 
 	public static int getCategoriesCommercePriceModifierRelsCount(
-		long commercePriceModifierId, String name) {
+		long commercePriceModifierId, java.lang.String name) {
 
 		return getService().getCategoriesCommercePriceModifierRelsCount(
 			commercePriceModifierId, name);
 	}
 
 	public static long[] getClassPKs(
-			long commercePriceModifierRelId, String className)
+			long commercePriceModifierRelId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getClassPKs(commercePriceModifierRelId, className);
@@ -97,7 +96,7 @@ public class CommercePriceModifierRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifierRel>
 				getCommercePriceModifierRels(
-					long commercePriceModifierRelId, String className)
+					long commercePriceModifierRelId, java.lang.String className)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommercePriceModifierRels(
@@ -107,7 +106,7 @@ public class CommercePriceModifierRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifierRel>
 				getCommercePriceModifierRels(
-					long commercePriceModifierRelId, String className,
+					long commercePriceModifierRelId, java.lang.String className,
 					int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.commerce.pricing.model.
@@ -120,7 +119,7 @@ public class CommercePriceModifierRelServiceUtil {
 	}
 
 	public static int getCommercePriceModifierRelsCount(
-			long commercePriceModifierRelId, String className)
+			long commercePriceModifierRelId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommercePriceModifierRelsCount(
@@ -129,7 +128,8 @@ public class CommercePriceModifierRelServiceUtil {
 
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifierRel>
-			getCommercePriceModifiersRels(String className, long classPK) {
+			getCommercePriceModifiersRels(
+				java.lang.String className, long classPK) {
 
 		return getService().getCommercePriceModifiersRels(className, classPK);
 	}
@@ -137,7 +137,7 @@ public class CommercePriceModifierRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifierRel>
 			getCommercePricingClassesCommercePriceModifierRels(
-				long commercePriceModifierId, String title, int start,
+				long commercePriceModifierId, java.lang.String title, int start,
 				int end) {
 
 		return getService().getCommercePricingClassesCommercePriceModifierRels(
@@ -145,7 +145,7 @@ public class CommercePriceModifierRelServiceUtil {
 	}
 
 	public static int getCommercePricingClassesCommercePriceModifierRelsCount(
-		long commercePriceModifierId, String title) {
+		long commercePriceModifierId, java.lang.String title) {
 
 		return getService().
 			getCommercePricingClassesCommercePriceModifierRelsCount(
@@ -155,15 +155,16 @@ public class CommercePriceModifierRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifierRel>
 			getCPDefinitionsCommercePriceModifierRels(
-				long commercePriceModifierId, String name, String languageId,
-				int start, int end) {
+				long commercePriceModifierId, java.lang.String name,
+				java.lang.String languageId, int start, int end) {
 
 		return getService().getCPDefinitionsCommercePriceModifierRels(
 			commercePriceModifierId, name, languageId, start, end);
 	}
 
 	public static int getCPDefinitionsCommercePriceModifierRelsCount(
-		long commercePriceModifierId, String name, String languageId) {
+		long commercePriceModifierId, java.lang.String name,
+		java.lang.String languageId) {
 
 		return getService().getCPDefinitionsCommercePriceModifierRelsCount(
 			commercePriceModifierId, name, languageId);
@@ -174,34 +175,15 @@ public class CommercePriceModifierRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommercePriceModifierRelService getService() {
-		return _serviceTracker.getService();
+		return _commercePriceModifierRelService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceModifierRelService, CommercePriceModifierRelService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceModifierRelService.class);
-
-		ServiceTracker
-			<CommercePriceModifierRelService, CommercePriceModifierRelService>
-				serviceTracker =
-					new ServiceTracker
-						<CommercePriceModifierRelService,
-						 CommercePriceModifierRelService>(
-							 bundle.getBundleContext(),
-							 CommercePriceModifierRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceModifierRelService
+		_commercePriceModifierRelService;
 
 }

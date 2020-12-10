@@ -14,10 +14,6 @@
 
 package com.liferay.saml.persistence.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SamlSpIdpConnection. This utility wraps
  * <code>com.liferay.saml.persistence.service.impl.SamlSpIdpConnectionLocalServiceImpl</code> and
@@ -58,12 +54,14 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlSpIdpConnection
 			addSamlSpIdpConnection(
-				String samlIdpEntityId, boolean assertionSignatureRequired,
-				long clockSkew, boolean enabled, boolean forceAuthn,
-				boolean ldapImportEnabled, String metadataUrl,
-				java.io.InputStream metadataXmlInputStream, String name,
-				String nameIdFormat, boolean signAuthnRequest,
-				boolean unknownUsersAreStrangers, String userAttributeMappings,
+				java.lang.String samlIdpEntityId,
+				boolean assertionSignatureRequired, long clockSkew,
+				boolean enabled, boolean forceAuthn, boolean ldapImportEnabled,
+				java.lang.String metadataUrl,
+				java.io.InputStream metadataXmlInputStream,
+				java.lang.String name, java.lang.String nameIdFormat,
+				boolean signAuthnRequest, boolean unknownUsersAreStrangers,
+				java.lang.String userAttributeMappings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -83,12 +81,14 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.saml.persistence.model.SamlSpIdpConnection
 			addSamlSpIdpConnection(
-				String samlIdpEntityId, boolean assertionSignatureRequired,
-				long clockSkew, boolean enabled, boolean forceAuthn,
-				boolean ldapImportEnabled, String metadataUrl,
-				java.io.InputStream metadataXmlInputStream, String name,
-				String nameIdFormat, boolean signAuthnRequest,
-				String userAttributeMappings,
+				java.lang.String samlIdpEntityId,
+				boolean assertionSignatureRequired, long clockSkew,
+				boolean enabled, boolean forceAuthn, boolean ldapImportEnabled,
+				java.lang.String metadataUrl,
+				java.io.InputStream metadataXmlInputStream,
+				java.lang.String name, java.lang.String nameIdFormat,
+				boolean signAuthnRequest,
+				java.lang.String userAttributeMappings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -283,7 +283,7 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -312,7 +312,8 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlSpIdpConnection
-			getSamlSpIdpConnection(long companyId, String samlIdpEntityId)
+			getSamlSpIdpConnection(
+				long companyId, java.lang.String samlIdpEntityId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSamlSpIdpConnection(companyId, samlIdpEntityId);
@@ -383,12 +384,14 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlSpIdpConnection
 			updateSamlSpIdpConnection(
-				long samlSpIdpConnectionId, String samlIdpEntityId,
+				long samlSpIdpConnectionId, java.lang.String samlIdpEntityId,
 				boolean assertionSignatureRequired, long clockSkew,
 				boolean enabled, boolean forceAuthn, boolean ldapImportEnabled,
-				String metadataUrl, java.io.InputStream metadataXmlInputStream,
-				String name, String nameIdFormat, boolean signAuthnRequest,
-				boolean unknownUsersAreStrangers, String userAttributeMappings,
+				java.lang.String metadataUrl,
+				java.io.InputStream metadataXmlInputStream,
+				java.lang.String name, java.lang.String nameIdFormat,
+				boolean signAuthnRequest, boolean unknownUsersAreStrangers,
+				java.lang.String userAttributeMappings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -408,12 +411,14 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.saml.persistence.model.SamlSpIdpConnection
 			updateSamlSpIdpConnection(
-				long samlSpIdpConnectionId, String samlIdpEntityId,
+				long samlSpIdpConnectionId, java.lang.String samlIdpEntityId,
 				boolean assertionSignatureRequired, long clockSkew,
 				boolean enabled, boolean forceAuthn, boolean ldapImportEnabled,
-				String metadataUrl, java.io.InputStream metadataXmlInputStream,
-				String name, String nameIdFormat, boolean signAuthnRequest,
-				String userAttributeMappings,
+				java.lang.String metadataUrl,
+				java.io.InputStream metadataXmlInputStream,
+				java.lang.String name, java.lang.String nameIdFormat,
+				boolean signAuthnRequest,
+				java.lang.String userAttributeMappings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -443,29 +448,10 @@ public class SamlSpIdpConnectionLocalServiceUtil {
 	}
 
 	public static SamlSpIdpConnectionLocalService getService() {
-		return _serviceTracker.getService();
+		return _samlSpIdpConnectionLocalService;
 	}
 
-	private static ServiceTracker
-		<SamlSpIdpConnectionLocalService, SamlSpIdpConnectionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SamlSpIdpConnectionLocalService.class);
-
-		ServiceTracker
-			<SamlSpIdpConnectionLocalService, SamlSpIdpConnectionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SamlSpIdpConnectionLocalService,
-						 SamlSpIdpConnectionLocalService>(
-							 bundle.getBundleContext(),
-							 SamlSpIdpConnectionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SamlSpIdpConnectionLocalService
+		_samlSpIdpConnectionLocalService;
 
 }

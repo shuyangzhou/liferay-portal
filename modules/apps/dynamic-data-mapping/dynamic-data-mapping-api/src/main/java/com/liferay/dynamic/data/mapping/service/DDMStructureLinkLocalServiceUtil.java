@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMStructureLink. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMStructureLinkLocalServiceImpl</code> and
@@ -325,7 +321,7 @@ public class DDMStructureLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -400,7 +396,7 @@ public class DDMStructureLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure>
 				getStructureLinkStructures(
-					long classNameId, long classPK, String keywords)
+					long classNameId, long classPK, java.lang.String keywords)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getStructureLinkStructures(
@@ -410,8 +406,8 @@ public class DDMStructureLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure>
 				getStructureLinkStructures(
-					long classNameId, long classPK, String keywords, int start,
-					int end)
+					long classNameId, long classPK, java.lang.String keywords,
+					int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getStructureLinkStructures(
@@ -421,8 +417,8 @@ public class DDMStructureLinkLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructure>
 				getStructureLinkStructures(
-					long classNameId, long classPK, String keywords, int start,
-					int end,
+					long classNameId, long classPK, java.lang.String keywords,
+					int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.dynamic.data.mapping.model.
 							DDMStructureLink> orderByComparator)
@@ -433,7 +429,7 @@ public class DDMStructureLinkLocalServiceUtil {
 	}
 
 	public static int getStructureLinkStructuresCount(
-		long classNameId, long classPK, String keywords) {
+		long classNameId, long classPK, java.lang.String keywords) {
 
 		return getService().getStructureLinkStructuresCount(
 			classNameId, classPK, keywords);
@@ -475,29 +471,10 @@ public class DDMStructureLinkLocalServiceUtil {
 	}
 
 	public static DDMStructureLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmStructureLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMStructureLinkLocalService, DDMStructureLinkLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMStructureLinkLocalService.class);
-
-		ServiceTracker
-			<DDMStructureLinkLocalService, DDMStructureLinkLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DDMStructureLinkLocalService,
-						 DDMStructureLinkLocalService>(
-							 bundle.getBundleContext(),
-							 DDMStructureLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMStructureLinkLocalService
+		_ddmStructureLinkLocalService;
 
 }

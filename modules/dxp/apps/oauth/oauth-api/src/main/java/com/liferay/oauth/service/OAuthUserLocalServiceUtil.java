@@ -14,10 +14,6 @@
 
 package com.liferay.oauth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for OAuthUser. This utility wraps
  * <code>com.liferay.oauth.service.impl.OAuthUserLocalServiceImpl</code> and
@@ -38,8 +34,8 @@ public class OAuthUserLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.oauth.service.impl.OAuthUserLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.oauth.model.OAuthUser addOAuthUser(
-			long userId, long oAuthApplicationId, String accessToken,
-			String accessSecret,
+			long userId, long oAuthApplicationId, java.lang.String accessToken,
+			java.lang.String accessSecret,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -244,7 +240,7 @@ public class OAuthUserLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth.model.OAuthUser fetchOAuthUser(
-		String accessToken) {
+		java.lang.String accessToken) {
 
 		return getService().fetchOAuthUser(accessToken);
 	}
@@ -301,7 +297,7 @@ public class OAuthUserLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth.model.OAuthUser getOAuthUser(
-			String accessToken)
+			java.lang.String accessToken)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getOAuthUser(accessToken);
@@ -338,7 +334,7 @@ public class OAuthUserLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -367,8 +363,8 @@ public class OAuthUserLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth.model.OAuthUser updateOAuthUser(
-			long userId, long oAuthApplicationId, String accessToken,
-			String accessSecret,
+			long userId, long oAuthApplicationId, java.lang.String accessToken,
+			java.lang.String accessSecret,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -394,25 +390,9 @@ public class OAuthUserLocalServiceUtil {
 	}
 
 	public static OAuthUserLocalService getService() {
-		return _serviceTracker.getService();
+		return _oAuthUserLocalService;
 	}
 
-	private static ServiceTracker<OAuthUserLocalService, OAuthUserLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(OAuthUserLocalService.class);
-
-		ServiceTracker<OAuthUserLocalService, OAuthUserLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<OAuthUserLocalService, OAuthUserLocalService>(
-						bundle.getBundleContext(), OAuthUserLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuthUserLocalService _oAuthUserLocalService;
 
 }

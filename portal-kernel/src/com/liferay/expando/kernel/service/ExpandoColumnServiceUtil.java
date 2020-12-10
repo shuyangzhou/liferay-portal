@@ -14,8 +14,6 @@
 
 package com.liferay.expando.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for ExpandoColumn. This utility wraps
  * <code>com.liferay.portlet.expando.service.impl.ExpandoColumnServiceImpl</code> and is an
@@ -36,14 +34,15 @@ public class ExpandoColumnServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portlet.expando.service.impl.ExpandoColumnServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.expando.kernel.model.ExpandoColumn addColumn(
-			long tableId, String name, int type)
+			long tableId, java.lang.String name, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addColumn(tableId, name, type);
 	}
 
 	public static com.liferay.expando.kernel.model.ExpandoColumn addColumn(
-			long tableId, String name, int type, Object defaultData)
+			long tableId, java.lang.String name, int type,
+			java.lang.Object defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addColumn(tableId, name, type, defaultData);
@@ -67,40 +66,36 @@ public class ExpandoColumnServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.expando.kernel.model.ExpandoColumn updateColumn(
-			long columnId, String name, int type)
+			long columnId, java.lang.String name, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateColumn(columnId, name, type);
 	}
 
 	public static com.liferay.expando.kernel.model.ExpandoColumn updateColumn(
-			long columnId, String name, int type, Object defaultData)
+			long columnId, java.lang.String name, int type,
+			java.lang.Object defaultData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateColumn(columnId, name, type, defaultData);
 	}
 
 	public static com.liferay.expando.kernel.model.ExpandoColumn
-			updateTypeSettings(long columnId, String typeSettings)
+			updateTypeSettings(long columnId, java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateTypeSettings(columnId, typeSettings);
 	}
 
 	public static ExpandoColumnService getService() {
-		if (_service == null) {
-			_service = (ExpandoColumnService)PortalBeanLocatorUtil.locate(
-				ExpandoColumnService.class.getName());
-		}
-
-		return _service;
+		return _expandoColumnService;
 	}
 
-	private static ExpandoColumnService _service;
+	private static volatile ExpandoColumnService _expandoColumnService;
 
 }

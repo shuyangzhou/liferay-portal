@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.type.virtual.order.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceVirtualOrderItem. This utility wraps
  * <code>com.liferay.commerce.product.type.virtual.order.service.impl.CommerceVirtualOrderItemLocalServiceImpl</code> and
@@ -59,8 +55,9 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 
 	public static com.liferay.commerce.product.type.virtual.order.model.
 		CommerceVirtualOrderItem addCommerceVirtualOrderItem(
-				long commerceOrderItemId, long fileEntryId, String url,
-				int activationStatus, long duration, int usages, int maxUsages,
+				long commerceOrderItemId, long fileEntryId,
+				java.lang.String url, int activationStatus, long duration,
+				int usages, int maxUsages,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -283,7 +280,7 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.type.virtual.order.model.
 		CommerceVirtualOrderItem fetchCommerceVirtualOrderItemByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCommerceVirtualOrderItemByUuidAndGroupId(
 			uuid, groupId);
@@ -321,7 +318,7 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.type.virtual.order.model.
 		CommerceVirtualOrderItem getCommerceVirtualOrderItemByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceVirtualOrderItemByUuidAndGroupId(
@@ -370,7 +367,7 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 		<com.liferay.commerce.product.type.virtual.order.model.
 			CommerceVirtualOrderItem>
 				getCommerceVirtualOrderItemsByUuidAndCompanyId(
-					String uuid, long companyId) {
+					java.lang.String uuid, long companyId) {
 
 		return getService().getCommerceVirtualOrderItemsByUuidAndCompanyId(
 			uuid, companyId);
@@ -390,7 +387,7 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 		<com.liferay.commerce.product.type.virtual.order.model.
 			CommerceVirtualOrderItem>
 				getCommerceVirtualOrderItemsByUuidAndCompanyId(
-					String uuid, long companyId, int start, int end,
+					java.lang.String uuid, long companyId, int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.commerce.product.type.virtual.order.model.
 							CommerceVirtualOrderItem> orderByComparator) {
@@ -424,7 +421,7 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 	}
 
 	public static java.io.File getFile(long commerceVirtualOrderItemId)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().getFile(commerceVirtualOrderItemId);
 	}
@@ -441,7 +438,7 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -492,9 +489,9 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 
 	public static com.liferay.commerce.product.type.virtual.order.model.
 		CommerceVirtualOrderItem updateCommerceVirtualOrderItem(
-				long commerceVirtualOrderItemId, long fileEntryId, String url,
-				int activationStatus, long duration, int usages, int maxUsages,
-				boolean active)
+				long commerceVirtualOrderItemId, long fileEntryId,
+				java.lang.String url, int activationStatus, long duration,
+				int usages, int maxUsages, boolean active)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceVirtualOrderItem(
@@ -512,29 +509,10 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 	}
 
 	public static CommerceVirtualOrderItemLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceVirtualOrderItemLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceVirtualOrderItemLocalService,
-		 CommerceVirtualOrderItemLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceVirtualOrderItemLocalService.class);
-
-		ServiceTracker
-			<CommerceVirtualOrderItemLocalService,
-			 CommerceVirtualOrderItemLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceVirtualOrderItemLocalService,
-					 CommerceVirtualOrderItemLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceVirtualOrderItemLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceVirtualOrderItemLocalService
+		_commerceVirtualOrderItemLocalService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for AnnouncementsDelivery. This utility wraps
  * <code>com.liferay.portlet.announcements.service.impl.AnnouncementsDeliveryServiceImpl</code> and is an
@@ -41,27 +39,23 @@ public class AnnouncementsDeliveryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.announcements.kernel.model.AnnouncementsDelivery
-			updateDelivery(long userId, String type, boolean email, boolean sms)
+			updateDelivery(
+				long userId, java.lang.String type, boolean email, boolean sms)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateDelivery(userId, type, email, sms);
 	}
 
 	public static AnnouncementsDeliveryService getService() {
-		if (_service == null) {
-			_service =
-				(AnnouncementsDeliveryService)PortalBeanLocatorUtil.locate(
-					AnnouncementsDeliveryService.class.getName());
-		}
-
-		return _service;
+		return _announcementsDeliveryService;
 	}
 
-	private static AnnouncementsDeliveryService _service;
+	private static volatile AnnouncementsDeliveryService
+		_announcementsDeliveryService;
 
 }

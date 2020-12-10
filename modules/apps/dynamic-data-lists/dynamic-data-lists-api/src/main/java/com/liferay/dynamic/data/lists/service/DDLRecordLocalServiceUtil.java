@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.lists.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDLRecord. This utility wraps
  * <code>com.liferay.dynamic.data.lists.service.impl.DDLRecordLocalServiceImpl</code> and
@@ -97,7 +93,7 @@ public class DDLRecordLocalServiceUtil {
 
 	public static com.liferay.dynamic.data.lists.model.DDLRecord addRecord(
 			long userId, long groupId, long ddmStorageId, long ddlRecordSetId,
-			String className, long classPK,
+			java.lang.String className, long classPK,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -318,13 +314,13 @@ public class DDLRecordLocalServiceUtil {
 	 * @return the matching ddl record, or <code>null</code> if a matching ddl record could not be found
 	 */
 	public static com.liferay.dynamic.data.lists.model.DDLRecord
-		fetchDDLRecordByUuidAndGroupId(String uuid, long groupId) {
+		fetchDDLRecordByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchDDLRecordByUuidAndGroupId(uuid, groupId);
 	}
 
 	public static com.liferay.dynamic.data.lists.model.DDLRecord
-		fetchFirstRecord(String className, long classPK) {
+		fetchFirstRecord(java.lang.String className, long classPK) {
 
 		return getService().fetchFirstRecord(className, classPK);
 	}
@@ -427,7 +423,7 @@ public class DDLRecordLocalServiceUtil {
 	 * @throws PortalException if a matching ddl record could not be found
 	 */
 	public static com.liferay.dynamic.data.lists.model.DDLRecord
-			getDDLRecordByUuidAndGroupId(String uuid, long groupId)
+			getDDLRecordByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDDLRecordByUuidAndGroupId(uuid, groupId);
@@ -458,7 +454,7 @@ public class DDLRecordLocalServiceUtil {
 	 * @return the matching ddl records, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.dynamic.data.lists.model.DDLRecord>
-		getDDLRecordsByUuidAndCompanyId(String uuid, long companyId) {
+		getDDLRecordsByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().getDDLRecordsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -475,7 +471,7 @@ public class DDLRecordLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.dynamic.data.lists.model.DDLRecord>
 		getDDLRecordsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.lists.model.DDLRecord>
 					orderByComparator) {
@@ -523,7 +519,7 @@ public class DDLRecordLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static Long[] getMinAndMaxCompanyRecordIds(
+	public static java.lang.Long[] getMinAndMaxCompanyRecordIds(
 		long companyId, int status, int scope) {
 
 		return getService().getMinAndMaxCompanyRecordIds(
@@ -544,7 +540,7 @@ public class DDLRecordLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -686,7 +682,7 @@ public class DDLRecordLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void revertRecord(
-			long userId, long recordId, String version,
+			long userId, long recordId, java.lang.String version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -740,8 +736,8 @@ public class DDLRecordLocalServiceUtil {
 	public static void updateAsset(
 			long userId, com.liferay.dynamic.data.lists.model.DDLRecord record,
 			com.liferay.dynamic.data.lists.model.DDLRecordVersion recordVersion,
-			long[] assetCategoryIds, String[] assetTagNames,
-			java.util.Locale locale, Double priority)
+			long[] assetCategoryIds, java.lang.String[] assetTagNames,
+			java.util.Locale locale, java.lang.Double priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateAsset(
@@ -825,25 +821,9 @@ public class DDLRecordLocalServiceUtil {
 	}
 
 	public static DDLRecordLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddlRecordLocalService;
 	}
 
-	private static ServiceTracker<DDLRecordLocalService, DDLRecordLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDLRecordLocalService.class);
-
-		ServiceTracker<DDLRecordLocalService, DDLRecordLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DDLRecordLocalService, DDLRecordLocalService>(
-						bundle.getBundleContext(), DDLRecordLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDLRecordLocalService _ddlRecordLocalService;
 
 }

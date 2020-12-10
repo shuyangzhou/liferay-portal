@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDefinitionSpecificationOptionValue. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDefinitionSpecificationOptionValueServiceImpl</code> and is an
@@ -42,7 +38,7 @@ public class CPDefinitionSpecificationOptionValueServiceUtil {
 				addCPDefinitionSpecificationOptionValue(
 					long cpDefinitionId, long cpSpecificationOptionId,
 					long cpOptionCategoryId,
-					java.util.Map<java.util.Locale, String> valueMap,
+					java.util.Map<java.util.Locale, java.lang.String> valueMap,
 					double priority,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
@@ -120,7 +116,7 @@ public class CPDefinitionSpecificationOptionValueServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -129,7 +125,7 @@ public class CPDefinitionSpecificationOptionValueServiceUtil {
 				updateCPDefinitionSpecificationOptionValue(
 					long cpDefinitionSpecificationOptionValueId,
 					long cpOptionCategoryId,
-					java.util.Map<java.util.Locale, String> valueMap,
+					java.util.Map<java.util.Locale, java.lang.String> valueMap,
 					double priority,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
@@ -141,30 +137,10 @@ public class CPDefinitionSpecificationOptionValueServiceUtil {
 	}
 
 	public static CPDefinitionSpecificationOptionValueService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionSpecificationOptionValueService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionSpecificationOptionValueService,
-		 CPDefinitionSpecificationOptionValueService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionSpecificationOptionValueService.class);
-
-		ServiceTracker
-			<CPDefinitionSpecificationOptionValueService,
-			 CPDefinitionSpecificationOptionValueService> serviceTracker =
-				new ServiceTracker
-					<CPDefinitionSpecificationOptionValueService,
-					 CPDefinitionSpecificationOptionValueService>(
-						 bundle.getBundleContext(),
-						 CPDefinitionSpecificationOptionValueService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionSpecificationOptionValueService
+		_cpDefinitionSpecificationOptionValueService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for KaleoProcess. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.forms.service.impl.KaleoProcessServiceImpl</code> and is an
@@ -63,9 +59,10 @@ public class KaleoProcessServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess
 			addKaleoProcess(
 				long groupId, long ddmStructureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long ddmTemplateId, String workflowDefinitionName,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long ddmTemplateId, java.lang.String workflowDefinitionName,
 				int workflowDefinitionVersion,
 				com.liferay.portal.workflow.kaleo.forms.model.KaleoTaskFormPairs
 					kaleoTaskFormPairs,
@@ -112,7 +109,7 @@ public class KaleoProcessServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -145,7 +142,7 @@ public class KaleoProcessServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess> search(
-			long groupId, String keywords, int start, int end,
+			long groupId, java.lang.String keywords, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess>
 					orderByComparator) {
@@ -167,7 +164,7 @@ public class KaleoProcessServiceUtil {
 	 the <code>AND</code> operator.
 	 * @return the number of matching Kaleo processes
 	 */
-	public static int searchCount(long groupId, String keywords) {
+	public static int searchCount(long groupId, java.lang.String keywords) {
 		return getService().searchCount(groupId, keywords);
 	}
 
@@ -196,9 +193,10 @@ public class KaleoProcessServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess
 			updateKaleoProcess(
 				long kaleoProcessId, long ddmStructureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long ddmTemplateId, String workflowDefinitionName,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long ddmTemplateId, java.lang.String workflowDefinitionName,
 				int workflowDefinitionVersion,
 				com.liferay.portal.workflow.kaleo.forms.model.KaleoTaskFormPairs
 					kaleoTaskFormPairs,
@@ -212,23 +210,9 @@ public class KaleoProcessServiceUtil {
 	}
 
 	public static KaleoProcessService getService() {
-		return _serviceTracker.getService();
+		return _kaleoProcessService;
 	}
 
-	private static ServiceTracker<KaleoProcessService, KaleoProcessService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KaleoProcessService.class);
-
-		ServiceTracker<KaleoProcessService, KaleoProcessService>
-			serviceTracker =
-				new ServiceTracker<KaleoProcessService, KaleoProcessService>(
-					bundle.getBundleContext(), KaleoProcessService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoProcessService _kaleoProcessService;
 
 }

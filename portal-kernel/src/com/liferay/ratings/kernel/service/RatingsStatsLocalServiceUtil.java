@@ -14,8 +14,6 @@
 
 package com.liferay.ratings.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for RatingsStats. This utility wraps
  * <code>com.liferay.portlet.ratings.service.impl.RatingsStatsLocalServiceImpl</code> and
@@ -126,7 +124,7 @@ public class RatingsStatsLocalServiceUtil {
 		return getService().deleteRatingsStats(ratingsStats);
 	}
 
-	public static void deleteStats(String className, long classPK) {
+	public static void deleteStats(java.lang.String className, long classPK) {
 		getService().deleteStats(className, classPK);
 	}
 
@@ -228,7 +226,7 @@ public class RatingsStatsLocalServiceUtil {
 	}
 
 	public static com.liferay.ratings.kernel.model.RatingsStats fetchStats(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().fetchStats(className, classPK);
 	}
@@ -251,7 +249,7 @@ public class RatingsStatsLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -313,15 +311,15 @@ public class RatingsStatsLocalServiceUtil {
 	}
 
 	public static com.liferay.ratings.kernel.model.RatingsStats getStats(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getStats(className, classPK);
 	}
 
 	public static java.util.Map
-		<Long, com.liferay.ratings.kernel.model.RatingsStats> getStats(
-			String className, long[] classPKs) {
+		<java.lang.Long, com.liferay.ratings.kernel.model.RatingsStats>
+			getStats(java.lang.String className, long[] classPKs) {
 
 		return getService().getStats(className, classPKs);
 	}
@@ -344,14 +342,9 @@ public class RatingsStatsLocalServiceUtil {
 	}
 
 	public static RatingsStatsLocalService getService() {
-		if (_service == null) {
-			_service = (RatingsStatsLocalService)PortalBeanLocatorUtil.locate(
-				RatingsStatsLocalService.class.getName());
-		}
-
-		return _service;
+		return _ratingsStatsLocalService;
 	}
 
-	private static RatingsStatsLocalService _service;
+	private static volatile RatingsStatsLocalService _ratingsStatsLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.bom.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceBOMFolderApplicationRel. This utility wraps
  * <code>com.liferay.commerce.bom.service.impl.CommerceBOMFolderApplicationRelServiceImpl</code> and is an
@@ -99,34 +95,15 @@ public class CommerceBOMFolderApplicationRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceBOMFolderApplicationRelService getService() {
-		return _serviceTracker.getService();
+		return _commerceBOMFolderApplicationRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceBOMFolderApplicationRelService,
-		 CommerceBOMFolderApplicationRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceBOMFolderApplicationRelService.class);
-
-		ServiceTracker
-			<CommerceBOMFolderApplicationRelService,
-			 CommerceBOMFolderApplicationRelService> serviceTracker =
-				new ServiceTracker
-					<CommerceBOMFolderApplicationRelService,
-					 CommerceBOMFolderApplicationRelService>(
-						 bundle.getBundleContext(),
-						 CommerceBOMFolderApplicationRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceBOMFolderApplicationRelService
+		_commerceBOMFolderApplicationRelService;
 
 }

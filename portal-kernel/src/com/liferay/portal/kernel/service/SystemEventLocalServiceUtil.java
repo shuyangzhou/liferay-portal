@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SystemEvent. This utility wraps
  * <code>com.liferay.portal.service.impl.SystemEventLocalServiceImpl</code> and
@@ -36,9 +34,9 @@ public class SystemEventLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.SystemEventLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
-			long userId, long groupId, String className, long classPK,
-			String classUuid, String referrerClassName, int type,
-			String extraData)
+			long userId, long groupId, java.lang.String className, long classPK,
+			java.lang.String classUuid, java.lang.String referrerClassName,
+			int type, java.lang.String extraData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addSystemEvent(
@@ -47,8 +45,9 @@ public class SystemEventLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
-			long companyId, String className, long classPK, String classUuid,
-			String referrerClassName, int type, String extraData)
+			long companyId, java.lang.String className, long classPK,
+			java.lang.String classUuid, java.lang.String referrerClassName,
+			int type, java.lang.String extraData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addSystemEvent(
@@ -277,7 +276,7 @@ public class SystemEventLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -368,14 +367,9 @@ public class SystemEventLocalServiceUtil {
 	}
 
 	public static SystemEventLocalService getService() {
-		if (_service == null) {
-			_service = (SystemEventLocalService)PortalBeanLocatorUtil.locate(
-				SystemEventLocalService.class.getName());
-		}
-
-		return _service;
+		return _systemEventLocalService;
 	}
 
-	private static SystemEventLocalService _service;
+	private static volatile SystemEventLocalService _systemEventLocalService;
 
 }

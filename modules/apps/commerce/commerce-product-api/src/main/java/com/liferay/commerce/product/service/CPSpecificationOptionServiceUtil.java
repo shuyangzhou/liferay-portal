@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPSpecificationOption. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPSpecificationOptionServiceImpl</code> and is an
@@ -40,9 +36,10 @@ public class CPSpecificationOptionServiceUtil {
 	public static com.liferay.commerce.product.model.CPSpecificationOption
 			addCPSpecificationOption(
 				long cpOptionCategoryId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				boolean facetable, String key,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				boolean facetable, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -58,7 +55,7 @@ public class CPSpecificationOptionServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPSpecificationOption
-			fetchCPSpecificationOption(long companyId, String key)
+			fetchCPSpecificationOption(long companyId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCPSpecificationOption(companyId, key);
@@ -76,15 +73,15 @@ public class CPSpecificationOptionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPSpecificationOption>
 				searchCPSpecificationOptions(
-					long companyId, Boolean facetable, String keywords,
-					int start, int end,
+					long companyId, java.lang.Boolean facetable,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -95,9 +92,10 @@ public class CPSpecificationOptionServiceUtil {
 	public static com.liferay.commerce.product.model.CPSpecificationOption
 			updateCPSpecificationOption(
 				long cpSpecificationOptionId, long cpOptionCategoryId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				boolean facetable, String key,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				boolean facetable, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -107,29 +105,10 @@ public class CPSpecificationOptionServiceUtil {
 	}
 
 	public static CPSpecificationOptionService getService() {
-		return _serviceTracker.getService();
+		return _cpSpecificationOptionService;
 	}
 
-	private static ServiceTracker
-		<CPSpecificationOptionService, CPSpecificationOptionService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPSpecificationOptionService.class);
-
-		ServiceTracker
-			<CPSpecificationOptionService, CPSpecificationOptionService>
-				serviceTracker =
-					new ServiceTracker
-						<CPSpecificationOptionService,
-						 CPSpecificationOptionService>(
-							 bundle.getBundleContext(),
-							 CPSpecificationOptionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPSpecificationOptionService
+		_cpSpecificationOptionService;
 
 }

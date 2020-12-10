@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceInventoryReplenishmentItem. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryReplenishmentItemServiceImpl</code> and is an
@@ -40,8 +36,9 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryReplenishmentItem
 				addCommerceInventoryReplenishmentItem(
-					long userId, long commerceInventoryWarehouseId, String sku,
-					java.util.Date availabilityDate, int quantity)
+					long userId, long commerceInventoryWarehouseId,
+					java.lang.String sku, java.util.Date availabilityDate,
+					int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceInventoryReplenishmentItem(
@@ -71,7 +68,8 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 		<com.liferay.commerce.inventory.model.
 			CommerceInventoryReplenishmentItem>
 					getCommerceInventoryReplenishmentItemsByCompanyIdAndSku(
-						long companyId, String sku, int start, int end)
+						long companyId, java.lang.String sku, int start,
+						int end)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
@@ -80,7 +78,7 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 	}
 
 	public static long getCommerceInventoryReplenishmentItemsCount(
-			long commerceInventoryWarehouseId, String sku)
+			long commerceInventoryWarehouseId, java.lang.String sku)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryReplenishmentItemsCount(
@@ -89,7 +87,7 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 
 	public static int
 			getCommerceInventoryReplenishmentItemsCountByCompanyIdAndSku(
-				long companyId, String sku)
+				long companyId, java.lang.String sku)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
@@ -102,7 +100,7 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -120,29 +118,10 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 	}
 
 	public static CommerceInventoryReplenishmentItemService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryReplenishmentItemService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryReplenishmentItemService,
-		 CommerceInventoryReplenishmentItemService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryReplenishmentItemService.class);
-
-		ServiceTracker
-			<CommerceInventoryReplenishmentItemService,
-			 CommerceInventoryReplenishmentItemService> serviceTracker =
-				new ServiceTracker
-					<CommerceInventoryReplenishmentItemService,
-					 CommerceInventoryReplenishmentItemService>(
-						 bundle.getBundleContext(),
-						 CommerceInventoryReplenishmentItemService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryReplenishmentItemService
+		_commerceInventoryReplenishmentItemService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.marketplace.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for App. This utility wraps
  * <code>com.liferay.marketplace.service.impl.AppLocalServiceImpl</code> and
@@ -225,7 +221,7 @@ public class AppLocalServiceUtil {
 	 * @return the matching app, or <code>null</code> if a matching app could not be found
 	 */
 	public static com.liferay.marketplace.model.App fetchAppByUuidAndCompanyId(
-		String uuid, long companyId) {
+		java.lang.String uuid, long companyId) {
 
 		return getService().fetchAppByUuidAndCompanyId(uuid, companyId);
 	}
@@ -264,7 +260,7 @@ public class AppLocalServiceUtil {
 	 * @throws PortalException if a matching app could not be found
 	 */
 	public static com.liferay.marketplace.model.App getAppByUuidAndCompanyId(
-			String uuid, long companyId)
+			java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAppByUuidAndCompanyId(uuid, companyId);
@@ -288,7 +284,7 @@ public class AppLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.marketplace.model.App> getApps(
-		String category) {
+		java.lang.String category) {
 
 		return getService().getApps(category);
 	}
@@ -324,7 +320,7 @@ public class AppLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.marketplace.model.App>
-		getInstalledApps(String category) {
+		getInstalledApps(java.lang.String category) {
 
 		return getService().getInstalledApps(category);
 	}
@@ -334,7 +330,7 @@ public class AppLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -348,7 +344,9 @@ public class AppLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.Map<String, String> getPrepackagedApps() {
+	public static java.util.Map<java.lang.String, java.lang.String>
+		getPrepackagedApps() {
+
 		return getService().getPrepackagedApps();
 	}
 
@@ -388,9 +386,10 @@ public class AppLocalServiceUtil {
 	}
 
 	public static com.liferay.marketplace.model.App updateApp(
-			long userId, long remoteAppId, String title, String description,
-			String category, String iconURL, String version, boolean required,
-			java.io.File file)
+			long userId, long remoteAppId, java.lang.String title,
+			java.lang.String description, java.lang.String category,
+			java.lang.String iconURL, java.lang.String version,
+			boolean required, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateApp(
@@ -399,22 +398,9 @@ public class AppLocalServiceUtil {
 	}
 
 	public static AppLocalService getService() {
-		return _serviceTracker.getService();
+		return _appLocalService;
 	}
 
-	private static ServiceTracker<AppLocalService, AppLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AppLocalService.class);
-
-		ServiceTracker<AppLocalService, AppLocalService> serviceTracker =
-			new ServiceTracker<AppLocalService, AppLocalService>(
-				bundle.getBundleContext(), AppLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppLocalService _appLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceCatalog. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CommerceCatalogLocalServiceImpl</code> and
@@ -58,9 +54,9 @@ public class CommerceCatalogLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			addCommerceCatalog(
-				String name, String commerceCurrencyCode,
-				String catalogDefaultLanguageId, boolean system,
-				String externalReferenceCode,
+				java.lang.String name, java.lang.String commerceCurrencyCode,
+				java.lang.String catalogDefaultLanguageId, boolean system,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -71,8 +67,9 @@ public class CommerceCatalogLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			addCommerceCatalog(
-				String name, String commerceCurrencyCode,
-				String catalogDefaultLanguageId, String externalReferenceCode,
+				java.lang.String name, java.lang.String commerceCurrencyCode,
+				java.lang.String catalogDefaultLanguageId,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -258,7 +255,7 @@ public class CommerceCatalogLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -285,7 +282,7 @@ public class CommerceCatalogLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CommerceCatalog
 		fetchCommerceCatalogByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCommerceCatalogByReferenceCode(
 			companyId, externalReferenceCode);
@@ -364,7 +361,7 @@ public class CommerceCatalogLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -389,8 +386,8 @@ public class CommerceCatalogLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceCatalog>
 				searchCommerceCatalogs(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceCatalogs(
@@ -398,7 +395,7 @@ public class CommerceCatalogLocalServiceUtil {
 	}
 
 	public static int searchCommerceCatalogsCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceCatalogsCount(companyId, keywords);
@@ -424,8 +421,9 @@ public class CommerceCatalogLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			updateCommerceCatalog(
-				long commerceCatalogId, String name,
-				String commerceCurrencyCode, String catalogDefaultLanguageId)
+				long commerceCatalogId, java.lang.String name,
+				java.lang.String commerceCurrencyCode,
+				java.lang.String catalogDefaultLanguageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceCatalog(
@@ -435,7 +433,7 @@ public class CommerceCatalogLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			updateCommerceCatalogExternalReferenceCode(
-				long commerceCatalogId, String externalReferenceCode)
+				long commerceCatalogId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceCatalogExternalReferenceCode(
@@ -443,27 +441,10 @@ public class CommerceCatalogLocalServiceUtil {
 	}
 
 	public static CommerceCatalogLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceCatalogLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceCatalogLocalService, CommerceCatalogLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceCatalogLocalService.class);
-
-		ServiceTracker<CommerceCatalogLocalService, CommerceCatalogLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceCatalogLocalService, CommerceCatalogLocalService>(
-						bundle.getBundleContext(),
-						CommerceCatalogLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceCatalogLocalService
+		_commerceCatalogLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAddressRestriction. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceAddressRestrictionLocalServiceImpl</code> and
@@ -59,8 +55,8 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceAddressRestriction
 			addCommerceAddressRestriction(
-				long userId, long groupId, String className, long classPK,
-				long commerceCountryId)
+				long userId, long groupId, java.lang.String className,
+				long classPK, long commerceCountryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceAddressRestriction(
@@ -73,7 +69,8 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.commerce.model.CommerceAddressRestriction
 			addCommerceAddressRestriction(
-				String className, long classPK, long commerceCountryId,
+				java.lang.String className, long classPK,
+				long commerceCountryId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -149,7 +146,7 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	}
 
 	public static void deleteCommerceAddressRestrictions(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		getService().deleteCommerceAddressRestrictions(className, classPK);
 	}
@@ -265,7 +262,7 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceAddressRestriction
 		fetchCommerceAddressRestriction(
-			String className, long classPK, long commerceCountryId) {
+			java.lang.String className, long classPK, long commerceCountryId) {
 
 		return getService().fetchCommerceAddressRestriction(
 			className, classPK, commerceCountryId);
@@ -313,7 +310,7 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.model.CommerceAddressRestriction>
 			getCommerceAddressRestrictions(
-				String className, long classPK, int start, int end,
+				java.lang.String className, long classPK, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.model.CommerceAddressRestriction>
 						orderByComparator) {
@@ -332,7 +329,7 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	}
 
 	public static int getCommerceAddressRestrictionsCount(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().getCommerceAddressRestrictionsCount(
 			className, classPK);
@@ -350,7 +347,7 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -365,7 +362,7 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	}
 
 	public static boolean isCommerceAddressRestricted(
-		String className, long classPK, long commerceCountryId) {
+		java.lang.String className, long classPK, long commerceCountryId) {
 
 		return getService().isCommerceAddressRestricted(
 			className, classPK, commerceCountryId);
@@ -398,29 +395,10 @@ public class CommerceAddressRestrictionLocalServiceUtil {
 	}
 
 	public static CommerceAddressRestrictionLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAddressRestrictionLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAddressRestrictionLocalService,
-		 CommerceAddressRestrictionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAddressRestrictionLocalService.class);
-
-		ServiceTracker
-			<CommerceAddressRestrictionLocalService,
-			 CommerceAddressRestrictionLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceAddressRestrictionLocalService,
-					 CommerceAddressRestrictionLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceAddressRestrictionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAddressRestrictionLocalService
+		_commerceAddressRestrictionLocalService;
 
 }

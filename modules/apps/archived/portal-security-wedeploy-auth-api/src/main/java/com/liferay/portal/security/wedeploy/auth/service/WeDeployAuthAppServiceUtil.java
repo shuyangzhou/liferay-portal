@@ -14,10 +14,6 @@
 
 package com.liferay.portal.security.wedeploy.auth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for WeDeployAuthApp. This utility wraps
  * <code>com.liferay.portal.security.wedeploy.auth.service.impl.WeDeployAuthAppServiceImpl</code> and is an
@@ -40,7 +36,7 @@ public class WeDeployAuthAppServiceUtil {
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
 				addWeDeployAuthApp(
-					String name, String redirectURI,
+					java.lang.String name, java.lang.String redirectURI,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -62,30 +58,14 @@ public class WeDeployAuthAppServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static WeDeployAuthAppService getService() {
-		return _serviceTracker.getService();
+		return _weDeployAuthAppService;
 	}
 
-	private static ServiceTracker
-		<WeDeployAuthAppService, WeDeployAuthAppService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WeDeployAuthAppService.class);
-
-		ServiceTracker<WeDeployAuthAppService, WeDeployAuthAppService>
-			serviceTracker =
-				new ServiceTracker
-					<WeDeployAuthAppService, WeDeployAuthAppService>(
-						bundle.getBundleContext(), WeDeployAuthAppService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WeDeployAuthAppService _weDeployAuthAppService;
 
 }

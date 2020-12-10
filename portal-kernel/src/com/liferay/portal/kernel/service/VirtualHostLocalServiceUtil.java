@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for VirtualHost. This utility wraps
  * <code>com.liferay.portal.service.impl.VirtualHostLocalServiceImpl</code> and
@@ -228,7 +226,7 @@ public class VirtualHostLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
-		String hostname) {
+		java.lang.String hostname) {
 
 		return getService().fetchVirtualHost(hostname);
 	}
@@ -251,7 +249,7 @@ public class VirtualHostLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -292,7 +290,7 @@ public class VirtualHostLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
-			String hostname)
+			java.lang.String hostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getVirtualHost(hostname);
@@ -337,7 +335,7 @@ public class VirtualHostLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.VirtualHost updateVirtualHost(
-		long companyId, long layoutSetId, String hostname) {
+		long companyId, long layoutSetId, java.lang.String hostname) {
 
 		return getService().updateVirtualHost(companyId, layoutSetId, hostname);
 	}
@@ -361,21 +359,16 @@ public class VirtualHostLocalServiceUtil {
 	public static java.util.List<com.liferay.portal.kernel.model.VirtualHost>
 		updateVirtualHosts(
 			long companyId, long layoutSetId,
-			java.util.TreeMap<String, String> hostnames) {
+			java.util.TreeMap<java.lang.String, java.lang.String> hostnames) {
 
 		return getService().updateVirtualHosts(
 			companyId, layoutSetId, hostnames);
 	}
 
 	public static VirtualHostLocalService getService() {
-		if (_service == null) {
-			_service = (VirtualHostLocalService)PortalBeanLocatorUtil.locate(
-				VirtualHostLocalService.class.getName());
-		}
-
-		return _service;
+		return _virtualHostLocalService;
 	}
 
-	private static VirtualHostLocalService _service;
+	private static volatile VirtualHostLocalService _virtualHostLocalService;
 
 }

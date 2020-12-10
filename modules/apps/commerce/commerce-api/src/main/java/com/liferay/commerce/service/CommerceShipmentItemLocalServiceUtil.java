@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceShipmentItem. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceShipmentItemLocalServiceImpl</code> and
@@ -394,7 +390,7 @@ public class CommerceShipmentItemLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -446,29 +442,10 @@ public class CommerceShipmentItemLocalServiceUtil {
 	}
 
 	public static CommerceShipmentItemLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceShipmentItemLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceShipmentItemLocalService, CommerceShipmentItemLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceShipmentItemLocalService.class);
-
-		ServiceTracker
-			<CommerceShipmentItemLocalService, CommerceShipmentItemLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceShipmentItemLocalService,
-						 CommerceShipmentItemLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceShipmentItemLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceShipmentItemLocalService
+		_commerceShipmentItemLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.portal.security.service.access.policy.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SAPEntry. This utility wraps
  * <code>com.liferay.portal.security.service.access.policy.service.impl.SAPEntryServiceImpl</code> and is an
@@ -40,9 +36,10 @@ public class SAPEntryServiceUtil {
 	public static
 		com.liferay.portal.security.service.access.policy.model.SAPEntry
 				addSAPEntry(
-					String allowedServiceSignatures, boolean defaultSAPEntry,
-					boolean enabled, String name,
-					java.util.Map<java.util.Locale, String> titleMap,
+					java.lang.String allowedServiceSignatures,
+					boolean defaultSAPEntry, boolean enabled,
+					java.lang.String name,
+					java.util.Map<java.util.Locale, java.lang.String> titleMap,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -72,7 +69,7 @@ public class SAPEntryServiceUtil {
 
 	public static
 		com.liferay.portal.security.service.access.policy.model.SAPEntry
-				fetchSAPEntry(long companyId, String name)
+				fetchSAPEntry(long companyId, java.lang.String name)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchSAPEntry(companyId, name);
@@ -106,7 +103,7 @@ public class SAPEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -120,7 +117,7 @@ public class SAPEntryServiceUtil {
 
 	public static
 		com.liferay.portal.security.service.access.policy.model.SAPEntry
-				getSAPEntry(long companyId, String name)
+				getSAPEntry(long companyId, java.lang.String name)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSAPEntry(companyId, name);
@@ -129,9 +126,10 @@ public class SAPEntryServiceUtil {
 	public static
 		com.liferay.portal.security.service.access.policy.model.SAPEntry
 				updateSAPEntry(
-					long sapEntryId, String allowedServiceSignatures,
-					boolean defaultSAPEntry, boolean enabled, String name,
-					java.util.Map<java.util.Locale, String> titleMap,
+					long sapEntryId, java.lang.String allowedServiceSignatures,
+					boolean defaultSAPEntry, boolean enabled,
+					java.lang.String name,
+					java.util.Map<java.util.Locale, java.lang.String> titleMap,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -142,22 +140,9 @@ public class SAPEntryServiceUtil {
 	}
 
 	public static SAPEntryService getService() {
-		return _serviceTracker.getService();
+		return _sapEntryService;
 	}
 
-	private static ServiceTracker<SAPEntryService, SAPEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SAPEntryService.class);
-
-		ServiceTracker<SAPEntryService, SAPEntryService> serviceTracker =
-			new ServiceTracker<SAPEntryService, SAPEntryService>(
-				bundle.getBundleContext(), SAPEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SAPEntryService _sapEntryService;
 
 }

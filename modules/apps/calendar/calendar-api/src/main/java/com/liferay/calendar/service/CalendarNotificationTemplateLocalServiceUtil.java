@@ -14,10 +14,6 @@
 
 package com.liferay.calendar.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CalendarNotificationTemplate. This utility wraps
  * <code>com.liferay.calendar.service.impl.CalendarNotificationTemplateLocalServiceImpl</code> and
@@ -62,10 +58,10 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 				long userId, long calendarId,
 				com.liferay.calendar.notification.NotificationType
 					notificationType,
-				String notificationTypeSettings,
+				java.lang.String notificationTypeSettings,
 				com.liferay.calendar.notification.NotificationTemplateType
 					notificationTemplateType,
-				String subject, String body,
+				java.lang.String subject, java.lang.String body,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -270,7 +266,7 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	 */
 	public static com.liferay.calendar.model.CalendarNotificationTemplate
 		fetchCalendarNotificationTemplateByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCalendarNotificationTemplateByUuidAndGroupId(
 			uuid, groupId);
@@ -307,7 +303,7 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	 */
 	public static com.liferay.calendar.model.CalendarNotificationTemplate
 			getCalendarNotificationTemplateByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCalendarNotificationTemplateByUuidAndGroupId(
@@ -342,7 +338,7 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.calendar.model.CalendarNotificationTemplate>
 			getCalendarNotificationTemplatesByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCalendarNotificationTemplatesByUuidAndCompanyId(
 			uuid, companyId);
@@ -361,7 +357,7 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.calendar.model.CalendarNotificationTemplate>
 			getCalendarNotificationTemplatesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.calendar.model.CalendarNotificationTemplate>
 						orderByComparator) {
@@ -399,7 +395,7 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -435,7 +431,8 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	public static com.liferay.calendar.model.CalendarNotificationTemplate
 			updateCalendarNotificationTemplate(
 				long calendarNotificationTemplateId,
-				String notificationTypeSettings, String subject, String body,
+				java.lang.String notificationTypeSettings,
+				java.lang.String subject, java.lang.String body,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -445,29 +442,10 @@ public class CalendarNotificationTemplateLocalServiceUtil {
 	}
 
 	public static CalendarNotificationTemplateLocalService getService() {
-		return _serviceTracker.getService();
+		return _calendarNotificationTemplateLocalService;
 	}
 
-	private static ServiceTracker
-		<CalendarNotificationTemplateLocalService,
-		 CalendarNotificationTemplateLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CalendarNotificationTemplateLocalService.class);
-
-		ServiceTracker
-			<CalendarNotificationTemplateLocalService,
-			 CalendarNotificationTemplateLocalService> serviceTracker =
-				new ServiceTracker
-					<CalendarNotificationTemplateLocalService,
-					 CalendarNotificationTemplateLocalService>(
-						 bundle.getBundleContext(),
-						 CalendarNotificationTemplateLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CalendarNotificationTemplateLocalService
+		_calendarNotificationTemplateLocalService;
 
 }

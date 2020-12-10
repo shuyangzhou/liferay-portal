@@ -14,10 +14,6 @@
 
 package com.liferay.app.builder.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AppBuilderApp. This utility wraps
  * <code>com.liferay.app.builder.service.impl.AppBuilderAppLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class AppBuilderAppLocalServiceUtil {
 			long groupId, long companyId, long userId, boolean active,
 			long ddlRecordSetId, long ddmStructureId, long ddmStructureLayoutId,
 			long deDataListViewId,
-			java.util.Map<java.util.Locale, String> nameMap, String scope)
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.lang.String scope)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAppBuilderApp(
@@ -76,7 +73,7 @@ public class AppBuilderAppLocalServiceUtil {
 			long groupId, long companyId, long userId, boolean active,
 			long ddmStructureId, long ddmStructureLayoutId,
 			long deDataListViewId,
-			java.util.Map<java.util.Locale, String> nameMap)
+			java.util.Map<java.util.Locale, java.lang.String> nameMap)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAppBuilderApp(
@@ -88,7 +85,8 @@ public class AppBuilderAppLocalServiceUtil {
 			long groupId, long companyId, long userId, boolean active,
 			long ddmStructureId, long ddmStructureLayoutId,
 			long deDataListViewId,
-			java.util.Map<java.util.Locale, String> nameMap, String scope)
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.lang.String scope)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAppBuilderApp(
@@ -275,7 +273,8 @@ public class AppBuilderAppLocalServiceUtil {
 	 * @return the matching app builder app, or <code>null</code> if a matching app builder app could not be found
 	 */
 	public static com.liferay.app.builder.model.AppBuilderApp
-		fetchAppBuilderAppByUuidAndGroupId(String uuid, long groupId) {
+		fetchAppBuilderAppByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAppBuilderAppByUuidAndGroupId(uuid, groupId);
 	}
@@ -309,14 +308,15 @@ public class AppBuilderAppLocalServiceUtil {
 	 * @throws PortalException if a matching app builder app could not be found
 	 */
 	public static com.liferay.app.builder.model.AppBuilderApp
-			getAppBuilderAppByUuidAndGroupId(String uuid, long groupId)
+			getAppBuilderAppByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAppBuilderAppByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static java.util.List<Long> getAppBuilderAppIds(
-		boolean active, String type) {
+	public static java.util.List<java.lang.Long> getAppBuilderAppIds(
+		boolean active, java.lang.String type) {
 
 		return getService().getAppBuilderAppIds(active, type);
 	}
@@ -351,7 +351,8 @@ public class AppBuilderAppLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.app.builder.model.AppBuilderApp>
-		getAppBuilderApps(long companyId, boolean active, String scope) {
+		getAppBuilderApps(
+			long companyId, boolean active, java.lang.String scope) {
 
 		return getService().getAppBuilderApps(companyId, active, scope);
 	}
@@ -381,8 +382,8 @@ public class AppBuilderAppLocalServiceUtil {
 
 	public static java.util.List<com.liferay.app.builder.model.AppBuilderApp>
 		getAppBuilderApps(
-			long groupId, long companyId, long ddmStructureId, String scope,
-			int start, int end,
+			long groupId, long companyId, long ddmStructureId,
+			java.lang.String scope, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.app.builder.model.AppBuilderApp>
 					orderByComparator) {
@@ -394,7 +395,7 @@ public class AppBuilderAppLocalServiceUtil {
 
 	public static java.util.List<com.liferay.app.builder.model.AppBuilderApp>
 		getAppBuilderApps(
-			long groupId, String scope, int start, int end,
+			long groupId, java.lang.String scope, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.app.builder.model.AppBuilderApp>
 					orderByComparator) {
@@ -411,7 +412,8 @@ public class AppBuilderAppLocalServiceUtil {
 	 * @return the matching app builder apps, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.app.builder.model.AppBuilderApp>
-		getAppBuilderAppsByUuidAndCompanyId(String uuid, long companyId) {
+		getAppBuilderAppsByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getAppBuilderAppsByUuidAndCompanyId(
 			uuid, companyId);
@@ -429,7 +431,7 @@ public class AppBuilderAppLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.app.builder.model.AppBuilderApp>
 		getAppBuilderAppsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.app.builder.model.AppBuilderApp>
 					orderByComparator) {
@@ -459,13 +461,16 @@ public class AppBuilderAppLocalServiceUtil {
 	}
 
 	public static int getAppBuilderAppsCount(
-		long groupId, long companyId, long ddmStructureId, String scope) {
+		long groupId, long companyId, long ddmStructureId,
+		java.lang.String scope) {
 
 		return getService().getAppBuilderAppsCount(
 			groupId, companyId, ddmStructureId, scope);
 	}
 
-	public static int getAppBuilderAppsCount(long groupId, String scope) {
+	public static int getAppBuilderAppsCount(
+		long groupId, java.lang.String scope) {
+
 		return getService().getAppBuilderAppsCount(groupId, scope);
 	}
 
@@ -482,7 +487,7 @@ public class AppBuilderAppLocalServiceUtil {
 
 	public static java.util.List<com.liferay.app.builder.model.AppBuilderApp>
 		getCompanyAppBuilderApps(
-			long companyId, String scope, int start, int end,
+			long companyId, java.lang.String scope, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.app.builder.model.AppBuilderApp>
 					orderByComparator) {
@@ -496,7 +501,7 @@ public class AppBuilderAppLocalServiceUtil {
 	}
 
 	public static int getCompanyAppBuilderAppsCount(
-		long companyId, String scope) {
+		long companyId, java.lang.String scope) {
 
 		return getService().getCompanyAppBuilderAppsCount(companyId, scope);
 	}
@@ -521,7 +526,7 @@ public class AppBuilderAppLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -557,7 +562,7 @@ public class AppBuilderAppLocalServiceUtil {
 				long userId, long appBuilderAppId, boolean active,
 				long ddmStructureId, long ddmStructureLayoutId,
 				long deDataListViewId,
-				java.util.Map<java.util.Locale, String> nameMap)
+				java.util.Map<java.util.Locale, java.lang.String> nameMap)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAppBuilderApp(
@@ -566,26 +571,10 @@ public class AppBuilderAppLocalServiceUtil {
 	}
 
 	public static AppBuilderAppLocalService getService() {
-		return _serviceTracker.getService();
+		return _appBuilderAppLocalService;
 	}
 
-	private static ServiceTracker
-		<AppBuilderAppLocalService, AppBuilderAppLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AppBuilderAppLocalService.class);
-
-		ServiceTracker<AppBuilderAppLocalService, AppBuilderAppLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AppBuilderAppLocalService, AppBuilderAppLocalService>(
-						bundle.getBundleContext(),
-						AppBuilderAppLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppBuilderAppLocalService
+		_appBuilderAppLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.journal.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for JournalFolder. This utility wraps
  * <code>com.liferay.journal.service.impl.JournalFolderServiceImpl</code> and is an
@@ -38,7 +34,8 @@ public class JournalFolderServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.journal.service.impl.JournalFolderServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.journal.model.JournalFolder addFolder(
-			long groupId, long parentFolderId, String name, String description,
+			long groupId, long parentFolderId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -94,7 +91,8 @@ public class JournalFolderServiceUtil {
 		return getService().getFolder(folderId);
 	}
 
-	public static java.util.List<Long> getFolderIds(long groupId, long folderId)
+	public static java.util.List<java.lang.Long> getFolderIds(
+			long groupId, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFolderIds(groupId, folderId);
@@ -132,7 +130,7 @@ public class JournalFolderServiceUtil {
 			groupId, parentFolderId, status, start, end);
 	}
 
-	public static java.util.List<Object> getFoldersAndArticles(
+	public static java.util.List<java.lang.Object> getFoldersAndArticles(
 		long groupId, long folderId, int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> orderByComparator) {
 
@@ -140,7 +138,7 @@ public class JournalFolderServiceUtil {
 			groupId, folderId, status, start, end, orderByComparator);
 	}
 
-	public static java.util.List<Object> getFoldersAndArticles(
+	public static java.util.List<java.lang.Object> getFoldersAndArticles(
 		long groupId, long folderId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> orderByComparator) {
 
@@ -148,7 +146,7 @@ public class JournalFolderServiceUtil {
 			groupId, folderId, start, end, orderByComparator);
 	}
 
-	public static java.util.List<Object> getFoldersAndArticles(
+	public static java.util.List<java.lang.Object> getFoldersAndArticles(
 		long groupId, long userId, long folderId, int status, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> orderByComparator) {
@@ -157,7 +155,7 @@ public class JournalFolderServiceUtil {
 			groupId, userId, folderId, status, start, end, orderByComparator);
 	}
 
-	public static java.util.List<Object> getFoldersAndArticles(
+	public static java.util.List<java.lang.Object> getFoldersAndArticles(
 		long groupId, long userId, long folderId, int status,
 		java.util.Locale locale, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> orderByComparator) {
@@ -168,7 +166,7 @@ public class JournalFolderServiceUtil {
 	}
 
 	public static int getFoldersAndArticlesCount(
-		long groupId, java.util.List<Long> folderIds, int status) {
+		long groupId, java.util.List<java.lang.Long> folderIds, int status) {
 
 		return getService().getFoldersAndArticlesCount(
 			groupId, folderIds, status);
@@ -207,18 +205,18 @@ public class JournalFolderServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static void getSubfolderIds(
-		java.util.List<Long> folderIds, long groupId, long folderId,
+		java.util.List<java.lang.Long> folderIds, long groupId, long folderId,
 		boolean recurse) {
 
 		getService().getSubfolderIds(folderIds, groupId, folderId, recurse);
 	}
 
-	public static java.util.List<Long> getSubfolderIds(
+	public static java.util.List<java.lang.Long> getSubfolderIds(
 		long groupId, long folderId, boolean recurse) {
 
 		return getService().getSubfolderIds(groupId, folderId, recurse);
@@ -259,7 +257,8 @@ public class JournalFolderServiceUtil {
 		<com.liferay.dynamic.data.mapping.model.DDMStructure>
 				searchDDMStructures(
 					long companyId, long[] groupIds, long folderId,
-					int restrictionType, String keywords, int start, int end,
+					int restrictionType, java.lang.String keywords, int start,
+					int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.dynamic.data.mapping.model.DDMStructure>
 							orderByComparator)
@@ -283,8 +282,9 @@ public class JournalFolderServiceUtil {
 	}
 
 	public static com.liferay.journal.model.JournalFolder updateFolder(
-			long groupId, long folderId, long parentFolderId, String name,
-			String description, boolean mergeWithParentFolder,
+			long groupId, long folderId, long parentFolderId,
+			java.lang.String name, java.lang.String description,
+			boolean mergeWithParentFolder,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -294,8 +294,9 @@ public class JournalFolderServiceUtil {
 	}
 
 	public static com.liferay.journal.model.JournalFolder updateFolder(
-			long groupId, long folderId, long parentFolderId, String name,
-			String description, long[] ddmStructureIds, int restrictionType,
+			long groupId, long folderId, long parentFolderId,
+			java.lang.String name, java.lang.String description,
+			long[] ddmStructureIds, int restrictionType,
 			boolean mergeWithParentFolder,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -307,24 +308,9 @@ public class JournalFolderServiceUtil {
 	}
 
 	public static JournalFolderService getService() {
-		return _serviceTracker.getService();
+		return _journalFolderService;
 	}
 
-	private static ServiceTracker<JournalFolderService, JournalFolderService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JournalFolderService.class);
-
-		ServiceTracker<JournalFolderService, JournalFolderService>
-			serviceTracker =
-				new ServiceTracker<JournalFolderService, JournalFolderService>(
-					bundle.getBundleContext(), JournalFolderService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile JournalFolderService _journalFolderService;
 
 }

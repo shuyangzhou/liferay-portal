@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceCountry. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceCountryServiceImpl</code> and is an
@@ -38,11 +34,11 @@ public class CommerceCountryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.commerce.service.impl.CommerceCountryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.commerce.model.CommerceCountry addCommerceCountry(
-			java.util.Map<java.util.Locale, String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
 			boolean billingAllowed, boolean shippingAllowed,
-			String twoLettersISOCode, String threeLettersISOCode,
-			int numericISOCode, boolean subjectToVAT, double priority,
-			boolean active,
+			java.lang.String twoLettersISOCode,
+			java.lang.String threeLettersISOCode, int numericISOCode,
+			boolean subjectToVAT, double priority, boolean active,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -59,7 +55,8 @@ public class CommerceCountryServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceCountry
-			fetchCommerceCountry(long companyId, String twoLettersISOCode)
+			fetchCommerceCountry(
+				long companyId, java.lang.String twoLettersISOCode)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().fetchCommerceCountry(companyId, twoLettersISOCode);
@@ -131,7 +128,7 @@ public class CommerceCountryServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceCountry getCommerceCountry(
-			long companyId, String twoLettersISOCode)
+			long companyId, java.lang.String twoLettersISOCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceCountry(companyId, twoLettersISOCode);
@@ -142,7 +139,7 @@ public class CommerceCountryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -171,8 +168,9 @@ public class CommerceCountryServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceCountry> searchCommerceCountries(
-				long companyId, Boolean active, String keywords, int start,
-				int end, com.liferay.portal.kernel.search.Sort sort)
+				long companyId, java.lang.Boolean active,
+				java.lang.String keywords, int start, int end,
+				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceCountries(
@@ -201,11 +199,11 @@ public class CommerceCountryServiceUtil {
 	public static com.liferay.commerce.model.CommerceCountry
 			updateCommerceCountry(
 				long commerceCountryId,
-				java.util.Map<java.util.Locale, String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
 				boolean billingAllowed, boolean shippingAllowed,
-				String twoLettersISOCode, String threeLettersISOCode,
-				int numericISOCode, boolean subjectToVAT, double priority,
-				boolean active,
+				java.lang.String twoLettersISOCode,
+				java.lang.String threeLettersISOCode, int numericISOCode,
+				boolean subjectToVAT, double priority, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -225,25 +223,9 @@ public class CommerceCountryServiceUtil {
 	}
 
 	public static CommerceCountryService getService() {
-		return _serviceTracker.getService();
+		return _commerceCountryService;
 	}
 
-	private static ServiceTracker
-		<CommerceCountryService, CommerceCountryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceCountryService.class);
-
-		ServiceTracker<CommerceCountryService, CommerceCountryService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceCountryService, CommerceCountryService>(
-						bundle.getBundleContext(), CommerceCountryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceCountryService _commerceCountryService;
 
 }

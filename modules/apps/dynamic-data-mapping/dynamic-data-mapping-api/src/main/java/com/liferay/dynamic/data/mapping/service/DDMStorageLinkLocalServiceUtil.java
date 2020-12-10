@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMStorageLink. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMStorageLinkLocalServiceImpl</code> and
@@ -264,7 +260,8 @@ public class DDMStorageLinkLocalServiceUtil {
 	 * @return the matching ddm storage link, or <code>null</code> if a matching ddm storage link could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStorageLink
-		fetchDDMStorageLinkByUuidAndCompanyId(String uuid, long companyId) {
+		fetchDDMStorageLinkByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchDDMStorageLinkByUuidAndCompanyId(
 			uuid, companyId);
@@ -306,7 +303,8 @@ public class DDMStorageLinkLocalServiceUtil {
 	 * @throws PortalException if a matching ddm storage link could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStorageLink
-			getDDMStorageLinkByUuidAndCompanyId(String uuid, long companyId)
+			getDDMStorageLinkByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDDMStorageLinkByUuidAndCompanyId(
@@ -352,7 +350,7 @@ public class DDMStorageLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -426,27 +424,10 @@ public class DDMStorageLinkLocalServiceUtil {
 	}
 
 	public static DDMStorageLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmStorageLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMStorageLinkLocalService, DDMStorageLinkLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMStorageLinkLocalService.class);
-
-		ServiceTracker<DDMStorageLinkLocalService, DDMStorageLinkLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DDMStorageLinkLocalService, DDMStorageLinkLocalService>(
-						bundle.getBundleContext(),
-						DDMStorageLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMStorageLinkLocalService
+		_ddmStorageLinkLocalService;
 
 }

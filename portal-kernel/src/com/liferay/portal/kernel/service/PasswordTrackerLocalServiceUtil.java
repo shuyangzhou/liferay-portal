@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PasswordTracker. This utility wraps
  * <code>com.liferay.portal.service.impl.PasswordTrackerLocalServiceImpl</code> and
@@ -240,7 +238,7 @@ public class PasswordTrackerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -296,19 +294,20 @@ public class PasswordTrackerLocalServiceUtil {
 	}
 
 	public static boolean isSameAsCurrentPassword(
-			long userId, String newClearTextPwd)
+			long userId, java.lang.String newClearTextPwd)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().isSameAsCurrentPassword(userId, newClearTextPwd);
 	}
 
-	public static boolean isValidPassword(long userId, String newClearTextPwd)
+	public static boolean isValidPassword(
+			long userId, java.lang.String newClearTextPwd)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().isValidPassword(userId, newClearTextPwd);
 	}
 
-	public static void trackPassword(long userId, String encPassword)
+	public static void trackPassword(long userId, java.lang.String encPassword)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().trackPassword(userId, encPassword);
@@ -332,15 +331,10 @@ public class PasswordTrackerLocalServiceUtil {
 	}
 
 	public static PasswordTrackerLocalService getService() {
-		if (_service == null) {
-			_service =
-				(PasswordTrackerLocalService)PortalBeanLocatorUtil.locate(
-					PasswordTrackerLocalService.class.getName());
-		}
-
-		return _service;
+		return _passwordTrackerLocalService;
 	}
 
-	private static PasswordTrackerLocalService _service;
+	private static volatile PasswordTrackerLocalService
+		_passwordTrackerLocalService;
 
 }

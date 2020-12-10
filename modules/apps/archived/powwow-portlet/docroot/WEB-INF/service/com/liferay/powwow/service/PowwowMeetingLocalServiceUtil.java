@@ -14,8 +14,6 @@
 
 package com.liferay.powwow.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PowwowMeeting. This utility wraps
  * <code>com.liferay.powwow.service.impl.PowwowMeetingLocalServiceImpl</code> and
@@ -36,10 +34,12 @@ public class PowwowMeetingLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.powwow.service.impl.PowwowMeetingLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.powwow.model.PowwowMeeting addPowwowMeeting(
-			long userId, long groupId, long powwowServerId, String name,
-			String description, String providerType,
-			java.util.Map<String, java.io.Serializable> providerTypeMetadataMap,
-			String languageId, long calendarBookingId, int status,
+			long userId, long groupId, long powwowServerId,
+			java.lang.String name, java.lang.String description,
+			java.lang.String providerType,
+			java.util.Map<java.lang.String, java.io.Serializable>
+				providerTypeMetadataMap,
+			java.lang.String languageId, long calendarBookingId, int status,
 			java.util.List<com.liferay.powwow.model.PowwowParticipant>
 				powwowParticipants,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -257,7 +257,7 @@ public class PowwowMeetingLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -336,9 +336,10 @@ public class PowwowMeetingLocalServiceUtil {
 
 	public static java.util.List<com.liferay.powwow.model.PowwowMeeting>
 		getPowwowMeetings(
-			long groupId, long userId, String name, String description,
-			int status, boolean andSearch, int start, int end,
-			String orderByField, String orderByType) {
+			long groupId, long userId, java.lang.String name,
+			java.lang.String description, int status, boolean andSearch,
+			int start, int end, java.lang.String orderByField,
+			java.lang.String orderByType) {
 
 		return getService().getPowwowMeetings(
 			groupId, userId, name, description, status, andSearch, start, end,
@@ -363,8 +364,8 @@ public class PowwowMeetingLocalServiceUtil {
 	}
 
 	public static int getPowwowMeetingsCount(
-		long groupId, long userId, String name, String description, int status,
-		boolean andSearch) {
+		long groupId, long userId, java.lang.String name,
+		java.lang.String description, int status, boolean andSearch) {
 
 		return getService().getPowwowMeetingsCount(
 			groupId, userId, name, description, status, andSearch);
@@ -375,10 +376,11 @@ public class PowwowMeetingLocalServiceUtil {
 	}
 
 	public static com.liferay.powwow.model.PowwowMeeting updatePowwowMeeting(
-			long powwowMeetingId, long powwowServerId, String name,
-			String description, String providerType,
-			java.util.Map<String, java.io.Serializable> providerTypeMetadataMap,
-			String languageId, long calendarBookingId, int status,
+			long powwowMeetingId, long powwowServerId, java.lang.String name,
+			java.lang.String description, java.lang.String providerType,
+			java.util.Map<java.lang.String, java.io.Serializable>
+				providerTypeMetadataMap,
+			java.lang.String languageId, long calendarBookingId, int status,
 			java.util.List<com.liferay.powwow.model.PowwowParticipant>
 				powwowParticipants,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -414,19 +416,14 @@ public class PowwowMeetingLocalServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_powwowMeetingLocalService = null;
 	}
 
 	public static PowwowMeetingLocalService getService() {
-		if (_service == null) {
-			_service = (PowwowMeetingLocalService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				PowwowMeetingLocalService.class.getName());
-		}
-
-		return _service;
+		return _powwowMeetingLocalService;
 	}
 
-	private static PowwowMeetingLocalService _service;
+	private static volatile PowwowMeetingLocalService
+		_powwowMeetingLocalService;
 
 }

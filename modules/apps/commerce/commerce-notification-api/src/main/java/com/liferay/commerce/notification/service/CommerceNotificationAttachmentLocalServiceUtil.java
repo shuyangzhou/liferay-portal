@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.notification.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceNotificationAttachment. This utility wraps
  * <code>com.liferay.commerce.notification.service.impl.CommerceNotificationAttachmentLocalServiceImpl</code> and
@@ -268,7 +264,7 @@ public class CommerceNotificationAttachmentLocalServiceUtil {
 	public static
 		com.liferay.commerce.notification.model.CommerceNotificationAttachment
 			fetchCommerceNotificationAttachmentByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchCommerceNotificationAttachmentByUuidAndGroupId(
 			uuid, groupId);
@@ -308,7 +304,7 @@ public class CommerceNotificationAttachmentLocalServiceUtil {
 	public static
 		com.liferay.commerce.notification.model.CommerceNotificationAttachment
 				getCommerceNotificationAttachmentByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceNotificationAttachmentByUuidAndGroupId(
@@ -355,7 +351,7 @@ public class CommerceNotificationAttachmentLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.notification.model.CommerceNotificationAttachment>
 			getCommerceNotificationAttachmentsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().
 			getCommerceNotificationAttachmentsByUuidAndCompanyId(
@@ -375,7 +371,7 @@ public class CommerceNotificationAttachmentLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.notification.model.CommerceNotificationAttachment>
 			getCommerceNotificationAttachmentsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.notification.model.
 						CommerceNotificationAttachment> orderByComparator) {
@@ -414,7 +410,7 @@ public class CommerceNotificationAttachmentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -450,30 +446,10 @@ public class CommerceNotificationAttachmentLocalServiceUtil {
 	}
 
 	public static CommerceNotificationAttachmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceNotificationAttachmentLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceNotificationAttachmentLocalService,
-		 CommerceNotificationAttachmentLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceNotificationAttachmentLocalService.class);
-
-		ServiceTracker
-			<CommerceNotificationAttachmentLocalService,
-			 CommerceNotificationAttachmentLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceNotificationAttachmentLocalService,
-					 CommerceNotificationAttachmentLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceNotificationAttachmentLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceNotificationAttachmentLocalService
+		_commerceNotificationAttachmentLocalService;
 
 }

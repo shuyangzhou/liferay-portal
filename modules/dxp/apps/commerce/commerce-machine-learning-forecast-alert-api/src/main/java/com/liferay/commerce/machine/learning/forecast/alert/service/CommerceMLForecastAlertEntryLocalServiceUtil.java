@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.machine.learning.forecast.alert.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceMLForecastAlertEntry. This utility wraps
  * <code>com.liferay.commerce.machine.learning.forecast.alert.service.impl.CommerceMLForecastAlertEntryLocalServiceImpl</code> and
@@ -240,7 +236,7 @@ public class CommerceMLForecastAlertEntryLocalServiceUtil {
 	public static com.liferay.commerce.machine.learning.forecast.alert.model.
 		CommerceMLForecastAlertEntry
 			fetchCommerceMLForecastAlertEntryByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommerceMLForecastAlertEntryByUuidAndCompanyId(
 			uuid, companyId);
@@ -364,7 +360,7 @@ public class CommerceMLForecastAlertEntryLocalServiceUtil {
 	public static com.liferay.commerce.machine.learning.forecast.alert.model.
 		CommerceMLForecastAlertEntry
 				getCommerceMLForecastAlertEntryByUuidAndCompanyId(
-					String uuid, long companyId)
+					java.lang.String uuid, long companyId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceMLForecastAlertEntryByUuidAndCompanyId(
@@ -391,7 +387,7 @@ public class CommerceMLForecastAlertEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -446,29 +442,10 @@ public class CommerceMLForecastAlertEntryLocalServiceUtil {
 	}
 
 	public static CommerceMLForecastAlertEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceMLForecastAlertEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceMLForecastAlertEntryLocalService,
-		 CommerceMLForecastAlertEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceMLForecastAlertEntryLocalService.class);
-
-		ServiceTracker
-			<CommerceMLForecastAlertEntryLocalService,
-			 CommerceMLForecastAlertEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceMLForecastAlertEntryLocalService,
-					 CommerceMLForecastAlertEntryLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceMLForecastAlertEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceMLForecastAlertEntryLocalService
+		_commerceMLForecastAlertEntryLocalService;
 
 }

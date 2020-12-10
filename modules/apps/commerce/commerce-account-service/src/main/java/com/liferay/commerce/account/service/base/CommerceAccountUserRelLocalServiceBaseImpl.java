@@ -16,6 +16,7 @@ package com.liferay.commerce.account.service.base;
 
 import com.liferay.commerce.account.model.CommerceAccountUserRel;
 import com.liferay.commerce.account.service.CommerceAccountUserRelLocalService;
+import com.liferay.commerce.account.service.CommerceAccountUserRelLocalServiceUtil;
 import com.liferay.commerce.account.service.persistence.CommerceAccountFinder;
 import com.liferay.commerce.account.service.persistence.CommerceAccountGroupCommerceAccountRelPersistence;
 import com.liferay.commerce.account.service.persistence.CommerceAccountGroupFinder;
@@ -57,6 +58,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -79,7 +82,7 @@ public abstract class CommerceAccountUserRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAccountUserRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.account.service.CommerceAccountUserRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAccountUserRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAccountUserRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -944,11 +947,15 @@ public abstract class CommerceAccountUserRelLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.commerce.account.model.CommerceAccountUserRel",
 			commerceAccountUserRelLocalService);
+
+		_setLocalServiceUtilService(commerceAccountUserRelLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.commerce.account.model.CommerceAccountUserRel");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -991,6 +998,23 @@ public abstract class CommerceAccountUserRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		CommerceAccountUserRelLocalService commerceAccountUserRelLocalService) {
+
+		try {
+			Field field =
+				CommerceAccountUserRelLocalServiceUtil.class.getDeclaredField(
+					"_commerceAccountUserRelLocalService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceAccountUserRelLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

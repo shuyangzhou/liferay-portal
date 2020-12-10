@@ -14,10 +14,6 @@
 
 package com.liferay.document.library.file.rank.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DLFileRank. This utility wraps
  * <code>com.liferay.document.library.file.rank.service.impl.DLFileRankLocalServiceImpl</code> and
@@ -341,7 +337,7 @@ public class DLFileRankLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -383,25 +379,9 @@ public class DLFileRankLocalServiceUtil {
 	}
 
 	public static DLFileRankLocalService getService() {
-		return _serviceTracker.getService();
+		return _dlFileRankLocalService;
 	}
 
-	private static ServiceTracker
-		<DLFileRankLocalService, DLFileRankLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DLFileRankLocalService.class);
-
-		ServiceTracker<DLFileRankLocalService, DLFileRankLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DLFileRankLocalService, DLFileRankLocalService>(
-						bundle.getBundleContext(), DLFileRankLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DLFileRankLocalService _dlFileRankLocalService;
 
 }

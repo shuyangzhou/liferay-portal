@@ -16,6 +16,7 @@ package com.liferay.commerce.data.integration.service.base;
 
 import com.liferay.commerce.data.integration.model.CommerceDataIntegrationProcess;
 import com.liferay.commerce.data.integration.service.CommerceDataIntegrationProcessService;
+import com.liferay.commerce.data.integration.service.CommerceDataIntegrationProcessServiceUtil;
 import com.liferay.commerce.data.integration.service.persistence.CommerceDataIntegrationProcessLogPersistence;
 import com.liferay.commerce.data.integration.service.persistence.CommerceDataIntegrationProcessPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -31,6 +32,8 @@ import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +55,7 @@ public abstract class CommerceDataIntegrationProcessServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceDataIntegrationProcessService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.data.integration.service.CommerceDataIntegrationProcessServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceDataIntegrationProcessService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceDataIntegrationProcessServiceUtil</code>.
 	 */
 
 	/**
@@ -440,9 +443,11 @@ public abstract class CommerceDataIntegrationProcessServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(commerceDataIntegrationProcessService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -485,6 +490,24 @@ public abstract class CommerceDataIntegrationProcessServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		CommerceDataIntegrationProcessService
+			commerceDataIntegrationProcessService) {
+
+		try {
+			Field field =
+				CommerceDataIntegrationProcessServiceUtil.class.
+					getDeclaredField("_commerceDataIntegrationProcessService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceDataIntegrationProcessService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

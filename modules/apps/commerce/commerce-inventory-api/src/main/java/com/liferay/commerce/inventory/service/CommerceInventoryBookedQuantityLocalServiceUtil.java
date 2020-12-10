@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceInventoryBookedQuantity. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryBookedQuantityLocalServiceImpl</code> and
@@ -40,9 +36,9 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity
 				addCommerceBookedQuantity(
-					long userId, String sku, int quantity,
+					long userId, java.lang.String sku, int quantity,
 					java.util.Date expirationDate,
-					java.util.Map<String, String> context)
+					java.util.Map<java.lang.String, java.lang.String> context)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceBookedQuantity(
@@ -269,7 +265,9 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static int getCommerceBookedQuantity(long companyId, String sku) {
+	public static int getCommerceBookedQuantity(
+		long companyId, java.lang.String sku) {
+
 		return getService().getCommerceBookedQuantity(companyId, sku);
 	}
 
@@ -294,7 +292,7 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity>
 			getCommerceInventoryBookedQuantities(
-				long companyId, String sku, int start, int end) {
+				long companyId, java.lang.String sku, int start, int end) {
 
 		return getService().getCommerceInventoryBookedQuantities(
 			companyId, sku, start, end);
@@ -310,7 +308,7 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 	}
 
 	public static int getCommerceInventoryBookedQuantitiesCount(
-		long companyId, String sku) {
+		long companyId, java.lang.String sku) {
 
 		return getService().getCommerceInventoryBookedQuantitiesCount(
 			companyId, sku);
@@ -345,7 +343,7 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -362,9 +360,10 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity
 				resetCommerceBookedQuantity(
-					long commerceBookedQuantityId, long userId, String sku,
-					int quantity, java.util.Date expirationDate,
-					java.util.Map<String, String> context)
+					long commerceBookedQuantityId, long userId,
+					java.lang.String sku, int quantity,
+					java.util.Date expirationDate,
+					java.util.Map<java.lang.String, java.lang.String> context)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().resetCommerceBookedQuantity(
@@ -397,7 +396,8 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 		com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity
 				updateCommerceInventoryBookedQuantity(
 					long userId, long commerceInventoryBookedQuantityId,
-					int quantity, java.util.Map<String, String> context,
+					int quantity,
+					java.util.Map<java.lang.String, java.lang.String> context,
 					long mvccVersion)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -407,30 +407,10 @@ public class CommerceInventoryBookedQuantityLocalServiceUtil {
 	}
 
 	public static CommerceInventoryBookedQuantityLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryBookedQuantityLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryBookedQuantityLocalService,
-		 CommerceInventoryBookedQuantityLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryBookedQuantityLocalService.class);
-
-		ServiceTracker
-			<CommerceInventoryBookedQuantityLocalService,
-			 CommerceInventoryBookedQuantityLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceInventoryBookedQuantityLocalService,
-					 CommerceInventoryBookedQuantityLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceInventoryBookedQuantityLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryBookedQuantityLocalService
+		_commerceInventoryBookedQuantityLocalService;
 
 }

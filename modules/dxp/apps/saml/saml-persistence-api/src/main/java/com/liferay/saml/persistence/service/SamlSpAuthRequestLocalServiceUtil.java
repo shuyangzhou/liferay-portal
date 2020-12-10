@@ -14,10 +14,6 @@
 
 package com.liferay.saml.persistence.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SamlSpAuthRequest. This utility wraps
  * <code>com.liferay.saml.persistence.service.impl.SamlSpAuthRequestLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class SamlSpAuthRequestLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlSpAuthRequest
 		addSamlSpAuthRequest(
-			String samlIdpEntityId, String samlSpAuthRequestKey,
+			java.lang.String samlIdpEntityId,
+			java.lang.String samlSpAuthRequestKey,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().addSamlSpAuthRequest(
@@ -237,7 +234,8 @@ public class SamlSpAuthRequestLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlSpAuthRequest
 		fetchSamlSpAuthRequest(
-			String samlIdpEntityId, String samlSpAuthRequestKey) {
+			java.lang.String samlIdpEntityId,
+			java.lang.String samlSpAuthRequestKey) {
 
 		return getService().fetchSamlSpAuthRequest(
 			samlIdpEntityId, samlSpAuthRequestKey);
@@ -261,7 +259,7 @@ public class SamlSpAuthRequestLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -291,7 +289,8 @@ public class SamlSpAuthRequestLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlSpAuthRequest
 			getSamlSpAuthRequest(
-				String samlIdpEntityId, String samlSpAuthRequestKey)
+				java.lang.String samlIdpEntityId,
+				java.lang.String samlSpAuthRequestKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSamlSpAuthRequest(
@@ -344,29 +343,10 @@ public class SamlSpAuthRequestLocalServiceUtil {
 	}
 
 	public static SamlSpAuthRequestLocalService getService() {
-		return _serviceTracker.getService();
+		return _samlSpAuthRequestLocalService;
 	}
 
-	private static ServiceTracker
-		<SamlSpAuthRequestLocalService, SamlSpAuthRequestLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SamlSpAuthRequestLocalService.class);
-
-		ServiceTracker
-			<SamlSpAuthRequestLocalService, SamlSpAuthRequestLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SamlSpAuthRequestLocalService,
-						 SamlSpAuthRequestLocalService>(
-							 bundle.getBundleContext(),
-							 SamlSpAuthRequestLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SamlSpAuthRequestLocalService
+		_samlSpAuthRequestLocalService;
 
 }

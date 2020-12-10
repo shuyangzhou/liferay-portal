@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceInventoryWarehouse. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryWarehouseServiceImpl</code> and is an
@@ -48,11 +44,13 @@ public class CommerceInventoryWarehouseServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouse
 				addCommerceInventoryWarehouse(
-					String name, String description, boolean active,
-					String street1, String street2, String street3, String city,
-					String zip, String commerceRegionCode,
-					String commerceCountryCode, double latitude,
-					double longitude, String externalReferenceCode,
+					java.lang.String name, java.lang.String description,
+					boolean active, java.lang.String street1,
+					java.lang.String street2, java.lang.String street3,
+					java.lang.String city, java.lang.String zip,
+					java.lang.String commerceRegionCode,
+					java.lang.String commerceCountryCode, double latitude,
+					double longitude, java.lang.String externalReferenceCode,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -66,11 +64,14 @@ public class CommerceInventoryWarehouseServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouse
 				addCommerceInventoryWarehouse(
-					String externalReferenceCode, String name,
-					String description, boolean active, String street1,
-					String street2, String street3, String city, String zip,
-					String commerceRegionCode, String commerceCountryCode,
-					double latitude, double longitude,
+					java.lang.String externalReferenceCode,
+					java.lang.String name, java.lang.String description,
+					boolean active, java.lang.String street1,
+					java.lang.String street2, java.lang.String street3,
+					java.lang.String city, java.lang.String zip,
+					java.lang.String commerceRegionCode,
+					java.lang.String commerceCountryCode, double latitude,
+					double longitude,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -99,7 +100,7 @@ public class CommerceInventoryWarehouseServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouse
 				fetchByExternalReferenceCode(
-					long companyId, String externalReferenceCode)
+					long companyId, java.lang.String externalReferenceCode)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -109,7 +110,7 @@ public class CommerceInventoryWarehouseServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouse
 				fetchByExternalReferenceCode(
-					String externalReferenceCode, long companyId)
+					java.lang.String externalReferenceCode, long companyId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -152,8 +153,8 @@ public class CommerceInventoryWarehouseServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryWarehouse>
 				getCommerceInventoryWarehouses(
-					long companyId, boolean active, String commerceCountryCode,
-					int start, int end,
+					long companyId, boolean active,
+					java.lang.String commerceCountryCode, int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.commerce.inventory.model.
 							CommerceInventoryWarehouse> orderByComparator)
@@ -194,7 +195,8 @@ public class CommerceInventoryWarehouseServiceUtil {
 	}
 
 	public static int getCommerceInventoryWarehousesCount(
-			long companyId, boolean active, String commerceCountryCode)
+			long companyId, boolean active,
+			java.lang.String commerceCountryCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryWarehousesCount(
@@ -206,15 +208,16 @@ public class CommerceInventoryWarehouseServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryWarehouse>
 				searchCommerceInventoryWarehouses(
-					long companyId, Boolean active, String commerceCountryCode,
-					String keywords, int start, int end,
+					long companyId, java.lang.Boolean active,
+					java.lang.String commerceCountryCode,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -223,8 +226,8 @@ public class CommerceInventoryWarehouseServiceUtil {
 	}
 
 	public static int searchCommerceInventoryWarehousesCount(
-			long companyId, Boolean active, String commerceCountryCode,
-			String keywords)
+			long companyId, java.lang.Boolean active,
+			java.lang.String commerceCountryCode, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceInventoryWarehousesCount(
@@ -242,11 +245,13 @@ public class CommerceInventoryWarehouseServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouse
 				updateCommerceInventoryWarehouse(
-					long commerceInventoryWarehouseId, String name,
-					String description, boolean active, String street1,
-					String street2, String street3, String city, String zip,
-					String commerceRegionCode, String commerceCountryCode,
-					double latitude, double longitude, long mvccVersion,
+					long commerceInventoryWarehouseId, java.lang.String name,
+					java.lang.String description, boolean active,
+					java.lang.String street1, java.lang.String street2,
+					java.lang.String street3, java.lang.String city,
+					java.lang.String zip, java.lang.String commerceRegionCode,
+					java.lang.String commerceCountryCode, double latitude,
+					double longitude, long mvccVersion,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -259,29 +264,10 @@ public class CommerceInventoryWarehouseServiceUtil {
 	}
 
 	public static CommerceInventoryWarehouseService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryWarehouseService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryWarehouseService, CommerceInventoryWarehouseService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryWarehouseService.class);
-
-		ServiceTracker
-			<CommerceInventoryWarehouseService,
-			 CommerceInventoryWarehouseService> serviceTracker =
-				new ServiceTracker
-					<CommerceInventoryWarehouseService,
-					 CommerceInventoryWarehouseService>(
-						 bundle.getBundleContext(),
-						 CommerceInventoryWarehouseService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryWarehouseService
+		_commerceInventoryWarehouseService;
 
 }

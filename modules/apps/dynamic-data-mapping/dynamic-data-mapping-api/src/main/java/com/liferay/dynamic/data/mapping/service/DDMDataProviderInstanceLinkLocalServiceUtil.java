@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMDataProviderInstanceLink. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMDataProviderInstanceLinkLocalServiceImpl</code> and
@@ -344,7 +340,7 @@ public class DDMDataProviderInstanceLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -379,29 +375,10 @@ public class DDMDataProviderInstanceLinkLocalServiceUtil {
 	}
 
 	public static DDMDataProviderInstanceLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmDataProviderInstanceLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMDataProviderInstanceLinkLocalService,
-		 DDMDataProviderInstanceLinkLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMDataProviderInstanceLinkLocalService.class);
-
-		ServiceTracker
-			<DDMDataProviderInstanceLinkLocalService,
-			 DDMDataProviderInstanceLinkLocalService> serviceTracker =
-				new ServiceTracker
-					<DDMDataProviderInstanceLinkLocalService,
-					 DDMDataProviderInstanceLinkLocalService>(
-						 bundle.getBundleContext(),
-						 DDMDataProviderInstanceLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMDataProviderInstanceLinkLocalService
+		_ddmDataProviderInstanceLinkLocalService;
 
 }

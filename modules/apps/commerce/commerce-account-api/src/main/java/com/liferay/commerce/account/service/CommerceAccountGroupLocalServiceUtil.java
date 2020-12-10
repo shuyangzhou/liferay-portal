@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAccountGroup. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountGroupLocalServiceImpl</code> and
@@ -58,8 +54,8 @@ public class CommerceAccountGroupLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 			addCommerceAccountGroup(
-				long companyId, String name, int type, boolean system,
-				String externalReferenceCode,
+				long companyId, java.lang.String name, int type, boolean system,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -238,7 +234,7 @@ public class CommerceAccountGroupLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -259,7 +255,7 @@ public class CommerceAccountGroupLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 		fetchCommerceAccountGroupByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCommerceAccountGroupByReferenceCode(
 			companyId, externalReferenceCode);
@@ -337,7 +333,7 @@ public class CommerceAccountGroupLocalServiceUtil {
 		return getService().getCommerceAccountGroupsCount(companyId);
 	}
 
-	public static java.util.List<Long>
+	public static java.util.List<java.lang.Long>
 		getCommerceAccountUserIdsFromAccountGroupIds(
 			long[] commerceAccountGroupIds, int start, int end) {
 
@@ -357,7 +353,7 @@ public class CommerceAccountGroupLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -374,8 +370,8 @@ public class CommerceAccountGroupLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.account.model.CommerceAccountGroup>
 				searchCommerceAccountGroups(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceAccountGroups(
@@ -383,7 +379,7 @@ public class CommerceAccountGroupLocalServiceUtil {
 	}
 
 	public static int searchCommerceAccountsGroupCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceAccountsGroupCount(
@@ -410,7 +406,7 @@ public class CommerceAccountGroupLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 			updateCommerceAccountGroup(
-				long commerceAccountGroupId, String name,
+				long commerceAccountGroupId, java.lang.String name,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -419,29 +415,10 @@ public class CommerceAccountGroupLocalServiceUtil {
 	}
 
 	public static CommerceAccountGroupLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountGroupLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountGroupLocalService, CommerceAccountGroupLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountGroupLocalService.class);
-
-		ServiceTracker
-			<CommerceAccountGroupLocalService, CommerceAccountGroupLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceAccountGroupLocalService,
-						 CommerceAccountGroupLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceAccountGroupLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountGroupLocalService
+		_commerceAccountGroupLocalService;
 
 }

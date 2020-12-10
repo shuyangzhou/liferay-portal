@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for CompanyInfo. This utility wraps
  * <code>com.liferay.portal.service.impl.CompanyInfoLocalServiceImpl</code> and
@@ -280,7 +278,7 @@ public class CompanyInfoLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -311,14 +309,9 @@ public class CompanyInfoLocalServiceUtil {
 	}
 
 	public static CompanyInfoLocalService getService() {
-		if (_service == null) {
-			_service = (CompanyInfoLocalService)PortalBeanLocatorUtil.locate(
-				CompanyInfoLocalService.class.getName());
-		}
-
-		return _service;
+		return _companyInfoLocalService;
 	}
 
-	private static CompanyInfoLocalService _service;
+	private static volatile CompanyInfoLocalService _companyInfoLocalService;
 
 }

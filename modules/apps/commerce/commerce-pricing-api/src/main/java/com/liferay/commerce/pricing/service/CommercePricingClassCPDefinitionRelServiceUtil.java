@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.pricing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePricingClassCPDefinitionRel. This utility wraps
  * <code>com.liferay.commerce.pricing.service.impl.CommercePricingClassCPDefinitionRelServiceImpl</code> and is an
@@ -124,7 +120,8 @@ public class CommercePricingClassCPDefinitionRelServiceUtil {
 	}
 
 	public static int getCommercePricingClassCPDefinitionRelsCount(
-		long commercePricingClassId, String name, String languageId) {
+		long commercePricingClassId, java.lang.String name,
+		java.lang.String languageId) {
 
 		return getService().getCommercePricingClassCPDefinitionRelsCount(
 			commercePricingClassId, name, languageId);
@@ -141,15 +138,15 @@ public class CommercePricingClassCPDefinitionRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePricingClassCPDefinitionRel>
 				searchByCommercePricingClassId(
-					long commercePricingClassId, String name, String languageId,
-					int start, int end)
+					long commercePricingClassId, java.lang.String name,
+					java.lang.String languageId, int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchByCommercePricingClassId(
@@ -157,30 +154,10 @@ public class CommercePricingClassCPDefinitionRelServiceUtil {
 	}
 
 	public static CommercePricingClassCPDefinitionRelService getService() {
-		return _serviceTracker.getService();
+		return _commercePricingClassCPDefinitionRelService;
 	}
 
-	private static ServiceTracker
-		<CommercePricingClassCPDefinitionRelService,
-		 CommercePricingClassCPDefinitionRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePricingClassCPDefinitionRelService.class);
-
-		ServiceTracker
-			<CommercePricingClassCPDefinitionRelService,
-			 CommercePricingClassCPDefinitionRelService> serviceTracker =
-				new ServiceTracker
-					<CommercePricingClassCPDefinitionRelService,
-					 CommercePricingClassCPDefinitionRelService>(
-						 bundle.getBundleContext(),
-						 CommercePricingClassCPDefinitionRelService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePricingClassCPDefinitionRelService
+		_commercePricingClassCPDefinitionRelService;
 
 }

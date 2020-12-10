@@ -14,10 +14,6 @@
 
 package com.liferay.knowledge.base.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for KBTemplate. This utility wraps
  * <code>com.liferay.knowledge.base.service.impl.KBTemplateServiceImpl</code> and is an
@@ -38,7 +34,8 @@ public class KBTemplateServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.knowledge.base.service.impl.KBTemplateServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.knowledge.base.model.KBTemplate addKBTemplate(
-			String portletId, String title, String content,
+			java.lang.String portletId, java.lang.String title,
+			java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -83,7 +80,7 @@ public class KBTemplateServiceUtil {
 
 	public static com.liferay.knowledge.base.model.KBTemplateSearchDisplay
 			getKBTemplateSearchDisplay(
-				long groupId, String title, String content,
+				long groupId, java.lang.String title, java.lang.String content,
 				java.util.Date startDate, java.util.Date endDate,
 				boolean andOperator, int[] curStartValues, int cur, int delta,
 				com.liferay.portal.kernel.util.OrderByComparator
@@ -101,12 +98,12 @@ public class KBTemplateServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.knowledge.base.model.KBTemplate updateKBTemplate(
-			long kbTemplateId, String title, String content,
+			long kbTemplateId, java.lang.String title, java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -115,22 +112,9 @@ public class KBTemplateServiceUtil {
 	}
 
 	public static KBTemplateService getService() {
-		return _serviceTracker.getService();
+		return _kbTemplateService;
 	}
 
-	private static ServiceTracker<KBTemplateService, KBTemplateService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KBTemplateService.class);
-
-		ServiceTracker<KBTemplateService, KBTemplateService> serviceTracker =
-			new ServiceTracker<KBTemplateService, KBTemplateService>(
-				bundle.getBundleContext(), KBTemplateService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KBTemplateService _kbTemplateService;
 
 }

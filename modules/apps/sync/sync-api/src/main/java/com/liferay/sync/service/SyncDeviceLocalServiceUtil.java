@@ -14,10 +14,6 @@
 
 package com.liferay.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SyncDevice. This utility wraps
  * <code>com.liferay.sync.service.impl.SyncDeviceLocalServiceImpl</code> and
@@ -38,8 +34,8 @@ public class SyncDeviceLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.sync.service.impl.SyncDeviceLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.sync.model.SyncDevice addSyncDevice(
-			long userId, String type, long buildNumber, String hostname,
-			int featureSet)
+			long userId, java.lang.String type, long buildNumber,
+			java.lang.String hostname, int featureSet)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addSyncDevice(
@@ -234,7 +230,8 @@ public class SyncDeviceLocalServiceUtil {
 	 * @return the matching sync device, or <code>null</code> if a matching sync device could not be found
 	 */
 	public static com.liferay.sync.model.SyncDevice
-		fetchSyncDeviceByUuidAndCompanyId(String uuid, long companyId) {
+		fetchSyncDeviceByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchSyncDeviceByUuidAndCompanyId(uuid, companyId);
 	}
@@ -265,7 +262,7 @@ public class SyncDeviceLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -302,7 +299,8 @@ public class SyncDeviceLocalServiceUtil {
 	 * @throws PortalException if a matching sync device could not be found
 	 */
 	public static com.liferay.sync.model.SyncDevice
-			getSyncDeviceByUuidAndCompanyId(String uuid, long companyId)
+			getSyncDeviceByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSyncDeviceByUuidAndCompanyId(uuid, companyId);
@@ -346,7 +344,7 @@ public class SyncDeviceLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.sync.model.SyncDevice> search(
-		long companyId, String keywords, int start, int end,
+		long companyId, java.lang.String keywords, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator
 			<com.liferay.sync.model.SyncDevice> orderByComparator) {
 
@@ -361,8 +359,8 @@ public class SyncDeviceLocalServiceUtil {
 	}
 
 	public static com.liferay.sync.model.SyncDevice updateSyncDevice(
-			long syncDeviceId, String type, long buildNumber, int featureSet,
-			String hostname, int status)
+			long syncDeviceId, java.lang.String type, long buildNumber,
+			int featureSet, java.lang.String hostname, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateSyncDevice(
@@ -386,25 +384,9 @@ public class SyncDeviceLocalServiceUtil {
 	}
 
 	public static SyncDeviceLocalService getService() {
-		return _serviceTracker.getService();
+		return _syncDeviceLocalService;
 	}
 
-	private static ServiceTracker
-		<SyncDeviceLocalService, SyncDeviceLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SyncDeviceLocalService.class);
-
-		ServiceTracker<SyncDeviceLocalService, SyncDeviceLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<SyncDeviceLocalService, SyncDeviceLocalService>(
-						bundle.getBundleContext(), SyncDeviceLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SyncDeviceLocalService _syncDeviceLocalService;
 
 }

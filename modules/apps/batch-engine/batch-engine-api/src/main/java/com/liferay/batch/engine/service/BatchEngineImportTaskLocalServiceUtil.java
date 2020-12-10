@@ -14,10 +14,6 @@
 
 package com.liferay.batch.engine.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for BatchEngineImportTask. This utility wraps
  * <code>com.liferay.batch.engine.service.impl.BatchEngineImportTaskLocalServiceImpl</code> and
@@ -58,12 +54,15 @@ public class BatchEngineImportTaskLocalServiceUtil {
 
 	public static com.liferay.batch.engine.model.BatchEngineImportTask
 		addBatchEngineImportTask(
-			long companyId, long userId, long batchSize, String callbackURL,
-			String className, byte[] content, String contentType,
-			String executeStatus,
-			java.util.Map<String, String> fieldNameMappingMap, String operation,
-			java.util.Map<String, java.io.Serializable> parameters,
-			String taskItemDelegateName) {
+			long companyId, long userId, long batchSize,
+			java.lang.String callbackURL, java.lang.String className,
+			byte[] content, java.lang.String contentType,
+			java.lang.String executeStatus,
+			java.util.Map<java.lang.String, java.lang.String>
+				fieldNameMappingMap,
+			java.lang.String operation,
+			java.util.Map<java.lang.String, java.io.Serializable> parameters,
+			java.lang.String taskItemDelegateName) {
 
 		return getService().addBatchEngineImportTask(
 			companyId, userId, batchSize, callbackURL, className, content,
@@ -248,7 +247,7 @@ public class BatchEngineImportTaskLocalServiceUtil {
 	 */
 	public static com.liferay.batch.engine.model.BatchEngineImportTask
 		fetchBatchEngineImportTaskByUuidAndCompanyId(
-			String uuid, long companyId) {
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchBatchEngineImportTaskByUuidAndCompanyId(
 			uuid, companyId);
@@ -284,7 +283,7 @@ public class BatchEngineImportTaskLocalServiceUtil {
 	 */
 	public static com.liferay.batch.engine.model.BatchEngineImportTask
 			getBatchEngineImportTaskByUuidAndCompanyId(
-				String uuid, long companyId)
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getBatchEngineImportTaskByUuidAndCompanyId(
@@ -311,7 +310,7 @@ public class BatchEngineImportTaskLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.batch.engine.model.BatchEngineImportTask>
-			getBatchEngineImportTasks(String executeStatus) {
+			getBatchEngineImportTasks(java.lang.String executeStatus) {
 
 		return getService().getBatchEngineImportTasks(executeStatus);
 	}
@@ -352,7 +351,7 @@ public class BatchEngineImportTaskLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -391,29 +390,10 @@ public class BatchEngineImportTaskLocalServiceUtil {
 	}
 
 	public static BatchEngineImportTaskLocalService getService() {
-		return _serviceTracker.getService();
+		return _batchEngineImportTaskLocalService;
 	}
 
-	private static ServiceTracker
-		<BatchEngineImportTaskLocalService, BatchEngineImportTaskLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			BatchEngineImportTaskLocalService.class);
-
-		ServiceTracker
-			<BatchEngineImportTaskLocalService,
-			 BatchEngineImportTaskLocalService> serviceTracker =
-				new ServiceTracker
-					<BatchEngineImportTaskLocalService,
-					 BatchEngineImportTaskLocalService>(
-						 bundle.getBundleContext(),
-						 BatchEngineImportTaskLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BatchEngineImportTaskLocalService
+		_batchEngineImportTaskLocalService;
 
 }

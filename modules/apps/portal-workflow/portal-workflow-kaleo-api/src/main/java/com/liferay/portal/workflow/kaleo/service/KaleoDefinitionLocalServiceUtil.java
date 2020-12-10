@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoDefinition. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionLocalServiceImpl</code> and
@@ -57,7 +53,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static void activateKaleoDefinition(
-			String name, int version,
+			java.lang.String name, int version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -90,7 +86,8 @@ public class KaleoDefinitionLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinition
 			addKaleoDefinition(
-				String name, String title, String description, String content,
+				java.lang.String name, java.lang.String title,
+				java.lang.String description, java.lang.String content,
 				int version,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -101,8 +98,9 @@ public class KaleoDefinitionLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinition
 			addKaleoDefinition(
-				String name, String title, String description, String content,
-				String scope, int version,
+				java.lang.String name, java.lang.String title,
+				java.lang.String description, java.lang.String content,
+				java.lang.String scope, int version,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -133,7 +131,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static void deactivateKaleoDefinition(
-			String name, int version,
+			java.lang.String name, int version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -181,7 +179,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static void deleteKaleoDefinition(
-			String name,
+			java.lang.String name,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -298,7 +296,7 @@ public class KaleoDefinitionLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinition
 		fetchKaleoDefinition(
-			String name,
+			java.lang.String name,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().fetchKaleoDefinition(name, serviceContext);
@@ -333,7 +331,7 @@ public class KaleoDefinitionLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinition
 			getKaleoDefinition(
-				String name,
+				java.lang.String name,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -409,7 +407,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static int getKaleoDefinitionsCount(
-		String name, boolean active,
+		java.lang.String name, boolean active,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().getKaleoDefinitionsCount(
@@ -417,7 +415,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static int getKaleoDefinitionsCount(
-		String name,
+		java.lang.String name,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().getKaleoDefinitionsCount(name, serviceContext);
@@ -428,7 +426,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -445,7 +443,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
 			getScopeKaleoDefinitions(
-				String scope, boolean active, int start, int end,
+				java.lang.String scope, boolean active, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
 						orderByComparator,
@@ -459,7 +457,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
 			getScopeKaleoDefinitions(
-				String scope, int start, int end,
+				java.lang.String scope, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
 						orderByComparator,
@@ -471,7 +469,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static int getScopeKaleoDefinitionsCount(
-		String scope, boolean active,
+		java.lang.String scope, boolean active,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().getScopeKaleoDefinitionsCount(
@@ -479,7 +477,7 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static int getScopeKaleoDefinitionsCount(
-		String scope,
+		java.lang.String scope,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().getScopeKaleoDefinitionsCount(
@@ -488,8 +486,8 @@ public class KaleoDefinitionLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinition
 			updatedKaleoDefinition(
-				long kaleoDefinitionId, String title, String description,
-				String content,
+				long kaleoDefinitionId, java.lang.String title,
+				java.lang.String description, java.lang.String content,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -516,27 +514,10 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static KaleoDefinitionLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoDefinitionLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoDefinitionLocalService, KaleoDefinitionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoDefinitionLocalService.class);
-
-		ServiceTracker<KaleoDefinitionLocalService, KaleoDefinitionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoDefinitionLocalService, KaleoDefinitionLocalService>(
-						bundle.getBundleContext(),
-						KaleoDefinitionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoDefinitionLocalService
+		_kaleoDefinitionLocalService;
 
 }

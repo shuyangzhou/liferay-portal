@@ -16,6 +16,7 @@ package com.liferay.account.service.base;
 
 import com.liferay.account.model.AccountGroupAccountEntryRel;
 import com.liferay.account.service.AccountGroupAccountEntryRelService;
+import com.liferay.account.service.AccountGroupAccountEntryRelServiceUtil;
 import com.liferay.account.service.persistence.AccountGroupAccountEntryRelPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -27,8 +28,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -50,8 +54,13 @@ public abstract class AccountGroupAccountEntryRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountGroupAccountEntryRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.account.service.AccountGroupAccountEntryRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountGroupAccountEntryRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountGroupAccountEntryRelServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -64,6 +73,8 @@ public abstract class AccountGroupAccountEntryRelServiceBaseImpl
 	public void setAopProxy(Object aopProxy) {
 		accountGroupAccountEntryRelService =
 			(AccountGroupAccountEntryRelService)aopProxy;
+
+		_setServiceUtilService(accountGroupAccountEntryRelService);
 	}
 
 	/**
@@ -106,6 +117,23 @@ public abstract class AccountGroupAccountEntryRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		AccountGroupAccountEntryRelService accountGroupAccountEntryRelService) {
+
+		try {
+			Field field =
+				AccountGroupAccountEntryRelServiceUtil.class.getDeclaredField(
+					"_accountGroupAccountEntryRelService");
+
+			field.setAccessible(true);
+
+			field.set(null, accountGroupAccountEntryRelService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

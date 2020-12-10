@@ -14,10 +14,6 @@
 
 package com.liferay.remote.app.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for RemoteAppEntry. This utility wraps
  * <code>com.liferay.remote.app.service.impl.RemoteAppEntryLocalServiceImpl</code> and
@@ -38,8 +34,9 @@ public class RemoteAppEntryLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.remote.app.service.impl.RemoteAppEntryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.remote.app.model.RemoteAppEntry addRemoteAppEntry(
-			long userId, java.util.Map<java.util.Locale, String> nameMap,
-			String url,
+			long userId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.lang.String url,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -236,7 +233,8 @@ public class RemoteAppEntryLocalServiceUtil {
 	 * @return the matching remote app entry, or <code>null</code> if a matching remote app entry could not be found
 	 */
 	public static com.liferay.remote.app.model.RemoteAppEntry
-		fetchRemoteAppEntryByUuidAndCompanyId(String uuid, long companyId) {
+		fetchRemoteAppEntryByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchRemoteAppEntryByUuidAndCompanyId(
 			uuid, companyId);
@@ -268,7 +266,7 @@ public class RemoteAppEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -331,7 +329,8 @@ public class RemoteAppEntryLocalServiceUtil {
 	 * @throws PortalException if a matching remote app entry could not be found
 	 */
 	public static com.liferay.remote.app.model.RemoteAppEntry
-			getRemoteAppEntryByUuidAndCompanyId(String uuid, long companyId)
+			getRemoteAppEntryByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRemoteAppEntryByUuidAndCompanyId(
@@ -340,7 +339,7 @@ public class RemoteAppEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.remote.app.model.RemoteAppEntry>
 			searchRemoteAppEntries(
-				long companyId, String keywords, int start, int end,
+				long companyId, java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -349,7 +348,7 @@ public class RemoteAppEntryLocalServiceUtil {
 	}
 
 	public static int searchRemoteAppEntriesCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchRemoteAppEntriesCount(companyId, keywords);
@@ -358,7 +357,8 @@ public class RemoteAppEntryLocalServiceUtil {
 	public static com.liferay.remote.app.model.RemoteAppEntry
 			updateRemoteAppEntry(
 				long remoteAppEntryId,
-				java.util.Map<java.util.Locale, String> nameMap, String url,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String url,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -384,27 +384,10 @@ public class RemoteAppEntryLocalServiceUtil {
 	}
 
 	public static RemoteAppEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _remoteAppEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<RemoteAppEntryLocalService, RemoteAppEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			RemoteAppEntryLocalService.class);
-
-		ServiceTracker<RemoteAppEntryLocalService, RemoteAppEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<RemoteAppEntryLocalService, RemoteAppEntryLocalService>(
-						bundle.getBundleContext(),
-						RemoteAppEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile RemoteAppEntryLocalService
+		_remoteAppEntryLocalService;
 
 }

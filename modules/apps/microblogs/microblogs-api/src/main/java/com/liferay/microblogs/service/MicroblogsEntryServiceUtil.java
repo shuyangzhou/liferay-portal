@@ -14,10 +14,6 @@
 
 package com.liferay.microblogs.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for MicroblogsEntry. This utility wraps
  * <code>com.liferay.microblogs.service.impl.MicroblogsEntryServiceImpl</code> and is an
@@ -39,7 +35,7 @@ public class MicroblogsEntryServiceUtil {
 	 */
 	public static com.liferay.microblogs.model.MicroblogsEntry
 			addMicroblogsEntry(
-				long userId, String content, int type,
+				long userId, java.lang.String content, int type,
 				long parentMicroblogsEntryId, int socialRelationType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -64,7 +60,8 @@ public class MicroblogsEntryServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.microblogs.model.MicroblogsEntry>
-			getMicroblogsEntries(String assetTagName, int start, int end)
+			getMicroblogsEntries(
+				java.lang.String assetTagName, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMicroblogsEntries(assetTagName, start, end);
@@ -76,7 +73,7 @@ public class MicroblogsEntryServiceUtil {
 		return getService().getMicroblogsEntriesCount();
 	}
 
-	public static int getMicroblogsEntriesCount(String assetTagName)
+	public static int getMicroblogsEntriesCount(java.lang.String assetTagName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMicroblogsEntriesCount(assetTagName);
@@ -94,7 +91,7 @@ public class MicroblogsEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -133,7 +130,8 @@ public class MicroblogsEntryServiceUtil {
 
 	public static com.liferay.microblogs.model.MicroblogsEntry
 			updateMicroblogsEntry(
-				long microblogsEntryId, String content, int socialRelationType,
+				long microblogsEntryId, java.lang.String content,
+				int socialRelationType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -142,25 +140,9 @@ public class MicroblogsEntryServiceUtil {
 	}
 
 	public static MicroblogsEntryService getService() {
-		return _serviceTracker.getService();
+		return _microblogsEntryService;
 	}
 
-	private static ServiceTracker
-		<MicroblogsEntryService, MicroblogsEntryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MicroblogsEntryService.class);
-
-		ServiceTracker<MicroblogsEntryService, MicroblogsEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<MicroblogsEntryService, MicroblogsEntryService>(
-						bundle.getBundleContext(), MicroblogsEntryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MicroblogsEntryService _microblogsEntryService;
 
 }

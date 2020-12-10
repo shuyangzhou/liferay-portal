@@ -14,10 +14,6 @@
 
 package com.liferay.style.book.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for StyleBookEntry. This utility wraps
  * <code>com.liferay.style.book.service.impl.StyleBookEntryLocalServiceImpl</code> and
@@ -38,7 +34,8 @@ public class StyleBookEntryLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.style.book.service.impl.StyleBookEntryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.style.book.model.StyleBookEntry addStyleBookEntry(
-			long userId, long groupId, String name, String styleBookEntryKey,
+			long userId, long groupId, java.lang.String name,
+			java.lang.String styleBookEntryKey,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -47,8 +44,8 @@ public class StyleBookEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntry addStyleBookEntry(
-			long userId, long groupId, String frontendTokensValues, String name,
-			String styleBookEntryKey,
+			long userId, long groupId, java.lang.String frontendTokensValues,
+			java.lang.String name, java.lang.String styleBookEntryKey,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -316,18 +313,21 @@ public class StyleBookEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntry
-		fetchStyleBookEntry(long groupId, String styleBookEntryKey) {
+		fetchStyleBookEntry(long groupId, java.lang.String styleBookEntryKey) {
 
 		return getService().fetchStyleBookEntry(groupId, styleBookEntryKey);
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntry
-		fetchStyleBookEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchStyleBookEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchStyleBookEntryByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static String generateStyleBookEntryKey(long groupId, String name) {
+	public static java.lang.String generateStyleBookEntryKey(
+		long groupId, java.lang.String name) {
+
 		return getService().generateStyleBookEntryKey(groupId, name);
 	}
 
@@ -371,7 +371,7 @@ public class StyleBookEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -415,7 +415,7 @@ public class StyleBookEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.style.book.model.StyleBookEntry>
 		getStyleBookEntries(
-			long groupId, String name, int start, int end,
+			long groupId, java.lang.String name, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.style.book.model.StyleBookEntry>
 					orderByComparator) {
@@ -425,7 +425,8 @@ public class StyleBookEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.style.book.model.StyleBookEntry>
-		getStyleBookEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getStyleBookEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getStyleBookEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -444,7 +445,9 @@ public class StyleBookEntryLocalServiceUtil {
 		return getService().getStyleBookEntriesCount(groupId);
 	}
 
-	public static int getStyleBookEntriesCount(long groupId, String name) {
+	public static int getStyleBookEntriesCount(
+		long groupId, java.lang.String name) {
+
 		return getService().getStyleBookEntriesCount(groupId, name);
 	}
 
@@ -520,7 +523,7 @@ public class StyleBookEntryLocalServiceUtil {
 
 	public static com.liferay.style.book.model.StyleBookEntry
 			updateFrontendTokensValues(
-				long styleBookEntryId, String frontendTokensValues)
+				long styleBookEntryId, java.lang.String frontendTokensValues)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFrontendTokensValues(
@@ -528,7 +531,7 @@ public class StyleBookEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntry updateName(
-			long styleBookEntryId, String name)
+			long styleBookEntryId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateName(styleBookEntryId, name);
@@ -546,8 +549,9 @@ public class StyleBookEntryLocalServiceUtil {
 	public static com.liferay.style.book.model.StyleBookEntry
 			updateStyleBookEntry(
 				long userId, long styleBookEntryId,
-				boolean defaultStylebookEntry, String frontendTokensValues,
-				String name, String styleBookEntryKey, long previewFileEntryId)
+				boolean defaultStylebookEntry,
+				java.lang.String frontendTokensValues, java.lang.String name,
+				java.lang.String styleBookEntryKey, long previewFileEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStyleBookEntry(
@@ -557,7 +561,8 @@ public class StyleBookEntryLocalServiceUtil {
 
 	public static com.liferay.style.book.model.StyleBookEntry
 			updateStyleBookEntry(
-				long styleBookEntryId, String frontendTokensValues, String name)
+				long styleBookEntryId, java.lang.String frontendTokensValues,
+				java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStyleBookEntry(
@@ -583,27 +588,10 @@ public class StyleBookEntryLocalServiceUtil {
 	}
 
 	public static StyleBookEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _styleBookEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<StyleBookEntryLocalService, StyleBookEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			StyleBookEntryLocalService.class);
-
-		ServiceTracker<StyleBookEntryLocalService, StyleBookEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<StyleBookEntryLocalService, StyleBookEntryLocalService>(
-						bundle.getBundleContext(),
-						StyleBookEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile StyleBookEntryLocalService
+		_styleBookEntryLocalService;
 
 }

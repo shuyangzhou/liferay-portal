@@ -14,8 +14,6 @@
 
 package com.liferay.counter.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Counter. This utility wraps
  * <code>com.liferay.counter.service.impl.CounterLocalServiceImpl</code> and
@@ -35,7 +33,7 @@ public class CounterLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.counter.service.impl.CounterLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.util.List<String> getNames() {
+	public static java.util.List<java.lang.String> getNames() {
 		return getService().getNames();
 	}
 
@@ -44,7 +42,7 @@ public class CounterLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -52,35 +50,32 @@ public class CounterLocalServiceUtil {
 		return getService().increment();
 	}
 
-	public static long increment(String name) {
+	public static long increment(java.lang.String name) {
 		return getService().increment(name);
 	}
 
-	public static long increment(String name, int size) {
+	public static long increment(java.lang.String name, int size) {
 		return getService().increment(name, size);
 	}
 
-	public static void rename(String oldName, String newName) {
+	public static void rename(
+		java.lang.String oldName, java.lang.String newName) {
+
 		getService().rename(oldName, newName);
 	}
 
-	public static void reset(String name) {
+	public static void reset(java.lang.String name) {
 		getService().reset(name);
 	}
 
-	public static void reset(String name, long size) {
+	public static void reset(java.lang.String name, long size) {
 		getService().reset(name, size);
 	}
 
 	public static CounterLocalService getService() {
-		if (_service == null) {
-			_service = (CounterLocalService)PortalBeanLocatorUtil.locate(
-				CounterLocalService.class.getName());
-		}
-
-		return _service;
+		return _counterLocalService;
 	}
 
-	private static CounterLocalService _service;
+	private static volatile CounterLocalService _counterLocalService;
 
 }

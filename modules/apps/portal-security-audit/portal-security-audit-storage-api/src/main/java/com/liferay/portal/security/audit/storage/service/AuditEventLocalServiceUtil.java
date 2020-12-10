@@ -14,10 +14,6 @@
 
 package com.liferay.portal.security.audit.storage.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AuditEvent. This utility wraps
  * <code>com.liferay.portal.security.audit.storage.service.impl.AuditEventLocalServiceImpl</code> and
@@ -289,12 +285,13 @@ public class AuditEventLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.security.audit.storage.model.AuditEvent>
 			getAuditEvents(
-				long companyId, long userId, String userName,
+				long companyId, long userId, java.lang.String userName,
 				java.util.Date createDateGT, java.util.Date createDateLT,
-				String eventType, String className, String classPK,
-				String clientHost, String clientIP, String serverName,
-				int serverPort, String sessionID, boolean andSearch, int start,
-				int end) {
+				java.lang.String eventType, java.lang.String className,
+				java.lang.String classPK, java.lang.String clientHost,
+				java.lang.String clientIP, java.lang.String serverName,
+				int serverPort, java.lang.String sessionID, boolean andSearch,
+				int start, int end) {
 
 		return getService().getAuditEvents(
 			companyId, userId, userName, createDateGT, createDateLT, eventType,
@@ -305,12 +302,13 @@ public class AuditEventLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.security.audit.storage.model.AuditEvent>
 			getAuditEvents(
-				long companyId, long userId, String userName,
+				long companyId, long userId, java.lang.String userName,
 				java.util.Date createDateGT, java.util.Date createDateLT,
-				String eventType, String className, String classPK,
-				String clientHost, String clientIP, String serverName,
-				int serverPort, String sessionID, boolean andSearch, int start,
-				int end,
+				java.lang.String eventType, java.lang.String className,
+				java.lang.String classPK, java.lang.String clientHost,
+				java.lang.String clientIP, java.lang.String serverName,
+				int serverPort, java.lang.String sessionID, boolean andSearch,
+				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.security.audit.storage.model.AuditEvent>
 						orderByComparator) {
@@ -335,11 +333,12 @@ public class AuditEventLocalServiceUtil {
 	}
 
 	public static int getAuditEventsCount(
-		long companyId, long userId, String userName,
+		long companyId, long userId, java.lang.String userName,
 		java.util.Date createDateGT, java.util.Date createDateLT,
-		String eventType, String className, String classPK, String clientHost,
-		String clientIP, String serverName, int serverPort, String sessionID,
-		boolean andSearch) {
+		java.lang.String eventType, java.lang.String className,
+		java.lang.String classPK, java.lang.String clientHost,
+		java.lang.String clientIP, java.lang.String serverName, int serverPort,
+		java.lang.String sessionID, boolean andSearch) {
 
 		return getService().getAuditEventsCount(
 			companyId, userId, userName, createDateGT, createDateLT, eventType,
@@ -359,7 +358,7 @@ public class AuditEventLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -392,25 +391,9 @@ public class AuditEventLocalServiceUtil {
 	}
 
 	public static AuditEventLocalService getService() {
-		return _serviceTracker.getService();
+		return _auditEventLocalService;
 	}
 
-	private static ServiceTracker
-		<AuditEventLocalService, AuditEventLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AuditEventLocalService.class);
-
-		ServiceTracker<AuditEventLocalService, AuditEventLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AuditEventLocalService, AuditEventLocalService>(
-						bundle.getBundleContext(), AuditEventLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuditEventLocalService _auditEventLocalService;
 
 }

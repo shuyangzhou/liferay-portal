@@ -14,10 +14,6 @@
 
 package com.liferay.subscription.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for Subscription. This utility wraps
  * <code>com.liferay.subscription.service.impl.SubscriptionLocalServiceImpl</code> and
@@ -60,7 +56,7 @@ public class SubscriptionLocalServiceUtil {
 	 * @return the subscription
 	 */
 	public static com.liferay.subscription.model.Subscription addSubscription(
-			long userId, long groupId, String className, long classPK)
+			long userId, long groupId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addSubscription(
@@ -89,8 +85,8 @@ public class SubscriptionLocalServiceUtil {
 	 * @return the subscription
 	 */
 	public static com.liferay.subscription.model.Subscription addSubscription(
-			long userId, long groupId, String className, long classPK,
-			String frequency)
+			long userId, long groupId, java.lang.String className, long classPK,
+			java.lang.String frequency)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addSubscription(
@@ -177,7 +173,7 @@ public class SubscriptionLocalServiceUtil {
 	 * @param classPK the primary key of the entity's instance
 	 */
 	public static void deleteSubscription(
-			long userId, String className, long classPK)
+			long userId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteSubscription(userId, className, classPK);
@@ -227,7 +223,7 @@ public class SubscriptionLocalServiceUtil {
 	 * @param classPK the primary key of the entity's instance
 	 */
 	public static void deleteSubscriptions(
-			long companyId, String className, long classPK)
+			long companyId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteSubscriptions(companyId, className, classPK);
@@ -331,7 +327,7 @@ public class SubscriptionLocalServiceUtil {
 	}
 
 	public static com.liferay.subscription.model.Subscription fetchSubscription(
-		long companyId, long userId, String className, long classPK) {
+		long companyId, long userId, java.lang.String className, long classPK) {
 
 		return getService().fetchSubscription(
 			companyId, userId, className, classPK);
@@ -355,7 +351,7 @@ public class SubscriptionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -393,7 +389,8 @@ public class SubscriptionLocalServiceUtil {
 	 * @return the subscription of the user to the entity
 	 */
 	public static com.liferay.subscription.model.Subscription getSubscription(
-			long companyId, long userId, String className, long classPK)
+			long companyId, long userId, java.lang.String className,
+			long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSubscription(
@@ -428,7 +425,8 @@ public class SubscriptionLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.subscription.model.Subscription>
 		getSubscriptions(
-			long companyId, long userId, String className, long[] classPKs) {
+			long companyId, long userId, java.lang.String className,
+			long[] classPKs) {
 
 		return getService().getSubscriptions(
 			companyId, userId, className, classPKs);
@@ -443,7 +441,8 @@ public class SubscriptionLocalServiceUtil {
 	 * @return the subscriptions to the entity
 	 */
 	public static java.util.List<com.liferay.subscription.model.Subscription>
-		getSubscriptions(long companyId, String className, long classPK) {
+		getSubscriptions(
+			long companyId, java.lang.String className, long classPK) {
 
 		return getService().getSubscriptions(companyId, className, classPK);
 	}
@@ -455,7 +454,7 @@ public class SubscriptionLocalServiceUtil {
 	 */
 	@Deprecated
 	public static java.util.List<com.liferay.subscription.model.Subscription>
-		getSubscriptions(String className) {
+		getSubscriptions(java.lang.String className) {
 
 		return getService().getSubscriptions(className);
 	}
@@ -475,7 +474,7 @@ public class SubscriptionLocalServiceUtil {
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
 	@Deprecated
-	public static int getSubscriptionsCount(String className) {
+	public static int getSubscriptionsCount(java.lang.String className) {
 		return getService().getSubscriptionsCount(className);
 	}
 
@@ -508,7 +507,7 @@ public class SubscriptionLocalServiceUtil {
 	 * @return the subscriptions of the user to the entities with the class name
 	 */
 	public static java.util.List<com.liferay.subscription.model.Subscription>
-		getUserSubscriptions(long userId, String className) {
+		getUserSubscriptions(long userId, java.lang.String className) {
 
 		return getService().getUserSubscriptions(userId, className);
 	}
@@ -534,7 +533,7 @@ public class SubscriptionLocalServiceUtil {
 	 <code>false</code> otherwise
 	 */
 	public static boolean isSubscribed(
-		long companyId, long userId, String className, long classPK) {
+		long companyId, long userId, java.lang.String className, long classPK) {
 
 		return getService().isSubscribed(companyId, userId, className, classPK);
 	}
@@ -551,7 +550,8 @@ public class SubscriptionLocalServiceUtil {
 	 entities; <code>false</code> otherwise
 	 */
 	public static boolean isSubscribed(
-		long companyId, long userId, String className, long[] classPKs) {
+		long companyId, long userId, java.lang.String className,
+		long[] classPKs) {
 
 		return getService().isSubscribed(
 			companyId, userId, className, classPKs);
@@ -575,25 +575,9 @@ public class SubscriptionLocalServiceUtil {
 	}
 
 	public static SubscriptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _subscriptionLocalService;
 	}
 
-	private static ServiceTracker
-		<SubscriptionLocalService, SubscriptionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SubscriptionLocalService.class);
-
-		ServiceTracker<SubscriptionLocalService, SubscriptionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<SubscriptionLocalService, SubscriptionLocalService>(
-						bundle.getBundleContext(),
-						SubscriptionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SubscriptionLocalService _subscriptionLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.oauth2.provider.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for OAuth2Authorization. This utility wraps
  * <code>com.liferay.oauth2.provider.service.impl.OAuth2AuthorizationLocalServiceImpl</code> and
@@ -46,11 +42,13 @@ public class OAuth2AuthorizationLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.oauth2.provider.model.OAuth2Authorization
 		addOAuth2Authorization(
-			long companyId, long userId, String userName,
+			long companyId, long userId, java.lang.String userName,
 			long oAuth2ApplicationId, long oAuth2ApplicationScopeAliasesId,
-			String accessTokenContent, java.util.Date accessTokenCreateDate,
-			java.util.Date accessTokenExpirationDate, String remoteIPInfo,
-			String refreshTokenContent, java.util.Date refreshTokenCreateDate,
+			java.lang.String accessTokenContent,
+			java.util.Date accessTokenCreateDate,
+			java.util.Date accessTokenExpirationDate,
+			java.lang.String remoteIPInfo, java.lang.String refreshTokenContent,
+			java.util.Date refreshTokenCreateDate,
 			java.util.Date refreshTokenExpirationDate) {
 
 		return getService().addOAuth2Authorization(
@@ -63,11 +61,13 @@ public class OAuth2AuthorizationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Authorization
 		addOAuth2Authorization(
-			long companyId, long userId, String userName,
+			long companyId, long userId, java.lang.String userName,
 			long oAuth2ApplicationId, long oAuth2ApplicationScopeAliasesId,
-			String accessTokenContent, java.util.Date accessTokenCreateDate,
-			java.util.Date accessTokenExpirationDate, String remoteHostInfo,
-			String remoteIPInfo, String refreshTokenContent,
+			java.lang.String accessTokenContent,
+			java.util.Date accessTokenCreateDate,
+			java.util.Date accessTokenExpirationDate,
+			java.lang.String remoteHostInfo, java.lang.String remoteIPInfo,
+			java.lang.String refreshTokenContent,
 			java.util.Date refreshTokenCreateDate,
 			java.util.Date refreshTokenExpirationDate) {
 
@@ -340,7 +340,7 @@ public class OAuth2AuthorizationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Authorization
 		fetchOAuth2AuthorizationByAccessTokenContent(
-			String accessTokenContent) {
+			java.lang.String accessTokenContent) {
 
 		return getService().fetchOAuth2AuthorizationByAccessTokenContent(
 			accessTokenContent);
@@ -348,7 +348,7 @@ public class OAuth2AuthorizationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Authorization
 		fetchOAuth2AuthorizationByRefreshTokenContent(
-			String refreshTokenContent) {
+			java.lang.String refreshTokenContent) {
 
 		return getService().fetchOAuth2AuthorizationByRefreshTokenContent(
 			refreshTokenContent);
@@ -383,7 +383,7 @@ public class OAuth2AuthorizationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Authorization
 			getOAuth2AuthorizationByAccessTokenContent(
-				String accessTokenContent)
+				java.lang.String accessTokenContent)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
@@ -393,7 +393,7 @@ public class OAuth2AuthorizationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Authorization
 			getOAuth2AuthorizationByRefreshTokenContent(
-				String refreshTokenContent)
+				java.lang.String refreshTokenContent)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
@@ -505,7 +505,7 @@ public class OAuth2AuthorizationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -575,29 +575,10 @@ public class OAuth2AuthorizationLocalServiceUtil {
 	}
 
 	public static OAuth2AuthorizationLocalService getService() {
-		return _serviceTracker.getService();
+		return _oAuth2AuthorizationLocalService;
 	}
 
-	private static ServiceTracker
-		<OAuth2AuthorizationLocalService, OAuth2AuthorizationLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			OAuth2AuthorizationLocalService.class);
-
-		ServiceTracker
-			<OAuth2AuthorizationLocalService, OAuth2AuthorizationLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<OAuth2AuthorizationLocalService,
-						 OAuth2AuthorizationLocalService>(
-							 bundle.getBundleContext(),
-							 OAuth2AuthorizationLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuth2AuthorizationLocalService
+		_oAuth2AuthorizationLocalService;
 
 }

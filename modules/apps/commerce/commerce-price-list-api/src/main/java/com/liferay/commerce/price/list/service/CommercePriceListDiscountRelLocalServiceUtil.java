@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.price.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommercePriceListDiscountRel. This utility wraps
  * <code>com.liferay.commerce.price.list.service.impl.CommercePriceListDiscountRelLocalServiceImpl</code> and
@@ -276,7 +272,7 @@ public class CommercePriceListDiscountRelLocalServiceUtil {
 	public static
 		com.liferay.commerce.price.list.model.CommercePriceListDiscountRel
 			fetchCommercePriceListDiscountRelByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommercePriceListDiscountRelByUuidAndCompanyId(
 			uuid, companyId);
@@ -316,7 +312,7 @@ public class CommercePriceListDiscountRelLocalServiceUtil {
 	public static
 		com.liferay.commerce.price.list.model.CommercePriceListDiscountRel
 				getCommercePriceListDiscountRelByUuidAndCompanyId(
-					String uuid, long companyId)
+					java.lang.String uuid, long companyId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommercePriceListDiscountRelByUuidAndCompanyId(
@@ -397,7 +393,7 @@ public class CommercePriceListDiscountRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -432,29 +428,10 @@ public class CommercePriceListDiscountRelLocalServiceUtil {
 	}
 
 	public static CommercePriceListDiscountRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commercePriceListDiscountRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceListDiscountRelLocalService,
-		 CommercePriceListDiscountRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceListDiscountRelLocalService.class);
-
-		ServiceTracker
-			<CommercePriceListDiscountRelLocalService,
-			 CommercePriceListDiscountRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommercePriceListDiscountRelLocalService,
-					 CommercePriceListDiscountRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommercePriceListDiscountRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceListDiscountRelLocalService
+		_commercePriceListDiscountRelLocalService;
 
 }

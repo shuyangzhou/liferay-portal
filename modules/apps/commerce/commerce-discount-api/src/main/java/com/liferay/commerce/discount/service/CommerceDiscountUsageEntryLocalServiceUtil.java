@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.discount.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceDiscountUsageEntry. This utility wraps
  * <code>com.liferay.commerce.discount.service.impl.CommerceDiscountUsageEntryLocalServiceImpl</code> and
@@ -340,7 +336,7 @@ public class CommerceDiscountUsageEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -382,29 +378,10 @@ public class CommerceDiscountUsageEntryLocalServiceUtil {
 	}
 
 	public static CommerceDiscountUsageEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceDiscountUsageEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceDiscountUsageEntryLocalService,
-		 CommerceDiscountUsageEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDiscountUsageEntryLocalService.class);
-
-		ServiceTracker
-			<CommerceDiscountUsageEntryLocalService,
-			 CommerceDiscountUsageEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceDiscountUsageEntryLocalService,
-					 CommerceDiscountUsageEntryLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceDiscountUsageEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDiscountUsageEntryLocalService
+		_commerceDiscountUsageEntryLocalService;
 
 }

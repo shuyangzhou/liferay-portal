@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.notification.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceNotificationQueueEntry. This utility wraps
  * <code>com.liferay.commerce.notification.service.impl.CommerceNotificationQueueEntryLocalServiceImpl</code> and
@@ -67,9 +63,11 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 		com.liferay.commerce.notification.model.CommerceNotificationQueueEntry
 				addCommerceNotificationQueueEntry(
 					long userId, long groupId,
-					long commerceNotificationTemplateId, String from,
-					String fromName, String to, String toName, String cc,
-					String bcc, String subject, String body, double priority)
+					long commerceNotificationTemplateId, java.lang.String from,
+					java.lang.String fromName, java.lang.String to,
+					java.lang.String toName, java.lang.String cc,
+					java.lang.String bcc, java.lang.String subject,
+					java.lang.String body, double priority)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceNotificationQueueEntry(
@@ -80,10 +78,13 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 	public static
 		com.liferay.commerce.notification.model.CommerceNotificationQueueEntry
 				addCommerceNotificationQueueEntry(
-					long userId, long groupId, String className, long classPK,
-					long commerceNotificationTemplateId, String from,
-					String fromName, String to, String toName, String cc,
-					String bcc, String subject, String body, double priority)
+					long userId, long groupId, java.lang.String className,
+					long classPK, long commerceNotificationTemplateId,
+					java.lang.String from, java.lang.String fromName,
+					java.lang.String to, java.lang.String toName,
+					java.lang.String cc, java.lang.String bcc,
+					java.lang.String subject, java.lang.String body,
+					double priority)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceNotificationQueueEntry(
@@ -339,8 +340,8 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.notification.model.CommerceNotificationQueueEntry>
 			getCommerceNotificationQueueEntries(
-				long groupId, String className, long classPK, boolean sent,
-				int start, int end,
+				long groupId, java.lang.String className, long classPK,
+				boolean sent, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.notification.model.
 						CommerceNotificationQueueEntry> orderByComparator) {
@@ -363,7 +364,7 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 	}
 
 	public static int getCommerceNotificationQueueEntriesCount(
-		long groupId, String className, long classPK, boolean sent) {
+		long groupId, java.lang.String className, long classPK, boolean sent) {
 
 		return getService().getCommerceNotificationQueueEntriesCount(
 			groupId, className, classPK, sent);
@@ -398,7 +399,7 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -422,7 +423,9 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 			commerceNotificationQueueEntryId);
 	}
 
-	public static void sendCommerceNotificationQueueEntries() throws Exception {
+	public static void sendCommerceNotificationQueueEntries()
+		throws java.lang.Exception {
+
 		getService().sendCommerceNotificationQueueEntries();
 	}
 
@@ -463,30 +466,10 @@ public class CommerceNotificationQueueEntryLocalServiceUtil {
 	}
 
 	public static CommerceNotificationQueueEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceNotificationQueueEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceNotificationQueueEntryLocalService,
-		 CommerceNotificationQueueEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceNotificationQueueEntryLocalService.class);
-
-		ServiceTracker
-			<CommerceNotificationQueueEntryLocalService,
-			 CommerceNotificationQueueEntryLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceNotificationQueueEntryLocalService,
-					 CommerceNotificationQueueEntryLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceNotificationQueueEntryLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceNotificationQueueEntryLocalService
+		_commerceNotificationQueueEntryLocalService;
 
 }

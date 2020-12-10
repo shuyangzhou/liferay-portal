@@ -14,10 +14,6 @@
 
 package com.liferay.changeset.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ChangesetEntry. This utility wraps
  * <code>com.liferay.changeset.service.impl.ChangesetEntryLocalServiceImpl</code> and
@@ -90,7 +86,7 @@ public class ChangesetEntryLocalServiceUtil {
 	}
 
 	public static void deleteChangesetEntries(
-		java.util.Set<Long> changesetEntryIds) {
+		java.util.Set<java.lang.Long> changesetEntryIds) {
 
 		getService().deleteChangesetEntries(changesetEntryIds);
 	}
@@ -313,7 +309,7 @@ public class ChangesetEntryLocalServiceUtil {
 
 	public static long getChangesetEntriesCount(
 		long changesetCollectionId, long classNameId,
-		java.util.Set<Long> classPKs) {
+		java.util.Set<java.lang.Long> classPKs) {
 
 		return getService().getChangesetEntriesCount(
 			changesetCollectionId, classNameId, classPKs);
@@ -353,7 +349,7 @@ public class ChangesetEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -385,27 +381,10 @@ public class ChangesetEntryLocalServiceUtil {
 	}
 
 	public static ChangesetEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _changesetEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<ChangesetEntryLocalService, ChangesetEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ChangesetEntryLocalService.class);
-
-		ServiceTracker<ChangesetEntryLocalService, ChangesetEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ChangesetEntryLocalService, ChangesetEntryLocalService>(
-						bundle.getBundleContext(),
-						ChangesetEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ChangesetEntryLocalService
+		_changesetEntryLocalService;
 
 }

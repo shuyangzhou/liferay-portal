@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMFormInstanceReport. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMFormInstanceReportLocalServiceImpl</code> and
@@ -296,7 +292,7 @@ public class DDMFormInstanceReportLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -312,7 +308,7 @@ public class DDMFormInstanceReportLocalServiceUtil {
 
 	public static void processFormInstanceReportEvent(
 		long formInstanceReportId, long formInstanceRecordVersionId,
-		String ddmFormInstanceReportEvent) {
+		java.lang.String ddmFormInstanceReportEvent) {
 
 		getService().processFormInstanceReportEvent(
 			formInstanceReportId, formInstanceRecordVersionId,
@@ -340,7 +336,7 @@ public class DDMFormInstanceReportLocalServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceReport
 			updateFormInstanceReport(
 				long formInstanceReportId, long formInstanceRecordVersionId,
-				String ddmFormInstanceReportEvent)
+				java.lang.String ddmFormInstanceReportEvent)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFormInstanceReport(
@@ -349,29 +345,10 @@ public class DDMFormInstanceReportLocalServiceUtil {
 	}
 
 	public static DDMFormInstanceReportLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmFormInstanceReportLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMFormInstanceReportLocalService, DDMFormInstanceReportLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMFormInstanceReportLocalService.class);
-
-		ServiceTracker
-			<DDMFormInstanceReportLocalService,
-			 DDMFormInstanceReportLocalService> serviceTracker =
-				new ServiceTracker
-					<DDMFormInstanceReportLocalService,
-					 DDMFormInstanceReportLocalService>(
-						 bundle.getBundleContext(),
-						 DDMFormInstanceReportLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMFormInstanceReportLocalService
+		_ddmFormInstanceReportLocalService;
 
 }

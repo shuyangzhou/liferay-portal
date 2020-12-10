@@ -14,10 +14,6 @@
 
 package com.liferay.html.preview.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for HtmlPreviewEntry. This utility wraps
  * <code>com.liferay.html.preview.service.impl.HtmlPreviewEntryLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class HtmlPreviewEntryLocalServiceUtil {
 	public static com.liferay.html.preview.model.HtmlPreviewEntry
 			addHtmlPreviewEntry(
 				long userId, long groupId, long classNameId, long classPK,
-				String content, String mimeType,
+				java.lang.String content, java.lang.String mimeType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -294,7 +290,7 @@ public class HtmlPreviewEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -327,7 +323,8 @@ public class HtmlPreviewEntryLocalServiceUtil {
 
 	public static com.liferay.html.preview.model.HtmlPreviewEntry
 			updateHtmlPreviewEntry(
-				long htmlPreviewEntryId, String content, String mimeType,
+				long htmlPreviewEntryId, java.lang.String content,
+				java.lang.String mimeType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -336,29 +333,10 @@ public class HtmlPreviewEntryLocalServiceUtil {
 	}
 
 	public static HtmlPreviewEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _htmlPreviewEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<HtmlPreviewEntryLocalService, HtmlPreviewEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			HtmlPreviewEntryLocalService.class);
-
-		ServiceTracker
-			<HtmlPreviewEntryLocalService, HtmlPreviewEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<HtmlPreviewEntryLocalService,
-						 HtmlPreviewEntryLocalService>(
-							 bundle.getBundleContext(),
-							 HtmlPreviewEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile HtmlPreviewEntryLocalService
+		_htmlPreviewEntryLocalService;
 
 }

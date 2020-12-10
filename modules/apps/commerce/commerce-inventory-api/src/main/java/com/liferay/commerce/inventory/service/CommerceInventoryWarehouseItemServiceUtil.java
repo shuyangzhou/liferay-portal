@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceInventoryWarehouseItem. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryWarehouseItemServiceImpl</code> and is an
@@ -40,8 +36,8 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				addCommerceInventoryWarehouseItem(
-					long userId, long commerceInventoryWarehouseId, String sku,
-					int quantity)
+					long userId, long commerceInventoryWarehouseId,
+					java.lang.String sku, int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceInventoryWarehouseItem(
@@ -58,7 +54,8 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				addCommerceInventoryWarehouseItem(
 					long userId, long commerceInventoryWarehouseId,
-					String externalReferenceCode, String sku, int quantity)
+					java.lang.String externalReferenceCode,
+					java.lang.String sku, int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceInventoryWarehouseItem(
@@ -69,8 +66,9 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				addCommerceInventoryWarehouseItem(
-					String externalReferenceCode, long userId,
-					long commerceInventoryWarehouseId, String sku, int quantity)
+					java.lang.String externalReferenceCode, long userId,
+					long commerceInventoryWarehouseId, java.lang.String sku,
+					int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceInventoryWarehouseItem(
@@ -87,7 +85,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	}
 
 	public static void deleteCommerceInventoryWarehouseItems(
-			long companyId, String sku)
+			long companyId, java.lang.String sku)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteCommerceInventoryWarehouseItems(companyId, sku);
@@ -96,7 +94,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				fetchCommerceInventoryWarehouseItem(
-					long commerceInventoryWarehouseId, String sku)
+					long commerceInventoryWarehouseId, java.lang.String sku)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommerceInventoryWarehouseItem(
@@ -106,7 +104,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				fetchCommerceInventoryWarehouseItemByReferenceCode(
-					long companyId, String externalReferenceCode)
+					long companyId, java.lang.String externalReferenceCode)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommerceInventoryWarehouseItemByReferenceCode(
@@ -132,7 +130,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				getCommerceInventoryWarehouseItemByReferenceCode(
-					long companyId, String externalReferenceCode)
+					long companyId, java.lang.String externalReferenceCode)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryWarehouseItemByReferenceCode(
@@ -142,7 +140,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				getCommerceInventoryWarehouseItemByReferenceCode(
-					String externalReferenceCode, long companyId)
+					java.lang.String externalReferenceCode, long companyId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryWarehouseItemByReferenceCode(
@@ -162,7 +160,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem>
 				getCommerceInventoryWarehouseItems(
-					long companyId, String sku, int start, int end)
+					long companyId, java.lang.String sku, int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryWarehouseItems(
@@ -182,7 +180,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem>
 				getCommerceInventoryWarehouseItemsByCompanyIdAndSku(
-					long companyId, String sku, int start, int end)
+					long companyId, java.lang.String sku, int start, int end)
 			throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getCommerceInventoryWarehouseItemsByCompanyIdAndSku(
@@ -198,7 +196,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	}
 
 	public static int getCommerceInventoryWarehouseItemsCount(
-			long companyId, String sku)
+			long companyId, java.lang.String sku)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryWarehouseItemsCount(
@@ -239,7 +237,7 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -255,7 +253,8 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 
 	public static void moveQuantitiesBetweenWarehouses(
 			long fromCommerceInventoryWarehouseId,
-			long toCommerceInventoryWarehouseId, String sku, int quantity)
+			long toCommerceInventoryWarehouseId, java.lang.String sku,
+			int quantity)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().moveQuantitiesBetweenWarehouses(
@@ -297,7 +296,8 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 				upsertCommerceInventoryWarehouseItem(
 					long companyId, long userId,
 					long commerceInventoryWarehouseId,
-					String externalReferenceCode, String sku, int quantity)
+					java.lang.String externalReferenceCode,
+					java.lang.String sku, int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().upsertCommerceInventoryWarehouseItem(
@@ -308,8 +308,8 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				upsertCommerceInventoryWarehouseItem(
-					long userId, long commerceInventoryWarehouseId, String sku,
-					int quantity)
+					long userId, long commerceInventoryWarehouseId,
+					java.lang.String sku, int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().upsertCommerceInventoryWarehouseItem(
@@ -319,8 +319,9 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem
 				upsertCommerceInventoryWarehouseItem(
-					String externalReferenceCode, long companyId, long userId,
-					long commerceInventoryWarehouseId, String sku, int quantity)
+					java.lang.String externalReferenceCode, long companyId,
+					long userId, long commerceInventoryWarehouseId,
+					java.lang.String sku, int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().upsertCommerceInventoryWarehouseItem(
@@ -329,29 +330,10 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 	}
 
 	public static CommerceInventoryWarehouseItemService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryWarehouseItemService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryWarehouseItemService,
-		 CommerceInventoryWarehouseItemService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryWarehouseItemService.class);
-
-		ServiceTracker
-			<CommerceInventoryWarehouseItemService,
-			 CommerceInventoryWarehouseItemService> serviceTracker =
-				new ServiceTracker
-					<CommerceInventoryWarehouseItemService,
-					 CommerceInventoryWarehouseItemService>(
-						 bundle.getBundleContext(),
-						 CommerceInventoryWarehouseItemService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryWarehouseItemService
+		_commerceInventoryWarehouseItemService;
 
 }

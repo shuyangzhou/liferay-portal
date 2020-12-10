@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.data.integration.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceDataIntegrationProcess. This utility wraps
  * <code>com.liferay.commerce.data.integration.service.impl.CommerceDataIntegrationProcessServiceImpl</code> and is an
@@ -40,7 +36,7 @@ public class CommerceDataIntegrationProcessServiceUtil {
 	public static
 		com.liferay.commerce.data.integration.model.
 			CommerceDataIntegrationProcess addCommerceDataIntegrationProcess(
-					long userId, String name, String type,
+					long userId, java.lang.String name, java.lang.String type,
 					com.liferay.portal.kernel.util.UnicodeProperties
 						typeSettingsUnicodeProperties)
 				throws com.liferay.portal.kernel.exception.PortalException {
@@ -98,14 +94,15 @@ public class CommerceDataIntegrationProcessServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static
 		com.liferay.commerce.data.integration.model.
 			CommerceDataIntegrationProcess updateCommerceDataIntegrationProcess(
-					long commerceDataIntegrationProcessId, String name,
+					long commerceDataIntegrationProcessId,
+					java.lang.String name,
 					com.liferay.portal.kernel.util.UnicodeProperties
 						typeSettingsUnicodeProperties)
 				throws com.liferay.portal.kernel.exception.PortalException {
@@ -120,7 +117,7 @@ public class CommerceDataIntegrationProcessServiceUtil {
 			CommerceDataIntegrationProcess
 					updateCommerceDataIntegrationProcessTrigger(
 						long commerceDataIntegrationProcessId, boolean active,
-						String cronExpression, int startDateMonth,
+						java.lang.String cronExpression, int startDateMonth,
 						int startDateDay, int startDateYear, int startDateHour,
 						int startDateMinute, int endDateMonth, int endDateDay,
 						int endDateYear, int endDateHour, int endDateMinute,
@@ -135,29 +132,10 @@ public class CommerceDataIntegrationProcessServiceUtil {
 	}
 
 	public static CommerceDataIntegrationProcessService getService() {
-		return _serviceTracker.getService();
+		return _commerceDataIntegrationProcessService;
 	}
 
-	private static ServiceTracker
-		<CommerceDataIntegrationProcessService,
-		 CommerceDataIntegrationProcessService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDataIntegrationProcessService.class);
-
-		ServiceTracker
-			<CommerceDataIntegrationProcessService,
-			 CommerceDataIntegrationProcessService> serviceTracker =
-				new ServiceTracker
-					<CommerceDataIntegrationProcessService,
-					 CommerceDataIntegrationProcessService>(
-						 bundle.getBundleContext(),
-						 CommerceDataIntegrationProcessService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDataIntegrationProcessService
+		_commerceDataIntegrationProcessService;
 
 }

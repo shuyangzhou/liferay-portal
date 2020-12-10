@@ -14,10 +14,6 @@
 
 package com.liferay.portal.security.wedeploy.auth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for WeDeployAuthToken. This utility wraps
  * <code>com.liferay.portal.security.wedeploy.auth.service.impl.WeDeployAuthTokenLocalServiceImpl</code> and
@@ -40,8 +36,9 @@ public class WeDeployAuthTokenLocalServiceUtil {
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken
 				addAccessWeDeployAuthToken(
-					String redirectURI, String clientId, String clientSecret,
-					String authorizationToken, int type,
+					java.lang.String redirectURI, java.lang.String clientId,
+					java.lang.String clientSecret,
+					java.lang.String authorizationToken, int type,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -54,7 +51,8 @@ public class WeDeployAuthTokenLocalServiceUtil {
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken
 				addAuthorizationWeDeployAuthToken(
-					long userId, String redirectURI, String clientId,
+					long userId, java.lang.String redirectURI,
+					java.lang.String clientId,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -66,7 +64,8 @@ public class WeDeployAuthTokenLocalServiceUtil {
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken
 				addWeDeployAuthToken(
-					long userId, String clientId, String token, int type,
+					long userId, java.lang.String clientId,
+					java.lang.String token, int type,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -282,7 +281,7 @@ public class WeDeployAuthTokenLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -313,7 +312,7 @@ public class WeDeployAuthTokenLocalServiceUtil {
 
 	public static
 		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken
-				getWeDeployAuthToken(String token, int type)
+				getWeDeployAuthToken(java.lang.String token, int type)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getWeDeployAuthToken(token, type);
@@ -366,29 +365,10 @@ public class WeDeployAuthTokenLocalServiceUtil {
 	}
 
 	public static WeDeployAuthTokenLocalService getService() {
-		return _serviceTracker.getService();
+		return _weDeployAuthTokenLocalService;
 	}
 
-	private static ServiceTracker
-		<WeDeployAuthTokenLocalService, WeDeployAuthTokenLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WeDeployAuthTokenLocalService.class);
-
-		ServiceTracker
-			<WeDeployAuthTokenLocalService, WeDeployAuthTokenLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<WeDeployAuthTokenLocalService,
-						 WeDeployAuthTokenLocalService>(
-							 bundle.getBundleContext(),
-							 WeDeployAuthTokenLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WeDeployAuthTokenLocalService
+		_weDeployAuthTokenLocalService;
 
 }

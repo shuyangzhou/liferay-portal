@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceChannel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CommerceChannelLocalServiceImpl</code> and
@@ -58,10 +54,11 @@ public class CommerceChannelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			addCommerceChannel(
-				long siteGroupId, String name, String type,
+				long siteGroupId, java.lang.String name, java.lang.String type,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					typeSettingsUnicodeProperties,
-				String commerceCurrencyCode, String externalReferenceCode,
+				java.lang.String commerceCurrencyCode,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -240,7 +237,7 @@ public class CommerceChannelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -261,7 +258,7 @@ public class CommerceChannelLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CommerceChannel
 		fetchCommerceChannelByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCommerceChannelByReferenceCode(
 			companyId, externalReferenceCode);
@@ -366,7 +363,7 @@ public class CommerceChannelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -391,8 +388,8 @@ public class CommerceChannelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannel>
 				searchCommerceChannels(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceChannels(
@@ -400,7 +397,7 @@ public class CommerceChannelLocalServiceUtil {
 	}
 
 	public static int searchCommerceChannelsCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceChannelsCount(companyId, keywords);
@@ -426,11 +423,11 @@ public class CommerceChannelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			updateCommerceChannel(
-				long commerceChannelId, long siteGroupId, String name,
-				String type,
+				long commerceChannelId, long siteGroupId, java.lang.String name,
+				java.lang.String type,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					typeSettingsUnicodeProperties,
-				String commerceCurrencyCode)
+				java.lang.String commerceCurrencyCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceChannel(
@@ -440,11 +437,12 @@ public class CommerceChannelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			updateCommerceChannel(
-				long commerceChannelId, long siteGroupId, String name,
-				String type,
+				long commerceChannelId, long siteGroupId, java.lang.String name,
+				java.lang.String type,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					typeSettingsUnicodeProperties,
-				String commerceCurrencyCode, String priceDisplayType,
+				java.lang.String commerceCurrencyCode,
+				java.lang.String priceDisplayType,
 				boolean discountsTargetNetPrice)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -456,7 +454,7 @@ public class CommerceChannelLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			updateCommerceChannelExternalReferenceCode(
-				long commerceChannelId, String externalReferenceCode)
+				long commerceChannelId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceChannelExternalReferenceCode(
@@ -464,27 +462,10 @@ public class CommerceChannelLocalServiceUtil {
 	}
 
 	public static CommerceChannelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceChannelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceChannelLocalService, CommerceChannelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceChannelLocalService.class);
-
-		ServiceTracker<CommerceChannelLocalService, CommerceChannelLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceChannelLocalService, CommerceChannelLocalService>(
-						bundle.getBundleContext(),
-						CommerceChannelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceChannelLocalService
+		_commerceChannelLocalService;
 
 }

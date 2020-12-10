@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDefinitionInventory. This utility wraps
  * <code>com.liferay.commerce.service.impl.CPDefinitionInventoryServiceImpl</code> and is an
@@ -40,10 +36,11 @@ public class CPDefinitionInventoryServiceUtil {
 	public static com.liferay.commerce.model.CPDefinitionInventory
 			addCPDefinitionInventory(
 				long userId, long cpDefinitionId,
-				String cpDefinitionInventoryEngine, String lowStockActivity,
-				boolean displayAvailability, boolean displayStockQuantity,
-				int minStockQuantity, boolean backOrders, int minOrderQuantity,
-				int maxOrderQuantity, String allowedOrderQuantities,
+				java.lang.String cpDefinitionInventoryEngine,
+				java.lang.String lowStockActivity, boolean displayAvailability,
+				boolean displayStockQuantity, int minStockQuantity,
+				boolean backOrders, int minOrderQuantity, int maxOrderQuantity,
+				java.lang.String allowedOrderQuantities,
 				int multipleOrderQuantity)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -73,7 +70,7 @@ public class CPDefinitionInventoryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -84,10 +81,11 @@ public class CPDefinitionInventoryServiceUtil {
 	public static com.liferay.commerce.model.CPDefinitionInventory
 			updateCPDefinitionInventory(
 				long groupId, long cpDefinitionInventoryId,
-				String cpDefinitionInventoryEngine, String lowStockActivity,
-				boolean displayAvailability, boolean displayStockQuantity,
-				int minStockQuantity, boolean backOrders, int minOrderQuantity,
-				int maxOrderQuantity, String allowedOrderQuantities,
+				java.lang.String cpDefinitionInventoryEngine,
+				java.lang.String lowStockActivity, boolean displayAvailability,
+				boolean displayStockQuantity, int minStockQuantity,
+				boolean backOrders, int minOrderQuantity, int maxOrderQuantity,
+				java.lang.String allowedOrderQuantities,
 				int multipleOrderQuantity)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -101,10 +99,11 @@ public class CPDefinitionInventoryServiceUtil {
 	public static com.liferay.commerce.model.CPDefinitionInventory
 			updateCPDefinitionInventory(
 				long cpDefinitionInventoryId,
-				String cpDefinitionInventoryEngine, String lowStockActivity,
-				boolean displayAvailability, boolean displayStockQuantity,
-				int minStockQuantity, boolean backOrders, int minOrderQuantity,
-				int maxOrderQuantity, String allowedOrderQuantities,
+				java.lang.String cpDefinitionInventoryEngine,
+				java.lang.String lowStockActivity, boolean displayAvailability,
+				boolean displayStockQuantity, int minStockQuantity,
+				boolean backOrders, int minOrderQuantity, int maxOrderQuantity,
+				java.lang.String allowedOrderQuantities,
 				int multipleOrderQuantity)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -116,29 +115,10 @@ public class CPDefinitionInventoryServiceUtil {
 	}
 
 	public static CPDefinitionInventoryService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionInventoryService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionInventoryService, CPDefinitionInventoryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionInventoryService.class);
-
-		ServiceTracker
-			<CPDefinitionInventoryService, CPDefinitionInventoryService>
-				serviceTracker =
-					new ServiceTracker
-						<CPDefinitionInventoryService,
-						 CPDefinitionInventoryService>(
-							 bundle.getBundleContext(),
-							 CPDefinitionInventoryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionInventoryService
+		_cpDefinitionInventoryService;
 
 }

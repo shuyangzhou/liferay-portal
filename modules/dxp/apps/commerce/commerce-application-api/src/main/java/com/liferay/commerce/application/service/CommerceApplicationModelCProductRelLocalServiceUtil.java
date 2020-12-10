@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.application.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceApplicationModelCProductRel. This utility wraps
  * <code>com.liferay.commerce.application.service.impl.CommerceApplicationModelCProductRelLocalServiceImpl</code> and
@@ -349,7 +345,7 @@ public class CommerceApplicationModelCProductRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -386,30 +382,10 @@ public class CommerceApplicationModelCProductRelLocalServiceUtil {
 	}
 
 	public static CommerceApplicationModelCProductRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceApplicationModelCProductRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceApplicationModelCProductRelLocalService,
-		 CommerceApplicationModelCProductRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceApplicationModelCProductRelLocalService.class);
-
-		ServiceTracker
-			<CommerceApplicationModelCProductRelLocalService,
-			 CommerceApplicationModelCProductRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceApplicationModelCProductRelLocalService,
-					 CommerceApplicationModelCProductRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceApplicationModelCProductRelLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceApplicationModelCProductRelLocalService
+		_commerceApplicationModelCProductRelLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.asset.auto.tagger.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetAutoTaggerEntry. This utility wraps
  * <code>com.liferay.asset.auto.tagger.service.impl.AssetAutoTaggerEntryLocalServiceImpl</code> and
@@ -67,7 +63,7 @@ public class AssetAutoTaggerEntryLocalServiceUtil {
 	public static com.liferay.asset.auto.tagger.model.AssetAutoTaggerEntry
 			addAssetAutoTaggerEntry(
 				com.liferay.asset.kernel.model.AssetEntry assetEntry,
-				String assetTagName)
+				java.lang.String assetTagName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAssetAutoTaggerEntry(assetEntry, assetTagName);
@@ -320,7 +316,7 @@ public class AssetAutoTaggerEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -353,29 +349,10 @@ public class AssetAutoTaggerEntryLocalServiceUtil {
 	}
 
 	public static AssetAutoTaggerEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetAutoTaggerEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetAutoTaggerEntryLocalService, AssetAutoTaggerEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetAutoTaggerEntryLocalService.class);
-
-		ServiceTracker
-			<AssetAutoTaggerEntryLocalService, AssetAutoTaggerEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AssetAutoTaggerEntryLocalService,
-						 AssetAutoTaggerEntryLocalService>(
-							 bundle.getBundleContext(),
-							 AssetAutoTaggerEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetAutoTaggerEntryLocalService
+		_assetAutoTaggerEntryLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.metrics.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for WorkflowMetricsSLADefinitionVersion. This utility wraps
  * <code>com.liferay.portal.workflow.metrics.service.impl.WorkflowMetricsSLADefinitionVersionLocalServiceImpl</code> and
@@ -247,7 +243,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	public static com.liferay.portal.workflow.metrics.model.
 		WorkflowMetricsSLADefinitionVersion
 			fetchWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().
 			fetchWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
@@ -280,7 +276,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -314,7 +310,8 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	public static com.liferay.portal.workflow.metrics.model.
 		WorkflowMetricsSLADefinitionVersion
 				getWorkflowMetricsSLADefinitionVersion(
-					long workflowMetricsSLADefinitionId, String version)
+					long workflowMetricsSLADefinitionId,
+					java.lang.String version)
 			throws com.liferay.portal.workflow.metrics.exception.
 				NoSuchSLADefinitionVersionException {
 
@@ -333,7 +330,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	public static com.liferay.portal.workflow.metrics.model.
 		WorkflowMetricsSLADefinitionVersion
 				getWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
@@ -374,8 +371,8 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 		<com.liferay.portal.workflow.metrics.model.
 			WorkflowMetricsSLADefinitionVersion>
 				getWorkflowMetricsSLADefinitionVersions(
-					long companyId, java.util.Date createDate, Long processId,
-					int status) {
+					long companyId, java.util.Date createDate,
+					java.lang.Long processId, int status) {
 
 		return getService().getWorkflowMetricsSLADefinitionVersions(
 			companyId, createDate, processId, status);
@@ -406,7 +403,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 		<com.liferay.portal.workflow.metrics.model.
 			WorkflowMetricsSLADefinitionVersion>
 				getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
-					String uuid, long companyId) {
+					java.lang.String uuid, long companyId) {
 
 		return getService().
 			getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
@@ -427,7 +424,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 		<com.liferay.portal.workflow.metrics.model.
 			WorkflowMetricsSLADefinitionVersion>
 				getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
-					String uuid, long companyId, int start, int end,
+					java.lang.String uuid, long companyId, int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.portal.workflow.metrics.model.
 							WorkflowMetricsSLADefinitionVersion>
@@ -469,30 +466,10 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	}
 
 	public static WorkflowMetricsSLADefinitionVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _workflowMetricsSLADefinitionVersionLocalService;
 	}
 
-	private static ServiceTracker
-		<WorkflowMetricsSLADefinitionVersionLocalService,
-		 WorkflowMetricsSLADefinitionVersionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WorkflowMetricsSLADefinitionVersionLocalService.class);
-
-		ServiceTracker
-			<WorkflowMetricsSLADefinitionVersionLocalService,
-			 WorkflowMetricsSLADefinitionVersionLocalService> serviceTracker =
-				new ServiceTracker
-					<WorkflowMetricsSLADefinitionVersionLocalService,
-					 WorkflowMetricsSLADefinitionVersionLocalService>(
-						 bundle.getBundleContext(),
-						 WorkflowMetricsSLADefinitionVersionLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WorkflowMetricsSLADefinitionVersionLocalService
+		_workflowMetricsSLADefinitionVersionLocalService;
 
 }

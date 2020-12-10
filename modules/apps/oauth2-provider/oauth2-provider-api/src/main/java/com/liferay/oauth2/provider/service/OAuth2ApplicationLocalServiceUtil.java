@@ -14,10 +14,6 @@
 
 package com.liferay.oauth2.provider.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for OAuth2Application. This utility wraps
  * <code>com.liferay.oauth2.provider.service.impl.OAuth2ApplicationLocalServiceImpl</code> and
@@ -39,14 +35,16 @@ public class OAuth2ApplicationLocalServiceUtil {
 	 */
 	public static com.liferay.oauth2.provider.model.OAuth2Application
 			addOAuth2Application(
-				long companyId, long userId, String userName,
+				long companyId, long userId, java.lang.String userName,
 				java.util.List<com.liferay.oauth2.provider.constants.GrantType>
 					allowedGrantTypesList,
-				long clientCredentialUserId, String clientId, int clientProfile,
-				String clientSecret, String description,
-				java.util.List<String> featuresList, String homePageURL,
-				long iconFileEntryId, String name, String privacyPolicyURL,
-				java.util.List<String> redirectURIsList,
+				long clientCredentialUserId, java.lang.String clientId,
+				int clientProfile, java.lang.String clientSecret,
+				java.lang.String description,
+				java.util.List<java.lang.String> featuresList,
+				java.lang.String homePageURL, long iconFileEntryId,
+				java.lang.String name, java.lang.String privacyPolicyURL,
+				java.util.List<java.lang.String> redirectURIsList,
 				java.util.function.Consumer
 					<com.liferay.oauth2.provider.util.builder.
 						OAuth2ScopeBuilder> builderConsumer,
@@ -63,15 +61,17 @@ public class OAuth2ApplicationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Application
 			addOAuth2Application(
-				long companyId, long userId, String userName,
+				long companyId, long userId, java.lang.String userName,
 				java.util.List<com.liferay.oauth2.provider.constants.GrantType>
 					allowedGrantTypesList,
-				long clientCredentialUserId, String clientId, int clientProfile,
-				String clientSecret, String description,
-				java.util.List<String> featuresList, String homePageURL,
-				long iconFileEntryId, String name, String privacyPolicyURL,
-				java.util.List<String> redirectURIsList,
-				java.util.List<String> scopeAliasesList,
+				long clientCredentialUserId, java.lang.String clientId,
+				int clientProfile, java.lang.String clientSecret,
+				java.lang.String description,
+				java.util.List<java.lang.String> featuresList,
+				java.lang.String homePageURL, long iconFileEntryId,
+				java.lang.String name, java.lang.String privacyPolicyURL,
+				java.util.List<java.lang.String> redirectURIsList,
+				java.util.List<java.lang.String> scopeAliasesList,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -89,15 +89,16 @@ public class OAuth2ApplicationLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.oauth2.provider.model.OAuth2Application
 			addOAuth2Application(
-				long companyId, long userId, String userName,
+				long companyId, long userId, java.lang.String userName,
 				java.util.List<com.liferay.oauth2.provider.constants.GrantType>
 					allowedGrantTypesList,
-				String clientId, int clientProfile, String clientSecret,
-				String description, java.util.List<String> featuresList,
-				String homePageURL, long iconFileEntryId, String name,
-				String privacyPolicyURL,
-				java.util.List<String> redirectURIsList,
-				java.util.List<String> scopeAliasesList,
+				java.lang.String clientId, int clientProfile,
+				java.lang.String clientSecret, java.lang.String description,
+				java.util.List<java.lang.String> featuresList,
+				java.lang.String homePageURL, long iconFileEntryId,
+				java.lang.String name, java.lang.String privacyPolicyURL,
+				java.util.List<java.lang.String> redirectURIsList,
+				java.util.List<java.lang.String> scopeAliasesList,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -299,7 +300,7 @@ public class OAuth2ApplicationLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth2.provider.model.OAuth2Application
-		fetchOAuth2Application(long companyId, String clientId) {
+		fetchOAuth2Application(long companyId, java.lang.String clientId) {
 
 		return getService().fetchOAuth2Application(companyId, clientId);
 	}
@@ -332,7 +333,7 @@ public class OAuth2ApplicationLocalServiceUtil {
 	}
 
 	public static com.liferay.oauth2.provider.model.OAuth2Application
-			getOAuth2Application(long companyId, String clientId)
+			getOAuth2Application(long companyId, java.lang.String clientId)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2ApplicationException {
 
@@ -378,7 +379,7 @@ public class OAuth2ApplicationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -405,11 +406,13 @@ public class OAuth2ApplicationLocalServiceUtil {
 				long oAuth2ApplicationId,
 				java.util.List<com.liferay.oauth2.provider.constants.GrantType>
 					allowedGrantTypesList,
-				long clientCredentialUserId, String clientId, int clientProfile,
-				String clientSecret, String description,
-				java.util.List<String> featuresList, String homePageURL,
-				long iconFileEntryId, String name, String privacyPolicyURL,
-				java.util.List<String> redirectURIsList,
+				long clientCredentialUserId, java.lang.String clientId,
+				int clientProfile, java.lang.String clientSecret,
+				java.lang.String description,
+				java.util.List<java.lang.String> featuresList,
+				java.lang.String homePageURL, long iconFileEntryId,
+				java.lang.String name, java.lang.String privacyPolicyURL,
+				java.util.List<java.lang.String> redirectURIsList,
 				long auth2ApplicationScopeAliasesId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -430,11 +433,12 @@ public class OAuth2ApplicationLocalServiceUtil {
 				long oAuth2ApplicationId,
 				java.util.List<com.liferay.oauth2.provider.constants.GrantType>
 					allowedGrantTypesList,
-				String clientId, int clientProfile, String clientSecret,
-				String description, java.util.List<String> featuresList,
-				String homePageURL, long iconFileEntryId, String name,
-				String privacyPolicyURL,
-				java.util.List<String> redirectURIsList,
+				java.lang.String clientId, int clientProfile,
+				java.lang.String clientSecret, java.lang.String description,
+				java.util.List<java.lang.String> featuresList,
+				java.lang.String homePageURL, long iconFileEntryId,
+				java.lang.String name, java.lang.String privacyPolicyURL,
+				java.util.List<java.lang.String> redirectURIsList,
 				long auth2ApplicationScopeAliasesId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -466,8 +470,9 @@ public class OAuth2ApplicationLocalServiceUtil {
 
 	public static com.liferay.oauth2.provider.model.OAuth2Application
 			updateScopeAliases(
-				long userId, String userName, long oAuth2ApplicationId,
-				java.util.List<String> scopeAliasesList)
+				long userId, java.lang.String userName,
+				long oAuth2ApplicationId,
+				java.util.List<java.lang.String> scopeAliasesList)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateScopeAliases(
@@ -475,29 +480,10 @@ public class OAuth2ApplicationLocalServiceUtil {
 	}
 
 	public static OAuth2ApplicationLocalService getService() {
-		return _serviceTracker.getService();
+		return _oAuth2ApplicationLocalService;
 	}
 
-	private static ServiceTracker
-		<OAuth2ApplicationLocalService, OAuth2ApplicationLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			OAuth2ApplicationLocalService.class);
-
-		ServiceTracker
-			<OAuth2ApplicationLocalService, OAuth2ApplicationLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<OAuth2ApplicationLocalService,
-						 OAuth2ApplicationLocalService>(
-							 bundle.getBundleContext(),
-							 OAuth2ApplicationLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuth2ApplicationLocalService
+		_oAuth2ApplicationLocalService;
 
 }

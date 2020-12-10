@@ -14,10 +14,6 @@
 
 package com.liferay.dispatch.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DispatchLog. This utility wraps
  * <code>com.liferay.dispatch.service.impl.DispatchLogLocalServiceImpl</code> and
@@ -56,7 +52,8 @@ public class DispatchLogLocalServiceUtil {
 
 	public static com.liferay.dispatch.model.DispatchLog addDispatchLog(
 			long userId, long dispatchTriggerId, java.util.Date endDate,
-			String error, String output, java.util.Date startDate,
+			java.lang.String error, java.lang.String output,
+			java.util.Date startDate,
 			com.liferay.dispatch.executor.DispatchTaskStatus dispatchTaskStatus)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -307,7 +304,7 @@ public class DispatchLogLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -338,8 +335,8 @@ public class DispatchLogLocalServiceUtil {
 	}
 
 	public static com.liferay.dispatch.model.DispatchLog updateDispatchLog(
-			long dispatchLogId, java.util.Date endDate, String error,
-			String output,
+			long dispatchLogId, java.util.Date endDate, java.lang.String error,
+			java.lang.String output,
 			com.liferay.dispatch.executor.DispatchTaskStatus dispatchTaskStatus)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -348,25 +345,9 @@ public class DispatchLogLocalServiceUtil {
 	}
 
 	public static DispatchLogLocalService getService() {
-		return _serviceTracker.getService();
+		return _dispatchLogLocalService;
 	}
 
-	private static ServiceTracker
-		<DispatchLogLocalService, DispatchLogLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DispatchLogLocalService.class);
-
-		ServiceTracker<DispatchLogLocalService, DispatchLogLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DispatchLogLocalService, DispatchLogLocalService>(
-						bundle.getBundleContext(),
-						DispatchLogLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DispatchLogLocalService _dispatchLogLocalService;
 
 }

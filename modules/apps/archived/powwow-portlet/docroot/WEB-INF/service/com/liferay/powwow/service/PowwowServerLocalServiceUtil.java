@@ -14,8 +14,6 @@
 
 package com.liferay.powwow.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PowwowServer. This utility wraps
  * <code>com.liferay.powwow.service.impl.PowwowServerLocalServiceImpl</code> and
@@ -36,8 +34,9 @@ public class PowwowServerLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.powwow.service.impl.PowwowServerLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.powwow.model.PowwowServer addPowwowServer(
-			long userId, String name, String providerType, String url,
-			String apiKey, String secret,
+			long userId, java.lang.String name, java.lang.String providerType,
+			java.lang.String url, java.lang.String apiKey,
+			java.lang.String secret,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -247,7 +246,7 @@ public class PowwowServerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -302,7 +301,7 @@ public class PowwowServerLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.powwow.model.PowwowServer>
-		getPowwowServers(String providerType, boolean active) {
+		getPowwowServers(java.lang.String providerType, boolean active) {
 
 		return getService().getPowwowServers(providerType, active);
 	}
@@ -317,14 +316,15 @@ public class PowwowServerLocalServiceUtil {
 	}
 
 	public static int getPowwowServersCount(
-		String providerType, boolean active) {
+		java.lang.String providerType, boolean active) {
 
 		return getService().getPowwowServersCount(providerType, active);
 	}
 
 	public static com.liferay.powwow.model.PowwowServer updatePowwowServer(
-			long powwowServerId, String name, String providerType, String url,
-			String apiKey, String secret,
+			long powwowServerId, java.lang.String name,
+			java.lang.String providerType, java.lang.String url,
+			java.lang.String apiKey, java.lang.String secret,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -350,19 +350,13 @@ public class PowwowServerLocalServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_powwowServerLocalService = null;
 	}
 
 	public static PowwowServerLocalService getService() {
-		if (_service == null) {
-			_service = (PowwowServerLocalService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				PowwowServerLocalService.class.getName());
-		}
-
-		return _service;
+		return _powwowServerLocalService;
 	}
 
-	private static PowwowServerLocalService _service;
+	private static volatile PowwowServerLocalService _powwowServerLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoProcessLink. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.forms.service.impl.KaleoProcessLinkLocalServiceImpl</code> and
@@ -68,7 +64,8 @@ public class KaleoProcessLinkLocalServiceUtil {
 	 */
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessLink
 		addKaleoProcessLink(
-			long kaleoProcessId, String workflowTaskName, long ddmTemplateId) {
+			long kaleoProcessId, java.lang.String workflowTaskName,
+			long ddmTemplateId) {
 
 		return getService().addKaleoProcessLink(
 			kaleoProcessId, workflowTaskName, ddmTemplateId);
@@ -264,7 +261,8 @@ public class KaleoProcessLinkLocalServiceUtil {
 	 could not be found
 	 */
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessLink
-		fetchKaleoProcessLink(long kaleoProcessId, String workflowTaskName) {
+		fetchKaleoProcessLink(
+			long kaleoProcessId, java.lang.String workflowTaskName) {
 
 		return getService().fetchKaleoProcessLink(
 			kaleoProcessId, workflowTaskName);
@@ -345,7 +343,7 @@ public class KaleoProcessLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -414,7 +412,7 @@ public class KaleoProcessLinkLocalServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessLink
 			updateKaleoProcessLink(
 				long kaleoProcessLinkId, long kaleoProcessId,
-				String workflowTaskName, long ddmTemplateId)
+				java.lang.String workflowTaskName, long ddmTemplateId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateKaleoProcessLink(
@@ -437,36 +435,18 @@ public class KaleoProcessLinkLocalServiceUtil {
 	 */
 	public static com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessLink
 		updateKaleoProcessLink(
-			long kaleoProcessId, String workflowTaskName, long ddmTemplateId) {
+			long kaleoProcessId, java.lang.String workflowTaskName,
+			long ddmTemplateId) {
 
 		return getService().updateKaleoProcessLink(
 			kaleoProcessId, workflowTaskName, ddmTemplateId);
 	}
 
 	public static KaleoProcessLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoProcessLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoProcessLinkLocalService, KaleoProcessLinkLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoProcessLinkLocalService.class);
-
-		ServiceTracker
-			<KaleoProcessLinkLocalService, KaleoProcessLinkLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<KaleoProcessLinkLocalService,
-						 KaleoProcessLinkLocalService>(
-							 bundle.getBundleContext(),
-							 KaleoProcessLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoProcessLinkLocalService
+		_kaleoProcessLinkLocalService;
 
 }

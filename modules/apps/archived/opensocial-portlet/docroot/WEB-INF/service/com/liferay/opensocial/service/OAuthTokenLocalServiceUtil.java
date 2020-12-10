@@ -14,8 +14,6 @@
 
 package com.liferay.opensocial.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the local service utility for OAuthToken. This utility wraps
  * <code>com.liferay.opensocial.service.impl.OAuthTokenLocalServiceImpl</code> and
@@ -36,9 +34,11 @@ public class OAuthTokenLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.opensocial.service.impl.OAuthTokenLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.opensocial.model.OAuthToken addOAuthToken(
-			long userId, String gadgetKey, String serviceName, long moduleId,
-			String accessToken, String tokenName, String tokenSecret,
-			String sessionHandle, long expiration)
+			long userId, java.lang.String gadgetKey,
+			java.lang.String serviceName, long moduleId,
+			java.lang.String accessToken, java.lang.String tokenName,
+			java.lang.String tokenSecret, java.lang.String sessionHandle,
+			long expiration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addOAuthToken(
@@ -103,8 +103,9 @@ public class OAuthTokenLocalServiceUtil {
 	}
 
 	public static void deleteOAuthToken(
-			long userId, String gadgetKey, String serviceName, long moduleId,
-			String tokenName)
+			long userId, java.lang.String gadgetKey,
+			java.lang.String serviceName, long moduleId,
+			java.lang.String tokenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteOAuthToken(
@@ -127,7 +128,9 @@ public class OAuthTokenLocalServiceUtil {
 		return getService().deleteOAuthToken(oAuthToken);
 	}
 
-	public static void deleteOAuthTokens(String gadgetKey, String serviceName) {
+	public static void deleteOAuthTokens(
+		java.lang.String gadgetKey, java.lang.String serviceName) {
+
 		getService().deleteOAuthTokens(gadgetKey, serviceName);
 	}
 
@@ -240,8 +243,8 @@ public class OAuthTokenLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.OAuthToken fetchOAuthToken(
-		long userId, String gadgetKey, String serviceName, long moduleId,
-		String tokenName) {
+		long userId, java.lang.String gadgetKey, java.lang.String serviceName,
+		long moduleId, java.lang.String tokenName) {
 
 		return getService().fetchOAuthToken(
 			userId, gadgetKey, serviceName, moduleId, tokenName);
@@ -275,8 +278,9 @@ public class OAuthTokenLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.OAuthToken getOAuthToken(
-			long userId, String gadgetKey, String serviceName, long moduleId,
-			String tokenName)
+			long userId, java.lang.String gadgetKey,
+			java.lang.String serviceName, long moduleId,
+			java.lang.String tokenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getOAuthToken(
@@ -301,7 +305,8 @@ public class OAuthTokenLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.opensocial.model.OAuthToken>
-		getOAuthTokens(String gadgetKey, String serviceName) {
+		getOAuthTokens(
+			java.lang.String gadgetKey, java.lang.String serviceName) {
 
 		return getService().getOAuthTokens(gadgetKey, serviceName);
 	}
@@ -320,7 +325,7 @@ public class OAuthTokenLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -351,19 +356,13 @@ public class OAuthTokenLocalServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_oAuthTokenLocalService = null;
 	}
 
 	public static OAuthTokenLocalService getService() {
-		if (_service == null) {
-			_service = (OAuthTokenLocalService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				OAuthTokenLocalService.class.getName());
-		}
-
-		return _service;
+		return _oAuthTokenLocalService;
 	}
 
-	private static OAuthTokenLocalService _service;
+	private static volatile OAuthTokenLocalService _oAuthTokenLocalService;
 
 }

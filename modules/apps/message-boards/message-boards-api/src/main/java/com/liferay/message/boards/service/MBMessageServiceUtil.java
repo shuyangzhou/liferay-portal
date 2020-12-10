@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for MBMessage. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBMessageServiceImpl</code> and is an
@@ -39,8 +35,9 @@ public class MBMessageServiceUtil {
 	 */
 	public static com.liferay.message.boards.model.MBMessage
 			addDiscussionMessage(
-				long groupId, String className, long classPK, long threadId,
-				long parentMessageId, String subject, String body,
+				long groupId, java.lang.String className, long classPK,
+				long threadId, long parentMessageId, java.lang.String subject,
+				java.lang.String body,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -50,11 +47,11 @@ public class MBMessageServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBMessage addMessage(
-			long groupId, long categoryId, String subject, String body,
-			String format,
+			long groupId, long categoryId, java.lang.String subject,
+			java.lang.String body, java.lang.String format,
 			java.util.List
 				<com.liferay.portal.kernel.util.ObjectValuePair
-					<String, java.io.InputStream>> inputStreamOVPs,
+					<java.lang.String, java.io.InputStream>> inputStreamOVPs,
 			boolean anonymous, double priority, boolean allowPingbacks,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -65,9 +62,10 @@ public class MBMessageServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBMessage addMessage(
-			long groupId, long categoryId, String subject, String body,
-			String format, String fileName, java.io.File file,
-			boolean anonymous, double priority, boolean allowPingbacks,
+			long groupId, long categoryId, java.lang.String subject,
+			java.lang.String body, java.lang.String format,
+			java.lang.String fileName, java.io.File file, boolean anonymous,
+			double priority, boolean allowPingbacks,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			   java.io.FileNotFoundException {
@@ -78,7 +76,7 @@ public class MBMessageServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBMessage addMessage(
-			long categoryId, String subject, String body,
+			long categoryId, java.lang.String subject, java.lang.String body,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -87,10 +85,11 @@ public class MBMessageServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBMessage addMessage(
-			long parentMessageId, String subject, String body, String format,
+			long parentMessageId, java.lang.String subject,
+			java.lang.String body, java.lang.String format,
 			java.util.List
 				<com.liferay.portal.kernel.util.ObjectValuePair
-					<String, java.io.InputStream>> inputStreamOVPs,
+					<java.lang.String, java.io.InputStream>> inputStreamOVPs,
 			boolean anonymous, double priority, boolean allowPingbacks,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -101,7 +100,8 @@ public class MBMessageServiceUtil {
 	}
 
 	public static void addMessageAttachment(
-			long messageId, String fileName, java.io.File file, String mimeType)
+			long messageId, java.lang.String fileName, java.io.File file,
+			java.lang.String mimeType)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().addMessageAttachment(messageId, fileName, file, mimeType);
@@ -109,9 +109,9 @@ public class MBMessageServiceUtil {
 
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			addTempAttachment(
-				long groupId, long categoryId, String folderName,
-				String fileName, java.io.InputStream inputStream,
-				String mimeType)
+				long groupId, long categoryId, java.lang.String folderName,
+				java.lang.String fileName, java.io.InputStream inputStream,
+				java.lang.String mimeType)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addTempAttachment(
@@ -130,7 +130,8 @@ public class MBMessageServiceUtil {
 		getService().deleteMessage(messageId);
 	}
 
-	public static void deleteMessageAttachment(long messageId, String fileName)
+	public static void deleteMessageAttachment(
+			long messageId, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteMessageAttachment(messageId, fileName);
@@ -143,7 +144,8 @@ public class MBMessageServiceUtil {
 	}
 
 	public static void deleteTempAttachment(
-			long groupId, long categoryId, String folderName, String fileName)
+			long groupId, long categoryId, java.lang.String folderName,
+			java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteTempAttachment(
@@ -157,7 +159,8 @@ public class MBMessageServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBMessage
-			fetchMBMessageByUrlSubject(long groupId, String urlSubject)
+			fetchMBMessageByUrlSubject(
+				long groupId, java.lang.String urlSubject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchMBMessageByUrlSubject(groupId, urlSubject);
@@ -179,10 +182,11 @@ public class MBMessageServiceUtil {
 			groupId, categoryId, status);
 	}
 
-	public static String getCategoryMessagesRSS(
-			long groupId, long categoryId, int status, int max, String type,
-			double version, String displayStyle, String feedURL,
-			String entryURL,
+	public static java.lang.String getCategoryMessagesRSS(
+			long groupId, long categoryId, int status, int max,
+			java.lang.String type, double version,
+			java.lang.String displayStyle, java.lang.String feedURL,
+			java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -191,9 +195,10 @@ public class MBMessageServiceUtil {
 			feedURL, entryURL, themeDisplay);
 	}
 
-	public static String getCompanyMessagesRSS(
-			long companyId, int status, int max, String type, double version,
-			String displayStyle, String feedURL, String entryURL,
+	public static java.lang.String getCompanyMessagesRSS(
+			long companyId, int status, int max, java.lang.String type,
+			double version, java.lang.String displayStyle,
+			java.lang.String feedURL, java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -206,9 +211,10 @@ public class MBMessageServiceUtil {
 		return getService().getGroupMessagesCount(groupId, status);
 	}
 
-	public static String getGroupMessagesRSS(
-			long groupId, int status, int max, String type, double version,
-			String displayStyle, String feedURL, String entryURL,
+	public static java.lang.String getGroupMessagesRSS(
+			long groupId, int status, int max, java.lang.String type,
+			double version, java.lang.String displayStyle,
+			java.lang.String feedURL, java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -217,10 +223,11 @@ public class MBMessageServiceUtil {
 			entryURL, themeDisplay);
 	}
 
-	public static String getGroupMessagesRSS(
-			long groupId, long userId, int status, int max, String type,
-			double version, String displayStyle, String feedURL,
-			String entryURL,
+	public static java.lang.String getGroupMessagesRSS(
+			long groupId, long userId, int status, int max,
+			java.lang.String type, double version,
+			java.lang.String displayStyle, java.lang.String feedURL,
+			java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -248,12 +255,12 @@ public class MBMessageServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static String[] getTempAttachmentNames(
-			long groupId, String folderName)
+	public static java.lang.String[] getTempAttachmentNames(
+			long groupId, java.lang.String folderName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getTempAttachmentNames(groupId, folderName);
@@ -282,9 +289,10 @@ public class MBMessageServiceUtil {
 			groupId, categoryId, threadId, status);
 	}
 
-	public static String getThreadMessagesRSS(
-			long threadId, int status, int max, String type, double version,
-			String displayStyle, String feedURL, String entryURL,
+	public static java.lang.String getThreadMessagesRSS(
+			long threadId, int status, int max, java.lang.String type,
+			double version, java.lang.String displayStyle,
+			java.lang.String feedURL, java.lang.String entryURL,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -294,14 +302,14 @@ public class MBMessageServiceUtil {
 	}
 
 	public static void moveMessageAttachmentToTrash(
-			long messageId, String fileName)
+			long messageId, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().moveMessageAttachmentToTrash(messageId, fileName);
 	}
 
 	public static void restoreMessageAttachmentFromTrash(
-			long messageId, String fileName)
+			long messageId, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().restoreMessageAttachmentFromTrash(messageId, fileName);
@@ -328,8 +336,8 @@ public class MBMessageServiceUtil {
 
 	public static com.liferay.message.boards.model.MBMessage
 			updateDiscussionMessage(
-				String className, long classPK, long messageId, String subject,
-				String body,
+				java.lang.String className, long classPK, long messageId,
+				java.lang.String subject, java.lang.String body,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -338,10 +346,10 @@ public class MBMessageServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBMessage updateMessage(
-			long messageId, String subject, String body,
+			long messageId, java.lang.String subject, java.lang.String body,
 			java.util.List
 				<com.liferay.portal.kernel.util.ObjectValuePair
-					<String, java.io.InputStream>> inputStreamOVPs,
+					<java.lang.String, java.io.InputStream>> inputStreamOVPs,
 			double priority, boolean allowPingbacks,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -352,22 +360,9 @@ public class MBMessageServiceUtil {
 	}
 
 	public static MBMessageService getService() {
-		return _serviceTracker.getService();
+		return _mbMessageService;
 	}
 
-	private static ServiceTracker<MBMessageService, MBMessageService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBMessageService.class);
-
-		ServiceTracker<MBMessageService, MBMessageService> serviceTracker =
-			new ServiceTracker<MBMessageService, MBMessageService>(
-				bundle.getBundleContext(), MBMessageService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBMessageService _mbMessageService;
 
 }

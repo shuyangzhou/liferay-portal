@@ -16,6 +16,7 @@ package com.liferay.commerce.account.service.base;
 
 import com.liferay.commerce.account.model.CommerceAccountGroupCommerceAccountRel;
 import com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelService;
+import com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelServiceUtil;
 import com.liferay.commerce.account.service.persistence.CommerceAccountFinder;
 import com.liferay.commerce.account.service.persistence.CommerceAccountGroupCommerceAccountRelPersistence;
 import com.liferay.commerce.account.service.persistence.CommerceAccountGroupFinder;
@@ -36,6 +37,8 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -58,7 +61,7 @@ public abstract class CommerceAccountGroupCommerceAccountRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAccountGroupCommerceAccountRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAccountGroupCommerceAccountRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAccountGroupCommerceAccountRelServiceUtil</code>.
 	 */
 
 	/**
@@ -701,9 +704,11 @@ public abstract class CommerceAccountGroupCommerceAccountRelServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(commerceAccountGroupCommerceAccountRelService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -747,6 +752,25 @@ public abstract class CommerceAccountGroupCommerceAccountRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		CommerceAccountGroupCommerceAccountRelService
+			commerceAccountGroupCommerceAccountRelService) {
+
+		try {
+			Field field =
+				CommerceAccountGroupCommerceAccountRelServiceUtil.class.
+					getDeclaredField(
+						"_commerceAccountGroupCommerceAccountRelService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceAccountGroupCommerceAccountRelService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,10 +14,6 @@
 
 package com.liferay.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AccountEntryUserRel. This utility wraps
  * <code>com.liferay.account.service.impl.AccountEntryUserRelLocalServiceImpl</code> and
@@ -65,10 +61,11 @@ public class AccountEntryUserRelLocalServiceUtil {
 
 	public static com.liferay.account.model.AccountEntryUserRel
 			addAccountEntryUserRel(
-				long accountEntryId, long creatorUserId, String screenName,
-				String emailAddress, java.util.Locale locale, String firstName,
-				String middleName, String lastName, long prefixId,
-				long suffixId)
+				long accountEntryId, long creatorUserId,
+				java.lang.String screenName, java.lang.String emailAddress,
+				java.util.Locale locale, java.lang.String firstName,
+				java.lang.String middleName, java.lang.String lastName,
+				long prefixId, long suffixId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountEntryUserRel(
@@ -85,10 +82,11 @@ public class AccountEntryUserRelLocalServiceUtil {
 
 	public static com.liferay.account.model.AccountEntryUserRel
 			addPersonTypeAccountEntryUserRel(
-				long accountEntryId, long creatorUserId, String screenName,
-				String emailAddress, java.util.Locale locale, String firstName,
-				String middleName, String lastName, long prefixId,
-				long suffixId)
+				long accountEntryId, long creatorUserId,
+				java.lang.String screenName, java.lang.String emailAddress,
+				java.util.Locale locale, java.lang.String firstName,
+				java.lang.String middleName, java.lang.String lastName,
+				long prefixId, long suffixId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addPersonTypeAccountEntryUserRel(
@@ -353,7 +351,7 @@ public class AccountEntryUserRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -407,29 +405,10 @@ public class AccountEntryUserRelLocalServiceUtil {
 	}
 
 	public static AccountEntryUserRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _accountEntryUserRelLocalService;
 	}
 
-	private static ServiceTracker
-		<AccountEntryUserRelLocalService, AccountEntryUserRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEntryUserRelLocalService.class);
-
-		ServiceTracker
-			<AccountEntryUserRelLocalService, AccountEntryUserRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AccountEntryUserRelLocalService,
-						 AccountEntryUserRelLocalService>(
-							 bundle.getBundleContext(),
-							 AccountEntryUserRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEntryUserRelLocalService
+		_accountEntryUserRelLocalService;
 
 }

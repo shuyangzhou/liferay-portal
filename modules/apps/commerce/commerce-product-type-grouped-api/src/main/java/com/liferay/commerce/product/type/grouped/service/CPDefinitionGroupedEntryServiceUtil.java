@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.type.grouped.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDefinitionGroupedEntry. This utility wraps
  * <code>com.liferay.commerce.product.type.grouped.service.impl.CPDefinitionGroupedEntryServiceImpl</code> and is an
@@ -88,7 +84,7 @@ public class CPDefinitionGroupedEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -104,29 +100,10 @@ public class CPDefinitionGroupedEntryServiceUtil {
 	}
 
 	public static CPDefinitionGroupedEntryService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionGroupedEntryService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionGroupedEntryService, CPDefinitionGroupedEntryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionGroupedEntryService.class);
-
-		ServiceTracker
-			<CPDefinitionGroupedEntryService, CPDefinitionGroupedEntryService>
-				serviceTracker =
-					new ServiceTracker
-						<CPDefinitionGroupedEntryService,
-						 CPDefinitionGroupedEntryService>(
-							 bundle.getBundleContext(),
-							 CPDefinitionGroupedEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionGroupedEntryService
+		_cpDefinitionGroupedEntryService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.price.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePriceListDiscountRel. This utility wraps
  * <code>com.liferay.commerce.price.list.service.impl.CommercePriceListDiscountRelServiceImpl</code> and is an
@@ -113,34 +109,15 @@ public class CommercePriceListDiscountRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommercePriceListDiscountRelService getService() {
-		return _serviceTracker.getService();
+		return _commercePriceListDiscountRelService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceListDiscountRelService,
-		 CommercePriceListDiscountRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceListDiscountRelService.class);
-
-		ServiceTracker
-			<CommercePriceListDiscountRelService,
-			 CommercePriceListDiscountRelService> serviceTracker =
-				new ServiceTracker
-					<CommercePriceListDiscountRelService,
-					 CommercePriceListDiscountRelService>(
-						 bundle.getBundleContext(),
-						 CommercePriceListDiscountRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceListDiscountRelService
+		_commercePriceListDiscountRelService;
 
 }

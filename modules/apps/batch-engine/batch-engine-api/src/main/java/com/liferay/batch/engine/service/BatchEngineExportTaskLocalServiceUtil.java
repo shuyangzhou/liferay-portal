@@ -14,10 +14,6 @@
 
 package com.liferay.batch.engine.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for BatchEngineExportTask. This utility wraps
  * <code>com.liferay.batch.engine.service.impl.BatchEngineExportTaskLocalServiceImpl</code> and
@@ -58,11 +54,12 @@ public class BatchEngineExportTaskLocalServiceUtil {
 
 	public static com.liferay.batch.engine.model.BatchEngineExportTask
 		addBatchEngineExportTask(
-			long companyId, long userId, String callbackURL, String className,
-			String contentType, String executeStatus,
-			java.util.List<String> fieldNamesList,
-			java.util.Map<String, java.io.Serializable> parameters,
-			String taskItemDelegateName) {
+			long companyId, long userId, java.lang.String callbackURL,
+			java.lang.String className, java.lang.String contentType,
+			java.lang.String executeStatus,
+			java.util.List<java.lang.String> fieldNamesList,
+			java.util.Map<java.lang.String, java.io.Serializable> parameters,
+			java.lang.String taskItemDelegateName) {
 
 		return getService().addBatchEngineExportTask(
 			companyId, userId, callbackURL, className, contentType,
@@ -246,7 +243,7 @@ public class BatchEngineExportTaskLocalServiceUtil {
 	 */
 	public static com.liferay.batch.engine.model.BatchEngineExportTask
 		fetchBatchEngineExportTaskByUuidAndCompanyId(
-			String uuid, long companyId) {
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchBatchEngineExportTaskByUuidAndCompanyId(
 			uuid, companyId);
@@ -282,7 +279,7 @@ public class BatchEngineExportTaskLocalServiceUtil {
 	 */
 	public static com.liferay.batch.engine.model.BatchEngineExportTask
 			getBatchEngineExportTaskByUuidAndCompanyId(
-				String uuid, long companyId)
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getBatchEngineExportTaskByUuidAndCompanyId(
@@ -309,7 +306,7 @@ public class BatchEngineExportTaskLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.batch.engine.model.BatchEngineExportTask>
-			getBatchEngineExportTasks(String executeStatus) {
+			getBatchEngineExportTasks(java.lang.String executeStatus) {
 
 		return getService().getBatchEngineExportTasks(executeStatus);
 	}
@@ -350,7 +347,7 @@ public class BatchEngineExportTaskLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -389,29 +386,10 @@ public class BatchEngineExportTaskLocalServiceUtil {
 	}
 
 	public static BatchEngineExportTaskLocalService getService() {
-		return _serviceTracker.getService();
+		return _batchEngineExportTaskLocalService;
 	}
 
-	private static ServiceTracker
-		<BatchEngineExportTaskLocalService, BatchEngineExportTaskLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			BatchEngineExportTaskLocalService.class);
-
-		ServiceTracker
-			<BatchEngineExportTaskLocalService,
-			 BatchEngineExportTaskLocalService> serviceTracker =
-				new ServiceTracker
-					<BatchEngineExportTaskLocalService,
-					 BatchEngineExportTaskLocalService>(
-						 bundle.getBundleContext(),
-						 BatchEngineExportTaskLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BatchEngineExportTaskLocalService
+		_batchEngineExportTaskLocalService;
 
 }

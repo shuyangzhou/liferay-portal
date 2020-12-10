@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.currency.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceCurrency. This utility wraps
  * <code>com.liferay.commerce.currency.service.impl.CommerceCurrencyLocalServiceImpl</code> and
@@ -58,12 +54,13 @@ public class CommerceCurrencyLocalServiceUtil {
 
 	public static com.liferay.commerce.currency.model.CommerceCurrency
 			addCommerceCurrency(
-				long userId, String code,
-				java.util.Map<java.util.Locale, String> nameMap, String symbol,
-				java.math.BigDecimal rate,
-				java.util.Map<java.util.Locale, String> formatPatternMap,
+				long userId, java.lang.String code,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String symbol, java.math.BigDecimal rate,
+				java.util.Map<java.util.Locale, java.lang.String>
+					formatPatternMap,
 				int maxFractionDigits, int minFractionDigits,
-				String roundingMode, boolean primary, double priority,
+				java.lang.String roundingMode, boolean primary, double priority,
 				boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -251,7 +248,8 @@ public class CommerceCurrencyLocalServiceUtil {
 	 * @return the matching commerce currency, or <code>null</code> if a matching commerce currency could not be found
 	 */
 	public static com.liferay.commerce.currency.model.CommerceCurrency
-		fetchCommerceCurrencyByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCommerceCurrencyByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommerceCurrencyByUuidAndCompanyId(
 			uuid, companyId);
@@ -352,7 +350,7 @@ public class CommerceCurrencyLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.currency.model.CommerceCurrency
-			getCommerceCurrency(long companyId, String code)
+			getCommerceCurrency(long companyId, java.lang.String code)
 		throws com.liferay.commerce.currency.exception.NoSuchCurrencyException {
 
 		return getService().getCommerceCurrency(companyId, code);
@@ -367,7 +365,8 @@ public class CommerceCurrencyLocalServiceUtil {
 	 * @throws PortalException if a matching commerce currency could not be found
 	 */
 	public static com.liferay.commerce.currency.model.CommerceCurrency
-			getCommerceCurrencyByUuidAndCompanyId(String uuid, long companyId)
+			getCommerceCurrencyByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceCurrencyByUuidAndCompanyId(
@@ -394,7 +393,7 @@ public class CommerceCurrencyLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -410,7 +409,7 @@ public class CommerceCurrencyLocalServiceUtil {
 
 	public static void importDefaultValues(
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws Exception {
+		throws java.lang.Exception {
 
 		getService().importDefaultValues(serviceContext);
 	}
@@ -449,12 +448,13 @@ public class CommerceCurrencyLocalServiceUtil {
 
 	public static com.liferay.commerce.currency.model.CommerceCurrency
 			updateCommerceCurrency(
-				long commerceCurrencyId, String code,
-				java.util.Map<java.util.Locale, String> nameMap, String symbol,
-				java.math.BigDecimal rate,
-				java.util.Map<java.util.Locale, String> formatPatternMap,
+				long commerceCurrencyId, java.lang.String code,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String symbol, java.math.BigDecimal rate,
+				java.util.Map<java.util.Locale, java.lang.String>
+					formatPatternMap,
 				int maxFractionDigits, int minFractionDigits,
-				String roundingMode, boolean primary, double priority,
+				java.lang.String roundingMode, boolean primary, double priority,
 				boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -475,7 +475,7 @@ public class CommerceCurrencyLocalServiceUtil {
 	}
 
 	public static void updateExchangeRate(
-			long commerceCurrencyId, String exchangeRateProviderKey)
+			long commerceCurrencyId, java.lang.String exchangeRateProviderKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateExchangeRate(
@@ -489,29 +489,10 @@ public class CommerceCurrencyLocalServiceUtil {
 	}
 
 	public static CommerceCurrencyLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceCurrencyLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceCurrencyLocalService, CommerceCurrencyLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceCurrencyLocalService.class);
-
-		ServiceTracker
-			<CommerceCurrencyLocalService, CommerceCurrencyLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceCurrencyLocalService,
-						 CommerceCurrencyLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceCurrencyLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceCurrencyLocalService
+		_commerceCurrencyLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SegmentsEntryRole. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsEntryRoleLocalServiceImpl</code> and
@@ -266,7 +262,7 @@ public class SegmentsEntryRoleLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -373,29 +369,10 @@ public class SegmentsEntryRoleLocalServiceUtil {
 	}
 
 	public static SegmentsEntryRoleLocalService getService() {
-		return _serviceTracker.getService();
+		return _segmentsEntryRoleLocalService;
 	}
 
-	private static ServiceTracker
-		<SegmentsEntryRoleLocalService, SegmentsEntryRoleLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SegmentsEntryRoleLocalService.class);
-
-		ServiceTracker
-			<SegmentsEntryRoleLocalService, SegmentsEntryRoleLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SegmentsEntryRoleLocalService,
-						 SegmentsEntryRoleLocalService>(
-							 bundle.getBundleContext(),
-							 SegmentsEntryRoleLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsEntryRoleLocalService
+		_segmentsEntryRoleLocalService;
 
 }

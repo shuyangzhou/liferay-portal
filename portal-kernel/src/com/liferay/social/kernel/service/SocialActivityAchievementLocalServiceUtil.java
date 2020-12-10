@@ -14,8 +14,6 @@
 
 package com.liferay.social.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for SocialActivityAchievement. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialActivityAchievementLocalServiceImpl</code> and
@@ -233,7 +231,7 @@ public class SocialActivityAchievementLocalServiceUtil {
 	}
 
 	public static com.liferay.social.kernel.model.SocialActivityAchievement
-		fetchUserAchievement(long userId, long groupId, String name) {
+		fetchUserAchievement(long userId, long groupId, java.lang.String name) {
 
 		return getService().fetchUserAchievement(userId, groupId, name);
 	}
@@ -253,7 +251,7 @@ public class SocialActivityAchievementLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.social.kernel.model.SocialActivityAchievement>
-			getGroupAchievements(long groupId, String name) {
+			getGroupAchievements(long groupId, java.lang.String name) {
 
 		return getService().getGroupAchievements(groupId, name);
 	}
@@ -262,7 +260,9 @@ public class SocialActivityAchievementLocalServiceUtil {
 		return getService().getGroupAchievementsCount(groupId);
 	}
 
-	public static int getGroupAchievementsCount(long groupId, String name) {
+	public static int getGroupAchievementsCount(
+		long groupId, java.lang.String name) {
+
 		return getService().getGroupAchievementsCount(groupId, name);
 	}
 
@@ -289,7 +289,7 @@ public class SocialActivityAchievementLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -375,16 +375,10 @@ public class SocialActivityAchievementLocalServiceUtil {
 	}
 
 	public static SocialActivityAchievementLocalService getService() {
-		if (_service == null) {
-			_service =
-				(SocialActivityAchievementLocalService)
-					PortalBeanLocatorUtil.locate(
-						SocialActivityAchievementLocalService.class.getName());
-		}
-
-		return _service;
+		return _socialActivityAchievementLocalService;
 	}
 
-	private static SocialActivityAchievementLocalService _service;
+	private static volatile SocialActivityAchievementLocalService
+		_socialActivityAchievementLocalService;
 
 }

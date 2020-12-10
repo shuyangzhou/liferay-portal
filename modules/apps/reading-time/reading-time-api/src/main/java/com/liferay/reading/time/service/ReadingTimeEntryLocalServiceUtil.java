@@ -14,10 +14,6 @@
 
 package com.liferay.reading.time.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ReadingTimeEntry. This utility wraps
  * <code>com.liferay.reading.time.service.impl.ReadingTimeEntryLocalServiceImpl</code> and
@@ -280,7 +276,8 @@ public class ReadingTimeEntryLocalServiceUtil {
 	 * @return the matching reading time entry, or <code>null</code> if a matching reading time entry could not be found
 	 */
 	public static com.liferay.reading.time.model.ReadingTimeEntry
-		fetchReadingTimeEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchReadingTimeEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchReadingTimeEntryByUuidAndGroupId(
 			uuid, groupId);
@@ -312,7 +309,7 @@ public class ReadingTimeEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -354,7 +351,7 @@ public class ReadingTimeEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.reading.time.model.ReadingTimeEntry>
 			getReadingTimeEntriesByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getReadingTimeEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -373,7 +370,7 @@ public class ReadingTimeEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.reading.time.model.ReadingTimeEntry>
 			getReadingTimeEntriesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.reading.time.model.ReadingTimeEntry>
 						orderByComparator) {
@@ -414,7 +411,8 @@ public class ReadingTimeEntryLocalServiceUtil {
 	 * @throws PortalException if a matching reading time entry could not be found
 	 */
 	public static com.liferay.reading.time.model.ReadingTimeEntry
-			getReadingTimeEntryByUuidAndGroupId(String uuid, long groupId)
+			getReadingTimeEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getReadingTimeEntryByUuidAndGroupId(uuid, groupId);
@@ -454,29 +452,10 @@ public class ReadingTimeEntryLocalServiceUtil {
 	}
 
 	public static ReadingTimeEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _readingTimeEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<ReadingTimeEntryLocalService, ReadingTimeEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ReadingTimeEntryLocalService.class);
-
-		ServiceTracker
-			<ReadingTimeEntryLocalService, ReadingTimeEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<ReadingTimeEntryLocalService,
-						 ReadingTimeEntryLocalService>(
-							 bundle.getBundleContext(),
-							 ReadingTimeEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ReadingTimeEntryLocalService
+		_readingTimeEntryLocalService;
 
 }

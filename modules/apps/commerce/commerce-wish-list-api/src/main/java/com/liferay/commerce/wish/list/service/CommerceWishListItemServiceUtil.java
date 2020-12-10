@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.wish.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceWishListItem. This utility wraps
  * <code>com.liferay.commerce.wish.list.service.impl.CommerceWishListItemServiceImpl</code> and is an
@@ -40,7 +36,8 @@ public class CommerceWishListItemServiceUtil {
 	public static com.liferay.commerce.wish.list.model.CommerceWishListItem
 			addCommerceWishListItem(
 				long commerceAccountId, long commerceWishListId,
-				long cProductId, String cpInstanceUuid, String json,
+				long cProductId, java.lang.String cpInstanceUuid,
+				java.lang.String json,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -64,7 +61,8 @@ public class CommerceWishListItemServiceUtil {
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishListItem
 			getCommerceWishListItem(
-				long commerceWishListId, String cpInstanceUuid, long cProductId)
+				long commerceWishListId, java.lang.String cpInstanceUuid,
+				long cProductId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceWishListItem(
@@ -72,7 +70,7 @@ public class CommerceWishListItemServiceUtil {
 	}
 
 	public static int getCommerceWishListItemByContainsCPInstanceCount(
-			long commerceWishListId, String cpInstanceUuid)
+			long commerceWishListId, java.lang.String cpInstanceUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceWishListItemByContainsCPInstanceCount(
@@ -111,32 +109,15 @@ public class CommerceWishListItemServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceWishListItemService getService() {
-		return _serviceTracker.getService();
+		return _commerceWishListItemService;
 	}
 
-	private static ServiceTracker
-		<CommerceWishListItemService, CommerceWishListItemService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceWishListItemService.class);
-
-		ServiceTracker<CommerceWishListItemService, CommerceWishListItemService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceWishListItemService, CommerceWishListItemService>(
-						bundle.getBundleContext(),
-						CommerceWishListItemService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceWishListItemService
+		_commerceWishListItemService;
 
 }

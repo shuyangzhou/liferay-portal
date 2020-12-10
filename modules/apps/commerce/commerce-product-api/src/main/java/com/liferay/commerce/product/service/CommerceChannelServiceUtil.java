@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceChannel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CommerceChannelServiceImpl</code> and is an
@@ -39,10 +35,11 @@ public class CommerceChannelServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CommerceChannel
 			addCommerceChannel(
-				long siteGroupId, String name, String type,
+				long siteGroupId, java.lang.String name, java.lang.String type,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					typeSettingsUnicodeProperties,
-				String commerceCurrencyCode, String externalReferenceCode,
+				java.lang.String commerceCurrencyCode,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -60,7 +57,7 @@ public class CommerceChannelServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -109,7 +106,7 @@ public class CommerceChannelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -124,8 +121,8 @@ public class CommerceChannelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannel>
 				searchCommerceChannels(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceChannels(
@@ -133,7 +130,7 @@ public class CommerceChannelServiceUtil {
 	}
 
 	public static int searchCommerceChannelsCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceChannelsCount(companyId, keywords);
@@ -141,11 +138,11 @@ public class CommerceChannelServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			updateCommerceChannel(
-				long commerceChannelId, long siteGroupId, String name,
-				String type,
+				long commerceChannelId, long siteGroupId, java.lang.String name,
+				java.lang.String type,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					typeSettingsUnicodeProperties,
-				String commerceCurrencyCode)
+				java.lang.String commerceCurrencyCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceChannel(
@@ -155,11 +152,12 @@ public class CommerceChannelServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			updateCommerceChannel(
-				long commerceChannelId, long siteGroupId, String name,
-				String type,
+				long commerceChannelId, long siteGroupId, java.lang.String name,
+				java.lang.String type,
 				com.liferay.portal.kernel.util.UnicodeProperties
 					typeSettingsUnicodeProperties,
-				String commerceCurrencyCode, String priceDisplayType,
+				java.lang.String commerceCurrencyCode,
+				java.lang.String priceDisplayType,
 				boolean discountsTargetNetPrice)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -171,7 +169,7 @@ public class CommerceChannelServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannel
 			updateCommerceChannelExternalReferenceCode(
-				long commerceChannelId, String externalReferenceCode)
+				long commerceChannelId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceChannelExternalReferenceCode(
@@ -179,25 +177,9 @@ public class CommerceChannelServiceUtil {
 	}
 
 	public static CommerceChannelService getService() {
-		return _serviceTracker.getService();
+		return _commerceChannelService;
 	}
 
-	private static ServiceTracker
-		<CommerceChannelService, CommerceChannelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceChannelService.class);
-
-		ServiceTracker<CommerceChannelService, CommerceChannelService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceChannelService, CommerceChannelService>(
-						bundle.getBundleContext(), CommerceChannelService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceChannelService _commerceChannelService;
 
 }

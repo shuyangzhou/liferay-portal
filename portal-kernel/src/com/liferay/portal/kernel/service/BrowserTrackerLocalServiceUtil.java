@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for BrowserTracker. This utility wraps
  * <code>com.liferay.portal.service.impl.BrowserTrackerLocalServiceImpl</code> and
@@ -286,7 +284,7 @@ public class BrowserTrackerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -324,14 +322,10 @@ public class BrowserTrackerLocalServiceUtil {
 	}
 
 	public static BrowserTrackerLocalService getService() {
-		if (_service == null) {
-			_service = (BrowserTrackerLocalService)PortalBeanLocatorUtil.locate(
-				BrowserTrackerLocalService.class.getName());
-		}
-
-		return _service;
+		return _browserTrackerLocalService;
 	}
 
-	private static BrowserTrackerLocalService _service;
+	private static volatile BrowserTrackerLocalService
+		_browserTrackerLocalService;
 
 }

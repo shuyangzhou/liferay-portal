@@ -14,8 +14,6 @@
 
 package com.liferay.opensocial.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the local service utility for OAuthConsumer. This utility wraps
  * <code>com.liferay.opensocial.service.impl.OAuthConsumerLocalServiceImpl</code> and
@@ -36,8 +34,9 @@ public class OAuthConsumerLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.opensocial.service.impl.OAuthConsumerLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.opensocial.model.OAuthConsumer addOAuthConsumer(
-		long companyId, String gadgetKey, String serviceName,
-		String consumerKey, String consumerSecret, String keyType) {
+		long companyId, java.lang.String gadgetKey,
+		java.lang.String serviceName, java.lang.String consumerKey,
+		java.lang.String consumerSecret, java.lang.String keyType) {
 
 		return getService().addOAuthConsumer(
 			companyId, gadgetKey, serviceName, consumerKey, consumerSecret,
@@ -117,7 +116,7 @@ public class OAuthConsumerLocalServiceUtil {
 		return getService().deleteOAuthConsumer(oAuthConsumer);
 	}
 
-	public static void deleteOAuthConsumers(String gadgetKey) {
+	public static void deleteOAuthConsumers(java.lang.String gadgetKey) {
 		getService().deleteOAuthConsumers(gadgetKey);
 	}
 
@@ -230,7 +229,7 @@ public class OAuthConsumerLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.OAuthConsumer fetchOAuthConsumer(
-		String gadgetKey, String serviceName) {
+		java.lang.String gadgetKey, java.lang.String serviceName) {
 
 		return getService().fetchOAuthConsumer(gadgetKey, serviceName);
 	}
@@ -263,7 +262,7 @@ public class OAuthConsumerLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.OAuthConsumer getOAuthConsumer(
-			String gadgetKey, String serviceName)
+			java.lang.String gadgetKey, java.lang.String serviceName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getOAuthConsumer(gadgetKey, serviceName);
@@ -287,13 +286,13 @@ public class OAuthConsumerLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.opensocial.model.OAuthConsumer>
-		getOAuthConsumers(String gadgetKey) {
+		getOAuthConsumers(java.lang.String gadgetKey) {
 
 		return getService().getOAuthConsumers(gadgetKey);
 	}
 
 	public static java.util.List<com.liferay.opensocial.model.OAuthConsumer>
-		getOAuthConsumers(String gadgetKey, int start, int end) {
+		getOAuthConsumers(java.lang.String gadgetKey, int start, int end) {
 
 		return getService().getOAuthConsumers(gadgetKey, start, end);
 	}
@@ -307,7 +306,7 @@ public class OAuthConsumerLocalServiceUtil {
 		return getService().getOAuthConsumersCount();
 	}
 
-	public static int getOAuthConsumersCount(String gadgetKey) {
+	public static int getOAuthConsumersCount(java.lang.String gadgetKey) {
 		return getService().getOAuthConsumersCount(gadgetKey);
 	}
 
@@ -316,7 +315,7 @@ public class OAuthConsumerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -332,8 +331,9 @@ public class OAuthConsumerLocalServiceUtil {
 
 	public static com.liferay.opensocial.model.OAuthConsumer
 			updateOAuthConsumer(
-				long oAuthConsumerId, String consumerKey, String consumerSecret,
-				String keyType, String keyName, String callbackURL)
+				long oAuthConsumerId, java.lang.String consumerKey,
+				java.lang.String consumerSecret, java.lang.String keyType,
+				java.lang.String keyName, java.lang.String callbackURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateOAuthConsumer(
@@ -359,19 +359,14 @@ public class OAuthConsumerLocalServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_oAuthConsumerLocalService = null;
 	}
 
 	public static OAuthConsumerLocalService getService() {
-		if (_service == null) {
-			_service = (OAuthConsumerLocalService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				OAuthConsumerLocalService.class.getName());
-		}
-
-		return _service;
+		return _oAuthConsumerLocalService;
 	}
 
-	private static OAuthConsumerLocalService _service;
+	private static volatile OAuthConsumerLocalService
+		_oAuthConsumerLocalService;
 
 }

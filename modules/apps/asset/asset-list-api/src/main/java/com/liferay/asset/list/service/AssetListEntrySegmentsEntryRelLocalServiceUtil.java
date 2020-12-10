@@ -14,10 +14,6 @@
 
 package com.liferay.asset.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetListEntrySegmentsEntryRel. This utility wraps
  * <code>com.liferay.asset.list.service.impl.AssetListEntrySegmentsEntryRelLocalServiceImpl</code> and
@@ -60,7 +56,7 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 	public static com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel
 			addAssetListEntrySegmentsEntryRel(
 				long userId, long groupId, long assetListEntryId,
-				long segmentsEntryId, String typeSettings,
+				long segmentsEntryId, java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -281,7 +277,7 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 	 */
 	public static com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel
 		fetchAssetListEntrySegmentsEntryRelByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAssetListEntrySegmentsEntryRelByUuidAndGroupId(
 			uuid, groupId);
@@ -328,7 +324,7 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 	 */
 	public static com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel
 			getAssetListEntrySegmentsEntryRelByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetListEntrySegmentsEntryRelByUuidAndGroupId(
@@ -372,7 +368,7 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel>
 			getAssetListEntrySegmentsEntryRelsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().
 			getAssetListEntrySegmentsEntryRelsByUuidAndCompanyId(
@@ -392,7 +388,7 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel>
 			getAssetListEntrySegmentsEntryRelsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.asset.list.model.
 						AssetListEntrySegmentsEntryRel> orderByComparator) {
@@ -438,7 +434,7 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -473,37 +469,18 @@ public class AssetListEntrySegmentsEntryRelLocalServiceUtil {
 
 	public static com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel
 		updateAssetListEntrySegmentsEntryRelTypeSettings(
-			long assetListEntryId, long segmentsEntryId, String typeSettings) {
+			long assetListEntryId, long segmentsEntryId,
+			java.lang.String typeSettings) {
 
 		return getService().updateAssetListEntrySegmentsEntryRelTypeSettings(
 			assetListEntryId, segmentsEntryId, typeSettings);
 	}
 
 	public static AssetListEntrySegmentsEntryRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetListEntrySegmentsEntryRelLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetListEntrySegmentsEntryRelLocalService,
-		 AssetListEntrySegmentsEntryRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetListEntrySegmentsEntryRelLocalService.class);
-
-		ServiceTracker
-			<AssetListEntrySegmentsEntryRelLocalService,
-			 AssetListEntrySegmentsEntryRelLocalService> serviceTracker =
-				new ServiceTracker
-					<AssetListEntrySegmentsEntryRelLocalService,
-					 AssetListEntrySegmentsEntryRelLocalService>(
-						 bundle.getBundleContext(),
-						 AssetListEntrySegmentsEntryRelLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetListEntrySegmentsEntryRelLocalService
+		_assetListEntrySegmentsEntryRelLocalService;
 
 }

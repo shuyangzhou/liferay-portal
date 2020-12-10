@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.pricing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePriceModifier. This utility wraps
  * <code>com.liferay.commerce.pricing.service.impl.CommercePriceModifierServiceImpl</code> and is an
@@ -39,8 +35,9 @@ public class CommercePriceModifierServiceUtil {
 	 */
 	public static com.liferay.commerce.pricing.model.CommercePriceModifier
 			addCommercePriceModifier(
-				long userId, long groupId, String title, String target,
-				long commercePriceListId, String modifierType,
+				long userId, long groupId, java.lang.String title,
+				java.lang.String target, long commercePriceListId,
+				java.lang.String modifierType,
 				java.math.BigDecimal modifierAmount, double priority,
 				boolean active, int displayDateMonth, int displayDateDay,
 				int displayDateYear, int displayDateHour, int displayDateMinute,
@@ -69,7 +66,7 @@ public class CommercePriceModifierServiceUtil {
 
 	public static com.liferay.commerce.pricing.model.CommercePriceModifier
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -109,7 +106,8 @@ public class CommercePriceModifierServiceUtil {
 	@Deprecated
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePriceModifier>
-				getCommercePriceModifiers(long companyId, String target)
+				getCommercePriceModifiers(
+					long companyId, java.lang.String target)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommercePriceModifiers(companyId, target);
@@ -136,7 +134,7 @@ public class CommercePriceModifierServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -147,8 +145,9 @@ public class CommercePriceModifierServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.pricing.model.CommercePriceModifier>
 				searchCommercePriceModifiers(
-					long companyId, String keywords, int status, int start,
-					int end, com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int status,
+					int start, int end,
+					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommercePriceModifiers(
@@ -157,8 +156,9 @@ public class CommercePriceModifierServiceUtil {
 
 	public static com.liferay.commerce.pricing.model.CommercePriceModifier
 			updateCommercePriceModifier(
-				long commercePriceModifierId, long groupId, String title,
-				String target, long commercePriceListId, String modifierType,
+				long commercePriceModifierId, long groupId,
+				java.lang.String title, java.lang.String target,
+				long commercePriceListId, java.lang.String modifierType,
 				java.math.BigDecimal modifierAmount, double priority,
 				boolean active, int displayDateMonth, int displayDateDay,
 				int displayDateYear, int displayDateHour, int displayDateMinute,
@@ -180,14 +180,15 @@ public class CommercePriceModifierServiceUtil {
 	public static com.liferay.commerce.pricing.model.CommercePriceModifier
 			upsertCommercePriceModifier(
 				long userId, long commercePriceModifierId, long groupId,
-				String title, String target, long commercePriceListId,
-				String modifierType, java.math.BigDecimal modifierAmount,
-				double priority, boolean active, int displayDateMonth,
-				int displayDateDay, int displayDateYear, int displayDateHour,
-				int displayDateMinute, int expirationDateMonth,
-				int expirationDateDay, int expirationDateYear,
-				int expirationDateHour, int expirationDateMinute,
-				String externalReferenceCode, boolean neverExpire,
+				java.lang.String title, java.lang.String target,
+				long commercePriceListId, java.lang.String modifierType,
+				java.math.BigDecimal modifierAmount, double priority,
+				boolean active, int displayDateMonth, int displayDateDay,
+				int displayDateYear, int displayDateHour, int displayDateMinute,
+				int expirationDateMonth, int expirationDateDay,
+				int expirationDateYear, int expirationDateHour,
+				int expirationDateMinute,
+				java.lang.String externalReferenceCode, boolean neverExpire,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -201,29 +202,10 @@ public class CommercePriceModifierServiceUtil {
 	}
 
 	public static CommercePriceModifierService getService() {
-		return _serviceTracker.getService();
+		return _commercePriceModifierService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceModifierService, CommercePriceModifierService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceModifierService.class);
-
-		ServiceTracker
-			<CommercePriceModifierService, CommercePriceModifierService>
-				serviceTracker =
-					new ServiceTracker
-						<CommercePriceModifierService,
-						 CommercePriceModifierService>(
-							 bundle.getBundleContext(),
-							 CommercePriceModifierService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceModifierService
+		_commercePriceModifierService;
 
 }

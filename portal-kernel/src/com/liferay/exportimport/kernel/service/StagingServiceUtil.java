@@ -14,8 +14,6 @@
 
 package com.liferay.exportimport.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Staging. This utility wraps
  * <code>com.liferay.portlet.exportimport.service.impl.StagingServiceImpl</code> and is an
@@ -41,7 +39,8 @@ public class StagingServiceUtil {
 		getService().cleanUpStagingRequest(stagingRequestId);
 	}
 
-	public static long createStagingRequest(long groupId, String checksum)
+	public static long createStagingRequest(
+			long groupId, java.lang.String checksum)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().createStagingRequest(groupId, checksum);
@@ -52,19 +51,19 @@ public class StagingServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static boolean hasRemoteLayout(
-			String uuid, long groupId, boolean privateLayout)
+			java.lang.String uuid, long groupId, boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().hasRemoteLayout(uuid, groupId, privateLayout);
 	}
 
 	public static void propagateExportImportLifecycleEvent(
-			int code, int processFlag, String processId,
+			int code, int processFlag, java.lang.String processId,
 			java.util.List<java.io.Serializable> arguments)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -84,21 +83,16 @@ public class StagingServiceUtil {
 	}
 
 	public static void updateStagingRequest(
-			long stagingRequestId, String fileName, byte[] bytes)
+			long stagingRequestId, java.lang.String fileName, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateStagingRequest(stagingRequestId, fileName, bytes);
 	}
 
 	public static StagingService getService() {
-		if (_service == null) {
-			_service = (StagingService)PortalBeanLocatorUtil.locate(
-				StagingService.class.getName());
-		}
-
-		return _service;
+		return _stagingService;
 	}
 
-	private static StagingService _service;
+	private static volatile StagingService _stagingService;
 
 }

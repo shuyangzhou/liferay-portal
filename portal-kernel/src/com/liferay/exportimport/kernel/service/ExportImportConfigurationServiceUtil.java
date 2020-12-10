@@ -14,8 +14,6 @@
 
 package com.liferay.exportimport.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for ExportImportConfiguration. This utility wraps
  * <code>com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationServiceImpl</code> and is an
@@ -48,7 +46,7 @@ public class ExportImportConfigurationServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -73,15 +71,10 @@ public class ExportImportConfigurationServiceUtil {
 	}
 
 	public static ExportImportConfigurationService getService() {
-		if (_service == null) {
-			_service =
-				(ExportImportConfigurationService)PortalBeanLocatorUtil.locate(
-					ExportImportConfigurationService.class.getName());
-		}
-
-		return _service;
+		return _exportImportConfigurationService;
 	}
 
-	private static ExportImportConfigurationService _service;
+	private static volatile ExportImportConfigurationService
+		_exportImportConfigurationService;
 
 }

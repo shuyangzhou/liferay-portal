@@ -14,10 +14,6 @@
 
 package com.liferay.saml.persistence.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SamlIdpSpConnection. This utility wraps
  * <code>com.liferay.saml.persistence.service.impl.SamlIdpSpConnectionLocalServiceImpl</code> and
@@ -58,12 +54,13 @@ public class SamlIdpSpConnectionLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlIdpSpConnection
 			addSamlIdpSpConnection(
-				String samlSpEntityId, int assertionLifetime,
-				String attributeNames, boolean attributesEnabled,
+				java.lang.String samlSpEntityId, int assertionLifetime,
+				java.lang.String attributeNames, boolean attributesEnabled,
 				boolean attributesNamespaceEnabled, boolean enabled,
-				boolean encryptionForced, String metadataUrl,
-				java.io.InputStream metadataXmlInputStream, String name,
-				String nameIdAttribute, String nameIdFormat,
+				boolean encryptionForced, java.lang.String metadataUrl,
+				java.io.InputStream metadataXmlInputStream,
+				java.lang.String name, java.lang.String nameIdAttribute,
+				java.lang.String nameIdFormat,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -258,7 +255,7 @@ public class SamlIdpSpConnectionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -287,7 +284,8 @@ public class SamlIdpSpConnectionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlIdpSpConnection
-			getSamlIdpSpConnection(long companyId, String samlSpEntityId)
+			getSamlIdpSpConnection(
+				long companyId, java.lang.String samlSpEntityId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSamlIdpSpConnection(companyId, samlSpEntityId);
@@ -358,12 +356,14 @@ public class SamlIdpSpConnectionLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlIdpSpConnection
 			updateSamlIdpSpConnection(
-				long samlIdpSpConnectionId, String samlSpEntityId,
-				int assertionLifetime, String attributeNames,
+				long samlIdpSpConnectionId, java.lang.String samlSpEntityId,
+				int assertionLifetime, java.lang.String attributeNames,
 				boolean attributesEnabled, boolean attributesNamespaceEnabled,
-				boolean enabled, boolean encryptionForced, String metadataUrl,
-				java.io.InputStream metadataXmlInputStream, String name,
-				String nameIdAttribute, String nameIdFormat,
+				boolean enabled, boolean encryptionForced,
+				java.lang.String metadataUrl,
+				java.io.InputStream metadataXmlInputStream,
+				java.lang.String name, java.lang.String nameIdAttribute,
+				java.lang.String nameIdFormat,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -393,29 +393,10 @@ public class SamlIdpSpConnectionLocalServiceUtil {
 	}
 
 	public static SamlIdpSpConnectionLocalService getService() {
-		return _serviceTracker.getService();
+		return _samlIdpSpConnectionLocalService;
 	}
 
-	private static ServiceTracker
-		<SamlIdpSpConnectionLocalService, SamlIdpSpConnectionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SamlIdpSpConnectionLocalService.class);
-
-		ServiceTracker
-			<SamlIdpSpConnectionLocalService, SamlIdpSpConnectionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SamlIdpSpConnectionLocalService,
-						 SamlIdpSpConnectionLocalService>(
-							 bundle.getBundleContext(),
-							 SamlIdpSpConnectionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SamlIdpSpConnectionLocalService
+		_samlIdpSpConnectionLocalService;
 
 }

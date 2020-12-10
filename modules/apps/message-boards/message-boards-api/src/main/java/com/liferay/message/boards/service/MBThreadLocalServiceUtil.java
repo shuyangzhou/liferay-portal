@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MBThread. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBThreadLocalServiceImpl</code> and
@@ -260,7 +256,7 @@ public class MBThreadLocalServiceUtil {
 	 * @return the matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
 	 */
 	public static com.liferay.message.boards.model.MBThread
-		fetchMBThreadByUuidAndGroupId(String uuid, long groupId) {
+		fetchMBThreadByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchMBThreadByUuidAndGroupId(uuid, groupId);
 	}
@@ -396,7 +392,7 @@ public class MBThreadLocalServiceUtil {
 	 * @throws PortalException if a matching message boards thread could not be found
 	 */
 	public static com.liferay.message.boards.model.MBThread
-			getMBThreadByUuidAndGroupId(String uuid, long groupId)
+			getMBThreadByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMBThreadByUuidAndGroupId(uuid, groupId);
@@ -427,7 +423,7 @@ public class MBThreadLocalServiceUtil {
 	 * @return the matching message boards threads, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBThread>
-		getMBThreadsByUuidAndCompanyId(String uuid, long companyId) {
+		getMBThreadsByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().getMBThreadsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -444,7 +440,7 @@ public class MBThreadLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBThread>
 		getMBThreadsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.message.boards.model.MBThread> orderByComparator) {
 
@@ -470,7 +466,7 @@ public class MBThreadLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -600,7 +596,7 @@ public class MBThreadLocalServiceUtil {
 	}
 
 	public static com.liferay.message.boards.model.MBThread splitThread(
-			long userId, long messageId, String subject,
+			long userId, long messageId, java.lang.String subject,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -644,24 +640,9 @@ public class MBThreadLocalServiceUtil {
 	}
 
 	public static MBThreadLocalService getService() {
-		return _serviceTracker.getService();
+		return _mbThreadLocalService;
 	}
 
-	private static ServiceTracker<MBThreadLocalService, MBThreadLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBThreadLocalService.class);
-
-		ServiceTracker<MBThreadLocalService, MBThreadLocalService>
-			serviceTracker =
-				new ServiceTracker<MBThreadLocalService, MBThreadLocalService>(
-					bundle.getBundleContext(), MBThreadLocalService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBThreadLocalService _mbThreadLocalService;
 
 }

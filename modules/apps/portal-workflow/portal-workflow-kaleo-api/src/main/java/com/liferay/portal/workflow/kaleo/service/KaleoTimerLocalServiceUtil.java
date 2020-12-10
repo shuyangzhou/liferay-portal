@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoTimer. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTimerLocalServiceImpl</code> and
@@ -57,7 +53,7 @@ public class KaleoTimerLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoTimer
 			addKaleoTimer(
-				String kaleoClassName, long kaleoClassPK,
+				java.lang.String kaleoClassName, long kaleoClassPK,
 				long kaleoDefinitionId, long kaleoDefinitionVersionId,
 				com.liferay.portal.workflow.kaleo.definition.Timer timer,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -280,14 +276,15 @@ public class KaleoTimerLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoTimer> getKaleoTimers(
-			String kaleoClassName, long kaleoClassPK) {
+			java.lang.String kaleoClassName, long kaleoClassPK) {
 
 		return getService().getKaleoTimers(kaleoClassName, kaleoClassPK);
 	}
 
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoTimer> getKaleoTimers(
-			String kaleoClassName, long kaleoClassPK, boolean blocking) {
+			java.lang.String kaleoClassName, long kaleoClassPK,
+			boolean blocking) {
 
 		return getService().getKaleoTimers(
 			kaleoClassName, kaleoClassPK, blocking);
@@ -307,7 +304,7 @@ public class KaleoTimerLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -339,25 +336,9 @@ public class KaleoTimerLocalServiceUtil {
 	}
 
 	public static KaleoTimerLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoTimerLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoTimerLocalService, KaleoTimerLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KaleoTimerLocalService.class);
-
-		ServiceTracker<KaleoTimerLocalService, KaleoTimerLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoTimerLocalService, KaleoTimerLocalService>(
-						bundle.getBundleContext(), KaleoTimerLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoTimerLocalService _kaleoTimerLocalService;
 
 }

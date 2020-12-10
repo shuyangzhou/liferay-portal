@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.discount.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceDiscountRule. This utility wraps
  * <code>com.liferay.commerce.discount.service.impl.CommerceDiscountRuleServiceImpl</code> and is an
@@ -39,7 +35,8 @@ public class CommerceDiscountRuleServiceUtil {
 	 */
 	public static com.liferay.commerce.discount.model.CommerceDiscountRule
 			addCommerceDiscountRule(
-				long commerceDiscountId, String type, String typeSettings,
+				long commerceDiscountId, java.lang.String type,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -49,8 +46,8 @@ public class CommerceDiscountRuleServiceUtil {
 
 	public static com.liferay.commerce.discount.model.CommerceDiscountRule
 			addCommerceDiscountRule(
-				long commerceDiscountId, String name, String type,
-				String typeSettings,
+				long commerceDiscountId, java.lang.String name,
+				java.lang.String type, java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -94,7 +91,8 @@ public class CommerceDiscountRuleServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountRule>
 				getCommerceDiscountRules(
-					long commerceDiscountId, String name, int start, int end)
+					long commerceDiscountId, java.lang.String name, int start,
+					int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceDiscountRules(
@@ -108,7 +106,7 @@ public class CommerceDiscountRuleServiceUtil {
 	}
 
 	public static int getCommerceDiscountRulesCount(
-			long commerceDiscountId, String name)
+			long commerceDiscountId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceDiscountRulesCount(
@@ -120,13 +118,14 @@ public class CommerceDiscountRuleServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.commerce.discount.model.CommerceDiscountRule
 			updateCommerceDiscountRule(
-				long commerceDiscountRuleId, String type, String typeSettings)
+				long commerceDiscountRuleId, java.lang.String type,
+				java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceDiscountRule(
@@ -135,8 +134,8 @@ public class CommerceDiscountRuleServiceUtil {
 
 	public static com.liferay.commerce.discount.model.CommerceDiscountRule
 			updateCommerceDiscountRule(
-				long commerceDiscountRuleId, String name, String type,
-				String typeSettings)
+				long commerceDiscountRuleId, java.lang.String name,
+				java.lang.String type, java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceDiscountRule(
@@ -144,27 +143,10 @@ public class CommerceDiscountRuleServiceUtil {
 	}
 
 	public static CommerceDiscountRuleService getService() {
-		return _serviceTracker.getService();
+		return _commerceDiscountRuleService;
 	}
 
-	private static ServiceTracker
-		<CommerceDiscountRuleService, CommerceDiscountRuleService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDiscountRuleService.class);
-
-		ServiceTracker<CommerceDiscountRuleService, CommerceDiscountRuleService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceDiscountRuleService, CommerceDiscountRuleService>(
-						bundle.getBundleContext(),
-						CommerceDiscountRuleService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDiscountRuleService
+		_commerceDiscountRuleService;
 
 }

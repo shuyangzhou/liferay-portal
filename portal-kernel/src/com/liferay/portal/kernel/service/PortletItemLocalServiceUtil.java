@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PortletItem. This utility wraps
  * <code>com.liferay.portal.service.impl.PortletItemLocalServiceImpl</code> and
@@ -36,8 +34,8 @@ public class PortletItemLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.PortletItemLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.PortletItem addPortletItem(
-			long userId, long groupId, String name, String portletId,
-			String className)
+			long userId, long groupId, java.lang.String name,
+			java.lang.String portletId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addPortletItem(
@@ -242,7 +240,7 @@ public class PortletItemLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -271,7 +269,8 @@ public class PortletItemLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PortletItem getPortletItem(
-			long groupId, String name, String portletId, String className)
+			long groupId, java.lang.String name, java.lang.String portletId,
+			java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPortletItem(groupId, name, portletId, className);
@@ -295,13 +294,15 @@ public class PortletItemLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.PortletItem>
-		getPortletItems(long groupId, String className) {
+		getPortletItems(long groupId, java.lang.String className) {
 
 		return getService().getPortletItems(groupId, className);
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.PortletItem>
-		getPortletItems(long groupId, String portletId, String className) {
+		getPortletItems(
+			long groupId, java.lang.String portletId,
+			java.lang.String className) {
 
 		return getService().getPortletItems(groupId, portletId, className);
 	}
@@ -316,8 +317,8 @@ public class PortletItemLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PortletItem updatePortletItem(
-			long userId, long groupId, String name, String portletId,
-			String className)
+			long userId, long groupId, java.lang.String name,
+			java.lang.String portletId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updatePortletItem(
@@ -341,14 +342,9 @@ public class PortletItemLocalServiceUtil {
 	}
 
 	public static PortletItemLocalService getService() {
-		if (_service == null) {
-			_service = (PortletItemLocalService)PortalBeanLocatorUtil.locate(
-				PortletItemLocalService.class.getName());
-		}
-
-		return _service;
+		return _portletItemLocalService;
 	}
 
-	private static PortletItemLocalService _service;
+	private static volatile PortletItemLocalService _portletItemLocalService;
 
 }

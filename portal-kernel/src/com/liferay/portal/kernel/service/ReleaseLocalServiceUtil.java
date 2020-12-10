@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Release. This utility wraps
  * <code>com.liferay.portal.service.impl.ReleaseLocalServiceImpl</code> and
@@ -53,13 +51,13 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Release addRelease(
-		String servletContextName, int buildNumber) {
+		java.lang.String servletContextName, int buildNumber) {
 
 		return getService().addRelease(servletContextName, buildNumber);
 	}
 
 	public static com.liferay.portal.kernel.model.Release addRelease(
-		String servletContextName, String schemaVersion) {
+		java.lang.String servletContextName, java.lang.String schemaVersion) {
 
 		return getService().addRelease(servletContextName, schemaVersion);
 	}
@@ -237,7 +235,7 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Release fetchRelease(
-		String servletContextName) {
+		java.lang.String servletContextName) {
 
 		return getService().fetchRelease(servletContextName);
 	}
@@ -270,7 +268,7 @@ public class ReleaseLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -325,7 +323,7 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Release updateRelease(
-			long releaseId, String schemaVersion, int buildNumber,
+			long releaseId, java.lang.String schemaVersion, int buildNumber,
 			java.util.Date buildDate, boolean verified)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -350,7 +348,7 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static void updateRelease(
-			String servletContextName,
+			java.lang.String servletContextName,
 			java.util.List<com.liferay.portal.kernel.upgrade.UpgradeProcess>
 				upgradeProcesses,
 			int buildNumber, int previousBuildNumber)
@@ -367,7 +365,7 @@ public class ReleaseLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void updateRelease(
-			String servletContextName,
+			java.lang.String servletContextName,
 			java.util.List<com.liferay.portal.kernel.upgrade.UpgradeProcess>
 				upgradeProcesses,
 			int buildNumber, int previousBuildNumber, boolean indexOnUpgrade)
@@ -379,33 +377,28 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static void updateRelease(
-			String servletContextName,
+			java.lang.String servletContextName,
 			java.util.List<com.liferay.portal.kernel.upgrade.UpgradeProcess>
 				upgradeProcesses,
 			java.util.Properties unfilteredPortalProperties)
-		throws Exception {
+		throws java.lang.Exception {
 
 		getService().updateRelease(
 			servletContextName, upgradeProcesses, unfilteredPortalProperties);
 	}
 
 	public static void updateRelease(
-		String servletContextName, String schemaVersion,
-		String previousSchemaVersion) {
+		java.lang.String servletContextName, java.lang.String schemaVersion,
+		java.lang.String previousSchemaVersion) {
 
 		getService().updateRelease(
 			servletContextName, schemaVersion, previousSchemaVersion);
 	}
 
 	public static ReleaseLocalService getService() {
-		if (_service == null) {
-			_service = (ReleaseLocalService)PortalBeanLocatorUtil.locate(
-				ReleaseLocalService.class.getName());
-		}
-
-		return _service;
+		return _releaseLocalService;
 	}
 
-	private static ReleaseLocalService _service;
+	private static volatile ReleaseLocalService _releaseLocalService;
 
 }

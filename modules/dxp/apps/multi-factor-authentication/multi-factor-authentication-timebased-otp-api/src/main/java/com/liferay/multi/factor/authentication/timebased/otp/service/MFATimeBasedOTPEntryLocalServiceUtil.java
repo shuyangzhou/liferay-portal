@@ -14,10 +14,6 @@
 
 package com.liferay.multi.factor.authentication.timebased.otp.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MFATimeBasedOTPEntry. This utility wraps
  * <code>com.liferay.multi.factor.authentication.timebased.otp.service.impl.MFATimeBasedOTPEntryLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class MFATimeBasedOTPEntryLocalServiceUtil {
 
 	public static com.liferay.multi.factor.authentication.timebased.otp.model.
 		MFATimeBasedOTPEntry addTimeBasedOTPEntry(
-				long userId, String sharedSecret)
+				long userId, java.lang.String sharedSecret)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addTimeBasedOTPEntry(userId, sharedSecret);
@@ -300,7 +296,7 @@ public class MFATimeBasedOTPEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -323,7 +319,7 @@ public class MFATimeBasedOTPEntryLocalServiceUtil {
 
 	public static com.liferay.multi.factor.authentication.timebased.otp.model.
 		MFATimeBasedOTPEntry updateAttempts(
-				long userId, String ipAddress, boolean success)
+				long userId, java.lang.String ipAddress, boolean success)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAttempts(userId, ipAddress, success);
@@ -348,29 +344,10 @@ public class MFATimeBasedOTPEntryLocalServiceUtil {
 	}
 
 	public static MFATimeBasedOTPEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _mfaTimeBasedOTPEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<MFATimeBasedOTPEntryLocalService, MFATimeBasedOTPEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			MFATimeBasedOTPEntryLocalService.class);
-
-		ServiceTracker
-			<MFATimeBasedOTPEntryLocalService, MFATimeBasedOTPEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<MFATimeBasedOTPEntryLocalService,
-						 MFATimeBasedOTPEntryLocalService>(
-							 bundle.getBundleContext(),
-							 MFATimeBasedOTPEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MFATimeBasedOTPEntryLocalService
+		_mfaTimeBasedOTPEntryLocalService;
 
 }

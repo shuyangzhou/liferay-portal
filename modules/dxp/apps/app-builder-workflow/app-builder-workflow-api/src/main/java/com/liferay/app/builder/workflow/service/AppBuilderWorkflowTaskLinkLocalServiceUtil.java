@@ -14,10 +14,6 @@
 
 package com.liferay.app.builder.workflow.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AppBuilderWorkflowTaskLink. This utility wraps
  * <code>com.liferay.app.builder.workflow.service.impl.AppBuilderWorkflowTaskLinkLocalServiceImpl</code> and
@@ -63,7 +59,7 @@ public class AppBuilderWorkflowTaskLinkLocalServiceUtil {
 				addAppBuilderWorkflowTaskLink(
 					long companyId, long appBuilderAppId,
 					long appBuilderAppVersionId, long ddmStructureLayoutId,
-					boolean readOnly, String workflowTaskName)
+					boolean readOnly, java.lang.String workflowTaskName)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAppBuilderWorkflowTaskLink(
@@ -318,7 +314,7 @@ public class AppBuilderWorkflowTaskLinkLocalServiceUtil {
 		<com.liferay.app.builder.workflow.model.AppBuilderWorkflowTaskLink>
 			getAppBuilderWorkflowTaskLinks(
 				long appBuilderAppId, long appBuilderAppVersionId,
-				String workflowTaskName) {
+				java.lang.String workflowTaskName) {
 
 		return getService().getAppBuilderWorkflowTaskLinks(
 			appBuilderAppId, appBuilderAppVersionId, workflowTaskName);
@@ -345,7 +341,7 @@ public class AppBuilderWorkflowTaskLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -380,29 +376,10 @@ public class AppBuilderWorkflowTaskLinkLocalServiceUtil {
 	}
 
 	public static AppBuilderWorkflowTaskLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _appBuilderWorkflowTaskLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<AppBuilderWorkflowTaskLinkLocalService,
-		 AppBuilderWorkflowTaskLinkLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AppBuilderWorkflowTaskLinkLocalService.class);
-
-		ServiceTracker
-			<AppBuilderWorkflowTaskLinkLocalService,
-			 AppBuilderWorkflowTaskLinkLocalService> serviceTracker =
-				new ServiceTracker
-					<AppBuilderWorkflowTaskLinkLocalService,
-					 AppBuilderWorkflowTaskLinkLocalService>(
-						 bundle.getBundleContext(),
-						 AppBuilderWorkflowTaskLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppBuilderWorkflowTaskLinkLocalService
+		_appBuilderWorkflowTaskLinkLocalService;
 
 }

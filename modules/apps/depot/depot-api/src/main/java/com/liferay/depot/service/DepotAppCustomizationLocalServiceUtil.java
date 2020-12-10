@@ -14,10 +14,6 @@
 
 package com.liferay.depot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DepotAppCustomization. This utility wraps
  * <code>com.liferay.depot.service.impl.DepotAppCustomizationLocalServiceImpl</code> and
@@ -225,7 +221,8 @@ public class DepotAppCustomizationLocalServiceUtil {
 	}
 
 	public static com.liferay.depot.model.DepotAppCustomization
-		fetchDepotAppCustomization(long depotEntryId, String portletId) {
+		fetchDepotAppCustomization(
+			long depotEntryId, java.lang.String portletId) {
 
 		return getService().fetchDepotAppCustomization(depotEntryId, portletId);
 	}
@@ -295,7 +292,7 @@ public class DepotAppCustomizationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -329,7 +326,7 @@ public class DepotAppCustomizationLocalServiceUtil {
 
 	public static com.liferay.depot.model.DepotAppCustomization
 			updateDepotAppCustomization(
-				long depotEntryId, boolean enabled, String portletId)
+				long depotEntryId, boolean enabled, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateDepotAppCustomization(
@@ -337,29 +334,10 @@ public class DepotAppCustomizationLocalServiceUtil {
 	}
 
 	public static DepotAppCustomizationLocalService getService() {
-		return _serviceTracker.getService();
+		return _depotAppCustomizationLocalService;
 	}
 
-	private static ServiceTracker
-		<DepotAppCustomizationLocalService, DepotAppCustomizationLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DepotAppCustomizationLocalService.class);
-
-		ServiceTracker
-			<DepotAppCustomizationLocalService,
-			 DepotAppCustomizationLocalService> serviceTracker =
-				new ServiceTracker
-					<DepotAppCustomizationLocalService,
-					 DepotAppCustomizationLocalService>(
-						 bundle.getBundleContext(),
-						 DepotAppCustomizationLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DepotAppCustomizationLocalService
+		_depotAppCustomizationLocalService;
 
 }

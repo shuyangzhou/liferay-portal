@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for ResourceAction. This utility wraps
  * <code>com.liferay.portal.service.impl.ResourceActionLocalServiceImpl</code> and
@@ -54,7 +52,9 @@ public class ResourceActionLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ResourceAction
-		addResourceAction(String name, String actionId, long bitwiseValue) {
+		addResourceAction(
+			java.lang.String name, java.lang.String actionId,
+			long bitwiseValue) {
 
 		return getService().addResourceAction(name, actionId, bitwiseValue);
 	}
@@ -64,13 +64,13 @@ public class ResourceActionLocalServiceUtil {
 	}
 
 	public static void checkResourceActions(
-		String name, java.util.List<String> actionIds) {
+		java.lang.String name, java.util.List<java.lang.String> actionIds) {
 
 		getService().checkResourceActions(name, actionIds);
 	}
 
 	public static void checkResourceActions(
-		String name, java.util.List<String> actionIds,
+		java.lang.String name, java.util.List<java.lang.String> actionIds,
 		boolean addDefaultActions) {
 
 		getService().checkResourceActions(name, actionIds, addDefaultActions);
@@ -242,7 +242,7 @@ public class ResourceActionLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ResourceAction
-		fetchResourceAction(String name, String actionId) {
+		fetchResourceAction(java.lang.String name, java.lang.String actionId) {
 
 		return getService().fetchResourceAction(name, actionId);
 	}
@@ -265,7 +265,7 @@ public class ResourceActionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -294,7 +294,7 @@ public class ResourceActionLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ResourceAction
-			getResourceAction(String name, String actionId)
+			getResourceAction(java.lang.String name, java.lang.String actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getResourceAction(name, actionId);
@@ -318,7 +318,7 @@ public class ResourceActionLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.ResourceAction>
-		getResourceActions(String name) {
+		getResourceActions(java.lang.String name) {
 
 		return getService().getResourceActions(name);
 	}
@@ -332,7 +332,7 @@ public class ResourceActionLocalServiceUtil {
 		return getService().getResourceActionsCount();
 	}
 
-	public static int getResourceActionsCount(String name) {
+	public static int getResourceActionsCount(java.lang.String name) {
 		return getService().getResourceActionsCount(name);
 	}
 
@@ -354,14 +354,10 @@ public class ResourceActionLocalServiceUtil {
 	}
 
 	public static ResourceActionLocalService getService() {
-		if (_service == null) {
-			_service = (ResourceActionLocalService)PortalBeanLocatorUtil.locate(
-				ResourceActionLocalService.class.getName());
-		}
-
-		return _service;
+		return _resourceActionLocalService;
 	}
 
-	private static ResourceActionLocalService _service;
+	private static volatile ResourceActionLocalService
+		_resourceActionLocalService;
 
 }

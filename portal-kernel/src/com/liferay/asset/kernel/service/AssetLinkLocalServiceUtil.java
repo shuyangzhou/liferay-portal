@@ -14,8 +14,6 @@
 
 package com.liferay.asset.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for AssetLink. This utility wraps
  * <code>com.liferay.portlet.asset.service.impl.AssetLinkLocalServiceImpl</code> and
@@ -440,7 +438,7 @@ public class AssetLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -527,14 +525,9 @@ public class AssetLinkLocalServiceUtil {
 	}
 
 	public static AssetLinkLocalService getService() {
-		if (_service == null) {
-			_service = (AssetLinkLocalService)PortalBeanLocatorUtil.locate(
-				AssetLinkLocalService.class.getName());
-		}
-
-		return _service;
+		return _assetLinkLocalService;
 	}
 
-	private static AssetLinkLocalService _service;
+	private static volatile AssetLinkLocalService _assetLinkLocalService;
 
 }

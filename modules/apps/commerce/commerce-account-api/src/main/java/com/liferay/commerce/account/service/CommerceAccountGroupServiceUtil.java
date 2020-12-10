@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceAccountGroup. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountGroupServiceImpl</code> and is an
@@ -39,8 +35,8 @@ public class CommerceAccountGroupServiceUtil {
 	 */
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 			addCommerceAccountGroup(
-				long companyId, String name, int type,
-				String externalReferenceCode,
+				long companyId, java.lang.String name, int type,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -56,7 +52,7 @@ public class CommerceAccountGroupServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -94,15 +90,15 @@ public class CommerceAccountGroupServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.commerce.account.model.CommerceAccountGroup>
 				searchCommerceAccountGroups(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceAccountGroups(
@@ -110,7 +106,7 @@ public class CommerceAccountGroupServiceUtil {
 	}
 
 	public static int searchCommerceAccountsGroupCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceAccountsGroupCount(
@@ -119,7 +115,7 @@ public class CommerceAccountGroupServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccountGroup
 			updateCommerceAccountGroup(
-				long commerceAccountGroupId, String name,
+				long commerceAccountGroupId, java.lang.String name,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -128,27 +124,10 @@ public class CommerceAccountGroupServiceUtil {
 	}
 
 	public static CommerceAccountGroupService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountGroupService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountGroupService, CommerceAccountGroupService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountGroupService.class);
-
-		ServiceTracker<CommerceAccountGroupService, CommerceAccountGroupService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceAccountGroupService, CommerceAccountGroupService>(
-						bundle.getBundleContext(),
-						CommerceAccountGroupService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountGroupService
+		_commerceAccountGroupService;
 
 }

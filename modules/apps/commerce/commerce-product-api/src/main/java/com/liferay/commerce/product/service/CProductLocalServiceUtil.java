@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CProduct. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CProductLocalServiceImpl</code> and
@@ -55,7 +51,7 @@ public class CProductLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CProduct addCProduct(
-			long groupId, long userId, String externalReferenceCode,
+			long groupId, long userId, java.lang.String externalReferenceCode,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -238,7 +234,7 @@ public class CProductLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CProduct
 		fetchCProductByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCProductByReferenceCode(
 			companyId, externalReferenceCode);
@@ -252,7 +248,7 @@ public class CProductLocalServiceUtil {
 	 * @return the matching c product, or <code>null</code> if a matching c product could not be found
 	 */
 	public static com.liferay.commerce.product.model.CProduct
-		fetchCProductByUuidAndGroupId(String uuid, long groupId) {
+		fetchCProductByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchCProductByUuidAndGroupId(uuid, groupId);
 	}
@@ -278,7 +274,7 @@ public class CProductLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CProduct
-			getCProductByCPInstanceUuid(String cpInstanceUuid)
+			getCProductByCPInstanceUuid(java.lang.String cpInstanceUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCProductByCPInstanceUuid(cpInstanceUuid);
@@ -293,7 +289,7 @@ public class CProductLocalServiceUtil {
 	 * @throws PortalException if a matching c product could not be found
 	 */
 	public static com.liferay.commerce.product.model.CProduct
-			getCProductByUuidAndGroupId(String uuid, long groupId)
+			getCProductByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCProductByUuidAndGroupId(uuid, groupId);
@@ -324,7 +320,7 @@ public class CProductLocalServiceUtil {
 	 * @return the matching c products, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.commerce.product.model.CProduct>
-		getCProductsByUuidAndCompanyId(String uuid, long companyId) {
+		getCProductsByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().getCProductsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -341,7 +337,7 @@ public class CProductLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.commerce.product.model.CProduct>
 		getCProductsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.commerce.product.model.CProduct>
 					orderByComparator) {
@@ -379,7 +375,7 @@ public class CProductLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -417,7 +413,7 @@ public class CProductLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CProduct
 			updateCProductExternalReferenceCode(
-				long cProductId, String externalReferenceCode)
+				long cProductId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCProductExternalReferenceCode(
@@ -434,24 +430,9 @@ public class CProductLocalServiceUtil {
 	}
 
 	public static CProductLocalService getService() {
-		return _serviceTracker.getService();
+		return _cProductLocalService;
 	}
 
-	private static ServiceTracker<CProductLocalService, CProductLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CProductLocalService.class);
-
-		ServiceTracker<CProductLocalService, CProductLocalService>
-			serviceTracker =
-				new ServiceTracker<CProductLocalService, CProductLocalService>(
-					bundle.getBundleContext(), CProductLocalService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CProductLocalService _cProductLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.depot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DepotEntry. This utility wraps
  * <code>com.liferay.depot.service.impl.DepotEntryLocalServiceImpl</code> and
@@ -63,8 +59,8 @@ public class DepotEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.depot.model.DepotEntry addDepotEntry(
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -244,7 +240,7 @@ public class DepotEntryLocalServiceUtil {
 	 * @return the matching depot entry, or <code>null</code> if a matching depot entry could not be found
 	 */
 	public static com.liferay.depot.model.DepotEntry
-		fetchDepotEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchDepotEntryByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchDepotEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -286,7 +282,8 @@ public class DepotEntryLocalServiceUtil {
 	 * @return the matching depot entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.depot.model.DepotEntry>
-		getDepotEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getDepotEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getDepotEntriesByUuidAndCompanyId(uuid, companyId);
 	}
@@ -303,7 +300,7 @@ public class DepotEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.depot.model.DepotEntry>
 		getDepotEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.depot.model.DepotEntry> orderByComparator) {
 
@@ -343,7 +340,7 @@ public class DepotEntryLocalServiceUtil {
 	 * @throws PortalException if a matching depot entry could not be found
 	 */
 	public static com.liferay.depot.model.DepotEntry
-			getDepotEntryByUuidAndGroupId(String uuid, long groupId)
+			getDepotEntryByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDepotEntryByUuidAndGroupId(uuid, groupId);
@@ -354,7 +351,8 @@ public class DepotEntryLocalServiceUtil {
 	 */
 	@Deprecated
 	public static java.util.List<com.liferay.depot.model.DepotEntry>
-		getDepotEntryGroupRelsByUuidAndCompanyId(String uuid, long companyId) {
+		getDepotEntryGroupRelsByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getDepotEntryGroupRelsByUuidAndCompanyId(
 			uuid, companyId);
@@ -408,7 +406,7 @@ public class DepotEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -439,9 +437,11 @@ public class DepotEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.depot.model.DepotEntry updateDepotEntry(
-			long depotEntryId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<String, Boolean> depotAppCustomizationMap,
+			long depotEntryId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.util.Map<java.lang.String, java.lang.Boolean>
+				depotAppCustomizationMap,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -453,25 +453,9 @@ public class DepotEntryLocalServiceUtil {
 	}
 
 	public static DepotEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _depotEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<DepotEntryLocalService, DepotEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DepotEntryLocalService.class);
-
-		ServiceTracker<DepotEntryLocalService, DepotEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DepotEntryLocalService, DepotEntryLocalService>(
-						bundle.getBundleContext(), DepotEntryLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DepotEntryLocalService _depotEntryLocalService;
 
 }

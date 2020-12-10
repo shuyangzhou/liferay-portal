@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPDefinitionSpecificationOptionValue. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDefinitionSpecificationOptionValueLocalServiceImpl</code> and
@@ -64,7 +60,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 				addCPDefinitionSpecificationOptionValue(
 					long cpDefinitionId, long cpSpecificationOptionId,
 					long cpOptionCategoryId,
-					java.util.Map<java.util.Locale, String> valueMap,
+					java.util.Map<java.util.Locale, java.lang.String> valueMap,
 					double priority,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
@@ -291,7 +287,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 	public static
 		com.liferay.commerce.product.model.CPDefinitionSpecificationOptionValue
 			fetchCPDefinitionSpecificationOptionValueByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().
 			fetchCPDefinitionSpecificationOptionValueByUuidAndGroupId(
@@ -332,7 +328,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 	public static
 		com.liferay.commerce.product.model.CPDefinitionSpecificationOptionValue
 				getCPDefinitionSpecificationOptionValueByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
@@ -425,7 +421,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 		<com.liferay.commerce.product.model.
 			CPDefinitionSpecificationOptionValue>
 				getCPDefinitionSpecificationOptionValuesByUuidAndCompanyId(
-					String uuid, long companyId) {
+					java.lang.String uuid, long companyId) {
 
 		return getService().
 			getCPDefinitionSpecificationOptionValuesByUuidAndCompanyId(
@@ -446,7 +442,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 		<com.liferay.commerce.product.model.
 			CPDefinitionSpecificationOptionValue>
 				getCPDefinitionSpecificationOptionValuesByUuidAndCompanyId(
-					String uuid, long companyId, int start, int end,
+					java.lang.String uuid, long companyId, int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.commerce.product.model.
 							CPDefinitionSpecificationOptionValue>
@@ -500,7 +496,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -540,7 +536,7 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 				updateCPDefinitionSpecificationOptionValue(
 					long cpDefinitionSpecificationOptionValueId,
 					long cpOptionCategoryId,
-					java.util.Map<java.util.Locale, String> valueMap,
+					java.util.Map<java.util.Locale, java.lang.String> valueMap,
 					double priority,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
@@ -565,30 +561,10 @@ public class CPDefinitionSpecificationOptionValueLocalServiceUtil {
 	public static CPDefinitionSpecificationOptionValueLocalService
 		getService() {
 
-		return _serviceTracker.getService();
+		return _cpDefinitionSpecificationOptionValueLocalService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionSpecificationOptionValueLocalService,
-		 CPDefinitionSpecificationOptionValueLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionSpecificationOptionValueLocalService.class);
-
-		ServiceTracker
-			<CPDefinitionSpecificationOptionValueLocalService,
-			 CPDefinitionSpecificationOptionValueLocalService> serviceTracker =
-				new ServiceTracker
-					<CPDefinitionSpecificationOptionValueLocalService,
-					 CPDefinitionSpecificationOptionValueLocalService>(
-						 bundle.getBundleContext(),
-						 CPDefinitionSpecificationOptionValueLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionSpecificationOptionValueLocalService
+		_cpDefinitionSpecificationOptionValueLocalService;
 
 }

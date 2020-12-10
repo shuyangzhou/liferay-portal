@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Layout. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutServiceImpl</code> and is an
@@ -82,13 +80,14 @@ public class LayoutServiceUtil {
 	public static com.liferay.portal.kernel.model.Layout addLayout(
 			long groupId, boolean privateLayout, long parentLayoutId,
 			long classNameId, long classPK,
-			java.util.Map<java.util.Locale, String> localeNamesMap,
-			java.util.Map<java.util.Locale, String> localeTitlesMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> keywordsMap,
-			java.util.Map<java.util.Locale, String> robotsMap, String type,
-			String typeSettings, boolean hidden, boolean system,
-			java.util.Map<java.util.Locale, String> friendlyURLMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeTitlesMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> keywordsMap,
+			java.util.Map<java.util.Locale, java.lang.String> robotsMap,
+			java.lang.String type, java.lang.String typeSettings,
+			boolean hidden, boolean system,
+			java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
 			long masterLayoutPlid, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -141,13 +140,14 @@ public class LayoutServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Layout addLayout(
 			long groupId, boolean privateLayout, long parentLayoutId,
-			java.util.Map<java.util.Locale, String> localeNamesMap,
-			java.util.Map<java.util.Locale, String> localeTitlesMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> keywordsMap,
-			java.util.Map<java.util.Locale, String> robotsMap, String type,
-			String typeSettings, boolean hidden,
-			java.util.Map<java.util.Locale, String> friendlyURLMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeTitlesMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> keywordsMap,
+			java.util.Map<java.util.Locale, java.lang.String> robotsMap,
+			java.lang.String type, java.lang.String typeSettings,
+			boolean hidden,
+			java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
 			long masterLayoutPlid, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -199,13 +199,14 @@ public class LayoutServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Layout addLayout(
 			long groupId, boolean privateLayout, long parentLayoutId,
-			java.util.Map<java.util.Locale, String> localeNamesMap,
-			java.util.Map<java.util.Locale, String> localeTitlesMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> keywordsMap,
-			java.util.Map<java.util.Locale, String> robotsMap, String type,
-			String typeSettings, boolean hidden,
-			java.util.Map<java.util.Locale, String> friendlyURLMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeTitlesMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> keywordsMap,
+			java.util.Map<java.util.Locale, java.lang.String> robotsMap,
+			java.lang.String type, java.lang.String typeSettings,
+			boolean hidden,
+			java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -252,8 +253,9 @@ public class LayoutServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Layout addLayout(
 			long groupId, boolean privateLayout, long parentLayoutId,
-			String name, String title, String description, String type,
-			boolean hidden, String friendlyURL, ServiceContext serviceContext)
+			java.lang.String name, java.lang.String title,
+			java.lang.String description, java.lang.String type, boolean hidden,
+			java.lang.String friendlyURL, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addLayout(
@@ -263,8 +265,9 @@ public class LayoutServiceUtil {
 
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			addTempFileEntry(
-				long groupId, String folderName, String fileName,
-				java.io.InputStream inputStream, String mimeType)
+				long groupId, java.lang.String folderName,
+				java.lang.String fileName, java.io.InputStream inputStream,
+				java.lang.String mimeType)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addTempFileEntry(
@@ -305,7 +308,8 @@ public class LayoutServiceUtil {
 	}
 
 	public static void deleteTempFileEntry(
-			long groupId, String folderName, String fileName)
+			long groupId, java.lang.String folderName,
+			java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteTempFileEntry(groupId, folderName, fileName);
@@ -370,7 +374,7 @@ public class LayoutServiceUtil {
 	 */
 	public static long getDefaultPlid(
 			long groupId, long scopeGroupId, boolean privateLayout,
-			String portletId)
+			java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDefaultPlid(
@@ -378,7 +382,7 @@ public class LayoutServiceUtil {
 	}
 
 	public static long getDefaultPlid(
-			long groupId, long scopeGroupId, String portletId)
+			long groupId, long scopeGroupId, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDefaultPlid(groupId, scopeGroupId, portletId);
@@ -395,7 +399,7 @@ public class LayoutServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Layout
 			getLayoutByUuidAndGroupId(
-				String uuid, long groupId, boolean privateLayout)
+				java.lang.String uuid, long groupId, boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutByUuidAndGroupId(
@@ -413,9 +417,9 @@ public class LayoutServiceUtil {
 	 * @return the layout's name
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static String getLayoutName(
+	public static java.lang.String getLayoutName(
 			long groupId, boolean privateLayout, long layoutId,
-			String languageId)
+			java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutName(
@@ -432,7 +436,7 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static long getLayoutPlid(
-			String uuid, long groupId, boolean privateLayout)
+			java.lang.String uuid, long groupId, boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutPlid(uuid, groupId, privateLayout);
@@ -450,8 +454,9 @@ public class LayoutServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.LayoutReference[]
 		getLayoutReferences(
-			long companyId, String portletId, String preferencesKey,
-			String preferencesValue) {
+			long companyId, java.lang.String portletId,
+			java.lang.String preferencesKey,
+			java.lang.String preferencesValue) {
 
 		return getService().getLayoutReferences(
 			companyId, portletId, preferencesKey, preferencesValue);
@@ -481,7 +486,8 @@ public class LayoutServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Layout>
-			getLayouts(long groupId, boolean privateLayout, String type)
+			getLayouts(
+				long groupId, boolean privateLayout, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayouts(groupId, privateLayout, type);
@@ -489,8 +495,8 @@ public class LayoutServiceUtil {
 
 	public static java.util.List<com.liferay.portal.kernel.model.Layout>
 			getLayouts(
-				long groupId, boolean privateLayout, String type, int start,
-				int end)
+				long groupId, boolean privateLayout, java.lang.String type,
+				int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayouts(
@@ -499,8 +505,8 @@ public class LayoutServiceUtil {
 
 	public static java.util.List<com.liferay.portal.kernel.model.Layout>
 			getLayouts(
-				long groupId, boolean privateLayout, String keywords,
-				String[] types, int start, int end,
+				long groupId, boolean privateLayout, java.lang.String keywords,
+				java.lang.String[] types, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.kernel.model.Layout> orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -511,13 +517,13 @@ public class LayoutServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Layout>
-		getLayouts(long groupId, String type) {
+		getLayouts(long groupId, java.lang.String type) {
 
 		return getService().getLayouts(groupId, type);
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Layout>
-		getLayouts(long groupId, String type, int start, int end) {
+		getLayouts(long groupId, java.lang.String type, int start, int end) {
 
 		return getService().getLayouts(groupId, type, start, end);
 	}
@@ -542,21 +548,21 @@ public class LayoutServiceUtil {
 	}
 
 	public static int getLayoutsCount(
-		long groupId, boolean privateLayout, String type) {
+		long groupId, boolean privateLayout, java.lang.String type) {
 
 		return getService().getLayoutsCount(groupId, privateLayout, type);
 	}
 
 	public static int getLayoutsCount(
-			long groupId, boolean privateLayout, String keywords,
-			String[] types)
+			long groupId, boolean privateLayout, java.lang.String keywords,
+			java.lang.String[] types)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutsCount(
 			groupId, privateLayout, keywords, types);
 	}
 
-	public static int getLayoutsCount(long groupId, String type) {
+	public static int getLayoutsCount(long groupId, java.lang.String type) {
 		return getService().getLayoutsCount(groupId, type);
 	}
 
@@ -565,11 +571,12 @@ public class LayoutServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static String[] getTempFileNames(long groupId, String folderName)
+	public static java.lang.String[] getTempFileNames(
+			long groupId, java.lang.String folderName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getTempFileNames(groupId, folderName);
@@ -587,13 +594,13 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static boolean hasLayout(
-			String uuid, long groupId, boolean privateLayout)
+			java.lang.String uuid, long groupId, boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().hasLayout(uuid, groupId, privateLayout);
 	}
 
-	public static boolean hasPortletId(long plid, String portletId)
+	public static boolean hasPortletId(long plid, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().hasPortletId(plid, portletId);
@@ -622,10 +629,11 @@ public class LayoutServiceUtil {
 	 */
 	public static void schedulePublishToLive(
 			long sourceGroupId, long targetGroupId, boolean privateLayout,
-			long[] layoutIds, java.util.Map<String, String[]> parameterMap,
-			String groupName, String cronText,
+			long[] layoutIds,
+			java.util.Map<java.lang.String, java.lang.String[]> parameterMap,
+			java.lang.String groupName, java.lang.String cronText,
 			java.util.Date schedulerStartDate, java.util.Date schedulerEndDate,
-			String description)
+			java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().schedulePublishToLive(
@@ -664,13 +672,15 @@ public class LayoutServiceUtil {
 	 */
 	public static void schedulePublishToRemote(
 			long sourceGroupId, boolean privateLayout,
-			java.util.Map<Long, Boolean> layoutIdMap,
-			java.util.Map<String, String[]> parameterMap, String remoteAddress,
-			int remotePort, String remotePathContext, boolean secureConnection,
+			java.util.Map<java.lang.Long, java.lang.Boolean> layoutIdMap,
+			java.util.Map<java.lang.String, java.lang.String[]> parameterMap,
+			java.lang.String remoteAddress, int remotePort,
+			java.lang.String remotePathContext, boolean secureConnection,
 			long remoteGroupId, boolean remotePrivateLayout,
-			java.util.Date startDate, java.util.Date endDate, String groupName,
-			String cronText, java.util.Date schedulerStartDate,
-			java.util.Date schedulerEndDate, String description)
+			java.util.Date startDate, java.util.Date endDate,
+			java.lang.String groupName, java.lang.String cronText,
+			java.util.Date schedulerStartDate, java.util.Date schedulerEndDate,
+			java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().schedulePublishToRemote(
@@ -711,7 +721,7 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void unschedulePublishToLive(
-			long groupId, String jobName, String groupName)
+			long groupId, java.lang.String jobName, java.lang.String groupName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().unschedulePublishToLive(groupId, jobName, groupName);
@@ -728,7 +738,7 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void unschedulePublishToRemote(
-			long groupId, String jobName, String groupName)
+			long groupId, java.lang.String jobName, java.lang.String groupName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().unschedulePublishToRemote(groupId, jobName, groupName);
@@ -775,13 +785,13 @@ public class LayoutServiceUtil {
 	public static com.liferay.portal.kernel.model.Layout updateLayout(
 			long groupId, boolean privateLayout, long layoutId,
 			long parentLayoutId,
-			java.util.Map<java.util.Locale, String> localeNamesMap,
-			java.util.Map<java.util.Locale, String> localeTitlesMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> keywordsMap,
-			java.util.Map<java.util.Locale, String> robotsMap, String type,
-			boolean hidden,
-			java.util.Map<java.util.Locale, String> friendlyURLMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
+			java.util.Map<java.util.Locale, java.lang.String> localeTitlesMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> keywordsMap,
+			java.util.Map<java.util.Locale, java.lang.String> robotsMap,
+			java.lang.String type, boolean hidden,
+			java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
 			boolean hasIconImage, byte[] iconBytes, long masterLayoutPlid,
 			long styleBookEntryId, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -807,7 +817,7 @@ public class LayoutServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Layout updateLayout(
 			long groupId, boolean privateLayout, long layoutId,
-			String typeSettings)
+			java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayout(
@@ -827,8 +837,9 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.model.Layout updateLookAndFeel(
-			long groupId, boolean privateLayout, long layoutId, String themeId,
-			String colorSchemeId, String css)
+			long groupId, boolean privateLayout, long layoutId,
+			java.lang.String themeId, java.lang.String colorSchemeId,
+			java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLookAndFeel(
@@ -849,8 +860,8 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.model.Layout updateName(
-			long groupId, boolean privateLayout, long layoutId, String name,
-			String languageId)
+			long groupId, boolean privateLayout, long layoutId,
+			java.lang.String name, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateName(
@@ -868,7 +879,7 @@ public class LayoutServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.model.Layout updateName(
-			long plid, String name, String languageId)
+			long plid, java.lang.String name, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateName(plid, name, languageId);
@@ -987,21 +998,16 @@ public class LayoutServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Layout updateType(
-			long plid, String type)
+			long plid, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateType(plid, type);
 	}
 
 	public static LayoutService getService() {
-		if (_service == null) {
-			_service = (LayoutService)PortalBeanLocatorUtil.locate(
-				LayoutService.class.getName());
-		}
-
-		return _service;
+		return _layoutService;
 	}
 
-	private static LayoutService _service;
+	private static volatile LayoutService _layoutService;
 
 }

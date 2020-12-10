@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.shipping.engine.fixed.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceShippingFixedOptionRel. This utility wraps
  * <code>com.liferay.commerce.shipping.engine.fixed.service.impl.CommerceShippingFixedOptionRelServiceImpl</code> and is an
@@ -42,7 +38,7 @@ public class CommerceShippingFixedOptionRelServiceUtil {
 				long userId, long groupId, long commerceShippingMethodId,
 				long commerceShippingFixedOptionId,
 				long commerceInventoryWarehouseId, long commerceCountryId,
-				long commerceRegionId, String zip, double weightFrom,
+				long commerceRegionId, java.lang.String zip, double weightFrom,
 				double weightTo, java.math.BigDecimal fixedPrice,
 				java.math.BigDecimal rateUnitWeightPrice, double ratePercentage)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -63,7 +59,7 @@ public class CommerceShippingFixedOptionRelServiceUtil {
 				long commerceShippingMethodId,
 				long commerceShippingFixedOptionId,
 				long commerceInventoryWarehouseId, long commerceCountryId,
-				long commerceRegionId, String zip, double weightFrom,
+				long commerceRegionId, java.lang.String zip, double weightFrom,
 				double weightTo, java.math.BigDecimal fixedPrice,
 				java.math.BigDecimal rateUnitWeightPrice, double ratePercentage,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -121,7 +117,7 @@ public class CommerceShippingFixedOptionRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -129,7 +125,7 @@ public class CommerceShippingFixedOptionRelServiceUtil {
 		CommerceShippingFixedOptionRel updateCommerceShippingFixedOptionRel(
 				long commerceShippingFixedOptionRelId,
 				long commerceInventoryWarehouseId, long commerceCountryId,
-				long commerceRegionId, String zip, double weightFrom,
+				long commerceRegionId, java.lang.String zip, double weightFrom,
 				double weightTo, java.math.BigDecimal fixedPrice,
 				java.math.BigDecimal rateUnitWeightPrice, double ratePercentage)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -141,29 +137,10 @@ public class CommerceShippingFixedOptionRelServiceUtil {
 	}
 
 	public static CommerceShippingFixedOptionRelService getService() {
-		return _serviceTracker.getService();
+		return _commerceShippingFixedOptionRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceShippingFixedOptionRelService,
-		 CommerceShippingFixedOptionRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceShippingFixedOptionRelService.class);
-
-		ServiceTracker
-			<CommerceShippingFixedOptionRelService,
-			 CommerceShippingFixedOptionRelService> serviceTracker =
-				new ServiceTracker
-					<CommerceShippingFixedOptionRelService,
-					 CommerceShippingFixedOptionRelService>(
-						 bundle.getBundleContext(),
-						 CommerceShippingFixedOptionRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceShippingFixedOptionRelService
+		_commerceShippingFixedOptionRelService;
 
 }

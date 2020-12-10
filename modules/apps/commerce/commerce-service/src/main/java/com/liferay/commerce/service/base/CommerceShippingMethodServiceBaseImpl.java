@@ -16,6 +16,7 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceShippingMethod;
 import com.liferay.commerce.service.CommerceShippingMethodService;
+import com.liferay.commerce.service.CommerceShippingMethodServiceUtil;
 import com.liferay.commerce.service.persistence.CPDAvailabilityEstimatePersistence;
 import com.liferay.commerce.service.persistence.CPDefinitionInventoryPersistence;
 import com.liferay.commerce.service.persistence.CommerceAddressPersistence;
@@ -51,6 +52,8 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -71,7 +74,7 @@ public abstract class CommerceShippingMethodServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceShippingMethodService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceShippingMethodServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceShippingMethodService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceShippingMethodServiceUtil</code>.
 	 */
 
 	/**
@@ -1428,9 +1431,11 @@ public abstract class CommerceShippingMethodServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(commerceShippingMethodService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1473,6 +1478,23 @@ public abstract class CommerceShippingMethodServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		CommerceShippingMethodService commerceShippingMethodService) {
+
+		try {
+			Field field =
+				CommerceShippingMethodServiceUtil.class.getDeclaredField(
+					"_commerceShippingMethodService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceShippingMethodService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

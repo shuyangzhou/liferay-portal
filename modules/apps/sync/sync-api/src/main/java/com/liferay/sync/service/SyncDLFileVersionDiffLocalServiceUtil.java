@@ -14,10 +14,6 @@
 
 package com.liferay.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SyncDLFileVersionDiff. This utility wraps
  * <code>com.liferay.sync.service.impl.SyncDLFileVersionDiffLocalServiceImpl</code> and
@@ -274,7 +270,7 @@ public class SyncDLFileVersionDiffLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -353,29 +349,10 @@ public class SyncDLFileVersionDiffLocalServiceUtil {
 	}
 
 	public static SyncDLFileVersionDiffLocalService getService() {
-		return _serviceTracker.getService();
+		return _syncDLFileVersionDiffLocalService;
 	}
 
-	private static ServiceTracker
-		<SyncDLFileVersionDiffLocalService, SyncDLFileVersionDiffLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SyncDLFileVersionDiffLocalService.class);
-
-		ServiceTracker
-			<SyncDLFileVersionDiffLocalService,
-			 SyncDLFileVersionDiffLocalService> serviceTracker =
-				new ServiceTracker
-					<SyncDLFileVersionDiffLocalService,
-					 SyncDLFileVersionDiffLocalService>(
-						 bundle.getBundleContext(),
-						 SyncDLFileVersionDiffLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SyncDLFileVersionDiffLocalService
+		_syncDLFileVersionDiffLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.fragment.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for FragmentCollection. This utility wraps
  * <code>com.liferay.fragment.service.impl.FragmentCollectionServiceImpl</code> and is an
@@ -39,7 +35,8 @@ public class FragmentCollectionServiceUtil {
 	 */
 	public static com.liferay.fragment.model.FragmentCollection
 			addFragmentCollection(
-				long groupId, String name, String description,
+				long groupId, java.lang.String name,
+				java.lang.String description,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -49,8 +46,8 @@ public class FragmentCollectionServiceUtil {
 
 	public static com.liferay.fragment.model.FragmentCollection
 			addFragmentCollection(
-				long groupId, String fragmentCollectionKey, String name,
-				String description,
+				long groupId, java.lang.String fragmentCollectionKey,
+				java.lang.String name, java.lang.String description,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -120,8 +117,8 @@ public class FragmentCollectionServiceUtil {
 
 	public static java.util.List<com.liferay.fragment.model.FragmentCollection>
 		getFragmentCollections(
-			long groupId, String name, boolean includeSystem, int start,
-			int end,
+			long groupId, java.lang.String name, boolean includeSystem,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.fragment.model.FragmentCollection>
 					orderByComparator) {
@@ -132,7 +129,7 @@ public class FragmentCollectionServiceUtil {
 
 	public static java.util.List<com.liferay.fragment.model.FragmentCollection>
 		getFragmentCollections(
-			long groupId, String name, int start, int end,
+			long groupId, java.lang.String name, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.fragment.model.FragmentCollection>
 					orderByComparator) {
@@ -160,7 +157,7 @@ public class FragmentCollectionServiceUtil {
 
 	public static java.util.List<com.liferay.fragment.model.FragmentCollection>
 		getFragmentCollections(
-			long[] groupIds, String name, int start, int end,
+			long[] groupIds, java.lang.String name, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.fragment.model.FragmentCollection>
 					orderByComparator) {
@@ -179,12 +176,14 @@ public class FragmentCollectionServiceUtil {
 		return getService().getFragmentCollectionsCount(groupId, includeSystem);
 	}
 
-	public static int getFragmentCollectionsCount(long groupId, String name) {
+	public static int getFragmentCollectionsCount(
+		long groupId, java.lang.String name) {
+
 		return getService().getFragmentCollectionsCount(groupId, name);
 	}
 
 	public static int getFragmentCollectionsCount(
-		long groupId, String name, boolean includeSystem) {
+		long groupId, java.lang.String name, boolean includeSystem) {
 
 		return getService().getFragmentCollectionsCount(
 			groupId, name, includeSystem);
@@ -195,7 +194,7 @@ public class FragmentCollectionServiceUtil {
 	}
 
 	public static int getFragmentCollectionsCount(
-		long[] groupIds, String name) {
+		long[] groupIds, java.lang.String name) {
 
 		return getService().getFragmentCollectionsCount(groupIds, name);
 	}
@@ -205,11 +204,12 @@ public class FragmentCollectionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static String[] getTempFileNames(long groupId, String folderName)
+	public static java.lang.String[] getTempFileNames(
+			long groupId, java.lang.String folderName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getTempFileNames(groupId, folderName);
@@ -217,7 +217,8 @@ public class FragmentCollectionServiceUtil {
 
 	public static com.liferay.fragment.model.FragmentCollection
 			updateFragmentCollection(
-				long fragmentCollectionId, String name, String description)
+				long fragmentCollectionId, java.lang.String name,
+				java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateFragmentCollection(
@@ -225,26 +226,10 @@ public class FragmentCollectionServiceUtil {
 	}
 
 	public static FragmentCollectionService getService() {
-		return _serviceTracker.getService();
+		return _fragmentCollectionService;
 	}
 
-	private static ServiceTracker
-		<FragmentCollectionService, FragmentCollectionService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			FragmentCollectionService.class);
-
-		ServiceTracker<FragmentCollectionService, FragmentCollectionService>
-			serviceTracker =
-				new ServiceTracker
-					<FragmentCollectionService, FragmentCollectionService>(
-						bundle.getBundleContext(),
-						FragmentCollectionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile FragmentCollectionService
+		_fragmentCollectionService;
 
 }

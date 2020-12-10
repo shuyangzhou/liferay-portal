@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MBStatsUser. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBStatsUserLocalServiceImpl</code> and
@@ -317,7 +313,7 @@ public class MBStatsUserLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -356,8 +352,8 @@ public class MBStatsUserLocalServiceUtil {
 		return getService().getStatsUsersByUserId(userId);
 	}
 
-	public static String[] getUserRank(
-			long groupId, String languageId, long userId)
+	public static java.lang.String[] getUserRank(
+			long groupId, java.lang.String languageId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserRank(groupId, languageId, userId);
@@ -401,25 +397,9 @@ public class MBStatsUserLocalServiceUtil {
 	}
 
 	public static MBStatsUserLocalService getService() {
-		return _serviceTracker.getService();
+		return _mbStatsUserLocalService;
 	}
 
-	private static ServiceTracker
-		<MBStatsUserLocalService, MBStatsUserLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBStatsUserLocalService.class);
-
-		ServiceTracker<MBStatsUserLocalService, MBStatsUserLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<MBStatsUserLocalService, MBStatsUserLocalService>(
-						bundle.getBundleContext(),
-						MBStatsUserLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBStatsUserLocalService _mbStatsUserLocalService;
 
 }

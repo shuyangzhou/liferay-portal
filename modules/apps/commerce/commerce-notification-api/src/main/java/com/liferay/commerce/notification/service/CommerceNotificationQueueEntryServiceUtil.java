@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.notification.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceNotificationQueueEntry. This utility wraps
  * <code>com.liferay.commerce.notification.service.impl.CommerceNotificationQueueEntryServiceImpl</code> and is an
@@ -69,7 +65,7 @@ public class CommerceNotificationQueueEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -84,29 +80,10 @@ public class CommerceNotificationQueueEntryServiceUtil {
 	}
 
 	public static CommerceNotificationQueueEntryService getService() {
-		return _serviceTracker.getService();
+		return _commerceNotificationQueueEntryService;
 	}
 
-	private static ServiceTracker
-		<CommerceNotificationQueueEntryService,
-		 CommerceNotificationQueueEntryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceNotificationQueueEntryService.class);
-
-		ServiceTracker
-			<CommerceNotificationQueueEntryService,
-			 CommerceNotificationQueueEntryService> serviceTracker =
-				new ServiceTracker
-					<CommerceNotificationQueueEntryService,
-					 CommerceNotificationQueueEntryService>(
-						 bundle.getBundleContext(),
-						 CommerceNotificationQueueEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceNotificationQueueEntryService
+		_commerceNotificationQueueEntryService;
 
 }

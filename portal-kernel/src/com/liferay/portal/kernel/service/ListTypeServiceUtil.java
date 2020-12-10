@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for ListType. This utility wraps
  * <code>com.liferay.portal.service.impl.ListTypeServiceImpl</code> and is an
@@ -43,13 +41,13 @@ public class ListTypeServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ListType getListType(
-		String name, String type) {
+		java.lang.String name, java.lang.String type) {
 
 		return getService().getListType(name, type);
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.ListType>
-		getListTypes(String type) {
+		getListTypes(java.lang.String type) {
 
 		return getService().getListTypes(type);
 	}
@@ -59,31 +57,27 @@ public class ListTypeServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void validate(long listTypeId, long classNameId, String type)
+	public static void validate(
+			long listTypeId, long classNameId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().validate(listTypeId, classNameId, type);
 	}
 
-	public static void validate(long listTypeId, String type)
+	public static void validate(long listTypeId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().validate(listTypeId, type);
 	}
 
 	public static ListTypeService getService() {
-		if (_service == null) {
-			_service = (ListTypeService)PortalBeanLocatorUtil.locate(
-				ListTypeService.class.getName());
-		}
-
-		return _service;
+		return _listTypeService;
 	}
 
-	private static ListTypeService _service;
+	private static volatile ListTypeService _listTypeService;
 
 }

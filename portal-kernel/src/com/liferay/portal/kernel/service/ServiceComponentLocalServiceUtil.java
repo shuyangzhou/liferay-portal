@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for ServiceComponent. This utility wraps
  * <code>com.liferay.portal.service.impl.ServiceComponentLocalServiceImpl</code> and
@@ -124,7 +122,7 @@ public class ServiceComponentLocalServiceUtil {
 	public static void destroyServiceComponent(
 		com.liferay.portal.kernel.service.configuration.
 			ServiceComponentConfiguration serviceComponentConfiguration,
-		ClassLoader classLoader) {
+		java.lang.ClassLoader classLoader) {
 
 		getService().destroyServiceComponent(
 			serviceComponentConfiguration, classLoader);
@@ -252,7 +250,7 @@ public class ServiceComponentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -311,8 +309,9 @@ public class ServiceComponentLocalServiceUtil {
 			initServiceComponent(
 				com.liferay.portal.kernel.service.configuration.
 					ServiceComponentConfiguration serviceComponentConfiguration,
-				ClassLoader classLoader, String buildNamespace,
-				long buildNumber, long buildDate)
+				java.lang.ClassLoader classLoader,
+				java.lang.String buildNamespace, long buildNumber,
+				long buildDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().initServiceComponent(
@@ -338,11 +337,13 @@ public class ServiceComponentLocalServiceUtil {
 	}
 
 	public static void upgradeDB(
-			ClassLoader classLoader, String buildNamespace, long buildNumber,
+			java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
+			long buildNumber,
 			com.liferay.portal.kernel.model.ServiceComponent
 				previousServiceComponent,
-			String tablesSQL, String sequencesSQL, String indexesSQL)
-		throws Exception {
+			java.lang.String tablesSQL, java.lang.String sequencesSQL,
+			java.lang.String indexesSQL)
+		throws java.lang.Exception {
 
 		getService().upgradeDB(
 			classLoader, buildNamespace, buildNumber, previousServiceComponent,
@@ -354,15 +355,10 @@ public class ServiceComponentLocalServiceUtil {
 	}
 
 	public static ServiceComponentLocalService getService() {
-		if (_service == null) {
-			_service =
-				(ServiceComponentLocalService)PortalBeanLocatorUtil.locate(
-					ServiceComponentLocalService.class.getName());
-		}
-
-		return _service;
+		return _serviceComponentLocalService;
 	}
 
-	private static ServiceComponentLocalService _service;
+	private static volatile ServiceComponentLocalService
+		_serviceComponentLocalService;
 
 }

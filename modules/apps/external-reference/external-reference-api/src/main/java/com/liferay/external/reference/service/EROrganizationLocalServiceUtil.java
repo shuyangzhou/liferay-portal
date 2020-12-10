@@ -14,10 +14,6 @@
 
 package com.liferay.external.reference.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for EROrganization. This utility wraps
  * <code>com.liferay.external.reference.service.impl.EROrganizationLocalServiceImpl</code> and
@@ -39,10 +35,11 @@ public class EROrganizationLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Organization
 			addOrUpdateOrganization(
-				String externalReferenceCode, long userId,
-				long parentOrganizationId, String name, String type,
-				long regionId, long countryId, long statusId, String comments,
-				boolean site, boolean hasLogo, byte[] logoBytes,
+				java.lang.String externalReferenceCode, long userId,
+				long parentOrganizationId, java.lang.String name,
+				java.lang.String type, long regionId, long countryId,
+				long statusId, java.lang.String comments, boolean site,
+				boolean hasLogo, byte[] logoBytes,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -57,32 +54,15 @@ public class EROrganizationLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static EROrganizationLocalService getService() {
-		return _serviceTracker.getService();
+		return _erOrganizationLocalService;
 	}
 
-	private static ServiceTracker
-		<EROrganizationLocalService, EROrganizationLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			EROrganizationLocalService.class);
-
-		ServiceTracker<EROrganizationLocalService, EROrganizationLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<EROrganizationLocalService, EROrganizationLocalService>(
-						bundle.getBundleContext(),
-						EROrganizationLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EROrganizationLocalService
+		_erOrganizationLocalService;
 
 }

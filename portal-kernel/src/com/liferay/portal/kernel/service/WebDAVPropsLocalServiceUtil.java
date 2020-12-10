@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for WebDAVProps. This utility wraps
  * <code>com.liferay.portal.service.impl.WebDAVPropsLocalServiceImpl</code> and
@@ -103,7 +101,9 @@ public class WebDAVPropsLocalServiceUtil {
 		return getService().deleteWebDAVProps(webDavPropsId);
 	}
 
-	public static void deleteWebDAVProps(String className, long classPK) {
+	public static void deleteWebDAVProps(
+		java.lang.String className, long classPK) {
+
 		getService().deleteWebDAVProps(className, classPK);
 	}
 
@@ -238,7 +238,7 @@ public class WebDAVPropsLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -267,7 +267,7 @@ public class WebDAVPropsLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.WebDAVProps getWebDAVProps(
-		long companyId, String className, long classPK) {
+		long companyId, java.lang.String className, long classPK) {
 
 		return getService().getWebDAVProps(companyId, className, classPK);
 	}
@@ -322,14 +322,9 @@ public class WebDAVPropsLocalServiceUtil {
 	}
 
 	public static WebDAVPropsLocalService getService() {
-		if (_service == null) {
-			_service = (WebDAVPropsLocalService)PortalBeanLocatorUtil.locate(
-				WebDAVPropsLocalService.class.getName());
-		}
-
-		return _service;
+		return _webDAVPropsLocalService;
 	}
 
-	private static WebDAVPropsLocalService _service;
+	private static volatile WebDAVPropsLocalService _webDAVPropsLocalService;
 
 }

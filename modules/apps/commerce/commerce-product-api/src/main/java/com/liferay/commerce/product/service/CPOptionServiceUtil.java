@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPOption. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPOptionServiceImpl</code> and is an
@@ -38,10 +34,10 @@ public class CPOptionServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.commerce.product.service.impl.CPOptionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.commerce.product.model.CPOption addCPOption(
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String ddmFormFieldTypeName, boolean facetable, boolean required,
-			boolean skuContributor, String key,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String ddmFormFieldTypeName, boolean facetable,
+			boolean required, boolean skuContributor, java.lang.String key,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -58,7 +54,7 @@ public class CPOptionServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPOption
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -73,7 +69,7 @@ public class CPOptionServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption fetchCPOption(
-			long companyId, String key)
+			long companyId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCPOption(companyId, key);
@@ -103,13 +99,13 @@ public class CPOptionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPOption> searchCPOptions(
-				long companyId, String keywords, int start, int end,
+				long companyId, java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -118,10 +114,11 @@ public class CPOptionServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption updateCPOption(
-			long cpOptionId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String ddmFormFieldTypeName, boolean facetable, boolean required,
-			boolean skuContributor, String key,
+			long cpOptionId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String ddmFormFieldTypeName, boolean facetable,
+			boolean required, boolean skuContributor, java.lang.String key,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -131,10 +128,11 @@ public class CPOptionServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOption upsertCPOption(
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String ddmFormFieldTypeName, boolean facetable, boolean required,
-			boolean skuContributor, String key, String externalReferenceCode,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String ddmFormFieldTypeName, boolean facetable,
+			boolean required, boolean skuContributor, java.lang.String key,
+			java.lang.String externalReferenceCode,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -144,22 +142,9 @@ public class CPOptionServiceUtil {
 	}
 
 	public static CPOptionService getService() {
-		return _serviceTracker.getService();
+		return _cpOptionService;
 	}
 
-	private static ServiceTracker<CPOptionService, CPOptionService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CPOptionService.class);
-
-		ServiceTracker<CPOptionService, CPOptionService> serviceTracker =
-			new ServiceTracker<CPOptionService, CPOptionService>(
-				bundle.getBundleContext(), CPOptionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPOptionService _cpOptionService;
 
 }

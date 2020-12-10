@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for ClassName. This utility wraps
  * <code>com.liferay.portal.service.impl.ClassNameServiceImpl</code> and is an
@@ -42,7 +40,7 @@ public class ClassNameServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ClassName fetchClassName(
-		String value) {
+		java.lang.String value) {
 
 		return getService().fetchClassName(value);
 	}
@@ -52,19 +50,14 @@ public class ClassNameServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ClassNameService getService() {
-		if (_service == null) {
-			_service = (ClassNameService)PortalBeanLocatorUtil.locate(
-				ClassNameService.class.getName());
-		}
-
-		return _service;
+		return _classNameService;
 	}
 
-	private static ClassNameService _service;
+	private static volatile ClassNameService _classNameService;
 
 }

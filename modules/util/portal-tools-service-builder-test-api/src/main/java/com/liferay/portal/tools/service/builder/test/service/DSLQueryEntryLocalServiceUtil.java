@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DSLQueryEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.DSLQueryEntryLocalServiceImpl</code> and
@@ -287,7 +283,7 @@ public class DSLQueryEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -321,26 +317,10 @@ public class DSLQueryEntryLocalServiceUtil {
 	}
 
 	public static DSLQueryEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _dslQueryEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<DSLQueryEntryLocalService, DSLQueryEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DSLQueryEntryLocalService.class);
-
-		ServiceTracker<DSLQueryEntryLocalService, DSLQueryEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DSLQueryEntryLocalService, DSLQueryEntryLocalService>(
-						bundle.getBundleContext(),
-						DSLQueryEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DSLQueryEntryLocalService
+		_dslQueryEntryLocalService;
 
 }

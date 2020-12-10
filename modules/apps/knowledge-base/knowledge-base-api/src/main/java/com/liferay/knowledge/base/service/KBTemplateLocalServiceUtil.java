@@ -14,10 +14,6 @@
 
 package com.liferay.knowledge.base.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KBTemplate. This utility wraps
  * <code>com.liferay.knowledge.base.service.impl.KBTemplateLocalServiceImpl</code> and
@@ -55,7 +51,7 @@ public class KBTemplateLocalServiceUtil {
 	}
 
 	public static com.liferay.knowledge.base.model.KBTemplate addKBTemplate(
-			long userId, String title, String content,
+			long userId, java.lang.String title, java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -249,7 +245,7 @@ public class KBTemplateLocalServiceUtil {
 	 * @return the matching kb template, or <code>null</code> if a matching kb template could not be found
 	 */
 	public static com.liferay.knowledge.base.model.KBTemplate
-		fetchKBTemplateByUuidAndGroupId(String uuid, long groupId) {
+		fetchKBTemplateByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchKBTemplateByUuidAndGroupId(uuid, groupId);
 	}
@@ -313,7 +309,7 @@ public class KBTemplateLocalServiceUtil {
 	 * @throws PortalException if a matching kb template could not be found
 	 */
 	public static com.liferay.knowledge.base.model.KBTemplate
-			getKBTemplateByUuidAndGroupId(String uuid, long groupId)
+			getKBTemplateByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKBTemplateByUuidAndGroupId(uuid, groupId);
@@ -344,7 +340,8 @@ public class KBTemplateLocalServiceUtil {
 	 * @return the matching kb templates, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.knowledge.base.model.KBTemplate>
-		getKBTemplatesByUuidAndCompanyId(String uuid, long companyId) {
+		getKBTemplatesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getKBTemplatesByUuidAndCompanyId(uuid, companyId);
 	}
@@ -361,7 +358,7 @@ public class KBTemplateLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.knowledge.base.model.KBTemplate>
 		getKBTemplatesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.knowledge.base.model.KBTemplate>
 					orderByComparator) {
@@ -384,7 +381,7 @@ public class KBTemplateLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -400,7 +397,7 @@ public class KBTemplateLocalServiceUtil {
 
 	public static java.util.List<com.liferay.knowledge.base.model.KBTemplate>
 		search(
-			long groupId, String title, String content,
+			long groupId, java.lang.String title, java.lang.String content,
 			java.util.Date startDate, java.util.Date endDate,
 			boolean andOperator, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
@@ -429,7 +426,7 @@ public class KBTemplateLocalServiceUtil {
 	}
 
 	public static com.liferay.knowledge.base.model.KBTemplate updateKBTemplate(
-			long kbTemplateId, String title, String content,
+			long kbTemplateId, java.lang.String title, java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -439,7 +436,8 @@ public class KBTemplateLocalServiceUtil {
 
 	public static void updateKBTemplateResources(
 			com.liferay.knowledge.base.model.KBTemplate kbTemplate,
-			String[] groupPermissions, String[] guestPermissions)
+			java.lang.String[] groupPermissions,
+			java.lang.String[] guestPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateKBTemplateResources(
@@ -447,25 +445,9 @@ public class KBTemplateLocalServiceUtil {
 	}
 
 	public static KBTemplateLocalService getService() {
-		return _serviceTracker.getService();
+		return _kbTemplateLocalService;
 	}
 
-	private static ServiceTracker
-		<KBTemplateLocalService, KBTemplateLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KBTemplateLocalService.class);
-
-		ServiceTracker<KBTemplateLocalService, KBTemplateLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KBTemplateLocalService, KBTemplateLocalService>(
-						bundle.getBundleContext(), KBTemplateLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KBTemplateLocalService _kbTemplateLocalService;
 
 }

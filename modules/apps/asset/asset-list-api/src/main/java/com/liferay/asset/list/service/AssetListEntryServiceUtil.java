@@ -14,10 +14,6 @@
 
 package com.liferay.asset.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for AssetListEntry. This utility wraps
  * <code>com.liferay.asset.list.service.impl.AssetListEntryServiceImpl</code> and is an
@@ -56,7 +52,7 @@ public class AssetListEntryServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry addAssetListEntry(
-			long groupId, String title, int type,
+			long groupId, java.lang.String title, int type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,7 +62,8 @@ public class AssetListEntryServiceUtil {
 
 	public static com.liferay.asset.list.model.AssetListEntry
 			addDynamicAssetListEntry(
-				long userId, long groupId, String title, String typeSettings,
+				long userId, long groupId, java.lang.String title,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -76,7 +73,8 @@ public class AssetListEntryServiceUtil {
 
 	public static com.liferay.asset.list.model.AssetListEntry
 			addManualAssetListEntry(
-				long userId, long groupId, String title, long[] assetEntryIds,
+				long userId, long groupId, java.lang.String title,
+				long[] assetEntryIds,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -132,7 +130,7 @@ public class AssetListEntryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntries(
-			long groupId, String title, int start, int end,
+			long groupId, java.lang.String title, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -154,7 +152,7 @@ public class AssetListEntryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntries(
-			long[] groupIds, String title, int start, int end,
+			long[] groupIds, java.lang.String title, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -165,8 +163,8 @@ public class AssetListEntryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntries(
-			long[] groupIds, String assetEntrySubtype, String assetEntryType,
-			int start, int end,
+			long[] groupIds, java.lang.String assetEntrySubtype,
+			java.lang.String assetEntryType, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -178,8 +176,9 @@ public class AssetListEntryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntries(
-			long[] groupIds, String title, String assetEntrySubtype,
-			String assetEntryType, int start, int end,
+			long[] groupIds, java.lang.String title,
+			java.lang.String assetEntrySubtype, java.lang.String assetEntryType,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -191,8 +190,8 @@ public class AssetListEntryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntries(
-			long[] groupIds, String title, String[] assetEntryTypes, int start,
-			int end,
+			long[] groupIds, java.lang.String title,
+			java.lang.String[] assetEntryTypes, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -203,7 +202,8 @@ public class AssetListEntryServiceUtil {
 
 	public static java.util.List<com.liferay.asset.list.model.AssetListEntry>
 		getAssetListEntries(
-			long[] groupIds, String[] assetEntryTypes, int start, int end,
+			long[] groupIds, java.lang.String[] assetEntryTypes, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.asset.list.model.AssetListEntry>
 					orderByComparator) {
@@ -216,7 +216,9 @@ public class AssetListEntryServiceUtil {
 		return getService().getAssetListEntriesCount(groupId);
 	}
 
-	public static int getAssetListEntriesCount(long groupId, String title) {
+	public static int getAssetListEntriesCount(
+		long groupId, java.lang.String title) {
+
 		return getService().getAssetListEntriesCount(groupId, title);
 	}
 
@@ -224,34 +226,38 @@ public class AssetListEntryServiceUtil {
 		return getService().getAssetListEntriesCount(groupIds);
 	}
 
-	public static int getAssetListEntriesCount(long[] groupIds, String title) {
+	public static int getAssetListEntriesCount(
+		long[] groupIds, java.lang.String title) {
+
 		return getService().getAssetListEntriesCount(groupIds, title);
 	}
 
 	public static int getAssetListEntriesCount(
-		long[] groupIds, String assetEntrySubtype, String assetEntryType) {
+		long[] groupIds, java.lang.String assetEntrySubtype,
+		java.lang.String assetEntryType) {
 
 		return getService().getAssetListEntriesCount(
 			groupIds, assetEntrySubtype, assetEntryType);
 	}
 
 	public static int getAssetListEntriesCount(
-		long[] groupIds, String title, String assetEntrySubtype,
-		String assetEntryType) {
+		long[] groupIds, java.lang.String title,
+		java.lang.String assetEntrySubtype, java.lang.String assetEntryType) {
 
 		return getService().getAssetListEntriesCount(
 			groupIds, title, assetEntrySubtype, assetEntryType);
 	}
 
 	public static int getAssetListEntriesCount(
-		long[] groupIds, String title, String[] assetEntryTypes) {
+		long[] groupIds, java.lang.String title,
+		java.lang.String[] assetEntryTypes) {
 
 		return getService().getAssetListEntriesCount(
 			groupIds, title, assetEntryTypes);
 	}
 
 	public static int getAssetListEntriesCount(
-		long[] groupIds, String[] assetEntryTypes) {
+		long[] groupIds, java.lang.String[] assetEntryTypes) {
 
 		return getService().getAssetListEntriesCount(groupIds, assetEntryTypes);
 	}
@@ -264,14 +270,15 @@ public class AssetListEntryServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry getAssetListEntry(
-			long groupId, String assetListEntryKey)
+			long groupId, java.lang.String assetListEntryKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetListEntry(groupId, assetListEntryKey);
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry
-			getAssetListEntryByUuidAndGroupId(String uuid, long groupId)
+			getAssetListEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetListEntryByUuidAndGroupId(uuid, groupId);
@@ -282,7 +289,7 @@ public class AssetListEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -296,7 +303,8 @@ public class AssetListEntryServiceUtil {
 	}
 
 	public static void updateAssetListEntry(
-			long assetListEntryId, long segmentsEntryId, String typeSettings,
+			long assetListEntryId, long segmentsEntryId,
+			java.lang.String typeSettings,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -305,14 +313,15 @@ public class AssetListEntryServiceUtil {
 	}
 
 	public static com.liferay.asset.list.model.AssetListEntry
-			updateAssetListEntry(long assetListEntryId, String title)
+			updateAssetListEntry(long assetListEntryId, java.lang.String title)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAssetListEntry(assetListEntryId, title);
 	}
 
 	public static void updateAssetListEntryTypeSettings(
-			long assetListEntryId, long segmentsEntryId, String typeSettings)
+			long assetListEntryId, long segmentsEntryId,
+			java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateAssetListEntryTypeSettings(
@@ -320,25 +329,9 @@ public class AssetListEntryServiceUtil {
 	}
 
 	public static AssetListEntryService getService() {
-		return _serviceTracker.getService();
+		return _assetListEntryService;
 	}
 
-	private static ServiceTracker<AssetListEntryService, AssetListEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AssetListEntryService.class);
-
-		ServiceTracker<AssetListEntryService, AssetListEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<AssetListEntryService, AssetListEntryService>(
-						bundle.getBundleContext(), AssetListEntryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetListEntryService _assetListEntryService;
 
 }

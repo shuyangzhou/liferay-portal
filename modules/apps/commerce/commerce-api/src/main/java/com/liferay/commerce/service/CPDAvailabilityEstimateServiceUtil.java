@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDAvailabilityEstimate. This utility wraps
  * <code>com.liferay.commerce.service.impl.CPDAvailabilityEstimateServiceImpl</code> and is an
@@ -50,7 +46,7 @@ public class CPDAvailabilityEstimateServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -67,29 +63,10 @@ public class CPDAvailabilityEstimateServiceUtil {
 	}
 
 	public static CPDAvailabilityEstimateService getService() {
-		return _serviceTracker.getService();
+		return _cpdAvailabilityEstimateService;
 	}
 
-	private static ServiceTracker
-		<CPDAvailabilityEstimateService, CPDAvailabilityEstimateService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDAvailabilityEstimateService.class);
-
-		ServiceTracker
-			<CPDAvailabilityEstimateService, CPDAvailabilityEstimateService>
-				serviceTracker =
-					new ServiceTracker
-						<CPDAvailabilityEstimateService,
-						 CPDAvailabilityEstimateService>(
-							 bundle.getBundleContext(),
-							 CPDAvailabilityEstimateService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDAvailabilityEstimateService
+		_cpdAvailabilityEstimateService;
 
 }

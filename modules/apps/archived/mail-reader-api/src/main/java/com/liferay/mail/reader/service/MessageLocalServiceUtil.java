@@ -14,10 +14,6 @@
 
 package com.liferay.mail.reader.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for Message. This utility wraps
  * <code>com.liferay.mail.reader.service.impl.MessageLocalServiceImpl</code> and
@@ -38,9 +34,11 @@ public class MessageLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.mail.reader.service.impl.MessageLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.mail.reader.model.Message addMessage(
-			long userId, long folderId, String sender, String to, String cc,
-			String bcc, java.util.Date sentDate, String subject, String body,
-			String flags, long remoteMessageId, String contentType)
+			long userId, long folderId, java.lang.String sender,
+			java.lang.String to, java.lang.String cc, java.lang.String bcc,
+			java.util.Date sentDate, java.lang.String subject,
+			java.lang.String body, java.lang.String flags, long remoteMessageId,
+			java.lang.String contentType)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addMessage(
@@ -329,7 +327,7 @@ public class MessageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -352,8 +350,9 @@ public class MessageLocalServiceUtil {
 
 	public static int populateMessages(
 		java.util.List<com.liferay.mail.reader.model.Message> messages,
-		long folderId, String keywords, int pageNumber, int messagesPerPage,
-		String orderByField, String orderByType) {
+		long folderId, java.lang.String keywords, int pageNumber,
+		int messagesPerPage, java.lang.String orderByField,
+		java.lang.String orderByType) {
 
 		return getService().populateMessages(
 			messages, folderId, keywords, pageNumber, messagesPerPage,
@@ -361,7 +360,7 @@ public class MessageLocalServiceUtil {
 	}
 
 	public static com.liferay.mail.reader.model.Message updateContent(
-			long messageId, String body, String flags)
+			long messageId, java.lang.String body, java.lang.String flags)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateContent(messageId, body, flags);
@@ -375,9 +374,10 @@ public class MessageLocalServiceUtil {
 	}
 
 	public static com.liferay.mail.reader.model.Message updateMessage(
-			long messageId, long folderId, String sender, String to, String cc,
-			String bcc, java.util.Date sentDate, String subject, String body,
-			String flags, long remoteMessageId)
+			long messageId, long folderId, java.lang.String sender,
+			java.lang.String to, java.lang.String cc, java.lang.String bcc,
+			java.util.Date sentDate, java.lang.String subject,
+			java.lang.String body, java.lang.String flags, long remoteMessageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateMessage(
@@ -402,23 +402,9 @@ public class MessageLocalServiceUtil {
 	}
 
 	public static MessageLocalService getService() {
-		return _serviceTracker.getService();
+		return _messageLocalService;
 	}
 
-	private static ServiceTracker<MessageLocalService, MessageLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MessageLocalService.class);
-
-		ServiceTracker<MessageLocalService, MessageLocalService>
-			serviceTracker =
-				new ServiceTracker<MessageLocalService, MessageLocalService>(
-					bundle.getBundleContext(), MessageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MessageLocalService _messageLocalService;
 
 }

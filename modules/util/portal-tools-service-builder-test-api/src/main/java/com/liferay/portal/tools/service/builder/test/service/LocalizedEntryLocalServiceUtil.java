@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LocalizedEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.LocalizedEntryLocalServiceImpl</code> and
@@ -229,7 +225,7 @@ public class LocalizedEntryLocalServiceUtil {
 
 	public static com.liferay.portal.tools.service.builder.test.model.
 		LocalizedEntryLocalization fetchLocalizedEntryLocalization(
-			long localizedEntryId, String languageId) {
+			long localizedEntryId, java.lang.String languageId) {
 
 		return getService().fetchLocalizedEntryLocalization(
 			localizedEntryId, languageId);
@@ -292,7 +288,7 @@ public class LocalizedEntryLocalServiceUtil {
 
 	public static com.liferay.portal.tools.service.builder.test.model.
 		LocalizedEntryLocalization getLocalizedEntryLocalization(
-				long localizedEntryId, String languageId)
+				long localizedEntryId, java.lang.String languageId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLocalizedEntryLocalization(
@@ -312,7 +308,7 @@ public class LocalizedEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -349,7 +345,8 @@ public class LocalizedEntryLocalServiceUtil {
 		LocalizedEntryLocalization updateLocalizedEntryLocalization(
 				com.liferay.portal.tools.service.builder.test.model.
 					LocalizedEntry localizedEntry,
-				String languageId, String title, String content)
+				java.lang.String languageId, java.lang.String title,
+				java.lang.String content)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLocalizedEntryLocalization(
@@ -361,8 +358,9 @@ public class LocalizedEntryLocalServiceUtil {
 			LocalizedEntryLocalization> updateLocalizedEntryLocalizations(
 					com.liferay.portal.tools.service.builder.test.model.
 						LocalizedEntry localizedEntry,
-					java.util.Map<String, String> titleMap,
-					java.util.Map<String, String> contentMap)
+					java.util.Map<java.lang.String, java.lang.String> titleMap,
+					java.util.Map<java.lang.String, java.lang.String>
+						contentMap)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLocalizedEntryLocalizations(
@@ -370,27 +368,10 @@ public class LocalizedEntryLocalServiceUtil {
 	}
 
 	public static LocalizedEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _localizedEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<LocalizedEntryLocalService, LocalizedEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LocalizedEntryLocalService.class);
-
-		ServiceTracker<LocalizedEntryLocalService, LocalizedEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LocalizedEntryLocalService, LocalizedEntryLocalService>(
-						bundle.getBundleContext(),
-						LocalizedEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LocalizedEntryLocalService
+		_localizedEntryLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceOrderPayment. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceOrderPaymentLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class CommerceOrderPaymentLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderPayment
 			addCommerceOrderPayment(
-				long commerceOrderId, int status, String result)
+				long commerceOrderId, int status, java.lang.String result)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceOrderPayment(
@@ -67,7 +63,7 @@ public class CommerceOrderPaymentLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderPayment
 			addCommerceOrderPayment(
-				long commerceOrderId, int status, String content,
+				long commerceOrderId, int status, java.lang.String content,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -327,7 +323,7 @@ public class CommerceOrderPaymentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -360,29 +356,10 @@ public class CommerceOrderPaymentLocalServiceUtil {
 	}
 
 	public static CommerceOrderPaymentLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceOrderPaymentLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceOrderPaymentLocalService, CommerceOrderPaymentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceOrderPaymentLocalService.class);
-
-		ServiceTracker
-			<CommerceOrderPaymentLocalService, CommerceOrderPaymentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceOrderPaymentLocalService,
-						 CommerceOrderPaymentLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceOrderPaymentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceOrderPaymentLocalService
+		_commerceOrderPaymentLocalService;
 
 }

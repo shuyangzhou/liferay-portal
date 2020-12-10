@@ -16,6 +16,7 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.service.CommerceOrderService;
+import com.liferay.commerce.service.CommerceOrderServiceUtil;
 import com.liferay.commerce.service.persistence.CPDAvailabilityEstimatePersistence;
 import com.liferay.commerce.service.persistence.CPDefinitionInventoryPersistence;
 import com.liferay.commerce.service.persistence.CommerceAddressPersistence;
@@ -54,6 +55,8 @@ import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersist
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -74,7 +77,7 @@ public abstract class CommerceOrderServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceOrderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceOrderServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceOrderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceOrderServiceUtil</code>.
 	 */
 
 	/**
@@ -1567,9 +1570,11 @@ public abstract class CommerceOrderServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(commerceOrderService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1611,6 +1616,22 @@ public abstract class CommerceOrderServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		CommerceOrderService commerceOrderService) {
+
+		try {
+			Field field = CommerceOrderServiceUtil.class.getDeclaredField(
+				"_commerceOrderService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceOrderService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

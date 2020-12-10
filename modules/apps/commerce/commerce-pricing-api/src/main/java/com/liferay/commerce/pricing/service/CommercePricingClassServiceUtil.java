@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.pricing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommercePricingClass. This utility wraps
  * <code>com.liferay.commerce.pricing.service.impl.CommercePricingClassServiceImpl</code> and is an
@@ -39,8 +35,10 @@ public class CommercePricingClassServiceUtil {
 	 */
 	public static com.liferay.commerce.pricing.model.CommercePricingClass
 			addCommercePricingClass(
-				long userId, java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				long userId,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -50,9 +48,11 @@ public class CommercePricingClassServiceUtil {
 
 	public static com.liferay.commerce.pricing.model.CommercePricingClass
 			addCommercePricingClass(
-				long userId, java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String externalReferenceCode,
+				long userId,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -70,7 +70,7 @@ public class CommercePricingClassServiceUtil {
 
 	public static com.liferay.commerce.pricing.model.CommercePricingClass
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -92,7 +92,7 @@ public class CommercePricingClassServiceUtil {
 	}
 
 	public static int getCommercePricingClassCountByCPDefinitionId(
-			long cpDefinitionId, String title)
+			long cpDefinitionId, java.lang.String title)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getCommercePricingClassCountByCPDefinitionId(
@@ -119,7 +119,7 @@ public class CommercePricingClassServiceUtil {
 	}
 
 	public static int getCommercePricingClassesCount(
-			long cpDefinitionId, String title)
+			long cpDefinitionId, java.lang.String title)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getCommercePricingClassesCount(
@@ -131,15 +131,15 @@ public class CommercePricingClassServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.pricing.model.CommercePricingClass>
 				searchCommercePricingClasses(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommercePricingClasses(
@@ -149,7 +149,8 @@ public class CommercePricingClassServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePricingClass>
 				searchCommercePricingClassesByCPDefinitionId(
-					long cpDefinitionId, String title, int start, int end)
+					long cpDefinitionId, java.lang.String title, int start,
+					int end)
 			throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().searchCommercePricingClassesByCPDefinitionId(
@@ -159,8 +160,9 @@ public class CommercePricingClassServiceUtil {
 	public static com.liferay.commerce.pricing.model.CommercePricingClass
 			updateCommercePricingClass(
 				long commercePricingClassId, long userId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -171,7 +173,8 @@ public class CommercePricingClassServiceUtil {
 
 	public static com.liferay.commerce.pricing.model.CommercePricingClass
 			updateCommercePricingClassExternalReferenceCode(
-				long commercePricingClassId, String externalReferenceCode)
+				long commercePricingClassId,
+				java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommercePricingClassExternalReferenceCode(
@@ -181,9 +184,10 @@ public class CommercePricingClassServiceUtil {
 	public static com.liferay.commerce.pricing.model.CommercePricingClass
 			upsertCommercePricingClass(
 				long commercePricingClassId, long userId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -193,27 +197,10 @@ public class CommercePricingClassServiceUtil {
 	}
 
 	public static CommercePricingClassService getService() {
-		return _serviceTracker.getService();
+		return _commercePricingClassService;
 	}
 
-	private static ServiceTracker
-		<CommercePricingClassService, CommercePricingClassService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePricingClassService.class);
-
-		ServiceTracker<CommercePricingClassService, CommercePricingClassService>
-			serviceTracker =
-				new ServiceTracker
-					<CommercePricingClassService, CommercePricingClassService>(
-						bundle.getBundleContext(),
-						CommercePricingClassService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePricingClassService
+		_commercePricingClassService;
 
 }

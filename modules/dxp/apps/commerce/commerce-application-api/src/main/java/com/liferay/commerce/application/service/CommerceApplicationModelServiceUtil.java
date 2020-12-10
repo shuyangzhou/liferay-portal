@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.application.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceApplicationModel. This utility wraps
  * <code>com.liferay.commerce.application.service.impl.CommerceApplicationModelServiceImpl</code> and is an
@@ -40,8 +36,8 @@ public class CommerceApplicationModelServiceUtil {
 	public static
 		com.liferay.commerce.application.model.CommerceApplicationModel
 				addCommerceApplicationModel(
-					long userId, long commerceApplicationBrandId, String name,
-					String year)
+					long userId, long commerceApplicationBrandId,
+					java.lang.String name, java.lang.String year)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceApplicationModel(
@@ -101,14 +97,15 @@ public class CommerceApplicationModelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static
 		com.liferay.commerce.application.model.CommerceApplicationModel
 				updateCommerceApplicationModel(
-					long commerceApplicationModelId, String name, String year)
+					long commerceApplicationModelId, java.lang.String name,
+					java.lang.String year)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceApplicationModel(
@@ -116,29 +113,10 @@ public class CommerceApplicationModelServiceUtil {
 	}
 
 	public static CommerceApplicationModelService getService() {
-		return _serviceTracker.getService();
+		return _commerceApplicationModelService;
 	}
 
-	private static ServiceTracker
-		<CommerceApplicationModelService, CommerceApplicationModelService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceApplicationModelService.class);
-
-		ServiceTracker
-			<CommerceApplicationModelService, CommerceApplicationModelService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceApplicationModelService,
-						 CommerceApplicationModelService>(
-							 bundle.getBundleContext(),
-							 CommerceApplicationModelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceApplicationModelService
+		_commerceApplicationModelService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMStructureLayout. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMStructureLayoutLocalServiceImpl</code> and
@@ -77,7 +73,7 @@ public class DDMStructureLayoutLocalServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
 			addStructureLayout(
 				long userId, long groupId, long classNameId,
-				String structureLayoutKey, long structureVersionId,
+				java.lang.String structureLayoutKey, long structureVersionId,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -91,10 +87,10 @@ public class DDMStructureLayoutLocalServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
 			addStructureLayout(
 				long userId, long groupId, long classNameId,
-				String structureLayoutKey, long structureVersionId,
-				java.util.Map<java.util.Locale, String> name,
-				java.util.Map<java.util.Locale, String> description,
-				String definition,
+				java.lang.String structureLayoutKey, long structureVersionId,
+				java.util.Map<java.util.Locale, java.lang.String> name,
+				java.util.Map<java.util.Locale, java.lang.String> description,
+				java.lang.String definition,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -300,7 +296,8 @@ public class DDMStructureLayoutLocalServiceUtil {
 	 * @return the matching ddm structure layout, or <code>null</code> if a matching ddm structure layout could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
-		fetchDDMStructureLayoutByUuidAndGroupId(String uuid, long groupId) {
+		fetchDDMStructureLayoutByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchDDMStructureLayoutByUuidAndGroupId(
 			uuid, groupId);
@@ -314,7 +311,8 @@ public class DDMStructureLayoutLocalServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
 		fetchStructureLayout(
-			long groupId, long classNameId, String structureLayoutKey) {
+			long groupId, long classNameId,
+			java.lang.String structureLayoutKey) {
 
 		return getService().fetchStructureLayout(
 			groupId, classNameId, structureLayoutKey);
@@ -349,7 +347,8 @@ public class DDMStructureLayoutLocalServiceUtil {
 	 * @throws PortalException if a matching ddm structure layout could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
-			getDDMStructureLayoutByUuidAndGroupId(String uuid, long groupId)
+			getDDMStructureLayoutByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDDMStructureLayoutByUuidAndGroupId(
@@ -384,7 +383,7 @@ public class DDMStructureLayoutLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
 			getDDMStructureLayoutsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getDDMStructureLayoutsByUuidAndCompanyId(
 			uuid, companyId);
@@ -403,7 +402,7 @@ public class DDMStructureLayoutLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
 			getDDMStructureLayoutsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
 						orderByComparator) {
@@ -441,7 +440,7 @@ public class DDMStructureLayoutLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -464,7 +463,8 @@ public class DDMStructureLayoutLocalServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
 			getStructureLayout(
-				long groupId, long classNameId, String structureLayoutKey)
+				long groupId, long classNameId,
+				java.lang.String structureLayoutKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getStructureLayout(
@@ -548,7 +548,7 @@ public class DDMStructureLayoutLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructureLayout> search(
 				long companyId, long[] groupIds, long classNameId,
-				String keywords, int start, int end,
+				java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
 						orderByComparator)
@@ -560,7 +560,8 @@ public class DDMStructureLayoutLocalServiceUtil {
 	}
 
 	public static int searchCount(
-			long companyId, long[] groupIds, long classNameId, String keywords)
+			long companyId, long[] groupIds, long classNameId,
+			java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCount(
@@ -600,9 +601,9 @@ public class DDMStructureLayoutLocalServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
 			updateStructureLayout(
 				long structureLayoutId, long structureVersionId,
-				java.util.Map<java.util.Locale, String> name,
-				java.util.Map<java.util.Locale, String> description,
-				String definition,
+				java.util.Map<java.util.Locale, java.lang.String> name,
+				java.util.Map<java.util.Locale, java.lang.String> description,
+				java.lang.String definition,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -612,29 +613,10 @@ public class DDMStructureLayoutLocalServiceUtil {
 	}
 
 	public static DDMStructureLayoutLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmStructureLayoutLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMStructureLayoutLocalService, DDMStructureLayoutLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMStructureLayoutLocalService.class);
-
-		ServiceTracker
-			<DDMStructureLayoutLocalService, DDMStructureLayoutLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DDMStructureLayoutLocalService,
-						 DDMStructureLayoutLocalService>(
-							 bundle.getBundleContext(),
-							 DDMStructureLayoutLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMStructureLayoutLocalService
+		_ddmStructureLayoutLocalService;
 
 }

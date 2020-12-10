@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceChannelRel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CommerceChannelRelServiceImpl</code> and is an
@@ -39,7 +35,8 @@ public class CommerceChannelRelServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CommerceChannelRel
 			addCommerceChannelRel(
-				String className, long classPK, long commerceChannelId,
+				java.lang.String className, long classPK,
+				long commerceChannelId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -53,7 +50,8 @@ public class CommerceChannelRelServiceUtil {
 		getService().deleteCommerceChannelRel(commerceChannelRelId);
 	}
 
-	public static void deleteCommerceChannelRels(String className, long classPK)
+	public static void deleteCommerceChannelRels(
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteCommerceChannelRels(className, classPK);
@@ -61,7 +59,8 @@ public class CommerceChannelRelServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceChannelRel
 			fetchCommerceChannelRel(
-				String className, long classPK, long commerceChannelId)
+				java.lang.String className, long classPK,
+				long commerceChannelId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommerceChannelRel(
@@ -95,7 +94,7 @@ public class CommerceChannelRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannelRel>
 			getCommerceChannelRels(
-				String className, long classPK, int start, int end,
+				java.lang.String className, long classPK, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.product.model.CommerceChannelRel>
 						orderByComparator) {
@@ -107,8 +106,8 @@ public class CommerceChannelRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannelRel>
 			getCommerceChannelRels(
-				String className, long classPK, String name, int start,
-				int end) {
+				java.lang.String className, long classPK, java.lang.String name,
+				int start, int end) {
 
 		return getService().getCommerceChannelRels(
 			className, classPK, name, start, end);
@@ -121,8 +120,9 @@ public class CommerceChannelRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceChannelRel>
 			getCommerceChannelRels(
-				String className, long classPK, String classPKField,
-				String name, int start, int end) {
+				java.lang.String className, long classPK,
+				java.lang.String classPKField, java.lang.String name, int start,
+				int end) {
 
 		return getService().getCommerceChannelRels(
 			className, classPK, classPKField, name, start, end);
@@ -135,13 +135,13 @@ public class CommerceChannelRelServiceUtil {
 	}
 
 	public static int getCommerceChannelRelsCount(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().getCommerceChannelRelsCount(className, classPK);
 	}
 
 	public static int getCommerceChannelRelsCount(
-		String className, long classPK, String name) {
+		java.lang.String className, long classPK, java.lang.String name) {
 
 		return getService().getCommerceChannelRelsCount(
 			className, classPK, name);
@@ -152,7 +152,8 @@ public class CommerceChannelRelServiceUtil {
 	 */
 	@Deprecated
 	public static int getCommerceChannelRelsCount(
-		String className, long classPK, String classPKField, String name) {
+		java.lang.String className, long classPK, java.lang.String classPKField,
+		java.lang.String name) {
 
 		return getService().getCommerceChannelRelsCount(
 			className, classPK, classPKField, name);
@@ -163,31 +164,15 @@ public class CommerceChannelRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceChannelRelService getService() {
-		return _serviceTracker.getService();
+		return _commerceChannelRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceChannelRelService, CommerceChannelRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceChannelRelService.class);
-
-		ServiceTracker<CommerceChannelRelService, CommerceChannelRelService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceChannelRelService, CommerceChannelRelService>(
-						bundle.getBundleContext(),
-						CommerceChannelRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceChannelRelService
+		_commerceChannelRelService;
 
 }

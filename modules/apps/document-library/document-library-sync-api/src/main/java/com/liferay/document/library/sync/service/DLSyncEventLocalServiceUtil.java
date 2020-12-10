@@ -14,10 +14,6 @@
 
 package com.liferay.document.library.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DLSyncEvent. This utility wraps
  * <code>com.liferay.document.library.sync.service.impl.DLSyncEventLocalServiceImpl</code> and
@@ -56,7 +52,8 @@ public class DLSyncEventLocalServiceUtil {
 	}
 
 	public static com.liferay.document.library.sync.model.DLSyncEvent
-		addDLSyncEvent(String event, String type, long typePK) {
+		addDLSyncEvent(
+			java.lang.String event, java.lang.String type, long typePK) {
 
 		return getService().addDLSyncEvent(event, type, typePK);
 	}
@@ -303,7 +300,7 @@ public class DLSyncEventLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -335,25 +332,9 @@ public class DLSyncEventLocalServiceUtil {
 	}
 
 	public static DLSyncEventLocalService getService() {
-		return _serviceTracker.getService();
+		return _dlSyncEventLocalService;
 	}
 
-	private static ServiceTracker
-		<DLSyncEventLocalService, DLSyncEventLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DLSyncEventLocalService.class);
-
-		ServiceTracker<DLSyncEventLocalService, DLSyncEventLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DLSyncEventLocalService, DLSyncEventLocalService>(
-						bundle.getBundleContext(),
-						DLSyncEventLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DLSyncEventLocalService _dlSyncEventLocalService;
 
 }

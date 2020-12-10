@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoTaskAssignmentInstance. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTaskAssignmentInstanceLocalServiceImpl</code> and
@@ -64,7 +60,7 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 					long groupId,
 					com.liferay.portal.workflow.kaleo.model.
 						KaleoTaskInstanceToken kaleoTaskInstanceToken,
-					String assigneeClassName, long assigneeClassPK,
+					java.lang.String assigneeClassName, long assigneeClassPK,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -82,7 +78,8 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 					java.util.Collection
 						<com.liferay.portal.workflow.kaleo.model.
 							KaleoTaskAssignment> kaleoTaskAssignments,
-					java.util.Map<String, java.io.Serializable> workflowContext,
+					java.util.Map<java.lang.String, java.io.Serializable>
+						workflowContext,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -97,7 +94,7 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 				assignKaleoTaskAssignmentInstance(
 					com.liferay.portal.workflow.kaleo.model.
 						KaleoTaskInstanceToken kaleoTaskInstanceToken,
-					String assigneeClassName, long assigneeClassPK,
+					java.lang.String assigneeClassName, long assigneeClassPK,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -115,7 +112,8 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 					java.util.Collection
 						<com.liferay.portal.workflow.kaleo.model.
 							KaleoTaskAssignment> kaleoTaskAssignments,
-					java.util.Map<String, java.io.Serializable> workflowContext,
+					java.util.Map<java.lang.String, java.io.Serializable>
+						workflowContext,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -347,7 +345,8 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 	public static
 		com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentInstance
 			fetchFirstKaleoTaskAssignmentInstance(
-				long kaleoTaskInstanceTokenId, String assigneeClassName,
+				long kaleoTaskInstanceTokenId,
+				java.lang.String assigneeClassName,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.workflow.kaleo.model.
 						KaleoTaskAssignmentInstance> orderByComparator) {
@@ -442,7 +441,7 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -477,29 +476,10 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 	}
 
 	public static KaleoTaskAssignmentInstanceLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoTaskAssignmentInstanceLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoTaskAssignmentInstanceLocalService,
-		 KaleoTaskAssignmentInstanceLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoTaskAssignmentInstanceLocalService.class);
-
-		ServiceTracker
-			<KaleoTaskAssignmentInstanceLocalService,
-			 KaleoTaskAssignmentInstanceLocalService> serviceTracker =
-				new ServiceTracker
-					<KaleoTaskAssignmentInstanceLocalService,
-					 KaleoTaskAssignmentInstanceLocalService>(
-						 bundle.getBundleContext(),
-						 KaleoTaskAssignmentInstanceLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoTaskAssignmentInstanceLocalService
+		_kaleoTaskAssignmentInstanceLocalService;
 
 }

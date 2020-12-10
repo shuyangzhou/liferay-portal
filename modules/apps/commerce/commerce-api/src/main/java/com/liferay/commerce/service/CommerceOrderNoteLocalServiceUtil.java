@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceOrderNote. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceOrderNoteLocalServiceImpl</code> and
@@ -57,7 +53,8 @@ public class CommerceOrderNoteLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderNote
 			addCommerceOrderNote(
-				long commerceOrderId, String content, boolean restricted,
+				long commerceOrderId, java.lang.String content,
+				boolean restricted,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -67,8 +64,8 @@ public class CommerceOrderNoteLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderNote
 			addCommerceOrderNote(
-				long commerceOrderId, String content, boolean restricted,
-				String externalReferenceCode,
+				long commerceOrderId, java.lang.String content,
+				boolean restricted, java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -242,7 +239,7 @@ public class CommerceOrderNoteLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderNote
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -263,7 +260,7 @@ public class CommerceOrderNoteLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceOrderNote
 		fetchCommerceOrderNoteByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCommerceOrderNoteByReferenceCode(
 			companyId, externalReferenceCode);
@@ -350,7 +347,7 @@ public class CommerceOrderNoteLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -383,7 +380,8 @@ public class CommerceOrderNoteLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderNote
 			updateCommerceOrderNote(
-				long commerceOrderNoteId, String content, boolean restricted)
+				long commerceOrderNoteId, java.lang.String content,
+				boolean restricted)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceOrderNote(
@@ -392,8 +390,8 @@ public class CommerceOrderNoteLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderNote
 			updateCommerceOrderNote(
-				long commerceOrderNoteId, String content, boolean restricted,
-				String externalReferenceCode)
+				long commerceOrderNoteId, java.lang.String content,
+				boolean restricted, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceOrderNote(
@@ -402,8 +400,9 @@ public class CommerceOrderNoteLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderNote
 			upsertCommerceOrderNote(
-				long commerceOrderNoteId, long commerceOrderId, String content,
-				boolean restricted, String externalReferenceCode,
+				long commerceOrderNoteId, long commerceOrderId,
+				java.lang.String content, boolean restricted,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -413,29 +412,10 @@ public class CommerceOrderNoteLocalServiceUtil {
 	}
 
 	public static CommerceOrderNoteLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceOrderNoteLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceOrderNoteLocalService, CommerceOrderNoteLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceOrderNoteLocalService.class);
-
-		ServiceTracker
-			<CommerceOrderNoteLocalService, CommerceOrderNoteLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceOrderNoteLocalService,
-						 CommerceOrderNoteLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceOrderNoteLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceOrderNoteLocalService
+		_commerceOrderNoteLocalService;
 
 }

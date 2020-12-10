@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ManyColumnsEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.ManyColumnsEntryServiceImpl</code> and is an
@@ -43,30 +39,14 @@ public class ManyColumnsEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ManyColumnsEntryService getService() {
-		return _serviceTracker.getService();
+		return _manyColumnsEntryService;
 	}
 
-	private static ServiceTracker
-		<ManyColumnsEntryService, ManyColumnsEntryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ManyColumnsEntryService.class);
-
-		ServiceTracker<ManyColumnsEntryService, ManyColumnsEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<ManyColumnsEntryService, ManyColumnsEntryService>(
-						bundle.getBundleContext(),
-						ManyColumnsEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ManyColumnsEntryService _manyColumnsEntryService;
 
 }

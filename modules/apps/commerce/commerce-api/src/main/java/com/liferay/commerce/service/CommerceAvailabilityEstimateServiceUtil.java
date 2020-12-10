@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceAvailabilityEstimate. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceAvailabilityEstimateServiceImpl</code> and is an
@@ -39,7 +35,7 @@ public class CommerceAvailabilityEstimateServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceAvailabilityEstimate
 			addCommerceAvailabilityEstimate(
-				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
 				double priority,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -88,14 +84,14 @@ public class CommerceAvailabilityEstimateServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.commerce.model.CommerceAvailabilityEstimate
 			updateCommerceAvailabilityEstimate(
 				long commerceAvailabilityEstimateId,
-				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
 				double priority,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -105,29 +101,10 @@ public class CommerceAvailabilityEstimateServiceUtil {
 	}
 
 	public static CommerceAvailabilityEstimateService getService() {
-		return _serviceTracker.getService();
+		return _commerceAvailabilityEstimateService;
 	}
 
-	private static ServiceTracker
-		<CommerceAvailabilityEstimateService,
-		 CommerceAvailabilityEstimateService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAvailabilityEstimateService.class);
-
-		ServiceTracker
-			<CommerceAvailabilityEstimateService,
-			 CommerceAvailabilityEstimateService> serviceTracker =
-				new ServiceTracker
-					<CommerceAvailabilityEstimateService,
-					 CommerceAvailabilityEstimateService>(
-						 bundle.getBundleContext(),
-						 CommerceAvailabilityEstimateService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAvailabilityEstimateService
+		_commerceAvailabilityEstimateService;
 
 }

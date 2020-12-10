@@ -14,10 +14,6 @@
 
 package com.liferay.change.tracking.store.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CTSContent. This utility wraps
  * <code>com.liferay.change.tracking.store.service.impl.CTSContentLocalServiceImpl</code> and
@@ -57,8 +53,9 @@ public class CTSContentLocalServiceUtil {
 
 	public static com.liferay.change.tracking.store.model.CTSContent
 		addCTSContent(
-			long companyId, long repositoryId, String path, String version,
-			String storeType, java.io.InputStream inputStream) {
+			long companyId, long repositoryId, java.lang.String path,
+			java.lang.String version, java.lang.String storeType,
+			java.io.InputStream inputStream) {
 
 		return getService().addCTSContent(
 			companyId, repositoryId, path, version, storeType, inputStream);
@@ -122,15 +119,16 @@ public class CTSContentLocalServiceUtil {
 	}
 
 	public static void deleteCTSContent(
-		long companyId, long repositoryId, String path, String version,
-		String storeType) {
+		long companyId, long repositoryId, java.lang.String path,
+		java.lang.String version, java.lang.String storeType) {
 
 		getService().deleteCTSContent(
 			companyId, repositoryId, path, version, storeType);
 	}
 
 	public static void deleteCTSContentsByDirectory(
-		long companyId, long repositoryId, String dirName, String storeType) {
+		long companyId, long repositoryId, java.lang.String dirName,
+		java.lang.String storeType) {
 
 		getService().deleteCTSContentsByDirectory(
 			companyId, repositoryId, dirName, storeType);
@@ -266,8 +264,8 @@ public class CTSContentLocalServiceUtil {
 
 	public static com.liferay.change.tracking.store.model.CTSContent
 			getCTSContent(
-				long companyId, long repositoryId, String path, String version,
-				String storeType)
+				long companyId, long repositoryId, java.lang.String path,
+				java.lang.String version, java.lang.String storeType)
 		throws com.liferay.change.tracking.store.exception.
 			NoSuchContentException {
 
@@ -295,7 +293,8 @@ public class CTSContentLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.change.tracking.store.model.CTSContent> getCTSContents(
-			long companyId, long repositoryId, String path, String storeType) {
+			long companyId, long repositoryId, java.lang.String path,
+			java.lang.String storeType) {
 
 		return getService().getCTSContents(
 			companyId, repositoryId, path, storeType);
@@ -304,8 +303,8 @@ public class CTSContentLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.change.tracking.store.model.CTSContent>
 			getCTSContentsByDirectory(
-				long companyId, long repositoryId, String dirName,
-				String storeType) {
+				long companyId, long repositoryId, java.lang.String dirName,
+				java.lang.String storeType) {
 
 		return getService().getCTSContentsByDirectory(
 			companyId, repositoryId, dirName, storeType);
@@ -339,7 +338,7 @@ public class CTSContentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -354,8 +353,8 @@ public class CTSContentLocalServiceUtil {
 	}
 
 	public static boolean hasCTSContent(
-		long companyId, long repositoryId, String path, String version,
-		String storeType) {
+		long companyId, long repositoryId, java.lang.String path,
+		java.lang.String version, java.lang.String storeType) {
 
 		return getService().hasCTSContent(
 			companyId, repositoryId, path, version, storeType);
@@ -383,25 +382,9 @@ public class CTSContentLocalServiceUtil {
 	}
 
 	public static CTSContentLocalService getService() {
-		return _serviceTracker.getService();
+		return _ctsContentLocalService;
 	}
 
-	private static ServiceTracker
-		<CTSContentLocalService, CTSContentLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CTSContentLocalService.class);
-
-		ServiceTracker<CTSContentLocalService, CTSContentLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CTSContentLocalService, CTSContentLocalService>(
-						bundle.getBundleContext(), CTSContentLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CTSContentLocalService _ctsContentLocalService;
 
 }

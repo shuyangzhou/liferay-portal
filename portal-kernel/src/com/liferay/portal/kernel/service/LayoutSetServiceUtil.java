@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for LayoutSet. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutSetServiceImpl</code> and is an
@@ -41,7 +39,7 @@ public class LayoutSetServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -66,7 +64,7 @@ public class LayoutSetServiceUtil {
 	public static void updateLayoutSetPrototypeLinkEnabled(
 			long groupId, boolean privateLayout,
 			boolean layoutSetPrototypeLinkEnabled,
-			String layoutSetPrototypeUuid)
+			java.lang.String layoutSetPrototypeUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateLayoutSetPrototypeLinkEnabled(
@@ -107,8 +105,8 @@ public class LayoutSetServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.LayoutSet updateLookAndFeel(
-			long groupId, boolean privateLayout, String themeId,
-			String colorSchemeId, String css)
+			long groupId, boolean privateLayout, java.lang.String themeId,
+			java.lang.String colorSchemeId, java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLookAndFeel(
@@ -116,7 +114,7 @@ public class LayoutSetServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.LayoutSet updateSettings(
-			long groupId, boolean privateLayout, String settings)
+			long groupId, boolean privateLayout, java.lang.String settings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateSettings(groupId, privateLayout, settings);
@@ -124,7 +122,8 @@ public class LayoutSetServiceUtil {
 
 	public static com.liferay.portal.kernel.model.LayoutSet updateVirtualHosts(
 			long groupId, boolean privateLayout,
-			java.util.TreeMap<String, String> virtualHostnames)
+			java.util.TreeMap<java.lang.String, java.lang.String>
+				virtualHostnames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateVirtualHosts(
@@ -132,14 +131,9 @@ public class LayoutSetServiceUtil {
 	}
 
 	public static LayoutSetService getService() {
-		if (_service == null) {
-			_service = (LayoutSetService)PortalBeanLocatorUtil.locate(
-				LayoutSetService.class.getName());
-		}
-
-		return _service;
+		return _layoutSetService;
 	}
 
-	private static LayoutSetService _service;
+	private static volatile LayoutSetService _layoutSetService;
 
 }

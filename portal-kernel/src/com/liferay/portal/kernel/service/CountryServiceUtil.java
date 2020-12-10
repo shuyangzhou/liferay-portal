@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Country. This utility wraps
  * <code>com.liferay.portal.service.impl.CountryServiceImpl</code> and is an
@@ -36,10 +34,11 @@ public class CountryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.CountryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Country addCountry(
-			String a2, String a3, boolean active, boolean billingAllowed,
-			String idd, String name, String number, double position,
-			boolean shippingAllowed, boolean subjectToVAT, boolean zipRequired,
-			java.util.Map<String, String> titleMap,
+			java.lang.String a2, java.lang.String a3, boolean active,
+			boolean billingAllowed, java.lang.String idd, java.lang.String name,
+			java.lang.String number, double position, boolean shippingAllowed,
+			boolean subjectToVAT, boolean zipRequired,
+			java.util.Map<java.lang.String, java.lang.String> titleMap,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -54,8 +53,8 @@ public class CountryServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.Country addCountry(
-			String name, String a2, String a3, String number, String idd,
-			boolean active)
+			java.lang.String name, java.lang.String a2, java.lang.String a3,
+			java.lang.String number, java.lang.String idd, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCountry(name, a2, a3, number, idd, active);
@@ -68,13 +67,13 @@ public class CountryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Country fetchCountryByA2(
-		String a2) {
+		java.lang.String a2) {
 
 		return getService().fetchCountryByA2(a2);
 	}
 
 	public static com.liferay.portal.kernel.model.Country fetchCountryByA3(
-		String a3) {
+		java.lang.String a3) {
 
 		return getService().fetchCountryByA3(a3);
 	}
@@ -99,21 +98,21 @@ public class CountryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Country getCountryByA2(
-			String a2)
+			java.lang.String a2)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCountryByA2(a2);
 	}
 
 	public static com.liferay.portal.kernel.model.Country getCountryByA3(
-			String a3)
+			java.lang.String a3)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCountryByA3(a3);
 	}
 
 	public static com.liferay.portal.kernel.model.Country getCountryByName(
-			String name)
+			java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCountryByName(name);
@@ -124,19 +123,14 @@ public class CountryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CountryService getService() {
-		if (_service == null) {
-			_service = (CountryService)PortalBeanLocatorUtil.locate(
-				CountryService.class.getName());
-		}
-
-		return _service;
+		return _countryService;
 	}
 
-	private static CountryService _service;
+	private static volatile CountryService _countryService;
 
 }

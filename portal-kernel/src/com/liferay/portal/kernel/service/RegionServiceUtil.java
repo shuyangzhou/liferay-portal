@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Region. This utility wraps
  * <code>com.liferay.portal.service.impl.RegionServiceImpl</code> and is an
@@ -36,8 +34,9 @@ public class RegionServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.RegionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Region addRegion(
-			long countryId, boolean active, String name, double position,
-			String regionCode, ServiceContext serviceContext)
+			long countryId, boolean active, java.lang.String name,
+			double position, java.lang.String regionCode,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addRegion(
@@ -49,7 +48,8 @@ public class RegionServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.Region addRegion(
-			long countryId, String regionCode, String name, boolean active)
+			long countryId, java.lang.String regionCode, java.lang.String name,
+			boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addRegion(countryId, regionCode, name, active);
@@ -62,7 +62,7 @@ public class RegionServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Region fetchRegion(
-		long countryId, String regionCode) {
+		long countryId, java.lang.String regionCode) {
 
 		return getService().fetchRegion(countryId, regionCode);
 	}
@@ -72,7 +72,7 @@ public class RegionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -84,7 +84,7 @@ public class RegionServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Region getRegion(
-			long countryId, String regionCode)
+			long countryId, java.lang.String regionCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRegion(countryId, regionCode);
@@ -115,14 +115,9 @@ public class RegionServiceUtil {
 	}
 
 	public static RegionService getService() {
-		if (_service == null) {
-			_service = (RegionService)PortalBeanLocatorUtil.locate(
-				RegionService.class.getName());
-		}
-
-		return _service;
+		return _regionService;
 	}
 
-	private static RegionService _service;
+	private static volatile RegionService _regionService;
 
 }

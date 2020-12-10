@@ -14,10 +14,6 @@
 
 package com.liferay.marketplace.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for App. This utility wraps
  * <code>com.liferay.marketplace.service.impl.AppServiceImpl</code> and is an
@@ -48,7 +44,7 @@ public class AppServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -71,21 +67,9 @@ public class AppServiceUtil {
 	}
 
 	public static AppService getService() {
-		return _serviceTracker.getService();
+		return _appService;
 	}
 
-	private static ServiceTracker<AppService, AppService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AppService.class);
-
-		ServiceTracker<AppService, AppService> serviceTracker =
-			new ServiceTracker<AppService, AppService>(
-				bundle.getBundleContext(), AppService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppService _appService;
 
 }

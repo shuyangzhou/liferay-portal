@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for UADPartialEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.UADPartialEntryLocalServiceImpl</code> and
@@ -245,7 +241,7 @@ public class UADPartialEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -321,27 +317,10 @@ public class UADPartialEntryLocalServiceUtil {
 	}
 
 	public static UADPartialEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _uadPartialEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<UADPartialEntryLocalService, UADPartialEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			UADPartialEntryLocalService.class);
-
-		ServiceTracker<UADPartialEntryLocalService, UADPartialEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<UADPartialEntryLocalService, UADPartialEntryLocalService>(
-						bundle.getBundleContext(),
-						UADPartialEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile UADPartialEntryLocalService
+		_uadPartialEntryLocalService;
 
 }

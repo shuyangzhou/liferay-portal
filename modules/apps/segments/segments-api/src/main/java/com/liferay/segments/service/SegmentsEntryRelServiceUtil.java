@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SegmentsEntryRel. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsEntryRelServiceImpl</code> and is an
@@ -85,7 +81,7 @@ public class SegmentsEntryRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -137,25 +133,9 @@ public class SegmentsEntryRelServiceUtil {
 	}
 
 	public static SegmentsEntryRelService getService() {
-		return _serviceTracker.getService();
+		return _segmentsEntryRelService;
 	}
 
-	private static ServiceTracker
-		<SegmentsEntryRelService, SegmentsEntryRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SegmentsEntryRelService.class);
-
-		ServiceTracker<SegmentsEntryRelService, SegmentsEntryRelService>
-			serviceTracker =
-				new ServiceTracker
-					<SegmentsEntryRelService, SegmentsEntryRelService>(
-						bundle.getBundleContext(),
-						SegmentsEntryRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsEntryRelService _segmentsEntryRelService;
 
 }

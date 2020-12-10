@@ -14,10 +14,6 @@
 
 package com.liferay.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AccountGroup. This utility wraps
  * <code>com.liferay.account.service.impl.AccountGroupLocalServiceImpl</code> and
@@ -55,7 +51,7 @@ public class AccountGroupLocalServiceUtil {
 	}
 
 	public static com.liferay.account.model.AccountGroup addAccountGroup(
-			long userId, String name, String description)
+			long userId, java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountGroup(userId, name, description);
@@ -234,7 +230,7 @@ public class AccountGroupLocalServiceUtil {
 	 */
 	public static com.liferay.account.model.AccountGroup
 		fetchAccountGroupByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchAccountGroupByReferenceCode(
 			companyId, externalReferenceCode);
@@ -308,7 +304,7 @@ public class AccountGroupLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -324,7 +320,7 @@ public class AccountGroupLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.account.model.AccountGroup> searchAccountGroups(
-			long companyId, String keywords, int start, int end,
+			long companyId, java.lang.String keywords, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.account.model.AccountGroup> orderByComparator) {
 
@@ -349,7 +345,8 @@ public class AccountGroupLocalServiceUtil {
 	}
 
 	public static com.liferay.account.model.AccountGroup updateAccountGroup(
-			long accountGroupId, String name, String description)
+			long accountGroupId, java.lang.String name,
+			java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAccountGroup(
@@ -357,25 +354,9 @@ public class AccountGroupLocalServiceUtil {
 	}
 
 	public static AccountGroupLocalService getService() {
-		return _serviceTracker.getService();
+		return _accountGroupLocalService;
 	}
 
-	private static ServiceTracker
-		<AccountGroupLocalService, AccountGroupLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountGroupLocalService.class);
-
-		ServiceTracker<AccountGroupLocalService, AccountGroupLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountGroupLocalService, AccountGroupLocalService>(
-						bundle.getBundleContext(),
-						AccountGroupLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountGroupLocalService _accountGroupLocalService;
 
 }

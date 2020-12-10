@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for UserGroup. This utility wraps
  * <code>com.liferay.portal.service.impl.UserGroupServiceImpl</code> and is an
@@ -76,7 +74,8 @@ public class UserGroupServiceUtil {
 	 * @return the user group
 	 */
 	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
-			String name, String description, ServiceContext serviceContext)
+			java.lang.String name, java.lang.String description,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addUserGroup(name, description, serviceContext);
@@ -120,7 +119,7 @@ public class UserGroupServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -144,7 +143,7 @@ public class UserGroupServiceUtil {
 	 * @return the user group with the name
 	 */
 	public static com.liferay.portal.kernel.model.UserGroup getUserGroup(
-			String name)
+			java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserGroup(name);
@@ -158,12 +157,15 @@ public class UserGroupServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
-		getUserGroups(long companyId, String name, int start, int end) {
+		getUserGroups(
+			long companyId, java.lang.String name, int start, int end) {
 
 		return getService().getUserGroups(companyId, name, start, end);
 	}
 
-	public static int getUserGroupsCount(long companyId, String name) {
+	public static int getUserGroupsCount(
+		long companyId, java.lang.String name) {
+
 		return getService().getUserGroupsCount(companyId, name);
 	}
 
@@ -209,8 +211,9 @@ public class UserGroupServiceUtil {
 	 */
 	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
 		search(
-			long companyId, String keywords,
-			java.util.LinkedHashMap<String, Object> params, int start, int end,
+			long companyId, java.lang.String keywords,
+			java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.portal.kernel.model.UserGroup> orderByComparator) {
 
@@ -251,9 +254,9 @@ public class UserGroupServiceUtil {
 	 */
 	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
 		search(
-			long companyId, String name, String description,
-			java.util.LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end,
+			long companyId, java.lang.String name, java.lang.String description,
+			java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+			boolean andOperator, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.portal.kernel.model.UserGroup> orderByComparator) {
 
@@ -275,8 +278,8 @@ public class UserGroupServiceUtil {
 	 * @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	 */
 	public static int searchCount(
-		long companyId, String keywords,
-		java.util.LinkedHashMap<String, Object> params) {
+		long companyId, java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 
 		return getService().searchCount(companyId, keywords, params);
 	}
@@ -297,8 +300,9 @@ public class UserGroupServiceUtil {
 	 * @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	 */
 	public static int searchCount(
-		long companyId, String name, String description,
-		java.util.LinkedHashMap<String, Object> params, boolean andOperator) {
+		long companyId, java.lang.String name, java.lang.String description,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator) {
 
 		return getService().searchCount(
 			companyId, name, description, params, andOperator);
@@ -340,8 +344,8 @@ public class UserGroupServiceUtil {
 	 * @return the user group
 	 */
 	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
-			long userGroupId, String name, String description,
-			ServiceContext serviceContext)
+			long userGroupId, java.lang.String name,
+			java.lang.String description, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateUserGroup(
@@ -349,14 +353,9 @@ public class UserGroupServiceUtil {
 	}
 
 	public static UserGroupService getService() {
-		if (_service == null) {
-			_service = (UserGroupService)PortalBeanLocatorUtil.locate(
-				UserGroupService.class.getName());
-		}
-
-		return _service;
+		return _userGroupService;
 	}
 
-	private static UserGroupService _service;
+	private static volatile UserGroupService _userGroupService;
 
 }

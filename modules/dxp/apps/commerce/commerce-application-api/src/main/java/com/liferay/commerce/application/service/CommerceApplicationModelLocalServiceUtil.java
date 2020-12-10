@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.application.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceApplicationModel. This utility wraps
  * <code>com.liferay.commerce.application.service.impl.CommerceApplicationModelLocalServiceImpl</code> and
@@ -61,8 +57,8 @@ public class CommerceApplicationModelLocalServiceUtil {
 	public static
 		com.liferay.commerce.application.model.CommerceApplicationModel
 				addCommerceApplicationModel(
-					long userId, long commerceApplicationBrandId, String name,
-					String year)
+					long userId, long commerceApplicationBrandId,
+					java.lang.String name, java.lang.String year)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceApplicationModel(
@@ -314,7 +310,7 @@ public class CommerceApplicationModelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -351,7 +347,8 @@ public class CommerceApplicationModelLocalServiceUtil {
 	public static
 		com.liferay.commerce.application.model.CommerceApplicationModel
 				updateCommerceApplicationModel(
-					long commerceApplicationModelId, String name, String year)
+					long commerceApplicationModelId, java.lang.String name,
+					java.lang.String year)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceApplicationModel(
@@ -359,29 +356,10 @@ public class CommerceApplicationModelLocalServiceUtil {
 	}
 
 	public static CommerceApplicationModelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceApplicationModelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceApplicationModelLocalService,
-		 CommerceApplicationModelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceApplicationModelLocalService.class);
-
-		ServiceTracker
-			<CommerceApplicationModelLocalService,
-			 CommerceApplicationModelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceApplicationModelLocalService,
-					 CommerceApplicationModelLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceApplicationModelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceApplicationModelLocalService
+		_commerceApplicationModelLocalService;
 
 }

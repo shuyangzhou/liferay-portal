@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.bom.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceBOMDefinition. This utility wraps
  * <code>com.liferay.commerce.bom.service.impl.CommerceBOMDefinitionLocalServiceImpl</code> and
@@ -59,7 +55,8 @@ public class CommerceBOMDefinitionLocalServiceUtil {
 	public static com.liferay.commerce.bom.model.CommerceBOMDefinition
 			addCommerceBOMDefinition(
 				long userId, long commerceBOMFolderId,
-				long cpAttachmentFileEntryId, String name, String friendlyUrl)
+				long cpAttachmentFileEntryId, java.lang.String name,
+				java.lang.String friendlyUrl)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceBOMDefinition(
@@ -302,7 +299,7 @@ public class CommerceBOMDefinitionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -337,7 +334,7 @@ public class CommerceBOMDefinitionLocalServiceUtil {
 	public static com.liferay.commerce.bom.model.CommerceBOMDefinition
 			updateCommerceBOMDefinition(
 				long commerceBOMDefinitionId, long cpAttachmentFileEntryId,
-				String name)
+				java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceBOMDefinition(
@@ -345,29 +342,10 @@ public class CommerceBOMDefinitionLocalServiceUtil {
 	}
 
 	public static CommerceBOMDefinitionLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceBOMDefinitionLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceBOMDefinitionLocalService, CommerceBOMDefinitionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceBOMDefinitionLocalService.class);
-
-		ServiceTracker
-			<CommerceBOMDefinitionLocalService,
-			 CommerceBOMDefinitionLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceBOMDefinitionLocalService,
-					 CommerceBOMDefinitionLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceBOMDefinitionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceBOMDefinitionLocalService
+		_commerceBOMDefinitionLocalService;
 
 }

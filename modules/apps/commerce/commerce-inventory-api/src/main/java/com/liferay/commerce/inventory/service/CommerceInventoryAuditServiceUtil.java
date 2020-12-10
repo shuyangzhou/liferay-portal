@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceInventoryAudit. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryAuditServiceImpl</code> and is an
@@ -40,7 +36,7 @@ public class CommerceInventoryAuditServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.inventory.model.CommerceInventoryAudit>
 				getCommerceInventoryAudits(
-					long companyId, String sku, int start, int end)
+					long companyId, java.lang.String sku, int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryAudits(
@@ -48,7 +44,7 @@ public class CommerceInventoryAuditServiceUtil {
 	}
 
 	public static int getCommerceInventoryAuditsCount(
-			long companyId, String sku)
+			long companyId, java.lang.String sku)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceInventoryAuditsCount(companyId, sku);
@@ -59,34 +55,15 @@ public class CommerceInventoryAuditServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceInventoryAuditService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryAuditService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryAuditService, CommerceInventoryAuditService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryAuditService.class);
-
-		ServiceTracker
-			<CommerceInventoryAuditService, CommerceInventoryAuditService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceInventoryAuditService,
-						 CommerceInventoryAuditService>(
-							 bundle.getBundleContext(),
-							 CommerceInventoryAuditService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryAuditService
+		_commerceInventoryAuditService;
 
 }

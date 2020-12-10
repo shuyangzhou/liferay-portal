@@ -14,10 +14,6 @@
 
 package com.liferay.trash.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for TrashEntry. This utility wraps
  * <code>com.liferay.trash.service.impl.TrashEntryLocalServiceImpl</code> and
@@ -56,11 +52,12 @@ public class TrashEntryLocalServiceUtil {
 	 * @return the trashEntry
 	 */
 	public static com.liferay.trash.model.TrashEntry addTrashEntry(
-			long userId, long groupId, String className, long classPK,
-			String classUuid, String referrerClassName, int status,
+			long userId, long groupId, java.lang.String className, long classPK,
+			java.lang.String classUuid, java.lang.String referrerClassName,
+			int status,
 			java.util.List
-				<com.liferay.portal.kernel.util.ObjectValuePair<Long, Integer>>
-					statusOVPs,
+				<com.liferay.portal.kernel.util.ObjectValuePair
+					<java.lang.Long, java.lang.Integer>> statusOVPs,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -142,7 +139,7 @@ public class TrashEntryLocalServiceUtil {
 	 * @return the trash entry with the entity class name and primary key
 	 */
 	public static com.liferay.trash.model.TrashEntry deleteEntry(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().deleteEntry(className, classPK);
 	}
@@ -307,7 +304,7 @@ public class TrashEntryLocalServiceUtil {
 	 * @return the trash entry with the entity class name and primary key
 	 */
 	public static com.liferay.trash.model.TrashEntry fetchEntry(
-		String className, long classPK) {
+		java.lang.String className, long classPK) {
 
 		return getService().fetchEntry(className, classPK);
 	}
@@ -372,7 +369,7 @@ public class TrashEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.trash.model.TrashEntry> getEntries(
-		long groupId, String className) {
+		long groupId, java.lang.String className) {
 
 		return getService().getEntries(groupId, className);
 	}
@@ -407,7 +404,7 @@ public class TrashEntryLocalServiceUtil {
 	 * @return the trash entry with the entity class name and primary key
 	 */
 	public static com.liferay.trash.model.TrashEntry getEntry(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(className, classPK);
@@ -425,7 +422,7 @@ public class TrashEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -479,8 +476,8 @@ public class TrashEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long groupId, long userId, String keywords, int start,
-		int end, com.liferay.portal.kernel.search.Sort sort) {
+		long companyId, long groupId, long userId, java.lang.String keywords,
+		int start, int end, com.liferay.portal.kernel.search.Sort sort) {
 
 		return getService().search(
 			companyId, groupId, userId, keywords, start, end, sort);
@@ -488,8 +485,9 @@ public class TrashEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.trash.model.TrashEntry> searchTrashEntries(
-			long companyId, long groupId, long userId, String keywords,
-			int start, int end, com.liferay.portal.kernel.search.Sort sort) {
+			long companyId, long groupId, long userId,
+			java.lang.String keywords, int start, int end,
+			com.liferay.portal.kernel.search.Sort sort) {
 
 		return getService().searchTrashEntries(
 			companyId, groupId, userId, keywords, start, end, sort);
@@ -512,25 +510,9 @@ public class TrashEntryLocalServiceUtil {
 	}
 
 	public static TrashEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _trashEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<TrashEntryLocalService, TrashEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TrashEntryLocalService.class);
-
-		ServiceTracker<TrashEntryLocalService, TrashEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TrashEntryLocalService, TrashEntryLocalService>(
-						bundle.getBundleContext(), TrashEntryLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TrashEntryLocalService _trashEntryLocalService;
 
 }

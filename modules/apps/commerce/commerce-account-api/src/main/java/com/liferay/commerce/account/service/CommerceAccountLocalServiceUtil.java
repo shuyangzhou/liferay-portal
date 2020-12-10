@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAccount. This utility wraps
  * <code>com.liferay.commerce.account.service.impl.CommerceAccountLocalServiceImpl</code> and
@@ -39,9 +35,10 @@ public class CommerceAccountLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.account.model.CommerceAccount
 			addBusinessCommerceAccount(
-				String name, long parentCommerceAccountId, String email,
-				String taxId, boolean active, String externalReferenceCode,
-				long[] userIds, String[] emailAddresses,
+				java.lang.String name, long parentCommerceAccountId,
+				java.lang.String email, java.lang.String taxId, boolean active,
+				java.lang.String externalReferenceCode, long[] userIds,
+				java.lang.String[] emailAddresses,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -70,9 +67,9 @@ public class CommerceAccountLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccount
 			addCommerceAccount(
-				String name, long parentCommerceAccountId, String email,
-				String taxId, int type, boolean active,
-				String externalReferenceCode,
+				java.lang.String name, long parentCommerceAccountId,
+				java.lang.String email, java.lang.String taxId, int type,
+				boolean active, java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -83,7 +80,8 @@ public class CommerceAccountLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccount
 			addPersonalCommerceAccount(
-				long userId, String taxId, String externalReferenceCode,
+				long userId, java.lang.String taxId,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -267,7 +265,7 @@ public class CommerceAccountLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccount
 		fetchByExternalReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchByExternalReferenceCode(
 			companyId, externalReferenceCode);
@@ -288,7 +286,7 @@ public class CommerceAccountLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.account.model.CommerceAccount
 		fetchCommerceAccountByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchCommerceAccountByReferenceCode(
 			companyId, externalReferenceCode);
@@ -374,7 +372,7 @@ public class CommerceAccountLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -398,9 +396,9 @@ public class CommerceAccountLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.account.model.CommerceAccount>
 				getUserCommerceAccounts(
-					long userId, Long parentCommerceAccountId,
-					int commerceSiteType, String keywords, Boolean active,
-					int start, int end)
+					long userId, java.lang.Long parentCommerceAccountId,
+					int commerceSiteType, java.lang.String keywords,
+					java.lang.Boolean active, int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserCommerceAccounts(
@@ -411,8 +409,9 @@ public class CommerceAccountLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.account.model.CommerceAccount>
 				getUserCommerceAccounts(
-					long userId, Long parentCommerceAccountId,
-					int commerceSiteType, String keywords, int start, int end)
+					long userId, java.lang.Long parentCommerceAccountId,
+					int commerceSiteType, java.lang.String keywords, int start,
+					int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserCommerceAccounts(
@@ -421,8 +420,8 @@ public class CommerceAccountLocalServiceUtil {
 	}
 
 	public static int getUserCommerceAccountsCount(
-			long userId, Long parentCommerceAccountId, int commerceSiteType,
-			String keywords)
+			long userId, java.lang.Long parentCommerceAccountId,
+			int commerceSiteType, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserCommerceAccountsCount(
@@ -430,8 +429,9 @@ public class CommerceAccountLocalServiceUtil {
 	}
 
 	public static int getUserCommerceAccountsCount(
-			long userId, Long parentCommerceAccountId, int commerceSiteType,
-			String keywords, Boolean active)
+			long userId, java.lang.Long parentCommerceAccountId,
+			int commerceSiteType, java.lang.String keywords,
+			java.lang.Boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserCommerceAccountsCount(
@@ -443,8 +443,9 @@ public class CommerceAccountLocalServiceUtil {
 		<com.liferay.commerce.account.model.CommerceAccount>
 				searchCommerceAccounts(
 					long companyId, long parentCommerceAccountId,
-					String keywords, int type, Boolean active, int start,
-					int end, com.liferay.portal.kernel.search.Sort sort)
+					java.lang.String keywords, int type,
+					java.lang.Boolean active, int start, int end,
+					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceAccounts(
@@ -453,8 +454,8 @@ public class CommerceAccountLocalServiceUtil {
 	}
 
 	public static int searchCommerceAccountsCount(
-			long companyId, long parentCommerceAccountId, String keywords,
-			int type, Boolean active)
+			long companyId, long parentCommerceAccountId,
+			java.lang.String keywords, int type, java.lang.Boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceAccountsCount(
@@ -488,8 +489,9 @@ public class CommerceAccountLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccount
 			updateCommerceAccount(
-				long commerceAccountId, String name, boolean logo,
-				byte[] logoBytes, String email, String taxId, boolean active,
+				long commerceAccountId, java.lang.String name, boolean logo,
+				byte[] logoBytes, java.lang.String email,
+				java.lang.String taxId, boolean active,
 				long defaultBillingAddressId, long defaultShippingAddressId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -501,10 +503,11 @@ public class CommerceAccountLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccount
 			updateCommerceAccount(
-				long commerceAccountId, String name, boolean logo,
-				byte[] logoBytes, String email, String taxId, boolean active,
+				long commerceAccountId, java.lang.String name, boolean logo,
+				byte[] logoBytes, java.lang.String email,
+				java.lang.String taxId, boolean active,
 				long defaultBillingAddressId, long defaultShippingAddressId,
-				String externalReferenceCode,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -520,8 +523,9 @@ public class CommerceAccountLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.commerce.account.model.CommerceAccount
 			updateCommerceAccount(
-				long commerceAccountId, String name, boolean logo,
-				byte[] logoBytes, String email, String taxId, boolean active,
+				long commerceAccountId, java.lang.String name, boolean logo,
+				byte[] logoBytes, java.lang.String email,
+				java.lang.String taxId, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -552,7 +556,8 @@ public class CommerceAccountLocalServiceUtil {
 			updateStatus(
 				long userId, long commerceAccountId, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext,
-				java.util.Map<String, java.io.Serializable> workflowContext)
+				java.util.Map<java.lang.String, java.io.Serializable>
+					workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStatus(
@@ -561,9 +566,10 @@ public class CommerceAccountLocalServiceUtil {
 
 	public static com.liferay.commerce.account.model.CommerceAccount
 			upsertCommerceAccount(
-				String name, long parentCommerceAccountId, boolean logo,
-				byte[] logoBytes, String email, String taxId, int type,
-				boolean active, String externalReferenceCode,
+				java.lang.String name, long parentCommerceAccountId,
+				boolean logo, byte[] logoBytes, java.lang.String email,
+				java.lang.String taxId, int type, boolean active,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -573,27 +579,10 @@ public class CommerceAccountLocalServiceUtil {
 	}
 
 	public static CommerceAccountLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAccountLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAccountLocalService, CommerceAccountLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAccountLocalService.class);
-
-		ServiceTracker<CommerceAccountLocalService, CommerceAccountLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceAccountLocalService, CommerceAccountLocalService>(
-						bundle.getBundleContext(),
-						CommerceAccountLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAccountLocalService
+		_commerceAccountLocalService;
 
 }

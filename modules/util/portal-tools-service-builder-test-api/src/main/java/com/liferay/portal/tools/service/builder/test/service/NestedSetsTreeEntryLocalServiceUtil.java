@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for NestedSetsTreeEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.NestedSetsTreeEntryLocalServiceImpl</code> and
@@ -293,7 +289,7 @@ public class NestedSetsTreeEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -327,29 +323,10 @@ public class NestedSetsTreeEntryLocalServiceUtil {
 	}
 
 	public static NestedSetsTreeEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _nestedSetsTreeEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<NestedSetsTreeEntryLocalService, NestedSetsTreeEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			NestedSetsTreeEntryLocalService.class);
-
-		ServiceTracker
-			<NestedSetsTreeEntryLocalService, NestedSetsTreeEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<NestedSetsTreeEntryLocalService,
-						 NestedSetsTreeEntryLocalService>(
-							 bundle.getBundleContext(),
-							 NestedSetsTreeEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile NestedSetsTreeEntryLocalService
+		_nestedSetsTreeEntryLocalService;
 
 }

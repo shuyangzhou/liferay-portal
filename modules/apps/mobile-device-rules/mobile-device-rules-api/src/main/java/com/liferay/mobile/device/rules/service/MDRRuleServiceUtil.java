@@ -14,10 +14,6 @@
 
 package com.liferay.mobile.device.rules.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for MDRRule. This utility wraps
  * <code>com.liferay.mobile.device.rules.service.impl.MDRRuleServiceImpl</code> and is an
@@ -38,9 +34,10 @@ public class MDRRuleServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.mobile.device.rules.service.impl.MDRRuleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.mobile.device.rules.model.MDRRule addRule(
-			long ruleGroupId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
-			String typeSettings,
+			long ruleGroupId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type, java.lang.String typeSettings,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -50,8 +47,10 @@ public class MDRRuleServiceUtil {
 	}
 
 	public static com.liferay.mobile.device.rules.model.MDRRule addRule(
-			long ruleGroupId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
+			long ruleGroupId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -80,7 +79,7 @@ public class MDRRuleServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -92,9 +91,10 @@ public class MDRRuleServiceUtil {
 	}
 
 	public static com.liferay.mobile.device.rules.model.MDRRule updateRule(
-			long ruleId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
-			String typeSettings,
+			long ruleId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type, java.lang.String typeSettings,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -104,8 +104,10 @@ public class MDRRuleServiceUtil {
 	}
 
 	public static com.liferay.mobile.device.rules.model.MDRRule updateRule(
-			long ruleId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, String type,
+			long ruleId,
+			java.util.Map<java.util.Locale, java.lang.String> nameMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+			java.lang.String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -117,22 +119,9 @@ public class MDRRuleServiceUtil {
 	}
 
 	public static MDRRuleService getService() {
-		return _serviceTracker.getService();
+		return _mdrRuleService;
 	}
 
-	private static ServiceTracker<MDRRuleService, MDRRuleService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MDRRuleService.class);
-
-		ServiceTracker<MDRRuleService, MDRRuleService> serviceTracker =
-			new ServiceTracker<MDRRuleService, MDRRuleService>(
-				bundle.getBundleContext(), MDRRuleService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MDRRuleService _mdrRuleService;
 
 }

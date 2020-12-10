@@ -14,10 +14,6 @@
 
 package com.liferay.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SyncDevice. This utility wraps
  * <code>com.liferay.sync.service.impl.SyncDeviceServiceImpl</code> and is an
@@ -43,41 +39,29 @@ public class SyncDeviceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.sync.model.SyncDevice registerSyncDevice(
-			String type, long buildNumber, int featureSet, String uuid)
+			java.lang.String type, long buildNumber, int featureSet,
+			java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().registerSyncDevice(
 			type, buildNumber, featureSet, uuid);
 	}
 
-	public static void unregisterSyncDevice(String uuid)
+	public static void unregisterSyncDevice(java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().unregisterSyncDevice(uuid);
 	}
 
 	public static SyncDeviceService getService() {
-		return _serviceTracker.getService();
+		return _syncDeviceService;
 	}
 
-	private static ServiceTracker<SyncDeviceService, SyncDeviceService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SyncDeviceService.class);
-
-		ServiceTracker<SyncDeviceService, SyncDeviceService> serviceTracker =
-			new ServiceTracker<SyncDeviceService, SyncDeviceService>(
-				bundle.getBundleContext(), SyncDeviceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SyncDeviceService _syncDeviceService;
 
 }

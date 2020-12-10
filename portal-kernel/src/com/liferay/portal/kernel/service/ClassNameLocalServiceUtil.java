@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for ClassName. This utility wraps
  * <code>com.liferay.portal.service.impl.ClassNameLocalServiceImpl</code> and
@@ -53,7 +51,7 @@ public class ClassNameLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ClassName addClassName(
-		String value) {
+		java.lang.String value) {
 
 		return getService().addClassName(value);
 	}
@@ -233,7 +231,7 @@ public class ClassNameLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ClassName fetchClassName(
-		String value) {
+		java.lang.String value) {
 
 		return getService().fetchClassName(value);
 	}
@@ -259,16 +257,16 @@ public class ClassNameLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.ClassName getClassName(
-		String value) {
+		java.lang.String value) {
 
 		return getService().getClassName(value);
 	}
 
-	public static long getClassNameId(Class<?> clazz) {
+	public static long getClassNameId(java.lang.Class<?> clazz) {
 		return getService().getClassNameId(clazz);
 	}
 
-	public static long getClassNameId(String value) {
+	public static long getClassNameId(java.lang.String value) {
 		return getService().getClassNameId(value);
 	}
 
@@ -310,7 +308,7 @@ public class ClassNameLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -324,7 +322,7 @@ public class ClassNameLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static String getRegistryName() {
+	public static java.lang.String getRegistryName() {
 		return getService().getRegistryName();
 	}
 
@@ -349,14 +347,9 @@ public class ClassNameLocalServiceUtil {
 	}
 
 	public static ClassNameLocalService getService() {
-		if (_service == null) {
-			_service = (ClassNameLocalService)PortalBeanLocatorUtil.locate(
-				ClassNameLocalService.class.getName());
-		}
-
-		return _service;
+		return _classNameLocalService;
 	}
 
-	private static ClassNameLocalService _service;
+	private static volatile ClassNameLocalService _classNameLocalService;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
 import com.liferay.commerce.service.CommerceSubscriptionEntryService;
+import com.liferay.commerce.service.CommerceSubscriptionEntryServiceUtil;
 import com.liferay.commerce.service.persistence.CPDAvailabilityEstimatePersistence;
 import com.liferay.commerce.service.persistence.CPDefinitionInventoryPersistence;
 import com.liferay.commerce.service.persistence.CommerceAddressPersistence;
@@ -50,6 +51,8 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -70,7 +73,7 @@ public abstract class CommerceSubscriptionEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceSubscriptionEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceSubscriptionEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceSubscriptionEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceSubscriptionEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -1369,9 +1372,11 @@ public abstract class CommerceSubscriptionEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(commerceSubscriptionEntryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1414,6 +1419,23 @@ public abstract class CommerceSubscriptionEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		CommerceSubscriptionEntryService commerceSubscriptionEntryService) {
+
+		try {
+			Field field =
+				CommerceSubscriptionEntryServiceUtil.class.getDeclaredField(
+					"_commerceSubscriptionEntryService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceSubscriptionEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

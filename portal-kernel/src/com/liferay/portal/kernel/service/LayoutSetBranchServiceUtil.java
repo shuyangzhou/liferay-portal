@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for LayoutSetBranch. This utility wraps
  * <code>com.liferay.portal.service.impl.LayoutSetBranchServiceImpl</code> and is an
@@ -37,9 +35,9 @@ public class LayoutSetBranchServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.LayoutSetBranch
 			addLayoutSetBranch(
-				long groupId, boolean privateLayout, String name,
-				String description, boolean master, long copyLayoutSetBranchId,
-				ServiceContext serviceContext)
+				long groupId, boolean privateLayout, java.lang.String name,
+				java.lang.String description, boolean master,
+				long copyLayoutSetBranchId, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addLayoutSetBranch(
@@ -73,7 +71,7 @@ public class LayoutSetBranchServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -89,8 +87,8 @@ public class LayoutSetBranchServiceUtil {
 
 	public static com.liferay.portal.kernel.model.LayoutSetBranch
 			updateLayoutSetBranch(
-				long groupId, long layoutSetBranchId, String name,
-				String description, ServiceContext serviceContext)
+				long groupId, long layoutSetBranchId, java.lang.String name,
+				java.lang.String description, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutSetBranch(
@@ -98,14 +96,9 @@ public class LayoutSetBranchServiceUtil {
 	}
 
 	public static LayoutSetBranchService getService() {
-		if (_service == null) {
-			_service = (LayoutSetBranchService)PortalBeanLocatorUtil.locate(
-				LayoutSetBranchService.class.getName());
-		}
-
-		return _service;
+		return _layoutSetBranchService;
 	}
 
-	private static LayoutSetBranchService _service;
+	private static volatile LayoutSetBranchService _layoutSetBranchService;
 
 }

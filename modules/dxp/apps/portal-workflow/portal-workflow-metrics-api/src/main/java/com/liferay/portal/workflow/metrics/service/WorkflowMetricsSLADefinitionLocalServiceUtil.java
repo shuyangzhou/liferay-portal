@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.metrics.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for WorkflowMetricsSLADefinition. This utility wraps
  * <code>com.liferay.portal.workflow.metrics.service.impl.WorkflowMetricsSLADefinitionLocalServiceImpl</code> and
@@ -40,9 +36,11 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static
 		com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition
 				addWorkflowMetricsSLADefinition(
-					String calendarKey, String description, long duration,
-					String name, String[] pauseNodeKeys, long processId,
-					String[] startNodeKeys, String[] stopNodeKeys,
+					java.lang.String calendarKey, java.lang.String description,
+					long duration, java.lang.String name,
+					java.lang.String[] pauseNodeKeys, long processId,
+					java.lang.String[] startNodeKeys,
+					java.lang.String[] stopNodeKeys,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -268,7 +266,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static
 		com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition
 			fetchWorkflowMetricsSLADefinitionByUuidAndGroupId(
-				String uuid, long groupId) {
+				java.lang.String uuid, long groupId) {
 
 		return getService().fetchWorkflowMetricsSLADefinitionByUuidAndGroupId(
 			uuid, groupId);
@@ -300,7 +298,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -352,7 +350,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static
 		com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition
 				getWorkflowMetricsSLADefinitionByUuidAndGroupId(
-					String uuid, long groupId)
+					java.lang.String uuid, long groupId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getWorkflowMetricsSLADefinitionByUuidAndGroupId(
@@ -395,7 +393,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 		<com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition>
 			getWorkflowMetricsSLADefinitions(
 				long companyId, boolean active, long processId,
-				String processVersion, int status) {
+				java.lang.String processVersion, int status) {
 
 		return getService().getWorkflowMetricsSLADefinitions(
 			companyId, active, processId, processVersion, status);
@@ -411,7 +409,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition>
 			getWorkflowMetricsSLADefinitions(
-				long companyId, String name, long processId) {
+				long companyId, java.lang.String name, long processId) {
 
 		return getService().getWorkflowMetricsSLADefinitions(
 			companyId, name, processId);
@@ -427,7 +425,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition>
 			getWorkflowMetricsSLADefinitionsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getWorkflowMetricsSLADefinitionsByUuidAndCompanyId(
 			uuid, companyId);
@@ -446,7 +444,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition>
 			getWorkflowMetricsSLADefinitionsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.workflow.metrics.model.
 						WorkflowMetricsSLADefinition> orderByComparator) {
@@ -481,10 +479,12 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	public static
 		com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition
 				updateWorkflowMetricsSLADefinition(
-					long workflowMetricsSLADefinitionId, String calendarKey,
-					String description, long duration, String name,
-					String[] pauseNodeKeys, String[] startNodeKeys,
-					String[] stopNodeKeys, int status,
+					long workflowMetricsSLADefinitionId,
+					java.lang.String calendarKey, java.lang.String description,
+					long duration, java.lang.String name,
+					java.lang.String[] pauseNodeKeys,
+					java.lang.String[] startNodeKeys,
+					java.lang.String[] stopNodeKeys, int status,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -516,29 +516,10 @@ public class WorkflowMetricsSLADefinitionLocalServiceUtil {
 	}
 
 	public static WorkflowMetricsSLADefinitionLocalService getService() {
-		return _serviceTracker.getService();
+		return _workflowMetricsSLADefinitionLocalService;
 	}
 
-	private static ServiceTracker
-		<WorkflowMetricsSLADefinitionLocalService,
-		 WorkflowMetricsSLADefinitionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WorkflowMetricsSLADefinitionLocalService.class);
-
-		ServiceTracker
-			<WorkflowMetricsSLADefinitionLocalService,
-			 WorkflowMetricsSLADefinitionLocalService> serviceTracker =
-				new ServiceTracker
-					<WorkflowMetricsSLADefinitionLocalService,
-					 WorkflowMetricsSLADefinitionLocalService>(
-						 bundle.getBundleContext(),
-						 WorkflowMetricsSLADefinitionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WorkflowMetricsSLADefinitionLocalService
+		_workflowMetricsSLADefinitionLocalService;
 
 }

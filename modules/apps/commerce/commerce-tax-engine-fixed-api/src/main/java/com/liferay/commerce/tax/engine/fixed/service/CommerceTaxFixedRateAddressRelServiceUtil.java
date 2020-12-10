@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.tax.engine.fixed.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceTaxFixedRateAddressRel. This utility wraps
  * <code>com.liferay.commerce.tax.engine.fixed.service.impl.CommerceTaxFixedRateAddressRelServiceImpl</code> and is an
@@ -42,7 +38,7 @@ public class CommerceTaxFixedRateAddressRelServiceUtil {
 			CommerceTaxFixedRateAddressRel addCommerceTaxFixedRateAddressRel(
 					long userId, long groupId, long commerceTaxMethodId,
 					long cpTaxCategoryId, long commerceCountryId,
-					long commerceRegionId, String zip, double rate)
+					long commerceRegionId, java.lang.String zip, double rate)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceTaxFixedRateAddressRel(
@@ -58,8 +54,8 @@ public class CommerceTaxFixedRateAddressRelServiceUtil {
 		com.liferay.commerce.tax.engine.fixed.model.
 			CommerceTaxFixedRateAddressRel addCommerceTaxFixedRateAddressRel(
 					long commerceTaxMethodId, long cpTaxCategoryId,
-					long commerceCountryId, long commerceRegionId, String zip,
-					double rate,
+					long commerceCountryId, long commerceRegionId,
+					java.lang.String zip, double rate,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 				throws com.liferay.portal.kernel.exception.PortalException {
@@ -116,7 +112,7 @@ public class CommerceTaxFixedRateAddressRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -124,8 +120,8 @@ public class CommerceTaxFixedRateAddressRelServiceUtil {
 		com.liferay.commerce.tax.engine.fixed.model.
 			CommerceTaxFixedRateAddressRel updateCommerceTaxFixedRateAddressRel(
 					long commerceTaxFixedRateAddressRelId,
-					long commerceCountryId, long commerceRegionId, String zip,
-					double rate)
+					long commerceCountryId, long commerceRegionId,
+					java.lang.String zip, double rate)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceTaxFixedRateAddressRel(
@@ -134,29 +130,10 @@ public class CommerceTaxFixedRateAddressRelServiceUtil {
 	}
 
 	public static CommerceTaxFixedRateAddressRelService getService() {
-		return _serviceTracker.getService();
+		return _commerceTaxFixedRateAddressRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceTaxFixedRateAddressRelService,
-		 CommerceTaxFixedRateAddressRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceTaxFixedRateAddressRelService.class);
-
-		ServiceTracker
-			<CommerceTaxFixedRateAddressRelService,
-			 CommerceTaxFixedRateAddressRelService> serviceTracker =
-				new ServiceTracker
-					<CommerceTaxFixedRateAddressRelService,
-					 CommerceTaxFixedRateAddressRelService>(
-						 bundle.getBundleContext(),
-						 CommerceTaxFixedRateAddressRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceTaxFixedRateAddressRelService
+		_commerceTaxFixedRateAddressRelService;
 
 }

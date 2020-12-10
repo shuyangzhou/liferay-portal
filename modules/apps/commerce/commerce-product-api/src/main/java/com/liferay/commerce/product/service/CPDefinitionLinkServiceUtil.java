@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDefinitionLink. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDefinitionLinkServiceImpl</code> and is an
@@ -40,7 +36,7 @@ public class CPDefinitionLinkServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionLink
 			addCPDefinitionLink(
 				long cpDefinitionId, long cProductId, double priority,
-				String type,
+				java.lang.String type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -86,7 +82,7 @@ public class CPDefinitionLinkServiceUtil {
 
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
-				getCPDefinitionLinks(long cpDefinitionId, String type)
+				getCPDefinitionLinks(long cpDefinitionId, java.lang.String type)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDefinitionLinks(cpDefinitionId, type);
@@ -95,7 +91,8 @@ public class CPDefinitionLinkServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionLink>
 				getCPDefinitionLinks(
-					long cpDefinitionId, String type, int start, int end,
+					long cpDefinitionId, java.lang.String type, int start,
+					int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.commerce.product.model.CPDefinitionLink>
 							orderByComparator)
@@ -112,7 +109,7 @@ public class CPDefinitionLinkServiceUtil {
 	}
 
 	public static int getCPDefinitionLinksCount(
-			long cpDefinitionId, String type)
+			long cpDefinitionId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDefinitionLinksCount(cpDefinitionId, type);
@@ -123,7 +120,7 @@ public class CPDefinitionLinkServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -138,7 +135,7 @@ public class CPDefinitionLinkServiceUtil {
 	}
 
 	public static void updateCPDefinitionLinks(
-			long cpDefinitionId, long[] cpDefinitionIds2, String type,
+			long cpDefinitionId, long[] cpDefinitionIds2, java.lang.String type,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -147,25 +144,9 @@ public class CPDefinitionLinkServiceUtil {
 	}
 
 	public static CPDefinitionLinkService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionLinkService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionLinkService, CPDefinitionLinkService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CPDefinitionLinkService.class);
-
-		ServiceTracker<CPDefinitionLinkService, CPDefinitionLinkService>
-			serviceTracker =
-				new ServiceTracker
-					<CPDefinitionLinkService, CPDefinitionLinkService>(
-						bundle.getBundleContext(),
-						CPDefinitionLinkService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionLinkService _cpDefinitionLinkService;
 
 }

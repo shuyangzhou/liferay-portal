@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for MBBan. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBBanServiceImpl</code> and is an
@@ -58,26 +54,14 @@ public class MBBanServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static MBBanService getService() {
-		return _serviceTracker.getService();
+		return _mbBanService;
 	}
 
-	private static ServiceTracker<MBBanService, MBBanService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBBanService.class);
-
-		ServiceTracker<MBBanService, MBBanService> serviceTracker =
-			new ServiceTracker<MBBanService, MBBanService>(
-				bundle.getBundleContext(), MBBanService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBBanService _mbBanService;
 
 }

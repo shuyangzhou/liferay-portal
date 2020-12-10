@@ -14,10 +14,6 @@
 
 package com.liferay.sharing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SharingEntry. This utility wraps
  * <code>com.liferay.sharing.service.impl.SharingEntryServiceImpl</code> and is an
@@ -121,7 +117,7 @@ public class SharingEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -155,23 +151,9 @@ public class SharingEntryServiceUtil {
 	}
 
 	public static SharingEntryService getService() {
-		return _serviceTracker.getService();
+		return _sharingEntryService;
 	}
 
-	private static ServiceTracker<SharingEntryService, SharingEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SharingEntryService.class);
-
-		ServiceTracker<SharingEntryService, SharingEntryService>
-			serviceTracker =
-				new ServiceTracker<SharingEntryService, SharingEntryService>(
-					bundle.getBundleContext(), SharingEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SharingEntryService _sharingEntryService;
 
 }

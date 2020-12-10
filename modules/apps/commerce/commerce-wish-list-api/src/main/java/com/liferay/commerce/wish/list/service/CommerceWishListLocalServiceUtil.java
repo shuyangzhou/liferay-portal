@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.wish.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceWishList. This utility wraps
  * <code>com.liferay.commerce.wish.list.service.impl.CommerceWishListLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class CommerceWishListLocalServiceUtil {
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
 			addCommerceWishList(
-				String name, boolean defaultWishList,
+				java.lang.String name, boolean defaultWishList,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -265,7 +261,8 @@ public class CommerceWishListLocalServiceUtil {
 	 * @return the matching commerce wish list, or <code>null</code> if a matching commerce wish list could not be found
 	 */
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
-		fetchCommerceWishListByUuidAndGroupId(String uuid, long groupId) {
+		fetchCommerceWishListByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchCommerceWishListByUuidAndGroupId(
 			uuid, groupId);
@@ -300,7 +297,8 @@ public class CommerceWishListLocalServiceUtil {
 	 * @throws PortalException if a matching commerce wish list could not be found
 	 */
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
-			getCommerceWishListByUuidAndGroupId(String uuid, long groupId)
+			getCommerceWishListByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceWishListByUuidAndGroupId(uuid, groupId);
@@ -358,7 +356,7 @@ public class CommerceWishListLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.wish.list.model.CommerceWishList>
 			getCommerceWishListsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getCommerceWishListsByUuidAndCompanyId(
 			uuid, companyId);
@@ -377,7 +375,7 @@ public class CommerceWishListLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.wish.list.model.CommerceWishList>
 			getCommerceWishListsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.wish.list.model.CommerceWishList>
 						orderByComparator) {
@@ -405,7 +403,7 @@ public class CommerceWishListLocalServiceUtil {
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
 			getDefaultCommerceWishList(
-				long groupId, long userId, String guestUuid)
+				long groupId, long userId, java.lang.String guestUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDefaultCommerceWishList(
@@ -432,7 +430,7 @@ public class CommerceWishListLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -466,7 +464,8 @@ public class CommerceWishListLocalServiceUtil {
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
 			updateCommerceWishList(
-				long commerceWishListId, String name, boolean defaultWishList)
+				long commerceWishListId, java.lang.String name,
+				boolean defaultWishList)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceWishList(
@@ -474,29 +473,10 @@ public class CommerceWishListLocalServiceUtil {
 	}
 
 	public static CommerceWishListLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceWishListLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceWishListLocalService, CommerceWishListLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceWishListLocalService.class);
-
-		ServiceTracker
-			<CommerceWishListLocalService, CommerceWishListLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceWishListLocalService,
-						 CommerceWishListLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceWishListLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceWishListLocalService
+		_commerceWishListLocalService;
 
 }

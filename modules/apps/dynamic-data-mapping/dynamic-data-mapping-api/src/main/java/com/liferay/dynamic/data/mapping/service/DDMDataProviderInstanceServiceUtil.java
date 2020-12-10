@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMDataProviderInstance. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMDataProviderInstanceServiceImpl</code> and is an
@@ -39,11 +35,13 @@ public class DDMDataProviderInstanceServiceUtil {
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance
 			addDataProviderInstance(
-				long groupId, java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				long groupId,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.storage.DDMFormValues
 					ddmFormValues,
-				String type,
+				java.lang.String type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,7 +64,7 @@ public class DDMDataProviderInstanceServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance
-			fetchDataProviderInstanceByUuid(String uuid)
+			fetchDataProviderInstanceByUuid(java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchDataProviderInstanceByUuid(uuid);
@@ -80,7 +78,7 @@ public class DDMDataProviderInstanceServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance
-			getDataProviderInstanceByUuid(String uuid)
+			getDataProviderInstanceByUuid(java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDataProviderInstanceByUuid(uuid);
@@ -106,14 +104,14 @@ public class DDMDataProviderInstanceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance> search(
-			long companyId, long[] groupIds, String keywords, int start,
-			int end,
+			long companyId, long[] groupIds, java.lang.String keywords,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance>
 					orderByComparator) {
@@ -124,8 +122,9 @@ public class DDMDataProviderInstanceServiceUtil {
 
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance> search(
-			long companyId, long[] groupIds, String name, String description,
-			boolean andOperator, int start, int end,
+			long companyId, long[] groupIds, java.lang.String name,
+			java.lang.String description, boolean andOperator, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance>
 					orderByComparator) {
@@ -136,14 +135,14 @@ public class DDMDataProviderInstanceServiceUtil {
 	}
 
 	public static int searchCount(
-		long companyId, long[] groupIds, String keywords) {
+		long companyId, long[] groupIds, java.lang.String keywords) {
 
 		return getService().searchCount(companyId, groupIds, keywords);
 	}
 
 	public static int searchCount(
-		long companyId, long[] groupIds, String name, String description,
-		boolean andOperator) {
+		long companyId, long[] groupIds, java.lang.String name,
+		java.lang.String description, boolean andOperator) {
 
 		return getService().searchCount(
 			companyId, groupIds, name, description, andOperator);
@@ -152,8 +151,9 @@ public class DDMDataProviderInstanceServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance
 			updateDataProviderInstance(
 				long dataProviderInstanceId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.storage.DDMFormValues
 					ddmFormValues,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -165,29 +165,10 @@ public class DDMDataProviderInstanceServiceUtil {
 	}
 
 	public static DDMDataProviderInstanceService getService() {
-		return _serviceTracker.getService();
+		return _ddmDataProviderInstanceService;
 	}
 
-	private static ServiceTracker
-		<DDMDataProviderInstanceService, DDMDataProviderInstanceService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMDataProviderInstanceService.class);
-
-		ServiceTracker
-			<DDMDataProviderInstanceService, DDMDataProviderInstanceService>
-				serviceTracker =
-					new ServiceTracker
-						<DDMDataProviderInstanceService,
-						 DDMDataProviderInstanceService>(
-							 bundle.getBundleContext(),
-							 DDMDataProviderInstanceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMDataProviderInstanceService
+		_ddmDataProviderInstanceService;
 
 }

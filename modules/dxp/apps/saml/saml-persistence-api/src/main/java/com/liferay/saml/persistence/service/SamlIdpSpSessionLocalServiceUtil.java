@@ -14,10 +14,6 @@
 
 package com.liferay.saml.persistence.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SamlIdpSpSession. This utility wraps
  * <code>com.liferay.saml.persistence.service.impl.SamlIdpSpSessionLocalServiceImpl</code> and
@@ -39,8 +35,8 @@ public class SamlIdpSpSessionLocalServiceUtil {
 	 */
 	public static com.liferay.saml.persistence.model.SamlIdpSpSession
 			addSamlIdpSpSession(
-				long samlIdpSsoSessionId, String samlSpEntityId,
-				String nameIdFormat, String nameIdValue,
+				long samlIdpSsoSessionId, java.lang.String samlSpEntityId,
+				java.lang.String nameIdFormat, java.lang.String nameIdValue,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -251,7 +247,7 @@ public class SamlIdpSpSessionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -280,7 +276,8 @@ public class SamlIdpSpSessionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlIdpSpSession
-			getSamlIdpSpSession(long samlIdpSsoSessionId, String samlSpEntityId)
+			getSamlIdpSpSession(
+				long samlIdpSsoSessionId, java.lang.String samlSpEntityId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSamlIdpSpSession(
@@ -322,7 +319,8 @@ public class SamlIdpSpSessionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlIdpSpSession
-			updateModifiedDate(long samlIdpSsoSessionId, String samlSpEntityId)
+			updateModifiedDate(
+				long samlIdpSsoSessionId, java.lang.String samlSpEntityId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateModifiedDate(
@@ -348,29 +346,10 @@ public class SamlIdpSpSessionLocalServiceUtil {
 	}
 
 	public static SamlIdpSpSessionLocalService getService() {
-		return _serviceTracker.getService();
+		return _samlIdpSpSessionLocalService;
 	}
 
-	private static ServiceTracker
-		<SamlIdpSpSessionLocalService, SamlIdpSpSessionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SamlIdpSpSessionLocalService.class);
-
-		ServiceTracker
-			<SamlIdpSpSessionLocalService, SamlIdpSpSessionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SamlIdpSpSessionLocalService,
-						 SamlIdpSpSessionLocalService>(
-							 bundle.getBundleContext(),
-							 SamlIdpSpSessionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SamlIdpSpSessionLocalService
+		_samlIdpSpSessionLocalService;
 
 }

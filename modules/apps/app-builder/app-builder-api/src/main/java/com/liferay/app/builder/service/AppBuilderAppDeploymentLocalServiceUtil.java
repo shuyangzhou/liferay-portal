@@ -14,10 +14,6 @@
 
 package com.liferay.app.builder.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AppBuilderAppDeployment. This utility wraps
  * <code>com.liferay.app.builder.service.impl.AppBuilderAppDeploymentLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class AppBuilderAppDeploymentLocalServiceUtil {
 
 	public static com.liferay.app.builder.model.AppBuilderAppDeployment
 		addAppBuilderAppDeployment(
-			long appBuilderAppId, String settings, String type) {
+			long appBuilderAppId, java.lang.String settings,
+			java.lang.String type) {
 
 		return getService().addAppBuilderAppDeployment(
 			appBuilderAppId, settings, type);
@@ -256,7 +253,8 @@ public class AppBuilderAppDeploymentLocalServiceUtil {
 	}
 
 	public static com.liferay.app.builder.model.AppBuilderAppDeployment
-			getAppBuilderAppDeployment(long appBuilderAppId, String type)
+			getAppBuilderAppDeployment(
+				long appBuilderAppId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAppBuilderAppDeployment(appBuilderAppId, type);
@@ -308,7 +306,7 @@ public class AppBuilderAppDeploymentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -342,29 +340,10 @@ public class AppBuilderAppDeploymentLocalServiceUtil {
 	}
 
 	public static AppBuilderAppDeploymentLocalService getService() {
-		return _serviceTracker.getService();
+		return _appBuilderAppDeploymentLocalService;
 	}
 
-	private static ServiceTracker
-		<AppBuilderAppDeploymentLocalService,
-		 AppBuilderAppDeploymentLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AppBuilderAppDeploymentLocalService.class);
-
-		ServiceTracker
-			<AppBuilderAppDeploymentLocalService,
-			 AppBuilderAppDeploymentLocalService> serviceTracker =
-				new ServiceTracker
-					<AppBuilderAppDeploymentLocalService,
-					 AppBuilderAppDeploymentLocalService>(
-						 bundle.getBundleContext(),
-						 AppBuilderAppDeploymentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppBuilderAppDeploymentLocalService
+		_appBuilderAppDeploymentLocalService;
 
 }

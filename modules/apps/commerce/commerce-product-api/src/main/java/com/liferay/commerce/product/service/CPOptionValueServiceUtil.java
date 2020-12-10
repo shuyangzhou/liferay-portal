@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPOptionValue. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPOptionValueServiceImpl</code> and is an
@@ -40,8 +36,8 @@ public class CPOptionValueServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionValue
 			addCPOptionValue(
 				long cpOptionId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				double priority, String key,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -57,7 +53,7 @@ public class CPOptionValueServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPOptionValue
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -97,15 +93,15 @@ public class CPOptionValueServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.commerce.product.model.CPOptionValue
 			updateCPOptionValue(
 				long cpOptionValueId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				double priority, String key,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -116,8 +112,9 @@ public class CPOptionValueServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionValue
 			upsertCPOptionValue(
 				long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key, String externalReferenceCode,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -127,24 +124,9 @@ public class CPOptionValueServiceUtil {
 	}
 
 	public static CPOptionValueService getService() {
-		return _serviceTracker.getService();
+		return _cpOptionValueService;
 	}
 
-	private static ServiceTracker<CPOptionValueService, CPOptionValueService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CPOptionValueService.class);
-
-		ServiceTracker<CPOptionValueService, CPOptionValueService>
-			serviceTracker =
-				new ServiceTracker<CPOptionValueService, CPOptionValueService>(
-					bundle.getBundleContext(), CPOptionValueService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPOptionValueService _cpOptionValueService;
 
 }

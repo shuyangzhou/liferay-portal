@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPMeasurementUnit. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPMeasurementUnitServiceImpl</code> and is an
@@ -39,8 +35,9 @@ public class CPMeasurementUnitServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CPMeasurementUnit
 			addCPMeasurementUnit(
-				java.util.Map<java.util.Locale, String> nameMap, String key,
-				double rate, boolean primary, double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String key, double rate, boolean primary,
+				double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -111,7 +108,7 @@ public class CPMeasurementUnitServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -125,8 +122,9 @@ public class CPMeasurementUnitServiceUtil {
 	public static com.liferay.commerce.product.model.CPMeasurementUnit
 			updateCPMeasurementUnit(
 				long cpMeasurementUnitId,
-				java.util.Map<java.util.Locale, String> nameMap, String key,
-				double rate, boolean primary, double priority, int type,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String key, double rate, boolean primary,
+				double priority, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -136,25 +134,9 @@ public class CPMeasurementUnitServiceUtil {
 	}
 
 	public static CPMeasurementUnitService getService() {
-		return _serviceTracker.getService();
+		return _cpMeasurementUnitService;
 	}
 
-	private static ServiceTracker
-		<CPMeasurementUnitService, CPMeasurementUnitService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CPMeasurementUnitService.class);
-
-		ServiceTracker<CPMeasurementUnitService, CPMeasurementUnitService>
-			serviceTracker =
-				new ServiceTracker
-					<CPMeasurementUnitService, CPMeasurementUnitService>(
-						bundle.getBundleContext(),
-						CPMeasurementUnitService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPMeasurementUnitService _cpMeasurementUnitService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PasswordPolicyRel. This utility wraps
  * <code>com.liferay.portal.service.impl.PasswordPolicyRelLocalServiceImpl</code> and
@@ -37,7 +35,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.PasswordPolicyRel
 		addPasswordPolicyRel(
-			long passwordPolicyId, String className, long classPK) {
+			long passwordPolicyId, java.lang.String className, long classPK) {
 
 		return getService().addPasswordPolicyRel(
 			passwordPolicyId, className, classPK);
@@ -62,7 +60,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static void addPasswordPolicyRels(
-		long passwordPolicyId, String className, long[] classPKs) {
+		long passwordPolicyId, java.lang.String className, long[] classPKs) {
 
 		getService().addPasswordPolicyRels(
 			passwordPolicyId, className, classPKs);
@@ -109,7 +107,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static void deletePasswordPolicyRel(
-		long passwordPolicyId, String className, long classPK) {
+		long passwordPolicyId, java.lang.String className, long classPK) {
 
 		getService().deletePasswordPolicyRel(
 			passwordPolicyId, className, classPK);
@@ -133,7 +131,9 @@ public class PasswordPolicyRelLocalServiceUtil {
 		return getService().deletePasswordPolicyRel(passwordPolicyRel);
 	}
 
-	public static void deletePasswordPolicyRel(String className, long classPK) {
+	public static void deletePasswordPolicyRel(
+		java.lang.String className, long classPK) {
+
 		getService().deletePasswordPolicyRel(className, classPK);
 	}
 
@@ -142,7 +142,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static void deletePasswordPolicyRels(
-		long passwordPolicyId, String className, long[] classPKs) {
+		long passwordPolicyId, java.lang.String className, long[] classPKs) {
 
 		getService().deletePasswordPolicyRels(
 			passwordPolicyId, className, classPKs);
@@ -257,7 +257,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PasswordPolicyRel
-		fetchPasswordPolicyRel(String className, long classPK) {
+		fetchPasswordPolicyRel(java.lang.String className, long classPK) {
 
 		return getService().fetchPasswordPolicyRel(className, classPK);
 	}
@@ -280,7 +280,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -300,7 +300,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.model.PasswordPolicyRel
 			getPasswordPolicyRel(
-				long passwordPolicyId, String className, long classPK)
+				long passwordPolicyId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPasswordPolicyRel(
@@ -308,7 +308,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PasswordPolicyRel
-			getPasswordPolicyRel(String className, long classPK)
+			getPasswordPolicyRel(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPasswordPolicyRel(className, classPK);
@@ -352,7 +352,7 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static boolean hasPasswordPolicyRel(
-		long passwordPolicyId, String className, long classPK) {
+		long passwordPolicyId, java.lang.String className, long classPK) {
 
 		return getService().hasPasswordPolicyRel(
 			passwordPolicyId, className, classPK);
@@ -377,15 +377,10 @@ public class PasswordPolicyRelLocalServiceUtil {
 	}
 
 	public static PasswordPolicyRelLocalService getService() {
-		if (_service == null) {
-			_service =
-				(PasswordPolicyRelLocalService)PortalBeanLocatorUtil.locate(
-					PasswordPolicyRelLocalService.class.getName());
-		}
-
-		return _service;
+		return _passwordPolicyRelLocalService;
 	}
 
-	private static PasswordPolicyRelLocalService _service;
+	private static volatile PasswordPolicyRelLocalService
+		_passwordPolicyRelLocalService;
 
 }

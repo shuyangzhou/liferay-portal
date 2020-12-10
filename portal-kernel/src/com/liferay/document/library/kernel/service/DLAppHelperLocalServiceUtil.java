@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for DLAppHelper. This utility wraps
  * <code>com.liferay.portlet.documentlibrary.service.impl.DLAppHelperLocalServiceImpl</code> and
@@ -137,7 +135,7 @@ public class DLAppHelperLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -235,7 +233,7 @@ public class DLAppHelperLocalServiceUtil {
 	}
 
 	public static void reindex(
-			long companyId, java.util.List<Long> dlFileEntryIds)
+			long companyId, java.util.List<java.lang.Long> dlFileEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().reindex(companyId, dlFileEntryIds);
@@ -296,7 +294,7 @@ public class DLAppHelperLocalServiceUtil {
 			long userId,
 			com.liferay.portal.kernel.repository.model.FileEntry fileEntry,
 			com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
-			long[] assetCategoryIds, String[] assetTagNames,
+			long[] assetCategoryIds, java.lang.String[] assetTagNames,
 			long[] assetLinkEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -308,7 +306,7 @@ public class DLAppHelperLocalServiceUtil {
 	public static com.liferay.asset.kernel.model.AssetEntry updateAsset(
 			long userId,
 			com.liferay.portal.kernel.repository.model.Folder folder,
-			long[] assetCategoryIds, String[] assetTagNames,
+			long[] assetCategoryIds, java.lang.String[] assetTagNames,
 			long[] assetLinkEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -362,7 +360,8 @@ public class DLAppHelperLocalServiceUtil {
 				latestFileVersion,
 			int oldStatus, int newStatus,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext,
-			java.util.Map<String, java.io.Serializable> workflowContext)
+			java.util.Map<java.lang.String, java.io.Serializable>
+				workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateStatus(
@@ -371,14 +370,9 @@ public class DLAppHelperLocalServiceUtil {
 	}
 
 	public static DLAppHelperLocalService getService() {
-		if (_service == null) {
-			_service = (DLAppHelperLocalService)PortalBeanLocatorUtil.locate(
-				DLAppHelperLocalService.class.getName());
-		}
-
-		return _service;
+		return _dlAppHelperLocalService;
 	}
 
-	private static DLAppHelperLocalService _service;
+	private static volatile DLAppHelperLocalService _dlAppHelperLocalService;
 
 }

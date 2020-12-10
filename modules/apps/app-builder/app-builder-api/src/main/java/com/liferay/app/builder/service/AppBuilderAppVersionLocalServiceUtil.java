@@ -14,10 +14,6 @@
 
 package com.liferay.app.builder.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AppBuilderAppVersion. This utility wraps
  * <code>com.liferay.app.builder.service.impl.AppBuilderAppVersionLocalServiceImpl</code> and
@@ -246,7 +242,8 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	 * @return the matching app builder app version, or <code>null</code> if a matching app builder app version could not be found
 	 */
 	public static com.liferay.app.builder.model.AppBuilderAppVersion
-		fetchAppBuilderAppVersionByUuidAndGroupId(String uuid, long groupId) {
+		fetchAppBuilderAppVersionByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAppBuilderAppVersionByUuidAndGroupId(
 			uuid, groupId);
@@ -279,7 +276,8 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.app.builder.model.AppBuilderAppVersion
-			getAppBuilderAppVersion(long appBuilderAppId, String version)
+			getAppBuilderAppVersion(
+				long appBuilderAppId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAppBuilderAppVersion(appBuilderAppId, version);
@@ -294,7 +292,8 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	 * @throws PortalException if a matching app builder app version could not be found
 	 */
 	public static com.liferay.app.builder.model.AppBuilderAppVersion
-			getAppBuilderAppVersionByUuidAndGroupId(String uuid, long groupId)
+			getAppBuilderAppVersionByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAppBuilderAppVersionByUuidAndGroupId(
@@ -329,7 +328,7 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.app.builder.model.AppBuilderAppVersion>
 			getAppBuilderAppVersionsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getAppBuilderAppVersionsByUuidAndCompanyId(
 			uuid, companyId);
@@ -348,7 +347,7 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.app.builder.model.AppBuilderAppVersion>
 			getAppBuilderAppVersionsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.app.builder.model.AppBuilderAppVersion>
 						orderByComparator) {
@@ -393,7 +392,7 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -426,29 +425,10 @@ public class AppBuilderAppVersionLocalServiceUtil {
 	}
 
 	public static AppBuilderAppVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _appBuilderAppVersionLocalService;
 	}
 
-	private static ServiceTracker
-		<AppBuilderAppVersionLocalService, AppBuilderAppVersionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AppBuilderAppVersionLocalService.class);
-
-		ServiceTracker
-			<AppBuilderAppVersionLocalService, AppBuilderAppVersionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AppBuilderAppVersionLocalService,
-						 AppBuilderAppVersionLocalService>(
-							 bundle.getBundleContext(),
-							 AppBuilderAppVersionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AppBuilderAppVersionLocalService
+		_appBuilderAppVersionLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoTask. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTaskLocalServiceImpl</code> and
@@ -310,7 +306,7 @@ public class KaleoTaskLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -342,25 +338,9 @@ public class KaleoTaskLocalServiceUtil {
 	}
 
 	public static KaleoTaskLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoTaskLocalService;
 	}
 
-	private static ServiceTracker<KaleoTaskLocalService, KaleoTaskLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KaleoTaskLocalService.class);
-
-		ServiceTracker<KaleoTaskLocalService, KaleoTaskLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoTaskLocalService, KaleoTaskLocalService>(
-						bundle.getBundleContext(), KaleoTaskLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoTaskLocalService _kaleoTaskLocalService;
 
 }

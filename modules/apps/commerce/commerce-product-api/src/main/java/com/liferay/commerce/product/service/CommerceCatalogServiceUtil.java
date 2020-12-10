@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceCatalog. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CommerceCatalogServiceImpl</code> and is an
@@ -39,8 +35,9 @@ public class CommerceCatalogServiceUtil {
 	 */
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			addCommerceCatalog(
-				String name, String commerceCurrencyCode,
-				String catalogDefaultLanguageId, String externalReferenceCode,
+				java.lang.String name, java.lang.String commerceCurrencyCode,
+				java.lang.String catalogDefaultLanguageId,
+				java.lang.String externalReferenceCode,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -58,7 +55,7 @@ public class CommerceCatalogServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -98,15 +95,15 @@ public class CommerceCatalogServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.commerce.product.model.CommerceCatalog>
 				searchCommerceCatalogs(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceCatalogs(
@@ -114,7 +111,7 @@ public class CommerceCatalogServiceUtil {
 	}
 
 	public static int searchCommerceCatalogsCount(
-			long companyId, String keywords)
+			long companyId, java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCommerceCatalogsCount(companyId, keywords);
@@ -122,8 +119,9 @@ public class CommerceCatalogServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			updateCommerceCatalog(
-				long commerceCatalogId, String name,
-				String commerceCurrencyCode, String catalogDefaultLanguageId)
+				long commerceCatalogId, java.lang.String name,
+				java.lang.String commerceCurrencyCode,
+				java.lang.String catalogDefaultLanguageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceCatalog(
@@ -133,7 +131,7 @@ public class CommerceCatalogServiceUtil {
 
 	public static com.liferay.commerce.product.model.CommerceCatalog
 			updateCommerceCatalogExternalReferenceCode(
-				long commerceCatalogId, String externalReferenceCode)
+				long commerceCatalogId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceCatalogExternalReferenceCode(
@@ -141,25 +139,9 @@ public class CommerceCatalogServiceUtil {
 	}
 
 	public static CommerceCatalogService getService() {
-		return _serviceTracker.getService();
+		return _commerceCatalogService;
 	}
 
-	private static ServiceTracker
-		<CommerceCatalogService, CommerceCatalogService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceCatalogService.class);
-
-		ServiceTracker<CommerceCatalogService, CommerceCatalogService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceCatalogService, CommerceCatalogService>(
-						bundle.getBundleContext(), CommerceCatalogService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceCatalogService _commerceCatalogService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Country. This utility wraps
  * <code>com.liferay.portal.service.impl.CountryLocalServiceImpl</code> and
@@ -53,10 +51,11 @@ public class CountryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Country addCountry(
-			String a2, String a3, boolean active, boolean billingAllowed,
-			String idd, String name, String number, double position,
-			boolean shippingAllowed, boolean subjectToVAT, boolean zipRequired,
-			java.util.Map<String, String> titleMap,
+			java.lang.String a2, java.lang.String a3, boolean active,
+			boolean billingAllowed, java.lang.String idd, java.lang.String name,
+			java.lang.String number, double position, boolean shippingAllowed,
+			boolean subjectToVAT, boolean zipRequired,
+			java.util.Map<java.lang.String, java.lang.String> titleMap,
 			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -242,13 +241,13 @@ public class CountryLocalServiceUtil {
 	 * @return the matching country, or <code>null</code> if a matching country could not be found
 	 */
 	public static com.liferay.portal.kernel.model.Country
-		fetchCountryByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCountryByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().fetchCountryByUuidAndCompanyId(uuid, companyId);
 	}
 
 	public static com.liferay.portal.kernel.model.CountryLocalization
-		fetchCountryLocalization(long countryId, String languageId) {
+		fetchCountryLocalization(long countryId, java.lang.String languageId) {
 
 		return getService().fetchCountryLocalization(countryId, languageId);
 	}
@@ -318,14 +317,14 @@ public class CountryLocalServiceUtil {
 	 * @throws PortalException if a matching country could not be found
 	 */
 	public static com.liferay.portal.kernel.model.Country
-			getCountryByUuidAndCompanyId(String uuid, long companyId)
+			getCountryByUuidAndCompanyId(java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCountryByUuidAndCompanyId(uuid, companyId);
 	}
 
 	public static com.liferay.portal.kernel.model.CountryLocalization
-			getCountryLocalization(long countryId, String languageId)
+			getCountryLocalization(long countryId, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCountryLocalization(countryId, languageId);
@@ -358,7 +357,7 @@ public class CountryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -391,7 +390,7 @@ public class CountryLocalServiceUtil {
 	public static com.liferay.portal.kernel.model.CountryLocalization
 			updateCountryLocalization(
 				com.liferay.portal.kernel.model.Country country,
-				String languageId, String title)
+				java.lang.String languageId, java.lang.String title)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCountryLocalization(
@@ -402,21 +401,16 @@ public class CountryLocalServiceUtil {
 		<com.liferay.portal.kernel.model.CountryLocalization>
 				updateCountryLocalizations(
 					com.liferay.portal.kernel.model.Country country,
-					java.util.Map<String, String> titleMap)
+					java.util.Map<java.lang.String, java.lang.String> titleMap)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCountryLocalizations(country, titleMap);
 	}
 
 	public static CountryLocalService getService() {
-		if (_service == null) {
-			_service = (CountryLocalService)PortalBeanLocatorUtil.locate(
-				CountryLocalService.class.getName());
-		}
-
-		return _service;
+		return _countryLocalService;
 	}
 
-	private static CountryLocalService _service;
+	private static volatile CountryLocalService _countryLocalService;
 
 }

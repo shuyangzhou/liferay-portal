@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.lists.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDLRecordVersion. This utility wraps
  * <code>com.liferay.dynamic.data.lists.service.impl.DDLRecordVersionLocalServiceImpl</code> and
@@ -234,7 +230,7 @@ public class DDLRecordVersionLocalServiceUtil {
 	 */
 	public static com.liferay.dynamic.data.lists.model.DDLRecordVersion
 		fetchLatestRecordVersion(
-			long userId, long recordSetId, String recordSetVersion,
+			long userId, long recordSetId, java.lang.String recordSetVersion,
 			int status) {
 
 		return getService().fetchLatestRecordVersion(
@@ -314,7 +310,7 @@ public class DDLRecordVersionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -351,7 +347,7 @@ public class DDLRecordVersionLocalServiceUtil {
 	 * @throws PortalException if a matching record set could not be found
 	 */
 	public static com.liferay.dynamic.data.lists.model.DDLRecordVersion
-			getRecordVersion(long recordId, String version)
+			getRecordVersion(long recordId, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRecordVersion(recordId, version);
@@ -418,29 +414,10 @@ public class DDLRecordVersionLocalServiceUtil {
 	}
 
 	public static DDLRecordVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddlRecordVersionLocalService;
 	}
 
-	private static ServiceTracker
-		<DDLRecordVersionLocalService, DDLRecordVersionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDLRecordVersionLocalService.class);
-
-		ServiceTracker
-			<DDLRecordVersionLocalService, DDLRecordVersionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DDLRecordVersionLocalService,
-						 DDLRecordVersionLocalService>(
-							 bundle.getBundleContext(),
-							 DDLRecordVersionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDLRecordVersionLocalService
+		_ddlRecordVersionLocalService;
 
 }

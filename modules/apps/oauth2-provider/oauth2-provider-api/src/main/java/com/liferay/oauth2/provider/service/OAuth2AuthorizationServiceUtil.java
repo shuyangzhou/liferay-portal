@@ -14,10 +14,6 @@
 
 package com.liferay.oauth2.provider.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for OAuth2Authorization. This utility wraps
  * <code>com.liferay.oauth2.provider.service.impl.OAuth2AuthorizationServiceImpl</code> and is an
@@ -63,7 +59,7 @@ public class OAuth2AuthorizationServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -93,27 +89,10 @@ public class OAuth2AuthorizationServiceUtil {
 	}
 
 	public static OAuth2AuthorizationService getService() {
-		return _serviceTracker.getService();
+		return _oAuth2AuthorizationService;
 	}
 
-	private static ServiceTracker
-		<OAuth2AuthorizationService, OAuth2AuthorizationService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			OAuth2AuthorizationService.class);
-
-		ServiceTracker<OAuth2AuthorizationService, OAuth2AuthorizationService>
-			serviceTracker =
-				new ServiceTracker
-					<OAuth2AuthorizationService, OAuth2AuthorizationService>(
-						bundle.getBundleContext(),
-						OAuth2AuthorizationService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuth2AuthorizationService
+		_oAuth2AuthorizationService;
 
 }

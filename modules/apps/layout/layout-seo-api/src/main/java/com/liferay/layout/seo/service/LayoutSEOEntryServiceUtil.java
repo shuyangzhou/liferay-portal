@@ -14,10 +14,6 @@
 
 package com.liferay.layout.seo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for LayoutSEOEntry. This utility wraps
  * <code>com.liferay.layout.seo.service.impl.LayoutSEOEntryServiceImpl</code> and is an
@@ -43,7 +39,7 @@ public class LayoutSEOEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -51,12 +47,16 @@ public class LayoutSEOEntryServiceUtil {
 			updateLayoutSEOEntry(
 				long groupId, boolean privateLayout, long layoutId,
 				boolean canonicalURLEnabled,
-				java.util.Map<java.util.Locale, String> canonicalURLMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					canonicalURLMap,
 				boolean openGraphDescriptionEnabled,
-				java.util.Map<java.util.Locale, String> openGraphDescriptionMap,
-				java.util.Map<java.util.Locale, String> openGraphImageAltMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphDescriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphImageAltMap,
 				long openGraphImageFileEntryId, boolean openGraphTitleEnabled,
-				java.util.Map<java.util.Locale, String> openGraphTitleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					openGraphTitleMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -72,7 +72,8 @@ public class LayoutSEOEntryServiceUtil {
 			updateLayoutSEOEntry(
 				long groupId, boolean privateLayout, long layoutId,
 				boolean enabledCanonicalURLMap,
-				java.util.Map<java.util.Locale, String> canonicalURLMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					canonicalURLMap,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -82,25 +83,9 @@ public class LayoutSEOEntryServiceUtil {
 	}
 
 	public static LayoutSEOEntryService getService() {
-		return _serviceTracker.getService();
+		return _layoutSEOEntryService;
 	}
 
-	private static ServiceTracker<LayoutSEOEntryService, LayoutSEOEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LayoutSEOEntryService.class);
-
-		ServiceTracker<LayoutSEOEntryService, LayoutSEOEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<LayoutSEOEntryService, LayoutSEOEntryService>(
-						bundle.getBundleContext(), LayoutSEOEntryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutSEOEntryService _layoutSEOEntryService;
 
 }

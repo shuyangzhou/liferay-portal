@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for PluginSetting. This utility wraps
  * <code>com.liferay.portal.service.impl.PluginSettingServiceImpl</code> and is an
@@ -41,14 +39,15 @@ public class PluginSettingServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.model.PluginSetting
 			updatePluginSetting(
-				long companyId, String pluginId, String pluginType,
-				String roles, boolean active)
+				long companyId, java.lang.String pluginId,
+				java.lang.String pluginType, java.lang.String roles,
+				boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updatePluginSetting(
@@ -56,14 +55,9 @@ public class PluginSettingServiceUtil {
 	}
 
 	public static PluginSettingService getService() {
-		if (_service == null) {
-			_service = (PluginSettingService)PortalBeanLocatorUtil.locate(
-				PluginSettingService.class.getName());
-		}
-
-		return _service;
+		return _pluginSettingService;
 	}
 
-	private static PluginSettingService _service;
+	private static volatile PluginSettingService _pluginSettingService;
 
 }

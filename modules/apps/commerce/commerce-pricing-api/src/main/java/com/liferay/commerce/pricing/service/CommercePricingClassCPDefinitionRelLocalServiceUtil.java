@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.pricing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommercePricingClassCPDefinitionRel. This utility wraps
  * <code>com.liferay.commerce.pricing.service.impl.CommercePricingClassCPDefinitionRelLocalServiceImpl</code> and
@@ -356,7 +352,8 @@ public class CommercePricingClassCPDefinitionRelLocalServiceUtil {
 	}
 
 	public static int getCommercePricingClassCPDefinitionRelsCount(
-		long commercePricingClassId, String name, String languageId) {
+		long commercePricingClassId, java.lang.String name,
+		java.lang.String languageId) {
 
 		return getService().getCommercePricingClassCPDefinitionRelsCount(
 			commercePricingClassId, name, languageId);
@@ -378,7 +375,7 @@ public class CommercePricingClassCPDefinitionRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -395,8 +392,8 @@ public class CommercePricingClassCPDefinitionRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.pricing.model.CommercePricingClassCPDefinitionRel>
 			searchByCommercePricingClassId(
-				long commercePricingClassId, String name, String languageId,
-				int start, int end) {
+				long commercePricingClassId, java.lang.String name,
+				java.lang.String languageId, int start, int end) {
 
 		return getService().searchByCommercePricingClassId(
 			commercePricingClassId, name, languageId, start, end);
@@ -424,30 +421,10 @@ public class CommercePricingClassCPDefinitionRelLocalServiceUtil {
 	}
 
 	public static CommercePricingClassCPDefinitionRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commercePricingClassCPDefinitionRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommercePricingClassCPDefinitionRelLocalService,
-		 CommercePricingClassCPDefinitionRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePricingClassCPDefinitionRelLocalService.class);
-
-		ServiceTracker
-			<CommercePricingClassCPDefinitionRelLocalService,
-			 CommercePricingClassCPDefinitionRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommercePricingClassCPDefinitionRelLocalService,
-					 CommercePricingClassCPDefinitionRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommercePricingClassCPDefinitionRelLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePricingClassCPDefinitionRelLocalService
+		_commercePricingClassCPDefinitionRelLocalService;
 
 }

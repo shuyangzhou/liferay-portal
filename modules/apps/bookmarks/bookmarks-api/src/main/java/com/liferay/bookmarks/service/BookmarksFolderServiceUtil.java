@@ -14,10 +14,6 @@
 
 package com.liferay.bookmarks.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for BookmarksFolder. This utility wraps
  * <code>com.liferay.bookmarks.service.impl.BookmarksFolderServiceImpl</code> and is an
@@ -38,7 +34,8 @@ public class BookmarksFolderServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.bookmarks.service.impl.BookmarksFolderServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.bookmarks.model.BookmarksFolder addFolder(
-			long parentFolderId, String name, String description,
+			long parentFolderId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,7 +63,8 @@ public class BookmarksFolderServiceUtil {
 		return getService().getFolder(folderId);
 	}
 
-	public static java.util.List<Long> getFolderIds(long groupId, long folderId)
+	public static java.util.List<java.lang.Long> getFolderIds(
+			long groupId, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFolderIds(groupId, folderId);
@@ -98,19 +96,19 @@ public class BookmarksFolderServiceUtil {
 			groupId, parentFolderId, status, start, end);
 	}
 
-	public static java.util.List<Object> getFoldersAndEntries(
+	public static java.util.List<java.lang.Object> getFoldersAndEntries(
 		long groupId, long folderId) {
 
 		return getService().getFoldersAndEntries(groupId, folderId);
 	}
 
-	public static java.util.List<Object> getFoldersAndEntries(
+	public static java.util.List<java.lang.Object> getFoldersAndEntries(
 		long groupId, long folderId, int status) {
 
 		return getService().getFoldersAndEntries(groupId, folderId, status);
 	}
 
-	public static java.util.List<Object> getFoldersAndEntries(
+	public static java.util.List<java.lang.Object> getFoldersAndEntries(
 		long groupId, long folderId, int status, int start, int end) {
 
 		return getService().getFoldersAndEntries(
@@ -143,18 +141,18 @@ public class BookmarksFolderServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static void getSubfolderIds(
-		java.util.List<Long> folderIds, long groupId, long folderId,
+		java.util.List<java.lang.Long> folderIds, long groupId, long folderId,
 		boolean recurse) {
 
 		getService().getSubfolderIds(folderIds, groupId, folderId, recurse);
 	}
 
-	public static java.util.List<Long> getSubfolderIds(
+	public static java.util.List<java.lang.Long> getSubfolderIds(
 		long groupId, long folderId, boolean recurse) {
 
 		return getService().getSubfolderIds(groupId, folderId, recurse);
@@ -206,7 +204,8 @@ public class BookmarksFolderServiceUtil {
 	}
 
 	public static com.liferay.bookmarks.model.BookmarksFolder updateFolder(
-			long folderId, long parentFolderId, String name, String description,
+			long folderId, long parentFolderId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -215,25 +214,9 @@ public class BookmarksFolderServiceUtil {
 	}
 
 	public static BookmarksFolderService getService() {
-		return _serviceTracker.getService();
+		return _bookmarksFolderService;
 	}
 
-	private static ServiceTracker
-		<BookmarksFolderService, BookmarksFolderService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(BookmarksFolderService.class);
-
-		ServiceTracker<BookmarksFolderService, BookmarksFolderService>
-			serviceTracker =
-				new ServiceTracker
-					<BookmarksFolderService, BookmarksFolderService>(
-						bundle.getBundleContext(), BookmarksFolderService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BookmarksFolderService _bookmarksFolderService;
 
 }

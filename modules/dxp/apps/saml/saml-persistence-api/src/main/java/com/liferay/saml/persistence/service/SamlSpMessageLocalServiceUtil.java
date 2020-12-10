@@ -14,10 +14,6 @@
 
 package com.liferay.saml.persistence.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SamlSpMessage. This utility wraps
  * <code>com.liferay.saml.persistence.service.impl.SamlSpMessageLocalServiceImpl</code> and
@@ -57,8 +53,8 @@ public class SamlSpMessageLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlSpMessage
 		addSamlSpMessage(
-			String samlIdpEntityId, String samlIdpResponseKey,
-			java.util.Date expirationDate,
+			java.lang.String samlIdpEntityId,
+			java.lang.String samlIdpResponseKey, java.util.Date expirationDate,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().addSamlSpMessage(
@@ -236,7 +232,9 @@ public class SamlSpMessageLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlSpMessage
-		fetchSamlSpMessage(String samlIdpEntityId, String samlIdpResponseKey) {
+		fetchSamlSpMessage(
+			java.lang.String samlIdpEntityId,
+			java.lang.String samlIdpResponseKey) {
 
 		return getService().fetchSamlSpMessage(
 			samlIdpEntityId, samlIdpResponseKey);
@@ -260,7 +258,7 @@ public class SamlSpMessageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -289,7 +287,9 @@ public class SamlSpMessageLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlSpMessage
-			getSamlSpMessage(String samlIdpEntityId, String samlIdpResponseKey)
+			getSamlSpMessage(
+				java.lang.String samlIdpEntityId,
+				java.lang.String samlIdpResponseKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSamlSpMessage(
@@ -341,26 +341,10 @@ public class SamlSpMessageLocalServiceUtil {
 	}
 
 	public static SamlSpMessageLocalService getService() {
-		return _serviceTracker.getService();
+		return _samlSpMessageLocalService;
 	}
 
-	private static ServiceTracker
-		<SamlSpMessageLocalService, SamlSpMessageLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SamlSpMessageLocalService.class);
-
-		ServiceTracker<SamlSpMessageLocalService, SamlSpMessageLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<SamlSpMessageLocalService, SamlSpMessageLocalService>(
-						bundle.getBundleContext(),
-						SamlSpMessageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SamlSpMessageLocalService
+		_samlSpMessageLocalService;
 
 }

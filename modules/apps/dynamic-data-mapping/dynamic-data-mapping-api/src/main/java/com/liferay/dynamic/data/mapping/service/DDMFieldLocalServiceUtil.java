@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMField. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMFieldLocalServiceImpl</code> and
@@ -287,8 +283,8 @@ public class DDMFieldLocalServiceUtil {
 	}
 
 	public static int getDDMFormValuesCount(
-		long companyId, String fieldType,
-		java.util.Map<String, Object> attributes) {
+		long companyId, java.lang.String fieldType,
+		java.util.Map<java.lang.String, java.lang.Object> attributes) {
 
 		return getService().getDDMFormValuesCount(
 			companyId, fieldType, attributes);
@@ -306,7 +302,7 @@ public class DDMFieldLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -347,24 +343,9 @@ public class DDMFieldLocalServiceUtil {
 	}
 
 	public static DDMFieldLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmFieldLocalService;
 	}
 
-	private static ServiceTracker<DDMFieldLocalService, DDMFieldLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDMFieldLocalService.class);
-
-		ServiceTracker<DDMFieldLocalService, DDMFieldLocalService>
-			serviceTracker =
-				new ServiceTracker<DDMFieldLocalService, DDMFieldLocalService>(
-					bundle.getBundleContext(), DDMFieldLocalService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMFieldLocalService _ddmFieldLocalService;
 
 }

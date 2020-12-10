@@ -14,10 +14,6 @@
 
 package com.liferay.push.notifications.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for PushNotificationsDevice. This utility wraps
  * <code>com.liferay.push.notifications.service.impl.PushNotificationsDeviceServiceImpl</code> and is an
@@ -38,7 +34,8 @@ public class PushNotificationsDeviceServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.push.notifications.service.impl.PushNotificationsDeviceServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.push.notifications.model.PushNotificationsDevice
-			addPushNotificationsDevice(String token, String platform)
+			addPushNotificationsDevice(
+				java.lang.String token, java.lang.String platform)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addPushNotificationsDevice(token, platform);
@@ -53,7 +50,7 @@ public class PushNotificationsDeviceServiceUtil {
 	}
 
 	public static com.liferay.push.notifications.model.PushNotificationsDevice
-			deletePushNotificationsDevice(String token)
+			deletePushNotificationsDevice(java.lang.String token)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().deletePushNotificationsDevice(token);
@@ -64,47 +61,30 @@ public class PushNotificationsDeviceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void sendPushNotification(long[] toUserIds, String payload)
+	public static void sendPushNotification(
+			long[] toUserIds, java.lang.String payload)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().sendPushNotification(toUserIds, payload);
 	}
 
 	public static void sendPushNotification(
-			String platform, java.util.List<String> tokens, String payload)
+			java.lang.String platform, java.util.List<java.lang.String> tokens,
+			java.lang.String payload)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().sendPushNotification(platform, tokens, payload);
 	}
 
 	public static PushNotificationsDeviceService getService() {
-		return _serviceTracker.getService();
+		return _pushNotificationsDeviceService;
 	}
 
-	private static ServiceTracker
-		<PushNotificationsDeviceService, PushNotificationsDeviceService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			PushNotificationsDeviceService.class);
-
-		ServiceTracker
-			<PushNotificationsDeviceService, PushNotificationsDeviceService>
-				serviceTracker =
-					new ServiceTracker
-						<PushNotificationsDeviceService,
-						 PushNotificationsDeviceService>(
-							 bundle.getBundleContext(),
-							 PushNotificationsDeviceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile PushNotificationsDeviceService
+		_pushNotificationsDeviceService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.calendar.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CalendarResource. This utility wraps
  * <code>com.liferay.calendar.service.impl.CalendarResourceServiceImpl</code> and is an
@@ -39,9 +35,11 @@ public class CalendarResourceServiceUtil {
 	 */
 	public static com.liferay.calendar.model.CalendarResource
 			addCalendarResource(
-				long groupId, long classNameId, long classPK, String classUuid,
-				String code, java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				long groupId, long classNameId, long classPK,
+				java.lang.String classUuid, java.lang.String code,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -77,15 +75,15 @@ public class CalendarResourceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List<com.liferay.calendar.model.CalendarResource>
 		search(
 			long companyId, long[] groupIds, long[] classNameIds,
-			String keywords, boolean active, boolean andOperator, int start,
-			int end,
+			java.lang.String keywords, boolean active, boolean andOperator,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.calendar.model.CalendarResource>
 					orderByComparator) {
@@ -97,9 +95,10 @@ public class CalendarResourceServiceUtil {
 
 	public static java.util.List<com.liferay.calendar.model.CalendarResource>
 		search(
-			long companyId, long[] groupIds, long[] classNameIds, String code,
-			String name, String description, boolean active,
-			boolean andOperator, int start, int end,
+			long companyId, long[] groupIds, long[] classNameIds,
+			java.lang.String code, java.lang.String name,
+			java.lang.String description, boolean active, boolean andOperator,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.calendar.model.CalendarResource>
 					orderByComparator) {
@@ -110,16 +109,17 @@ public class CalendarResourceServiceUtil {
 	}
 
 	public static int searchCount(
-		long companyId, long[] groupIds, long[] classNameIds, String keywords,
-		boolean active) {
+		long companyId, long[] groupIds, long[] classNameIds,
+		java.lang.String keywords, boolean active) {
 
 		return getService().searchCount(
 			companyId, groupIds, classNameIds, keywords, active);
 	}
 
 	public static int searchCount(
-		long companyId, long[] groupIds, long[] classNameIds, String code,
-		String name, String description, boolean active, boolean andOperator) {
+		long companyId, long[] groupIds, long[] classNameIds,
+		java.lang.String code, java.lang.String name,
+		java.lang.String description, boolean active, boolean andOperator) {
 
 		return getService().searchCount(
 			companyId, groupIds, classNameIds, code, name, description, active,
@@ -129,8 +129,9 @@ public class CalendarResourceServiceUtil {
 	public static com.liferay.calendar.model.CalendarResource
 			updateCalendarResource(
 				long calendarResourceId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -141,25 +142,9 @@ public class CalendarResourceServiceUtil {
 	}
 
 	public static CalendarResourceService getService() {
-		return _serviceTracker.getService();
+		return _calendarResourceService;
 	}
 
-	private static ServiceTracker
-		<CalendarResourceService, CalendarResourceService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CalendarResourceService.class);
-
-		ServiceTracker<CalendarResourceService, CalendarResourceService>
-			serviceTracker =
-				new ServiceTracker
-					<CalendarResourceService, CalendarResourceService>(
-						bundle.getBundleContext(),
-						CalendarResourceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CalendarResourceService _calendarResourceService;
 
 }

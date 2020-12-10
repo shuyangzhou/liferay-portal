@@ -14,10 +14,6 @@
 
 package com.liferay.depot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DepotEntryGroupRel. This utility wraps
  * <code>com.liferay.depot.service.impl.DepotEntryGroupRelServiceImpl</code> and is an
@@ -76,7 +72,7 @@ public class DepotEntryGroupRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -97,26 +93,10 @@ public class DepotEntryGroupRelServiceUtil {
 	}
 
 	public static DepotEntryGroupRelService getService() {
-		return _serviceTracker.getService();
+		return _depotEntryGroupRelService;
 	}
 
-	private static ServiceTracker
-		<DepotEntryGroupRelService, DepotEntryGroupRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DepotEntryGroupRelService.class);
-
-		ServiceTracker<DepotEntryGroupRelService, DepotEntryGroupRelService>
-			serviceTracker =
-				new ServiceTracker
-					<DepotEntryGroupRelService, DepotEntryGroupRelService>(
-						bundle.getBundleContext(),
-						DepotEntryGroupRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DepotEntryGroupRelService
+		_depotEntryGroupRelService;
 
 }

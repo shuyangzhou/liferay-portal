@@ -16,6 +16,7 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceOrderNote;
 import com.liferay.commerce.service.CommerceOrderNoteService;
+import com.liferay.commerce.service.CommerceOrderNoteServiceUtil;
 import com.liferay.commerce.service.persistence.CPDAvailabilityEstimatePersistence;
 import com.liferay.commerce.service.persistence.CPDefinitionInventoryPersistence;
 import com.liferay.commerce.service.persistence.CommerceAddressPersistence;
@@ -50,6 +51,8 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -70,7 +73,7 @@ public abstract class CommerceOrderNoteServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceOrderNoteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceOrderNoteServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceOrderNoteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceOrderNoteServiceUtil</code>.
 	 */
 
 	/**
@@ -1367,9 +1370,11 @@ public abstract class CommerceOrderNoteServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(commerceOrderNoteService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1412,6 +1417,22 @@ public abstract class CommerceOrderNoteServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		CommerceOrderNoteService commerceOrderNoteService) {
+
+		try {
+			Field field = CommerceOrderNoteServiceUtil.class.getDeclaredField(
+				"_commerceOrderNoteService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceOrderNoteService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

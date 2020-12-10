@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMFormInstanceVersion. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMFormInstanceVersionServiceImpl</code> and is an
@@ -83,34 +79,15 @@ public class DDMFormInstanceVersionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static DDMFormInstanceVersionService getService() {
-		return _serviceTracker.getService();
+		return _ddmFormInstanceVersionService;
 	}
 
-	private static ServiceTracker
-		<DDMFormInstanceVersionService, DDMFormInstanceVersionService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMFormInstanceVersionService.class);
-
-		ServiceTracker
-			<DDMFormInstanceVersionService, DDMFormInstanceVersionService>
-				serviceTracker =
-					new ServiceTracker
-						<DDMFormInstanceVersionService,
-						 DDMFormInstanceVersionService>(
-							 bundle.getBundleContext(),
-							 DDMFormInstanceVersionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMFormInstanceVersionService
+		_ddmFormInstanceVersionService;
 
 }

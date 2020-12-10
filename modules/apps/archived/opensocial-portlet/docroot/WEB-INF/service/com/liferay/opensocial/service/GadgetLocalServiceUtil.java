@@ -14,8 +14,6 @@
 
 package com.liferay.opensocial.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Gadget. This utility wraps
  * <code>com.liferay.opensocial.service.impl.GadgetLocalServiceImpl</code> and
@@ -53,7 +51,8 @@ public class GadgetLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.Gadget addGadget(
-			long companyId, String url, String portletCategoryNames,
+			long companyId, java.lang.String url,
+			java.lang.String portletCategoryNames,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -136,7 +135,7 @@ public class GadgetLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static void destroyGadget(String uuid, long companyId) {
+	public static void destroyGadget(java.lang.String uuid, long companyId) {
 		getService().destroyGadget(uuid, companyId);
 	}
 
@@ -242,7 +241,7 @@ public class GadgetLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.Gadget fetchGadget(
-		long companyId, String url) {
+		long companyId, java.lang.String url) {
 
 		return getService().fetchGadget(companyId, url);
 	}
@@ -255,7 +254,7 @@ public class GadgetLocalServiceUtil {
 	 * @return the matching gadget, or <code>null</code> if a matching gadget could not be found
 	 */
 	public static com.liferay.opensocial.model.Gadget
-		fetchGadgetByUuidAndCompanyId(String uuid, long companyId) {
+		fetchGadgetByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().fetchGadgetByUuidAndCompanyId(uuid, companyId);
 	}
@@ -288,14 +287,14 @@ public class GadgetLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.Gadget getGadget(
-			long companyId, String url)
+			long companyId, java.lang.String url)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGadget(companyId, url);
 	}
 
 	public static com.liferay.opensocial.model.Gadget getGadget(
-			String uuid, long companyId)
+			java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGadget(uuid, companyId);
@@ -310,7 +309,7 @@ public class GadgetLocalServiceUtil {
 	 * @throws PortalException if a matching gadget could not be found
 	 */
 	public static com.liferay.opensocial.model.Gadget
-			getGadgetByUuidAndCompanyId(String uuid, long companyId)
+			getGadgetByUuidAndCompanyId(java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getGadgetByUuidAndCompanyId(uuid, companyId);
@@ -364,7 +363,7 @@ public class GadgetLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -379,8 +378,8 @@ public class GadgetLocalServiceUtil {
 	}
 
 	public static void initGadget(
-			String uuid, long companyId, long gadgetId, String name,
-			String portletCategoryNames)
+			java.lang.String uuid, long companyId, long gadgetId,
+			java.lang.String name, java.lang.String portletCategoryNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().initGadget(
@@ -410,26 +409,20 @@ public class GadgetLocalServiceUtil {
 	}
 
 	public static com.liferay.opensocial.model.Gadget updateGadget(
-			long gadgetId, String portletCategoryNames)
+			long gadgetId, java.lang.String portletCategoryNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateGadget(gadgetId, portletCategoryNames);
 	}
 
 	public static void clearService() {
-		_service = null;
+		_gadgetLocalService = null;
 	}
 
 	public static GadgetLocalService getService() {
-		if (_service == null) {
-			_service = (GadgetLocalService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				GadgetLocalService.class.getName());
-		}
-
-		return _service;
+		return _gadgetLocalService;
 	}
 
-	private static GadgetLocalService _service;
+	private static volatile GadgetLocalService _gadgetLocalService;
 
 }

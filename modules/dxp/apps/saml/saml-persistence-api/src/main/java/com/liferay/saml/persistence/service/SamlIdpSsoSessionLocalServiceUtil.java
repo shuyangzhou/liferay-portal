@@ -14,10 +14,6 @@
 
 package com.liferay.saml.persistence.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SamlIdpSsoSession. This utility wraps
  * <code>com.liferay.saml.persistence.service.impl.SamlIdpSsoSessionLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class SamlIdpSsoSessionLocalServiceUtil {
 
 	public static com.liferay.saml.persistence.model.SamlIdpSsoSession
 			addSamlIdpSsoSession(
-				String samlIdpSsoSessionKey,
+				java.lang.String samlIdpSsoSessionKey,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -231,7 +227,7 @@ public class SamlIdpSsoSessionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlIdpSsoSession
-		fetchSamlIdpSso(String samlIdpSsoSessionKey) {
+		fetchSamlIdpSso(java.lang.String samlIdpSsoSessionKey) {
 
 		return getService().fetchSamlIdpSso(samlIdpSsoSessionKey);
 	}
@@ -260,7 +256,7 @@ public class SamlIdpSsoSessionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -275,7 +271,7 @@ public class SamlIdpSsoSessionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlIdpSsoSession
-			getSamlIdpSso(String samlIdpSsoSessionKey)
+			getSamlIdpSso(java.lang.String samlIdpSsoSessionKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSamlIdpSso(samlIdpSsoSessionKey);
@@ -323,7 +319,7 @@ public class SamlIdpSsoSessionLocalServiceUtil {
 	}
 
 	public static com.liferay.saml.persistence.model.SamlIdpSsoSession
-			updateModifiedDate(String samlIdpSsoSessionKey)
+			updateModifiedDate(java.lang.String samlIdpSsoSessionKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateModifiedDate(samlIdpSsoSessionKey);
@@ -348,29 +344,10 @@ public class SamlIdpSsoSessionLocalServiceUtil {
 	}
 
 	public static SamlIdpSsoSessionLocalService getService() {
-		return _serviceTracker.getService();
+		return _samlIdpSsoSessionLocalService;
 	}
 
-	private static ServiceTracker
-		<SamlIdpSsoSessionLocalService, SamlIdpSsoSessionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SamlIdpSsoSessionLocalService.class);
-
-		ServiceTracker
-			<SamlIdpSsoSessionLocalService, SamlIdpSsoSessionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<SamlIdpSsoSessionLocalService,
-						 SamlIdpSsoSessionLocalService>(
-							 bundle.getBundleContext(),
-							 SamlIdpSsoSessionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SamlIdpSsoSessionLocalService
+		_samlIdpSsoSessionLocalService;
 
 }

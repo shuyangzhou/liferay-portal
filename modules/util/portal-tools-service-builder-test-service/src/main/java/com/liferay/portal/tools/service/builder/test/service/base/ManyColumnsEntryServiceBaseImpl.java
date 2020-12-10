@@ -26,7 +26,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntry;
 import com.liferay.portal.tools.service.builder.test.service.ManyColumnsEntryService;
+import com.liferay.portal.tools.service.builder.test.service.ManyColumnsEntryServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.ManyColumnsEntryPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -48,7 +51,7 @@ public abstract class ManyColumnsEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ManyColumnsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.ManyColumnsEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ManyColumnsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ManyColumnsEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -138,9 +141,11 @@ public abstract class ManyColumnsEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(manyColumnsEntryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -182,6 +187,22 @@ public abstract class ManyColumnsEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ManyColumnsEntryService manyColumnsEntryService) {
+
+		try {
+			Field field = ManyColumnsEntryServiceUtil.class.getDeclaredField(
+				"_manyColumnsEntryService");
+
+			field.setAccessible(true);
+
+			field.set(null, manyColumnsEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

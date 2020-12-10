@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.inventory.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceInventoryReplenishmentItem. This utility wraps
  * <code>com.liferay.commerce.inventory.service.impl.CommerceInventoryReplenishmentItemLocalServiceImpl</code> and
@@ -62,8 +58,9 @@ public class CommerceInventoryReplenishmentItemLocalServiceUtil {
 	public static
 		com.liferay.commerce.inventory.model.CommerceInventoryReplenishmentItem
 				addCommerceInventoryReplenishmentItem(
-					long userId, long commerceInventoryWarehouseId, String sku,
-					java.util.Date availabilityDate, int quantity)
+					long userId, long commerceInventoryWarehouseId,
+					java.lang.String sku, java.util.Date availabilityDate,
+					int quantity)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceInventoryReplenishmentItem(
@@ -295,7 +292,7 @@ public class CommerceInventoryReplenishmentItemLocalServiceUtil {
 		<com.liferay.commerce.inventory.model.
 			CommerceInventoryReplenishmentItem>
 				getCommerceInventoryReplenishmentItemsByCompanyIdAndSku(
-					long companyId, String sku, int start, int end) {
+					long companyId, java.lang.String sku, int start, int end) {
 
 		return getService().
 			getCommerceInventoryReplenishmentItemsByCompanyIdAndSku(
@@ -312,7 +309,7 @@ public class CommerceInventoryReplenishmentItemLocalServiceUtil {
 	}
 
 	public static long getCommerceInventoryReplenishmentItemsCount(
-		long commerceInventoryWarehouseId, String sku) {
+		long commerceInventoryWarehouseId, java.lang.String sku) {
 
 		return getService().getCommerceInventoryReplenishmentItemsCount(
 			commerceInventoryWarehouseId, sku);
@@ -320,7 +317,7 @@ public class CommerceInventoryReplenishmentItemLocalServiceUtil {
 
 	public static int
 		getCommerceInventoryReplenishmentItemsCountByCompanyIdAndSku(
-			long companyId, String sku) {
+			long companyId, java.lang.String sku) {
 
 		return getService().
 			getCommerceInventoryReplenishmentItemsCountByCompanyIdAndSku(
@@ -339,7 +336,7 @@ public class CommerceInventoryReplenishmentItemLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -388,30 +385,10 @@ public class CommerceInventoryReplenishmentItemLocalServiceUtil {
 	}
 
 	public static CommerceInventoryReplenishmentItemLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceInventoryReplenishmentItemLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceInventoryReplenishmentItemLocalService,
-		 CommerceInventoryReplenishmentItemLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceInventoryReplenishmentItemLocalService.class);
-
-		ServiceTracker
-			<CommerceInventoryReplenishmentItemLocalService,
-			 CommerceInventoryReplenishmentItemLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceInventoryReplenishmentItemLocalService,
-					 CommerceInventoryReplenishmentItemLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceInventoryReplenishmentItemLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceInventoryReplenishmentItemLocalService
+		_commerceInventoryReplenishmentItemLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.trash.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for TrashEntry. This utility wraps
  * <code>com.liferay.trash.service.impl.TrashEntryServiceImpl</code> and is an
@@ -90,7 +86,7 @@ public class TrashEntryServiceUtil {
 	 * @param className the class name of the entity
 	 * @param classPK the primary key of the entity
 	 */
-	public static void deleteEntry(String className, long classPK)
+	public static void deleteEntry(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteEntry(className, classPK);
@@ -131,7 +127,7 @@ public class TrashEntryServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.trash.model.TrashEntry> getEntries(
-			long groupId, String className)
+			long groupId, java.lang.String className)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getEntries(groupId, className);
@@ -151,7 +147,7 @@ public class TrashEntryServiceUtil {
 	 <code>orderByComparator</code>
 	 */
 	public static com.liferay.trash.model.TrashEntryList getEntries(
-			long groupId, String className, int start, int end,
+			long groupId, java.lang.String className, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.trash.model.TrashEntry> orderByComparator)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
@@ -165,7 +161,7 @@ public class TrashEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -199,7 +195,8 @@ public class TrashEntryServiceUtil {
 	 <code>null</code>)
 	 */
 	public static void moveEntry(
-			String className, long classPK, long destinationContainerModelId,
+			java.lang.String className, long classPK,
+			long destinationContainerModelId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -248,21 +245,22 @@ public class TrashEntryServiceUtil {
 	 * @return the restored trash entry
 	 */
 	public static com.liferay.trash.model.TrashEntry restoreEntry(
-			long entryId, long overrideClassPK, String name)
+			long entryId, long overrideClassPK, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().restoreEntry(entryId, overrideClassPK, name);
 	}
 
 	public static com.liferay.trash.model.TrashEntry restoreEntry(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().restoreEntry(className, classPK);
 	}
 
 	public static com.liferay.trash.model.TrashEntry restoreEntry(
-			String className, long classPK, long overrideClassPK, String name)
+			java.lang.String className, long classPK, long overrideClassPK,
+			java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().restoreEntry(
@@ -270,22 +268,9 @@ public class TrashEntryServiceUtil {
 	}
 
 	public static TrashEntryService getService() {
-		return _serviceTracker.getService();
+		return _trashEntryService;
 	}
 
-	private static ServiceTracker<TrashEntryService, TrashEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TrashEntryService.class);
-
-		ServiceTracker<TrashEntryService, TrashEntryService> serviceTracker =
-			new ServiceTracker<TrashEntryService, TrashEntryService>(
-				bundle.getBundleContext(), TrashEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TrashEntryService _trashEntryService;
 
 }

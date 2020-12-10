@@ -14,8 +14,6 @@
 
 package com.liferay.asset.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for AssetEntry. This utility wraps
  * <code>com.liferay.portlet.asset.service.impl.AssetEntryServiceImpl</code> and is an
@@ -77,7 +75,7 @@ public class AssetEntryServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry getEntry(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(className, classPK);
@@ -88,7 +86,7 @@ public class AssetEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -100,7 +98,8 @@ public class AssetEntryServiceUtil {
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry
-			incrementViewCounter(long companyId, String className, long classPK)
+			incrementViewCounter(
+				long companyId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().incrementViewCounter(companyId, className, classPK);
@@ -108,14 +107,15 @@ public class AssetEntryServiceUtil {
 
 	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
 			long groupId, java.util.Date createDate,
-			java.util.Date modifiedDate, String className, long classPK,
-			String classUuid, long classTypeId, long[] categoryIds,
-			String[] tagNames, boolean listable, boolean visible,
-			java.util.Date startDate, java.util.Date endDate,
+			java.util.Date modifiedDate, java.lang.String className,
+			long classPK, java.lang.String classUuid, long classTypeId,
+			long[] categoryIds, java.lang.String[] tagNames, boolean listable,
+			boolean visible, java.util.Date startDate, java.util.Date endDate,
 			java.util.Date publishDate, java.util.Date expirationDate,
-			String mimeType, String title, String description, String summary,
-			String url, String layoutUuid, int height, int width,
-			Double priority)
+			java.lang.String mimeType, java.lang.String title,
+			java.lang.String description, java.lang.String summary,
+			java.lang.String url, java.lang.String layoutUuid, int height,
+			int width, java.lang.Double priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateEntry(
@@ -126,14 +126,9 @@ public class AssetEntryServiceUtil {
 	}
 
 	public static AssetEntryService getService() {
-		if (_service == null) {
-			_service = (AssetEntryService)PortalBeanLocatorUtil.locate(
-				AssetEntryService.class.getName());
-		}
-
-		return _service;
+		return _assetEntryService;
 	}
 
-	private static AssetEntryService _service;
+	private static volatile AssetEntryService _assetEntryService;
 
 }

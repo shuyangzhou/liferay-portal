@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MBBan. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBBanLocalServiceImpl</code> and
@@ -267,7 +263,7 @@ public class MBBanLocalServiceUtil {
 	 * @return the matching message boards ban, or <code>null</code> if a matching message boards ban could not be found
 	 */
 	public static com.liferay.message.boards.model.MBBan
-		fetchMBBanByUuidAndGroupId(String uuid, long groupId) {
+		fetchMBBanByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchMBBanByUuidAndGroupId(uuid, groupId);
 	}
@@ -325,7 +321,7 @@ public class MBBanLocalServiceUtil {
 	 * @throws PortalException if a matching message boards ban could not be found
 	 */
 	public static com.liferay.message.boards.model.MBBan
-			getMBBanByUuidAndGroupId(String uuid, long groupId)
+			getMBBanByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMBBanByUuidAndGroupId(uuid, groupId);
@@ -356,7 +352,7 @@ public class MBBanLocalServiceUtil {
 	 * @return the matching message boards bans, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBBan>
-		getMBBansByUuidAndCompanyId(String uuid, long companyId) {
+		getMBBansByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().getMBBansByUuidAndCompanyId(uuid, companyId);
 	}
@@ -373,7 +369,7 @@ public class MBBanLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBBan>
 		getMBBansByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.message.boards.model.MBBan> orderByComparator) {
 
@@ -395,7 +391,7 @@ public class MBBanLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -430,22 +426,9 @@ public class MBBanLocalServiceUtil {
 	}
 
 	public static MBBanLocalService getService() {
-		return _serviceTracker.getService();
+		return _mbBanLocalService;
 	}
 
-	private static ServiceTracker<MBBanLocalService, MBBanLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MBBanLocalService.class);
-
-		ServiceTracker<MBBanLocalService, MBBanLocalService> serviceTracker =
-			new ServiceTracker<MBBanLocalService, MBBanLocalService>(
-				bundle.getBundleContext(), MBBanLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBBanLocalService _mbBanLocalService;
 
 }

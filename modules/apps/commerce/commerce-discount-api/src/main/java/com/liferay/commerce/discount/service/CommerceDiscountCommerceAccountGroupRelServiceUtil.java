@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.discount.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceDiscountCommerceAccountGroupRel. This utility wraps
  * <code>com.liferay.commerce.discount.service.impl.CommerceDiscountCommerceAccountGroupRelServiceImpl</code> and is an
@@ -109,7 +105,8 @@ public class CommerceDiscountCommerceAccountGroupRelServiceUtil {
 		<com.liferay.commerce.discount.model.
 			CommerceDiscountCommerceAccountGroupRel>
 				getCommerceDiscountCommerceAccountGroupRels(
-					long commerceDiscountId, String name, int start, int end) {
+					long commerceDiscountId, java.lang.String name, int start,
+					int end) {
 
 		return getService().getCommerceDiscountCommerceAccountGroupRels(
 			commerceDiscountId, name, start, end);
@@ -124,7 +121,7 @@ public class CommerceDiscountCommerceAccountGroupRelServiceUtil {
 	}
 
 	public static int getCommerceDiscountCommerceAccountGroupRelsCount(
-		long commerceDiscountId, String name) {
+		long commerceDiscountId, java.lang.String name) {
 
 		return getService().getCommerceDiscountCommerceAccountGroupRelsCount(
 			commerceDiscountId, name);
@@ -135,35 +132,15 @@ public class CommerceDiscountCommerceAccountGroupRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceDiscountCommerceAccountGroupRelService getService() {
-		return _serviceTracker.getService();
+		return _commerceDiscountCommerceAccountGroupRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceDiscountCommerceAccountGroupRelService,
-		 CommerceDiscountCommerceAccountGroupRelService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDiscountCommerceAccountGroupRelService.class);
-
-		ServiceTracker
-			<CommerceDiscountCommerceAccountGroupRelService,
-			 CommerceDiscountCommerceAccountGroupRelService> serviceTracker =
-				new ServiceTracker
-					<CommerceDiscountCommerceAccountGroupRelService,
-					 CommerceDiscountCommerceAccountGroupRelService>(
-						 bundle.getBundleContext(),
-						 CommerceDiscountCommerceAccountGroupRelService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDiscountCommerceAccountGroupRelService
+		_commerceDiscountCommerceAccountGroupRelService;
 
 }

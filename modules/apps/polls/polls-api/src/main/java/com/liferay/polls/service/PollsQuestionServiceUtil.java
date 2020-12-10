@@ -14,10 +14,6 @@
 
 package com.liferay.polls.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for PollsQuestion. This utility wraps
  * <code>com.liferay.polls.service.impl.PollsQuestionServiceImpl</code> and is an
@@ -38,8 +34,8 @@ public class PollsQuestionServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.polls.service.impl.PollsQuestionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.polls.model.PollsQuestion addQuestion(
-			java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
+			java.util.Map<java.util.Locale, java.lang.String> titleMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 			int expirationDateMonth, int expirationDateDay,
 			int expirationDateYear, int expirationDateHour,
 			int expirationDateMinute, boolean neverExpire,
@@ -64,7 +60,7 @@ public class PollsQuestionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -76,8 +72,9 @@ public class PollsQuestionServiceUtil {
 	}
 
 	public static com.liferay.polls.model.PollsQuestion updateQuestion(
-			long questionId, java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
+			long questionId,
+			java.util.Map<java.util.Locale, java.lang.String> titleMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 			int expirationDateMonth, int expirationDateDay,
 			int expirationDateYear, int expirationDateHour,
 			int expirationDateMinute, boolean neverExpire,
@@ -92,24 +89,9 @@ public class PollsQuestionServiceUtil {
 	}
 
 	public static PollsQuestionService getService() {
-		return _serviceTracker.getService();
+		return _pollsQuestionService;
 	}
 
-	private static ServiceTracker<PollsQuestionService, PollsQuestionService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(PollsQuestionService.class);
-
-		ServiceTracker<PollsQuestionService, PollsQuestionService>
-			serviceTracker =
-				new ServiceTracker<PollsQuestionService, PollsQuestionService>(
-					bundle.getBundleContext(), PollsQuestionService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile PollsQuestionService _pollsQuestionService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.screens.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ScreensRatingsEntry. This utility wraps
  * <code>com.liferay.screens.service.impl.ScreensRatingsEntryServiceImpl</code> and is an
@@ -38,7 +34,7 @@ public class ScreensRatingsEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.screens.service.impl.ScreensRatingsEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.json.JSONObject deleteRatingsEntry(
-			long classPK, String className, int ratingsLength)
+			long classPK, java.lang.String className, int ratingsLength)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().deleteRatingsEntry(
@@ -50,7 +46,7 @@ public class ScreensRatingsEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -62,7 +58,7 @@ public class ScreensRatingsEntryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject getRatingsEntries(
-			long classPK, String className, int ratingsLength)
+			long classPK, java.lang.String className, int ratingsLength)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRatingsEntries(
@@ -70,7 +66,8 @@ public class ScreensRatingsEntryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject updateRatingsEntry(
-			long classPK, String className, double score, int ratingsLength)
+			long classPK, java.lang.String className, double score,
+			int ratingsLength)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateRatingsEntry(
@@ -78,27 +75,10 @@ public class ScreensRatingsEntryServiceUtil {
 	}
 
 	public static ScreensRatingsEntryService getService() {
-		return _serviceTracker.getService();
+		return _screensRatingsEntryService;
 	}
 
-	private static ServiceTracker
-		<ScreensRatingsEntryService, ScreensRatingsEntryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ScreensRatingsEntryService.class);
-
-		ServiceTracker<ScreensRatingsEntryService, ScreensRatingsEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<ScreensRatingsEntryService, ScreensRatingsEntryService>(
-						bundle.getBundleContext(),
-						ScreensRatingsEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ScreensRatingsEntryService
+		_screensRatingsEntryService;
 
 }

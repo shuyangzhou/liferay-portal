@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMTemplateLink. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMTemplateLinkLocalServiceImpl</code> and
@@ -312,7 +308,7 @@ public class DDMTemplateLinkLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -391,27 +387,10 @@ public class DDMTemplateLinkLocalServiceUtil {
 	}
 
 	public static DDMTemplateLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmTemplateLinkLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMTemplateLinkLocalService, DDMTemplateLinkLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMTemplateLinkLocalService.class);
-
-		ServiceTracker<DDMTemplateLinkLocalService, DDMTemplateLinkLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DDMTemplateLinkLocalService, DDMTemplateLinkLocalService>(
-						bundle.getBundleContext(),
-						DDMTemplateLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMTemplateLinkLocalService
+		_ddmTemplateLinkLocalService;
 
 }

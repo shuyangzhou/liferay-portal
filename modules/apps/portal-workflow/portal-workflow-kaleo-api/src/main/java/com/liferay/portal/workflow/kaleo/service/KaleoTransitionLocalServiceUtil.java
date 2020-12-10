@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoTransition. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTransitionLocalServiceImpl</code> and
@@ -295,7 +291,7 @@ public class KaleoTransitionLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoTransition
-			getKaleoTransition(long kaleoNodeId, String name)
+			getKaleoTransition(long kaleoNodeId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKaleoTransition(kaleoNodeId, name);
@@ -344,7 +340,7 @@ public class KaleoTransitionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -377,27 +373,10 @@ public class KaleoTransitionLocalServiceUtil {
 	}
 
 	public static KaleoTransitionLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoTransitionLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoTransitionLocalService, KaleoTransitionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoTransitionLocalService.class);
-
-		ServiceTracker<KaleoTransitionLocalService, KaleoTransitionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoTransitionLocalService, KaleoTransitionLocalService>(
-						bundle.getBundleContext(),
-						KaleoTransitionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoTransitionLocalService
+		_kaleoTransitionLocalService;
 
 }

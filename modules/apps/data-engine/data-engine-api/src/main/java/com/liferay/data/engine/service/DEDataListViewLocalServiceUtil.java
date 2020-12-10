@@ -14,10 +14,6 @@
 
 package com.liferay.data.engine.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DEDataListView. This utility wraps
  * <code>com.liferay.data.engine.service.impl.DEDataListViewLocalServiceImpl</code> and
@@ -58,9 +54,11 @@ public class DEDataListViewLocalServiceUtil {
 	public static com.liferay.data.engine.model.DEDataListView
 			addDEDataListView(
 				long groupId, long companyId, long userId,
-				String appliedFilters, long ddmStructureId, String fieldNames,
-				java.util.Map<java.util.Locale, String> name, String sortField)
-		throws Exception {
+				java.lang.String appliedFilters, long ddmStructureId,
+				java.lang.String fieldNames,
+				java.util.Map<java.util.Locale, java.lang.String> name,
+				java.lang.String sortField)
+		throws java.lang.Exception {
 
 		return getService().addDEDataListView(
 			groupId, companyId, userId, appliedFilters, ddmStructureId,
@@ -244,7 +242,8 @@ public class DEDataListViewLocalServiceUtil {
 	 * @return the matching de data list view, or <code>null</code> if a matching de data list view could not be found
 	 */
 	public static com.liferay.data.engine.model.DEDataListView
-		fetchDEDataListViewByUuidAndGroupId(String uuid, long groupId) {
+		fetchDEDataListViewByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchDEDataListViewByUuidAndGroupId(uuid, groupId);
 	}
@@ -278,7 +277,8 @@ public class DEDataListViewLocalServiceUtil {
 	 * @throws PortalException if a matching de data list view could not be found
 	 */
 	public static com.liferay.data.engine.model.DEDataListView
-			getDEDataListViewByUuidAndGroupId(String uuid, long groupId)
+			getDEDataListViewByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDEDataListViewByUuidAndGroupId(uuid, groupId);
@@ -327,7 +327,8 @@ public class DEDataListViewLocalServiceUtil {
 	 * @return the matching de data list views, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.data.engine.model.DEDataListView>
-		getDEDataListViewsByUuidAndCompanyId(String uuid, long companyId) {
+		getDEDataListViewsByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getDEDataListViewsByUuidAndCompanyId(
 			uuid, companyId);
@@ -345,7 +346,7 @@ public class DEDataListViewLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.data.engine.model.DEDataListView>
 		getDEDataListViewsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.data.engine.model.DEDataListView>
 					orderByComparator) {
@@ -390,7 +391,7 @@ public class DEDataListViewLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -423,37 +424,21 @@ public class DEDataListViewLocalServiceUtil {
 
 	public static com.liferay.data.engine.model.DEDataListView
 			updateDEDataListView(
-				long deDataListViewId, String appliedFilters, String fieldNames,
-				java.util.Map<java.util.Locale, String> nameMap,
-				String sortField)
-		throws Exception {
+				long deDataListViewId, java.lang.String appliedFilters,
+				java.lang.String fieldNames,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String sortField)
+		throws java.lang.Exception {
 
 		return getService().updateDEDataListView(
 			deDataListViewId, appliedFilters, fieldNames, nameMap, sortField);
 	}
 
 	public static DEDataListViewLocalService getService() {
-		return _serviceTracker.getService();
+		return _deDataListViewLocalService;
 	}
 
-	private static ServiceTracker
-		<DEDataListViewLocalService, DEDataListViewLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DEDataListViewLocalService.class);
-
-		ServiceTracker<DEDataListViewLocalService, DEDataListViewLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DEDataListViewLocalService, DEDataListViewLocalService>(
-						bundle.getBundleContext(),
-						DEDataListViewLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DEDataListViewLocalService
+		_deDataListViewLocalService;
 
 }

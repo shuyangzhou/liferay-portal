@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMFormInstanceRecord. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMFormInstanceRecordServiceImpl</code> and is an
@@ -94,12 +90,12 @@ public class DDMFormInstanceRecordServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static void revertFormInstanceRecord(
-			long ddmFormInstanceRecordId, String version,
+			long ddmFormInstanceRecordId, java.lang.String version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -110,8 +106,8 @@ public class DDMFormInstanceRecordServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord>
 				searchFormInstanceRecords(
-					long ddmFormInstanceId, String[] notEmptyFields, int status,
-					int start, int end,
+					long ddmFormInstanceId, java.lang.String[] notEmptyFields,
+					int status, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -133,29 +129,10 @@ public class DDMFormInstanceRecordServiceUtil {
 	}
 
 	public static DDMFormInstanceRecordService getService() {
-		return _serviceTracker.getService();
+		return _ddmFormInstanceRecordService;
 	}
 
-	private static ServiceTracker
-		<DDMFormInstanceRecordService, DDMFormInstanceRecordService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMFormInstanceRecordService.class);
-
-		ServiceTracker
-			<DDMFormInstanceRecordService, DDMFormInstanceRecordService>
-				serviceTracker =
-					new ServiceTracker
-						<DDMFormInstanceRecordService,
-						 DDMFormInstanceRecordService>(
-							 bundle.getBundleContext(),
-							 DDMFormInstanceRecordService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMFormInstanceRecordService
+		_ddmFormInstanceRecordService;
 
 }

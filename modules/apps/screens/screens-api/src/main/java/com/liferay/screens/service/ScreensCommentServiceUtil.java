@@ -14,10 +14,6 @@
 
 package com.liferay.screens.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ScreensComment. This utility wraps
  * <code>com.liferay.screens.service.impl.ScreensCommentServiceImpl</code> and is an
@@ -38,7 +34,7 @@ public class ScreensCommentServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.screens.service.impl.ScreensCommentServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.json.JSONObject addComment(
-			String className, long classPK, String body)
+			java.lang.String className, long classPK, java.lang.String body)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addComment(className, classPK, body);
@@ -52,13 +48,13 @@ public class ScreensCommentServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getComments(
-			String className, long classPK, int start, int end)
+			java.lang.String className, long classPK, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getComments(className, classPK, start, end);
 	}
 
-	public static int getCommentsCount(String className, long classPK)
+	public static int getCommentsCount(java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommentsCount(className, classPK);
@@ -69,37 +65,21 @@ public class ScreensCommentServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject updateComment(
-			long commentId, String body)
+			long commentId, java.lang.String body)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateComment(commentId, body);
 	}
 
 	public static ScreensCommentService getService() {
-		return _serviceTracker.getService();
+		return _screensCommentService;
 	}
 
-	private static ServiceTracker<ScreensCommentService, ScreensCommentService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ScreensCommentService.class);
-
-		ServiceTracker<ScreensCommentService, ScreensCommentService>
-			serviceTracker =
-				new ServiceTracker
-					<ScreensCommentService, ScreensCommentService>(
-						bundle.getBundleContext(), ScreensCommentService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ScreensCommentService _screensCommentService;
 
 }

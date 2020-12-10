@@ -14,10 +14,6 @@
 
 package com.liferay.blogs.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for BlogsEntry. This utility wraps
  * <code>com.liferay.blogs.service.impl.BlogsEntryLocalServiceImpl</code> and
@@ -40,7 +36,7 @@ public class BlogsEntryLocalServiceUtil {
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			addAttachmentFileEntry(
 				com.liferay.blogs.model.BlogsEntry blogsEntry, long userId,
-				String fileName, String mimeType,
+				java.lang.String fileName, java.lang.String mimeType,
 				java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -81,7 +77,7 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			long userId, String title, String content,
+			long userId, java.lang.String title, java.lang.String content,
 			java.util.Date displayDate,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -91,7 +87,7 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			long userId, String title, String content,
+			long userId, java.lang.String title, java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -99,10 +95,11 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			long userId, String title, String subtitle, String description,
-			String content, java.util.Date displayDate, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			long userId, java.lang.String title, java.lang.String subtitle,
+			java.lang.String description, java.lang.String content,
+			java.util.Date displayDate, boolean allowPingbacks,
+			boolean allowTrackbacks, java.lang.String[] trackbacks,
+			java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -117,11 +114,12 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			long userId, String title, String subtitle, String description,
-			String content, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
+			long userId, java.lang.String title, java.lang.String subtitle,
+			java.lang.String description, java.lang.String content,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
+			boolean allowTrackbacks, java.lang.String[] trackbacks,
+			java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -137,10 +135,11 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			long userId, String title, String subtitle, String urlTitle,
-			String description, String content, java.util.Date displayDate,
+			long userId, java.lang.String title, java.lang.String subtitle,
+			java.lang.String urlTitle, java.lang.String description,
+			java.lang.String content, java.util.Date displayDate,
 			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
+			java.lang.String[] trackbacks, java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -156,12 +155,12 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry addEntry(
-			long userId, String title, String subtitle, String urlTitle,
-			String description, String content, int displayDateMonth,
-			int displayDateDay, int displayDateYear, int displayDateHour,
-			int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			long userId, java.lang.String title, java.lang.String subtitle,
+			java.lang.String urlTitle, java.lang.String description,
+			java.lang.String content, int displayDateMonth, int displayDateDay,
+			int displayDateYear, int displayDateHour, int displayDateMinute,
+			boolean allowPingbacks, boolean allowTrackbacks,
+			java.lang.String[] trackbacks, java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -435,13 +434,13 @@ public class BlogsEntryLocalServiceUtil {
 	 * @return the matching blogs entry, or <code>null</code> if a matching blogs entry could not be found
 	 */
 	public static com.liferay.blogs.model.BlogsEntry
-		fetchBlogsEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchBlogsEntryByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchBlogsEntryByUuidAndGroupId(uuid, groupId);
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry fetchEntry(
-		long groupId, String urlTitle) {
+		long groupId, java.lang.String urlTitle) {
 
 		return getService().fetchEntry(groupId, urlTitle);
 	}
@@ -477,7 +476,8 @@ public class BlogsEntryLocalServiceUtil {
 	 * @return the matching blogs entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.blogs.model.BlogsEntry>
-		getBlogsEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getBlogsEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getBlogsEntriesByUuidAndCompanyId(uuid, companyId);
 	}
@@ -494,7 +494,7 @@ public class BlogsEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.blogs.model.BlogsEntry>
 		getBlogsEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.blogs.model.BlogsEntry> orderByComparator) {
 
@@ -533,7 +533,7 @@ public class BlogsEntryLocalServiceUtil {
 	 * @throws PortalException if a matching blogs entry could not be found
 	 */
 	public static com.liferay.blogs.model.BlogsEntry
-			getBlogsEntryByUuidAndGroupId(String uuid, long groupId)
+			getBlogsEntryByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getBlogsEntryByUuidAndGroupId(uuid, groupId);
@@ -572,7 +572,7 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry getEntry(
-			long groupId, String urlTitle)
+			long groupId, java.lang.String urlTitle)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getEntry(groupId, urlTitle);
@@ -682,7 +682,7 @@ public class BlogsEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -696,7 +696,7 @@ public class BlogsEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static String getUniqueUrlTitle(
+	public static java.lang.String getUniqueUrlTitle(
 		com.liferay.blogs.model.BlogsEntry entry) {
 
 		return getService().getUniqueUrlTitle(entry);
@@ -766,8 +766,8 @@ public class BlogsEntryLocalServiceUtil {
 
 	public static void updateAsset(
 			long userId, com.liferay.blogs.model.BlogsEntry entry,
-			long[] assetCategoryIds, String[] assetTagNames,
-			long[] assetLinkEntryIds, Double priority)
+			long[] assetCategoryIds, java.lang.String[] assetTagNames,
+			long[] assetLinkEntryIds, java.lang.Double priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateAsset(
@@ -792,7 +792,8 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long userId, long entryId, String title, String content,
+			long userId, long entryId, java.lang.String title,
+			java.lang.String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -801,10 +802,11 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long userId, long entryId, String title, String subtitle,
-			String description, String content, java.util.Date displayDate,
+			long userId, long entryId, java.lang.String title,
+			java.lang.String subtitle, java.lang.String description,
+			java.lang.String content, java.util.Date displayDate,
 			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
+			java.lang.String[] trackbacks, java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -819,12 +821,12 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long userId, long entryId, String title, String subtitle,
-			String description, String content, int displayDateMonth,
-			int displayDateDay, int displayDateYear, int displayDateHour,
-			int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			long userId, long entryId, java.lang.String title,
+			java.lang.String subtitle, java.lang.String description,
+			java.lang.String content, int displayDateMonth, int displayDateDay,
+			int displayDateYear, int displayDateHour, int displayDateMinute,
+			boolean allowPingbacks, boolean allowTrackbacks,
+			java.lang.String[] trackbacks, java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -841,11 +843,12 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long userId, long entryId, String title, String subtitle,
-			String urlTitle, String description, String content,
+			long userId, long entryId, java.lang.String title,
+			java.lang.String subtitle, java.lang.String urlTitle,
+			java.lang.String description, java.lang.String content,
 			java.util.Date displayDate, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			boolean allowTrackbacks, java.lang.String[] trackbacks,
+			java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -861,12 +864,13 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.blogs.model.BlogsEntry updateEntry(
-			long userId, long entryId, String title, String subtitle,
-			String urlTitle, String description, String content,
+			long userId, long entryId, java.lang.String title,
+			java.lang.String subtitle, java.lang.String urlTitle,
+			java.lang.String description, java.lang.String content,
 			int displayDateMonth, int displayDateDay, int displayDateYear,
 			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption,
+			boolean allowTrackbacks, java.lang.String[] trackbacks,
+			java.lang.String coverImageCaption,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
 				coverImageImageSelector,
 			com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector
@@ -892,8 +896,9 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static void updateEntryResources(
-			com.liferay.blogs.model.BlogsEntry entry, String[] groupPermissions,
-			String[] guestPermissions)
+			com.liferay.blogs.model.BlogsEntry entry,
+			java.lang.String[] groupPermissions,
+			java.lang.String[] guestPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateEntryResources(
@@ -903,7 +908,8 @@ public class BlogsEntryLocalServiceUtil {
 	public static com.liferay.blogs.model.BlogsEntry updateStatus(
 			long userId, long entryId, int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext,
-			java.util.Map<String, java.io.Serializable> workflowContext)
+			java.util.Map<java.lang.String, java.io.Serializable>
+				workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateStatus(
@@ -911,25 +917,9 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static BlogsEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _blogsEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<BlogsEntryLocalService, BlogsEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(BlogsEntryLocalService.class);
-
-		ServiceTracker<BlogsEntryLocalService, BlogsEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<BlogsEntryLocalService, BlogsEntryLocalService>(
-						bundle.getBundleContext(), BlogsEntryLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BlogsEntryLocalService _blogsEntryLocalService;
 
 }

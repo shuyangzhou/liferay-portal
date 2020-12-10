@@ -14,10 +14,6 @@
 
 package com.liferay.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AccountRole. This utility wraps
  * <code>com.liferay.account.service.impl.AccountRoleLocalServiceImpl</code> and
@@ -55,9 +51,9 @@ public class AccountRoleLocalServiceUtil {
 	}
 
 	public static com.liferay.account.model.AccountRole addAccountRole(
-			long userId, long accountEntryId, String name,
-			java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap)
+			long userId, long accountEntryId, java.lang.String name,
+			java.util.Map<java.util.Locale, java.lang.String> titleMap,
+			java.util.Map<java.util.Locale, java.lang.String> descriptionMap)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountRole(
@@ -325,7 +321,7 @@ public class AccountRoleLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -341,8 +337,8 @@ public class AccountRoleLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.account.model.AccountRole> searchAccountRoles(
-			long companyId, long accountEntryId, String keywords, int start,
-			int end,
+			long companyId, long accountEntryId, java.lang.String keywords,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator<?>
 				orderByComparator) {
 
@@ -352,8 +348,8 @@ public class AccountRoleLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.account.model.AccountRole> searchAccountRoles(
-			long companyId, long[] accountEntryIds, String keywords, int start,
-			int end,
+			long companyId, long[] accountEntryIds, java.lang.String keywords,
+			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator<?>
 				orderByComparator) {
 
@@ -368,7 +364,7 @@ public class AccountRoleLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.account.model.AccountRole> searchAccountRoles(
-			long accountEntryId, String keywords, int start, int end,
+			long accountEntryId, java.lang.String keywords, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator<?>
 				orderByComparator) {
 
@@ -382,7 +378,8 @@ public class AccountRoleLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.account.model.AccountRole> searchAccountRoles(
-			long[] accountEntryIds, String keywords, int start, int end,
+			long[] accountEntryIds, java.lang.String keywords, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator<?>
 				orderByComparator) {
 
@@ -414,25 +411,9 @@ public class AccountRoleLocalServiceUtil {
 	}
 
 	public static AccountRoleLocalService getService() {
-		return _serviceTracker.getService();
+		return _accountRoleLocalService;
 	}
 
-	private static ServiceTracker
-		<AccountRoleLocalService, AccountRoleLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountRoleLocalService.class);
-
-		ServiceTracker<AccountRoleLocalService, AccountRoleLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountRoleLocalService, AccountRoleLocalService>(
-						bundle.getBundleContext(),
-						AccountRoleLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountRoleLocalService _accountRoleLocalService;
 
 }

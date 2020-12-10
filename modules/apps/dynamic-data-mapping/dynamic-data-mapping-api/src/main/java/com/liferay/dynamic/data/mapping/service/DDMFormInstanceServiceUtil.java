@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMFormInstance. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMFormInstanceServiceImpl</code> and is an
@@ -40,8 +36,9 @@ public class DDMFormInstanceServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstance
 			addFormInstance(
 				long groupId, long ddmStructureId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.storage.DDMFormValues
 					settingsDDMFormValues,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -54,8 +51,10 @@ public class DDMFormInstanceServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstance
 			addFormInstance(
-				long groupId, java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				long groupId,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
@@ -71,7 +70,8 @@ public class DDMFormInstanceServiceUtil {
 
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstance
 			copyFormInstance(
-				long groupId, java.util.Map<java.util.Locale, String> nameMap,
+				long groupId,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
 				com.liferay.dynamic.data.mapping.model.DDMFormInstance
 					ddmFormInstance,
 				com.liferay.dynamic.data.mapping.storage.DDMFormValues
@@ -115,7 +115,7 @@ public class DDMFormInstanceServiceUtil {
 		return getService().getFormInstancesCount(companyId, groupId);
 	}
 
-	public static int getFormInstancesCount(String uuid)
+	public static int getFormInstancesCount(java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getFormInstancesCount(uuid);
@@ -126,13 +126,13 @@ public class DDMFormInstanceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstance> search(
-			long companyId, long groupId, String keywords, int status,
+			long companyId, long groupId, java.lang.String keywords, int status,
 			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMFormInstance>
@@ -145,7 +145,8 @@ public class DDMFormInstanceServiceUtil {
 
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstance> search(
-			long companyId, long groupId, String keywords, int start, int end,
+			long companyId, long groupId, java.lang.String keywords, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMFormInstance>
 					orderByComparator) {
@@ -156,8 +157,9 @@ public class DDMFormInstanceServiceUtil {
 
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstance> search(
-			long companyId, long groupId, String[] names, String[] descriptions,
-			boolean andOperator, int start, int end,
+			long companyId, long groupId, java.lang.String[] names,
+			java.lang.String[] descriptions, boolean andOperator, int start,
+			int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.dynamic.data.mapping.model.DDMFormInstance>
 					orderByComparator) {
@@ -168,29 +170,29 @@ public class DDMFormInstanceServiceUtil {
 	}
 
 	public static int searchCount(
-		long companyId, long groupId, String keywords) {
+		long companyId, long groupId, java.lang.String keywords) {
 
 		return getService().searchCount(companyId, groupId, keywords);
 	}
 
 	public static int searchCount(
-		long companyId, long groupId, String keywords, int status) {
+		long companyId, long groupId, java.lang.String keywords, int status) {
 
 		return getService().searchCount(companyId, groupId, keywords, status);
 	}
 
 	public static int searchCount(
-		long companyId, long groupId, String[] names, String[] descriptions,
-		boolean andOperator) {
+		long companyId, long groupId, java.lang.String[] names,
+		java.lang.String[] descriptions, boolean andOperator) {
 
 		return getService().searchCount(
 			companyId, groupId, names, descriptions, andOperator);
 	}
 
 	public static void sendEmail(
-			long formInstanceId, String message, String subject,
-			String[] toEmailAddresses)
-		throws Exception {
+			long formInstanceId, java.lang.String message,
+			java.lang.String subject, java.lang.String[] toEmailAddresses)
+		throws java.lang.Exception {
 
 		getService().sendEmail(
 			formInstanceId, message, subject, toEmailAddresses);
@@ -220,8 +222,9 @@ public class DDMFormInstanceServiceUtil {
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstance
 			updateFormInstance(
 				long ddmFormInstanceId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
 				com.liferay.dynamic.data.mapping.model.DDMFormLayout
 					ddmFormLayout,
@@ -236,25 +239,9 @@ public class DDMFormInstanceServiceUtil {
 	}
 
 	public static DDMFormInstanceService getService() {
-		return _serviceTracker.getService();
+		return _ddmFormInstanceService;
 	}
 
-	private static ServiceTracker
-		<DDMFormInstanceService, DDMFormInstanceService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDMFormInstanceService.class);
-
-		ServiceTracker<DDMFormInstanceService, DDMFormInstanceService>
-			serviceTracker =
-				new ServiceTracker
-					<DDMFormInstanceService, DDMFormInstanceService>(
-						bundle.getBundleContext(), DDMFormInstanceService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMFormInstanceService _ddmFormInstanceService;
 
 }

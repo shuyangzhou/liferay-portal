@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Image. This utility wraps
  * <code>com.liferay.portal.service.impl.ImageLocalServiceImpl</code> and
@@ -297,7 +295,7 @@ public class ImageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -342,8 +340,8 @@ public class ImageLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Image updateImage(
-			long imageId, byte[] bytes, String type, int height, int width,
-			int size)
+			long imageId, byte[] bytes, java.lang.String type, int height,
+			int width, int size)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateImage(
@@ -373,14 +371,9 @@ public class ImageLocalServiceUtil {
 	}
 
 	public static ImageLocalService getService() {
-		if (_service == null) {
-			_service = (ImageLocalService)PortalBeanLocatorUtil.locate(
-				ImageLocalService.class.getName());
-		}
-
-		return _service;
+		return _imageLocalService;
 	}
 
-	private static ImageLocalService _service;
+	private static volatile ImageLocalService _imageLocalService;
 
 }

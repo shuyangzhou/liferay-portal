@@ -14,10 +14,6 @@
 
 package com.liferay.site.navigation.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SiteNavigationMenuItem. This utility wraps
  * <code>com.liferay.site.navigation.service.impl.SiteNavigationMenuItemServiceImpl</code> and is an
@@ -40,8 +36,8 @@ public class SiteNavigationMenuItemServiceUtil {
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
 			addSiteNavigationMenuItem(
 				long groupId, long siteNavigationMenuId,
-				long parentSiteNavigationMenuItemId, String type,
-				String typeSettings,
+				long parentSiteNavigationMenuItemId, java.lang.String type,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -69,7 +65,7 @@ public class SiteNavigationMenuItemServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -103,7 +99,7 @@ public class SiteNavigationMenuItemServiceUtil {
 
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
 			updateSiteNavigationMenuItem(
-				long siteNavigationMenuId, String typeSettings,
+				long siteNavigationMenuId, java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -112,29 +108,10 @@ public class SiteNavigationMenuItemServiceUtil {
 	}
 
 	public static SiteNavigationMenuItemService getService() {
-		return _serviceTracker.getService();
+		return _siteNavigationMenuItemService;
 	}
 
-	private static ServiceTracker
-		<SiteNavigationMenuItemService, SiteNavigationMenuItemService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SiteNavigationMenuItemService.class);
-
-		ServiceTracker
-			<SiteNavigationMenuItemService, SiteNavigationMenuItemService>
-				serviceTracker =
-					new ServiceTracker
-						<SiteNavigationMenuItemService,
-						 SiteNavigationMenuItemService>(
-							 bundle.getBundleContext(),
-							 SiteNavigationMenuItemService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SiteNavigationMenuItemService
+		_siteNavigationMenuItemService;
 
 }

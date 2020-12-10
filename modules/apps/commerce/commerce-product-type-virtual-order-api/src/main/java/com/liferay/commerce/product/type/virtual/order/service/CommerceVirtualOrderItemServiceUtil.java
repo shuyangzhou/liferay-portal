@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.type.virtual.order.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceVirtualOrderItem. This utility wraps
  * <code>com.liferay.commerce.product.type.virtual.order.service.impl.CommerceVirtualOrderItemServiceImpl</code> and is an
@@ -38,7 +34,7 @@ public class CommerceVirtualOrderItemServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.commerce.product.type.virtual.order.service.impl.CommerceVirtualOrderItemServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static java.io.File getFile(long commerceVirtualOrderItemId)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().getFile(commerceVirtualOrderItemId);
 	}
@@ -48,15 +44,15 @@ public class CommerceVirtualOrderItemServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.commerce.product.type.virtual.order.model.
 		CommerceVirtualOrderItem updateCommerceVirtualOrderItem(
-				long commerceVirtualOrderItemId, long fileEntryId, String url,
-				int activationStatus, long duration, int usages, int maxUsages,
-				boolean active)
+				long commerceVirtualOrderItemId, long fileEntryId,
+				java.lang.String url, int activationStatus, long duration,
+				int usages, int maxUsages, boolean active)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceVirtualOrderItem(
@@ -65,29 +61,10 @@ public class CommerceVirtualOrderItemServiceUtil {
 	}
 
 	public static CommerceVirtualOrderItemService getService() {
-		return _serviceTracker.getService();
+		return _commerceVirtualOrderItemService;
 	}
 
-	private static ServiceTracker
-		<CommerceVirtualOrderItemService, CommerceVirtualOrderItemService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceVirtualOrderItemService.class);
-
-		ServiceTracker
-			<CommerceVirtualOrderItemService, CommerceVirtualOrderItemService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceVirtualOrderItemService,
-						 CommerceVirtualOrderItemService>(
-							 bundle.getBundleContext(),
-							 CommerceVirtualOrderItemService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceVirtualOrderItemService
+		_commerceVirtualOrderItemService;
 
 }

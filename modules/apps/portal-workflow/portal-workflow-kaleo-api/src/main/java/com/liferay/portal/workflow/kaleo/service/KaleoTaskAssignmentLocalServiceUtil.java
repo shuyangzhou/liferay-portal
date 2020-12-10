@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoTaskAssignment. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTaskAssignmentLocalServiceImpl</code> and
@@ -58,7 +54,7 @@ public class KaleoTaskAssignmentLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment
 			addKaleoTaskAssignment(
-				String kaleoClassName, long kaleoClassPK,
+				java.lang.String kaleoClassName, long kaleoClassPK,
 				long kaleoDefinitionId, long kaleoDefinitionVersionId,
 				com.liferay.portal.workflow.kaleo.definition.Assignment
 					assignment,
@@ -302,7 +298,7 @@ public class KaleoTaskAssignmentLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment>
 			getKaleoTaskAssignments(
-				long kaleoTaskId, String assigneeClassName) {
+				long kaleoTaskId, java.lang.String assigneeClassName) {
 
 		return getService().getKaleoTaskAssignments(
 			kaleoTaskId, assigneeClassName);
@@ -310,7 +306,8 @@ public class KaleoTaskAssignmentLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment>
-			getKaleoTaskAssignments(String kaleoClassName, long kaleoClassPK) {
+			getKaleoTaskAssignments(
+				java.lang.String kaleoClassName, long kaleoClassPK) {
 
 		return getService().getKaleoTaskAssignments(
 			kaleoClassName, kaleoClassPK);
@@ -330,7 +327,7 @@ public class KaleoTaskAssignmentLocalServiceUtil {
 	}
 
 	public static int getKaleoTaskAssignmentsCount(
-		long kaleoTaskId, String assigneeClassName) {
+		long kaleoTaskId, java.lang.String assigneeClassName) {
 
 		return getService().getKaleoTaskAssignmentsCount(
 			kaleoTaskId, assigneeClassName);
@@ -341,7 +338,7 @@ public class KaleoTaskAssignmentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -374,29 +371,10 @@ public class KaleoTaskAssignmentLocalServiceUtil {
 	}
 
 	public static KaleoTaskAssignmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoTaskAssignmentLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoTaskAssignmentLocalService, KaleoTaskAssignmentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoTaskAssignmentLocalService.class);
-
-		ServiceTracker
-			<KaleoTaskAssignmentLocalService, KaleoTaskAssignmentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<KaleoTaskAssignmentLocalService,
-						 KaleoTaskAssignmentLocalService>(
-							 bundle.getBundleContext(),
-							 KaleoTaskAssignmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoTaskAssignmentLocalService
+		_kaleoTaskAssignmentLocalService;
 
 }

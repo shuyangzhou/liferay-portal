@@ -14,10 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for KaleoNotificationRecipient. This utility wraps
  * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoNotificationRecipientLocalServiceImpl</code> and
@@ -331,7 +327,7 @@ public class KaleoNotificationRecipientLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -366,29 +362,10 @@ public class KaleoNotificationRecipientLocalServiceUtil {
 	}
 
 	public static KaleoNotificationRecipientLocalService getService() {
-		return _serviceTracker.getService();
+		return _kaleoNotificationRecipientLocalService;
 	}
 
-	private static ServiceTracker
-		<KaleoNotificationRecipientLocalService,
-		 KaleoNotificationRecipientLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoNotificationRecipientLocalService.class);
-
-		ServiceTracker
-			<KaleoNotificationRecipientLocalService,
-			 KaleoNotificationRecipientLocalService> serviceTracker =
-				new ServiceTracker
-					<KaleoNotificationRecipientLocalService,
-					 KaleoNotificationRecipientLocalService>(
-						 bundle.getBundleContext(),
-						 KaleoNotificationRecipientLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoNotificationRecipientLocalService
+		_kaleoNotificationRecipientLocalService;
 
 }

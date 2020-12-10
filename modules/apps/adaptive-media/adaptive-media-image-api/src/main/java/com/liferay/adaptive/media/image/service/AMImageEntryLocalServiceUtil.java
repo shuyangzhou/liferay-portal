@@ -14,10 +14,6 @@
 
 package com.liferay.adaptive.media.image.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AMImageEntry. This utility wraps
  * <code>com.liferay.adaptive.media.image.service.impl.AMImageEntryLocalServiceImpl</code> and
@@ -186,7 +182,7 @@ public class AMImageEntryLocalServiceUtil {
 	 * @throws PortalException if the file version was not found
 	 */
 	public static void deleteAMImageEntryFileVersion(
-			String configurationUuid, long fileVersionId)
+			java.lang.String configurationUuid, long fileVersionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteAMImageEntryFileVersion(
@@ -312,7 +308,8 @@ public class AMImageEntryLocalServiceUtil {
 	 a matching adaptive media image entry could not be found
 	 */
 	public static com.liferay.adaptive.media.image.model.AMImageEntry
-		fetchAMImageEntry(String configurationUuid, long fileVersionId) {
+		fetchAMImageEntry(
+			java.lang.String configurationUuid, long fileVersionId) {
 
 		return getService().fetchAMImageEntry(configurationUuid, fileVersionId);
 	}
@@ -325,7 +322,7 @@ public class AMImageEntryLocalServiceUtil {
 	 * @return the matching am image entry, or <code>null</code> if a matching am image entry could not be found
 	 */
 	public static com.liferay.adaptive.media.image.model.AMImageEntry
-		fetchAMImageEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchAMImageEntryByUuidAndGroupId(java.lang.String uuid, long groupId) {
 
 		return getService().fetchAMImageEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -377,7 +374,8 @@ public class AMImageEntryLocalServiceUtil {
 	 */
 	public static java.util.List
 		<com.liferay.adaptive.media.image.model.AMImageEntry>
-			getAMImageEntriesByUuidAndCompanyId(String uuid, long companyId) {
+			getAMImageEntriesByUuidAndCompanyId(
+				java.lang.String uuid, long companyId) {
 
 		return getService().getAMImageEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -396,7 +394,7 @@ public class AMImageEntryLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.adaptive.media.image.model.AMImageEntry>
 			getAMImageEntriesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.adaptive.media.image.model.AMImageEntry>
 						orderByComparator) {
@@ -425,7 +423,7 @@ public class AMImageEntryLocalServiceUtil {
 	 configuration
 	 */
 	public static int getAMImageEntriesCount(
-		long companyId, String configurationUuid) {
+		long companyId, java.lang.String configurationUuid) {
 
 		return getService().getAMImageEntriesCount(
 			companyId, configurationUuid);
@@ -454,7 +452,7 @@ public class AMImageEntryLocalServiceUtil {
 	 * @throws PortalException if a matching am image entry could not be found
 	 */
 	public static com.liferay.adaptive.media.image.model.AMImageEntry
-			getAMImageEntryByUuidAndGroupId(String uuid, long groupId)
+			getAMImageEntryByUuidAndGroupId(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAMImageEntryByUuidAndGroupId(uuid, groupId);
@@ -505,7 +503,7 @@ public class AMImageEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -520,7 +518,9 @@ public class AMImageEntryLocalServiceUtil {
 	 * @return the percentage of images that have an adaptive media image out of
 	 the expected adaptive media images
 	 */
-	public static int getPercentage(long companyId, String configurationUuid) {
+	public static int getPercentage(
+		long companyId, java.lang.String configurationUuid) {
+
 		return getService().getPercentage(companyId, configurationUuid);
 	}
 
@@ -552,25 +552,9 @@ public class AMImageEntryLocalServiceUtil {
 	}
 
 	public static AMImageEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _amImageEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<AMImageEntryLocalService, AMImageEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AMImageEntryLocalService.class);
-
-		ServiceTracker<AMImageEntryLocalService, AMImageEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AMImageEntryLocalService, AMImageEntryLocalService>(
-						bundle.getBundleContext(),
-						AMImageEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AMImageEntryLocalService _amImageEntryLocalService;
 
 }

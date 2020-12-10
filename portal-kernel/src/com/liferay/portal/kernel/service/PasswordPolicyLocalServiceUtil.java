@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PasswordPolicy. This utility wraps
  * <code>com.liferay.portal.service.impl.PasswordPolicyLocalServiceImpl</code> and
@@ -37,13 +35,14 @@ public class PasswordPolicyLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.PasswordPolicy
 			addPasswordPolicy(
-				long userId, boolean defaultPolicy, String name,
-				String description, boolean changeable, boolean changeRequired,
-				long minAge, boolean checkSyntax, boolean allowDictionaryWords,
-				int minAlphanumeric, int minLength, int minLowerCase,
-				int minNumbers, int minSymbols, int minUpperCase, String regex,
-				boolean history, int historyCount, boolean expireable,
-				long maxAge, long warningTime, int graceLimit, boolean lockout,
+				long userId, boolean defaultPolicy, java.lang.String name,
+				java.lang.String description, boolean changeable,
+				boolean changeRequired, long minAge, boolean checkSyntax,
+				boolean allowDictionaryWords, int minAlphanumeric,
+				int minLength, int minLowerCase, int minNumbers, int minSymbols,
+				int minUpperCase, java.lang.String regex, boolean history,
+				int historyCount, boolean expireable, long maxAge,
+				long warningTime, int graceLimit, boolean lockout,
 				int maxFailure, long lockoutDuration, long resetFailureCount,
 				long resetTicketMaxAge, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -254,7 +253,7 @@ public class PasswordPolicyLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PasswordPolicy
-		fetchPasswordPolicy(long companyId, String name) {
+		fetchPasswordPolicy(long companyId, java.lang.String name) {
 
 		return getService().fetchPasswordPolicy(companyId, name);
 	}
@@ -267,7 +266,8 @@ public class PasswordPolicyLocalServiceUtil {
 	 * @return the matching password policy, or <code>null</code> if a matching password policy could not be found
 	 */
 	public static com.liferay.portal.kernel.model.PasswordPolicy
-		fetchPasswordPolicyByUuidAndCompanyId(String uuid, long companyId) {
+		fetchPasswordPolicyByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchPasswordPolicyByUuidAndCompanyId(
 			uuid, companyId);
@@ -306,7 +306,7 @@ public class PasswordPolicyLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -387,7 +387,8 @@ public class PasswordPolicyLocalServiceUtil {
 	 * @throws PortalException if a matching password policy could not be found
 	 */
 	public static com.liferay.portal.kernel.model.PasswordPolicy
-			getPasswordPolicyByUuidAndCompanyId(String uuid, long companyId)
+			getPasswordPolicyByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPasswordPolicyByUuidAndCompanyId(
@@ -406,7 +407,7 @@ public class PasswordPolicyLocalServiceUtil {
 
 	public static java.util.List<com.liferay.portal.kernel.model.PasswordPolicy>
 		search(
-			long companyId, String name, int start, int end,
+			long companyId, java.lang.String name, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.portal.kernel.model.PasswordPolicy>
 					orderByComparator) {
@@ -415,19 +416,20 @@ public class PasswordPolicyLocalServiceUtil {
 			companyId, name, start, end, orderByComparator);
 	}
 
-	public static int searchCount(long companyId, String name) {
+	public static int searchCount(long companyId, java.lang.String name) {
 		return getService().searchCount(companyId, name);
 	}
 
 	public static com.liferay.portal.kernel.model.PasswordPolicy
 			updatePasswordPolicy(
-				long passwordPolicyId, String name, String description,
-				boolean changeable, boolean changeRequired, long minAge,
-				boolean checkSyntax, boolean allowDictionaryWords,
-				int minAlphanumeric, int minLength, int minLowerCase,
-				int minNumbers, int minSymbols, int minUpperCase, String regex,
-				boolean history, int historyCount, boolean expireable,
-				long maxAge, long warningTime, int graceLimit, boolean lockout,
+				long passwordPolicyId, java.lang.String name,
+				java.lang.String description, boolean changeable,
+				boolean changeRequired, long minAge, boolean checkSyntax,
+				boolean allowDictionaryWords, int minAlphanumeric,
+				int minLength, int minLowerCase, int minNumbers, int minSymbols,
+				int minUpperCase, java.lang.String regex, boolean history,
+				int historyCount, boolean expireable, long maxAge,
+				long warningTime, int graceLimit, boolean lockout,
 				int maxFailure, long lockoutDuration, long resetFailureCount,
 				long resetTicketMaxAge, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -459,14 +461,10 @@ public class PasswordPolicyLocalServiceUtil {
 	}
 
 	public static PasswordPolicyLocalService getService() {
-		if (_service == null) {
-			_service = (PasswordPolicyLocalService)PortalBeanLocatorUtil.locate(
-				PasswordPolicyLocalService.class.getName());
-		}
-
-		return _service;
+		return _passwordPolicyLocalService;
 	}
 
-	private static PasswordPolicyLocalService _service;
+	private static volatile PasswordPolicyLocalService
+		_passwordPolicyLocalService;
 
 }

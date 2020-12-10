@@ -14,10 +14,6 @@
 
 package com.liferay.document.library.content.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DLContent. This utility wraps
  * <code>com.liferay.document.library.content.service.impl.DLContentLocalServiceImpl</code> and
@@ -45,8 +41,8 @@ public class DLContentLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.document.library.content.model.DLContent
 		addContent(
-			long companyId, long repositoryId, String path, String version,
-			byte[] bytes) {
+			long companyId, long repositoryId, java.lang.String path,
+			java.lang.String version, byte[] bytes) {
 
 		return getService().addContent(
 			companyId, repositoryId, path, version, bytes);
@@ -54,8 +50,8 @@ public class DLContentLocalServiceUtil {
 
 	public static com.liferay.document.library.content.model.DLContent
 		addContent(
-			long companyId, long repositoryId, String path, String version,
-			java.io.InputStream inputStream) {
+			long companyId, long repositoryId, java.lang.String path,
+			java.lang.String version, java.io.InputStream inputStream) {
 
 		return getService().addContent(
 			companyId, repositoryId, path, version, inputStream);
@@ -68,8 +64,9 @@ public class DLContentLocalServiceUtil {
 	@Deprecated
 	public static com.liferay.document.library.content.model.DLContent
 		addContent(
-			long companyId, long repositoryId, String path, String version,
-			java.io.InputStream inputStream, long size) {
+			long companyId, long repositoryId, java.lang.String path,
+			java.lang.String version, java.io.InputStream inputStream,
+			long size) {
 
 		return getService().addContent(
 			companyId, repositoryId, path, version, inputStream, size);
@@ -115,7 +112,8 @@ public class DLContentLocalServiceUtil {
 	}
 
 	public static void deleteContent(
-		long companyId, long repositoryId, String path, String version) {
+		long companyId, long repositoryId, java.lang.String path,
+		java.lang.String version) {
 
 		getService().deleteContent(companyId, repositoryId, path, version);
 	}
@@ -125,13 +123,13 @@ public class DLContentLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void deleteContents(
-		long companyId, long repositoryId, String path) {
+		long companyId, long repositoryId, java.lang.String path) {
 
 		getService().deleteContents(companyId, repositoryId, path);
 	}
 
 	public static void deleteContentsByDirectory(
-		long companyId, long repositoryId, String dirName) {
+		long companyId, long repositoryId, java.lang.String dirName) {
 
 		getService().deleteContentsByDirectory(
 			companyId, repositoryId, dirName);
@@ -292,7 +290,7 @@ public class DLContentLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.document.library.content.model.DLContent
-			getContent(long companyId, long repositoryId, String path)
+			getContent(long companyId, long repositoryId, java.lang.String path)
 		throws com.liferay.document.library.content.exception.
 			NoSuchContentException {
 
@@ -301,7 +299,8 @@ public class DLContentLocalServiceUtil {
 
 	public static com.liferay.document.library.content.model.DLContent
 			getContent(
-				long companyId, long repositoryId, String path, String version)
+				long companyId, long repositoryId, java.lang.String path,
+				java.lang.String version)
 		throws com.liferay.document.library.content.exception.
 			NoSuchContentException {
 
@@ -322,7 +321,7 @@ public class DLContentLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.document.library.content.model.DLContent> getContents(
-			long companyId, long repositoryId, String path) {
+			long companyId, long repositoryId, java.lang.String path) {
 
 		return getService().getContents(companyId, repositoryId, path);
 	}
@@ -330,7 +329,7 @@ public class DLContentLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.document.library.content.model.DLContent>
 			getContentsByDirectory(
-				long companyId, long repositoryId, String dirName) {
+				long companyId, long repositoryId, java.lang.String dirName) {
 
 		return getService().getContentsByDirectory(
 			companyId, repositoryId, dirName);
@@ -396,7 +395,7 @@ public class DLContentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -411,7 +410,8 @@ public class DLContentLocalServiceUtil {
 	}
 
 	public static boolean hasContent(
-		long companyId, long repositoryId, String path, String version) {
+		long companyId, long repositoryId, java.lang.String path,
+		java.lang.String version) {
 
 		return getService().hasContent(companyId, repositoryId, path, version);
 	}
@@ -443,32 +443,16 @@ public class DLContentLocalServiceUtil {
 	@Deprecated
 	public static void updateDLContent(
 		long companyId, long oldRepositoryId, long newRepositoryId,
-		String oldPath, String newPath) {
+		java.lang.String oldPath, java.lang.String newPath) {
 
 		getService().updateDLContent(
 			companyId, oldRepositoryId, newRepositoryId, oldPath, newPath);
 	}
 
 	public static DLContentLocalService getService() {
-		return _serviceTracker.getService();
+		return _dlContentLocalService;
 	}
 
-	private static ServiceTracker<DLContentLocalService, DLContentLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DLContentLocalService.class);
-
-		ServiceTracker<DLContentLocalService, DLContentLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DLContentLocalService, DLContentLocalService>(
-						bundle.getBundleContext(), DLContentLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DLContentLocalService _dlContentLocalService;
 
 }

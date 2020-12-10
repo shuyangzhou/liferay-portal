@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.machine.learning.forecast.alert.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceMLForecastAlertEntry. This utility wraps
  * <code>com.liferay.commerce.machine.learning.forecast.alert.service.impl.CommerceMLForecastAlertEntryServiceImpl</code> and is an
@@ -102,7 +98,7 @@ public class CommerceMLForecastAlertEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -116,29 +112,10 @@ public class CommerceMLForecastAlertEntryServiceUtil {
 	}
 
 	public static CommerceMLForecastAlertEntryService getService() {
-		return _serviceTracker.getService();
+		return _commerceMLForecastAlertEntryService;
 	}
 
-	private static ServiceTracker
-		<CommerceMLForecastAlertEntryService,
-		 CommerceMLForecastAlertEntryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceMLForecastAlertEntryService.class);
-
-		ServiceTracker
-			<CommerceMLForecastAlertEntryService,
-			 CommerceMLForecastAlertEntryService> serviceTracker =
-				new ServiceTracker
-					<CommerceMLForecastAlertEntryService,
-					 CommerceMLForecastAlertEntryService>(
-						 bundle.getBundleContext(),
-						 CommerceMLForecastAlertEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceMLForecastAlertEntryService
+		_commerceMLForecastAlertEntryService;
 
 }

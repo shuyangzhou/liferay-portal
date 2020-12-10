@@ -14,10 +14,6 @@
 
 package com.liferay.dispatch.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DispatchLog. This utility wraps
  * <code>com.liferay.dispatch.service.impl.DispatchLogServiceImpl</code> and is an
@@ -68,27 +64,14 @@ public class DispatchLogServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static DispatchLogService getService() {
-		return _serviceTracker.getService();
+		return _dispatchLogService;
 	}
 
-	private static ServiceTracker<DispatchLogService, DispatchLogService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DispatchLogService.class);
-
-		ServiceTracker<DispatchLogService, DispatchLogService> serviceTracker =
-			new ServiceTracker<DispatchLogService, DispatchLogService>(
-				bundle.getBundleContext(), DispatchLogService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DispatchLogService _dispatchLogService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.analytics.message.storage.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AnalyticsMessage. This utility wraps
  * <code>com.liferay.analytics.message.storage.service.impl.AnalyticsMessageLocalServiceImpl</code> and
@@ -303,7 +299,7 @@ public class AnalyticsMessageLocalServiceUtil {
 		return getService().getBodyBlobModel(primaryKey);
 	}
 
-	public static java.util.List<Long> getCompanyIds() {
+	public static java.util.List<java.lang.Long> getCompanyIds() {
 		return getService().getCompanyIds();
 	}
 
@@ -319,7 +315,7 @@ public class AnalyticsMessageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -358,29 +354,10 @@ public class AnalyticsMessageLocalServiceUtil {
 	}
 
 	public static AnalyticsMessageLocalService getService() {
-		return _serviceTracker.getService();
+		return _analyticsMessageLocalService;
 	}
 
-	private static ServiceTracker
-		<AnalyticsMessageLocalService, AnalyticsMessageLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AnalyticsMessageLocalService.class);
-
-		ServiceTracker
-			<AnalyticsMessageLocalService, AnalyticsMessageLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AnalyticsMessageLocalService,
-						 AnalyticsMessageLocalService>(
-							 bundle.getBundleContext(),
-							 AnalyticsMessageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AnalyticsMessageLocalService
+		_analyticsMessageLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.external.reference.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ERUserGroup. This utility wraps
  * <code>com.liferay.external.reference.service.impl.ERUserGroupLocalServiceImpl</code> and
@@ -39,8 +35,9 @@ public class ERUserGroupLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.UserGroup
 			addOrUpdateUserGroup(
-				String externalReferenceCode, long userId, long companyId,
-				String name, String description,
+				java.lang.String externalReferenceCode, long userId,
+				long companyId, java.lang.String name,
+				java.lang.String description,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -54,30 +51,14 @@ public class ERUserGroupLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ERUserGroupLocalService getService() {
-		return _serviceTracker.getService();
+		return _erUserGroupLocalService;
 	}
 
-	private static ServiceTracker
-		<ERUserGroupLocalService, ERUserGroupLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ERUserGroupLocalService.class);
-
-		ServiceTracker<ERUserGroupLocalService, ERUserGroupLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ERUserGroupLocalService, ERUserGroupLocalService>(
-						bundle.getBundleContext(),
-						ERUserGroupLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ERUserGroupLocalService _erUserGroupLocalService;
 
 }

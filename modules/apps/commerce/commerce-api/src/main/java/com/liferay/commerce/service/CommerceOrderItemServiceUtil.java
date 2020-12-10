@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceOrderItem. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceOrderItemServiceImpl</code> and is an
@@ -40,7 +36,7 @@ public class CommerceOrderItemServiceUtil {
 	public static com.liferay.commerce.model.CommerceOrderItem
 			addCommerceOrderItem(
 				long commerceOrderId, long cpInstanceId, int quantity,
-				int shippedQuantity, String json,
+				int shippedQuantity, java.lang.String json,
 				com.liferay.commerce.context.CommerceContext commerceContext,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -80,7 +76,7 @@ public class CommerceOrderItemServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderItem
 			fetchByExternalReferenceCode(
-				long companyId, String externalReferenceCode)
+				long companyId, java.lang.String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchByExternalReferenceCode(
@@ -175,14 +171,14 @@ public class CommerceOrderItemServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceOrderItem> search(
 				long commerceOrderId, long parentCommerceOrderItemId,
-				String keywords, int start, int end,
+				java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -193,8 +189,8 @@ public class CommerceOrderItemServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceOrderItem> search(
-				long commerceOrderId, String keywords, int start, int end,
-				com.liferay.portal.kernel.search.Sort sort)
+				long commerceOrderId, java.lang.String keywords, int start,
+				int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().search(commerceOrderId, keywords, start, end, sort);
@@ -202,8 +198,8 @@ public class CommerceOrderItemServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.model.CommerceOrderItem> search(
-				long commerceOrderId, String sku, String name,
-				boolean andOperator, int start, int end,
+				long commerceOrderId, java.lang.String sku,
+				java.lang.String name, boolean andOperator, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -224,7 +220,7 @@ public class CommerceOrderItemServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderItem
 			updateCommerceOrderItem(
-				long commerceOrderItemId, int quantity, String json,
+				long commerceOrderItemId, int quantity, java.lang.String json,
 				com.liferay.commerce.context.CommerceContext commerceContext,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -245,8 +241,8 @@ public class CommerceOrderItemServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderItem
 			updateCommerceOrderItemInfo(
-				long commerceOrderItemId, String deliveryGroup,
-				long shippingAddressId, String printedNote)
+				long commerceOrderItemId, java.lang.String deliveryGroup,
+				long shippingAddressId, java.lang.String printedNote)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceOrderItemInfo(
@@ -255,8 +251,8 @@ public class CommerceOrderItemServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceOrderItem
 			updateCommerceOrderItemInfo(
-				long commerceOrderItemId, String deliveryGroup,
-				long shippingAddressId, String printedNote,
+				long commerceOrderItemId, java.lang.String deliveryGroup,
+				long shippingAddressId, java.lang.String printedNote,
 				int requestedDeliveryDateMonth, int requestedDeliveryDateDay,
 				int requestedDeliveryDateYear)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -273,8 +269,8 @@ public class CommerceOrderItemServiceUtil {
 	@Deprecated
 	public static com.liferay.commerce.model.CommerceOrderItem
 			updateCommerceOrderItemInfo(
-				long commerceOrderItemId, String deliveryGroup,
-				long shippingAddressId, String printedNote,
+				long commerceOrderItemId, java.lang.String deliveryGroup,
+				long shippingAddressId, java.lang.String printedNote,
 				int requestedDeliveryDateMonth, int requestedDeliveryDateDay,
 				int requestedDeliveryDateYear, int requestedDeliveryDateHour,
 				int requestedDeliveryDateMinute,
@@ -374,7 +370,7 @@ public class CommerceOrderItemServiceUtil {
 	public static com.liferay.commerce.model.CommerceOrderItem
 			upsertCommerceOrderItem(
 				long commerceOrderId, long cpInstanceId, int quantity,
-				int shippedQuantity, String json,
+				int shippedQuantity, java.lang.String json,
 				com.liferay.commerce.context.CommerceContext commerceContext,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -385,25 +381,9 @@ public class CommerceOrderItemServiceUtil {
 	}
 
 	public static CommerceOrderItemService getService() {
-		return _serviceTracker.getService();
+		return _commerceOrderItemService;
 	}
 
-	private static ServiceTracker
-		<CommerceOrderItemService, CommerceOrderItemService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceOrderItemService.class);
-
-		ServiceTracker<CommerceOrderItemService, CommerceOrderItemService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceOrderItemService, CommerceOrderItemService>(
-						bundle.getBundleContext(),
-						CommerceOrderItemService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceOrderItemService _commerceOrderItemService;
 
 }

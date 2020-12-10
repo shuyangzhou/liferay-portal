@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.tax.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceTaxMethod. This utility wraps
  * <code>com.liferay.commerce.tax.service.impl.CommerceTaxMethodServiceImpl</code> and is an
@@ -40,9 +36,10 @@ public class CommerceTaxMethodServiceUtil {
 	public static com.liferay.commerce.tax.model.CommerceTaxMethod
 			addCommerceTaxMethod(
 				long userId, long groupId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String engineKey, boolean percentage, boolean active)
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String engineKey, boolean percentage, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceTaxMethod(
@@ -56,9 +53,10 @@ public class CommerceTaxMethodServiceUtil {
 	@Deprecated
 	public static com.liferay.commerce.tax.model.CommerceTaxMethod
 			addCommerceTaxMethod(
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String engineKey, boolean percentage, boolean active,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String engineKey, boolean percentage, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -82,7 +80,7 @@ public class CommerceTaxMethodServiceUtil {
 	}
 
 	public static com.liferay.commerce.tax.model.CommerceTaxMethod
-			fetchCommerceTaxMethod(long groupId, String engineKey)
+			fetchCommerceTaxMethod(long groupId, java.lang.String engineKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCommerceTaxMethod(groupId, engineKey);
@@ -116,7 +114,7 @@ public class CommerceTaxMethodServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -130,8 +128,9 @@ public class CommerceTaxMethodServiceUtil {
 	public static com.liferay.commerce.tax.model.CommerceTaxMethod
 			updateCommerceTaxMethod(
 				long commerceTaxMethodId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
 				boolean percentage, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -140,25 +139,9 @@ public class CommerceTaxMethodServiceUtil {
 	}
 
 	public static CommerceTaxMethodService getService() {
-		return _serviceTracker.getService();
+		return _commerceTaxMethodService;
 	}
 
-	private static ServiceTracker
-		<CommerceTaxMethodService, CommerceTaxMethodService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceTaxMethodService.class);
-
-		ServiceTracker<CommerceTaxMethodService, CommerceTaxMethodService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceTaxMethodService, CommerceTaxMethodService>(
-						bundle.getBundleContext(),
-						CommerceTaxMethodService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceTaxMethodService _commerceTaxMethodService;
 
 }

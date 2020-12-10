@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDefinitionOptionValueRel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDefinitionOptionValueRelServiceImpl</code> and is an
@@ -40,8 +36,8 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionValueRel
 			addCPDefinitionOptionValueRel(
 				long cpDefinitionOptionRelId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -67,7 +63,7 @@ public class CPDefinitionOptionValueRelServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPDefinitionOptionValueRel
 			fetchCPDefinitionOptionValueRel(
-				long cpDefinitionOptionRelId, String key)
+				long cpDefinitionOptionRelId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchCPDefinitionOptionValueRel(
@@ -108,7 +104,7 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.product.model.CPDefinitionOptionValueRel>
 				getCPDefinitionOptionValueRels(
-					long groupId, String key, int start, int end)
+					long groupId, java.lang.String key, int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPDefinitionOptionValueRels(
@@ -128,7 +124,7 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -145,7 +141,7 @@ public class CPDefinitionOptionValueRelServiceUtil {
 		<com.liferay.commerce.product.model.CPDefinitionOptionValueRel>
 				searchCPDefinitionOptionValueRels(
 					long companyId, long groupId, long cpDefinitionOptionRelId,
-					String keywords, int start, int end,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -173,9 +169,9 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionValueRel
 			updateCPDefinitionOptionValueRel(
 				long cpDefinitionOptionValueRelId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key, long cpInstanceId, int quantity,
-				java.math.BigDecimal price,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key, long cpInstanceId,
+				int quantity, java.math.BigDecimal price,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -187,9 +183,9 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionValueRel
 			updateCPDefinitionOptionValueRel(
 				long cpDefinitionOptionValueRelId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key, long cpInstanceId, int quantity,
-				boolean preselected, java.math.BigDecimal price,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key, long cpInstanceId,
+				int quantity, boolean preselected, java.math.BigDecimal price,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -214,8 +210,8 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionValueRel
 			updateCPDefinitionOptionValueRel(
 				long cpDefinitionOptionValueRelId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				double priority, String key,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -234,29 +230,10 @@ public class CPDefinitionOptionValueRelServiceUtil {
 	}
 
 	public static CPDefinitionOptionValueRelService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionOptionValueRelService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionOptionValueRelService, CPDefinitionOptionValueRelService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionOptionValueRelService.class);
-
-		ServiceTracker
-			<CPDefinitionOptionValueRelService,
-			 CPDefinitionOptionValueRelService> serviceTracker =
-				new ServiceTracker
-					<CPDefinitionOptionValueRelService,
-					 CPDefinitionOptionValueRelService>(
-						 bundle.getBundleContext(),
-						 CPDefinitionOptionValueRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionOptionValueRelService
+		_cpDefinitionOptionValueRelService;
 
 }

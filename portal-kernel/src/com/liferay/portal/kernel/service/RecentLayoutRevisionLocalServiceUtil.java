@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for RecentLayoutRevision. This utility wraps
  * <code>com.liferay.portal.service.impl.RecentLayoutRevisionLocalServiceImpl</code> and
@@ -263,7 +261,7 @@ public class RecentLayoutRevisionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -337,15 +335,10 @@ public class RecentLayoutRevisionLocalServiceUtil {
 	}
 
 	public static RecentLayoutRevisionLocalService getService() {
-		if (_service == null) {
-			_service =
-				(RecentLayoutRevisionLocalService)PortalBeanLocatorUtil.locate(
-					RecentLayoutRevisionLocalService.class.getName());
-		}
-
-		return _service;
+		return _recentLayoutRevisionLocalService;
 	}
 
-	private static RecentLayoutRevisionLocalService _service;
+	private static volatile RecentLayoutRevisionLocalService
+		_recentLayoutRevisionLocalService;
 
 }

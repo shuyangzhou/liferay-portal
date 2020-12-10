@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.discount.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceDiscountAccountRel. This utility wraps
  * <code>com.liferay.commerce.discount.service.impl.CommerceDiscountAccountRelLocalServiceImpl</code> and
@@ -275,7 +271,7 @@ public class CommerceDiscountAccountRelLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.discount.model.CommerceDiscountAccountRel
 		fetchCommerceDiscountAccountRelByUuidAndCompanyId(
-			String uuid, long companyId) {
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommerceDiscountAccountRelByUuidAndCompanyId(
 			uuid, companyId);
@@ -312,7 +308,7 @@ public class CommerceDiscountAccountRelLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.discount.model.CommerceDiscountAccountRel
 			getCommerceDiscountAccountRelByUuidAndCompanyId(
-				String uuid, long companyId)
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceDiscountAccountRelByUuidAndCompanyId(
@@ -352,7 +348,8 @@ public class CommerceDiscountAccountRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountAccountRel>
 			getCommerceDiscountAccountRels(
-				long commerceDiscountId, String name, int start, int end) {
+				long commerceDiscountId, java.lang.String name, int start,
+				int end) {
 
 		return getService().getCommerceDiscountAccountRels(
 			commerceDiscountId, name, start, end);
@@ -375,7 +372,7 @@ public class CommerceDiscountAccountRelLocalServiceUtil {
 	}
 
 	public static int getCommerceDiscountAccountRelsCount(
-		long commerceDiscountId, String name) {
+		long commerceDiscountId, java.lang.String name) {
 
 		return getService().getCommerceDiscountAccountRelsCount(
 			commerceDiscountId, name);
@@ -401,7 +398,7 @@ public class CommerceDiscountAccountRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -435,29 +432,10 @@ public class CommerceDiscountAccountRelLocalServiceUtil {
 	}
 
 	public static CommerceDiscountAccountRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceDiscountAccountRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceDiscountAccountRelLocalService,
-		 CommerceDiscountAccountRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDiscountAccountRelLocalService.class);
-
-		ServiceTracker
-			<CommerceDiscountAccountRelLocalService,
-			 CommerceDiscountAccountRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceDiscountAccountRelLocalService,
-					 CommerceDiscountAccountRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceDiscountAccountRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDiscountAccountRelLocalService
+		_commerceDiscountAccountRelLocalService;
 
 }

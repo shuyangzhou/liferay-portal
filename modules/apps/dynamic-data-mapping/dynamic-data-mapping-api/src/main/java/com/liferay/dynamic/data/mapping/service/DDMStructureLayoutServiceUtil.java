@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMStructureLayout. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMStructureLayoutServiceImpl</code> and is an
@@ -43,7 +39,7 @@ public class DDMStructureLayoutServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -62,7 +58,7 @@ public class DDMStructureLayoutServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructureLayout> search(
 				long companyId, long[] groupIds, long classNameId,
-				String keywords, int start, int end,
+				java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
 						orderByComparator)
@@ -74,26 +70,10 @@ public class DDMStructureLayoutServiceUtil {
 	}
 
 	public static DDMStructureLayoutService getService() {
-		return _serviceTracker.getService();
+		return _ddmStructureLayoutService;
 	}
 
-	private static ServiceTracker
-		<DDMStructureLayoutService, DDMStructureLayoutService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMStructureLayoutService.class);
-
-		ServiceTracker<DDMStructureLayoutService, DDMStructureLayoutService>
-			serviceTracker =
-				new ServiceTracker
-					<DDMStructureLayoutService, DDMStructureLayoutService>(
-						bundle.getBundleContext(),
-						DDMStructureLayoutService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMStructureLayoutService
+		_ddmStructureLayoutService;
 
 }

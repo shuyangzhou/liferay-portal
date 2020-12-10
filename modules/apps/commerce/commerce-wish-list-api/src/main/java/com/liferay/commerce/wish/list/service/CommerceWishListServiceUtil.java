@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.wish.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceWishList. This utility wraps
  * <code>com.liferay.commerce.wish.list.service.impl.CommerceWishListServiceImpl</code> and is an
@@ -39,7 +35,7 @@ public class CommerceWishListServiceUtil {
 	 */
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
 			addCommerceWishList(
-				String name, boolean defaultWishList,
+				java.lang.String name, boolean defaultWishList,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -122,13 +118,14 @@ public class CommerceWishListServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.commerce.wish.list.model.CommerceWishList
 			updateCommerceWishList(
-				long commerceWishListId, String name, boolean defaultWishList)
+				long commerceWishListId, java.lang.String name,
+				boolean defaultWishList)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceWishList(
@@ -136,25 +133,9 @@ public class CommerceWishListServiceUtil {
 	}
 
 	public static CommerceWishListService getService() {
-		return _serviceTracker.getService();
+		return _commerceWishListService;
 	}
 
-	private static ServiceTracker
-		<CommerceWishListService, CommerceWishListService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceWishListService.class);
-
-		ServiceTracker<CommerceWishListService, CommerceWishListService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceWishListService, CommerceWishListService>(
-						bundle.getBundleContext(),
-						CommerceWishListService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceWishListService _commerceWishListService;
 
 }

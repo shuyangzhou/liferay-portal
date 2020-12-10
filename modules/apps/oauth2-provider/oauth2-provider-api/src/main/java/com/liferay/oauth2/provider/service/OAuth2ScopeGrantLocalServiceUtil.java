@@ -14,10 +14,6 @@
 
 package com.liferay.oauth2.provider.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for OAuth2ScopeGrant. This utility wraps
  * <code>com.liferay.oauth2.provider.service.impl.OAuth2ScopeGrantLocalServiceImpl</code> and
@@ -108,7 +104,8 @@ public class OAuth2ScopeGrantLocalServiceUtil {
 	public static com.liferay.oauth2.provider.model.OAuth2ScopeGrant
 			createOAuth2ScopeGrant(
 				long companyId, long oAuth2ApplicationScopeAliasesId,
-				String applicationName, String bundleSymbolicName, String scope)
+				java.lang.String applicationName,
+				java.lang.String bundleSymbolicName, java.lang.String scope)
 		throws com.liferay.oauth2.provider.exception.
 			DuplicateOAuth2ScopeGrantException {
 
@@ -120,8 +117,9 @@ public class OAuth2ScopeGrantLocalServiceUtil {
 	public static com.liferay.oauth2.provider.model.OAuth2ScopeGrant
 			createOAuth2ScopeGrant(
 				long companyId, long oAuth2ApplicationScopeAliasesId,
-				String applicationName, String bundleSymbolicName, String scope,
-				java.util.List<String> scopeAliases)
+				java.lang.String applicationName,
+				java.lang.String bundleSymbolicName, java.lang.String scope,
+				java.util.List<java.lang.String> scopeAliases)
 		throws com.liferay.oauth2.provider.exception.
 			DuplicateOAuth2ScopeGrantException {
 
@@ -437,8 +435,9 @@ public class OAuth2ScopeGrantLocalServiceUtil {
 	public static java.util.Collection
 		<com.liferay.oauth2.provider.model.OAuth2ScopeGrant>
 			getOAuth2ScopeGrants(
-				long companyId, String applicationName,
-				String bundleSymbolicName, String accessTokenContent) {
+				long companyId, java.lang.String applicationName,
+				java.lang.String bundleSymbolicName,
+				java.lang.String accessTokenContent) {
 
 		return getService().getOAuth2ScopeGrants(
 			companyId, applicationName, bundleSymbolicName, accessTokenContent);
@@ -458,7 +457,7 @@ public class OAuth2ScopeGrantLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -525,29 +524,10 @@ public class OAuth2ScopeGrantLocalServiceUtil {
 	}
 
 	public static OAuth2ScopeGrantLocalService getService() {
-		return _serviceTracker.getService();
+		return _oAuth2ScopeGrantLocalService;
 	}
 
-	private static ServiceTracker
-		<OAuth2ScopeGrantLocalService, OAuth2ScopeGrantLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			OAuth2ScopeGrantLocalService.class);
-
-		ServiceTracker
-			<OAuth2ScopeGrantLocalService, OAuth2ScopeGrantLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<OAuth2ScopeGrantLocalService,
-						 OAuth2ScopeGrantLocalService>(
-							 bundle.getBundleContext(),
-							 OAuth2ScopeGrantLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile OAuth2ScopeGrantLocalService
+		_oAuth2ScopeGrantLocalService;
 
 }

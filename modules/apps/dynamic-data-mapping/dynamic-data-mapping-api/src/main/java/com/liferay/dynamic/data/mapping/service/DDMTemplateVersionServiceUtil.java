@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDMTemplateVersion. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMTemplateVersionServiceImpl</code> and is an
@@ -49,7 +45,7 @@ public class DDMTemplateVersionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -80,26 +76,10 @@ public class DDMTemplateVersionServiceUtil {
 	}
 
 	public static DDMTemplateVersionService getService() {
-		return _serviceTracker.getService();
+		return _ddmTemplateVersionService;
 	}
 
-	private static ServiceTracker
-		<DDMTemplateVersionService, DDMTemplateVersionService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMTemplateVersionService.class);
-
-		ServiceTracker<DDMTemplateVersionService, DDMTemplateVersionService>
-			serviceTracker =
-				new ServiceTracker
-					<DDMTemplateVersionService, DDMTemplateVersionService>(
-						bundle.getBundleContext(),
-						DDMTemplateVersionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMTemplateVersionService
+		_ddmTemplateVersionService;
 
 }

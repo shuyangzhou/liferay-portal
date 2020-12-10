@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Image. This utility wraps
  * <code>com.liferay.portal.service.impl.ImageServiceImpl</code> and is an
@@ -46,19 +44,14 @@ public class ImageServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ImageService getService() {
-		if (_service == null) {
-			_service = (ImageService)PortalBeanLocatorUtil.locate(
-				ImageService.class.getName());
-		}
-
-		return _service;
+		return _imageService;
 	}
 
-	private static ImageService _service;
+	private static volatile ImageService _imageService;
 
 }

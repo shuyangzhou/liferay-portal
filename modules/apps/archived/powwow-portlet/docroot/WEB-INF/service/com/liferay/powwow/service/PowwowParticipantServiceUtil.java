@@ -14,8 +14,6 @@
 
 package com.liferay.powwow.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for PowwowParticipant. This utility wraps
  * <code>com.liferay.powwow.service.impl.PowwowParticipantServiceImpl</code> and is an
@@ -48,7 +46,7 @@ public class PowwowParticipantServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -67,9 +65,9 @@ public class PowwowParticipantServiceUtil {
 
 	public static com.liferay.powwow.model.PowwowParticipant
 			updatePowwowParticipant(
-				long powwowParticipantId, long powwowMeetingId, String name,
-				long participantUserId, String emailAddress, int type,
-				int status,
+				long powwowParticipantId, long powwowMeetingId,
+				java.lang.String name, long participantUserId,
+				java.lang.String emailAddress, int type, int status,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -79,19 +77,13 @@ public class PowwowParticipantServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_powwowParticipantService = null;
 	}
 
 	public static PowwowParticipantService getService() {
-		if (_service == null) {
-			_service = (PowwowParticipantService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				PowwowParticipantService.class.getName());
-		}
-
-		return _service;
+		return _powwowParticipantService;
 	}
 
-	private static PowwowParticipantService _service;
+	private static volatile PowwowParticipantService _powwowParticipantService;
 
 }

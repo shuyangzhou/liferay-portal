@@ -14,10 +14,6 @@
 
 package com.liferay.portal.security.audit.storage.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for AuditEvent. This utility wraps
  * <code>com.liferay.portal.security.audit.storage.service.impl.AuditEventServiceImpl</code> and is an
@@ -61,12 +57,13 @@ public class AuditEventServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.security.audit.storage.model.AuditEvent>
 				getAuditEvents(
-					long companyId, long userId, String userName,
+					long companyId, long userId, java.lang.String userName,
 					java.util.Date createDateGT, java.util.Date createDateLT,
-					String eventType, String className, String classPK,
-					String clientHost, String clientIP, String serverName,
-					int serverPort, String sessionID, boolean andSearch,
-					int start, int end)
+					java.lang.String eventType, java.lang.String className,
+					java.lang.String classPK, java.lang.String clientHost,
+					java.lang.String clientIP, java.lang.String serverName,
+					int serverPort, java.lang.String sessionID,
+					boolean andSearch, int start, int end)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAuditEvents(
@@ -78,12 +75,13 @@ public class AuditEventServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.security.audit.storage.model.AuditEvent>
 				getAuditEvents(
-					long companyId, long userId, String userName,
+					long companyId, long userId, java.lang.String userName,
 					java.util.Date createDateGT, java.util.Date createDateLT,
-					String eventType, String className, String classPK,
-					String clientHost, String clientIP, String serverName,
-					int serverPort, String sessionID, boolean andSearch,
-					int start, int end,
+					java.lang.String eventType, java.lang.String className,
+					java.lang.String classPK, java.lang.String clientHost,
+					java.lang.String clientIP, java.lang.String serverName,
+					int serverPort, java.lang.String sessionID,
+					boolean andSearch, int start, int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.portal.security.audit.storage.model.
 							AuditEvent> orderByComparator)
@@ -102,11 +100,12 @@ public class AuditEventServiceUtil {
 	}
 
 	public static int getAuditEventsCount(
-			long companyId, long userId, String userName,
+			long companyId, long userId, java.lang.String userName,
 			java.util.Date createDateGT, java.util.Date createDateLT,
-			String eventType, String className, String classPK,
-			String clientHost, String clientIP, String serverName,
-			int serverPort, String sessionID, boolean andSearch)
+			java.lang.String eventType, java.lang.String className,
+			java.lang.String classPK, java.lang.String clientHost,
+			java.lang.String clientIP, java.lang.String serverName,
+			int serverPort, java.lang.String sessionID, boolean andSearch)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAuditEventsCount(
@@ -120,27 +119,14 @@ public class AuditEventServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static AuditEventService getService() {
-		return _serviceTracker.getService();
+		return _auditEventService;
 	}
 
-	private static ServiceTracker<AuditEventService, AuditEventService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AuditEventService.class);
-
-		ServiceTracker<AuditEventService, AuditEventService> serviceTracker =
-			new ServiceTracker<AuditEventService, AuditEventService>(
-				bundle.getBundleContext(), AuditEventService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuditEventService _auditEventService;
 
 }

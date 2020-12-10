@@ -14,10 +14,6 @@
 
 package com.liferay.layout.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for LayoutClassedModelUsage. This utility wraps
  * <code>com.liferay.layout.service.impl.LayoutClassedModelUsageLocalServiceImpl</code> and
@@ -66,8 +62,8 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 
 	public static com.liferay.layout.model.LayoutClassedModelUsage
 		addLayoutClassedModelUsage(
-			long groupId, long classNameId, long classPK, String containerKey,
-			long containerType, long plid,
+			long groupId, long classNameId, long classPK,
+			java.lang.String containerKey, long containerType, long plid,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return getService().addLayoutClassedModelUsage(
@@ -143,7 +139,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	}
 
 	public static void deleteLayoutClassedModelUsages(
-		String containerKey, long containerType, long plid) {
+		java.lang.String containerKey, long containerType, long plid) {
 
 		getService().deleteLayoutClassedModelUsages(
 			containerKey, containerType, plid);
@@ -264,7 +260,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 
 	public static com.liferay.layout.model.LayoutClassedModelUsage
 		fetchLayoutClassedModelUsage(
-			long classNameId, long classPK, String containerKey,
+			long classNameId, long classPK, java.lang.String containerKey,
 			long containerType, long plid) {
 
 		return getService().fetchLayoutClassedModelUsage(
@@ -280,7 +276,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	 */
 	public static com.liferay.layout.model.LayoutClassedModelUsage
 		fetchLayoutClassedModelUsageByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchLayoutClassedModelUsageByUuidAndGroupId(
 			uuid, groupId);
@@ -332,7 +328,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	 */
 	public static com.liferay.layout.model.LayoutClassedModelUsage
 			getLayoutClassedModelUsageByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getLayoutClassedModelUsageByUuidAndGroupId(
@@ -405,7 +401,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.model.LayoutClassedModelUsage>
 			getLayoutClassedModelUsagesByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getLayoutClassedModelUsagesByUuidAndCompanyId(
 			uuid, companyId);
@@ -424,7 +420,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.layout.model.LayoutClassedModelUsage>
 			getLayoutClassedModelUsagesByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.layout.model.LayoutClassedModelUsage>
 						orderByComparator) {
@@ -461,7 +457,7 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -509,29 +505,10 @@ public class LayoutClassedModelUsageLocalServiceUtil {
 	}
 
 	public static LayoutClassedModelUsageLocalService getService() {
-		return _serviceTracker.getService();
+		return _layoutClassedModelUsageLocalService;
 	}
 
-	private static ServiceTracker
-		<LayoutClassedModelUsageLocalService,
-		 LayoutClassedModelUsageLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutClassedModelUsageLocalService.class);
-
-		ServiceTracker
-			<LayoutClassedModelUsageLocalService,
-			 LayoutClassedModelUsageLocalService> serviceTracker =
-				new ServiceTracker
-					<LayoutClassedModelUsageLocalService,
-					 LayoutClassedModelUsageLocalService>(
-						 bundle.getBundleContext(),
-						 LayoutClassedModelUsageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutClassedModelUsageLocalService
+		_layoutClassedModelUsageLocalService;
 
 }

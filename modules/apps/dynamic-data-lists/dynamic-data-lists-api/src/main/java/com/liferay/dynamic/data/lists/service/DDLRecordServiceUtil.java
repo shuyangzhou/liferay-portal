@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.lists.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for DDLRecord. This utility wraps
  * <code>com.liferay.dynamic.data.lists.service.impl.DDLRecordServiceImpl</code> and is an
@@ -81,7 +77,7 @@ public class DDLRecordServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -123,7 +119,7 @@ public class DDLRecordServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void revertRecord(
-			long recordId, String version,
+			long recordId, java.lang.String version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -158,22 +154,9 @@ public class DDLRecordServiceUtil {
 	}
 
 	public static DDLRecordService getService() {
-		return _serviceTracker.getService();
+		return _ddlRecordService;
 	}
 
-	private static ServiceTracker<DDLRecordService, DDLRecordService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DDLRecordService.class);
-
-		ServiceTracker<DDLRecordService, DDLRecordService> serviceTracker =
-			new ServiceTracker<DDLRecordService, DDLRecordService>(
-				bundle.getBundleContext(), DDLRecordService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDLRecordService _ddlRecordService;
 
 }

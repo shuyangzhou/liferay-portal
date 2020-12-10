@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for PortletPreferenceValue. This utility wraps
  * <code>com.liferay.portal.service.impl.PortletPreferenceValueLocalServiceImpl</code> and
@@ -242,7 +240,7 @@ public class PortletPreferenceValueLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -323,16 +321,10 @@ public class PortletPreferenceValueLocalServiceUtil {
 	}
 
 	public static PortletPreferenceValueLocalService getService() {
-		if (_service == null) {
-			_service =
-				(PortletPreferenceValueLocalService)
-					PortalBeanLocatorUtil.locate(
-						PortletPreferenceValueLocalService.class.getName());
-		}
-
-		return _service;
+		return _portletPreferenceValueLocalService;
 	}
 
-	private static PortletPreferenceValueLocalService _service;
+	private static volatile PortletPreferenceValueLocalService
+		_portletPreferenceValueLocalService;
 
 }

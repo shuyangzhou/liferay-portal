@@ -14,10 +14,6 @@
 
 package com.liferay.view.count.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for ViewCountEntry. This utility wraps
  * <code>com.liferay.view.count.service.impl.ViewCountEntryLocalServiceImpl</code> and
@@ -249,7 +245,7 @@ public class ViewCountEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -343,27 +339,10 @@ public class ViewCountEntryLocalServiceUtil {
 	}
 
 	public static ViewCountEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _viewCountEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<ViewCountEntryLocalService, ViewCountEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ViewCountEntryLocalService.class);
-
-		ServiceTracker<ViewCountEntryLocalService, ViewCountEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ViewCountEntryLocalService, ViewCountEntryLocalService>(
-						bundle.getBundleContext(),
-						ViewCountEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ViewCountEntryLocalService
+		_viewCountEntryLocalService;
 
 }

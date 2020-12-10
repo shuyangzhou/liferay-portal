@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Region. This utility wraps
  * <code>com.liferay.portal.service.impl.RegionLocalServiceImpl</code> and
@@ -36,8 +34,9 @@ public class RegionLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.RegionLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Region addRegion(
-			long countryId, boolean active, String name, double position,
-			String regionCode, ServiceContext serviceContext)
+			long countryId, boolean active, java.lang.String name,
+			double position, java.lang.String regionCode,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addRegion(
@@ -236,7 +235,7 @@ public class RegionLocalServiceUtil {
 	 * @return the matching region, or <code>null</code> if a matching region could not be found
 	 */
 	public static com.liferay.portal.kernel.model.Region
-		fetchRegionByUuidAndCompanyId(String uuid, long companyId) {
+		fetchRegionByUuidAndCompanyId(java.lang.String uuid, long companyId) {
 
 		return getService().fetchRegionByUuidAndCompanyId(uuid, companyId);
 	}
@@ -267,7 +266,7 @@ public class RegionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -304,7 +303,7 @@ public class RegionLocalServiceUtil {
 	 * @throws PortalException if a matching region could not be found
 	 */
 	public static com.liferay.portal.kernel.model.Region
-			getRegionByUuidAndCompanyId(String uuid, long companyId)
+			getRegionByUuidAndCompanyId(java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRegionByUuidAndCompanyId(uuid, companyId);
@@ -353,14 +352,9 @@ public class RegionLocalServiceUtil {
 	}
 
 	public static RegionLocalService getService() {
-		if (_service == null) {
-			_service = (RegionLocalService)PortalBeanLocatorUtil.locate(
-				RegionLocalService.class.getName());
-		}
-
-		return _service;
+		return _regionLocalService;
 	}
 
-	private static RegionLocalService _service;
+	private static volatile RegionLocalService _regionLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.notification.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceNotificationTemplateCommerceAccountGroupRel. This utility wraps
  * <code>com.liferay.commerce.notification.service.impl.CommerceNotificationTemplateCommerceAccountGroupRelServiceImpl</code> and is an
@@ -94,39 +90,18 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CommerceNotificationTemplateCommerceAccountGroupRelService
 		getService() {
 
-		return _serviceTracker.getService();
+		return _commerceNotificationTemplateCommerceAccountGroupRelService;
 	}
 
-	private static ServiceTracker
-		<CommerceNotificationTemplateCommerceAccountGroupRelService,
-		 CommerceNotificationTemplateCommerceAccountGroupRelService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceNotificationTemplateCommerceAccountGroupRelService.class);
-
-		ServiceTracker
-			<CommerceNotificationTemplateCommerceAccountGroupRelService,
-			 CommerceNotificationTemplateCommerceAccountGroupRelService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceNotificationTemplateCommerceAccountGroupRelService,
-						 CommerceNotificationTemplateCommerceAccountGroupRelService>(
-							 bundle.getBundleContext(),
-							 CommerceNotificationTemplateCommerceAccountGroupRelService.class,
-							 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile
+		CommerceNotificationTemplateCommerceAccountGroupRelService
+			_commerceNotificationTemplateCommerceAccountGroupRelService;
 
 }

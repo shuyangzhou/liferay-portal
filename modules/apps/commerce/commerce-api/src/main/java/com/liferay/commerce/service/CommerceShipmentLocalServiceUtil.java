@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceShipment. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceShipmentLocalServiceImpl</code> and
@@ -39,10 +35,12 @@ public class CommerceShipmentLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceShipment
 			addCommerceDeliverySubscriptionShipment(
-				long userId, long commerceOrderId, String name,
-				String description, String street1, String street2,
-				String street3, String city, String zip, long commerceRegionId,
-				long commerceCountryId, String phoneNumber)
+				long userId, long commerceOrderId, java.lang.String name,
+				java.lang.String description, java.lang.String street1,
+				java.lang.String street2, java.lang.String street3,
+				java.lang.String city, java.lang.String zip,
+				long commerceRegionId, long commerceCountryId,
+				java.lang.String phoneNumber)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceDeliverySubscriptionShipment(
@@ -72,7 +70,7 @@ public class CommerceShipmentLocalServiceUtil {
 			addCommerceShipment(
 				long groupId, long commerceAccountId, long commerceAddressId,
 				long commerceShippingMethodId,
-				String commerceShippingOptionName,
+				java.lang.String commerceShippingOptionName,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -313,7 +311,7 @@ public class CommerceShipmentLocalServiceUtil {
 	public static java.util.List<com.liferay.commerce.model.CommerceShipment>
 			getCommerceShipments(
 				long companyId, long[] groupIds, long[] commerceAccountIds,
-				String keywords, int[] shipmentStatuses,
+				java.lang.String keywords, int[] shipmentStatuses,
 				boolean excludeShipmentStatus, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -370,7 +368,7 @@ public class CommerceShipmentLocalServiceUtil {
 
 	public static int getCommerceShipmentsCount(
 			long companyId, long[] groupIds, long[] commerceAccountIds,
-			String keywords, int[] shipmentStatuses,
+			java.lang.String keywords, int[] shipmentStatuses,
 			boolean excludeShipmentStatus)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -413,7 +411,7 @@ public class CommerceShipmentLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -443,10 +441,11 @@ public class CommerceShipmentLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.model.CommerceShipment updateAddress(
-			long commerceShipmentId, String name, String description,
-			String street1, String street2, String street3, String city,
-			String zip, long commerceRegionId, long commerceCountryId,
-			String phoneNumber)
+			long commerceShipmentId, java.lang.String name,
+			java.lang.String description, java.lang.String street1,
+			java.lang.String street2, java.lang.String street3,
+			java.lang.String city, java.lang.String zip, long commerceRegionId,
+			long commerceCountryId, java.lang.String phoneNumber)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAddress(
@@ -456,7 +455,8 @@ public class CommerceShipmentLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceShipment
 			updateCarrierDetails(
-				long commerceShipmentId, String carrier, String trackingNumber)
+				long commerceShipmentId, java.lang.String carrier,
+				java.lang.String trackingNumber)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCarrierDetails(
@@ -482,8 +482,9 @@ public class CommerceShipmentLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceShipment
 			updateCommerceShipment(
-				long commerceShipmentId, String carrier, String trackingNumber,
-				int status, int shippingDateMonth, int shippingDateDay,
+				long commerceShipmentId, java.lang.String carrier,
+				java.lang.String trackingNumber, int status,
+				int shippingDateMonth, int shippingDateDay,
 				int shippingDateYear, int shippingDateHour,
 				int shippingDateMinute, int expectedDateMonth,
 				int expectedDateDay, int expectedDateYear, int expectedDateHour,
@@ -500,11 +501,14 @@ public class CommerceShipmentLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceShipment
 			updateCommerceShipment(
-				long commerceShipmentId, String name, String description,
-				String street1, String street2, String street3, String city,
-				String zip, long commerceRegionId, long commerceCountryId,
-				String phoneNumber, String carrier, String trackingNumber,
-				int status, int shippingDateMonth, int shippingDateDay,
+				long commerceShipmentId, java.lang.String name,
+				java.lang.String description, java.lang.String street1,
+				java.lang.String street2, java.lang.String street3,
+				java.lang.String city, java.lang.String zip,
+				long commerceRegionId, long commerceCountryId,
+				java.lang.String phoneNumber, java.lang.String carrier,
+				java.lang.String trackingNumber, int status,
+				int shippingDateMonth, int shippingDateDay,
 				int shippingDateYear, int shippingDateHour,
 				int shippingDateMinute, int expectedDateMonth,
 				int expectedDateDay, int expectedDateYear, int expectedDateHour,
@@ -552,29 +556,10 @@ public class CommerceShipmentLocalServiceUtil {
 	}
 
 	public static CommerceShipmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceShipmentLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceShipmentLocalService, CommerceShipmentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceShipmentLocalService.class);
-
-		ServiceTracker
-			<CommerceShipmentLocalService, CommerceShipmentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceShipmentLocalService,
-						 CommerceShipmentLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceShipmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceShipmentLocalService
+		_commerceShipmentLocalService;
 
 }

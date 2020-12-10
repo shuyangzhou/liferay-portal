@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CPOptionCategory. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPOptionCategoryLocalServiceImpl</code> and
@@ -58,9 +54,11 @@ public class CPOptionCategoryLocalServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPOptionCategory
 			addCPOptionCategory(
-				long userId, java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				double priority, String key,
+				long userId,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				double priority, java.lang.String key,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -243,7 +241,7 @@ public class CPOptionCategoryLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOptionCategory
-		fetchCPOptionCategory(long companyId, String key) {
+		fetchCPOptionCategory(long companyId, java.lang.String key) {
 
 		return getService().fetchCPOptionCategory(companyId, key);
 	}
@@ -256,7 +254,8 @@ public class CPOptionCategoryLocalServiceUtil {
 	 * @return the matching cp option category, or <code>null</code> if a matching cp option category could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPOptionCategory
-		fetchCPOptionCategoryByUuidAndCompanyId(String uuid, long companyId) {
+		fetchCPOptionCategoryByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCPOptionCategoryByUuidAndCompanyId(
 			uuid, companyId);
@@ -317,7 +316,7 @@ public class CPOptionCategoryLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPOptionCategory
-			getCPOptionCategory(long companyId, String key)
+			getCPOptionCategory(long companyId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPOptionCategory(companyId, key);
@@ -332,7 +331,8 @@ public class CPOptionCategoryLocalServiceUtil {
 	 * @throws PortalException if a matching cp option category could not be found
 	 */
 	public static com.liferay.commerce.product.model.CPOptionCategory
-			getCPOptionCategoryByUuidAndCompanyId(String uuid, long companyId)
+			getCPOptionCategoryByUuidAndCompanyId(
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCPOptionCategoryByUuidAndCompanyId(
@@ -359,7 +359,7 @@ public class CPOptionCategoryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -376,8 +376,8 @@ public class CPOptionCategoryLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPOptionCategory>
 				searchCPOptionCategories(
-					long companyId, String keywords, int start, int end,
-					com.liferay.portal.kernel.search.Sort sort)
+					long companyId, java.lang.String keywords, int start,
+					int end, com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().searchCPOptionCategories(
@@ -405,9 +405,10 @@ public class CPOptionCategoryLocalServiceUtil {
 	public static com.liferay.commerce.product.model.CPOptionCategory
 			updateCPOptionCategory(
 				long cpOptionCategoryId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				double priority, String key)
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				double priority, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCPOptionCategory(
@@ -415,29 +416,10 @@ public class CPOptionCategoryLocalServiceUtil {
 	}
 
 	public static CPOptionCategoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _cpOptionCategoryLocalService;
 	}
 
-	private static ServiceTracker
-		<CPOptionCategoryLocalService, CPOptionCategoryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPOptionCategoryLocalService.class);
-
-		ServiceTracker
-			<CPOptionCategoryLocalService, CPOptionCategoryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CPOptionCategoryLocalService,
-						 CPOptionCategoryLocalService>(
-							 bundle.getBundleContext(),
-							 CPOptionCategoryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPOptionCategoryLocalService
+		_cpOptionCategoryLocalService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.site.navigation.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SiteNavigationMenuItem. This utility wraps
  * <code>com.liferay.site.navigation.service.impl.SiteNavigationMenuItemLocalServiceImpl</code> and
@@ -40,8 +36,8 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
 			addSiteNavigationMenuItem(
 				long userId, long groupId, long siteNavigationMenuId,
-				long parentSiteNavigationMenuItemId, String type, int order,
-				String typeSettings,
+				long parentSiteNavigationMenuItemId, java.lang.String type,
+				int order, java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -54,8 +50,8 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
 			addSiteNavigationMenuItem(
 				long userId, long groupId, long siteNavigationMenuId,
-				long parentSiteNavigationMenuItemId, String type,
-				String typeSettings,
+				long parentSiteNavigationMenuItemId, java.lang.String type,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -270,7 +266,8 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	 * @return the matching site navigation menu item, or <code>null</code> if a matching site navigation menu item could not be found
 	 */
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
-		fetchSiteNavigationMenuItemByUuidAndGroupId(String uuid, long groupId) {
+		fetchSiteNavigationMenuItemByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchSiteNavigationMenuItemByUuidAndGroupId(
 			uuid, groupId);
@@ -302,7 +299,7 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -339,7 +336,8 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	 * @throws PortalException if a matching site navigation menu item could not be found
 	 */
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
-			getSiteNavigationMenuItemByUuidAndGroupId(String uuid, long groupId)
+			getSiteNavigationMenuItemByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getSiteNavigationMenuItemByUuidAndGroupId(
@@ -391,7 +389,7 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.site.navigation.model.SiteNavigationMenuItem>
 			getSiteNavigationMenuItemsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getSiteNavigationMenuItemsByUuidAndCompanyId(
 			uuid, companyId);
@@ -410,7 +408,7 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.site.navigation.model.SiteNavigationMenuItem>
 			getSiteNavigationMenuItemsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.site.navigation.model.SiteNavigationMenuItem>
 						orderByComparator) {
@@ -449,7 +447,7 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 			updateSiteNavigationMenuItem(
 				long userId, long siteNavigationMenuItemId, long groupId,
 				long siteNavigationMenuId, long parentSiteNavigationMenuItemId,
-				String type, int order, String typeSettings)
+				java.lang.String type, int order, java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateSiteNavigationMenuItem(
@@ -459,7 +457,8 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 
 	public static com.liferay.site.navigation.model.SiteNavigationMenuItem
 			updateSiteNavigationMenuItem(
-				long userId, long siteNavigationMenuItemId, String typeSettings,
+				long userId, long siteNavigationMenuItemId,
+				java.lang.String typeSettings,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -487,29 +486,10 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 	}
 
 	public static SiteNavigationMenuItemLocalService getService() {
-		return _serviceTracker.getService();
+		return _siteNavigationMenuItemLocalService;
 	}
 
-	private static ServiceTracker
-		<SiteNavigationMenuItemLocalService, SiteNavigationMenuItemLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SiteNavigationMenuItemLocalService.class);
-
-		ServiceTracker
-			<SiteNavigationMenuItemLocalService,
-			 SiteNavigationMenuItemLocalService> serviceTracker =
-				new ServiceTracker
-					<SiteNavigationMenuItemLocalService,
-					 SiteNavigationMenuItemLocalService>(
-						 bundle.getBundleContext(),
-						 SiteNavigationMenuItemLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SiteNavigationMenuItemLocalService
+		_siteNavigationMenuItemLocalService;
 
 }

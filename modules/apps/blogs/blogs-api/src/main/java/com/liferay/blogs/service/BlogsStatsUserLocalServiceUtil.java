@@ -14,10 +14,6 @@
 
 package com.liferay.blogs.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for BlogsStatsUser. This utility wraps
  * <code>com.liferay.blogs.service.impl.BlogsStatsUserLocalServiceImpl</code> and
@@ -369,7 +365,7 @@ public class BlogsStatsUserLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -430,27 +426,10 @@ public class BlogsStatsUserLocalServiceUtil {
 	}
 
 	public static BlogsStatsUserLocalService getService() {
-		return _serviceTracker.getService();
+		return _blogsStatsUserLocalService;
 	}
 
-	private static ServiceTracker
-		<BlogsStatsUserLocalService, BlogsStatsUserLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			BlogsStatsUserLocalService.class);
-
-		ServiceTracker<BlogsStatsUserLocalService, BlogsStatsUserLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<BlogsStatsUserLocalService, BlogsStatsUserLocalService>(
-						bundle.getBundleContext(),
-						BlogsStatsUserLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BlogsStatsUserLocalService
+		_blogsStatsUserLocalService;
 
 }

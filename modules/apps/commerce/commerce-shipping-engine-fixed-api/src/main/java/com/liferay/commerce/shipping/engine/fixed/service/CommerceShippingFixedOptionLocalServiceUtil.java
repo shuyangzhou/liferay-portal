@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.shipping.engine.fixed.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceShippingFixedOption. This utility wraps
  * <code>com.liferay.commerce.shipping.engine.fixed.service.impl.CommerceShippingFixedOptionLocalServiceImpl</code> and
@@ -62,8 +58,9 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 		com.liferay.commerce.shipping.engine.fixed.model.
 			CommerceShippingFixedOption addCommerceShippingFixedOption(
 					long userId, long groupId, long commerceShippingMethodId,
-					java.util.Map<java.util.Locale, String> nameMap,
-					java.util.Map<java.util.Locale, String> descriptionMap,
+					java.util.Map<java.util.Locale, java.lang.String> nameMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						descriptionMap,
 					java.math.BigDecimal amount, double priority)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -80,8 +77,9 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 		com.liferay.commerce.shipping.engine.fixed.model.
 			CommerceShippingFixedOption addCommerceShippingFixedOption(
 					long commerceShippingMethodId,
-					java.util.Map<java.util.Locale, String> nameMap,
-					java.util.Map<java.util.Locale, String> descriptionMap,
+					java.util.Map<java.util.Locale, java.lang.String> nameMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						descriptionMap,
 					java.math.BigDecimal amount, double priority,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
@@ -343,7 +341,7 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 		<com.liferay.commerce.shipping.engine.fixed.model.
 			CommerceShippingFixedOption> getCommerceShippingFixedOptions(
 					long companyId, long groupId, long commerceShippingMethodId,
-					String keywords, int start, int end)
+					java.lang.String keywords, int start, int end)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceShippingFixedOptions(
@@ -368,7 +366,7 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 
 	public static long getCommerceShippingFixedOptionsCount(
 			long companyId, long groupId, long commerceShippingMethodId,
-			String keywords)
+			java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceShippingFixedOptionsCount(
@@ -387,7 +385,7 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -435,8 +433,9 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 		com.liferay.commerce.shipping.engine.fixed.model.
 			CommerceShippingFixedOption updateCommerceShippingFixedOption(
 					long commerceShippingFixedOptionId,
-					java.util.Map<java.util.Locale, String> nameMap,
-					java.util.Map<java.util.Locale, String> descriptionMap,
+					java.util.Map<java.util.Locale, java.lang.String> nameMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						descriptionMap,
 					java.math.BigDecimal amount, double priority)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -446,29 +445,10 @@ public class CommerceShippingFixedOptionLocalServiceUtil {
 	}
 
 	public static CommerceShippingFixedOptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceShippingFixedOptionLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceShippingFixedOptionLocalService,
-		 CommerceShippingFixedOptionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceShippingFixedOptionLocalService.class);
-
-		ServiceTracker
-			<CommerceShippingFixedOptionLocalService,
-			 CommerceShippingFixedOptionLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceShippingFixedOptionLocalService,
-					 CommerceShippingFixedOptionLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceShippingFixedOptionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceShippingFixedOptionLocalService
+		_commerceShippingFixedOptionLocalService;
 
 }

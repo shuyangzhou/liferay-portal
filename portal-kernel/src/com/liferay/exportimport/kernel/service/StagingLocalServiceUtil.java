@@ -14,8 +14,6 @@
 
 package com.liferay.exportimport.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Staging. This utility wraps
  * <code>com.liferay.portlet.exportimport.service.impl.StagingLocalServiceImpl</code> and
@@ -53,7 +51,7 @@ public class StagingLocalServiceUtil {
 	}
 
 	public static long createStagingRequest(
-			long userId, long groupId, String checksum)
+			long userId, long groupId, java.lang.String checksum)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().createStagingRequest(userId, groupId, checksum);
@@ -90,8 +88,9 @@ public class StagingLocalServiceUtil {
 	public static void enableRemoteStaging(
 			long userId, com.liferay.portal.kernel.model.Group stagingGroup,
 			boolean branchingPublic, boolean branchingPrivate,
-			String remoteAddress, int remotePort, String remotePathContext,
-			boolean secureConnection, long remoteGroupId,
+			java.lang.String remoteAddress, int remotePort,
+			java.lang.String remotePathContext, boolean secureConnection,
+			long remoteGroupId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -106,7 +105,7 @@ public class StagingLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -122,7 +121,8 @@ public class StagingLocalServiceUtil {
 	}
 
 	public static void updateStagingRequest(
-			long userId, long stagingRequestId, String fileName, byte[] bytes)
+			long userId, long stagingRequestId, java.lang.String fileName,
+			byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateStagingRequest(
@@ -130,14 +130,9 @@ public class StagingLocalServiceUtil {
 	}
 
 	public static StagingLocalService getService() {
-		if (_service == null) {
-			_service = (StagingLocalService)PortalBeanLocatorUtil.locate(
-				StagingLocalService.class.getName());
-		}
-
-		return _service;
+		return _stagingLocalService;
 	}
 
-	private static StagingLocalService _service;
+	private static volatile StagingLocalService _stagingLocalService;
 
 }

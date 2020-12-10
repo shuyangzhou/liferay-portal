@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDefinitionOptionRel. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDefinitionOptionRelServiceImpl</code> and is an
@@ -40,10 +36,11 @@ public class CPDefinitionOptionRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionRel
 			addCPDefinitionOptionRel(
 				long cpDefinitionId, long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String ddmFormFieldTypeName, double priority, boolean facetable,
-				boolean required, boolean skuContributor,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String ddmFormFieldTypeName, double priority,
+				boolean facetable, boolean required, boolean skuContributor,
 				boolean importOptionValue,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -57,11 +54,12 @@ public class CPDefinitionOptionRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionRel
 			addCPDefinitionOptionRel(
 				long cpDefinitionId, long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String ddmFormFieldTypeName, double priority, boolean facetable,
-				boolean required, boolean skuContributor,
-				boolean importOptionValue, String priceType,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String ddmFormFieldTypeName, double priority,
+				boolean facetable, boolean required, boolean skuContributor,
+				boolean importOptionValue, java.lang.String priceType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -109,9 +107,9 @@ public class CPDefinitionOptionRelServiceUtil {
 		return getService().getCPDefinitionOptionRel(cpDefinitionOptionRelId);
 	}
 
-	public static java.util.Map<Long, java.util.List<Long>>
+	public static java.util.Map<java.lang.Long, java.util.List<java.lang.Long>>
 			getCPDefinitionOptionRelCPDefinitionOptionValueRelIds(
-				long cpDefinitionId, String json)
+				long cpDefinitionId, java.lang.String json)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
@@ -119,10 +117,11 @@ public class CPDefinitionOptionRelServiceUtil {
 				cpDefinitionId, json);
 	}
 
-	public static java.util.Map<String, java.util.List<String>>
-			getCPDefinitionOptionRelKeysCPDefinitionOptionValueRelKeys(
-				long cpInstanceId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static java.util.Map
+		<java.lang.String, java.util.List<java.lang.String>>
+				getCPDefinitionOptionRelKeysCPDefinitionOptionValueRelKeys(
+					long cpInstanceId)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().
 			getCPDefinitionOptionRelKeysCPDefinitionOptionValueRelKeys(
@@ -181,7 +180,7 @@ public class CPDefinitionOptionRelServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -189,7 +188,7 @@ public class CPDefinitionOptionRelServiceUtil {
 		<com.liferay.commerce.product.model.CPDefinitionOptionRel>
 				searchCPDefinitionOptionRels(
 					long companyId, long groupId, long cpDefinitionId,
-					String keywords, int start, int end,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -200,10 +199,11 @@ public class CPDefinitionOptionRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionRel
 			updateCPDefinitionOptionRel(
 				long cpDefinitionOptionRelId, long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String ddmFormFieldTypeName, double priority, boolean facetable,
-				boolean required, boolean skuContributor,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String ddmFormFieldTypeName, double priority,
+				boolean facetable, boolean required, boolean skuContributor,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -216,10 +216,12 @@ public class CPDefinitionOptionRelServiceUtil {
 	public static com.liferay.commerce.product.model.CPDefinitionOptionRel
 			updateCPDefinitionOptionRel(
 				long cpDefinitionOptionRelId, long cpOptionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String ddmFormFieldTypeName, double priority, boolean facetable,
-				boolean required, boolean skuContributor, String priceType,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				java.lang.String ddmFormFieldTypeName, double priority,
+				boolean facetable, boolean required, boolean skuContributor,
+				java.lang.String priceType,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -230,29 +232,10 @@ public class CPDefinitionOptionRelServiceUtil {
 	}
 
 	public static CPDefinitionOptionRelService getService() {
-		return _serviceTracker.getService();
+		return _cpDefinitionOptionRelService;
 	}
 
-	private static ServiceTracker
-		<CPDefinitionOptionRelService, CPDefinitionOptionRelService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CPDefinitionOptionRelService.class);
-
-		ServiceTracker
-			<CPDefinitionOptionRelService, CPDefinitionOptionRelService>
-				serviceTracker =
-					new ServiceTracker
-						<CPDefinitionOptionRelService,
-						 CPDefinitionOptionRelService>(
-							 bundle.getBundleContext(),
-							 CPDefinitionOptionRelService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDefinitionOptionRelService
+		_cpDefinitionOptionRelService;
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceAvailabilityEstimate. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceAvailabilityEstimateLocalServiceImpl</code> and
@@ -59,7 +55,7 @@ public class CommerceAvailabilityEstimateLocalServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceAvailabilityEstimate
 			addCommerceAvailabilityEstimate(
-				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
 				double priority,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -257,7 +253,7 @@ public class CommerceAvailabilityEstimateLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceAvailabilityEstimate
 		fetchCommerceAvailabilityEstimateByUuidAndCompanyId(
-			String uuid, long companyId) {
+			java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommerceAvailabilityEstimateByUuidAndCompanyId(
 			uuid, companyId);
@@ -294,7 +290,7 @@ public class CommerceAvailabilityEstimateLocalServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceAvailabilityEstimate
 			getCommerceAvailabilityEstimateByUuidAndCompanyId(
-				String uuid, long companyId)
+				java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceAvailabilityEstimateByUuidAndCompanyId(
@@ -364,7 +360,7 @@ public class CommerceAvailabilityEstimateLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -400,7 +396,7 @@ public class CommerceAvailabilityEstimateLocalServiceUtil {
 	public static com.liferay.commerce.model.CommerceAvailabilityEstimate
 			updateCommerceAvailabilityEstimate(
 				long commerceAvailabilityId,
-				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, java.lang.String> titleMap,
 				double priority,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -410,29 +406,10 @@ public class CommerceAvailabilityEstimateLocalServiceUtil {
 	}
 
 	public static CommerceAvailabilityEstimateLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceAvailabilityEstimateLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceAvailabilityEstimateLocalService,
-		 CommerceAvailabilityEstimateLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceAvailabilityEstimateLocalService.class);
-
-		ServiceTracker
-			<CommerceAvailabilityEstimateLocalService,
-			 CommerceAvailabilityEstimateLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceAvailabilityEstimateLocalService,
-					 CommerceAvailabilityEstimateLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceAvailabilityEstimateLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceAvailabilityEstimateLocalService
+		_commerceAvailabilityEstimateLocalService;
 
 }

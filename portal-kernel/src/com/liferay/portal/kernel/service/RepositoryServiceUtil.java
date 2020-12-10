@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Repository. This utility wraps
  * <code>com.liferay.portal.service.impl.RepositoryServiceImpl</code> and is an
@@ -36,8 +34,9 @@ public class RepositoryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.RepositoryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.model.Repository addRepository(
-			long groupId, long classNameId, long parentFolderId, String name,
-			String description, String portletId,
+			long groupId, long classNameId, long parentFolderId,
+			java.lang.String name, java.lang.String description,
+			java.lang.String portletId,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			ServiceContext serviceContext)
@@ -65,7 +64,7 @@ public class RepositoryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -77,7 +76,7 @@ public class RepositoryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Repository getRepository(
-			long groupId, String portletId)
+			long groupId, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRepository(groupId, portletId);
@@ -91,21 +90,17 @@ public class RepositoryServiceUtil {
 	}
 
 	public static void updateRepository(
-			long repositoryId, String name, String description)
+			long repositoryId, java.lang.String name,
+			java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateRepository(repositoryId, name, description);
 	}
 
 	public static RepositoryService getService() {
-		if (_service == null) {
-			_service = (RepositoryService)PortalBeanLocatorUtil.locate(
-				RepositoryService.class.getName());
-		}
-
-		return _service;
+		return _repositoryService;
 	}
 
-	private static RepositoryService _service;
+	private static volatile RepositoryService _repositoryService;
 
 }

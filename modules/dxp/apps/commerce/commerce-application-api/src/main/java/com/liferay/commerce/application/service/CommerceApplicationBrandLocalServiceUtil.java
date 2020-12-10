@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.application.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceApplicationBrand. This utility wraps
  * <code>com.liferay.commerce.application.service.impl.CommerceApplicationBrandLocalServiceImpl</code> and
@@ -61,7 +57,8 @@ public class CommerceApplicationBrandLocalServiceUtil {
 	public static
 		com.liferay.commerce.application.model.CommerceApplicationBrand
 				addCommerceApplicationBrand(
-					long userId, String name, boolean logo, byte[] logoBytes)
+					long userId, java.lang.String name, boolean logo,
+					byte[] logoBytes)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCommerceApplicationBrand(
@@ -311,7 +308,7 @@ public class CommerceApplicationBrandLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -348,8 +345,8 @@ public class CommerceApplicationBrandLocalServiceUtil {
 	public static
 		com.liferay.commerce.application.model.CommerceApplicationBrand
 				updateCommerceApplicationBrand(
-					long commerceApplicationBrandId, String name, boolean logo,
-					byte[] logoBytes)
+					long commerceApplicationBrandId, java.lang.String name,
+					boolean logo, byte[] logoBytes)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCommerceApplicationBrand(
@@ -357,29 +354,10 @@ public class CommerceApplicationBrandLocalServiceUtil {
 	}
 
 	public static CommerceApplicationBrandLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceApplicationBrandLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceApplicationBrandLocalService,
-		 CommerceApplicationBrandLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceApplicationBrandLocalService.class);
-
-		ServiceTracker
-			<CommerceApplicationBrandLocalService,
-			 CommerceApplicationBrandLocalService> serviceTracker =
-				new ServiceTracker
-					<CommerceApplicationBrandLocalService,
-					 CommerceApplicationBrandLocalService>(
-						 bundle.getBundleContext(),
-						 CommerceApplicationBrandLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceApplicationBrandLocalService
+		_commerceApplicationBrandLocalService;
 
 }

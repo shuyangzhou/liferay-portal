@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.product.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CPDisplayLayout. This utility wraps
  * <code>com.liferay.commerce.product.service.impl.CPDisplayLayoutServiceImpl</code> and is an
@@ -44,7 +40,8 @@ public class CPDisplayLayoutServiceUtil {
 	@Deprecated
 	public static com.liferay.commerce.product.model.CPDisplayLayout
 			addCPDisplayLayout(
-				Class<?> clazz, long classPK, String layoutUuid,
+				java.lang.Class<?> clazz, long classPK,
+				java.lang.String layoutUuid,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -54,15 +51,16 @@ public class CPDisplayLayoutServiceUtil {
 
 	public static com.liferay.commerce.product.model.CPDisplayLayout
 			addCPDisplayLayout(
-				long userId, long groupId, Class<?> clazz, long classPK,
-				String layoutUuid)
+				long userId, long groupId, java.lang.Class<?> clazz,
+				long classPK, java.lang.String layoutUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCPDisplayLayout(
 			userId, groupId, clazz, classPK, layoutUuid);
 	}
 
-	public static void deleteCPDisplayLayout(Class<?> clazz, long classPK)
+	public static void deleteCPDisplayLayout(
+			java.lang.Class<?> clazz, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteCPDisplayLayout(clazz, classPK);
@@ -86,15 +84,15 @@ public class CPDisplayLayoutServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.commerce.product.model.CPDisplayLayout>
 				searchCPDisplayLayout(
-					long companyId, long groupId, String className,
-					String keywords, int start, int end,
+					long companyId, long groupId, java.lang.String className,
+					java.lang.String keywords, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -103,7 +101,8 @@ public class CPDisplayLayoutServiceUtil {
 	}
 
 	public static com.liferay.commerce.product.model.CPDisplayLayout
-			updateCPDisplayLayout(long cpDisplayLayoutId, String layoutUuid)
+			updateCPDisplayLayout(
+				long cpDisplayLayoutId, java.lang.String layoutUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCPDisplayLayout(
@@ -111,25 +110,9 @@ public class CPDisplayLayoutServiceUtil {
 	}
 
 	public static CPDisplayLayoutService getService() {
-		return _serviceTracker.getService();
+		return _cpDisplayLayoutService;
 	}
 
-	private static ServiceTracker
-		<CPDisplayLayoutService, CPDisplayLayoutService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CPDisplayLayoutService.class);
-
-		ServiceTracker<CPDisplayLayoutService, CPDisplayLayoutService>
-			serviceTracker =
-				new ServiceTracker
-					<CPDisplayLayoutService, CPDisplayLayoutService>(
-						bundle.getBundleContext(), CPDisplayLayoutService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CPDisplayLayoutService _cpDisplayLayoutService;
 
 }

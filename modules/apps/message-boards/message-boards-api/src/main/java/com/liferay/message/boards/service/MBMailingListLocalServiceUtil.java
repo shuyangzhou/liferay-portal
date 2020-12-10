@@ -14,10 +14,6 @@
 
 package com.liferay.message.boards.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for MBMailingList. This utility wraps
  * <code>com.liferay.message.boards.service.impl.MBMailingListLocalServiceImpl</code> and
@@ -38,12 +34,14 @@ public class MBMailingListLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.message.boards.service.impl.MBMailingListLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.message.boards.model.MBMailingList addMailingList(
-			long userId, long groupId, long categoryId, String emailAddress,
-			String inProtocol, String inServerName, int inServerPort,
-			boolean inUseSSL, String inUserName, String inPassword,
-			int inReadInterval, String outEmailAddress, boolean outCustom,
-			String outServerName, int outServerPort, boolean outUseSSL,
-			String outUserName, String outPassword, boolean allowAnonymous,
+			long userId, long groupId, long categoryId,
+			java.lang.String emailAddress, java.lang.String inProtocol,
+			java.lang.String inServerName, int inServerPort, boolean inUseSSL,
+			java.lang.String inUserName, java.lang.String inPassword,
+			int inReadInterval, java.lang.String outEmailAddress,
+			boolean outCustom, java.lang.String outServerName,
+			int outServerPort, boolean outUseSSL, java.lang.String outUserName,
+			java.lang.String outPassword, boolean allowAnonymous,
 			boolean active,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -270,7 +268,8 @@ public class MBMailingListLocalServiceUtil {
 	 * @return the matching message boards mailing list, or <code>null</code> if a matching message boards mailing list could not be found
 	 */
 	public static com.liferay.message.boards.model.MBMailingList
-		fetchMBMailingListByUuidAndGroupId(String uuid, long groupId) {
+		fetchMBMailingListByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchMBMailingListByUuidAndGroupId(uuid, groupId);
 	}
@@ -326,7 +325,8 @@ public class MBMailingListLocalServiceUtil {
 	 * @throws PortalException if a matching message boards mailing list could not be found
 	 */
 	public static com.liferay.message.boards.model.MBMailingList
-			getMBMailingListByUuidAndGroupId(String uuid, long groupId)
+			getMBMailingListByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getMBMailingListByUuidAndGroupId(uuid, groupId);
@@ -357,7 +357,8 @@ public class MBMailingListLocalServiceUtil {
 	 * @return the matching message boards mailing lists, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBMailingList>
-		getMBMailingListsByUuidAndCompanyId(String uuid, long companyId) {
+		getMBMailingListsByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getMBMailingListsByUuidAndCompanyId(
 			uuid, companyId);
@@ -375,7 +376,7 @@ public class MBMailingListLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.message.boards.model.MBMailingList>
 		getMBMailingListsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.message.boards.model.MBMailingList>
 					orderByComparator) {
@@ -398,7 +399,7 @@ public class MBMailingListLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -414,12 +415,15 @@ public class MBMailingListLocalServiceUtil {
 
 	public static com.liferay.message.boards.model.MBMailingList
 			updateMailingList(
-				long mailingListId, String emailAddress, String inProtocol,
-				String inServerName, int inServerPort, boolean inUseSSL,
-				String inUserName, String inPassword, int inReadInterval,
-				String outEmailAddress, boolean outCustom, String outServerName,
-				int outServerPort, boolean outUseSSL, String outUserName,
-				String outPassword, boolean allowAnonymous, boolean active,
+				long mailingListId, java.lang.String emailAddress,
+				java.lang.String inProtocol, java.lang.String inServerName,
+				int inServerPort, boolean inUseSSL, java.lang.String inUserName,
+				java.lang.String inPassword, int inReadInterval,
+				java.lang.String outEmailAddress, boolean outCustom,
+				java.lang.String outServerName, int outServerPort,
+				boolean outUseSSL, java.lang.String outUserName,
+				java.lang.String outPassword, boolean allowAnonymous,
+				boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -448,26 +452,10 @@ public class MBMailingListLocalServiceUtil {
 	}
 
 	public static MBMailingListLocalService getService() {
-		return _serviceTracker.getService();
+		return _mbMailingListLocalService;
 	}
 
-	private static ServiceTracker
-		<MBMailingListLocalService, MBMailingListLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			MBMailingListLocalService.class);
-
-		ServiceTracker<MBMailingListLocalService, MBMailingListLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<MBMailingListLocalService, MBMailingListLocalService>(
-						bundle.getBundleContext(),
-						MBMailingListLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MBMailingListLocalService
+		_mbMailingListLocalService;
 
 }

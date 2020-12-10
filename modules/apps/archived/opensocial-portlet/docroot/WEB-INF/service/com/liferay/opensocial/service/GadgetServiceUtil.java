@@ -14,8 +14,6 @@
 
 package com.liferay.opensocial.service;
 
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Gadget. This utility wraps
  * <code>com.liferay.opensocial.service.impl.GadgetServiceImpl</code> and is an
@@ -36,7 +34,8 @@ public class GadgetServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.opensocial.service.impl.GadgetServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.opensocial.model.Gadget addGadget(
-			long companyId, String url, String portletCategoryNames,
+			long companyId, java.lang.String url,
+			java.lang.String portletCategoryNames,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -57,12 +56,12 @@ public class GadgetServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static void updateGadget(
-			long gadgetId, String portletCategoryNames,
+			long gadgetId, java.lang.String portletCategoryNames,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -71,19 +70,13 @@ public class GadgetServiceUtil {
 	}
 
 	public static void clearService() {
-		_service = null;
+		_gadgetService = null;
 	}
 
 	public static GadgetService getService() {
-		if (_service == null) {
-			_service = (GadgetService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				GadgetService.class.getName());
-		}
-
-		return _service;
+		return _gadgetService;
 	}
 
-	private static GadgetService _service;
+	private static volatile GadgetService _gadgetService;
 
 }

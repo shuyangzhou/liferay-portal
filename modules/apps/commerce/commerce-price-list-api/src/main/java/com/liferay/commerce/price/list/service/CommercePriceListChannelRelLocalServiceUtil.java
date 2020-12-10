@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.price.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommercePriceListChannelRel. This utility wraps
  * <code>com.liferay.commerce.price.list.service.impl.CommercePriceListChannelRelLocalServiceImpl</code> and
@@ -275,7 +271,7 @@ public class CommercePriceListChannelRelLocalServiceUtil {
 	public static
 		com.liferay.commerce.price.list.model.CommercePriceListChannelRel
 			fetchCommercePriceListChannelRelByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().fetchCommercePriceListChannelRelByUuidAndCompanyId(
 			uuid, companyId);
@@ -315,7 +311,7 @@ public class CommercePriceListChannelRelLocalServiceUtil {
 	public static
 		com.liferay.commerce.price.list.model.CommercePriceListChannelRel
 				getCommercePriceListChannelRelByUuidAndCompanyId(
-					String uuid, long companyId)
+					java.lang.String uuid, long companyId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommercePriceListChannelRelByUuidAndCompanyId(
@@ -363,7 +359,8 @@ public class CommercePriceListChannelRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.price.list.model.CommercePriceListChannelRel>
 			getCommercePriceListChannelRels(
-				long commercePriceListId, String name, int start, int end) {
+				long commercePriceListId, java.lang.String name, int start,
+				int end) {
 
 		return getService().getCommercePriceListChannelRels(
 			commercePriceListId, name, start, end);
@@ -386,7 +383,7 @@ public class CommercePriceListChannelRelLocalServiceUtil {
 	}
 
 	public static int getCommercePriceListChannelRelsCount(
-		long commercePriceListId, String name) {
+		long commercePriceListId, java.lang.String name) {
 
 		return getService().getCommercePriceListChannelRelsCount(
 			commercePriceListId, name);
@@ -412,7 +409,7 @@ public class CommercePriceListChannelRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -447,29 +444,10 @@ public class CommercePriceListChannelRelLocalServiceUtil {
 	}
 
 	public static CommercePriceListChannelRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commercePriceListChannelRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommercePriceListChannelRelLocalService,
-		 CommercePriceListChannelRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceListChannelRelLocalService.class);
-
-		ServiceTracker
-			<CommercePriceListChannelRelLocalService,
-			 CommercePriceListChannelRelLocalService> serviceTracker =
-				new ServiceTracker
-					<CommercePriceListChannelRelLocalService,
-					 CommercePriceListChannelRelLocalService>(
-						 bundle.getBundleContext(),
-						 CommercePriceListChannelRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommercePriceListChannelRelLocalService
+		_commercePriceListChannelRelLocalService;
 
 }

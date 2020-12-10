@@ -14,10 +14,6 @@
 
 package com.liferay.asset.list.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AssetListEntryAssetEntryRel. This utility wraps
  * <code>com.liferay.asset.list.service.impl.AssetListEntryAssetEntryRelLocalServiceImpl</code> and
@@ -275,7 +271,7 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	 */
 	public static com.liferay.asset.list.model.AssetListEntryAssetEntryRel
 		fetchAssetListEntryAssetEntryRelByUuidAndGroupId(
-			String uuid, long groupId) {
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchAssetListEntryAssetEntryRelByUuidAndGroupId(
 			uuid, groupId);
@@ -312,7 +308,7 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	 */
 	public static com.liferay.asset.list.model.AssetListEntryAssetEntryRel
 			getAssetListEntryAssetEntryRelByUuidAndGroupId(
-				String uuid, long groupId)
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getAssetListEntryAssetEntryRelByUuidAndGroupId(
@@ -386,7 +382,7 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.asset.list.model.AssetListEntryAssetEntryRel>
 			getAssetListEntryAssetEntryRelsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getAssetListEntryAssetEntryRelsByUuidAndCompanyId(
 			uuid, companyId);
@@ -405,7 +401,7 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.asset.list.model.AssetListEntryAssetEntryRel>
 			getAssetListEntryAssetEntryRelsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.asset.list.model.AssetListEntryAssetEntryRel>
 						orderByComparator) {
@@ -479,7 +475,7 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -534,29 +530,10 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	}
 
 	public static AssetListEntryAssetEntryRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _assetListEntryAssetEntryRelLocalService;
 	}
 
-	private static ServiceTracker
-		<AssetListEntryAssetEntryRelLocalService,
-		 AssetListEntryAssetEntryRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetListEntryAssetEntryRelLocalService.class);
-
-		ServiceTracker
-			<AssetListEntryAssetEntryRelLocalService,
-			 AssetListEntryAssetEntryRelLocalService> serviceTracker =
-				new ServiceTracker
-					<AssetListEntryAssetEntryRelLocalService,
-					 AssetListEntryAssetEntryRelLocalService>(
-						 bundle.getBundleContext(),
-						 AssetListEntryAssetEntryRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetListEntryAssetEntryRelLocalService
+		_assetListEntryAssetEntryRelLocalService;
 
 }

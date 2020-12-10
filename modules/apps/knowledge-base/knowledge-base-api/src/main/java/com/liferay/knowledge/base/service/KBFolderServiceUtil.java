@@ -14,10 +14,6 @@
 
 package com.liferay.knowledge.base.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for KBFolder. This utility wraps
  * <code>com.liferay.knowledge.base.service.impl.KBFolderServiceImpl</code> and is an
@@ -39,7 +35,8 @@ public class KBFolderServiceUtil {
 	 */
 	public static com.liferay.knowledge.base.model.KBFolder addKBFolder(
 			long groupId, long parentResourceClassNameId,
-			long parentResourcePrimKey, String name, String description,
+			long parentResourcePrimKey, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -83,7 +80,7 @@ public class KBFolderServiceUtil {
 
 	public static com.liferay.knowledge.base.model.KBFolder
 			fetchKBFolderByUrlTitle(
-				long groupId, long parentKbFolderId, String urlTitle)
+				long groupId, long parentKbFolderId, java.lang.String urlTitle)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchKBFolderByUrlTitle(
@@ -99,7 +96,7 @@ public class KBFolderServiceUtil {
 
 	public static com.liferay.knowledge.base.model.KBFolder
 			getKBFolderByUrlTitle(
-				long groupId, long parentKbFolderId, String urlTitle)
+				long groupId, long parentKbFolderId, java.lang.String urlTitle)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getKBFolderByUrlTitle(
@@ -114,7 +111,7 @@ public class KBFolderServiceUtil {
 		return getService().getKBFolders(groupId, parentKBFolderId, start, end);
 	}
 
-	public static java.util.List<Object> getKBFoldersAndKBArticles(
+	public static java.util.List<java.lang.Object> getKBFoldersAndKBArticles(
 		long groupId, long parentResourcePrimKey, int status, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> orderByComparator) {
@@ -142,7 +139,7 @@ public class KBFolderServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -154,7 +151,8 @@ public class KBFolderServiceUtil {
 
 	public static com.liferay.knowledge.base.model.KBFolder updateKBFolder(
 			long parentResourceClassNameId, long parentResourcePrimKey,
-			long kbFolderId, String name, String description,
+			long kbFolderId, java.lang.String name,
+			java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -164,22 +162,9 @@ public class KBFolderServiceUtil {
 	}
 
 	public static KBFolderService getService() {
-		return _serviceTracker.getService();
+		return _kbFolderService;
 	}
 
-	private static ServiceTracker<KBFolderService, KBFolderService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(KBFolderService.class);
-
-		ServiceTracker<KBFolderService, KBFolderService> serviceTracker =
-			new ServiceTracker<KBFolderService, KBFolderService>(
-				bundle.getBundleContext(), KBFolderService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KBFolderService _kbFolderService;
 
 }

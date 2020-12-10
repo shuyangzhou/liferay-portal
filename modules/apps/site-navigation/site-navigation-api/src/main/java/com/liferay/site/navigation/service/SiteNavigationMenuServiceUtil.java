@@ -14,10 +14,6 @@
 
 package com.liferay.site.navigation.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SiteNavigationMenu. This utility wraps
  * <code>com.liferay.site.navigation.service.impl.SiteNavigationMenuServiceImpl</code> and is an
@@ -39,7 +35,7 @@ public class SiteNavigationMenuServiceUtil {
 	 */
 	public static com.liferay.site.navigation.model.SiteNavigationMenu
 			addSiteNavigationMenu(
-				long groupId, String name, int type, boolean auto,
+				long groupId, java.lang.String name, int type, boolean auto,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -49,7 +45,7 @@ public class SiteNavigationMenuServiceUtil {
 
 	public static com.liferay.site.navigation.model.SiteNavigationMenu
 			addSiteNavigationMenu(
-				long groupId, String name, int type,
+				long groupId, java.lang.String name, int type,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -59,7 +55,7 @@ public class SiteNavigationMenuServiceUtil {
 
 	public static com.liferay.site.navigation.model.SiteNavigationMenu
 			addSiteNavigationMenu(
-				long groupId, String name,
+				long groupId, java.lang.String name,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -86,7 +82,7 @@ public class SiteNavigationMenuServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -112,7 +108,7 @@ public class SiteNavigationMenuServiceUtil {
 	public static java.util.List
 		<com.liferay.site.navigation.model.SiteNavigationMenu>
 			getSiteNavigationMenus(
-				long groupId, String keywords, int start, int end,
+				long groupId, java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.site.navigation.model.SiteNavigationMenu>
 						orderByComparator) {
@@ -136,7 +132,7 @@ public class SiteNavigationMenuServiceUtil {
 	public static java.util.List
 		<com.liferay.site.navigation.model.SiteNavigationMenu>
 			getSiteNavigationMenus(
-				long[] groupIds, String keywords, int start, int end,
+				long[] groupIds, java.lang.String keywords, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.site.navigation.model.SiteNavigationMenu>
 						orderByComparator) {
@@ -150,7 +146,7 @@ public class SiteNavigationMenuServiceUtil {
 	}
 
 	public static int getSiteNavigationMenusCount(
-		long groupId, String keywords) {
+		long groupId, java.lang.String keywords) {
 
 		return getService().getSiteNavigationMenusCount(groupId, keywords);
 	}
@@ -160,7 +156,7 @@ public class SiteNavigationMenuServiceUtil {
 	}
 
 	public static int getSiteNavigationMenusCount(
-		long[] groupIds, String keywords) {
+		long[] groupIds, java.lang.String keywords) {
 
 		return getService().getSiteNavigationMenusCount(groupIds, keywords);
 	}
@@ -177,7 +173,7 @@ public class SiteNavigationMenuServiceUtil {
 
 	public static com.liferay.site.navigation.model.SiteNavigationMenu
 			updateSiteNavigationMenu(
-				long siteNavigationMenuId, String name,
+				long siteNavigationMenuId, java.lang.String name,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -186,26 +182,10 @@ public class SiteNavigationMenuServiceUtil {
 	}
 
 	public static SiteNavigationMenuService getService() {
-		return _serviceTracker.getService();
+		return _siteNavigationMenuService;
 	}
 
-	private static ServiceTracker
-		<SiteNavigationMenuService, SiteNavigationMenuService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SiteNavigationMenuService.class);
-
-		ServiceTracker<SiteNavigationMenuService, SiteNavigationMenuService>
-			serviceTracker =
-				new ServiceTracker
-					<SiteNavigationMenuService, SiteNavigationMenuService>(
-						bundle.getBundleContext(),
-						SiteNavigationMenuService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SiteNavigationMenuService
+		_siteNavigationMenuService;
 
 }

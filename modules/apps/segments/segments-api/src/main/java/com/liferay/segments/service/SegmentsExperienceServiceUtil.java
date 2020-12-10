@@ -14,10 +14,6 @@
 
 package com.liferay.segments.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for SegmentsExperience. This utility wraps
  * <code>com.liferay.segments.service.impl.SegmentsExperienceServiceImpl</code> and is an
@@ -40,7 +36,8 @@ public class SegmentsExperienceServiceUtil {
 	public static com.liferay.segments.model.SegmentsExperience
 			addSegmentsExperience(
 				long segmentsEntryId, long classNameId, long classPK,
-				java.util.Map<java.util.Locale, String> nameMap, boolean active,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -57,7 +54,8 @@ public class SegmentsExperienceServiceUtil {
 	}
 
 	public static com.liferay.segments.model.SegmentsExperience
-			fetchSegmentsExperience(long groupId, String segmentsExperienceKey)
+			fetchSegmentsExperience(
+				long groupId, java.lang.String segmentsExperienceKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().fetchSegmentsExperience(
@@ -69,7 +67,7 @@ public class SegmentsExperienceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -114,7 +112,8 @@ public class SegmentsExperienceServiceUtil {
 	public static com.liferay.segments.model.SegmentsExperience
 			updateSegmentsExperience(
 				long segmentsExperienceId, long segmentsEntryId,
-				java.util.Map<java.util.Locale, String> nameMap, boolean active)
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateSegmentsExperience(
@@ -130,26 +129,10 @@ public class SegmentsExperienceServiceUtil {
 	}
 
 	public static SegmentsExperienceService getService() {
-		return _serviceTracker.getService();
+		return _segmentsExperienceService;
 	}
 
-	private static ServiceTracker
-		<SegmentsExperienceService, SegmentsExperienceService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			SegmentsExperienceService.class);
-
-		ServiceTracker<SegmentsExperienceService, SegmentsExperienceService>
-			serviceTracker =
-				new ServiceTracker
-					<SegmentsExperienceService, SegmentsExperienceService>(
-						bundle.getBundleContext(),
-						SegmentsExperienceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SegmentsExperienceService
+		_segmentsExperienceService;
 
 }

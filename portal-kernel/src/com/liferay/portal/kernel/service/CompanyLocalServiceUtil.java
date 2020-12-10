@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the local service utility for Company. This utility wraps
  * <code>com.liferay.portal.service.impl.CompanyLocalServiceImpl</code> and
@@ -68,7 +66,8 @@ public class CompanyLocalServiceUtil {
 	 * @return the company
 	 */
 	public static com.liferay.portal.kernel.model.Company addCompany(
-			Long companyId, String webId, String virtualHostname, String mx,
+			java.lang.Long companyId, java.lang.String webId,
+			java.lang.String virtualHostname, java.lang.String mx,
 			boolean system, int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -94,8 +93,8 @@ public class CompanyLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.model.Company addCompany(
-			String webId, String virtualHostname, String mx, boolean system,
-			int maxUsers, boolean active)
+			java.lang.String webId, java.lang.String virtualHostname,
+			java.lang.String mx, boolean system, int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addCompany(
@@ -112,7 +111,7 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the web domain
 	 */
 	public static com.liferay.portal.kernel.model.Company checkCompany(
-			String webId)
+			java.lang.String webId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().checkCompany(webId);
@@ -129,7 +128,7 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the web domain and mail domain
 	 */
 	public static com.liferay.portal.kernel.model.Company checkCompany(
-			String webId, String mx)
+			java.lang.String webId, java.lang.String mx)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().checkCompany(webId, mx);
@@ -347,7 +346,7 @@ public class CompanyLocalServiceUtil {
 	 company with the virtual host could not be found
 	 */
 	public static com.liferay.portal.kernel.model.Company
-		fetchCompanyByVirtualHost(String virtualHostname) {
+		fetchCompanyByVirtualHost(java.lang.String virtualHostname) {
 
 		return getService().fetchCompanyByVirtualHost(virtualHostname);
 	}
@@ -472,7 +471,7 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the mail domain
 	 */
 	public static com.liferay.portal.kernel.model.Company getCompanyByMx(
-			String mx)
+			java.lang.String mx)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCompanyByMx(mx);
@@ -485,7 +484,7 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the virtual host name
 	 */
 	public static com.liferay.portal.kernel.model.Company
-			getCompanyByVirtualHost(String virtualHostname)
+			getCompanyByVirtualHost(java.lang.String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCompanyByVirtualHost(virtualHostname);
@@ -498,7 +497,7 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the web domain
 	 */
 	public static com.liferay.portal.kernel.model.Company getCompanyByWebId(
-			String webId)
+			java.lang.String webId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCompanyByWebId(webId);
@@ -513,7 +512,9 @@ public class CompanyLocalServiceUtil {
 	 otherwise
 	 * @throws Exception if a user with the primary key could not be found
 	 */
-	public static long getCompanyIdByUserId(long userId) throws Exception {
+	public static long getCompanyIdByUserId(long userId)
+		throws java.lang.Exception {
+
 		return getService().getCompanyIdByUserId(userId);
 	}
 
@@ -529,7 +530,7 @@ public class CompanyLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -553,7 +554,9 @@ public class CompanyLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @param keys the company's preferences keys to be remove
 	 */
-	public static void removePreferences(long companyId, String[] keys) {
+	public static void removePreferences(
+		long companyId, java.lang.String[] keys) {
+
 		getService().removePreferences(companyId, keys);
 	}
 
@@ -575,7 +578,8 @@ public class CompanyLocalServiceUtil {
 	 * @return the matching assets in the company
 	 */
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long userId, String keywords, int start, int end) {
+		long companyId, long userId, java.lang.String keywords, int start,
+		int end) {
 
 		return getService().search(companyId, userId, keywords, start, end);
 	}
@@ -599,8 +603,8 @@ public class CompanyLocalServiceUtil {
 	 * @return the matching assets in the portlet within the company
 	 */
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long userId, String portletId, long groupId,
-		String type, String keywords, int start, int end) {
+		long companyId, long userId, java.lang.String portletId, long groupId,
+		java.lang.String type, java.lang.String keywords, int start, int end) {
 
 		return getService().search(
 			companyId, userId, portletId, groupId, type, keywords, start, end);
@@ -634,8 +638,8 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the primary key
 	 */
 	public static com.liferay.portal.kernel.model.Company updateCompany(
-			long companyId, String virtualHostname, String mx, int maxUsers,
-			boolean active)
+			long companyId, java.lang.String virtualHostname,
+			java.lang.String mx, int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCompany(
@@ -669,10 +673,13 @@ public class CompanyLocalServiceUtil {
 	 * @return the company with the primary key
 	 */
 	public static com.liferay.portal.kernel.model.Company updateCompany(
-			long companyId, String virtualHostname, String mx, String homeURL,
-			boolean hasLogo, byte[] logoBytes, String name, String legalName,
-			String legalId, String legalType, String sicCode,
-			String tickerSymbol, String industry, String type, String size)
+			long companyId, java.lang.String virtualHostname,
+			java.lang.String mx, java.lang.String homeURL, boolean hasLogo,
+			byte[] logoBytes, java.lang.String name, java.lang.String legalName,
+			java.lang.String legalId, java.lang.String legalType,
+			java.lang.String sicCode, java.lang.String tickerSymbol,
+			java.lang.String industry, java.lang.String type,
+			java.lang.String size)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCompany(
@@ -689,7 +696,8 @@ public class CompanyLocalServiceUtil {
 	 * @param timeZoneId the ID of the company's default user's time zone
 	 */
 	public static void updateDisplay(
-			long companyId, String languageId, String timeZoneId)
+			long companyId, java.lang.String languageId,
+			java.lang.String timeZoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateDisplay(companyId, languageId, timeZoneId);
@@ -778,7 +786,7 @@ public class CompanyLocalServiceUtil {
 	 logo instead of the enterprise logo
 	 */
 	public static void updateSecurity(
-		long companyId, String authType, boolean autoLogin,
+		long companyId, java.lang.String authType, boolean autoLogin,
 		boolean sendPassword, boolean strangers, boolean strangersWithMx,
 		boolean strangersVerify, boolean siteLogo) {
 
@@ -788,14 +796,9 @@ public class CompanyLocalServiceUtil {
 	}
 
 	public static CompanyLocalService getService() {
-		if (_service == null) {
-			_service = (CompanyLocalService)PortalBeanLocatorUtil.locate(
-				CompanyLocalService.class.getName());
-		}
-
-		return _service;
+		return _companyLocalService;
 	}
 
-	private static CompanyLocalService _service;
+	private static volatile CompanyLocalService _companyLocalService;
 
 }

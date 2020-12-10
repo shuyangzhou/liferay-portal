@@ -14,10 +14,6 @@
 
 package com.liferay.account.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for AccountEntry. This utility wraps
  * <code>com.liferay.account.service.impl.AccountEntryLocalServiceImpl</code> and
@@ -51,7 +47,7 @@ public class AccountEntryLocalServiceUtil {
 
 	public static com.liferay.account.model.AccountEntry activateAccountEntry(
 			long accountEntryId)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().activateAccountEntry(accountEntryId);
 	}
@@ -79,8 +75,9 @@ public class AccountEntryLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.account.model.AccountEntry addAccountEntry(
-			long userId, long parentAccountEntryId, String name,
-			String description, String[] domains, byte[] logoBytes, int status)
+			long userId, long parentAccountEntryId, java.lang.String name,
+			java.lang.String description, java.lang.String[] domains,
+			byte[] logoBytes, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountEntry(
@@ -95,8 +92,9 @@ public class AccountEntryLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.account.model.AccountEntry addAccountEntry(
-			long userId, long parentAccountEntryId, String name,
-			String description, String[] domains, byte[] logoBytes, int status,
+			long userId, long parentAccountEntryId, java.lang.String name,
+			java.lang.String description, java.lang.String[] domains,
+			byte[] logoBytes, int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -106,9 +104,10 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.account.model.AccountEntry addAccountEntry(
-			long userId, long parentAccountEntryId, String name,
-			String description, String[] domains, byte[] logoBytes,
-			String taxIdNumber, String type, int status,
+			long userId, long parentAccountEntryId, java.lang.String name,
+			java.lang.String description, java.lang.String[] domains,
+			byte[] logoBytes, java.lang.String taxIdNumber,
+			java.lang.String type, int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -153,7 +152,7 @@ public class AccountEntryLocalServiceUtil {
 
 	public static com.liferay.account.model.AccountEntry deactivateAccountEntry(
 			long accountEntryId)
-		throws Exception {
+		throws java.lang.Exception {
 
 		return getService().deactivateAccountEntry(accountEntryId);
 	}
@@ -321,7 +320,7 @@ public class AccountEntryLocalServiceUtil {
 	 */
 	public static com.liferay.account.model.AccountEntry
 		fetchAccountEntryByReferenceCode(
-			long companyId, String externalReferenceCode) {
+			long companyId, java.lang.String externalReferenceCode) {
 
 		return getService().fetchAccountEntryByReferenceCode(
 			companyId, externalReferenceCode);
@@ -406,7 +405,7 @@ public class AccountEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -422,8 +421,9 @@ public class AccountEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.account.model.AccountEntry>
 			getUserAccountEntries(
-				long userId, Long parentAccountEntryId, String keywords,
-				String[] types, int start, int end)
+				long userId, java.lang.Long parentAccountEntryId,
+				java.lang.String keywords, java.lang.String[] types, int start,
+				int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserAccountEntries(
@@ -432,8 +432,9 @@ public class AccountEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.account.model.AccountEntry>
 			getUserAccountEntries(
-				long userId, Long parentAccountEntryId, String keywords,
-				String[] types, Integer status, int start, int end)
+				long userId, java.lang.Long parentAccountEntryId,
+				java.lang.String keywords, java.lang.String[] types,
+				java.lang.Integer status, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserAccountEntries(
@@ -441,8 +442,8 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static int getUserAccountEntriesCount(
-			long userId, Long parentAccountEntryId, String keywords,
-			String[] types)
+			long userId, java.lang.Long parentAccountEntryId,
+			java.lang.String keywords, java.lang.String[] types)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserAccountEntriesCount(
@@ -450,8 +451,9 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static int getUserAccountEntriesCount(
-			long userId, Long parentAccountEntryId, String keywords,
-			String[] types, Integer status)
+			long userId, java.lang.Long parentAccountEntryId,
+			java.lang.String keywords, java.lang.String[] types,
+			java.lang.Integer status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getUserAccountEntriesCount(
@@ -460,9 +462,10 @@ public class AccountEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.account.model.AccountEntry> search(
-			long companyId, String keywords,
-			java.util.LinkedHashMap<String, Object> params, int cur, int delta,
-			String orderByField, boolean reverse) {
+			long companyId, java.lang.String keywords,
+			java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+			int cur, int delta, java.lang.String orderByField,
+			boolean reverse) {
 
 		return getService().search(
 			companyId, keywords, params, cur, delta, orderByField, reverse);
@@ -491,9 +494,10 @@ public class AccountEntryLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.account.model.AccountEntry updateAccountEntry(
-			Long accountEntryId, long parentAccountEntryId, String name,
-			String description, boolean deleteLogo, String[] domains,
-			byte[] logoBytes, int status)
+			java.lang.Long accountEntryId, long parentAccountEntryId,
+			java.lang.String name, java.lang.String description,
+			boolean deleteLogo, java.lang.String[] domains, byte[] logoBytes,
+			int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAccountEntry(
@@ -508,9 +512,10 @@ public class AccountEntryLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.account.model.AccountEntry updateAccountEntry(
-			Long accountEntryId, long parentAccountEntryId, String name,
-			String description, boolean deleteLogo, String[] domains,
-			byte[] logoBytes, int status,
+			java.lang.Long accountEntryId, long parentAccountEntryId,
+			java.lang.String name, java.lang.String description,
+			boolean deleteLogo, java.lang.String[] domains, byte[] logoBytes,
+			int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -520,9 +525,10 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.account.model.AccountEntry updateAccountEntry(
-			Long accountEntryId, long parentAccountEntryId, String name,
-			String description, boolean deleteLogo, String[] domains,
-			byte[] logoBytes, String taxIdNumber, int status,
+			java.lang.Long accountEntryId, long parentAccountEntryId,
+			java.lang.String name, java.lang.String description,
+			boolean deleteLogo, java.lang.String[] domains, byte[] logoBytes,
+			java.lang.String taxIdNumber, int status,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -538,25 +544,9 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static AccountEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _accountEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<AccountEntryLocalService, AccountEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountEntryLocalService.class);
-
-		ServiceTracker<AccountEntryLocalService, AccountEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountEntryLocalService, AccountEntryLocalService>(
-						bundle.getBundleContext(),
-						AccountEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEntryLocalService _accountEntryLocalService;
 
 }

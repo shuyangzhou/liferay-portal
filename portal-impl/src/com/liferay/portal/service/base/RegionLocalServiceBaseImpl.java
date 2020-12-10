@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.RegionLocalService;
+import com.liferay.portal.kernel.service.RegionLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.RegionPersistence;
@@ -52,6 +53,8 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -75,7 +78,7 @@ public abstract class RegionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RegionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RegionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RegionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RegionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -620,11 +623,15 @@ public abstract class RegionLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Region", regionLocalService);
+
+		_setLocalServiceUtilService(regionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Region");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -666,6 +673,22 @@ public abstract class RegionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		RegionLocalService regionLocalService) {
+
+		try {
+			Field field = RegionLocalServiceUtil.class.getDeclaredField(
+				"_regionLocalService");
+
+			field.setAccessible(true);
+
+			field.set(null, regionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

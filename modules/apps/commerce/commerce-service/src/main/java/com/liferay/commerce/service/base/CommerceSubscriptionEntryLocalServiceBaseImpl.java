@@ -16,6 +16,7 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
 import com.liferay.commerce.service.CommerceSubscriptionEntryLocalService;
+import com.liferay.commerce.service.CommerceSubscriptionEntryLocalServiceUtil;
 import com.liferay.commerce.service.persistence.CPDAvailabilityEstimatePersistence;
 import com.liferay.commerce.service.persistence.CPDefinitionInventoryPersistence;
 import com.liferay.commerce.service.persistence.CommerceAddressPersistence;
@@ -73,6 +74,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class CommerceSubscriptionEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceSubscriptionEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceSubscriptionEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceSubscriptionEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceSubscriptionEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1496,11 +1499,15 @@ public abstract class CommerceSubscriptionEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.commerce.model.CommerceSubscriptionEntry",
 			commerceSubscriptionEntryLocalService);
+
+		_setLocalServiceUtilService(commerceSubscriptionEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.commerce.model.CommerceSubscriptionEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1543,6 +1550,24 @@ public abstract class CommerceSubscriptionEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		CommerceSubscriptionEntryLocalService
+			commerceSubscriptionEntryLocalService) {
+
+		try {
+			Field field =
+				CommerceSubscriptionEntryLocalServiceUtil.class.
+					getDeclaredField("_commerceSubscriptionEntryLocalService");
+
+			field.setAccessible(true);
+
+			field.set(null, commerceSubscriptionEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

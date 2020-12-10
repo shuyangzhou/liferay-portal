@@ -14,10 +14,6 @@
 
 package com.liferay.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for SyncDLObject. This utility wraps
  * <code>com.liferay.sync.service.impl.SyncDLObjectLocalServiceImpl</code> and
@@ -38,14 +34,17 @@ public class SyncDLObjectLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.sync.service.impl.SyncDLObjectLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.sync.model.SyncDLObject addSyncDLObject(
-			long companyId, long userId, String userName, long modifiedTime,
-			long repositoryId, long parentFolderId, String treePath,
-			String name, String extension, String mimeType, String description,
-			String changeLog, String extraSettings, String version,
-			long versionId, long size, String checksum, String event,
-			String lanTokenKey, java.util.Date lockExpirationDate,
-			long lockUserId, String lockUserName, String type, long typePK,
-			String typeUuid)
+			long companyId, long userId, java.lang.String userName,
+			long modifiedTime, long repositoryId, long parentFolderId,
+			java.lang.String treePath, java.lang.String name,
+			java.lang.String extension, java.lang.String mimeType,
+			java.lang.String description, java.lang.String changeLog,
+			java.lang.String extraSettings, java.lang.String version,
+			long versionId, long size, java.lang.String checksum,
+			java.lang.String event, java.lang.String lanTokenKey,
+			java.util.Date lockExpirationDate, long lockUserId,
+			java.lang.String lockUserName, java.lang.String type, long typePK,
+			java.lang.String typeUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addSyncDLObject(
@@ -139,7 +138,9 @@ public class SyncDLObjectLocalServiceUtil {
 		return getService().deleteSyncDLObject(syncDLObject);
 	}
 
-	public static void deleteSyncDLObjects(String version, String type) {
+	public static void deleteSyncDLObjects(
+		java.lang.String version, java.lang.String type) {
+
 		getService().deleteSyncDLObjects(version, type);
 	}
 
@@ -241,7 +242,7 @@ public class SyncDLObjectLocalServiceUtil {
 	}
 
 	public static com.liferay.sync.model.SyncDLObject fetchSyncDLObject(
-		String type, long typePK) {
+		java.lang.String type, long typePK) {
 
 		return getService().fetchSyncDLObject(type, typePK);
 	}
@@ -268,7 +269,7 @@ public class SyncDLObjectLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -366,25 +367,9 @@ public class SyncDLObjectLocalServiceUtil {
 	}
 
 	public static SyncDLObjectLocalService getService() {
-		return _serviceTracker.getService();
+		return _syncDLObjectLocalService;
 	}
 
-	private static ServiceTracker
-		<SyncDLObjectLocalService, SyncDLObjectLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SyncDLObjectLocalService.class);
-
-		ServiceTracker<SyncDLObjectLocalService, SyncDLObjectLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<SyncDLObjectLocalService, SyncDLObjectLocalService>(
-						bundle.getBundleContext(),
-						SyncDLObjectLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SyncDLObjectLocalService _syncDLObjectLocalService;
 
 }

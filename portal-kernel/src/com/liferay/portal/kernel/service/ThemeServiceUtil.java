@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Theme. This utility wraps
  * <code>com.liferay.portal.service.impl.ThemeServiceImpl</code> and is an
@@ -41,7 +39,7 @@ public class ThemeServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -56,14 +54,9 @@ public class ThemeServiceUtil {
 	}
 
 	public static ThemeService getService() {
-		if (_service == null) {
-			_service = (ThemeService)PortalBeanLocatorUtil.locate(
-				ThemeService.class.getName());
-		}
-
-		return _service;
+		return _themeService;
 	}
 
-	private static ThemeService _service;
+	private static volatile ThemeService _themeService;
 
 }

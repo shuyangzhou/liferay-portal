@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for VersionedEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.VersionedEntryLocalServiceImpl</code> and
@@ -344,7 +340,7 @@ public class VersionedEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -479,27 +475,10 @@ public class VersionedEntryLocalServiceUtil {
 	}
 
 	public static VersionedEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _versionedEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<VersionedEntryLocalService, VersionedEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			VersionedEntryLocalService.class);
-
-		ServiceTracker<VersionedEntryLocalService, VersionedEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<VersionedEntryLocalService, VersionedEntryLocalService>(
-						bundle.getBundleContext(),
-						VersionedEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile VersionedEntryLocalService
+		_versionedEntryLocalService;
 
 }

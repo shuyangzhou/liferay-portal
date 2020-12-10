@@ -14,10 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DDMFormInstanceRecord. This utility wraps
  * <code>com.liferay.dynamic.data.mapping.service.impl.DDMFormInstanceRecordLocalServiceImpl</code> and
@@ -264,7 +260,8 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	 * @return the matching ddm form instance record, or <code>null</code> if a matching ddm form instance record could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord
-		fetchDDMFormInstanceRecordByUuidAndGroupId(String uuid, long groupId) {
+		fetchDDMFormInstanceRecordByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchDDMFormInstanceRecordByUuidAndGroupId(
 			uuid, groupId);
@@ -305,7 +302,8 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	 * @throws PortalException if a matching ddm form instance record could not be found
 	 */
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord
-			getDDMFormInstanceRecordByUuidAndGroupId(String uuid, long groupId)
+			getDDMFormInstanceRecordByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDDMFormInstanceRecordByUuidAndGroupId(
@@ -340,7 +338,7 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord>
 			getDDMFormInstanceRecordsByUuidAndCompanyId(
-				String uuid, long companyId) {
+				java.lang.String uuid, long companyId) {
 
 		return getService().getDDMFormInstanceRecordsByUuidAndCompanyId(
 			uuid, companyId);
@@ -359,7 +357,7 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord>
 			getDDMFormInstanceRecordsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
+				java.lang.String uuid, long companyId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.dynamic.data.mapping.model.
 						DDMFormInstanceRecord> orderByComparator) {
@@ -380,7 +378,7 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	public static com.liferay.dynamic.data.mapping.storage.DDMFormValues
 			getDDMFormValues(
 				com.liferay.dynamic.data.mapping.model.DDMForm ddmForm,
-				long storageId, String storageType)
+				long storageId, java.lang.String storageType)
 		throws com.liferay.dynamic.data.mapping.exception.StorageException {
 
 		return getService().getDDMFormValues(ddmForm, storageId, storageType);
@@ -476,7 +474,7 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -491,7 +489,7 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	}
 
 	public static void revertFormInstanceRecord(
-			long userId, long ddmFormInstanceRecordId, String version,
+			long userId, long ddmFormInstanceRecordId, java.lang.String version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -502,8 +500,8 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord>
 				searchFormInstanceRecords(
-					long formInstanceId, String[] notEmptyFields, int status,
-					int start, int end,
+					long formInstanceId, java.lang.String[] notEmptyFields,
+					int status, int start, int end,
 					com.liferay.portal.kernel.search.Sort sort)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -561,29 +559,10 @@ public class DDMFormInstanceRecordLocalServiceUtil {
 	}
 
 	public static DDMFormInstanceRecordLocalService getService() {
-		return _serviceTracker.getService();
+		return _ddmFormInstanceRecordLocalService;
 	}
 
-	private static ServiceTracker
-		<DDMFormInstanceRecordLocalService, DDMFormInstanceRecordLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DDMFormInstanceRecordLocalService.class);
-
-		ServiceTracker
-			<DDMFormInstanceRecordLocalService,
-			 DDMFormInstanceRecordLocalService> serviceTracker =
-				new ServiceTracker
-					<DDMFormInstanceRecordLocalService,
-					 DDMFormInstanceRecordLocalService>(
-						 bundle.getBundleContext(),
-						 DDMFormInstanceRecordLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DDMFormInstanceRecordLocalService
+		_ddmFormInstanceRecordLocalService;
 
 }

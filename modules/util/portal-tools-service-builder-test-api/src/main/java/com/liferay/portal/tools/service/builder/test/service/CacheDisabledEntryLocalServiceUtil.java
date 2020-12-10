@@ -14,10 +14,6 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CacheDisabledEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.CacheDisabledEntryLocalServiceImpl</code> and
@@ -287,7 +283,7 @@ public class CacheDisabledEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -321,29 +317,10 @@ public class CacheDisabledEntryLocalServiceUtil {
 	}
 
 	public static CacheDisabledEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _cacheDisabledEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<CacheDisabledEntryLocalService, CacheDisabledEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CacheDisabledEntryLocalService.class);
-
-		ServiceTracker
-			<CacheDisabledEntryLocalService, CacheDisabledEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CacheDisabledEntryLocalService,
-						 CacheDisabledEntryLocalService>(
-							 bundle.getBundleContext(),
-							 CacheDisabledEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CacheDisabledEntryLocalService
+		_cacheDisabledEntryLocalService;
 
 }

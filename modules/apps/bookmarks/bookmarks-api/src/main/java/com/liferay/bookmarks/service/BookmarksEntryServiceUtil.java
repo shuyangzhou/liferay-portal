@@ -14,10 +14,6 @@
 
 package com.liferay.bookmarks.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for BookmarksEntry. This utility wraps
  * <code>com.liferay.bookmarks.service.impl.BookmarksEntryServiceImpl</code> and is an
@@ -38,8 +34,8 @@ public class BookmarksEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.bookmarks.service.impl.BookmarksEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.bookmarks.model.BookmarksEntry addEntry(
-			long groupId, long folderId, String name, String url,
-			String description,
+			long groupId, long folderId, java.lang.String name,
+			java.lang.String url, java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -86,7 +82,7 @@ public class BookmarksEntryServiceUtil {
 	}
 
 	public static int getFoldersEntriesCount(
-		long groupId, java.util.List<Long> folderIds) {
+		long groupId, java.util.List<java.lang.Long> folderIds) {
 
 		return getService().getFoldersEntriesCount(groupId, folderIds);
 	}
@@ -139,7 +135,7 @@ public class BookmarksEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -204,8 +200,8 @@ public class BookmarksEntryServiceUtil {
 	}
 
 	public static com.liferay.bookmarks.model.BookmarksEntry updateEntry(
-			long entryId, long groupId, long folderId, String name, String url,
-			String description,
+			long entryId, long groupId, long folderId, java.lang.String name,
+			java.lang.String url, java.lang.String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -214,25 +210,9 @@ public class BookmarksEntryServiceUtil {
 	}
 
 	public static BookmarksEntryService getService() {
-		return _serviceTracker.getService();
+		return _bookmarksEntryService;
 	}
 
-	private static ServiceTracker<BookmarksEntryService, BookmarksEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(BookmarksEntryService.class);
-
-		ServiceTracker<BookmarksEntryService, BookmarksEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<BookmarksEntryService, BookmarksEntryService>(
-						bundle.getBundleContext(), BookmarksEntryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BookmarksEntryService _bookmarksEntryService;
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-
 /**
  * Provides the remote service utility for Portal. This utility wraps
  * <code>com.liferay.portal.service.impl.PortalServiceImpl</code> and is an
@@ -35,7 +33,7 @@ public class PortalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.PortalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static String getAutoDeployDirectory() {
+	public static java.lang.String getAutoDeployDirectory() {
 		return getService().getAutoDeployDirectory();
 	}
 
@@ -48,25 +46,29 @@ public class PortalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static String getVersion() {
+	public static java.lang.String getVersion() {
 		return getService().getVersion();
 	}
 
-	public static void testAddClassName_Rollback(String classNameValue) {
+	public static void testAddClassName_Rollback(
+		java.lang.String classNameValue) {
+
 		getService().testAddClassName_Rollback(classNameValue);
 	}
 
-	public static void testAddClassName_Success(String classNameValue) {
+	public static void testAddClassName_Success(
+		java.lang.String classNameValue) {
+
 		getService().testAddClassName_Success(classNameValue);
 	}
 
 	public static void
 		testAddClassNameAndTestTransactionPortletBar_PortalRollback(
-			String transactionPortletBarText) {
+			java.lang.String transactionPortletBarText) {
 
 		getService().
 			testAddClassNameAndTestTransactionPortletBar_PortalRollback(
@@ -75,7 +77,7 @@ public class PortalServiceUtil {
 
 	public static void
 		testAddClassNameAndTestTransactionPortletBar_PortletRollback(
-			String transactionPortletBarText) {
+			java.lang.String transactionPortletBarText) {
 
 		getService().
 			testAddClassNameAndTestTransactionPortletBar_PortletRollback(
@@ -83,7 +85,7 @@ public class PortalServiceUtil {
 	}
 
 	public static void testAddClassNameAndTestTransactionPortletBar_Success(
-		String transactionPortletBarText) {
+		java.lang.String transactionPortletBarText) {
 
 		getService().testAddClassNameAndTestTransactionPortletBar_Success(
 			transactionPortletBarText);
@@ -112,14 +114,9 @@ public class PortalServiceUtil {
 	}
 
 	public static PortalService getService() {
-		if (_service == null) {
-			_service = (PortalService)PortalBeanLocatorUtil.locate(
-				PortalService.class.getName());
-		}
-
-		return _service;
+		return _portalService;
 	}
 
-	private static PortalService _service;
+	private static volatile PortalService _portalService;
 
 }

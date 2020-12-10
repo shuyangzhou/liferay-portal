@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.notification.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceNotificationTemplate. This utility wraps
  * <code>com.liferay.commerce.notification.service.impl.CommerceNotificationTemplateServiceImpl</code> and is an
@@ -40,13 +36,16 @@ public class CommerceNotificationTemplateServiceUtil {
 	public static
 		com.liferay.commerce.notification.model.CommerceNotificationTemplate
 				addCommerceNotificationTemplate(
-					long userId, long groupId, String name, String description,
-					String from,
-					java.util.Map<java.util.Locale, String> fromNameMap,
-					String to, String cc, String bcc, String type,
+					long userId, long groupId, java.lang.String name,
+					java.lang.String description, java.lang.String from,
+					java.util.Map<java.util.Locale, java.lang.String>
+						fromNameMap,
+					java.lang.String to, java.lang.String cc,
+					java.lang.String bcc, java.lang.String type,
 					boolean enabled,
-					java.util.Map<java.util.Locale, String> subjectMap,
-					java.util.Map<java.util.Locale, String> bodyMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						subjectMap,
+					java.util.Map<java.util.Locale, java.lang.String> bodyMap,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -63,12 +62,16 @@ public class CommerceNotificationTemplateServiceUtil {
 	public static
 		com.liferay.commerce.notification.model.CommerceNotificationTemplate
 				addCommerceNotificationTemplate(
-					String name, String description, String from,
-					java.util.Map<java.util.Locale, String> fromNameMap,
-					String to, String cc, String bcc, String type,
+					java.lang.String name, java.lang.String description,
+					java.lang.String from,
+					java.util.Map<java.util.Locale, java.lang.String>
+						fromNameMap,
+					java.lang.String to, java.lang.String cc,
+					java.lang.String bcc, java.lang.String type,
 					boolean enabled,
-					java.util.Map<java.util.Locale, String> subjectMap,
-					java.util.Map<java.util.Locale, String> bodyMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						subjectMap,
+					java.util.Map<java.util.Locale, java.lang.String> bodyMap,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -141,20 +144,23 @@ public class CommerceNotificationTemplateServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static
 		com.liferay.commerce.notification.model.CommerceNotificationTemplate
 				updateCommerceNotificationTemplate(
-					long commerceNotificationTemplateId, String name,
-					String description, String from,
-					java.util.Map<java.util.Locale, String> fromNameMap,
-					String to, String cc, String bcc, String type,
+					long commerceNotificationTemplateId, java.lang.String name,
+					java.lang.String description, java.lang.String from,
+					java.util.Map<java.util.Locale, java.lang.String>
+						fromNameMap,
+					java.lang.String to, java.lang.String cc,
+					java.lang.String bcc, java.lang.String type,
 					boolean enabled,
-					java.util.Map<java.util.Locale, String> subjectMap,
-					java.util.Map<java.util.Locale, String> bodyMap,
+					java.util.Map<java.util.Locale, java.lang.String>
+						subjectMap,
+					java.util.Map<java.util.Locale, java.lang.String> bodyMap,
 					com.liferay.portal.kernel.service.ServiceContext
 						serviceContext)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -166,29 +172,10 @@ public class CommerceNotificationTemplateServiceUtil {
 	}
 
 	public static CommerceNotificationTemplateService getService() {
-		return _serviceTracker.getService();
+		return _commerceNotificationTemplateService;
 	}
 
-	private static ServiceTracker
-		<CommerceNotificationTemplateService,
-		 CommerceNotificationTemplateService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceNotificationTemplateService.class);
-
-		ServiceTracker
-			<CommerceNotificationTemplateService,
-			 CommerceNotificationTemplateService> serviceTracker =
-				new ServiceTracker
-					<CommerceNotificationTemplateService,
-					 CommerceNotificationTemplateService>(
-						 bundle.getBundleContext(),
-						 CommerceNotificationTemplateService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceNotificationTemplateService
+		_commerceNotificationTemplateService;
 
 }

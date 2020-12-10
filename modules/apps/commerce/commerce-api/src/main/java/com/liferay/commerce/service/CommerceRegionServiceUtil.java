@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for CommerceRegion. This utility wraps
  * <code>com.liferay.commerce.service.impl.CommerceRegionServiceImpl</code> and is an
@@ -38,8 +34,8 @@ public class CommerceRegionServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.commerce.service.impl.CommerceRegionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.commerce.model.CommerceRegion addCommerceRegion(
-			long commerceCountryId, String name, String code, double priority,
-			boolean active,
+			long commerceCountryId, java.lang.String name,
+			java.lang.String code, double priority, boolean active,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -92,7 +88,8 @@ public class CommerceRegionServiceUtil {
 
 	public static java.util.List<com.liferay.commerce.model.CommerceRegion>
 			getCommerceRegions(
-				long companyId, String countryTwoLettersISOCode, boolean active)
+				long companyId, java.lang.String countryTwoLettersISOCode,
+				boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getCommerceRegions(
@@ -117,7 +114,7 @@ public class CommerceRegionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -130,8 +127,8 @@ public class CommerceRegionServiceUtil {
 
 	public static com.liferay.commerce.model.CommerceRegion
 			updateCommerceRegion(
-				long commerceRegionId, String name, String code,
-				double priority, boolean active,
+				long commerceRegionId, java.lang.String name,
+				java.lang.String code, double priority, boolean active,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -140,25 +137,9 @@ public class CommerceRegionServiceUtil {
 	}
 
 	public static CommerceRegionService getService() {
-		return _serviceTracker.getService();
+		return _commerceRegionService;
 	}
 
-	private static ServiceTracker<CommerceRegionService, CommerceRegionService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CommerceRegionService.class);
-
-		ServiceTracker<CommerceRegionService, CommerceRegionService>
-			serviceTracker =
-				new ServiceTracker
-					<CommerceRegionService, CommerceRegionService>(
-						bundle.getBundleContext(), CommerceRegionService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceRegionService _commerceRegionService;
 
 }

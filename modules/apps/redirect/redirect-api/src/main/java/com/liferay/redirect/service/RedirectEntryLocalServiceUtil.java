@@ -14,10 +14,6 @@
 
 package com.liferay.redirect.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for RedirectEntry. This utility wraps
  * <code>com.liferay.redirect.service.impl.RedirectEntryLocalServiceImpl</code> and
@@ -56,8 +52,9 @@ public class RedirectEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry addRedirectEntry(
-			long groupId, String destinationURL, java.util.Date expirationDate,
-			boolean permanent, String sourceURL,
+			long groupId, java.lang.String destinationURL,
+			java.util.Date expirationDate, boolean permanent,
+			java.lang.String sourceURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -67,8 +64,9 @@ public class RedirectEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry addRedirectEntry(
-			long groupId, String destinationURL, java.util.Date expirationDate,
-			String groupBaseURL, boolean permanent, String sourceURL,
+			long groupId, java.lang.String destinationURL,
+			java.util.Date expirationDate, java.lang.String groupBaseURL,
+			boolean permanent, java.lang.String sourceURL,
 			boolean updateChainedRedirectEntries,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -259,13 +257,14 @@ public class RedirectEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry fetchRedirectEntry(
-		long groupId, String sourceURL) {
+		long groupId, java.lang.String sourceURL) {
 
 		return getService().fetchRedirectEntry(groupId, sourceURL);
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry fetchRedirectEntry(
-		long groupId, String sourceURL, boolean updateLastOccurrenceDate) {
+		long groupId, java.lang.String sourceURL,
+		boolean updateLastOccurrenceDate) {
 
 		return getService().fetchRedirectEntry(
 			groupId, sourceURL, updateLastOccurrenceDate);
@@ -279,7 +278,8 @@ public class RedirectEntryLocalServiceUtil {
 	 * @return the matching redirect entry, or <code>null</code> if a matching redirect entry could not be found
 	 */
 	public static com.liferay.redirect.model.RedirectEntry
-		fetchRedirectEntryByUuidAndGroupId(String uuid, long groupId) {
+		fetchRedirectEntryByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchRedirectEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -310,7 +310,7 @@ public class RedirectEntryLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -352,7 +352,7 @@ public class RedirectEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.redirect.model.RedirectEntry>
-		getRedirectEntries(long groupId, String destinationURL) {
+		getRedirectEntries(long groupId, java.lang.String destinationURL) {
 
 		return getService().getRedirectEntries(groupId, destinationURL);
 	}
@@ -365,7 +365,8 @@ public class RedirectEntryLocalServiceUtil {
 	 * @return the matching redirect entries, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.redirect.model.RedirectEntry>
-		getRedirectEntriesByUuidAndCompanyId(String uuid, long companyId) {
+		getRedirectEntriesByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getRedirectEntriesByUuidAndCompanyId(
 			uuid, companyId);
@@ -383,7 +384,7 @@ public class RedirectEntryLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.redirect.model.RedirectEntry>
 		getRedirectEntriesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.redirect.model.RedirectEntry> orderByComparator) {
 
@@ -427,15 +428,17 @@ public class RedirectEntryLocalServiceUtil {
 	 * @throws PortalException if a matching redirect entry could not be found
 	 */
 	public static com.liferay.redirect.model.RedirectEntry
-			getRedirectEntryByUuidAndGroupId(String uuid, long groupId)
+			getRedirectEntryByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getRedirectEntryByUuidAndGroupId(uuid, groupId);
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry updateRedirectEntry(
-			long redirectEntryId, String destinationURL,
-			java.util.Date expirationDate, boolean permanent, String sourceURL)
+			long redirectEntryId, java.lang.String destinationURL,
+			java.util.Date expirationDate, boolean permanent,
+			java.lang.String sourceURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateRedirectEntry(
@@ -444,9 +447,9 @@ public class RedirectEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.redirect.model.RedirectEntry updateRedirectEntry(
-			long redirectEntryId, String destinationURL,
-			java.util.Date expirationDate, String groupBaseURL,
-			boolean permanent, String sourceURL,
+			long redirectEntryId, java.lang.String destinationURL,
+			java.util.Date expirationDate, java.lang.String groupBaseURL,
+			boolean permanent, java.lang.String sourceURL,
 			boolean updateChainedRedirectEntries)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -472,26 +475,10 @@ public class RedirectEntryLocalServiceUtil {
 	}
 
 	public static RedirectEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _redirectEntryLocalService;
 	}
 
-	private static ServiceTracker
-		<RedirectEntryLocalService, RedirectEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			RedirectEntryLocalService.class);
-
-		ServiceTracker<RedirectEntryLocalService, RedirectEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<RedirectEntryLocalService, RedirectEntryLocalService>(
-						bundle.getBundleContext(),
-						RedirectEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile RedirectEntryLocalService
+		_redirectEntryLocalService;
 
 }

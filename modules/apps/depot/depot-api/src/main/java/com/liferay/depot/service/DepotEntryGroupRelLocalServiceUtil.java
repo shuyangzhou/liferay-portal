@@ -14,10 +14,6 @@
 
 package com.liferay.depot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for DepotEntryGroupRel. This utility wraps
  * <code>com.liferay.depot.service.impl.DepotEntryGroupRelLocalServiceImpl</code> and
@@ -262,7 +258,8 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	 * @return the matching depot entry group rel, or <code>null</code> if a matching depot entry group rel could not be found
 	 */
 	public static com.liferay.depot.model.DepotEntryGroupRel
-		fetchDepotEntryGroupRelByUuidAndGroupId(String uuid, long groupId) {
+		fetchDepotEntryGroupRelByUuidAndGroupId(
+			java.lang.String uuid, long groupId) {
 
 		return getService().fetchDepotEntryGroupRelByUuidAndGroupId(
 			uuid, groupId);
@@ -297,7 +294,8 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	 * @throws PortalException if a matching depot entry group rel could not be found
 	 */
 	public static com.liferay.depot.model.DepotEntryGroupRel
-			getDepotEntryGroupRelByUuidAndGroupId(String uuid, long groupId)
+			getDepotEntryGroupRelByUuidAndGroupId(
+				java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getDepotEntryGroupRelByUuidAndGroupId(
@@ -341,7 +339,8 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	 * @return the matching depot entry group rels, or an empty list if no matches were found
 	 */
 	public static java.util.List<com.liferay.depot.model.DepotEntryGroupRel>
-		getDepotEntryGroupRelsByUuidAndCompanyId(String uuid, long companyId) {
+		getDepotEntryGroupRelsByUuidAndCompanyId(
+			java.lang.String uuid, long companyId) {
 
 		return getService().getDepotEntryGroupRelsByUuidAndCompanyId(
 			uuid, companyId);
@@ -359,7 +358,7 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	 */
 	public static java.util.List<com.liferay.depot.model.DepotEntryGroupRel>
 		getDepotEntryGroupRelsByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
+			java.lang.String uuid, long companyId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.liferay.depot.model.DepotEntryGroupRel>
 					orderByComparator) {
@@ -407,7 +406,7 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -466,29 +465,10 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	}
 
 	public static DepotEntryGroupRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _depotEntryGroupRelLocalService;
 	}
 
-	private static ServiceTracker
-		<DepotEntryGroupRelLocalService, DepotEntryGroupRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DepotEntryGroupRelLocalService.class);
-
-		ServiceTracker
-			<DepotEntryGroupRelLocalService, DepotEntryGroupRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<DepotEntryGroupRelLocalService,
-						 DepotEntryGroupRelLocalService>(
-							 bundle.getBundleContext(),
-							 DepotEntryGroupRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DepotEntryGroupRelLocalService
+		_depotEntryGroupRelLocalService;
 
 }

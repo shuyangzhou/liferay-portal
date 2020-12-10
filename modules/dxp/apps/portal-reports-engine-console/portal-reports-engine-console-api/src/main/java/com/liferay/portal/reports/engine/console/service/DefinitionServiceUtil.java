@@ -14,10 +14,6 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for Definition. This utility wraps
  * <code>com.liferay.portal.reports.engine.console.service.impl.DefinitionServiceImpl</code> and is an
@@ -39,10 +35,12 @@ public class DefinitionServiceUtil {
 	 */
 	public static com.liferay.portal.reports.engine.console.model.Definition
 			addDefinition(
-				long groupId, java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long sourceId, String reportParameters, String fileName,
-				java.io.InputStream inputStream,
+				long groupId,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long sourceId, java.lang.String reportParameters,
+				java.lang.String fileName, java.io.InputStream inputStream,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -68,9 +66,10 @@ public class DefinitionServiceUtil {
 	public static java.util.List
 		<com.liferay.portal.reports.engine.console.model.Definition>
 				getDefinitions(
-					long groupId, String definitionName, String description,
-					String sourceId, String reportName, boolean andSearch,
-					int start, int end,
+					long groupId, java.lang.String definitionName,
+					java.lang.String description, java.lang.String sourceId,
+					java.lang.String reportName, boolean andSearch, int start,
+					int end,
 					com.liferay.portal.kernel.util.OrderByComparator
 						<com.liferay.portal.reports.engine.console.model.
 							Definition> orderByComparator)
@@ -82,8 +81,9 @@ public class DefinitionServiceUtil {
 	}
 
 	public static int getDefinitionsCount(
-		long groupId, String definitionName, String description,
-		String sourceId, String reportName, boolean andSearch) {
+		long groupId, java.lang.String definitionName,
+		java.lang.String description, java.lang.String sourceId,
+		java.lang.String reportName, boolean andSearch) {
 
 		return getService().getDefinitionsCount(
 			groupId, definitionName, description, sourceId, reportName,
@@ -95,17 +95,18 @@ public class DefinitionServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.reports.engine.console.model.Definition
 			updateDefinition(
 				long definitionId,
-				java.util.Map<java.util.Locale, String> nameMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				long sourceId, String reportParameters, String fileName,
-				java.io.InputStream inputStream,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.util.Map<java.util.Locale, java.lang.String>
+					descriptionMap,
+				long sourceId, java.lang.String reportParameters,
+				java.lang.String fileName, java.io.InputStream inputStream,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -115,22 +116,9 @@ public class DefinitionServiceUtil {
 	}
 
 	public static DefinitionService getService() {
-		return _serviceTracker.getService();
+		return _definitionService;
 	}
 
-	private static ServiceTracker<DefinitionService, DefinitionService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DefinitionService.class);
-
-		ServiceTracker<DefinitionService, DefinitionService> serviceTracker =
-			new ServiceTracker<DefinitionService, DefinitionService>(
-				bundle.getBundleContext(), DefinitionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DefinitionService _definitionService;
 
 }

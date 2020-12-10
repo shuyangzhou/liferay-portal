@@ -14,10 +14,6 @@
 
 package com.liferay.external.data.source.test.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for TestEntity. This utility wraps
  * <code>com.liferay.external.data.source.test.service.impl.TestEntityLocalServiceImpl</code> and
@@ -238,7 +234,7 @@ public class TestEntityLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -311,25 +307,9 @@ public class TestEntityLocalServiceUtil {
 	}
 
 	public static TestEntityLocalService getService() {
-		return _serviceTracker.getService();
+		return _testEntityLocalService;
 	}
 
-	private static ServiceTracker
-		<TestEntityLocalService, TestEntityLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TestEntityLocalService.class);
-
-		ServiceTracker<TestEntityLocalService, TestEntityLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TestEntityLocalService, TestEntityLocalService>(
-						bundle.getBundleContext(), TestEntityLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestEntityLocalService _testEntityLocalService;
 
 }

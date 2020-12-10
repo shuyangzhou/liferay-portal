@@ -14,10 +14,6 @@
 
 package com.liferay.commerce.discount.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the local service utility for CommerceDiscountRel. This utility wraps
  * <code>com.liferay.commerce.discount.service.impl.CommerceDiscountRelLocalServiceImpl</code> and
@@ -58,7 +54,8 @@ public class CommerceDiscountRelLocalServiceUtil {
 
 	public static com.liferay.commerce.discount.model.CommerceDiscountRel
 			addCommerceDiscountRel(
-				long commerceDiscountId, String className, long classPK,
+				long commerceDiscountId, java.lang.String className,
+				long classPK,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -133,7 +130,7 @@ public class CommerceDiscountRelLocalServiceUtil {
 	}
 
 	public static void deleteCommerceDiscountRels(
-			String className, long classPK)
+			java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().deleteCommerceDiscountRels(className, classPK);
@@ -248,7 +245,7 @@ public class CommerceDiscountRelLocalServiceUtil {
 	}
 
 	public static com.liferay.commerce.discount.model.CommerceDiscountRel
-		fetchCommerceDiscountRel(String className, long classPK) {
+		fetchCommerceDiscountRel(java.lang.String className, long classPK) {
 
 		return getService().fetchCommerceDiscountRel(className, classPK);
 	}
@@ -262,21 +259,22 @@ public class CommerceDiscountRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountRel>
 			getCategoriesByCommerceDiscountId(
-				long commerceDiscountId, String name, int start, int end) {
+				long commerceDiscountId, java.lang.String name, int start,
+				int end) {
 
 		return getService().getCategoriesByCommerceDiscountId(
 			commerceDiscountId, name, start, end);
 	}
 
 	public static int getCategoriesByCommerceDiscountIdCount(
-		long commerceDiscountId, String name) {
+		long commerceDiscountId, java.lang.String name) {
 
 		return getService().getCategoriesByCommerceDiscountIdCount(
 			commerceDiscountId, name);
 	}
 
 	public static long[] getClassPKs(
-		long commerceDiscountId, String className) {
+		long commerceDiscountId, java.lang.String className) {
 
 		return getService().getClassPKs(commerceDiscountId, className);
 	}
@@ -315,7 +313,8 @@ public class CommerceDiscountRelLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountRel>
-			getCommerceDiscountRels(long commerceDiscountId, String className) {
+			getCommerceDiscountRels(
+				long commerceDiscountId, java.lang.String className) {
 
 		return getService().getCommerceDiscountRels(
 			commerceDiscountId, className);
@@ -324,7 +323,8 @@ public class CommerceDiscountRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountRel>
 			getCommerceDiscountRels(
-				long commerceDiscountId, String className, int start, int end,
+				long commerceDiscountId, java.lang.String className, int start,
+				int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.commerce.discount.model.CommerceDiscountRel>
 						orderByComparator) {
@@ -343,7 +343,7 @@ public class CommerceDiscountRelLocalServiceUtil {
 	}
 
 	public static int getCommerceDiscountRelsCount(
-		long commerceDiscountId, String className) {
+		long commerceDiscountId, java.lang.String className) {
 
 		return getService().getCommerceDiscountRelsCount(
 			commerceDiscountId, className);
@@ -352,14 +352,15 @@ public class CommerceDiscountRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountRel>
 			getCommercePricingClassesByCommerceDiscountId(
-				long commerceDiscountId, String title, int start, int end) {
+				long commerceDiscountId, java.lang.String title, int start,
+				int end) {
 
 		return getService().getCommercePricingClassesByCommerceDiscountId(
 			commerceDiscountId, title, start, end);
 	}
 
 	public static int getCommercePricingClassesByCommerceDiscountIdCount(
-		long commerceDiscountId, String title) {
+		long commerceDiscountId, java.lang.String title) {
 
 		return getService().getCommercePricingClassesByCommerceDiscountIdCount(
 			commerceDiscountId, title);
@@ -368,15 +369,16 @@ public class CommerceDiscountRelLocalServiceUtil {
 	public static java.util.List
 		<com.liferay.commerce.discount.model.CommerceDiscountRel>
 			getCPDefinitionsByCommerceDiscountId(
-				long commerceDiscountId, String name, String languageId,
-				int start, int end) {
+				long commerceDiscountId, java.lang.String name,
+				java.lang.String languageId, int start, int end) {
 
 		return getService().getCPDefinitionsByCommerceDiscountId(
 			commerceDiscountId, name, languageId, start, end);
 	}
 
 	public static int getCPDefinitionsByCommerceDiscountIdCount(
-		long commerceDiscountId, String name, String languageId) {
+		long commerceDiscountId, java.lang.String name,
+		java.lang.String languageId) {
 
 		return getService().getCPDefinitionsByCommerceDiscountIdCount(
 			commerceDiscountId, name, languageId);
@@ -394,7 +396,7 @@ public class CommerceDiscountRelLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -427,29 +429,10 @@ public class CommerceDiscountRelLocalServiceUtil {
 	}
 
 	public static CommerceDiscountRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _commerceDiscountRelLocalService;
 	}
 
-	private static ServiceTracker
-		<CommerceDiscountRelLocalService, CommerceDiscountRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommerceDiscountRelLocalService.class);
-
-		ServiceTracker
-			<CommerceDiscountRelLocalService, CommerceDiscountRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<CommerceDiscountRelLocalService,
-						 CommerceDiscountRelLocalService>(
-							 bundle.getBundleContext(),
-							 CommerceDiscountRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CommerceDiscountRelLocalService
+		_commerceDiscountRelLocalService;
 
 }

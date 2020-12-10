@@ -14,10 +14,6 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for Source. This utility wraps
  * <code>com.liferay.portal.reports.engine.console.service.impl.SourceServiceImpl</code> and is an
@@ -39,9 +35,11 @@ public class SourceServiceUtil {
 	 */
 	public static com.liferay.portal.reports.engine.console.model.Source
 			addSource(
-				long groupId, java.util.Map<java.util.Locale, String> nameMap,
-				String driverClassName, String driverUrl, String driverUserName,
-				String driverPassword,
+				long groupId,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String driverClassName, java.lang.String driverUrl,
+				java.lang.String driverUserName,
+				java.lang.String driverPassword,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -62,7 +60,7 @@ public class SourceServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -75,8 +73,8 @@ public class SourceServiceUtil {
 
 	public static java.util.List
 		<com.liferay.portal.reports.engine.console.model.Source> getSources(
-				long groupId, String name, String driverUrl, boolean andSearch,
-				int start, int end,
+				long groupId, java.lang.String name, java.lang.String driverUrl,
+				boolean andSearch, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.reports.engine.console.model.Source>
 						orderByComparator)
@@ -87,7 +85,8 @@ public class SourceServiceUtil {
 	}
 
 	public static int getSourcesCount(
-		long groupId, String name, String driverUrl, boolean andSearch) {
+		long groupId, java.lang.String name, java.lang.String driverUrl,
+		boolean andSearch) {
 
 		return getService().getSourcesCount(
 			groupId, name, driverUrl, andSearch);
@@ -95,9 +94,11 @@ public class SourceServiceUtil {
 
 	public static com.liferay.portal.reports.engine.console.model.Source
 			updateSource(
-				long sourceId, java.util.Map<java.util.Locale, String> nameMap,
-				String driverClassName, String driverUrl, String driverUserName,
-				String driverPassword,
+				long sourceId,
+				java.util.Map<java.util.Locale, java.lang.String> nameMap,
+				java.lang.String driverClassName, java.lang.String driverUrl,
+				java.lang.String driverUserName,
+				java.lang.String driverPassword,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -107,21 +108,9 @@ public class SourceServiceUtil {
 	}
 
 	public static SourceService getService() {
-		return _serviceTracker.getService();
+		return _sourceService;
 	}
 
-	private static ServiceTracker<SourceService, SourceService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(SourceService.class);
-
-		ServiceTracker<SourceService, SourceService> serviceTracker =
-			new ServiceTracker<SourceService, SourceService>(
-				bundle.getBundleContext(), SourceService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile SourceService _sourceService;
 
 }
