@@ -19,6 +19,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -206,6 +209,25 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 				_serviceProxyClassNames.add(className);
 
 				return _SERVICE_PROXY_STRING_MODEL_FACTORY.create(object, this);
+			}
+		}
+		else if (object instanceof BaseModel) {
+			long currentCompanyId = CompanyThreadLocal.getCompanyId();
+
+			if (currentCompanyId != CompanyConstants.SYSTEM) {
+				BaseModel<?> baseModel = (BaseModel<?>)object;
+
+				Map<String, Object> modelAttributes =
+					baseModel.getModelAttributes();
+
+				Long companyId = (Long)modelAttributes.get("companyId");
+
+				if ((companyId != null) && (companyId != currentCompanyId)) {
+					throw new TemplateModelException(
+						StringBundler.concat(
+							"Denied access to model object as it does not ",
+							"belong to current company ", currentCompanyId));
+				}
 			}
 		}
 
