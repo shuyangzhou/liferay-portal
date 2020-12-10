@@ -16,26 +16,44 @@ package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvoker;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.spring.aop.AopCacheManager;
+import com.liferay.registry.BasicRegistryImpl;
+import com.liferay.registry.RegistryUtil;
 
 import freemarker.ext.beans.InvalidPropertyException;
 import freemarker.ext.beans.SimpleMethodModel;
+import freemarker.ext.beans.StringModel;
 
+import freemarker.template.ObjectWrapper;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
+import java.io.Serializable;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.hamcrest.CoreMatchers;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -48,6 +66,17 @@ public class RestrictedLiferayObjectWrapperTest
 	@ClassRule
 	public static final CodeCoverageAssertor codeCoverageAssertor =
 		CodeCoverageAssertor.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		RegistryUtil.setRegistry(new BasicRegistryImpl());
+
+		TransactionInvokerUtil transactionInvokerUtil =
+			new TransactionInvokerUtil();
+
+		transactionInvokerUtil.setTransactionInvoker(
+			new TestTransactionInvoker());
+	}
 
 	@Test
 	public void testConstructor() {
@@ -327,6 +356,101 @@ public class RestrictedLiferayObjectWrapperTest
 
 	}
 
+	protected void testWrap(ObjectWrapper objectWrapper) throws Exception {
+		super.testWrap(objectWrapper);
+
+		// Test 1, Local Service Object without proxy
+
+		assertTemplateModel(
+			"TestLocalServiceObject", stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(
+					new TestLocalService("TestLocalServiceObject"))));
+
+		// Test 2, Local Service Object with proxy
+
+		assertTemplateModel(
+			"TestLocalServiceObject1", stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(
+					_createAopProxy(
+						new TestLocalService("TestLocalServiceObject1")))));
+
+		assertTemplateModel(
+			"TestLocalServiceObject2", stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(
+					_createAopProxy(
+						new TestLocalService("TestLocalServiceObject2")))));
+
+		// Test 3, Service Object
+
+		assertTemplateModel(
+			"TestServiceObject", stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(
+					_createAopProxy(new TestService("TestServiceObject")))));
+
+		// Test 4, system company id
+
+		Map<String, Object> modelAttributes = Collections.emptyMap();
+
+		assertTemplateModel(
+			modelAttributes.toString(),
+			stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(new TestBaseModel(modelAttributes))));
+
+		// Test 5, Base Model without companyId
+
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					CompanyThreadLocal.class.getName(), Level.OFF)) {
+
+			CompanyThreadLocal.setCompanyId(1L);
+		}
+
+		assertTemplateModel(
+			modelAttributes.toString(),
+			stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(new TestBaseModel(modelAttributes))));
+
+		// Test 6, Base Model with companyId
+
+		modelAttributes = Collections.singletonMap("companyId", 1L);
+
+		assertTemplateModel(
+			modelAttributes.toString(),
+			stringModel -> stringModel.getAsString(),
+			StringModel.class.cast(
+				objectWrapper.wrap(new TestBaseModel(modelAttributes))));
+
+		// Test 7, Base Model with wrong companyId
+
+		modelAttributes = Collections.singletonMap("companyId", 2L);
+
+		try {
+			objectWrapper.wrap(new TestBaseModel(modelAttributes));
+
+			Assert.fail();
+		}
+		catch (TemplateModelException templateModelException) {
+			Assert.assertEquals(
+				"Denied access to model object as it does not belong to " +
+					"current company 1",
+				templateModelException.getMessage());
+		}
+	}
+
+	private Object _createAopProxy(Object target) {
+		Class<?> clazz = target.getClass();
+
+		return ProxyUtil.newProxyInstance(
+			clazz.getClassLoader(), clazz.getInterfaces(),
+			AopCacheManager.create(target, null));
+	}
+
 	private boolean _isRestricted(
 		RestrictedLiferayObjectWrapper restrictedLiferayObjectWrapper,
 		Class<?> targetClass) {
@@ -355,6 +479,116 @@ public class RestrictedLiferayObjectWrapperTest
 					TestLiferayMethodObject.class.toString()),
 				templateModelException.getMessage());
 		}
+	}
+
+	private static class TestBaseModel extends BaseModelImpl<TestBaseModel> {
+
+		@Override
+		public Object clone() {
+			return null;
+		}
+
+		@Override
+		public int compareTo(TestBaseModel testBaseModel) {
+			return 0;
+		}
+
+		@Override
+		public Map<String, Object> getModelAttributes() {
+			return _modelAttributes;
+		}
+
+		@Override
+		public Class<?> getModelClass() {
+			return null;
+		}
+
+		@Override
+		public String getModelClassName() {
+			return null;
+		}
+
+		@Override
+		public Serializable getPrimaryKeyObj() {
+			return null;
+		}
+
+		@Override
+		public boolean isEntityCacheEnabled() {
+			return false;
+		}
+
+		@Override
+		public boolean isFinderCacheEnabled() {
+			return false;
+		}
+
+		@Override
+		public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		}
+
+		@Override
+		public String toString() {
+			return _modelAttributes.toString();
+		}
+
+		@Override
+		public String toXmlString() {
+			return null;
+		}
+
+		private TestBaseModel(Map<String, Object> modelAttributes) {
+			_modelAttributes = modelAttributes;
+		}
+
+		private final Map<String, Object> _modelAttributes;
+
+	}
+
+	private static class TestLocalService implements BaseLocalService {
+
+		@Override
+		public String toString() {
+			return _name;
+		}
+
+		private TestLocalService(String name) {
+			_name = name;
+		}
+
+		private final String _name;
+
+	}
+
+	private static class TestService implements BaseService {
+
+		@Override
+		public String toString() {
+			return _name;
+		}
+
+		private TestService(String name) {
+			_name = name;
+		}
+
+		private final String _name;
+
+	}
+
+	private static class TestTransactionInvoker implements TransactionInvoker {
+
+		@Override
+		public <T> T invoke(
+				TransactionConfig transactionConfig, Callable<T> callable)
+			throws Throwable {
+
+			if (transactionConfig.isStrictReadOnly()) {
+				return callable.call();
+			}
+
+			return null;
+		}
+
 	}
 
 }
