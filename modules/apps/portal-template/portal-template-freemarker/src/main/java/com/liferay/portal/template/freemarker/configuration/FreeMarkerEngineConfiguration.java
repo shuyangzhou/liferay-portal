@@ -52,6 +52,14 @@ public interface FreeMarkerEngineConfiguration {
 	)
 	public String[] restrictedMethods();
 
+	@Meta.AD(deflt = "0", name = "async-render-timeout", required = false)
+	public long asyncRenderTimeout();
+
+	@Meta.AD(
+		deflt = "10", name = "async-render-timeout-threshold", required = false
+	)
+	public int asyncRenderTimeoutThreshold();
+
 	@Meta.AD(
 		deflt = "httpUtilUnsafe|objectUtil|serviceLocator|staticFieldGetter|staticUtil|utilLocator",
 		name = "restricted-variables", required = false
