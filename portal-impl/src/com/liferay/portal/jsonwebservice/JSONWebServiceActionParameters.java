@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.CamelCaseUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
@@ -205,27 +206,21 @@ public class JSONWebServiceActionParameters {
 	private void _collectFromRequestParameters(
 		HttpServletRequest httpServletRequest) {
 
-		Map<String, FileItem[]> multipartParameterMap = null;
-
 		Set<String> parameterNames = new HashSet<>(
 			Collections.list(httpServletRequest.getParameterNames()));
 
-		if (httpServletRequest instanceof UploadServletRequest) {
-			UploadServletRequest uploadServletRequest =
-				(UploadServletRequest)httpServletRequest;
+		UploadServletRequest uploadServletRequest =
+			PortalUtil.getUploadServletRequest(httpServletRequest);
 
-			multipartParameterMap =
-				uploadServletRequest.getMultipartParameterMap();
+		Map<String, FileItem[]> multipartParameterMap =
+			uploadServletRequest.getMultipartParameterMap();
 
-			parameterNames.addAll(multipartParameterMap.keySet());
-		}
+		parameterNames.addAll(multipartParameterMap.keySet());
 
 		for (String parameterName : parameterNames) {
 			Object value = null;
 
-			if ((multipartParameterMap != null) &&
-				multipartParameterMap.containsKey(parameterName)) {
-
+			if (multipartParameterMap.containsKey(parameterName)) {
 				FileItem[] fileItems = multipartParameterMap.get(parameterName);
 
 				File[] files = new File[fileItems.length];
