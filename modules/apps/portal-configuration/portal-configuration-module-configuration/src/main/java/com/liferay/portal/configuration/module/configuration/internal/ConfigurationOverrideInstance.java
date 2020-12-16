@@ -14,6 +14,8 @@
 
 package com.liferay.portal.configuration.module.configuration.internal;
 
+import aQute.bnd.annotation.metatype.Meta;
+
 import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.petra.memory.FinalizeManager;
@@ -25,8 +27,10 @@ import java.lang.ref.Reference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * @author Preston Crary
@@ -46,15 +50,17 @@ public class ConfigurationOverrideInstance {
 			return null;
 		}
 
+		Class<?> keyClass = _getKeyClass(clazz);
+
 		ConfigurationOverrideInstance configurationOverrideInstance =
-			_configurationOverrideInstances.get(configurationOverrideClass);
+			_configurationOverrideInstances.get(keyClass);
 
 		if (configurationOverrideInstance == null) {
 			configurationOverrideInstance = new ConfigurationOverrideInstance(
 				configurationOverrideClass, typedSettings);
 
 			_configurationOverrideInstances.put(
-				configurationOverrideClass, configurationOverrideInstance);
+				keyClass, configurationOverrideInstance);
 		}
 
 		return configurationOverrideInstance;
@@ -68,6 +74,21 @@ public class ConfigurationOverrideInstance {
 		}
 
 		return overriddenMethod.invoke(_configurationOverrideInstance);
+	}
+
+	protected static void clearConfigurationOverrideInstance(Class<?> clazz) {
+		_configurationOverrideInstances.remove(clazz);
+	}
+
+	private static Class<?> _getKeyClass(Class<?> clazz) {
+		Stream<Class<?>> classStream = Arrays.stream(clazz.getInterfaces());
+
+		return classStream.filter(
+			clazz1 -> clazz1.getAnnotation(Meta.OCD.class) != null
+		).findFirst(
+		).orElse(
+			clazz
+		);
 	}
 
 	private static Class<?> _getOverrideClass(Class<?> clazz) {
