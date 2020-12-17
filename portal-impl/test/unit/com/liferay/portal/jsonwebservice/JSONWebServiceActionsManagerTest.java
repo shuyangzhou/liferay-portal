@@ -16,6 +16,8 @@ package com.liferay.portal.jsonwebservice;
 
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceAction;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceActionsManagerUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.util.PortalImpl;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -32,6 +34,10 @@ public class JSONWebServiceActionsManagerTest
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		initPortalServices();
+
+		PortalUtil portalUtil = new PortalUtil();
+
+		portalUtil.setPortal(new PortalImpl());
 
 		registerAction(new FooService());
 	}
