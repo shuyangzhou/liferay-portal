@@ -15,8 +15,8 @@
  */
 package org.outerj.daisy.diff.helper;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Constants;
-import com.sun.org.apache.xml.internal.utils.XML11Char;
+import org.apache.xalan.xsltc.runtime.Constants;
+import org.apache.xml.utils.XML11Char;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -91,3 +91,4 @@ class CleanBrokenAttributeQNamesHandler implements ContentHandler {
         return filtered;
     }
 }
+/* @generated */
