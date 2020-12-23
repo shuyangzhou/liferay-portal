@@ -1561,7 +1561,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/daisydiff.jar</file-name>
-				<version>1.2.0-atlassian-hosted</version>
+				<version>1.2.0-atlassian-hosted.LIFERAY-PATCHED-1</version>
 				<project-name>DaisyDiff</project-name>
 				<project-url>http://code.google.com/p/daisydiff</project-url>
 				<licenses>
