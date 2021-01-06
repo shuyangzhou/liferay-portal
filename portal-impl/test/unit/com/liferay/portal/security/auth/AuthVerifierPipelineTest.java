@@ -72,6 +72,20 @@ public class AuthVerifierPipelineTest {
 		authVerifierResult.setSettings(new HashMap<>());
 		authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
 
+		AuthVerifierPipeline authVerifierPipeline = new AuthVerifierPipeline(
+			HashMapBuilder.<String, Object>put(
+				"portal_property_prefix", ""
+			).build());
+
+		AccessControlContext accessControlContext = new AccessControlContext();
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest(new MockServletContext());
+
+		mockHttpServletRequest.setRequestURI(_BASE_URL + "/Hello");
+
+		accessControlContext.setRequest(mockHttpServletRequest);
+
 		ServiceRegistration<AuthVerifier> serviceRegistration =
 			registry.registerService(
 				AuthVerifier.class,
@@ -86,20 +100,6 @@ public class AuthVerifierPipelineTest {
 						return null;
 					}),
 				Collections.singletonMap("urls.includes", _BASE_URL + "/*"));
-
-		MockHttpServletRequest mockHttpServletRequest =
-			new MockHttpServletRequest(new MockServletContext());
-
-		mockHttpServletRequest.setRequestURI(_BASE_URL + "/Hello");
-
-		AccessControlContext accessControlContext = new AccessControlContext();
-
-		accessControlContext.setRequest(mockHttpServletRequest);
-
-		AuthVerifierPipeline authVerifierPipeline = new AuthVerifierPipeline(
-			HashMapBuilder.<String, Object>put(
-				"portal_property_prefix", ""
-			).build());
 
 		try {
 			Assert.assertSame(
