@@ -181,7 +181,7 @@ public class AuthVerifierPipeline {
 		return mergedAuthVerifierConfiguration;
 	}
 
-	private void _rebuildConfiguration() {
+	private void _rebuildAuthVerifierPipeline() {
 		Map<String, List<AuthVerifierConfiguration>>
 			excludeAuthVerifierConfigurations = new HashMap<>();
 		Map<String, List<AuthVerifierConfiguration>>
@@ -417,7 +417,7 @@ public class AuthVerifierPipeline {
 
 			_authVerifierPipelines.add(authVerifierPipeline);
 
-			authVerifierPipeline._rebuildConfiguration();
+			authVerifierPipeline._rebuildAuthVerifierPipeline();
 		}
 
 		@Override
@@ -451,7 +451,7 @@ public class AuthVerifierPipeline {
 
 			_authVerifierConfigurations.add(authVerifierConfiguration);
 
-			_rebuildAll();
+			_rebuildAllAuthVerifierPipelines();
 
 			return authVerifierConfiguration;
 		}
@@ -475,7 +475,7 @@ public class AuthVerifierPipeline {
 				_authVerifierConfigurations.remove(authVerifierConfiguration);
 			}
 
-			_rebuildAll();
+			_rebuildAllAuthVerifierPipelines();
 		}
 
 		@Override
@@ -489,7 +489,7 @@ public class AuthVerifierPipeline {
 
 			_authVerifierConfigurations.remove(authVerifierConfiguration);
 
-			_rebuildAll();
+			_rebuildAllAuthVerifierPipelines();
 		}
 
 		private Properties _loadProperties(
@@ -519,9 +519,9 @@ public class AuthVerifierPipeline {
 			return properties;
 		}
 
-		private void _rebuildAll() {
+		private void _rebuildAllAuthVerifierPipelines() {
 			_authVerifierPipelines.forEach(
-				AuthVerifierPipeline::_rebuildConfiguration);
+				AuthVerifierPipeline::_rebuildAuthVerifierPipeline);
 		}
 
 		private boolean _validate(
