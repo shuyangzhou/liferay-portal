@@ -66,8 +66,8 @@ public class AuthVerifierPipeline {
 			PropsKeys.AUTH_VERIFIER, simpleClassName, StringPool.PERIOD);
 	}
 
-	public AuthVerifierPipeline(Map<String, Object> filterProperties) {
-		_filterProperties = filterProperties;
+	public AuthVerifierPipeline(Map<String, Object> initParametersMap) {
+		_initParametersMap = initParametersMap;
 
 		AuthVerifierTrackerCustomizer.addAuthVerifierPipeline(this);
 	}
@@ -155,7 +155,7 @@ public class AuthVerifierPipeline {
 		Properties properties = new Properties(
 			authVerifierConfiguration.getProperties());
 
-		for (Map.Entry<String, Object> entry : _filterProperties.entrySet()) {
+		for (Map.Entry<String, Object> entry : _initParametersMap.entrySet()) {
 			String propertyName = entry.getKey();
 
 			if (propertyName.startsWith(authVerifierPropertyName)) {
@@ -190,7 +190,7 @@ public class AuthVerifierPipeline {
 		for (AuthVerifierConfiguration authVerifierConfiguration :
 				AuthVerifierTrackerCustomizer._authVerifierConfigurations) {
 
-			if (!_filterProperties.containsKey("portal_property_prefix")) {
+			if (!_initParametersMap.containsKey("portal_property_prefix")) {
 				authVerifierConfiguration = _mergeAuthVerifierConfiguration(
 					authVerifierConfiguration);
 
@@ -250,7 +250,7 @@ public class AuthVerifierPipeline {
 
 	private URLPatternMapper<List<AuthVerifierConfiguration>>
 		_excludeURLPatternMapper;
-	private final Map<String, Object> _filterProperties;
+	private final Map<String, Object> _initParametersMap;
 	private URLPatternMapper<List<AuthVerifierConfiguration>>
 		_includeURLPatternMapper;
 
