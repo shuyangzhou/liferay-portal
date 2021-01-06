@@ -128,17 +128,6 @@ public class AuthVerifierPipeline {
 		return authVerifierResult;
 	}
 
-	/**
-	 * We have non-standard url-pattern across the portal for AuthVerifiers,
-	 * in order to be backward compatible, we need to do runtime fix, like:
-	 * "*" will be fixed to "/*"
-	 * "/abc*" will be fixed to "/abc/*"
-	 *
-	 * Notice both "*" and "/abc*" are valid url-pattern, but the ending "*"
-	 * is not considered as wildcard by servlet spec.
-	 *
-	 * In the future, all non-standard url-patterns need rewriting.
-	 */
 	private String _fixLegacyURLPattern(String urlPattern) {
 		if ((urlPattern == null) || (urlPattern.length() == 0)) {
 			return urlPattern;
