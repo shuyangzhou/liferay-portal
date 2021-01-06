@@ -146,11 +146,6 @@ public class AuthVerifierPipeline {
 		return urlPattern.substring(0, urlPattern.length() - 1) + "/*";
 	}
 
-	/**
-	 * Because we allow Filter to overwrite authVerifier's properties,
-	 * we need to create a new configuration that takes the overwritten
-	 * properties instead of authVerifier's original properties.
-	 */
 	private AuthVerifierConfiguration _mergeAuthVerifierConfiguration(
 		AuthVerifierConfiguration authVerifierConfiguration,
 		Map<String, Object> filterProperties) {
