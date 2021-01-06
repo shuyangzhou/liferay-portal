@@ -453,7 +453,7 @@ public class AuthVerifierPipeline {
 
 			Class<?> authVerifierClass = authVerifier.getClass();
 
-			final Properties properties = _loadProperties(
+			Properties properties = _loadProperties(
 				serviceReference, authVerifierClass.getName());
 
 			if (!_validate(properties, authVerifierClass.getName())) {
