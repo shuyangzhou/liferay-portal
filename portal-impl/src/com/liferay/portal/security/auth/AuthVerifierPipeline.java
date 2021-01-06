@@ -165,7 +165,7 @@ public class AuthVerifierPipeline {
 			}
 		}
 
-		if (properties.size() < 1) {
+		if (properties.isEmpty()) {
 			return null;
 		}
 
