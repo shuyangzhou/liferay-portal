@@ -152,7 +152,7 @@ public class AuthVerifierPipeline {
 		String authVerifierPropertyName = getAuthVerifierPropertyName(
 			authVerifierConfiguration.getAuthVerifierClassName());
 
-		Properties mergedProperties = new Properties(
+		Properties properties = new Properties(
 			authVerifierConfiguration.getProperties());
 
 		for (Map.Entry<String, Object> filterPropertyEntry :
@@ -161,13 +161,13 @@ public class AuthVerifierPipeline {
 			String propertyName = filterPropertyEntry.getKey();
 
 			if (propertyName.startsWith(authVerifierPropertyName)) {
-				mergedProperties.setProperty(
+				properties.setProperty(
 					propertyName.substring(authVerifierPropertyName.length()),
 					String.valueOf(filterPropertyEntry.getValue()));
 			}
 		}
 
-		if (mergedProperties.size() < 1) {
+		if (properties.size() < 1) {
 			return null;
 		}
 
@@ -178,7 +178,7 @@ public class AuthVerifierPipeline {
 			authVerifierConfiguration.getAuthVerifier());
 		mergedAuthVerifierConfiguration.setAuthVerifierClassName(
 			authVerifierConfiguration.getAuthVerifierClassName());
-		mergedAuthVerifierConfiguration.setProperties(mergedProperties);
+		mergedAuthVerifierConfiguration.setProperties(properties);
 
 		return mergedAuthVerifierConfiguration;
 	}
