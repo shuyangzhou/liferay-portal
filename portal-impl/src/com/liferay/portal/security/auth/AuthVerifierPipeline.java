@@ -155,15 +155,13 @@ public class AuthVerifierPipeline {
 		Properties properties = new Properties(
 			authVerifierConfiguration.getProperties());
 
-		for (Map.Entry<String, Object> filterPropertyEntry :
-				_filterProperties.entrySet()) {
-
-			String propertyName = filterPropertyEntry.getKey();
+		for (Map.Entry<String, Object> entry : _filterProperties.entrySet()) {
+			String propertyName = entry.getKey();
 
 			if (propertyName.startsWith(authVerifierPropertyName)) {
 				properties.setProperty(
 					propertyName.substring(authVerifierPropertyName.length()),
-					String.valueOf(filterPropertyEntry.getValue()));
+					String.valueOf(entry.getValue()));
 			}
 		}
 
