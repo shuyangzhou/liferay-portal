@@ -53,7 +53,7 @@ public class AccessControlImpl implements AccessControl {
 		}
 
 		_authVerifierPipeline = (AuthVerifierPipeline)settings.get(
-			"AuthVerifierPipeline");
+			AuthVerifierPipeline.class.getName());
 
 		accessControlContext = new AccessControlContext();
 
@@ -66,7 +66,7 @@ public class AccessControlImpl implements AccessControl {
 		for (Map.Entry<String, Object> entry : settings.entrySet()) {
 			String key = entry.getKey();
 
-			if (key.equals("AuthVerifierPipeline")) {
+			if (key.equals(AuthVerifierPipeline.class.getName())) {
 				continue;
 			}
 
