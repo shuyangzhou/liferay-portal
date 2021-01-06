@@ -147,8 +147,7 @@ public class AuthVerifierPipeline {
 	}
 
 	private AuthVerifierConfiguration _mergeAuthVerifierConfiguration(
-		AuthVerifierConfiguration authVerifierConfiguration,
-		Map<String, Object> filterProperties) {
+		AuthVerifierConfiguration authVerifierConfiguration) {
 
 		String authVerifierPropertyName = getAuthVerifierPropertyName(
 			authVerifierConfiguration.getAuthVerifierClassName());
@@ -157,7 +156,7 @@ public class AuthVerifierPipeline {
 			authVerifierConfiguration.getProperties());
 
 		for (Map.Entry<String, Object> filterPropertyEntry :
-				filterProperties.entrySet()) {
+				_filterProperties.entrySet()) {
 
 			String propertyName = filterPropertyEntry.getKey();
 
@@ -195,7 +194,7 @@ public class AuthVerifierPipeline {
 
 			if (!_filterProperties.containsKey("portal_property_prefix")) {
 				authVerifierConfiguration = _mergeAuthVerifierConfiguration(
-					authVerifierConfiguration, _filterProperties);
+					authVerifierConfiguration);
 
 				if (authVerifierConfiguration == null) {
 					continue;
