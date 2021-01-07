@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.auth;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
@@ -77,15 +78,6 @@ public class AuthVerifierPipelineTest {
 				"portal_property_prefix", ""
 			).build());
 
-		AccessControlContext accessControlContext = new AccessControlContext();
-
-		MockHttpServletRequest mockHttpServletRequest =
-			new MockHttpServletRequest(new MockServletContext());
-
-		mockHttpServletRequest.setRequestURI(_BASE_URL + "/Hello");
-
-		accessControlContext.setRequest(mockHttpServletRequest);
-
 		ServiceRegistration<AuthVerifier> serviceRegistration =
 			registry.registerService(
 				AuthVerifier.class,
@@ -99,9 +91,29 @@ public class AuthVerifierPipelineTest {
 
 						return null;
 					}),
-				Collections.singletonMap("urls.includes", _BASE_URL + "/*"));
+				Collections.singletonMap(
+					"urls.includes",
+					StringBundler.concat(
+						_BASE_URL, "/regular/*,", _BASE_URL, "/legacy*")));
+
+		AccessControlContext accessControlContext = new AccessControlContext();
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest(new MockServletContext());
 
 		try {
+			mockHttpServletRequest.setRequestURI(_BASE_URL + "/legacy/Hello");
+
+			accessControlContext.setRequest(mockHttpServletRequest);
+
+			Assert.assertSame(
+				authVerifierResult,
+				authVerifierPipeline.verifyRequest(accessControlContext));
+
+			mockHttpServletRequest.setRequestURI(_BASE_URL + "/regular/Hello");
+
+			accessControlContext.setRequest(mockHttpServletRequest);
+
 			Assert.assertSame(
 				authVerifierResult,
 				authVerifierPipeline.verifyRequest(accessControlContext));
