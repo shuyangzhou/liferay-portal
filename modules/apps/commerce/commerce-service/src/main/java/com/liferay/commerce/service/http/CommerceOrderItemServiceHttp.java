@@ -754,7 +754,7 @@ public class CommerceOrderItemServiceHttp {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.commerce.model.CommerceOrderItem> search(
+		<com.liferay.commerce.model.CommerceOrderItem> searchCommerceOrderItems(
 				HttpPrincipal httpPrincipal, long commerceOrderId,
 				long parentCommerceOrderItemId, String keywords, int start,
 				int end, com.liferay.portal.kernel.search.Sort sort)
@@ -762,8 +762,8 @@ public class CommerceOrderItemServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				CommerceOrderItemServiceUtil.class, "search",
-				_searchParameterTypes17);
+				CommerceOrderItemServiceUtil.class, "searchCommerceOrderItems",
+				_searchCommerceOrderItemsParameterTypes17);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, commerceOrderId, parentCommerceOrderItemId, keywords,
@@ -799,7 +799,7 @@ public class CommerceOrderItemServiceHttp {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.commerce.model.CommerceOrderItem> search(
+		<com.liferay.commerce.model.CommerceOrderItem> searchCommerceOrderItems(
 				HttpPrincipal httpPrincipal, long commerceOrderId,
 				String keywords, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
@@ -807,8 +807,8 @@ public class CommerceOrderItemServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				CommerceOrderItemServiceUtil.class, "search",
-				_searchParameterTypes18);
+				CommerceOrderItemServiceUtil.class, "searchCommerceOrderItems",
+				_searchCommerceOrderItemsParameterTypes18);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, commerceOrderId, keywords, start, end, sort);
@@ -843,7 +843,7 @@ public class CommerceOrderItemServiceHttp {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.commerce.model.CommerceOrderItem> search(
+		<com.liferay.commerce.model.CommerceOrderItem> searchCommerceOrderItems(
 				HttpPrincipal httpPrincipal, long commerceOrderId, String sku,
 				String name, boolean andOperator, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
@@ -851,8 +851,8 @@ public class CommerceOrderItemServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				CommerceOrderItemServiceUtil.class, "search",
-				_searchParameterTypes19);
+				CommerceOrderItemServiceUtil.class, "searchCommerceOrderItems",
+				_searchCommerceOrderItemsParameterTypes19);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, commerceOrderId, sku, name, andOperator, start, end,
@@ -1509,18 +1509,21 @@ public class CommerceOrderItemServiceHttp {
 		_getCommerceOrderItemsQuantityParameterTypes16 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _searchParameterTypes17 = new Class[] {
-		long.class, long.class, String.class, int.class, int.class,
-		com.liferay.portal.kernel.search.Sort.class
-	};
-	private static final Class<?>[] _searchParameterTypes18 = new Class[] {
-		long.class, String.class, int.class, int.class,
-		com.liferay.portal.kernel.search.Sort.class
-	};
-	private static final Class<?>[] _searchParameterTypes19 = new Class[] {
-		long.class, String.class, String.class, boolean.class, int.class,
-		int.class, com.liferay.portal.kernel.search.Sort.class
-	};
+	private static final Class<?>[] _searchCommerceOrderItemsParameterTypes17 =
+		new Class[] {
+			long.class, long.class, String.class, int.class, int.class,
+			com.liferay.portal.kernel.search.Sort.class
+		};
+	private static final Class<?>[] _searchCommerceOrderItemsParameterTypes18 =
+		new Class[] {
+			long.class, String.class, int.class, int.class,
+			com.liferay.portal.kernel.search.Sort.class
+		};
+	private static final Class<?>[] _searchCommerceOrderItemsParameterTypes19 =
+		new Class[] {
+			long.class, String.class, String.class, boolean.class, int.class,
+			int.class, com.liferay.portal.kernel.search.Sort.class
+		};
 	private static final Class<?>[] _updateCommerceOrderItemParameterTypes20 =
 		new Class[] {
 			long.class, int.class,

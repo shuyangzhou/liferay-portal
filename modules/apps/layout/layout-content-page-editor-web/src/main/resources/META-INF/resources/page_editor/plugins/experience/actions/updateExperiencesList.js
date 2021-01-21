@@ -12,9 +12,13 @@
  * details.
  */
 
-export const CREATE_SEGMENTS_EXPERIENCE = 'CREATE_SEGMENTS_EXPERIENCE';
-export const SELECT_SEGMENTS_EXPERIENCE = 'SELECT_SEGMENTS_EXPERIENCE';
-export const DELETE_SEGMENTS_EXPERIENCE = 'DELETE_SEGMENTS_EXPERIENCE';
-export const UPDATE_SEGMENTS_EXPERIENCE = 'UPDATE_SEGMENTS_EXPERIENCE';
-export const UPDATE_SEGMENTS_EXPERIENCE_PRIORITY =
-	'UPDATE_SEGMENTS_EXPERIENCE_PRIORITY';
+import {UPDATE_SEGMENTS_EXPERIENCES_LIST} from '../actions';
+
+export default function updateExperiencesList(availableSegmentsExperiences) {
+	return {
+		payload: {
+			availableSegmentsExperiences,
+		},
+		type: UPDATE_SEGMENTS_EXPERIENCES_LIST,
+	};
+}

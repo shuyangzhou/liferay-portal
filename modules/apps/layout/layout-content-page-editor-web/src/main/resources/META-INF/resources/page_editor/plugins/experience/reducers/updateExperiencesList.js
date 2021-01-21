@@ -12,14 +12,17 @@
  * details.
  */
 
-import {UPDATE_SEGMENTS_EXPERIENCE_PRIORITY} from './types';
+function updateExperiencesListReducer(state, payload) {
+	let nextState = state;
 
-export default function updateExperiencePriority({subtarget, target}) {
-	return {
-		payload: {
-			subtarget,
-			target,
-		},
-		type: UPDATE_SEGMENTS_EXPERIENCE_PRIORITY,
+	const availableSegmentsExperiences = payload;
+
+	nextState = {
+		...nextState,
+		...availableSegmentsExperiences,
 	};
+
+	return nextState;
 }
+
+export default updateExperiencesListReducer;

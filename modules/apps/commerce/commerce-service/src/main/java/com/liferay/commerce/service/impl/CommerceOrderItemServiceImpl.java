@@ -287,7 +287,7 @@ public class CommerceOrderItemServiceImpl
 	}
 
 	@Override
-	public BaseModelSearchResult<CommerceOrderItem> search(
+	public BaseModelSearchResult<CommerceOrderItem> searchCommerceOrderItems(
 			long commerceOrderId, long parentCommerceOrderItemId,
 			String keywords, int start, int end, Sort sort)
 		throws PortalException {
@@ -295,13 +295,13 @@ public class CommerceOrderItemServiceImpl
 		_commerceOrderModelResourcePermission.check(
 			getPermissionChecker(), commerceOrderId, ActionKeys.VIEW);
 
-		return commerceOrderItemLocalService.search(
+		return commerceOrderItemLocalService.searchCommerceOrderItems(
 			commerceOrderId, parentCommerceOrderItemId, keywords, start, end,
 			sort);
 	}
 
 	@Override
-	public BaseModelSearchResult<CommerceOrderItem> search(
+	public BaseModelSearchResult<CommerceOrderItem> searchCommerceOrderItems(
 			long commerceOrderId, String keywords, int start, int end,
 			Sort sort)
 		throws PortalException {
@@ -309,12 +309,12 @@ public class CommerceOrderItemServiceImpl
 		_commerceOrderModelResourcePermission.check(
 			getPermissionChecker(), commerceOrderId, ActionKeys.VIEW);
 
-		return commerceOrderItemLocalService.search(
+		return commerceOrderItemLocalService.searchCommerceOrderItems(
 			commerceOrderId, keywords, start, end, sort);
 	}
 
 	@Override
-	public BaseModelSearchResult<CommerceOrderItem> search(
+	public BaseModelSearchResult<CommerceOrderItem> searchCommerceOrderItems(
 			long commerceOrderId, String sku, String name, boolean andOperator,
 			int start, int end, Sort sort)
 		throws PortalException {
@@ -322,7 +322,7 @@ public class CommerceOrderItemServiceImpl
 		_commerceOrderModelResourcePermission.check(
 			getPermissionChecker(), commerceOrderId, ActionKeys.VIEW);
 
-		return commerceOrderItemLocalService.search(
+		return commerceOrderItemLocalService.searchCommerceOrderItems(
 			commerceOrderId, sku, name, andOperator, start, end, sort);
 	}
 

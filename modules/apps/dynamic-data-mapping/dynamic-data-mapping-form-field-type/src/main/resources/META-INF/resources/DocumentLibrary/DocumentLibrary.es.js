@@ -358,9 +358,43 @@ const Main = ({
 		document.getElementById('ddm-form-submit').disabled = disable;
 	};
 
+	const handleGuestUploadFileChanged = (errorMessage, event, value) => {
+		configureErrorMessage(errorMessage);
+
+		setCurrentValue(value);
+
+		onChange(event, value ? value : '{}');
+	};
+
+	const isExceededUploadRequestSizeLimit = (fileSize) => {
+		const uploadRequestSizeLimit =
+			Liferay.PropsValues.UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE;
+
+		if (fileSize <= uploadRequestSizeLimit) {
+			return false;
+		}
+
+		const errorMessage = Liferay.Util.sub(
+			Liferay.Language.get(
+				'please-enter-a-file-with-a-valid-file-size-no-larger-than-x'
+			),
+			[Liferay.Util.formatStorage(uploadRequestSizeLimit)]
+		);
+
+		handleGuestUploadFileChanged(errorMessage, {}, null);
+
+		return true;
+	};
+
 	const handleUploadSelectButtonClicked = (event) => {
+		const file = event.target.files[0];
+
+		if (isExceededUploadRequestSizeLimit(file.size)) {
+			return;
+		}
+
 		const data = {
-			[`${portletNamespace}file`]: event.target.files[0],
+			[`${portletNamespace}file`]: file,
 		};
 
 		axios
@@ -383,19 +417,20 @@ const Main = ({
 				disableSubmitButton(false);
 
 				if (error) {
-					configureErrorMessage(error.message);
-
-					setCurrentValue(null);
-
-					onChange(event, '{}');
+					handleGuestUploadFileChanged(error.message, event, null);
 				}
 				else {
-					configureErrorMessage('');
-
-					setCurrentValue(JSON.stringify(file));
-
-					onChange(event, JSON.stringify(file));
+					handleGuestUploadFileChanged(
+						'',
+						event,
+						JSON.stringify(file)
+					);
 				}
+
+				setProgress(0);
+			})
+			.catch(() => {
+				disableSubmitButton(false);
 
 				setProgress(0);
 			});

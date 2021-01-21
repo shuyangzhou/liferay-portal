@@ -60,6 +60,7 @@ import com.liferay.dynamic.data.mapping.io.DDMFormSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormValuesDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializer;
 import com.liferay.dynamic.data.mapping.util.DDM;
+import com.liferay.dynamic.data.mapping.util.DDMDataDefinitionConverter;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
@@ -388,8 +389,9 @@ public class DDMServiceUpgrade implements UpgradeStepRegistrator {
 			"4.0.0", "4.1.0",
 			new com.liferay.dynamic.data.mapping.internal.upgrade.v4_1_0.
 				UpgradeDDMStructure(
-					_jsonDDMFormDeserializer, _ddmFormLayoutDeserializer,
-					ddmFormLayoutSerializer, ddmFormSerializer));
+					_ddmDataDefinitionConverter, _jsonDDMFormDeserializer,
+					_ddmFormLayoutDeserializer, ddmFormLayoutSerializer,
+					ddmFormSerializer));
 
 		registry.register(
 			"4.1.0", "4.2.0",
@@ -448,6 +450,9 @@ public class DDMServiceUpgrade implements UpgradeStepRegistrator {
 
 	@Reference
 	private DDM _ddm;
+
+	@Reference
+	private DDMDataDefinitionConverter _ddmDataDefinitionConverter;
 
 	private ServiceTrackerMap<String, DDMDataProviderSettingsProvider>
 		_ddmDataProviderSettingsProviderServiceTracker;

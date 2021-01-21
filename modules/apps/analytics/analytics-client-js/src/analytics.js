@@ -14,7 +14,7 @@
 
 // Gateway
 
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 
 import Client from './client';
 import EventQueue from './eventQueue';
@@ -24,15 +24,16 @@ import defaultPlugins from './plugins/defaults';
 import {
 	FLUSH_INTERVAL,
 	QUEUE_PRIORITY_IDENTITY,
-	STORAGE_KEY_CONTEXTS,
 	STORAGE_KEY_EVENTS,
 	STORAGE_KEY_IDENTITY,
 	STORAGE_KEY_MESSAGE_IDENTITY,
 	STORAGE_KEY_USER_ID,
 } from './utils/constants';
+import {getContexts, setContexts} from './utils/contexts';
 import {normalizeEvent} from './utils/events';
 import hash from './utils/hash';
 import {getItem, setItem} from './utils/storage';
+import {upgradeStorage} from './utils/storage_version';
 
 // Constants
 
@@ -81,6 +82,10 @@ class Analytics {
 
 		this._initializeEventQueue();
 		this._initializeIdentityQueue();
+
+		// Upgrade storage
+
+		upgradeStorage();
 
 		// Initializes default plugins
 
@@ -191,7 +196,12 @@ class Analytics {
 	 * Set stored context to the current context.
 	 */
 	resetContext() {
-		setItem(STORAGE_KEY_CONTEXTS, [this._getContext()]);
+		const context = this._getContext();
+
+		const contextsMap = new Map();
+		contextsMap.set(hash(context), context);
+
+		setContexts(contextsMap);
 	}
 
 	/**
@@ -265,10 +275,18 @@ class Analytics {
 			return;
 		}
 
-		this.config.identity = identity;
+		if (!identity.email) {
+			return console.error(
+				'Unable to send identity message due invalid email'
+			);
+		}
+
+		const hashedIdentity = {emailAddressHashed: hash(identity.email)};
+
+		this.config.identity = hashedIdentity;
 
 		return this._getUserId().then((userId) =>
-			this._sendIdentity(identity, userId)
+			this._sendIdentity(hashedIdentity, userId)
 		);
 	}
 
@@ -302,7 +320,7 @@ class Analytics {
 	 * @returns {string} The generated id
 	 */
 	_generateUserId() {
-		const userId = uuidv1();
+		const userId = uuidv4();
 
 		setItem(STORAGE_KEY_USER_ID, userId);
 		this._setCookie(STORAGE_KEY_USER_ID, userId);
@@ -315,15 +333,12 @@ class Analytics {
 	_getCurrentContextHash() {
 		const currentContext = this._getContext();
 		const currentContextHash = hash(currentContext);
+		const contextsMap = getContexts();
 
-		const storedContexts = getItem(STORAGE_KEY_CONTEXTS) || [];
+		if (!contextsMap.has(currentContextHash)) {
+			contextsMap.set(currentContextHash, currentContext);
 
-		const hasStoredContext = storedContexts.find(
-			(storedContext) => hash(storedContext) === currentContextHash
-		);
-
-		if (!hasStoredContext) {
-			setItem(STORAGE_KEY_CONTEXTS, [...storedContexts, currentContext]);
+			setContexts(contextsMap);
 		}
 
 		return currentContextHash;
@@ -422,6 +437,7 @@ class Analytics {
 	 */
 	_sendIdentity(identity, userId) {
 		const {channelId, dataSourceId} = this.config;
+		const {emailAddressHashed} = identity;
 
 		const newIdentityHash = this._getIdentityHash(
 			dataSourceId,
@@ -438,8 +454,8 @@ class Analytics {
 			instance._identityQueue.addItem({
 				channelId,
 				dataSourceId,
+				emailAddressHashed,
 				id: newIdentityHash,
-				identity,
 				userId,
 			});
 

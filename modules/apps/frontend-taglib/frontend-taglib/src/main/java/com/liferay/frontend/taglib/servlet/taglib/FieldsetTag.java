@@ -68,6 +68,10 @@ public class FieldsetTag extends IncludeTag {
 		return _column;
 	}
 
+	public boolean isDisabled() {
+		return _disabled;
+	}
+
 	public boolean isLocalizeLabel() {
 		return _localizeLabel;
 	}
@@ -86,6 +90,10 @@ public class FieldsetTag extends IncludeTag {
 
 	public void setCssClass(String cssClass) {
 		_cssClass = cssClass;
+	}
+
+	public void setDisabled(boolean disabled) {
+		_disabled = disabled;
 	}
 
 	public void setHelpMessage(String helpMessage) {
@@ -119,6 +127,7 @@ public class FieldsetTag extends IncludeTag {
 		_collapsible = false;
 		_column = false;
 		_cssClass = null;
+		_disabled = false;
 		_helpMessage = null;
 		_id = null;
 		_label = null;
@@ -162,6 +171,8 @@ public class FieldsetTag extends IncludeTag {
 		httpServletRequest.setAttribute(
 			"liferay-frontend:fieldset:cssClass", _cssClass);
 		httpServletRequest.setAttribute(
+			"liferay-frontend:fieldset:disabled", String.valueOf(_disabled));
+		httpServletRequest.setAttribute(
 			"liferay-frontend:fieldset:helpMessage", _helpMessage);
 		httpServletRequest.setAttribute("liferay-frontend:fieldset:id", _id);
 		httpServletRequest.setAttribute(
@@ -199,6 +210,7 @@ public class FieldsetTag extends IncludeTag {
 	private boolean _collapsible;
 	private boolean _column;
 	private String _cssClass;
+	private boolean _disabled;
 	private String _helpMessage;
 	private String _id;
 	private String _label;

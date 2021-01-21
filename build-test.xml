@@ -3035,6 +3035,38 @@ tell application "Safari" to quit
 		</sequential>
 	</macrodef>
 
+	<macrodef name="print-files">
+		<attribute name="dir" />
+		<attribute default="" name="exclude" />
+		<attribute name="include" />
+
+		<sequential>
+			<for param="file.name">
+				<fileset
+					dir="@{dir}"
+					excludes="@{exclude}"
+					includes="@{include}"
+				/>
+				<sequential>
+					<echo></echo>
+					<echo>##</echo>
+					<echo>## @{file.name}</echo>
+					<echo>##</echo>
+					<echo></echo>
+
+					<loadfile
+						property="file.content"
+						srcFile="@{file.name}"
+					/>
+
+					<echo>${file.content}</echo>
+
+					<var name="file.content" unset="true" />
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="print-gc-logs">
 		<attribute name="tomcat.gc.log" />
 		<attribute name="tsant.gc.log" />
@@ -3099,7 +3131,21 @@ ${tomcat-gc-log}
 
 	<macrodef name="print-search-indices">
 		<sequential>
-			<ant antfile="build-test-elasticsearch7.xml" target="print-elasticsearch-indices" />
+			<get-testcase-property property.name="remote.elasticsearch.enabled" />
+
+			<condition else="9201" property="elasticsearch.port" value="9200">
+				<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
+			</condition>
+
+			<ant antfile="build-test-elasticsearch7.xml" target="print-elasticsearch-indices">
+				<property name="elasticsearch.port" value="${elasticsearch.port}" />
+			</ant>
+
+			<get-testcase-property property.name="elasticsearch.multiple.connections" />
+
+			<ant antfile="build-test-elasticsearch7.xml" if:true="${elasticsearch.multiple.connections}" target="print-elasticsearch-indices">
+				<property name="elasticsearch.port" value="9202" />
+			</ant>
 		</sequential>
 	</macrodef>
 
@@ -5310,24 +5356,63 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="stop-remote-search-engine">
 		<sequential>
-			<get-testcase-property property.name="remote.elasticsearch.clusters.enabled" />
 			<get-testcase-property property.name="remote.elasticsearch.enabled" />
-			<get-testcase-property property.name="test.name.skip.portal.instance" />
 
 			<if>
-				<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
+				<istrue value="${remote.elasticsearch.enabled}" />
 				<then>
-					<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch" />
+					<get-testcase-property property.name="elasticsearch.cluster.size" />
+					<get-testcase-property property.name="elasticsearch.multiple.connections" />
+
+					<local name="stop.type" />
+
+					<property if:set="elasticsearch.cluster.size" name="stop.type" value="elasticsearch.cluster.size" />
+					<property if:true="${elasticsearch.multiple.connections}" name="stop.type" value="elasticsearch.multiple.connections" />
+
+					<switch value="${stop.type}">
+						<case value="elasticsearch.cluster.size">
+							<var name="elasticsearch.node.number" value="2" />
+
+							<antelope:repeat count="${elasticsearch.cluster.size}">
+								<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch">
+									<property name="elasticsearch.bundle.number" value="${elasticsearch.node.number}" />
+								</ant>
+
+								<math
+									datatype="int"
+									operand1="${elasticsearch.node.number}"
+									operand2="1"
+									operation="-"
+									result="elasticsearch.node.number"
+								/>
+							</antelope:repeat>
+						</case>
+						<case value="elasticsearch.multiple.connections">
+							<var name="elasticsearch.cluster.number" value="2" />
+
+							<antelope:repeat count="2">
+								<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch">
+									<property name="elasticsearch.bundle.number" value="${elasticsearch.cluster.number}" />
+								</ant>
+
+								<math
+									datatype="int"
+									operand1="${elasticsearch.cluster.number}"
+									operand2="1"
+									operation="-"
+									result="elasticsearch.cluster.number"
+								/>
+							</antelope:repeat>
+						</case>
+						<default>
+							<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch" />
+						</default>
+					</switch>
 
 					<if>
-						<and>
-							<equals arg1="${remote.elasticsearch.clusters.enabled}" arg2="true" />
-							<not>
-								<contains string="${test.name.skip.portal.instance}" substring="#Smoke" />
-							</not>
-						</and>
+						<socket port="5601" server="localhost" />
 						<then>
-							<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch-local-cluster" />
+							<ant antfile="build-test-elasticsearch7.xml" target="stop-kibana" />
 						</then>
 					</if>
 				</then>
@@ -8509,7 +8594,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 
 	<appender class="org.apache.log4j.rolling.RollingFileAppender" name="TEXT_FILE">
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="@liferay.home@/logs/liferay@spi.id@.%d{yyyy-MM-dd}.log" />
+			<param name="FileNamePattern" value="@liferay.home@/logs/liferay.%d{yyyy-MM-dd}.log" />
 		</rollingPolicy>
 
 		<layout class="org.apache.log4j.EnhancedPatternLayout">
@@ -8519,7 +8604,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 
 	<appender class="org.apache.log4j.rolling.RollingFileAppender" name="XML_FILE">
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="@liferay.home@/logs/liferay@spi.id@.%d{yyyy-MM-dd}.xml" />
+			<param name="FileNamePattern" value="@liferay.home@/logs/liferay.%d{yyyy-MM-dd}.xml" />
 		</rollingPolicy>
 
 		<layout class="org.apache.log4j.xml.XMLLayout">

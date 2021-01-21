@@ -80,7 +80,7 @@ describe('EventQueue', () => {
 		};
 		const contextHash = hash(mockContext);
 
-		setItem(eventQueue.keys.contexts, [mockContext]);
+		setItem(eventQueue.keys.contexts, [[contextHash, mockContext]]);
 
 		for (let i = 0; i < 3; i++) {
 			eventQueue.addItem({

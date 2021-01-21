@@ -86,11 +86,10 @@ function trackCustomAssetScroll(analytics, customAssetElements) {
 	const onScroll = debounce(() => {
 		customAssetElements.forEach((element) => {
 			scrollTracker.onDepthReached((depth) => {
-				analytics.send('assetDepthReached', applicationId, {
-					...getCustomAssetPayload(element),
-					depth,
-					sessionId: scrollSessionId,
-				});
+				const payload = getCustomAssetPayload(element);
+				Object.assign(payload, {depth, sessionId: scrollSessionId});
+
+				analytics.send('assetDepthReached', applicationId, payload);
 			}, element);
 		});
 	}, DEBOUNCE);
@@ -149,10 +148,9 @@ function trackCustomAssetViewed(analytics) {
 			.forEach((element) => {
 				const formEnabled =
 					element.getElementsByTagName('form').length > 0;
-				const payload = {
-					...getCustomAssetPayload(element),
-					formEnabled,
-				};
+
+				const payload = getCustomAssetPayload(element);
+				Object.assign(payload, {formEnabled});
 
 				customAssetElements.push(element);
 

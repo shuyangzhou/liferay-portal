@@ -36,15 +36,6 @@ public class PluginsAcceptancePullRequestJob extends PluginsGitRepositoryJob {
 
 		_pluginsTestBaseDirs = _getPluginsTestBaseDirs();
 
-		for (File pluginsTestBaseDir : _pluginsTestBaseDirs) {
-			File testPropertiesFile = new File(
-				pluginsTestBaseDir, "test.properties");
-
-			if (testPropertiesFile.exists()) {
-				jobPropertiesFiles.add(testPropertiesFile);
-			}
-		}
-
 		readJobProperties();
 	}
 

@@ -40,6 +40,8 @@ export const STORAGE_KEY_MESSAGE_IDENTITY = 'ac_message_queue_identity';
 
 export const STORAGE_KEY_USER_ID = 'ac_client_user_id';
 
+export const STORAGE_KEY_STORAGE_VERSION = 'ac_client_storage_version';
+
 // Request Constants
 
 export const LIMIT_FAILED_ATTEMPTS = 7;

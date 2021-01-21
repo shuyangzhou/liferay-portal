@@ -28,15 +28,12 @@ const applicationId = 'Blog';
 function getBlogPayload(blog) {
 	const {dataset} = blog;
 
-	let payload = {
+	const payload = {
 		entryId: dataset.analyticsAssetId,
 	};
 
 	if (dataset.analyticsAssetTitle) {
-		payload = {
-			...payload,
-			title: dataset.analyticsAssetTitle,
-		};
+		Object.assign(payload, {title: dataset.analyticsAssetTitle});
 	}
 
 	return payload;
@@ -62,11 +59,10 @@ function trackBlogsScroll(analytics, blogElements) {
 	const onScroll = debounce(() => {
 		blogElements.forEach((element) => {
 			scrollTracker.onDepthReached((depth) => {
-				analytics.send('blogDepthReached', applicationId, {
-					...getBlogPayload(element),
-					depth,
-					sessionId: scrollSessionId,
-				});
+				const payload = getBlogPayload(element);
+				Object.assign(payload, {depth, sessionId: scrollSessionId});
+
+				analytics.send('blogDepthReached', applicationId, payload);
 			}, element);
 		});
 	}, DEBOUNCE);
@@ -91,14 +87,10 @@ function trackBlogViewed(analytics) {
 			)
 			.filter((element) => isTrackableBlog(element))
 			.forEach((element) => {
-				const numberOfWords = getNumberOfWords(element);
-
-				let payload = getBlogPayload(element);
-
-				payload = {
-					numberOfWords,
-					...payload,
-				};
+				const payload = getBlogPayload(element);
+				Object.assign(payload, {
+					numberOfWords: getNumberOfWords(element),
+				});
 
 				blogElements.push(element);
 

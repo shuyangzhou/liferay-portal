@@ -102,11 +102,11 @@ public class AccountEntryServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.account.model.AccountEntry> search(
+		<com.liferay.account.model.AccountEntry> searchAccountEntries(
 			String keywords, java.util.LinkedHashMap<String, Object> params,
 			int cur, int delta, String orderByField, boolean reverse) {
 
-		return _accountEntryService.search(
+		return _accountEntryService.searchAccountEntries(
 			keywords, params, cur, delta, orderByField, reverse);
 	}
 

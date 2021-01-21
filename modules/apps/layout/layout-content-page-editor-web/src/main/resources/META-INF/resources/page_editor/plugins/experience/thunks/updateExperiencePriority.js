@@ -13,19 +13,22 @@
  */
 
 import ExperienceService from '../../../app/services/ExperienceService';
-import updateExperiencePriorityAction from '../actions/updateExperiencePriority';
+import updateExperiencesListAction from '../actions/updateExperiencesList';
 
-export default function updateExperiencePriority({subtarget, target}) {
+export default function updateExperiencePriority({
+	priority,
+	segmentsExperienceId,
+}) {
 	return (dispatch) => {
 		return ExperienceService.updateExperiencePriority({
 			body: {
-				newPriority: target.priority,
-				segmentsExperienceId: target.segmentsExperienceId,
+				newPriority: priority,
+				segmentsExperienceId,
 			},
 			dispatch,
-		}).then(() => {
+		}).then(({availableSegmentsExperiences}) => {
 			return dispatch(
-				updateExperiencePriorityAction({subtarget, target})
+				updateExperiencesListAction(availableSegmentsExperiences)
 			);
 		});
 	};

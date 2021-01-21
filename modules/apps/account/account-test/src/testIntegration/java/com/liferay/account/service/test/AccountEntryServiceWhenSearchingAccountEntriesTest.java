@@ -252,7 +252,8 @@ public class AccountEntryServiceWhenSearchingAccountEntriesTest {
 		throws Exception {
 
 		BaseModelSearchResult<AccountEntry> baseModelSearchResult =
-			_accountEntryService.search(null, null, 0, 10, "name", false);
+			_accountEntryService.searchAccountEntries(
+				null, null, 0, 10, "name", false);
 
 		Assert.assertEquals(
 			expectedAccountEntries.size(), baseModelSearchResult.getLength());

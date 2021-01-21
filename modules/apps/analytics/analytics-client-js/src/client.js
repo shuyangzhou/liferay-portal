@@ -55,9 +55,7 @@ class Client {
 	 * @returns {Object} Parameters of the request to be sent.
 	 */
 	_getRequestParameters() {
-		const headers = new Headers();
-
-		headers.append('Content-Type', 'application/json');
+		const headers = {'Content-Type': 'application/json'};
 
 		return {
 			cache: 'default',
@@ -99,10 +97,13 @@ class Client {
 	 * Send a request with given payload and url.
 	 */
 	send({payload, url}) {
-		return fetch(url, {
-			...this._getRequestParameters(),
+		const parameters = this._getRequestParameters();
+
+		Object.assign(parameters, {
 			body: JSON.stringify(payload),
-		}).then(this._validateResponse);
+		});
+
+		return fetch(url, parameters).then(this._validateResponse);
 	}
 
 	/**
@@ -120,7 +121,7 @@ class Client {
 	 * @param {QueueConfig} config
 	 */
 	addQueue(queueInstance, config) {
-		this.queues.push({instance: queueInstance, ...config});
+		this.queues.push(Object.assign(config, {instance: queueInstance}));
 		this.queues.sort(this._prioritize);
 	}
 
@@ -206,21 +207,15 @@ class Client {
 							}
 
 							return Promise.all(
-								messages.map(({item, ...newItem}) => {
-									let payload = newItem;
-
-									if (item) {
-										payload = item;
-									}
-
-									return this.sendWithTimeout({
+								messages.map((payload) =>
+									this.sendWithTimeout({
 										payload,
 										timeout: REQUEST_TIMEOUT,
 										url: endpointUrl,
 									}).then(() => {
 										queue._dequeue(payload.id);
-									});
-								})
+									})
+								)
 							)
 								.then(() => {
 									this.onRequestSuccess();

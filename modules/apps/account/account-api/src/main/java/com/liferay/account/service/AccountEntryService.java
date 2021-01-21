@@ -100,7 +100,7 @@ public interface AccountEntryService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BaseModelSearchResult<AccountEntry> search(
+	public BaseModelSearchResult<AccountEntry> searchAccountEntries(
 		String keywords, LinkedHashMap<String, Object> params, int cur,
 		int delta, String orderByField, boolean reverse);
 

@@ -17,7 +17,9 @@
 <%@ include file="/init.jsp" %>
 
 <liferay-frontend:fieldset-group>
-	<liferay-frontend:fieldset>
+	<liferay-frontend:fieldset
+		disabled="<%= editAssetListDisplayContext.isLiveGroup() %>"
+	>
 		<clay:row
 			id='<%= liferayPortletResponse.getNamespace() + "ordering" %>'
 		>

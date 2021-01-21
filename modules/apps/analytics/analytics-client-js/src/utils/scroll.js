@@ -31,7 +31,7 @@ function getDocumentHeight() {
 		document.documentElement.scrollHeight,
 	];
 
-	return Math.max(...heights);
+	return Math.max.apply(null, heights);
 }
 
 function getDimensions(element) {

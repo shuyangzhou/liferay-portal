@@ -944,7 +944,7 @@ public class AccountEntryLocalServiceTest {
 		}
 
 		BaseModelSearchResult<AccountEntry> baseModelSearchResult =
-			_accountEntryLocalService.search(
+			_accountEntryLocalService.searchAccountEntries(
 				TestPropsValues.getCompanyId(), keywords, null, start, delta,
 				"name", reversed);
 
@@ -968,7 +968,7 @@ public class AccountEntryLocalServiceTest {
 		throws Exception {
 
 		BaseModelSearchResult<AccountEntry> baseModelSearchResult =
-			_accountEntryLocalService.search(
+			_accountEntryLocalService.searchAccountEntries(
 				TestPropsValues.getCompanyId(), null, params, 0, 10, null,
 				false);
 
@@ -1009,7 +1009,7 @@ public class AccountEntryLocalServiceTest {
 	private BaseModelSearchResult<AccountEntry> _keywordSearch(String keywords)
 		throws Exception {
 
-		return _accountEntryLocalService.search(
+		return _accountEntryLocalService.searchAccountEntries(
 			TestPropsValues.getCompanyId(), keywords, null, 0, 10, null, false);
 	}
 

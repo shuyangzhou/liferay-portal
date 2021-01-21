@@ -25,16 +25,13 @@ const applicationId = 'Document';
 function getDocumentPayload(documentElement) {
 	const {dataset} = documentElement;
 
-	let payload = {
+	const payload = {
 		fileEntryId: dataset.analyticsAssetId,
 		fileEntryVersion: dataset.analyticsAssetVersion,
 	};
 
 	if (dataset.analyticsAssetTitle) {
-		payload = {
-			...payload,
-			title: dataset.analyticsAssetTitle,
-		};
+		Object.assign(payload, {title: dataset.analyticsAssetTitle});
 	}
 
 	return payload;

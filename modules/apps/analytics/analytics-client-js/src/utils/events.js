@@ -47,17 +47,19 @@ const clickEvent = ({
 
 		const tagName = target.tagName.toLowerCase();
 
-		const payload = {
-			...getPayload(element),
-			tagName,
-		};
+		const payload = getPayload(element);
+		Object.assign(payload, {tagName});
 
 		if (tagName === 'a') {
-			payload.href = target.href;
-			payload.text = target.innerText;
+			Object.assign(payload, {
+				href: target.href,
+				text: target.innerText,
+			});
 		}
 		else if (tagName === 'img') {
-			payload.src = target.src;
+			Object.assign(payload, {
+				src: target.src,
+			});
 		}
 
 		analytics.send(eventType, applicationId, payload);

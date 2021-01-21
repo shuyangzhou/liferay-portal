@@ -437,6 +437,12 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
 			<description>Text to display as a help tooltip when mousing over the component's help icon.</description>
 			<name>helpMessage</name>
 			<required>false</required>

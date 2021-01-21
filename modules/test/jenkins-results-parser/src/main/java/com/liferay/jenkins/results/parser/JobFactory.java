@@ -25,6 +25,67 @@ import java.util.Map;
  */
 public class JobFactory {
 
+	public static Job newJob(Build build) {
+		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
+
+		String topLevelJobName = topLevelBuild.getJobName();
+
+		Map<String, String> buildParameters = topLevelBuild.getParameters();
+
+		String testSuiteName;
+
+		if (topLevelJobName.equals("test-plugins-release") ||
+			topLevelJobName.equals("test-plugins-upstream")) {
+
+			testSuiteName = buildParameters.get("TEST_PLUGIN_NAME");
+		}
+		else if (topLevelJobName.equals("test-qa-websites-functional-daily") ||
+				 topLevelJobName.equals(
+					 "test-qa-websites-functional-environment")) {
+
+			testSuiteName = buildParameters.get("PROJECT_NAMES");
+		}
+		else {
+			testSuiteName = topLevelBuild.getTestSuiteName();
+		}
+
+		String branchName = topLevelBuild.getBranchName();
+
+		String repositoryName = null;
+
+		if (topLevelJobName.contains("subrepository")) {
+			repositoryName = topLevelBuild.getBaseGitRepositoryName();
+		}
+
+		String buildProfile;
+
+		if (topLevelJobName.contains("aws") ||
+			topLevelJobName.contains("environment")) {
+
+			if (!branchName.startsWith("ee-")) {
+				buildProfile = "dxp";
+			}
+			else {
+				buildProfile = "portal";
+			}
+		}
+		else {
+			buildProfile = buildParameters.get("TEST_PORTAL_BUILD_PROFILE");
+
+			if ((buildProfile == null) || !buildProfile.equals("dxp")) {
+				buildProfile = "portal";
+			}
+
+			if (branchName.startsWith("ee-")) {
+				buildProfile = "portal";
+			}
+		}
+
+		return _newJob(
+			topLevelJobName, testSuiteName, branchName, repositoryName,
+			Job.BuildProfile.valueOf(buildProfile.toUpperCase()));
+	}
+
 	public static Job newJob(BuildData buildData) {
 		String upstreamBranchName = null;
 
@@ -306,6 +367,17 @@ public class JobFactory {
 
 		if (jobName.startsWith("test-portal-upstream(")) {
 			_jobs.put(jobKey, new PortalUpstreamJob(jobName, buildProfile));
+
+			return _jobs.get(jobKey);
+		}
+
+		if (jobName.equals("test-qa-websites-functional-daily") ||
+			jobName.equals("test-qa-websites-functional-environment")) {
+
+			_jobs.put(
+				jobKey,
+				new QAWebsitesGitRepositoryJob(
+					jobName, buildProfile, testSuiteName, branchName));
 
 			return _jobs.get(jobKey);
 		}

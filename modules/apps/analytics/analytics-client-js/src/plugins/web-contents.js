@@ -25,15 +25,12 @@ const applicationId = 'WebContent';
 function getWebContentPayload(webContent) {
 	const {dataset} = webContent;
 
-	let payload = {
+	const payload = {
 		articleId: dataset.analyticsAssetId,
 	};
 
 	if (dataset.analyticsAssetTitle) {
-		payload = {
-			...payload,
-			title: dataset.analyticsAssetTitle,
-		};
+		Object.assign(payload, {title: dataset.analyticsAssetTitle});
 	}
 
 	return payload;
@@ -77,14 +74,11 @@ function trackWebContentViewed(analytics) {
 			)
 			.filter((element) => isTrackableWebContent(element))
 			.forEach((element) => {
-				const numberOfWords = getNumberOfWords(element);
+				const payload = getWebContentPayload(element);
 
-				let payload = getWebContentPayload(element);
-
-				payload = {
-					...payload,
-					numberOfWords,
-				};
+				Object.assign(payload, {
+					numberOfWords: getNumberOfWords(element),
+				});
 
 				analytics.send('webContentViewed', applicationId, payload);
 			});

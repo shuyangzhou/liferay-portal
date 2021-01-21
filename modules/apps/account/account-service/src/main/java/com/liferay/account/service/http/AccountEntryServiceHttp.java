@@ -229,15 +229,15 @@ public class AccountEntryServiceHttp {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.account.model.AccountEntry> search(
+		<com.liferay.account.model.AccountEntry> searchAccountEntries(
 			HttpPrincipal httpPrincipal, String keywords,
 			java.util.LinkedHashMap<String, Object> params, int cur, int delta,
 			String orderByField, boolean reverse) {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				AccountEntryServiceUtil.class, "search",
-				_searchParameterTypes4);
+				AccountEntryServiceUtil.class, "searchAccountEntries",
+				_searchAccountEntriesParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, keywords, params, cur, delta, orderByField, reverse);
@@ -289,9 +289,10 @@ public class AccountEntryServiceHttp {
 			long.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _searchParameterTypes4 = new Class[] {
-		String.class, java.util.LinkedHashMap.class, int.class, int.class,
-		String.class, boolean.class
-	};
+	private static final Class<?>[] _searchAccountEntriesParameterTypes4 =
+		new Class[] {
+			String.class, java.util.LinkedHashMap.class, int.class, int.class,
+			String.class, boolean.class
+		};
 
 }

@@ -118,17 +118,20 @@ public class AccountEntryDisplaySearchContainerFactory {
 		BaseModelSearchResult<AccountEntry> baseModelSearchResult;
 
 		if (filterManageableAccountEntries) {
-			baseModelSearchResult = AccountEntryServiceUtil.search(
-				keywords, params, accountEntryDisplaySearchContainer.getStart(),
-				accountEntryDisplaySearchContainer.getDelta(), orderByCol,
-				_isReverseOrder(orderByType));
+			baseModelSearchResult =
+				AccountEntryServiceUtil.searchAccountEntries(
+					keywords, params,
+					accountEntryDisplaySearchContainer.getStart(),
+					accountEntryDisplaySearchContainer.getDelta(), orderByCol,
+					_isReverseOrder(orderByType));
 		}
 		else {
-			baseModelSearchResult = AccountEntryLocalServiceUtil.search(
-				CompanyThreadLocal.getCompanyId(), keywords, params,
-				accountEntryDisplaySearchContainer.getStart(),
-				accountEntryDisplaySearchContainer.getDelta(), orderByCol,
-				_isReverseOrder(orderByType));
+			baseModelSearchResult =
+				AccountEntryLocalServiceUtil.searchAccountEntries(
+					CompanyThreadLocal.getCompanyId(), keywords, params,
+					accountEntryDisplaySearchContainer.getStart(),
+					accountEntryDisplaySearchContainer.getDelta(), orderByCol,
+					_isReverseOrder(orderByType));
 		}
 
 		List<AccountEntryDisplay> accountEntryDisplays =

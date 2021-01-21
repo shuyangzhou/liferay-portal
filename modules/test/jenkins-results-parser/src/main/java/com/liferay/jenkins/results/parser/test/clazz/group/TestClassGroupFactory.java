@@ -19,6 +19,7 @@ import com.liferay.jenkins.results.parser.Job;
 import com.liferay.jenkins.results.parser.PortalAWSJob;
 import com.liferay.jenkins.results.parser.PortalEnvironmentJob;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
+import com.liferay.jenkins.results.parser.QAWebsitesGitRepositoryJob;
 
 import java.io.File;
 
@@ -125,6 +126,13 @@ public class TestClassGroupFactory {
 				batchTestClassGroup = new PluginsGulpBatchTestClassGroup(
 					batchName, portalTestClassJob);
 			}
+			else if (batchName.startsWith("qa-websites-functional-") &&
+					 (job instanceof QAWebsitesGitRepositoryJob)) {
+
+				batchTestClassGroup =
+					new QAWebsitesFunctionalBatchTestClassGroup(
+						batchName, (QAWebsitesGitRepositoryJob)job);
+			}
 			else if (batchName.startsWith("js-test-") ||
 					 batchName.startsWith("portal-frontend-js-")) {
 
@@ -166,6 +174,13 @@ public class TestClassGroupFactory {
 
 			return new EnvironmentFunctionalSegmentTestClassGroup(
 				(EnvironmentFunctionalBatchTestClassGroup)batchTestClassGroup);
+		}
+
+		if (batchTestClassGroup instanceof
+				QAWebsitesFunctionalBatchTestClassGroup) {
+
+			return new QAWebsitesFunctionalSegmentTestClassGroup(
+				(QAWebsitesFunctionalBatchTestClassGroup)batchTestClassGroup);
 		}
 
 		if (batchTestClassGroup instanceof FunctionalBatchTestClassGroup) {

@@ -29,13 +29,13 @@ export function convertUTCDateToLocalDate(date = new Date()) {
 export function getTimezoneOffsetHour(date = new Date()) {
 	const offset = date.getTimezoneOffset() / 60;
 
-	const sign = Math.sign(offset) > 0 ? '-' : '+';
+	const sign = offset > 0 ? '-' : '+';
 
 	const fractionalMinutes = Math.abs(offset % 1);
 
-	const hourFormatted = `${sign}${String(
-		Math.abs(Math.trunc(offset))
-	).padStart(2, '0')}`;
+	const hourFormatted = `${sign}${String('00' + Math.abs(~~offset)).slice(
+		-2
+	)}`;
 
 	if (fractionalMinutes) {
 		return `${hourFormatted}:${60 * fractionalMinutes}`;

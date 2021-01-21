@@ -104,11 +104,11 @@ public class AccountEntryServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.account.model.AccountEntry> search(
+		<com.liferay.account.model.AccountEntry> searchAccountEntries(
 			String keywords, java.util.LinkedHashMap<String, Object> params,
 			int cur, int delta, String orderByField, boolean reverse) {
 
-		return getService().search(
+		return getService().searchAccountEntries(
 			keywords, params, cur, delta, orderByField, reverse);
 	}
 

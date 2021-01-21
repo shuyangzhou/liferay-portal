@@ -720,48 +720,7 @@ public abstract class BaseBuild implements Build {
 			return _job;
 		}
 
-		TopLevelBuild topLevelBuild = getTopLevelBuild();
-
-		String topLevelJobName = topLevelBuild.getJobName();
-
-		String repositoryName = null;
-
-		if (topLevelJobName.contains("subrepository")) {
-			repositoryName = topLevelBuild.getBaseGitRepositoryName();
-		}
-
-		Map<String, String> buildParameters = topLevelBuild.getParameters();
-
-		String branchName = topLevelBuild.getBranchName();
-
-		String buildProfile;
-
-		if (topLevelJobName.contains("aws") ||
-			topLevelJobName.contains("environment")) {
-
-			if (!branchName.startsWith("ee-")) {
-				buildProfile = "dxp";
-			}
-			else {
-				buildProfile = "portal";
-			}
-		}
-		else {
-			buildProfile = buildParameters.get("TEST_PORTAL_BUILD_PROFILE");
-
-			if ((buildProfile == null) || !buildProfile.equals("dxp")) {
-				buildProfile = "portal";
-			}
-
-			if (branchName.startsWith("ee-")) {
-				buildProfile = "portal";
-			}
-		}
-
-		_job = JobFactory.newJob(
-			topLevelJobName, topLevelBuild.getTestSuiteName(),
-			topLevelBuild.getBranchName(), repositoryName,
-			Job.BuildProfile.valueOf(buildProfile.toUpperCase()));
+		_job = JobFactory.newJob(this);
 
 		return _job;
 	}

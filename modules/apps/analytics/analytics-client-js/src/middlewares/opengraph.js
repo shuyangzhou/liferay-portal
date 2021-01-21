@@ -54,17 +54,14 @@ function openGraph(request) {
 	const openGraphElements = elements.filter(isOpenGraphElement);
 
 	const openGraphData = openGraphElements.reduce(
-		(data, meta) => ({
-			[meta.getAttribute('property')]: meta.getAttribute('content'),
-			...data,
-		}),
+		(data, meta) =>
+			Object.assign(data, {
+				[meta.getAttribute('property')]: meta.getAttribute('content'),
+			}),
 		{}
 	);
 
-	request.context = {
-		...openGraphData,
-		...request.context,
-	};
+	Object.assign(request.context, openGraphData);
 
 	return request;
 }

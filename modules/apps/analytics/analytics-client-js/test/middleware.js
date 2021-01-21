@@ -61,7 +61,7 @@ describe('Analytics MiddleWare Integration', () => {
 
 	describe('default middlewares', () => {
 		it('includes document metadata by default', () => {
-			const req = {};
+			const req = {context: {}};
 
 			expect(meta(req).context).toEqual(
 				expect.objectContaining({

@@ -415,7 +415,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	@Override
-	public BaseModelSearchResult<AccountEntry> search(
+	public BaseModelSearchResult<AccountEntry> searchAccountEntries(
 		long companyId, String keywords, LinkedHashMap<String, Object> params,
 		int cur, int delta, String orderByField, boolean reverse) {
 

@@ -33,6 +33,7 @@ definition {
 	}
 
 	@description = "Assert that Asset Lists administration is only accessible on the staging site."
+	@ignore = "true"
 	@priority = "5"
 	test AssertAssetListsAreOnlyEditableInStagingView {
 		property portal.acceptance = "true";

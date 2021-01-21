@@ -23,6 +23,7 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = new ArrayList<>
 <liferay-frontend:fieldset-group>
 	<liferay-frontend:fieldset
 		cssClass="source-container"
+		disabled="<%= editAssetListDisplayContext.isLiveGroup() %>"
 	>
 
 		<%

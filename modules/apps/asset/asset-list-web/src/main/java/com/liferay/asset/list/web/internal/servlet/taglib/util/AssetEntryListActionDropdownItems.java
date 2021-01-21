@@ -14,6 +14,7 @@
 
 package com.liferay.asset.list.web.internal.servlet.taglib.util;
 
+import com.liferay.asset.list.constants.AssetListPortletKeys;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.web.internal.security.permission.resource.AssetListEntryPermission;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
@@ -21,6 +22,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -28,6 +30,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.staging.StagingGroupHelper;
+import com.liferay.staging.StagingGroupHelperUtil;
 import com.liferay.taglib.security.PermissionsURLTag;
 
 import java.util.List;
@@ -57,27 +61,37 @@ public class AssetEntryListActionDropdownItems {
 	}
 
 	public List<DropdownItem> getActionDropdownItems() throws Exception {
+		boolean liveGroup = _isLiveGroup();
+
 		return DropdownItemListBuilder.add(
-			() -> AssetListEntryPermission.contains(
-				_themeDisplay.getPermissionChecker(), _assetListEntry,
-				ActionKeys.UPDATE),
+			() ->
+				!liveGroup &&
+				AssetListEntryPermission.contains(
+					_themeDisplay.getPermissionChecker(), _assetListEntry,
+					ActionKeys.UPDATE),
 			_getEditAssetListEntryActionUnsafeConsumer()
 		).add(
-			() -> AssetListEntryPermission.contains(
-				_themeDisplay.getPermissionChecker(), _assetListEntry,
-				ActionKeys.UPDATE),
+			() ->
+				!liveGroup &&
+				AssetListEntryPermission.contains(
+					_themeDisplay.getPermissionChecker(), _assetListEntry,
+					ActionKeys.UPDATE),
 			_getRenameAssetListEntryActionUnsafeConsumer()
 		).add(
-			() -> AssetListEntryPermission.contains(
-				_themeDisplay.getPermissionChecker(), _assetListEntry,
-				ActionKeys.PERMISSIONS),
+			() ->
+				!liveGroup &&
+				AssetListEntryPermission.contains(
+					_themeDisplay.getPermissionChecker(), _assetListEntry,
+					ActionKeys.PERMISSIONS),
 			_getPermissionsAssetListEntryActionUnsafeConsumer()
 		).add(
 			_getViewAssetListEntryUsagesActionUnsafeConsumer()
 		).add(
-			() -> AssetListEntryPermission.contains(
-				_themeDisplay.getPermissionChecker(), _assetListEntry,
-				ActionKeys.DELETE),
+			() ->
+				!liveGroup &&
+				AssetListEntryPermission.contains(
+					_themeDisplay.getPermissionChecker(), _assetListEntry,
+					ActionKeys.DELETE),
 			_getDeleteAssetListEntryActionUnsafeConsumer()
 		).build();
 	}
@@ -176,6 +190,26 @@ public class AssetEntryListActionDropdownItems {
 			dropdownItem.setLabel(
 				LanguageUtil.get(_httpServletRequest, "view-usages"));
 		};
+	}
+
+	private boolean _isLiveGroup() {
+		Group group = _themeDisplay.getScopeGroup();
+
+		if (group.isLayout()) {
+			group = group.getParentGroup();
+		}
+
+		StagingGroupHelper stagingGroupHelper =
+			StagingGroupHelperUtil.getStagingGroupHelper();
+
+		if (stagingGroupHelper.isLiveGroup(group) &&
+			stagingGroupHelper.isStagedPortlet(
+				group, AssetListPortletKeys.ASSET_LIST)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private final AssetListEntry _assetListEntry;

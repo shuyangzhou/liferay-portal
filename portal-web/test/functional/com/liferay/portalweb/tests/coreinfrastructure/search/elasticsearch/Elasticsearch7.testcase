@@ -351,12 +351,12 @@ definition {
 	}
 
 	@priority = "5"
-	test ElasticsearchRemoteClusterSmokeTest {
+	test ElasticsearchClusteringSmokeTest {
+		property elasticsearch.cluster.size = "2";
 		property portal.acceptance = "true";
 		property portal.upstream = "quarantine";
-		property remote.elasticsearch.cluster.size = "2";
 		property remote.elasticsearch.enabled = "true";
-		property test.name.skip.portal.instance = "Elasticsearch7#ElasticsearchRemoteClusterSmokeTest";
+		property test.name.skip.portal.instance = "Elasticsearch7#ElasticsearchClusteringSmokeTest";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(
 			nodePort = "9200",
@@ -409,15 +409,9 @@ definition {
 	}
 
 	test MultipleConnectionsSmokeTest {
+		property elasticsearch.multiple.connections = "true";
 		property portal.upstream = "quarantine";
-		property remote.elasticsearch.clusters.enabled = "true";
 		property remote.elasticsearch.enabled = "true";
-
-		OSGiConfig.deployOSGiConfigs(
-			OSGiConfigFileName = "com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConnectionConfiguration-connection2.config",
-			OSGiConfigs = "active=&quot;true&quot;,connectionId=&quot;connection2&quot;,networkHostAddresses=[&quot;http://localhost:9202&quot;]");
-
-		Pause(locator1 = "10000");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",

@@ -16,9 +16,11 @@ package com.liferay.layout.admin.web.internal.handler;
 
 import com.liferay.asset.kernel.exception.AssetCategoryException;
 import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.friendly.url.exception.DuplicateFriendlyURLEntryException;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.LayoutNameException;
 import com.liferay.portal.kernel.exception.LayoutTypeException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -50,7 +52,55 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = LayoutExceptionRequestHandler.class)
 public class LayoutExceptionRequestHandler {
 
-	public void handlePortalException(
+	public void handleException(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			Exception exception)
+		throws Exception {
+
+		if ((exception instanceof ModelListenerException) &&
+			(exception.getCause() instanceof PortalException)) {
+
+			_handlePortalException(
+				actionRequest, actionResponse,
+				(PortalException)exception.getCause());
+		}
+		else if (exception instanceof PortalException) {
+			_handlePortalException(
+				actionRequest, actionResponse, (PortalException)exception);
+		}
+
+		throw exception;
+	}
+
+	private String _handleLayoutTypeException(
+		ActionRequest actionRequest, int exceptionType) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String errorMessage = "pages-of-type-x-cannot-be-selected";
+
+		if (exceptionType == LayoutTypeException.FIRST_LAYOUT) {
+			errorMessage = "the-first-page-cannot-be-of-type-x";
+		}
+
+		String type = ParamUtil.getString(actionRequest, "type");
+
+		LayoutTypeController layoutTypeController =
+			LayoutTypeControllerTracker.getLayoutTypeController(type);
+
+		ResourceBundle layoutTypeResourceBundle = ResourceBundleUtil.getBundle(
+			"content.Language", themeDisplay.getLocale(),
+			layoutTypeController.getClass());
+
+		String layoutTypeName = LanguageUtil.get(
+			layoutTypeResourceBundle, "layout.types." + type);
+
+		return LanguageUtil.format(
+			themeDisplay.getRequest(), errorMessage, layoutTypeName);
+	}
+
+	private void _handlePortalException(
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			PortalException portalException)
 		throws Exception {
@@ -94,6 +144,14 @@ public class LayoutExceptionRequestHandler {
 					"you-cannot-select-more-than-one-category-for-x",
 					assetVocabularyTitle);
 			}
+		}
+		else if (portalException instanceof
+					DuplicateFriendlyURLEntryException) {
+
+			errorMessage = LanguageUtil.get(
+				themeDisplay.getRequest(),
+				"the-friendly-url-is-already-in-use.-please-enter-a-unique-" +
+					"friendly-url");
 		}
 		else if (portalException instanceof LayoutNameException) {
 			LayoutNameException layoutNameException =
@@ -142,34 +200,6 @@ public class LayoutExceptionRequestHandler {
 
 		JSONPortletResponseUtil.writeJSON(
 			actionRequest, actionResponse, jsonObject);
-	}
-
-	private String _handleLayoutTypeException(
-		ActionRequest actionRequest, int exceptionType) {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		String errorMessage = "pages-of-type-x-cannot-be-selected";
-
-		if (exceptionType == LayoutTypeException.FIRST_LAYOUT) {
-			errorMessage = "the-first-page-cannot-be-of-type-x";
-		}
-
-		String type = ParamUtil.getString(actionRequest, "type");
-
-		LayoutTypeController layoutTypeController =
-			LayoutTypeControllerTracker.getLayoutTypeController(type);
-
-		ResourceBundle layoutTypeResourceBundle = ResourceBundleUtil.getBundle(
-			"content.Language", themeDisplay.getLocale(),
-			layoutTypeController.getClass());
-
-		String layoutTypeName = LanguageUtil.get(
-			layoutTypeResourceBundle, "layout.types." + type);
-
-		return LanguageUtil.format(
-			themeDisplay.getRequest(), errorMessage, layoutTypeName);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

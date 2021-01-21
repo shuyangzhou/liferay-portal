@@ -217,7 +217,7 @@ public class CommercePlacedOrderItemDataSetDataProvider
 			end = pagination.getEndPosition();
 		}
 
-		return _commerceOrderItemService.search(
+		return _commerceOrderItemService.searchCommerceOrderItems(
 			commerceOrderId, 0, filter.getKeywords(), start, end, sort);
 	}
 

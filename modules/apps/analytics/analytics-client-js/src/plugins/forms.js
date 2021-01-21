@@ -49,15 +49,12 @@ function getFieldPayload({form, name}) {
  * @returns {Object} The payload with form information
  */
 function getFormPayload(form) {
-	let payload = {
+	const payload = {
 		formId: getFormKey(form),
 	};
 
 	if (form.dataset.analyticsAssetTitle) {
-		payload = {
-			...payload,
-			title: form.dataset.analyticsAssetTitle,
-		};
+		Object.assign(payload, {title: form.dataset.analyticsAssetTitle});
 	}
 
 	return payload;
@@ -101,10 +98,9 @@ function trackFieldBlurred(analytics) {
 
 		const focusDuration = ~~perfData.duration;
 
-		analytics.send('fieldBlurred', applicationId, {
-			...payload,
-			focusDuration,
-		});
+		Object.assign(payload, {focusDuration});
+
+		analytics.send('fieldBlurred', applicationId, payload);
 
 		performance.clearMarks('focusDuration');
 	};

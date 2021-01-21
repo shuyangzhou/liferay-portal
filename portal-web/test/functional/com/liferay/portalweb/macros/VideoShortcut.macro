@@ -107,6 +107,12 @@ definition {
 				value1 = "${videoShortcutPreviousTitle}");
 		}
 
+		if (isSet(videoShortcutPreviousDescription)) {
+			AssertTextEquals(
+				locator1 = "TextArea#DESCRIPTION",
+				value1 = "${videoShortcutPreviousDescription}");
+		}
+
 		Type(
 			key_text = "Video URL",
 			locator1 = "TextInput#ANY",
@@ -118,17 +124,6 @@ definition {
 			AssertVisible(
 				key_videoShortcutPreview = "${videoShortcutPreview}",
 				locator1 = "DocumentsAndMediaDocument#VIDEO_SHORTCUT_PREVIEW");
-		}
-
-		if (isSet(extractedVideoShortcutTitleEdit)) {
-			var titleText = selenium.getElementValue("TextInput#TITLE");
-
-			if ("${extractedVideoShortcutTitleEdit}" == "${titleText}") {
-				echo("This is a correct title.");
-			}
-			else {
-				fail("FAIL!");
-			}
 		}
 
 		if (isSet(videoShortcutTitleEdit)) {

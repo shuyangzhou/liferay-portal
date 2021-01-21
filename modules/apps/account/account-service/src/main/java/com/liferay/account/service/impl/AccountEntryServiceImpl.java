@@ -136,7 +136,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	@Override
-	public BaseModelSearchResult<AccountEntry> search(
+	public BaseModelSearchResult<AccountEntry> searchAccountEntries(
 		String keywords, LinkedHashMap<String, Object> params, int cur,
 		int delta, String orderByField, boolean reverse) {
 
@@ -185,7 +185,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			}
 		}
 
-		return accountEntryLocalService.search(
+		return accountEntryLocalService.searchAccountEntries(
 			permissionChecker.getCompanyId(), keywords, params, cur, delta,
 			orderByField, reverse);
 	}

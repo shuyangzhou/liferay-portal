@@ -395,7 +395,10 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 			return commerceOrder;
 		}
 
-		HttpSession httpSession = httpServletRequest.getSession();
+		HttpServletRequest originalHttpServletRequest =
+			_portal.getOriginalServletRequest(httpServletRequest);
+
+		HttpSession httpSession = originalHttpServletRequest.getSession();
 
 		String commerceOrderUuidWebKey = getCookieName(
 			commerceOrder.getGroupId());
@@ -430,7 +433,7 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			httpServletRequest);
 
-		_commerceOrderService.mergeGuestCommerceOrder(
+		_commerceOrderLocalService.mergeGuestCommerceOrder(
 			commerceOrder.getCommerceOrderId(),
 			userCommerceOrder.getCommerceOrderId(),
 			_getCommerceContext(httpServletRequest), serviceContext);
@@ -472,9 +475,12 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 			return null;
 		}
 
-		String cookieName = getCookieName(commerceChannel.getGroupId());
+		HttpServletRequest originalHttpServletRequest =
+			_portal.getOriginalServletRequest(httpServletRequest);
 
-		HttpSession httpSession = httpServletRequest.getSession();
+		HttpSession httpSession = originalHttpServletRequest.getSession();
+
+		String cookieName = getCookieName(commerceChannel.getGroupId());
 
 		String commerceOrderUuid = (String)httpSession.getAttribute(cookieName);
 

@@ -130,6 +130,9 @@ public class MultiMatchQueryTranslatorImpl
 		if (multiMatchQueryType == MultiMatchQuery.Type.BEST_FIELDS) {
 			return MultiMatchQueryBuilder.Type.BEST_FIELDS;
 		}
+		else if (multiMatchQueryType == MultiMatchQuery.Type.BOOL_PREFIX) {
+			return MultiMatchQueryBuilder.Type.BOOL_PREFIX;
+		}
 		else if (multiMatchQueryType == MultiMatchQuery.Type.CROSS_FIELDS) {
 			return MultiMatchQueryBuilder.Type.CROSS_FIELDS;
 		}

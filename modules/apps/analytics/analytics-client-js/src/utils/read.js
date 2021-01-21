@@ -49,7 +49,7 @@ class ReadTracker {
 		if (expectedViewDuration && !this.timeoutId) {
 			this.timeoutId = setTimeout(
 				() => this.onTimeReached(fn),
-				Math.trunc(expectedViewDuration)
+				~~expectedViewDuration
 			);
 		}
 	}

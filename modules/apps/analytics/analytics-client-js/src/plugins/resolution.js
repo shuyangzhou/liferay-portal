@@ -30,12 +30,11 @@ function extendContextWithResolutionData(request) {
 		document.documentElement.clientWidth ||
 		document.body.clientWidth;
 
-	request.context = {
+	Object.assign(request.context, {
 		devicePixelRatio,
 		screenHeight,
 		screenWidth,
-		...request.context,
-	};
+	});
 
 	return request;
 }

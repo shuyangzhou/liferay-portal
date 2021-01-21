@@ -32,7 +32,7 @@ function getAttribute(selector, attribute) {
  * @returns {Object} The updated request object
  */
 function meta(request) {
-	request.context = {
+	Object.assign(request.context, {
 		canonicalUrl: getAttribute('link[rel=canonical]', 'href'),
 		contentLanguageId: getAttribute('html', 'lang'),
 		description: getAttribute('meta[name="description"]', 'content'),
@@ -43,8 +43,7 @@ function meta(request) {
 		title: getAttribute('title', 'textContent'),
 		url: location.href,
 		userAgent: navigator.userAgent,
-		...request.context,
-	};
+	});
 
 	return request;
 }

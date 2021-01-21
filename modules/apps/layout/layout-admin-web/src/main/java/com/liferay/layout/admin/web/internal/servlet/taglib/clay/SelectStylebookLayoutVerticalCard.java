@@ -52,6 +52,10 @@ public class SelectStylebookLayoutVerticalCard implements VerticalCard {
 		).put(
 			"data-styleBookEntryId",
 			String.valueOf(_styleBookEntry.getStyleBookEntryId())
+		).put(
+			"role", "button"
+		).put(
+			"tabIndex", "0"
 		).build();
 	}
 

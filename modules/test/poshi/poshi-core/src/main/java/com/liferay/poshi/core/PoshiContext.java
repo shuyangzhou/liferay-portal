@@ -360,15 +360,14 @@ public class PoshiContext {
 			properties.putAll(
 				_namespacedClassCommandNamePropertiesMap.get(classCommandName));
 
-			if (Validator.isNotNull(
-					PropsValues.TEST_BATCH_GROUP_IGNORE_REGEX)) {
+			String testBatchGroupIgnoreRegex = PropsUtil.get(
+				"test.batch.group.ignore.regex");
 
+			if (Validator.isNotNull(testBatchGroupIgnoreRegex)) {
 				Set<String> propertyNames = properties.stringPropertyNames();
 
 				for (String propertyName : propertyNames) {
-					if (propertyName.matches(
-							PropsValues.TEST_BATCH_GROUP_IGNORE_REGEX)) {
-
+					if (propertyName.matches(testBatchGroupIgnoreRegex)) {
 						properties.remove(propertyName);
 					}
 				}
@@ -484,9 +483,9 @@ public class PoshiContext {
 		_readPoshiFilesFromClassPath(
 			poshiFileIncludes.toArray(new String[0]), "testFunctional");
 
-		if ((baseDirNames == null) || (baseDirNames.length == 0)) {
-			String testBaseDirName = PropsUtil.get("test.base.dir.name");
+		String testBaseDirName = PropsUtil.get("test.base.dir.name");
 
+		if ((baseDirNames == null) || (baseDirNames.length == 0)) {
 			if ((testBaseDirName == null) || testBaseDirName.isEmpty()) {
 				throw new RuntimeException("Please set 'test.base.dir.name'");
 			}
@@ -504,9 +503,28 @@ public class PoshiContext {
 		String testIncludeDirNames = PropsUtil.get("test.include.dir.names");
 
 		if ((testIncludeDirNames != null) && !testIncludeDirNames.isEmpty()) {
+			Set<String> testIncludeDirPaths = new HashSet<>();
+
+			for (String testIncludeDirName :
+					StringUtil.split(testIncludeDirNames)) {
+
+				File testIncludeDir = new File(testIncludeDirName);
+
+				if (!testIncludeDir.exists()) {
+					testIncludeDir = new File(
+						testBaseDirName, testIncludeDirName);
+				}
+
+				if (!testIncludeDir.exists()) {
+					continue;
+				}
+
+				testIncludeDirPaths.add(testIncludeDir.getCanonicalPath());
+			}
+
 			_readPoshiFiles(
 				POSHI_SUPPORT_FILE_INCLUDES,
-				StringUtil.split(testIncludeDirNames));
+				testIncludeDirPaths.toArray(new String[0]));
 		}
 
 		_readPoshiFiles(poshiFileIncludes.toArray(new String[0]), baseDirNames);

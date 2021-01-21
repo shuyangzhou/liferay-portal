@@ -430,7 +430,7 @@ public class CommerceOrderItemLocalServiceImpl
 	}
 
 	@Override
-	public BaseModelSearchResult<CommerceOrderItem> search(
+	public BaseModelSearchResult<CommerceOrderItem> searchCommerceOrderItems(
 			long commerceOrderId, long parentCommerceOrderItemId,
 			String keywords, int start, int end, Sort sort)
 		throws PortalException {
@@ -444,7 +444,7 @@ public class CommerceOrderItemLocalServiceImpl
 	}
 
 	@Override
-	public BaseModelSearchResult<CommerceOrderItem> search(
+	public BaseModelSearchResult<CommerceOrderItem> searchCommerceOrderItems(
 			long commerceOrderId, String keywords, int start, int end,
 			Sort sort)
 		throws PortalException {
@@ -458,7 +458,7 @@ public class CommerceOrderItemLocalServiceImpl
 	}
 
 	@Override
-	public BaseModelSearchResult<CommerceOrderItem> search(
+	public BaseModelSearchResult<CommerceOrderItem> searchCommerceOrderItems(
 			long commerceOrderId, String sku, String name, boolean andOperator,
 			int start, int end, Sort sort)
 		throws PortalException {
