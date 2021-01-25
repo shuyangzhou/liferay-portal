@@ -52,6 +52,11 @@ public class AccessControlImpl implements AccessControl {
 				"Authentication context is already initialized");
 		}
 
+		if (settings.get(AuthVerifierPipeline.class.getName()) != null) {
+			_authVerifierPipeline = (AuthVerifierPipeline)settings.get(
+				AuthVerifierPipeline.class.getName());
+		}
+
 		accessControlContext = new AccessControlContext();
 
 		accessControlContext.setRequest(httpServletRequest);
@@ -60,7 +65,15 @@ public class AccessControlImpl implements AccessControl {
 		Map<String, Object> accessControlContextSettings =
 			accessControlContext.getSettings();
 
-		accessControlContextSettings.putAll(settings);
+		for (Map.Entry<String, Object> entry : settings.entrySet()) {
+			String key = entry.getKey();
+
+			if (key.equals(AuthVerifierPipeline.class.getName())) {
+				continue;
+			}
+
+			accessControlContextSettings.put(key, entry.getValue());
+		}
 
 		AccessControlUtil.setAccessControlContext(accessControlContext);
 	}
@@ -90,7 +103,17 @@ public class AccessControlImpl implements AccessControl {
 			AccessControlUtil.getAccessControlContext();
 
 		AuthVerifierResult authVerifierResult =
-			AuthVerifierPipeline.verifyRequest(accessControlContext);
+			_authVerifierPipeline.verifyRequest(accessControlContext);
+
+		if ((authVerifierResult.getState() !=
+				AuthVerifierResult.State.SUCCESS) &&
+			(_authVerifierPipeline !=
+				AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE)) {
+
+			authVerifierResult =
+				AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE.
+					verifyRequest(accessControlContext);
+		}
 
 		Map<String, Object> authVerifierResultSettings =
 			authVerifierResult.getSettings();
@@ -105,5 +128,8 @@ public class AccessControlImpl implements AccessControl {
 
 		return authVerifierResult.getState();
 	}
+
+	private AuthVerifierPipeline _authVerifierPipeline =
+		AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE;
 
 }
