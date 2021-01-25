@@ -36,9 +36,12 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Zsolt Berentey
  */
+@Component(service = AuthVerifier.class)
 public class TunnelAuthVerifier implements AuthVerifier {
 
 	@Override
