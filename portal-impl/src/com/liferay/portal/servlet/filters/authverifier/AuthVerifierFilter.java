@@ -251,6 +251,9 @@ public class AuthVerifierFilter extends BasePortalFilter {
 
 				authVerifierConfigurationIndex =
 					authVerifierConfigurations.size() - 1;
+
+				authVerifierConfigurationIndexs.put(
+					authVerifierClassName, authVerifierConfigurationIndex);
 			}
 
 			AuthVerifierConfiguration authVerifierConfiguration =
