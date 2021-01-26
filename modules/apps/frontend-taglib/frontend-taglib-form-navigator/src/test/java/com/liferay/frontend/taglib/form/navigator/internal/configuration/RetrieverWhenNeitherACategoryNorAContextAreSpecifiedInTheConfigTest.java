@@ -14,12 +14,16 @@
 
 package com.liferay.frontend.taglib.form.navigator.internal.configuration;
 
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.util.PropsImpl;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +31,11 @@ import org.junit.Test;
  */
 public class RetrieverWhenNeitherACategoryNorAContextAreSpecifiedInTheConfigTest
 	extends BaseFormNavigatorEntryConfigurationRetrieverTestCase {
+
+	@BeforeClass
+	public static void setUpClass() {
+		PropsUtil.setProps(new PropsImpl());
+	}
 
 	@Before
 	@Override
