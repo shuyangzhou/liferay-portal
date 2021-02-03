@@ -38,10 +38,10 @@ renderResponse.setTitle(LanguageUtil.get(request, "add-category"));
 			<aui:select label="log-level" name="priority">
 
 				<%
-				for (int i = 0; i < Levels.ALL_LEVELS.length; i++) {
+				for (int i = 0; i < Level.ALL_LEVELS.length; i++) {
 				%>
 
-					<aui:option label="<%= Levels.ALL_LEVELS[i] %>" selected="<%= Level.INFO.equals(Levels.ALL_LEVELS[i]) %>" />
+					<aui:option label="<%= Level.ALL_LEVELS[i] %>" selected="<%= Level.INFO.equals(Level.ALL_LEVELS[i]) %>" />
 
 				<%
 				}

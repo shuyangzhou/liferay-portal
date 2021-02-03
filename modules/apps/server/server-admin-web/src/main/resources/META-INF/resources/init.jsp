@@ -31,7 +31,6 @@ page import="com.liferay.document.library.kernel.service.DLFileEntryLocalService
 page import="com.liferay.expando.kernel.model.ExpandoBridge" %><%@
 page import="com.liferay.expando.kernel.model.ExpandoColumnConstants" %><%@
 page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu" %><%@
-page import="com.liferay.petra.log4j.Levels" %><%@
 page import="com.liferay.petra.log4j.Log4JUtil" %><%@
 page import="com.liferay.petra.string.CharPool" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
@@ -42,6 +41,7 @@ page import="com.liferay.portal.kernel.configuration.Filter" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.image.ImageMagickUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+page import="com.liferay.portal.kernel.log.Level" %><%@
 page import="com.liferay.portal.kernel.model.*" %><%@
 page import="com.liferay.portal.kernel.model.impl.*" %><%@
 page import="com.liferay.portal.kernel.patcher.PatcherUtil" %><%@
@@ -90,8 +90,6 @@ page import="java.util.TreeMap" %>
 <%@ page import="javax.portlet.PortletPreferences" %><%@
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
-
-<%@ page import="org.apache.log4j.Level" %>
 
 <liferay-frontend:defineObjects />
 
