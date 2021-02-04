@@ -17,6 +17,7 @@ package com.liferay.portal.configuration.extender.internal.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.log.CaptureAppender;
@@ -32,8 +33,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
-import org.apache.log4j.Level;
 
 import org.junit.After;
 import org.junit.Assert;

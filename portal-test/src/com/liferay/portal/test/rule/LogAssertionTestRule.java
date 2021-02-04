@@ -20,6 +20,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.test.rule.AbstractTestRule;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
@@ -31,7 +32,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.Assert;
@@ -149,7 +149,7 @@ public class LogAssertionTestRule
 
 			captureAppenders.add(
 				Log4JLoggerTestUtil.configureLog4JLogger(
-					clazz.getName(), Level.toLevel(expectedLogs.level())));
+					clazz.getName(), Level.valueOf(expectedLogs.level())));
 		}
 
 		installJdk14Handler();
