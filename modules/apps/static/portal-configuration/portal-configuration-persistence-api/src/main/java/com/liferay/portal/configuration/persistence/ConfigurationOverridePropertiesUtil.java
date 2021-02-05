@@ -18,6 +18,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.file.install.properties.ConfigurationHandler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.io.IOException;
@@ -49,43 +50,51 @@ public class ConfigurationOverridePropertiesUtil {
 		_overridePropertiesMap;
 
 	static {
-		Properties properties = PropsUtil.getProperties(
-			"configuration.override.", true);
+		Props props = PropsUtil.getProps();
 
-		Map<String, Map<String, Object>> overridePropertiesMap =
-			new HashMap<>();
+		if (props == null) {
+			_overridePropertiesMap = Collections.emptyMap();
+		}
+		else {
+			Properties properties = PropsUtil.getProperties(
+				"configuration.override.", true);
 
-		for (String key : properties.stringPropertyNames()) {
-			int index = key.indexOf(CharPool.UNDERLINE);
+			Map<String, Map<String, Object>> overridePropertiesMap =
+				new HashMap<>();
 
-			if (index > 0) {
-				Map<String, Object> overrideProperties =
-					overridePropertiesMap.computeIfAbsent(
-						key.substring(0, index), pid -> new HashMap<>());
+			for (String key : properties.stringPropertyNames()) {
+				int index = key.indexOf(CharPool.UNDERLINE);
 
-				try {
-					overrideProperties.put(
-						key.substring(index + 1),
-						ConfigurationHandler.read(properties.getProperty(key)));
-				}
-				catch (IOException ioException) {
-					_log.error("Unable to parse property", ioException);
+				if (index > 0) {
+					Map<String, Object> overrideProperties =
+						overridePropertiesMap.computeIfAbsent(
+							key.substring(0, index), pid -> new HashMap<>());
+
+					try {
+						overrideProperties.put(
+							key.substring(index + 1),
+							ConfigurationHandler.read(
+								properties.getProperty(key)));
+					}
+					catch (IOException ioException) {
+						_log.error("Unable to parse property", ioException);
+					}
 				}
 			}
+
+			for (Map.Entry<String, Map<String, Object>> entry :
+					overridePropertiesMap.entrySet()) {
+
+				Map<String, Object> map = entry.getValue();
+
+				map.put(Constants.SERVICE_PID, entry.getKey());
+
+				entry.setValue(Collections.unmodifiableMap(map));
+			}
+
+			_overridePropertiesMap = Collections.unmodifiableMap(
+				overridePropertiesMap);
 		}
-
-		for (Map.Entry<String, Map<String, Object>> entry :
-				overridePropertiesMap.entrySet()) {
-
-			Map<String, Object> map = entry.getValue();
-
-			map.put(Constants.SERVICE_PID, entry.getKey());
-
-			entry.setValue(Collections.unmodifiableMap(map));
-		}
-
-		_overridePropertiesMap = Collections.unmodifiableMap(
-			overridePropertiesMap);
 	}
 
 }
