@@ -28,6 +28,12 @@ import org.apache.log4j.Logger;
 public class Log4JLoggerTestUtil {
 
 	public static CaptureAppender configureLog4JLogger(
+		String name, com.liferay.portal.kernel.log.Level level) {
+
+		return configureLog4JLogger(name, Level.toLevel(String.valueOf(level)));
+	}
+
+	public static CaptureAppender configureLog4JLogger(
 		String name, Level level) {
 
 		LogWrapper logWrapper = (LogWrapper)LogFactoryUtil.getLog(name);
