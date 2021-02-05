@@ -17,12 +17,11 @@ package com.liferay.app.builder.workflow.web.internal.portlet.action.test;
 import com.liferay.app.builder.rest.dto.v1_0.App;
 import com.liferay.app.builder.workflow.web.internal.portlet.test.BaseAppBuilderPortletTestCase;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.messaging.proxy.ProxyMessageListener;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
-
-import org.apache.log4j.Level;
 
 import org.junit.Assert;
 import org.junit.Test;
