@@ -21,6 +21,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.log.SanitizerLogWrapper;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -49,7 +50,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.AfterClass;
@@ -129,9 +129,10 @@ public class SpringExtenderDependencyManagerTest {
 					"registered",
 				message);
 
-			Level level = loggingEvent.getLevel();
+			String levelString = String.valueOf(loggingEvent.getLevel());
 
-			Assert.assertEquals(level.toString(), Level.INFO, level);
+			Assert.assertEquals(
+				levelString, String.valueOf(Level.INFO), levelString);
 
 			loggingEvent = loggingEvents.get(1);
 
@@ -141,9 +142,10 @@ public class SpringExtenderDependencyManagerTest {
 				message, "Stopped scanning for unavailable components",
 				message);
 
-			level = loggingEvent.getLevel();
+			levelString = String.valueOf(loggingEvent.getLevel());
 
-			Assert.assertEquals(level.toString(), Level.INFO, level);
+			Assert.assertEquals(
+				levelString, String.valueOf(Level.INFO), levelString);
 		}
 	}
 
@@ -186,10 +188,10 @@ public class SpringExtenderDependencyManagerTest {
 
 			Assert.assertTrue(message, message.contains(sb.toString()));
 
-			Level level = loggingEvent.getLevel();
+			String levelString = String.valueOf(loggingEvent.getLevel());
 
 			Assert.assertEquals(
-				level.toString(), Level.WARN, loggingEvent.getLevel());
+				levelString, String.valueOf(Level.WARN), levelString);
 
 			loggingEvent = loggingEvents.get(1);
 
@@ -199,9 +201,10 @@ public class SpringExtenderDependencyManagerTest {
 				message, "Stopped scanning for unavailable components",
 				message);
 
-			level = loggingEvent.getLevel();
+			levelString = String.valueOf(loggingEvent.getLevel());
 
-			Assert.assertEquals(level.toString(), Level.INFO, level);
+			Assert.assertEquals(
+				levelString, String.valueOf(Level.INFO), levelString);
 		}
 		finally {
 			bundle.uninstall();

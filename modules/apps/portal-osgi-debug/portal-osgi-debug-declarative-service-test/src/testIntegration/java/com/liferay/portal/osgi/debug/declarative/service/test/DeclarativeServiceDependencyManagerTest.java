@@ -20,6 +20,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -46,7 +47,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.AfterClass;
@@ -121,7 +121,9 @@ public class DeclarativeServiceDependencyManagerTest {
 			Assert.assertEquals(
 				"All declarative service components are satisfied",
 				loggingEvent.getMessage());
-			Assert.assertEquals(Level.INFO, loggingEvent.getLevel());
+			Assert.assertEquals(
+				String.valueOf(Level.INFO),
+				String.valueOf(loggingEvent.getLevel()));
 
 			loggingEvent = loggingEvents.get(1);
 
@@ -129,7 +131,9 @@ public class DeclarativeServiceDependencyManagerTest {
 				"Stopped scanning for unsatisfied declarative service " +
 					"components",
 				loggingEvent.getMessage());
-			Assert.assertEquals(Level.INFO, loggingEvent.getLevel());
+			Assert.assertEquals(
+				String.valueOf(Level.INFO),
+				String.valueOf(loggingEvent.getLevel()));
 		}
 	}
 
@@ -171,7 +175,9 @@ public class DeclarativeServiceDependencyManagerTest {
 			Assert.assertTrue(
 				message, message.contains(s.replaceAll("\\s", "")));
 
-			Assert.assertEquals(Level.WARN, loggingEvent.getLevel());
+			Assert.assertEquals(
+				String.valueOf(Level.WARN),
+				String.valueOf(loggingEvent.getLevel()));
 
 			loggingEvent = loggingEvents.get(1);
 
@@ -179,7 +185,9 @@ public class DeclarativeServiceDependencyManagerTest {
 				"Stopped scanning for unsatisfied declarative service " +
 					"components",
 				loggingEvent.getMessage());
-			Assert.assertEquals(Level.INFO, loggingEvent.getLevel());
+			Assert.assertEquals(
+				String.valueOf(Level.INFO),
+				String.valueOf(loggingEvent.getLevel()));
 		}
 		finally {
 			bundle.uninstall();

@@ -26,6 +26,7 @@ import com.liferay.batch.engine.service.BatchEngineExportTaskLocalService;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.string.CharPool;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -50,7 +51,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -292,7 +292,9 @@ public class BatchEngineExportTaskExecutorTest
 
 		LoggingEvent loggingEvent = loggingEvents.get(0);
 
-		Assert.assertEquals(Level.ERROR, loggingEvent.getLevel());
+		Assert.assertEquals(
+			String.valueOf(Level.ERROR),
+			String.valueOf(loggingEvent.getLevel()));
 
 		String message = (String)loggingEvent.getMessage();
 

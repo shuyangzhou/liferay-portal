@@ -15,6 +15,7 @@
 package com.liferay.portal.vulcan.internal.jaxrs.param.converter.provider.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.User;
@@ -42,8 +43,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Application;
-
-import org.apache.log4j.Level;
 
 import org.junit.After;
 import org.junit.Assert;
