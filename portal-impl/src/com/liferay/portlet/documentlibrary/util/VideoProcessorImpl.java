@@ -32,6 +32,7 @@ import com.liferay.portal.fabric.OutputResource;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -340,7 +341,8 @@ public class VideoProcessorImpl
 							HashMapBuilder.putAll(
 								Log4JUtil.getCustomLogSettings()
 							).put(
-								PropsUtil.class.getName(), "WARN"
+								PropsUtil.class.getName(),
+								String.valueOf(Level.WARN)
 							).build(),
 							file, thumbnailTempFile, THUMBNAIL_TYPE, height,
 							width,

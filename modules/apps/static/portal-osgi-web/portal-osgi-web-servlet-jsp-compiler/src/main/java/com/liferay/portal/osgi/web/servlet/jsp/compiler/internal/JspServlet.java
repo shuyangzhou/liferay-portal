@@ -16,6 +16,7 @@ package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -312,7 +313,8 @@ public class JspServlet extends HttpServlet {
 			});
 
 		_logVerbosityLevelDebug = Objects.equals(
-			_jspServlet.getInitParameter("logVerbosityLevel"), "DEBUG");
+			_jspServlet.getInitParameter("logVerbosityLevel"),
+			String.valueOf(Level.DEBUG));
 	}
 
 	@Override

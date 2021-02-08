@@ -29,6 +29,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.fabric.InputResource;
 import com.liferay.portal.fabric.OutputResource;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -370,7 +371,8 @@ public class AudioProcessorImpl
 						HashMapBuilder.putAll(
 							Log4JUtil.getCustomLogSettings()
 						).put(
-							PropsUtil.class.getName(), "WARN"
+							PropsUtil.class.getName(),
+							String.valueOf(Level.WARN)
 						).build(),
 						srcFile, destFile, containerType,
 						PropsUtil.getProperties(

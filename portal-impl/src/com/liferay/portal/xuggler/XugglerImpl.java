@@ -16,6 +16,7 @@ package com.liferay.portal.xuggler;
 
 import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Level;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -101,11 +102,13 @@ public class XugglerImpl implements Xuggler {
 			JNILibraryLoader.class.getName());
 
 		if (Validator.isNull(logLevelString)) {
-			logLevelString = "ALL";
+			logLevelString = String.valueOf(Level.ALL);
 		}
 
 		try {
-			Log4JUtil.setLevel(JNILibraryLoader.class.getName(), "OFF", false);
+			Log4JUtil.setLevel(
+				JNILibraryLoader.class.getName(), String.valueOf(Level.OFF),
+				false);
 
 			IContainer.make();
 
