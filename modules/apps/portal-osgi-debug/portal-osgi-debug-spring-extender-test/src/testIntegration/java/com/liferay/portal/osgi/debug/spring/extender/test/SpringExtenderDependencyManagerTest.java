@@ -49,7 +49,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.AfterClass;
@@ -129,9 +128,10 @@ public class SpringExtenderDependencyManagerTest {
 					"registered",
 				message);
 
-			Level level = loggingEvent.getLevel();
+			String levelString = String.valueOf(loggingEvent.getLevel());
 
-			Assert.assertEquals(level.toString(), Level.INFO, level);
+			Assert.assertEquals(
+				levelString, Log4JLoggerTestUtil.INFO, levelString);
 
 			loggingEvent = loggingEvents.get(1);
 
@@ -141,9 +141,10 @@ public class SpringExtenderDependencyManagerTest {
 				message, "Stopped scanning for unavailable components",
 				message);
 
-			level = loggingEvent.getLevel();
+			levelString = String.valueOf(loggingEvent.getLevel());
 
-			Assert.assertEquals(level.toString(), Level.INFO, level);
+			Assert.assertEquals(
+				levelString, Log4JLoggerTestUtil.INFO, levelString);
 		}
 	}
 
@@ -186,10 +187,10 @@ public class SpringExtenderDependencyManagerTest {
 
 			Assert.assertTrue(message, message.contains(sb.toString()));
 
-			Level level = loggingEvent.getLevel();
+			String levelString = String.valueOf(loggingEvent.getLevel());
 
 			Assert.assertEquals(
-				level.toString(), Level.WARN, loggingEvent.getLevel());
+				levelString, Log4JLoggerTestUtil.WARN, levelString);
 
 			loggingEvent = loggingEvents.get(1);
 
@@ -199,9 +200,10 @@ public class SpringExtenderDependencyManagerTest {
 				message, "Stopped scanning for unavailable components",
 				message);
 
-			level = loggingEvent.getLevel();
+			levelString = String.valueOf(loggingEvent.getLevel());
 
-			Assert.assertEquals(level.toString(), Level.INFO, level);
+			Assert.assertEquals(
+				levelString, Log4JLoggerTestUtil.INFO, levelString);
 		}
 		finally {
 			bundle.uninstall();
@@ -270,7 +272,7 @@ public class SpringExtenderDependencyManagerTest {
 		return Log4JLoggerTestUtil.configureLog4JLogger(
 			"com.liferay.portal.osgi.debug.spring.extender.internal." +
 				"UnavailableComponentScanner",
-			Level.INFO);
+			Log4JLoggerTestUtil.INFO);
 	}
 
 	private static void _ensureStopScanning() throws Exception {
