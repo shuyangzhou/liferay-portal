@@ -107,10 +107,10 @@ CreationMenu creationMenu =
 				<select name="<%= liferayPortletResponse.getNamespace() + "logLevel" + HtmlUtil.escapeAttribute(name) %>">
 
 					<%
-					for (int j = 0; j < Levels.ALL_LEVELS.length; j++) {
+					for (int j = 0; j < allLevelStrings.length; j++) {
 					%>
 
-						<option <%= levelString.equals(String.valueOf(Levels.ALL_LEVELS[j])) ? "selected" : StringPool.BLANK %> value="<%= String.valueOf(Levels.ALL_LEVELS[j]) %>"><%= String.valueOf(Levels.ALL_LEVELS[j]) %></option>
+						<option <%= levelString.equals(allLevelStrings[j]) ? "selected" : StringPool.BLANK %> value="<%= allLevelStrings[j] %>"><%= allLevelStrings[j] %></option>
 
 					<%
 					}
