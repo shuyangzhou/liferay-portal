@@ -112,7 +112,7 @@ public class Log4JUtil {
 	 */
 	@Deprecated
 	public static String getOriginalLevel(String className) {
-		Map<String, String> priorities = getPriorities();
+		Map<String, String> priorities = Log4jConfigUtil.getPriorities();
 
 		String logLevelString = priorities.get(className);
 
@@ -121,24 +121,6 @@ public class Log4JUtil {
 		}
 
 		return logLevelString;
-	}
-
-	public static Map<String, String> getPriorities() {
-		Map<String, String> priorities = new HashMap<>();
-
-		Enumeration<Logger> enumeration = LogManager.getCurrentLoggers();
-
-		while (enumeration.hasMoreElements()) {
-			Logger logger = enumeration.nextElement();
-
-			Level level = logger.getLevel();
-
-			if (level != null) {
-				priorities.put(logger.getName(), level.toString());
-			}
-		}
-
-		return priorities;
 	}
 
 	public static void initLog4J(
