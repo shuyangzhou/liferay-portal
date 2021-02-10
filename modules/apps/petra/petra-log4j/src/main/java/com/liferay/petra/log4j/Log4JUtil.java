@@ -38,8 +38,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.spi.LoggerRepository;
 
 /**
  * @author Brian Wing Shun Chan
@@ -160,9 +158,7 @@ public class Log4JUtil {
 	}
 
 	public static void shutdownLog4J() {
-		LoggerRepository loggerRepository = LogManager.getLoggerRepository();
-
-		loggerRepository.shutdown();
+		Log4jConfigUtil.shutdownLog4J();
 	}
 
 	private static String _escapeXMLAttribute(String s) {
