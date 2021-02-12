@@ -70,7 +70,7 @@ public class AggregateTestRule implements TestRule {
 		"com.liferay.document.library.webdav.test." +
 			"WebDAVEnvironmentConfigClassTestRule",
 		"com.liferay.portal.test.rule.PermissionCheckerMethodTestRule",
-		KernelUtilClassTestRule.class.getName()
+		InitializeKernelUtilClassTestRule.class.getName()
 	};
 
 	private static final Comparator<TestRule> _testRuleComparator =
