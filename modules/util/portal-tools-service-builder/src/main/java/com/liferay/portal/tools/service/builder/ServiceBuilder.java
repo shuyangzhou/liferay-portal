@@ -62,6 +62,8 @@ import com.thoughtworks.qdox.model.JavaType;
 import com.thoughtworks.qdox.model.impl.AbstractBaseJavaEntity;
 import com.thoughtworks.qdox.model.impl.DefaultJavaMethod;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
+import com.thoughtworks.qdox.model.impl.DefaultJavaType;
+import com.thoughtworks.qdox.model.impl.DefaultJavaTypeVariable;
 
 import freemarker.cache.ClassTemplateLoader;
 
@@ -117,6 +119,7 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.dom4j.Attribute;
@@ -1630,6 +1633,44 @@ public class ServiceBuilder {
 		sb.append(getDimensions(defaultJavaParameterizedType.getDimensions()));
 
 		return sb.toString();
+	}
+
+	public String getTypeParametersDefinition(
+		List<DefaultJavaTypeVariable> typeParameters) {
+
+		Stream<DefaultJavaTypeVariable> typeParametersStream =
+			typeParameters.stream();
+
+		String typeParametersDefinition = typeParametersStream.map(
+			typeParameter -> {
+				String boundsDefinition = StringPool.BLANK;
+
+				List<DefaultJavaParameterizedType> bounds =
+					typeParameter.getBounds();
+
+				if (ListUtil.isNotEmpty(bounds)) {
+					Stream<DefaultJavaParameterizedType> boundsStream =
+						bounds.stream();
+
+					String boundClasses = boundsStream.map(
+						DefaultJavaType::getName
+					).collect(
+						Collectors.joining(
+							StringPool.SPACE + StringPool.AMPERSAND +
+								StringPool.SPACE)
+					);
+
+					boundsDefinition = " extends " + boundClasses;
+				}
+
+				return typeParameter.getName() + boundsDefinition;
+			}
+		).collect(
+			Collectors.joining(StringPool.COMMA_AND_SPACE)
+		);
+
+		return StringPool.LESS_THAN + typeParametersDefinition +
+			StringPool.GREATER_THAN;
 	}
 
 	public String getVariableName(JavaField field) {

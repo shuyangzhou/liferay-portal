@@ -162,7 +162,11 @@ public interface ${entity.name}${sessionTypeName}Service
 			</#if>
 			public
 
-			${serviceBuilder.getTypeGenericsName(method.returns)} ${method.name}(
+			<#if method.typeParameters?size gt 0>
+				${serviceBuilder.getTypeParametersDefinition(method.typeParameters)}
+			</#if>
+
+			 ${serviceBuilder.getTypeGenericsName(method.returns)} ${method.name}(
 
 			<#list method.parameters as parameter>
 				${serviceBuilder.getTypeGenericsName(parameter.type)} ${parameter.name}

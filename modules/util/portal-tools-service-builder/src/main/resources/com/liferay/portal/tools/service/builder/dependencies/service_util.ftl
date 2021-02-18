@@ -61,6 +61,10 @@ public class ${entity.name}${sessionTypeName}ServiceUtil {
 			</#if>
 			public static
 
+			<#if method.typeParameters?size gt 0>
+				${serviceBuilder.getTypeParametersDefinition(method.typeParameters)}
+			</#if>
+
 			${serviceBuilder.getTypeGenericsName(method.returns)} ${method.name}(
 
 			<#list method.parameters as parameter>
