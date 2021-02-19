@@ -47,43 +47,45 @@ public class GenericMethodsEntryLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static <T> void typeParameter(
-			java.util.function.Consumer<T> consumer)
-		throws Exception {
-
-		getService().typeParameter(consumer);
-	}
-
-	public static <E extends Exception> void typeParameterAndBound(
+	public static <E extends Exception> void typeParameterAndBoundMethod(
 			java.util.function.BiConsumer<String, E> biConsumer)
 		throws E {
 
-		getService().typeParameterAndBound(biConsumer);
+		getService().typeParameterAndBoundMethod(biConsumer);
+	}
+
+	public static <T> void typeParameterMethod(
+			java.util.function.Consumer<T> consumer)
+		throws Exception {
+
+		getService().typeParameterMethod(consumer);
 	}
 
 	public static <T, E extends Exception> java.util.List<T>
-		typeParametersAndBound(
+		typeParametersAndBoundMethod(
 			java.util.function.BiFunction<Long, T, E> biFunction,
 			java.util.function.BiConsumer<Long, E> biConsumer) {
 
-		return getService().typeParametersAndBound(biFunction, biConsumer);
+		return getService().typeParametersAndBoundMethod(
+			biFunction, biConsumer);
 	}
 
 	public static <N extends Number, E extends Exception> java.util.List<N>
-		typeParametersAndBounds(
+		typeParametersAndBoundsMethod(
 			java.util.function.BiFunction<Long, N, E> biFunction,
 			java.util.function.BiConsumer<Long, N> biConsumer) {
 
-		return getService().typeParametersAndBounds(biFunction, biConsumer);
+		return getService().typeParametersAndBoundsMethod(
+			biFunction, biConsumer);
 	}
 
 	public static
 		<N extends Number & ObjIntConsumer, E extends Exception & Serializable>
-			java.util.List<N> typeParametersAndMultipleBounds(
+			java.util.List<N> typeParametersAndMultipleBoundsMethod(
 				java.util.function.BiFunction<Long, N, E> biFunction,
 				java.util.function.BiConsumer<Long, N> biConsumer) {
 
-		return getService().typeParametersAndMultipleBounds(
+		return getService().typeParametersAndMultipleBoundsMethod(
 			biFunction, biConsumer);
 	}
 
