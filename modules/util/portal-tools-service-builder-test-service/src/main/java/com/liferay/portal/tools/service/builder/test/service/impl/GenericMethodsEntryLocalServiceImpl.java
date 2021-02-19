@@ -31,17 +31,17 @@ public class GenericMethodsEntryLocalServiceImpl
 	extends GenericMethodsEntryLocalServiceBaseImpl {
 
 	@Override
-	public <T> void typeParameter(Consumer<T> consumer) throws Exception {
+	public <T> void typeParameterMethod(Consumer<T> consumer) throws Exception {
 	}
 
 	@Override
-	public <E extends Exception> void typeParameterAndBound(
+	public <E extends Exception> void typeParameterAndBoundMethod(
 			BiConsumer<String, E> biConsumer)
 		throws E {
 	}
 
 	@Override
-	public <T, E extends Exception> List<T> typeParametersAndBound(
+	public <T, E extends Exception> List<T> typeParametersAndBoundMethod(
 		BiFunction<Long, T, E> biFunction, BiConsumer<Long, E> biConsumer) {
 
 		return null;
@@ -49,7 +49,7 @@ public class GenericMethodsEntryLocalServiceImpl
 
 	@Override
 	public <N extends Number, E extends Exception> List<N>
-		typeParametersAndBounds(
+		typeParametersAndBoundsMethod(
 			BiFunction<Long, N, E> biFunction, BiConsumer<Long, N> biConsumer) {
 
 		return null;
@@ -58,7 +58,7 @@ public class GenericMethodsEntryLocalServiceImpl
 	@Override
 	public
 		<N extends Number & ObjIntConsumer, E extends Exception & Serializable>
-			List<N> typeParametersAndMultipleBounds(
+			List<N> typeParametersAndMultipleBoundsMethod(
 				BiFunction<Long, N, E> biFunction,
 				BiConsumer<Long, N> biConsumer) {
 
