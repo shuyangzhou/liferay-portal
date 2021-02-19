@@ -47,6 +47,46 @@ public class GenericMethodsEntryLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static <T> void typeParameter(
+			java.util.function.Consumer<T> consumer)
+		throws Exception {
+
+		getService().typeParameter(consumer);
+	}
+
+	public static <E extends Exception> void typeParameterAndBound(
+			java.util.function.BiConsumer<String, E> biConsumer)
+		throws E {
+
+		getService().typeParameterAndBound(biConsumer);
+	}
+
+	public static <T, E extends Exception> java.util.List<T>
+		typeParametersAndBound(
+			java.util.function.BiFunction<Long, T, E> biFunction,
+			java.util.function.BiConsumer<Long, E> biConsumer) {
+
+		return getService().typeParametersAndBound(biFunction, biConsumer);
+	}
+
+	public static <N extends Number, E extends Exception> java.util.List<N>
+		typeParametersAndBounds(
+			java.util.function.BiFunction<Long, N, E> biFunction,
+			java.util.function.BiConsumer<Long, N> biConsumer) {
+
+		return getService().typeParametersAndBounds(biFunction, biConsumer);
+	}
+
+	public static
+		<N extends Number & ObjIntConsumer, E extends Exception & Serializable>
+			java.util.List<N> typeParametersAndMultipleBounds(
+				java.util.function.BiFunction<Long, N, E> biFunction,
+				java.util.function.BiConsumer<Long, N> biConsumer) {
+
+		return getService().typeParametersAndMultipleBounds(
+			biFunction, biConsumer);
+	}
+
 	public static GenericMethodsEntryLocalService getService() {
 		return _serviceTracker.getService();
 	}

@@ -44,6 +44,51 @@ public class GenericMethodsEntryLocalServiceWrapper
 	}
 
 	@Override
+	public <T> void typeParameter(java.util.function.Consumer<T> consumer)
+		throws Exception {
+
+		_genericMethodsEntryLocalService.typeParameter(consumer);
+	}
+
+	@Override
+	public <E extends Exception> void typeParameterAndBound(
+			java.util.function.BiConsumer<String, E> biConsumer)
+		throws E {
+
+		_genericMethodsEntryLocalService.typeParameterAndBound(biConsumer);
+	}
+
+	@Override
+	public <T, E extends Exception> java.util.List<T> typeParametersAndBound(
+		java.util.function.BiFunction<Long, T, E> biFunction,
+		java.util.function.BiConsumer<Long, E> biConsumer) {
+
+		return _genericMethodsEntryLocalService.typeParametersAndBound(
+			biFunction, biConsumer);
+	}
+
+	@Override
+	public <N extends Number, E extends Exception> java.util.List<N>
+		typeParametersAndBounds(
+			java.util.function.BiFunction<Long, N, E> biFunction,
+			java.util.function.BiConsumer<Long, N> biConsumer) {
+
+		return _genericMethodsEntryLocalService.typeParametersAndBounds(
+			biFunction, biConsumer);
+	}
+
+	@Override
+	public
+		<N extends Number & ObjIntConsumer, E extends Exception & Serializable>
+			java.util.List<N> typeParametersAndMultipleBounds(
+				java.util.function.BiFunction<Long, N, E> biFunction,
+				java.util.function.BiConsumer<Long, N> biConsumer) {
+
+		return _genericMethodsEntryLocalService.typeParametersAndMultipleBounds(
+			biFunction, biConsumer);
+	}
+
+	@Override
 	public GenericMethodsEntryLocalService getWrappedService() {
 		return _genericMethodsEntryLocalService;
 	}
