@@ -55,7 +55,9 @@ import com.liferay.portal.tools.rest.builder.internal.yaml.openapi.Schema;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
+import java.io.Reader;
 
 import java.net.URL;
 
@@ -72,6 +74,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Stream;
@@ -148,6 +151,25 @@ public class RESTBuilder {
 			throw new RuntimeException(
 				"Error in file \"rest-config.yaml\": " +
 					exception.getMessage());
+		}
+
+		String absolutePath = _configDir.getAbsolutePath();
+
+		try (Reader reader = new FileReader(
+				new File(
+					absolutePath.substring(0, absolutePath.indexOf("modules/")),
+					"release.properties"))) {
+
+			Properties properties = new Properties();
+
+			properties.load(reader);
+
+			_configYAML.setBuildNumber(
+				Integer.valueOf(properties.getProperty("release.info.build")));
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(
+				"Unable to get release version", exception);
 		}
 	}
 

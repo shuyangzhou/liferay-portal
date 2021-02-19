@@ -14,8 +14,11 @@
 
 package com.liferay.portal.tools.rest.builder;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.rest.builder.internal.yaml.config.ConfigYAML;
 
 import java.io.File;
 
@@ -41,6 +44,13 @@ public class RESTBuilderTest {
 		RESTBuilder restBuilder = new RESTBuilder(
 			new File(dependenciesPath, "copyright.txt"),
 			new File(dependenciesPath), null);
+
+		Assert.assertEquals(
+			ReleaseInfo.getBuildNumber(),
+			(int)ReflectionTestUtil.getFieldValue(
+				(ConfigYAML)ReflectionTestUtil.getFieldValue(
+					restBuilder, "_configYAML"),
+				"_buildNumber"));
 
 		restBuilder.build();
 
