@@ -14,11 +14,16 @@
 
 package com.liferay.portal.security.permission;
 
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupTable;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.OrganizationTable;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleTable;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -108,7 +113,23 @@ public class UserBagImpl implements UserBag {
 
 	@Override
 	public List<Role> getRoles() throws PortalException {
-		return RoleLocalServiceUtil.getRoles(_userRoleIds);
+		return RoleLocalServiceUtil.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				RoleTable.INSTANCE
+			).from(
+				RoleTable.INSTANCE
+			).where(
+				RoleTable.INSTANCE.roleId.in(
+					ArrayUtil.toArray(_userRoleIds)
+				).and(
+					RoleTable.INSTANCE.ctCollectionId.eq(
+						0L
+					).or(
+						RoleTable.INSTANCE.ctCollectionId.eq(
+							CTCollectionThreadLocal.getCTCollectionId())
+					)
+				)
+			));
 	}
 
 	@Override
@@ -118,7 +139,23 @@ public class UserBagImpl implements UserBag {
 
 	@Override
 	public List<Group> getUserGroups() throws PortalException {
-		return GroupLocalServiceUtil.getGroups(_userGroupIds);
+		return GroupLocalServiceUtil.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				GroupTable.INSTANCE
+			).from(
+				GroupTable.INSTANCE
+			).where(
+				GroupTable.INSTANCE.groupId.in(
+					ArrayUtil.toArray(_userGroupIds)
+				).and(
+					GroupTable.INSTANCE.ctCollectionId.eq(
+						0L
+					).or(
+						GroupTable.INSTANCE.ctCollectionId.eq(
+							CTCollectionThreadLocal.getCTCollectionId())
+					)
+				)
+			));
 	}
 
 	@Override
@@ -133,7 +170,23 @@ public class UserBagImpl implements UserBag {
 
 	@Override
 	public List<Group> getUserOrgGroups() throws PortalException {
-		return GroupLocalServiceUtil.getGroups(_userOrgGroupIds);
+		return GroupLocalServiceUtil.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				GroupTable.INSTANCE
+			).from(
+				GroupTable.INSTANCE
+			).where(
+				GroupTable.INSTANCE.groupId.in(
+					ArrayUtil.toArray(_userOrgGroupIds)
+				).and(
+					GroupTable.INSTANCE.ctCollectionId.eq(
+						0L
+					).or(
+						GroupTable.INSTANCE.ctCollectionId.eq(
+							CTCollectionThreadLocal.getCTCollectionId())
+					)
+				)
+			));
 	}
 
 	@Override
@@ -143,12 +196,44 @@ public class UserBagImpl implements UserBag {
 
 	@Override
 	public List<Organization> getUserOrgs() throws PortalException {
-		return OrganizationLocalServiceUtil.getOrganizations(_userOrgIds);
+		return OrganizationLocalServiceUtil.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				OrganizationTable.INSTANCE
+			).from(
+				OrganizationTable.INSTANCE
+			).where(
+				OrganizationTable.INSTANCE.organizationId.in(
+					ArrayUtil.toArray(_userOrgIds)
+				).and(
+					OrganizationTable.INSTANCE.ctCollectionId.eq(
+						0L
+					).or(
+						OrganizationTable.INSTANCE.ctCollectionId.eq(
+							CTCollectionThreadLocal.getCTCollectionId())
+					)
+				)
+			));
 	}
 
 	@Override
 	public List<Group> getUserUserGroupGroups() throws PortalException {
-		return GroupLocalServiceUtil.getGroups(_userUserGroupGroupIds);
+		return GroupLocalServiceUtil.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				GroupTable.INSTANCE
+			).from(
+				GroupTable.INSTANCE
+			).where(
+				GroupTable.INSTANCE.groupId.in(
+					ArrayUtil.toArray(_userUserGroupGroupIds)
+				).and(
+					GroupTable.INSTANCE.ctCollectionId.eq(
+						0L
+					).or(
+						GroupTable.INSTANCE.ctCollectionId.eq(
+							CTCollectionThreadLocal.getCTCollectionId())
+					)
+				)
+			));
 	}
 
 	@Override
