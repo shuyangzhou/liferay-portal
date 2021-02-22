@@ -27,6 +27,10 @@ public class CommerceDataIntegrationProcessLogLocalServiceWrapper
 	implements CommerceDataIntegrationProcessLogLocalService,
 			   ServiceWrapper<CommerceDataIntegrationProcessLogLocalService> {
 
+	public CommerceDataIntegrationProcessLogLocalServiceWrapper() {
+		this(null);
+	}
+
 	public CommerceDataIntegrationProcessLogLocalServiceWrapper(
 		CommerceDataIntegrationProcessLogLocalService
 			commerceDataIntegrationProcessLogLocalService) {
