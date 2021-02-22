@@ -21,8 +21,7 @@
 <c:if test="<%= cpContentListEntryModel.getSkuId() != 0 %>">
 	<div class="aspect-ratio-item-bottom-left">
 		<commerce-ui:availability-label
-			lowStock="<%= cpContentListEntryModel.isLowStock() %>"
-			stockQuantity="<%= cpContentListEntryModel.getStockQuantity() %>"
+			cpCatalogEntry="<%= cpCatalogEntry %>"
 		/>
 	</div>
 </c:if>

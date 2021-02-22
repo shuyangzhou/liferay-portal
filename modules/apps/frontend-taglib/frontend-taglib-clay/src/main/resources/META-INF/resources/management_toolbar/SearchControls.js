@@ -67,14 +67,16 @@ const SearchControls = ({
 				</ClayInput.Group>
 
 				{searchData &&
-					Object.keys(searchData).map((key) => (
-						<ClayInput
-							key={key}
-							name={key}
-							type="hidden"
-							value={searchData[key]}
-						/>
-					))}
+					Object.keys(searchData).map((key) =>
+						searchData[key].map((value) => (
+							<ClayInput
+								key={key}
+								name={key}
+								type="hidden"
+								value={value}
+							/>
+						))
+					)}
 			</ClayManagementToolbar.Search>
 		</>
 	);

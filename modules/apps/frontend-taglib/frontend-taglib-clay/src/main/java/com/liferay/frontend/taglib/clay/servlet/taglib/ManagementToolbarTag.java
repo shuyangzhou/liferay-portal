@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -1067,8 +1068,8 @@ public class ManagementToolbarTag extends BaseContainerTag {
 		return SKIP_BODY;
 	}
 
-	private Map<String, String> _getParamsMap(String url) {
-		Map<String, String> searchData = new HashMap<>();
+	private Map<String, List<String>> _getParamsMap(String url) {
+		Map<String, List<String>> searchData = new HashMap<>();
 
 		String[] parameters = StringUtil.split(
 			HttpUtil.getQueryString(url), CharPool.AMPERSAND);
@@ -1095,7 +1096,15 @@ public class ManagementToolbarTag extends BaseContainerTag {
 
 			parameterValue = HttpUtil.decodeURL(parameterValue);
 
-			searchData.put(parameterName, parameterValue);
+			List<String> parameterValues = searchData.get(parameterName);
+
+			if (parameterValues == null) {
+				parameterValues = new LinkedList<>();
+
+				searchData.put(parameterName, parameterValues);
+			}
+
+			parameterValues.add(parameterValue);
 		}
 
 		return searchData;

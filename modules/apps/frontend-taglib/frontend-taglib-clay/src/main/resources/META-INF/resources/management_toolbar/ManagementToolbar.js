@@ -43,7 +43,9 @@ function ManagementToolbar({
 	onCheckboxChange = () => {},
 	onClearSelectionButtonClick = () => {},
 	onCreateButtonClick = () => {},
+	onCreationMenuItemClick = () => {},
 	onInfoButtonClick = () => {},
+	onFilterDropdownItemClick = () => {},
 	onSelectAllButtonClick = () => {},
 	onShowMoreButtonClick,
 	searchActionURL,
@@ -100,6 +102,9 @@ function ManagementToolbar({
 						<FilterOrderControls
 							disabled={disabled}
 							filterDropdownItems={filterDropdownItems}
+							onFilterDropdownItemClick={
+								onFilterDropdownItemClick
+							}
 							sortingURL={sortingURL}
 						/>
 					)}
@@ -167,6 +172,9 @@ function ManagementToolbar({
 										{...creationMenu}
 										onCreateButtonClick={
 											onCreateButtonClick
+										}
+										onCreationMenuItemClick={
+											onCreationMenuItemClick
 										}
 										onShowMoreButtonClick={
 											onShowMoreButtonClick

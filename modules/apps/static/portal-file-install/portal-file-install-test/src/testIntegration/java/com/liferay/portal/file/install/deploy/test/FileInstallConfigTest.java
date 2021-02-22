@@ -36,11 +36,11 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -137,6 +137,9 @@ public class FileInstallConfigTest {
 
 	@Test
 	public void testConfigurationDeprecatedFileExtension() throws Exception {
+		Assume.assumeFalse(
+			PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED);
+
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testDummy");
 		String configurationPidDeprecated = _CONFIGURATION_PID_PREFIX.concat(
@@ -157,7 +160,7 @@ public class FileInstallConfigTest {
 				Log4JLoggerTestUtil.configureLog4JLogger(
 					"com.liferay.portal.file.install.internal.configuration." +
 						"ConfigurationFileInstaller",
-					Level.WARN)) {
+					Log4JLoggerTestUtil.WARN)) {
 
 			Files.write(configPathDeprecated, contentDeprecated.getBytes());
 

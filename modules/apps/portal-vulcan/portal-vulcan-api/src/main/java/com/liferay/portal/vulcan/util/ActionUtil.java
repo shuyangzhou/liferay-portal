@@ -319,7 +319,7 @@ public class ActionUtil {
 	}
 
 	private static Map<String, Object> _getParameterMap(
-		Class<?> clazz, Long id, String methodName, long siteId,
+		Class<?> clazz, Long id, String methodName, Long siteId,
 		UriInfo uriInfo) {
 
 		MultivaluedMap<String, String> pathParameters =
@@ -346,7 +346,7 @@ public class ActionUtil {
 			return parameterMap;
 		}
 
-		if (Objects.equals(firstParameterName, "siteId")) {
+		if ((siteId != null) && Objects.equals(firstParameterName, "siteId")) {
 			parameterMap.put(firstParameterName, siteId);
 		}
 		else {

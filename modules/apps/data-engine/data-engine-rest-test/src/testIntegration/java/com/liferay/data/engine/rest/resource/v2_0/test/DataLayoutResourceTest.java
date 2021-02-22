@@ -125,9 +125,7 @@ public class DataLayoutResourceTest extends BaseDataLayoutResourceTestCase {
 				new GraphQLField(
 					"dataLayoutByContentTypeByDataLayoutKey",
 					HashMapBuilder.<String, Object>put(
-						"contentType",
-						StringBundler.concat(
-							StringPool.QUOTE, "app-builder", StringPool.QUOTE)
+						"contentType", "\"app-builder\""
 					).put(
 						"dataLayoutKey",
 						StringBundler.concat(
