@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.log.Log4jLogFactoryImpl;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
+import com.liferay.portal.test.log.LogEvent;
 
 import java.util.List;
 import java.util.Properties;
@@ -142,13 +143,13 @@ public class SanitizerLogWrapperTest {
 		log.warn(_message);
 		log.warn(_message, exception);
 
-		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
+		List<LogEvent> logEvents = _captureAppender.getLogEvents();
 
-		Assert.assertNotNull(loggingEvents);
-		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(logEvents);
+		Assert.assertEquals(logEvents.toString(), 12, logEvents.size());
 
-		for (LoggingEvent loggingEvent : loggingEvents) {
-			String message = loggingEvent.getRenderedMessage();
+		for (LogEvent logEvent : logEvents) {
+			String message = logEvent.getMessage();
 
 			Assert.assertTrue(
 				message.startsWith(SanitizerLogWrapper.CRLF_WARNING));
@@ -166,7 +167,7 @@ public class SanitizerLogWrapperTest {
 				expectedMessageWithCRLFChars, messageWithCRLFChars);
 		}
 
-		loggingEvents.clear();
+		logEvents.clear();
 
 		_log.debug(_message);
 		_log.debug(_message, exception);
@@ -181,11 +182,11 @@ public class SanitizerLogWrapperTest {
 		_log.warn(_message);
 		_log.warn(_message, exception);
 
-		Assert.assertNotNull(loggingEvents);
-		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(logEvents);
+		Assert.assertEquals(logEvents.toString(), 12, logEvents.size());
 
-		for (LoggingEvent loggingEvent : loggingEvents) {
-			String message = loggingEvent.getRenderedMessage();
+		for (LogEvent logEvent : logEvents) {
+			String message = logEvent.getMessage();
 
 			char[] messageChars = message.toCharArray();
 
@@ -215,12 +216,15 @@ public class SanitizerLogWrapperTest {
 		_log.warn(exception, exception);
 		_log.warn(null, exception);
 
-		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
+		List<LogEvent> logEvents = _captureAppender.getLogEvents();
 
-		Assert.assertNotNull(loggingEvents);
-		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(logEvents);
+		Assert.assertEquals(logEvents.toString(), 12, logEvents.size());
 
-		for (LoggingEvent loggingEvent : loggingEvents) {
+		for (LogEvent logEvent : logEvents) {
+			LoggingEvent loggingEvent =
+				(LoggingEvent)logEvent.getWrappedObject();
+
 			ThrowableInformation throwableInformation =
 				loggingEvent.getThrowableInformation();
 
@@ -255,13 +259,13 @@ public class SanitizerLogWrapperTest {
 		_log.warn(_message);
 		_log.warn(_message, exception);
 
-		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
+		List<LogEvent> logEvents = _captureAppender.getLogEvents();
 
-		Assert.assertNotNull(loggingEvents);
-		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(logEvents);
+		Assert.assertEquals(logEvents.toString(), 12, logEvents.size());
 
-		for (LoggingEvent loggingEvent : loggingEvents) {
-			String message = loggingEvent.getRenderedMessage();
+		for (LogEvent logEvent : logEvents) {
+			String message = logEvent.getMessage();
 
 			char[] messageChars = message.toCharArray();
 
