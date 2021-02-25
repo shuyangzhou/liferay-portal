@@ -21,6 +21,7 @@ import java.io.Closeable;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -66,8 +67,18 @@ public class CaptureAppender extends AppenderSkeleton implements Closeable {
 		}
 	}
 
+	public List<LogEvent> getLogEvents() {
+		return _logEvents;
+	}
+
 	public List<LoggingEvent> getLoggingEvents() {
-		return _loggingEvents;
+		List<LoggingEvent> loggingEvents = new ArrayList<>();
+
+		for (LogEvent logEvent : _logEvents) {
+			loggingEvents.add((LoggingEvent)logEvent.getWrappedObject());
+		}
+
+		return loggingEvents;
 	}
 
 	@Override
@@ -77,7 +88,7 @@ public class CaptureAppender extends AppenderSkeleton implements Closeable {
 
 	@Override
 	protected void append(LoggingEvent loggingEvent) {
-		_loggingEvents.add(new PrintableLoggingEvent(loggingEvent));
+		_logEvents.add(new LogEvent(new PrintableLoggingEvent(loggingEvent)));
 	}
 
 	private static final Field _parentField;
@@ -93,9 +104,8 @@ public class CaptureAppender extends AppenderSkeleton implements Closeable {
 	}
 
 	private final Level _level;
+	private final List<LogEvent> _logEvents = new CopyOnWriteArrayList<>();
 	private final Logger _logger;
-	private final List<LoggingEvent> _loggingEvents =
-		new CopyOnWriteArrayList<>();
 	private final Category _parentCategory;
 
 	private static class PrintableLoggingEvent extends LoggingEvent {
