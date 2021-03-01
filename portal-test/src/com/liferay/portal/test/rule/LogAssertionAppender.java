@@ -16,48 +16,44 @@ package com.liferay.portal.test.rule;
 
 import com.liferay.petra.string.StringBundler;
 
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
-import org.apache.log4j.spi.ThrowableInformation;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.message.Message;
 
 /**
  * @author William Newbury
  */
-public class LogAssertionAppender extends AppenderSkeleton {
+public class LogAssertionAppender extends AbstractAppender {
 
 	public static final LogAssertionAppender INSTANCE =
 		new LogAssertionAppender();
 
-	@Override
-	public void close() {
+	public LogAssertionAppender() {
+		super("LogAssertionAppender", null, null, true, null);
+
+		start();
 	}
 
 	@Override
-	public boolean requiresLayout() {
-		return false;
-	}
-
-	@Override
-	protected void append(LoggingEvent loggingEvent) {
-		Level level = loggingEvent.getLevel();
+	public void append(LogEvent logEvent) {
+		Level level = logEvent.getLevel();
 
 		if (level.equals(Level.ERROR) || level.equals(Level.FATAL)) {
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("{level=");
-			sb.append(loggingEvent.getLevel());
+			sb.append(logEvent.getLevel());
 			sb.append(", loggerName=");
-			sb.append(loggingEvent.getLoggerName());
+			sb.append(logEvent.getLoggerName());
 			sb.append(", message=");
-			sb.append(loggingEvent.getMessage());
 
-			ThrowableInformation throwableInformation =
-				loggingEvent.getThrowableInformation();
+			Message objectMessage = logEvent.getMessage();
+
+			sb.append(objectMessage.getFormattedMessage());
 
 			LogAssertionTestRule.caughtFailure(
-				new AssertionError(
-					sb.toString(), throwableInformation.getThrowable()));
+				new AssertionError(sb.toString(), logEvent.getThrown()));
 		}
 	}
 

@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import org.apache.logging.log4j.LogManager;
+
 import org.junit.Assert;
 import org.junit.runner.Description;
 
@@ -226,8 +228,8 @@ public class LogAssertionTestRule
 	}
 
 	protected static void installLog4jAppender() {
-		org.apache.log4j.Logger logger =
-			org.apache.log4j.Logger.getRootLogger();
+		org.apache.logging.log4j.core.Logger logger =
+			(org.apache.logging.log4j.core.Logger)LogManager.getRootLogger();
 
 		logger.removeAppender(LogAssertionAppender.INSTANCE);
 
@@ -284,8 +286,8 @@ public class LogAssertionTestRule
 	}
 
 	protected static void uninstallLog4jAppender() {
-		org.apache.log4j.Logger logger =
-			org.apache.log4j.Logger.getRootLogger();
+		org.apache.logging.log4j.core.Logger logger =
+			(org.apache.logging.log4j.core.Logger)LogManager.getRootLogger();
 
 		logger.removeAppender(LogAssertionAppender.INSTANCE);
 	}
