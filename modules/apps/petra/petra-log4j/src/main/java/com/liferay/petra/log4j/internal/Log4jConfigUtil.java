@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -123,7 +122,9 @@ public class Log4jConfigUtil {
 		for (LoggerConfig loggerConfig : loggerConfigs.values()) {
 			String loggerConfigName = loggerConfig.getName();
 
-			if (Validator.isNotNull(loggerConfigName)) {
+			if (!Objects.equals(
+					loggerConfigName, LogManager.ROOT_LOGGER_NAME)) {
+
 				priorities.put(
 					loggerConfigName, String.valueOf(loggerConfig.getLevel()));
 			}
