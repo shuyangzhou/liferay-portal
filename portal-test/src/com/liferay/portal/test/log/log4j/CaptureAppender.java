@@ -20,7 +20,6 @@ import java.io.Closeable;
 
 import java.lang.reflect.Field;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -59,20 +58,6 @@ public class CaptureAppender implements Closeable {
 
 	public List<LogEvent> getLogEvents() {
 		return _logEvents;
-	}
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link #getLogEvents()}
-	 */
-	@Deprecated
-	public List<LoggingEvent> getLoggingEvents() {
-		List<LoggingEvent> loggingEvents = new ArrayList<>();
-
-		for (LogEvent logEvent : _logEvents) {
-			loggingEvents.add((LoggingEvent)logEvent.getWrappedObject());
-		}
-
-		return loggingEvents;
 	}
 
 	private static final Field _parentField;

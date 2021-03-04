@@ -47,10 +47,6 @@ public class LogEvent {
 		return null;
 	}
 
-	public Object getWrappedObject() {
-		return _loggingEvent;
-	}
-
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(5);
