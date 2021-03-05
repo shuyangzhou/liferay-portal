@@ -330,31 +330,16 @@ public class CompanyLocalServiceUtil {
 
 	public static <E extends Exception> void forEach(
 			com.liferay.petra.function.UnsafeConsumer<Company, E>
-				unsafeConsumer)
-		throws E {
-
-		getService().forEach(unsafeConsumer);
-	}
-
-	public static <E extends Exception> void forEach(
-			com.liferay.petra.function.UnsafeConsumer<Company, E>
 				unsafeConsumer,
-			List<Company> companies)
+			Company... companies)
 		throws E {
 
 		getService().forEach(unsafeConsumer, companies);
 	}
 
 	public static <E extends Exception> void forEachCompanyId(
-			com.liferay.petra.function.UnsafeConsumer<Long, E> unsafeConsumer)
-		throws E {
-
-		getService().forEachCompanyId(unsafeConsumer);
-	}
-
-	public static <E extends Exception> void forEachCompanyId(
 			com.liferay.petra.function.UnsafeConsumer<Long, E> unsafeConsumer,
-			long[] companyIds)
+			long... companyIds)
 		throws E {
 
 		getService().forEachCompanyId(unsafeConsumer, companyIds);
