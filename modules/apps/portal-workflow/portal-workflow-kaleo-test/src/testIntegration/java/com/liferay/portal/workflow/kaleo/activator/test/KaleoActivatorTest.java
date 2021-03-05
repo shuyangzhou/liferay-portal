@@ -63,7 +63,7 @@ public class KaleoActivatorTest {
 
 				Assert.assertNotNull(kaleoDefinition);
 			},
-			companies);
+			companies.toArray(new Company[0]));
 	}
 
 	@Inject
