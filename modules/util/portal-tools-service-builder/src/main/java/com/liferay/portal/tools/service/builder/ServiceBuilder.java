@@ -1379,9 +1379,15 @@ public class ServiceBuilder {
 	}
 
 	public String getParameterType(JavaParameter parameter) {
-		JavaType returnType = parameter.getType();
+		JavaType javaType = parameter.getType();
 
-		return getTypeGenericsName(returnType);
+		String genericsName = getTypeGenericsName(javaType);
+
+		if (parameter.isVarArgs()) {
+			return genericsName.concat(StringPool.TRIPLE_PERIOD);
+		}
+
+		return genericsName;
 	}
 
 	public String getPrimitiveObj(String type) {

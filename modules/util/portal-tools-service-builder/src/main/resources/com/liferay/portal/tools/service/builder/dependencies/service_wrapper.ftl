@@ -43,7 +43,7 @@ public class ${entity.name}${sessionTypeName}ServiceWrapper implements ${entity.
 			${serviceBuilder.getTypeParametersDefinition(method.typeParameters)} ${serviceBuilder.getTypeGenericsName(method.returns)} ${method.name}(
 
 			<#list method.parameters as parameter>
-				${serviceBuilder.getTypeGenericsName(parameter.type)} ${parameter.name}
+				${serviceBuilder.getParameterType(parameter)} ${parameter.name}
 
 				<#if parameter_has_next>
 					,
