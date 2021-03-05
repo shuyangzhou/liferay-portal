@@ -433,19 +433,19 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public <E extends Exception> void forEach(
-			UnsafeConsumer<Company, E> unsafeConsumer)
+			UnsafeConsumer<Company, E> unsafeConsumer, Company... companies)
 		throws E {
 
-		forEach(unsafeConsumer, getCompanies(false));
-	}
+		List<Company> companyList = null;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public <E extends Exception> void forEach(
-			UnsafeConsumer<Company, E> unsafeConsumer, List<Company> companies)
-		throws E {
+		if (ArrayUtil.isEmpty(companies)) {
+			companyList = getCompanies(false);
+		}
+		else {
+			companyList = Arrays.asList(companies);
+		}
 
-		for (Company company : companies) {
+		for (Company company : companyList) {
 			try (SafeClosable safeClosable =
 					CompanyThreadLocal.setWithSafeClosable(
 						company.getCompanyId())) {
@@ -458,19 +458,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public <E extends Exception> void forEachCompanyId(
-			UnsafeConsumer<Long, E> unsafeConsumer)
+			UnsafeConsumer<Long, E> unsafeConsumer, long... companyIds)
 		throws E {
 
-		forEachCompanyId(
-			unsafeConsumer,
-			ListUtil.toLongArray(getCompanies(false), Company::getCompanyId));
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public <E extends Exception> void forEachCompanyId(
-			UnsafeConsumer<Long, E> unsafeConsumer, long[] companyIds)
-		throws E {
+		if (ArrayUtil.isEmpty(companyIds)) {
+			companyIds = ListUtil.toLongArray(
+				getCompanies(false), Company::getCompanyId);
+		}
 
 		for (long companyId : companyIds) {
 			try (SafeClosable safeClosable =
