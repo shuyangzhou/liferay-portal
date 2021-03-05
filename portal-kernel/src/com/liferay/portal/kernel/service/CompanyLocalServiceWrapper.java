@@ -363,17 +363,8 @@ public class CompanyLocalServiceWrapper
 	@Override
 	public <E extends java.lang.Exception> void forEach(
 			com.liferay.petra.function.UnsafeConsumer
-				<com.liferay.portal.kernel.model.Company, E> unsafeConsumer)
-		throws E {
-
-		_companyLocalService.forEach(unsafeConsumer);
-	}
-
-	@Override
-	public <E extends java.lang.Exception> void forEach(
-			com.liferay.petra.function.UnsafeConsumer
 				<com.liferay.portal.kernel.model.Company, E> unsafeConsumer,
-			java.util.List<com.liferay.portal.kernel.model.Company> companies)
+			com.liferay.portal.kernel.model.Company... companies)
 		throws E {
 
 		_companyLocalService.forEach(unsafeConsumer, companies);
@@ -382,17 +373,8 @@ public class CompanyLocalServiceWrapper
 	@Override
 	public <E extends java.lang.Exception> void forEachCompanyId(
 			com.liferay.petra.function.UnsafeConsumer<java.lang.Long, E>
-				unsafeConsumer)
-		throws E {
-
-		_companyLocalService.forEachCompanyId(unsafeConsumer);
-	}
-
-	@Override
-	public <E extends java.lang.Exception> void forEachCompanyId(
-			com.liferay.petra.function.UnsafeConsumer<java.lang.Long, E>
 				unsafeConsumer,
-			long[] companyIds)
+			long... companyIds)
 		throws E {
 
 		_companyLocalService.forEachCompanyId(unsafeConsumer, companyIds);
