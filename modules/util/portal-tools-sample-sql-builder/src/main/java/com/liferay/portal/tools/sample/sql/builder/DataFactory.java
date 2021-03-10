@@ -1240,21 +1240,6 @@ public class DataFactory {
 			commerceCatalogModel.getName(), false);
 	}
 
-	public List<GroupModel> newCommerceCatalogGroupModels(
-		List<CommerceCatalogModel> commerceCatalogModels) {
-
-		List<GroupModel> groupModels = new ArrayList<>(
-			commerceCatalogModels.size());
-
-		for (CommerceCatalogModel commerceCatalogModel :
-				commerceCatalogModels) {
-
-			groupModels.add(newCommerceCatalogGroupModel(commerceCatalogModel));
-		}
-
-		return groupModels;
-	}
-
 	public CommerceCatalogModel newCommerceCatalogModel(
 		CommerceCurrencyModel commerceCurrencyModel, int count) {
 
