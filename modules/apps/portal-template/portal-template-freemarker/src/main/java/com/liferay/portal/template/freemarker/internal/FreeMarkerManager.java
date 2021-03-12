@@ -376,6 +376,8 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 		_bundle = bundleContext.getBundle();
 
+		_freeMarkerBundleClassloader = new FreeMarkerBundleClassloader(_bundle);
+
 		int stateMask = ~Bundle.INSTALLED & ~Bundle.UNINSTALLED;
 
 		_bundleTracker = new BundleTracker<>(
@@ -456,39 +458,6 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			templateResource, helperUtilities, _configuration,
 			templateContextHelper, _freeMarkerTemplateResourceCache, restricted,
 			beansWrapper, this);
-	}
-
-	protected FreeMarkerBundleClassloader getFreeMarkerBundleClassloader() {
-		int currentCount;
-
-		synchronized (_bundleTracker) {
-			if (((currentCount = _bundleTracker.getTrackingCount()) <=
-					_bundleTrackingCount) &&
-				(_freeMarkerBundleClassloader != null)) {
-
-				return _freeMarkerBundleClassloader;
-			}
-
-			_bundleTrackingCount = currentCount;
-
-			Bundle[] bundles = _bundleTracker.getBundles();
-
-			if (bundles == null) {
-				bundles = new Bundle[] {_bundle};
-			}
-			else {
-				Bundle[] tempBundles = new Bundle[bundles.length + 1];
-
-				tempBundles[0] = _bundle;
-
-				System.arraycopy(bundles, 0, tempBundles, 1, bundles.length);
-
-				bundles = tempBundles;
-			}
-
-			return _freeMarkerBundleClassloader =
-				new FreeMarkerBundleClassloader(bundles);
-		}
 	}
 
 	protected ServletContextHashModel getServletContextHashModel(
@@ -695,7 +664,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	private volatile int _bundleTrackingCount = -2;
 	private volatile Configuration _configuration;
 	private volatile BeansWrapper _defaultBeanWrapper;
-	private volatile FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
+	private FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 	private volatile FreeMarkerEngineConfiguration
 		_freeMarkerEngineConfiguration;
 
@@ -963,7 +932,11 @@ public class FreeMarkerManager extends BaseTemplateManager {
 					@SuppressWarnings("unchecked")
 					Map<String, String> map = PropertiesUtil.toMap(properties);
 
-					_taglibMappings.putAll(map);
+					if (!map.isEmpty()) {
+						_freeMarkerBundleClassloader.addBundle(bundle);
+
+						_taglibMappings.putAll(map);
+					}
 
 					return map.keySet();
 				}
@@ -989,6 +962,8 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			}
 
 			_templateModels.clear();
+
+			_freeMarkerBundleClassloader.removeBundle(bundle);
 		}
 
 	}
@@ -997,8 +972,6 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 		public TaglibFactoryWrapper(
 			ServletContext servletContext, ObjectWrapper objectWrapper) {
-
-			_freeMarkerBundleClassloader = getFreeMarkerBundleClassloader();
 
 			_taglibFactory = new TaglibFactory(
 				getServletContextWrapper(
@@ -1038,7 +1011,6 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			return false;
 		}
 
-		private final FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 		private final TaglibFactory _taglibFactory;
 
 	}
