@@ -20,16 +20,15 @@ import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.test.FinalizeManagerUtil;
 import com.liferay.portal.kernel.test.GCUtil;
 import com.liferay.portal.kernel.upload.FileItem;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.upload.LiferayFileItem;
 import com.liferay.portal.upload.LiferayFileItemFactory;
 import com.liferay.portal.upload.UploadServletRequestImpl;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PortalImpl;
 
 import java.io.IOException;
@@ -45,6 +44,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -57,13 +57,13 @@ import org.springframework.mock.web.MockHttpServletResponse;
 public class JSONWebServiceServiceActionTest
 	extends BaseJSONWebServiceTestCase {
 
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		initPortalServices();
-
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
 
 		Class<?> clazz = JSONWebServiceServiceAction.class;
 

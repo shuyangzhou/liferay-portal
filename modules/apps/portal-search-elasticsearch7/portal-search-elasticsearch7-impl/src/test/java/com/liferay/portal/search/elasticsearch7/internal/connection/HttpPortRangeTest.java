@@ -16,13 +16,12 @@ package com.liferay.portal.search.elasticsearch7.internal.connection;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 /**
@@ -31,10 +30,9 @@ import org.junit.Test;
  */
 public class HttpPortRangeTest {
 
-	@BeforeClass
-	public static void setUpClass() {
-		PropsUtil.setProps(new PropsImpl());
-	}
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testEmbeddedHttpPort() {

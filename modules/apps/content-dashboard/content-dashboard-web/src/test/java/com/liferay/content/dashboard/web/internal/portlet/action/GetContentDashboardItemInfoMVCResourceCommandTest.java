@@ -33,13 +33,13 @@ import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceResponse;
-import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.servlet.BrowserSnifferImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.HtmlImpl;
 import com.liferay.portal.util.HttpImpl;
 import com.liferay.portal.util.PortalImpl;
@@ -58,6 +58,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -66,6 +67,10 @@ import org.mockito.Mockito;
  * @author Cristina González
  */
 public class GetContentDashboardItemInfoMVCResourceCommandTest {
+
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -84,8 +89,6 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(new PortalImpl());
-
-		PropsTestUtil.setProps(Collections.emptyMap());
 	}
 
 	@Test

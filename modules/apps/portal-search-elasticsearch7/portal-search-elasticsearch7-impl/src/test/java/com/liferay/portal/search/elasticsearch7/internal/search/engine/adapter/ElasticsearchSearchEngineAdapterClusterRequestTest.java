@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.cluster.ClusterRequestExecutorFixture;
@@ -32,7 +31,7 @@ import com.liferay.portal.search.engine.adapter.cluster.StateClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.StateClusterResponse;
 import com.liferay.portal.search.engine.adapter.cluster.StatsClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.StatsClusterResponse;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
 
@@ -47,6 +46,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 /**
@@ -54,10 +54,12 @@ import org.junit.Test;
  */
 public class ElasticsearchSearchEngineAdapterClusterRequestTest {
 
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@BeforeClass
 	public static void setUpClass() {
-		PropsUtil.setProps(new PropsImpl());
-
 		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
 			ElasticsearchConnectionFixture.builder(
 			).clusterName(

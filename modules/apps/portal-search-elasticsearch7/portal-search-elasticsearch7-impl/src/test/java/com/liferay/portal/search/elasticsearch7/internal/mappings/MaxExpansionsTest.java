@@ -18,13 +18,21 @@ import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchIndexingFi
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.search.test.util.mappings.BaseMaxExpansionsTestCase;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Wade Cao
  */
 public class MaxExpansionsTest extends BaseMaxExpansionsTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Override
 	@Test

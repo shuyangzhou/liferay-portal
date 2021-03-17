@@ -17,9 +17,11 @@ package com.liferay.portal.search.elasticsearch7.internal.suggest;
 import com.liferay.portal.search.elasticsearch7.internal.LiferayElasticsearchIndexingFixtureFactory;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.search.test.util.suggest.BaseSuggestTestCase;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.elasticsearch.ElasticsearchStatusException;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,6 +30,11 @@ import org.junit.rules.ExpectedException;
  * @author André de Oliveira
  */
 public class ElasticsearchSuggestTest extends BaseSuggestTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Override
 	@Test

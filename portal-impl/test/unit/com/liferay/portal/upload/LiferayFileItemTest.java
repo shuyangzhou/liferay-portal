@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.HtmlImpl;
 import com.liferay.portal.util.MimeTypesImpl;
 
@@ -33,12 +33,17 @@ import java.nio.file.Files;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 /**
  * @author Manuel de la Peña
  */
 public class LiferayFileItemTest {
+
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() throws IOException {
@@ -47,10 +52,6 @@ public class LiferayFileItemTest {
 
 		fastDateFormatFactoryUtil.setFastDateFormatFactory(
 			new FastDateFormatFactoryImpl());
-
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
 
 		HtmlUtil htmlUtil = new HtmlUtil();
 

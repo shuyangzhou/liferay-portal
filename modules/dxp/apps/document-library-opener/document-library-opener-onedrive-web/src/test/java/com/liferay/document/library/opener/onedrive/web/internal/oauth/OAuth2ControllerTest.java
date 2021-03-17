@@ -27,10 +27,9 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.servlet.BrowserSnifferImpl;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.UnsupportedEncodingException;
 
@@ -43,6 +42,7 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Matchers;
@@ -55,6 +55,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Cristina González
  */
 public class OAuth2ControllerTest {
+
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() throws PortalException {
@@ -108,8 +112,6 @@ public class OAuth2ControllerTest {
 		).thenReturn(
 			_liferayPortletURL
 		);
-
-		PropsUtil.setProps(new PropsImpl());
 
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 

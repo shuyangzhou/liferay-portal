@@ -17,10 +17,13 @@ package com.liferay.portal.search.elasticsearch7.internal.mappings;
 import com.liferay.portal.search.elasticsearch7.internal.LiferayElasticsearchIndexingFixtureFactory;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.search.test.util.mappings.BaseAssetTagNamesFieldQueryBuilderTestCase;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -28,6 +31,11 @@ import org.junit.Test;
  */
 public class AssetTagNamesFieldQueryBuilderTest
 	extends BaseAssetTagNamesFieldQueryBuilderTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Override
 	@Test

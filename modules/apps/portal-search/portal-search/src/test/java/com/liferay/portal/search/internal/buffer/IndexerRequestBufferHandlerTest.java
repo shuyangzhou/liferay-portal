@@ -16,9 +16,8 @@ package com.liferay.portal.search.internal.buffer;
 
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.configuration.IndexerRegistryConfiguration;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.reflect.Method;
 
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -37,10 +36,9 @@ import org.mockito.Mockito;
  */
 public class IndexerRequestBufferHandlerTest {
 
-	@BeforeClass
-	public static void setUpClass() {
-		PropsUtil.setProps(new PropsImpl());
-	}
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	public IndexerRequestBufferHandlerTest() throws Exception {
 		_method = Indexer.class.getDeclaredMethod(

@@ -23,20 +23,17 @@ import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceWrapper;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceWrapper;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.model.impl.PortletAppImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.HttpImpl;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PrefsPropsUtil;
-import com.liferay.portal.util.PropsImpl;
 import com.liferay.portlet.PortalPreferencesWrapper;
 
 import java.util.Objects;
@@ -51,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -68,6 +66,10 @@ import org.springframework.mock.web.MockServletContext;
  * @author Raymond Augé
  */
 public class ComboServletTest extends PowerMockito {
+
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -225,15 +227,9 @@ public class ComboServletTest extends PowerMockito {
 
 	@Test
 	public void testMixedExtensionsRequest() throws Exception {
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
-
 		LanguageUtil languageUtil = new LanguageUtil();
 
 		languageUtil.setLanguage(new LanguageImpl());
-
-		PropsUtil.setProps(new PropsImpl());
 
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();

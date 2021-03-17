@@ -25,9 +25,8 @@ import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderResponse;
@@ -36,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -45,6 +45,10 @@ import org.mockito.invocation.InvocationOnMock;
  * @author Adolfo Pérez
  */
 public class MBUtilTest {
+
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -84,8 +88,6 @@ public class MBUtilTest {
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(portal);
-
-		PropsUtil.setProps(Mockito.mock(Props.class));
 	}
 
 	@Test

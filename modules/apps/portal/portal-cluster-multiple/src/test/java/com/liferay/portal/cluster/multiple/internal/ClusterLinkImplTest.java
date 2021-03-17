@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
-import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Serializable;
 
@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -47,6 +48,11 @@ import org.junit.Test;
  */
 @NewEnv(type = NewEnv.Type.CLASSLOADER)
 public class ClusterLinkImplTest extends BaseClusterTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testDeactivate() {
@@ -241,9 +247,6 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		Assert.assertSame(message, unicastMessage.getKey());
 		Assert.assertSame(address, unicastMessage.getValue());
 	}
-
-	@Rule
-	public final NewEnvTestRule newEnvTestRule = NewEnvTestRule.INSTANCE;
 
 	protected ClusterLinkImpl getClusterLinkImpl(final int channels) {
 		ClusterLinkImpl clusterLinkImpl = new ClusterLinkImpl();

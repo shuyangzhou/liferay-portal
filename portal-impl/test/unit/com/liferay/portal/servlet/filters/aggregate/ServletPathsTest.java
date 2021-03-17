@@ -16,13 +16,14 @@ package com.liferay.portal.servlet.filters.aggregate;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.util.FileImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,15 +52,12 @@ import org.springframework.mock.web.MockServletContext;
 public class ServletPathsTest {
 
 	@ClassRule
-	public static final CodeCoverageAssertor codeCoverageAssertor =
-		CodeCoverageAssertor.INSTANCE;
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
 	@BeforeClass
 	public static void setUpClass() {
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
-
 		FileUtil.deltree(_testDir);
 	}
 

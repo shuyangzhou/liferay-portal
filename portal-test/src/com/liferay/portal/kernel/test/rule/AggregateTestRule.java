@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import com.liferay.portal.test.rule.InitializeKernelUtilTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -63,13 +66,16 @@ public class AggregateTestRule implements TestRule {
 		CodeCoverageAssertor.class.getName(), NewEnvTestRule.class.getName(),
 		AssumeTestRule.class.getName(),
 		"com.liferay.portal.test.rule.LiferayIntegrationTestRule",
+		LiferayUnitTestRule.class.getName(),
 		"com.liferay.portal.test.rule.PersistenceTestRule",
 		"com.liferay.portal.test.rule.TransactionalTestRule",
 		SynchronousDestinationTestRule.class.getName(),
 		"com.liferay.portal.test.rule.SynchronousMailTestRule",
 		"com.liferay.document.library.webdav.test." +
 			"WebDAVEnvironmentConfigClassTestRule",
-		"com.liferay.portal.test.rule.PermissionCheckerMethodTestRule"
+		"com.liferay.portal.test.rule.PermissionCheckerMethodTestRule",
+		InitializeKernelUtilTestRule.class.getName(),
+		"com.liferay.portal.search.test.util.logging.ExpectedLogMethodTestRule"
 	};
 
 	private static final Comparator<TestRule> _testRuleComparator =

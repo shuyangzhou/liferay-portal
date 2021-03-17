@@ -21,10 +21,9 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.search.index.IndexInformation;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.HttpImpl;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderRequest;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockRenderResponse;
@@ -33,6 +32,7 @@ import javax.portlet.RenderRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Matchers;
@@ -43,12 +43,15 @@ import org.mockito.Mockito;
  */
 public class SearchAdminDisplayContextTest {
 
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@Before
 	public void setUp() {
 		setUpHttpUtil();
 		setUpIndexInformation();
 		setUpLanguage();
-		setUpParamUtil();
 		setUpPortalUtil();
 	}
 
@@ -229,10 +232,6 @@ public class SearchAdminDisplayContextTest {
 
 	protected void setUpLanguage() {
 		_language = new LanguageImpl();
-	}
-
-	protected void setUpParamUtil() {
-		PropsUtil.setProps(Mockito.mock(Props.class));
 	}
 
 	protected void setUpPortalUtil() {

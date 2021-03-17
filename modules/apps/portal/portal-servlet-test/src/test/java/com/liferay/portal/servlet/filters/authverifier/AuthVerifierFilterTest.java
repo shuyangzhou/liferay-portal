@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.security.access.control.AccessControlImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.BasicRegistryImpl;
@@ -37,6 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockFilterChain;
@@ -49,16 +52,21 @@ import org.springframework.mock.web.MockHttpServletResponse;
  */
 public class AuthVerifierFilterTest {
 
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@BeforeClass
 	public static void setUpClass() {
 		_portalUtil.setPortal(_portalImpl);
 
 		Registry registry = new BasicRegistryImpl();
 
+		RegistryUtil.setRegistry(registry);
+
 		registry.registerService(
 			AccessControl.class, new TestAccessControlImpl());
-
-		RegistryUtil.setRegistry(registry);
 	}
 
 	@After

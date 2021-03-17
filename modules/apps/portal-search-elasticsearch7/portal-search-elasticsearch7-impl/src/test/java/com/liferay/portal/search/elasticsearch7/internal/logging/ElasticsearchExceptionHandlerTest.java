@@ -17,11 +17,12 @@ package com.liferay.portal.search.elasticsearch7.internal.logging;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.search.test.util.logging.ExpectedLogMethodTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.util.logging.Level;
-
-import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -31,20 +32,20 @@ import org.junit.rules.ExpectedException;
  */
 public class ElasticsearchExceptionHandlerTest {
 
-	@Before
-	public void setUp() {
-		expectedLogTestRule.configure(
-			ElasticsearchExceptionHandlerTest.class, Level.WARNING);
-	}
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
+	@ExpectedLog(
+		expectedClass = ElasticsearchExceptionHandlerTest.class,
+		expectedLevel = ExpectedLog.Level.INFO,
+		expectedLog = ElasticsearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE
+	)
 	@Test
 	public void testDeleteIndexNotFoundLogExceptionsOnlyFalse()
 		throws Throwable {
-
-		expectedLogTestRule.configure(
-			ElasticsearchExceptionHandlerTest.class, Level.INFO);
-		expectedLogTestRule.expectMessage(
-			ElasticsearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE);
 
 		ElasticsearchExceptionHandler elasticsearchExceptionHandler =
 			new ElasticsearchExceptionHandler(_log, false);
@@ -55,14 +56,14 @@ public class ElasticsearchExceptionHandlerTest {
 					INDEX_NOT_FOUND_EXCEPTION_MESSAGE));
 	}
 
+	@ExpectedLog(
+		expectedClass = ElasticsearchExceptionHandlerTest.class,
+		expectedLevel = ExpectedLog.Level.INFO,
+		expectedLog = ElasticsearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE
+	)
 	@Test
 	public void testDeleteIndexNotFoundLogExceptionsOnlyTrue()
 		throws Throwable {
-
-		expectedLogTestRule.configure(
-			ElasticsearchExceptionHandlerTest.class, Level.INFO);
-		expectedLogTestRule.expectMessage(
-			ElasticsearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE);
 
 		ElasticsearchExceptionHandler elasticsearchExceptionHandler =
 			new ElasticsearchExceptionHandler(_log, true);
@@ -86,10 +87,13 @@ public class ElasticsearchExceptionHandlerTest {
 			new SearchException("deletion failed and results in exception"));
 	}
 
+	@ExpectedLog(
+		expectedClass = ElasticsearchExceptionHandlerTest.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "deletion failed is only logged"
+	)
 	@Test
 	public void testDeleteLogExceptionsOnlyTrue() throws Throwable {
-		expectedLogTestRule.expectMessage("deletion failed is only logged");
-
 		ElasticsearchExceptionHandler elasticsearchExceptionHandler =
 			new ElasticsearchExceptionHandler(_log, true);
 
@@ -109,10 +113,13 @@ public class ElasticsearchExceptionHandlerTest {
 			new SearchException("some other random message"));
 	}
 
+	@ExpectedLog(
+		expectedClass = ElasticsearchExceptionHandlerTest.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "some random message"
+	)
 	@Test
 	public void testLogExceptionsOnlyTrue() throws Throwable {
-		expectedLogTestRule.expectMessage("some random message");
-
 		ElasticsearchExceptionHandler elasticsearchExceptionHandler =
 			new ElasticsearchExceptionHandler(_log, true);
 
@@ -122,9 +129,6 @@ public class ElasticsearchExceptionHandlerTest {
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
-
-	@Rule
-	public ExpectedLogTestRule expectedLogTestRule = ExpectedLogTestRule.none();
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchExceptionHandlerTest.class);

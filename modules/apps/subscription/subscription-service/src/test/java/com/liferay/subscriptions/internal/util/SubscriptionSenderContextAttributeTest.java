@@ -16,13 +16,13 @@ package com.liferay.subscriptions.internal.util;
 
 import com.liferay.portal.kernel.util.EscapableObject;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.HtmlImpl;
-import com.liferay.portal.util.PropsImpl;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 /**
@@ -30,13 +30,15 @@ import org.junit.Test;
  */
 public class SubscriptionSenderContextAttributeTest {
 
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@Before
 	public void setUp() {
 		HtmlUtil htmlUtil = new HtmlUtil();
 
 		htmlUtil.setHtml(new HtmlImpl());
-
-		PropsUtil.setProps(new PropsImpl());
 	}
 
 	@Test

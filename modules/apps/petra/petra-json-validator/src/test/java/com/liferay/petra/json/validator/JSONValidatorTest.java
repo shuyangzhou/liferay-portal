@@ -15,13 +15,13 @@
 package com.liferay.petra.json.validator;
 
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.util.FileImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.InputStream;
 
 import org.hamcrest.core.StringStartsWith;
 
-import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -31,12 +31,9 @@ import org.junit.rules.ExpectedException;
  */
 public class JSONValidatorTest {
 
-	@Before
-	public void setUp() {
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
-	}
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testValidateExampleInvalidExtraProperties() throws Exception {

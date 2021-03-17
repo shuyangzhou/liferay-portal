@@ -16,12 +16,12 @@ package com.liferay.portal.search.elasticsearch7.internal.index;
 
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.IndexName;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -31,10 +31,12 @@ import org.junit.rules.TestName;
  */
 public class LiferayTypeMappingsPortugueseTest {
 
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@Before
 	public void setUp() throws Exception {
-		PropsUtil.setProps(new PropsImpl());
-
 		Class<?> clazz = getClass();
 
 		_liferayIndexFixture = new LiferayIndexFixture(

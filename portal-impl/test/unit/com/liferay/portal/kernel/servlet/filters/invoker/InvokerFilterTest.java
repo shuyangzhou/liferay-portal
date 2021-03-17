@@ -22,9 +22,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;
 import com.liferay.portal.util.HttpImpl;
-import com.liferay.portal.util.PropsImpl;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockFilterChain;
@@ -44,6 +45,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
  */
 public class InvokerFilterTest {
 
+	@ClassRule
+	public static LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
+
 	@Before
 	public void setUp() {
 		ToolDependencies.wireCaches();
@@ -51,8 +56,6 @@ public class InvokerFilterTest {
 		HttpUtil httpUtil = new HttpUtil();
 
 		httpUtil.setHttp(new HttpImpl());
-
-		PropsUtil.setProps(new PropsImpl());
 	}
 
 	@Test
