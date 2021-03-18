@@ -38,6 +38,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Tomas Polesovsky
@@ -174,6 +177,10 @@ public class Log4JUtil {
 
 	private static String _getLiferayHome() {
 		if (_liferayHome == null) {
+			org.apache.log4j.Logger rootLogger = LogManager.getRootLogger();
+
+			rootLogger.setLevel(Level.ERROR);
+
 			_liferayHome = _escapeXMLAttribute(
 				PropsUtil.get(PropsKeys.LIFERAY_HOME));
 		}
