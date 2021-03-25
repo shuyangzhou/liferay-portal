@@ -582,7 +582,14 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	protected void testDatabaseClass(String driverClassName) throws Exception {
 		try {
-			Class.forName(driverClassName);
+			Class<?> clazz = Class.forName(driverClassName);
+
+			if (!PortalClassLoaderUtil.isPortalClassLoader(
+					clazz.getClassLoader())) {
+
+				throw new Error(
+					"JDBC driver is not loaded from portal classloader");
+			}
 		}
 		catch (ClassNotFoundException classNotFoundException) {
 			if (!ServerDetector.isTomcat()) {
