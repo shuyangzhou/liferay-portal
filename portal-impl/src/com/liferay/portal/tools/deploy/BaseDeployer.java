@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -71,6 +72,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.lang.reflect.Method;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -728,6 +731,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 				String content = FileUtil.read(contextXml);
 
 				if (content.contains(_PORTAL_CLASS_LOADER)) {
+					_initPortalClassLoaderFactory();
+
 					excludes += "**/WEB-INF/lib/util-bridges.jar,";
 					excludes += "**/WEB-INF/lib/util-java.jar,";
 					excludes += "**/WEB-INF/lib/util-taglib.jar,";
@@ -2271,8 +2276,26 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	protected List<String> wars;
 	protected String wildflyPrefix;
 
+	private void _initPortalClassLoaderFactory() {
+		try {
+			Class<?> clazz = Class.forName(_PORTAL_CLASS_LOADER_FACTORY);
+
+			Method method = clazz.getMethod(
+				"setClassLoader", ClassLoader.class);
+
+			method.invoke(null, PortalClassLoaderUtil.getClassLoader());
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			_log.error(
+				reflectiveOperationException, reflectiveOperationException);
+		}
+	}
+
 	private static final String _PORTAL_CLASS_LOADER =
 		"com.liferay.support.tomcat.loader.PortalClassLoader";
+
+	private static final String _PORTAL_CLASS_LOADER_FACTORY =
+		"com.liferay.support.tomcat.loader.PortalClassLoaderFactory";
 
 	private static final Log _log = LogFactoryUtil.getLog(BaseDeployer.class);
 
