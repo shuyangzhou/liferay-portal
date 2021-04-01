@@ -38,7 +38,6 @@ import com.liferay.portal.tools.service.builder.test.service.persistence.ManyCol
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -636,9 +635,7 @@ public class ManyColumnsEntryPersistenceImpl
 				(ManyColumnsEntryModelImpl)baseModel;
 
 			if (!checkColumn ||
-				_hasModifiedColumns(manyColumnsEntryModelImpl, columnNames) ||
-				_hasModifiedColumns(
-					manyColumnsEntryModelImpl, _ORDER_BY_COLUMNS)) {
+				_hasModifiedColumns(manyColumnsEntryModelImpl, columnNames)) {
 
 				return _getValue(
 					manyColumnsEntryModelImpl, columnNames, original);
@@ -699,14 +696,6 @@ public class ManyColumnsEntryPersistenceImpl
 			}
 
 			return false;
-		}
-
-		private static final String[] _ORDER_BY_COLUMNS;
-
-		static {
-			List<String> orderByColumns = new ArrayList<String>();
-
-			_ORDER_BY_COLUMNS = orderByColumns.toArray(new String[0]);
 		}
 
 	}

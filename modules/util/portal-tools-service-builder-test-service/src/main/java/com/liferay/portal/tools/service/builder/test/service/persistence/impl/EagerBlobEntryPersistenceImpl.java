@@ -44,7 +44,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1518,9 +1517,7 @@ public class EagerBlobEntryPersistenceImpl
 				(EagerBlobEntryModelImpl)baseModel;
 
 			if (!checkColumn ||
-				_hasModifiedColumns(eagerBlobEntryModelImpl, columnNames) ||
-				_hasModifiedColumns(
-					eagerBlobEntryModelImpl, _ORDER_BY_COLUMNS)) {
+				_hasModifiedColumns(eagerBlobEntryModelImpl, columnNames)) {
 
 				return _getValue(
 					eagerBlobEntryModelImpl, columnNames, original);
@@ -1581,14 +1578,6 @@ public class EagerBlobEntryPersistenceImpl
 			}
 
 			return false;
-		}
-
-		private static final String[] _ORDER_BY_COLUMNS;
-
-		static {
-			List<String> orderByColumns = new ArrayList<String>();
-
-			_ORDER_BY_COLUMNS = orderByColumns.toArray(new String[0]);
 		}
 
 	}
