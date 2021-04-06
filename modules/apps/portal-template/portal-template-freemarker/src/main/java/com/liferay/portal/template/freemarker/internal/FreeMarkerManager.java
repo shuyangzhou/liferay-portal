@@ -658,8 +658,8 @@ public class FreeMarkerManager extends BaseTemplateManager {
 
 	private Bundle _bundle;
 	private BundleTracker<Set<String>> _bundleTracker;
-	private volatile Configuration _configuration;
-	private volatile BeansWrapper _defaultBeanWrapper;
+	private Configuration _configuration;
+	private BeansWrapper _defaultBeanWrapper;
 	private FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 	private volatile FreeMarkerEngineConfiguration
 		_freeMarkerEngineConfiguration;
@@ -672,7 +672,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
 
-	private volatile BeansWrapper _restrictedBeanWrapper;
+	private BeansWrapper _restrictedBeanWrapper;
 	private volatile ServiceRegistration<PortalExecutorConfig>
 		_serviceRegistration;
 	private SingleVMPool _singleVMPool;

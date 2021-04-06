@@ -335,12 +335,11 @@ public class DDMPortlet extends MVCPortlet {
 		_storageAdapterRegistry = storageAdapterRegistry;
 	}
 
-	protected volatile DDMStructureLinkLocalService
-		ddmStructureLinkLocalService;
-	protected volatile DDMStructureLocalService ddmStructureLocalService;
-	protected volatile DDMStructureService ddmStructureService;
-	protected volatile DDMTemplateLocalService ddmTemplateLocalService;
-	protected volatile DDMTemplateService ddmTemplateService;
+	protected DDMStructureLinkLocalService ddmStructureLinkLocalService;
+	protected DDMStructureLocalService ddmStructureLocalService;
+	protected DDMStructureService ddmStructureService;
+	protected DDMTemplateLocalService ddmTemplateLocalService;
+	protected DDMTemplateService ddmTemplateService;
 	protected volatile DDMWebConfiguration ddmWebConfiguration;
 
 	@Reference

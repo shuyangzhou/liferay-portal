@@ -381,7 +381,7 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 
 	private final Indexer<?> _dummyIndexer = new DummyIndexer();
 	private volatile IndexerRegistryConfiguration _indexerRegistryConfiguration;
-	private volatile IndexerRequestBufferOverflowHandler
+	private IndexerRequestBufferOverflowHandler
 		_indexerRequestBufferOverflowHandler;
 	private final Map<String, Indexer<? extends Object>> _indexers =
 		new ConcurrentHashMap<>();

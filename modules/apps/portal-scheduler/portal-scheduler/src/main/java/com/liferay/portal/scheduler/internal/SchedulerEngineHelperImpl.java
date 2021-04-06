@@ -896,7 +896,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	)
 	private volatile AuditRouter _auditRouter;
 
-	private volatile BundleContext _bundleContext;
+	private BundleContext _bundleContext;
 	private DestinationFactory _destinationFactory;
 	private final Set<ServiceRegistration<Destination>>
 		_destinationServiceRegistrations = new HashSet<>();
@@ -913,7 +913,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private final Map
 		<String, ServiceRegistration<SchedulerEventMessageListener>>
 			_serviceRegistrations = new ConcurrentHashMap<>();
-	private volatile ServiceTracker
+	private ServiceTracker
 		<SchedulerEventMessageListener, SchedulerEventMessageListener>
 			_serviceTracker;
 
