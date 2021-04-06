@@ -91,6 +91,6 @@ public class AMMessagingConfigurator {
 	@Reference
 	private DestinationFactory _destinationFactory;
 
-	private ServiceRegistration<Destination> _serviceRegistration;
+	private volatile ServiceRegistration<Destination> _serviceRegistration;
 
 }

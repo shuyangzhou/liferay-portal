@@ -114,7 +114,7 @@ public class CXFEndpointPublisher {
 		activate(bundleContext, properties);
 	}
 
-	private DependencyManager _dependencyManager;
+	private volatile DependencyManager _dependencyManager;
 
 	private static class ServicesRegistrator {
 

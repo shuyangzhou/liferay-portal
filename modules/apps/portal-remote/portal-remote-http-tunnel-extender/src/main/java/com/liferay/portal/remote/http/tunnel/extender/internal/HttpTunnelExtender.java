@@ -222,8 +222,9 @@ public class HttpTunnelExtender
 		activate(bundleContext, properties);
 	}
 
-	private BundleTracker<?> _bundleTracker;
-	private HttpTunnelExtenderConfiguration _httpTunnelExtenderConfiguration;
+	private volatile BundleTracker<?> _bundleTracker;
+	private volatile HttpTunnelExtenderConfiguration
+		_httpTunnelExtenderConfiguration;
 
 	private final class ServiceRegistrations {
 

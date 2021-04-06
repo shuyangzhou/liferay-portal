@@ -101,6 +101,7 @@ public abstract class BaseAuthVerifierPipelineConfigurator {
 		return key;
 	}
 
-	private ServiceRegistration<AuthVerifierConfiguration> _serviceRegistration;
+	private volatile ServiceRegistration<AuthVerifierConfiguration>
+		_serviceRegistration;
 
 }

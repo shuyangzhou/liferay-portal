@@ -490,12 +490,12 @@ public class SimpleCaptchaImpl implements Captcha {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SimpleCaptchaImpl.class);
 
-	private BackgroundProducer[] _backgroundProducers;
+	private volatile BackgroundProducer[] _backgroundProducers;
 	private volatile CaptchaConfiguration _captchaConfiguration;
-	private GimpyRenderer[] _gimpyRenderers;
+	private volatile GimpyRenderer[] _gimpyRenderers;
 	private final Map<String, Object> _instances = new ConcurrentHashMap<>();
-	private NoiseProducer[] _noiseProducers;
-	private TextProducer[] _textProducers;
-	private WordRenderer[] _wordRenderers;
+	private volatile NoiseProducer[] _noiseProducers;
+	private volatile TextProducer[] _textProducers;
+	private volatile WordRenderer[] _wordRenderers;
 
 }

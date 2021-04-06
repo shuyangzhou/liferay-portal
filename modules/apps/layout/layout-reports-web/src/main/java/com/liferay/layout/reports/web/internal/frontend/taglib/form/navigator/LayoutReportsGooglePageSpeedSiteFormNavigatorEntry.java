@@ -202,7 +202,7 @@ public class LayoutReportsGooglePageSpeedSiteFormNavigatorEntry
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	private LayoutReportsGooglePageSpeedConfiguration
+	private volatile LayoutReportsGooglePageSpeedConfiguration
 		_layoutReportsGooglePageSpeedConfiguration;
 
 	@Reference

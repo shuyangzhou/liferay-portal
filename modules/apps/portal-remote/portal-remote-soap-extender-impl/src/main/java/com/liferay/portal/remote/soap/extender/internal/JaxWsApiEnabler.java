@@ -105,8 +105,8 @@ public class JaxWsApiEnabler {
 		activate(bundleContext, properties);
 	}
 
-	private Bus _bus;
-	private ServiceRegistration<Provider> _serviceRegistration;
-	private ServiceTracker<Bus, Bus> _serviceTracker;
+	private volatile Bus _bus;
+	private volatile ServiceRegistration<Provider> _serviceRegistration;
+	private volatile ServiceTracker<Bus, Bus> _serviceTracker;
 
 }

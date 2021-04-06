@@ -432,7 +432,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 	@Reference
 	private Portal _portal;
 
-	private String _portletNamespace;
+	private volatile String _portletNamespace;
 
 	@Reference
 	private PortletURLFactory _portletURLFactory;

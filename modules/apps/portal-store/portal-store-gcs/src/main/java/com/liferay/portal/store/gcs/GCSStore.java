@@ -409,11 +409,11 @@ public class GCSStore implements Store {
 
 	private static final Log _log = LogFactoryUtil.getLog(GCSStore.class);
 
-	private Blob.BlobSourceOption _blobDecryptSourceOption;
-	private Storage.BlobWriteOption _blobEncryptWriteOption;
+	private volatile Blob.BlobSourceOption _blobDecryptSourceOption;
+	private volatile Storage.BlobWriteOption _blobEncryptWriteOption;
 	private BucketInfo _bucketInfo;
-	private Storage _gcsStore;
-	private GCSStoreConfiguration _gcsStoreConfiguration;
-	private GoogleCredentials _googleCredentials;
+	private volatile Storage _gcsStore;
+	private volatile GCSStoreConfiguration _gcsStoreConfiguration;
+	private volatile GoogleCredentials _googleCredentials;
 
 }

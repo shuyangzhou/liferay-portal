@@ -259,7 +259,7 @@ public class ReportEngineImpl implements ReportEngine {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReportEngineImpl.class);
 
-	private BundleContext _bundleContext;
+	private volatile BundleContext _bundleContext;
 
 	@Reference
 	private DestinationFactory _destinationFactory;

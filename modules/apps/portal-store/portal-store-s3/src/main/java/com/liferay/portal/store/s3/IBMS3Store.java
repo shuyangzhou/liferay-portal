@@ -708,9 +708,9 @@ public class IBMS3Store implements Store {
 
 	private static volatile S3StoreConfiguration _s3StoreConfiguration;
 
-	private AmazonS3 _amazonS3;
-	private AWSCredentialsProvider _awsCredentialsProvider;
-	private String _bucketName;
+	private volatile AmazonS3 _amazonS3;
+	private volatile AWSCredentialsProvider _awsCredentialsProvider;
+	private volatile String _bucketName;
 
 	@Reference
 	private S3FileCache _s3FileCache;
@@ -718,7 +718,7 @@ public class IBMS3Store implements Store {
 	@Reference
 	private S3KeyTransformer _s3KeyTransformer;
 
-	private StorageClass _storageClass;
-	private TransferManager _transferManager;
+	private volatile StorageClass _storageClass;
+	private volatile TransferManager _transferManager;
 
 }

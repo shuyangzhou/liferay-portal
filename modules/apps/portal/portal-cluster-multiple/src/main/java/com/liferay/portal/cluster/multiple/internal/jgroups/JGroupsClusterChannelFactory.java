@@ -305,8 +305,8 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		JGroupsClusterChannelFactory.class);
 
-	private InetAddress _bindInetAddress;
-	private NetworkInterface _bindNetworkInterface;
+	private volatile InetAddress _bindInetAddress;
+	private volatile NetworkInterface _bindNetworkInterface;
 	private final ConcurrentMap<ClassLoader, ClassLoader> _classLoaders =
 		new ConcurrentReferenceKeyHashMap<>(
 			FinalizeManager.WEAK_REFERENCE_FACTORY);

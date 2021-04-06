@@ -215,8 +215,8 @@ public class SoapExtender {
 		_dependencyManager.add(component);
 	}
 
-	private DependencyManager _dependencyManager;
-	private SoapDescriptorBuilder _soapDescriptorBuilder;
-	private SoapExtenderConfiguration _soapExtenderConfiguration;
+	private volatile DependencyManager _dependencyManager;
+	private volatile SoapDescriptorBuilder _soapDescriptorBuilder;
+	private volatile SoapExtenderConfiguration _soapExtenderConfiguration;
 
 }

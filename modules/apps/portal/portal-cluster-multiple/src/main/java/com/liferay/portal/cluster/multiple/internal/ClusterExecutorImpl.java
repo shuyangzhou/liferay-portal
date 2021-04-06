@@ -644,7 +644,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		_clusterNodeIdCompletableFutures = new ConcurrentHashMap<>();
 	private final Map<String, ClusterNodeStatus> _clusterNodeStatuses =
 		new ConcurrentHashMap<>();
-	private ClusterEventListener _debugClusterEventListener;
+	private volatile ClusterEventListener _debugClusterEventListener;
 	private boolean _enabled;
 	private ExecutorService _executorService;
 	private final Map<String, FutureClusterResponses> _futureClusterResponses =

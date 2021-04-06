@@ -191,7 +191,7 @@ public class ComponentBlacklistImpl implements ComponentBlacklist {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ComponentBlacklistImpl.class);
 
-	private Set<String> _blacklistComponentNames;
+	private volatile Set<String> _blacklistComponentNames;
 	private BundleContext _bundleContext;
 	private BundleListener _bundleListener;
 	private final Set<String> _disabledComponentNames = new HashSet<>();

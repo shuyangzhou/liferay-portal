@@ -121,7 +121,7 @@ public class AppsPortlet extends MVCPortlet {
 		_appBuilderAppsPortletTabTrackerMap.close();
 	}
 
-	private ServiceTrackerMap<String, AppBuilderAppsPortletTab>
+	private volatile ServiceTrackerMap<String, AppBuilderAppsPortletTab>
 		_appBuilderAppsPortletTabTrackerMap;
 	private volatile AppBuilderConfiguration _appBuilderConfiguration;
 

@@ -177,8 +177,10 @@ public class HttpClientFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		HttpClientFactory.class);
 
-	private CloseableHttpClient _closeableHttpClient;
-	private ServiceRegistration<HttpClient> _httpClientServiceRegistration;
-	private PoolingHttpClientConnectionManager _poolingClientConnectionManager;
+	private volatile CloseableHttpClient _closeableHttpClient;
+	private volatile ServiceRegistration<HttpClient>
+		_httpClientServiceRegistration;
+	private volatile PoolingHttpClientConnectionManager
+		_poolingClientConnectionManager;
 
 }

@@ -135,8 +135,9 @@ public class AntiSamySanitizerPublisher implements ManagedServiceFactory {
 		activate(bundleContext, properties);
 	}
 
-	private AntiSamySanitizerImpl _antiSamySanitizerImpl;
+	private volatile AntiSamySanitizerImpl _antiSamySanitizerImpl;
 	private final Map<String, String> _classNames = new ConcurrentHashMap<>();
-	private ServiceRegistration<Sanitizer> _sanitizerServiceRegistration;
+	private volatile ServiceRegistration<Sanitizer>
+		_sanitizerServiceRegistration;
 
 }
