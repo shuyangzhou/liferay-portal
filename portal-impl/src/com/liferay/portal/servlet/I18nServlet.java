@@ -215,7 +215,11 @@ public class I18nServlet extends HttpServlet {
 			}
 		}
 
-		String redirect = HttpUtil.encodePath(path);
+		String redirect = path;
+
+		if (_hasNonasciiCode(redirect)) {
+			redirect = HttpUtil.encodePath(redirect);
+		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Redirect " + redirect);
@@ -326,6 +330,16 @@ public class I18nServlet extends HttpServlet {
 		private final String _languageId;
 		private final String _path;
 
+	}
+
+	private boolean _hasNonasciiCode(String string) {
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) > 127) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void _processI18nData(
