@@ -121,6 +121,11 @@ public class ReflectionUtil {
 		return interfaceClasses.toArray(new Class<?>[0]);
 	}
 
+	public static <T> T throwException(String message, Throwable throwable) {
+		return ReflectionUtil.<T, RuntimeException>_throwException(
+			message, throwable);
+	}
+
 	public static <T> T throwException(Throwable throwable) {
 		return ReflectionUtil.<T, RuntimeException>_throwException(throwable);
 	}
@@ -133,6 +138,14 @@ public class ReflectionUtil {
 		}
 
 		return field;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T, E extends Throwable> T _throwException(
+			String message, Throwable throwable)
+		throws E {
+
+		throw (E)new Throwable(message, throwable);
 	}
 
 	@SuppressWarnings("unchecked")
