@@ -100,6 +100,10 @@ public class ModuleFrameworkAdapterHelper {
 
 			Arrays.sort(packageNames);
 
+			_log.error(
+				"#########ModuleFrameworkClassLoader urls : " +
+					Arrays.toString(urls));
+
 			_classLoader = new ModuleFrameworkClassLoader(
 				urls, PortalClassLoaderUtil.getClassLoader(), packageNames);
 
