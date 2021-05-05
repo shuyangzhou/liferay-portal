@@ -4352,7 +4352,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						</then>
 					</if>
 
-					<delete failonerror="false" includeemptydirs="true">
+					<delete failonerror="false" includeemptydirs="true" verbose="true">
 						<fileset
 							dir="${test.app.server.dir}/logs"
 							excludes="catalina.*.log"
