@@ -1204,6 +1204,12 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 	</target>
 
 	<target name="update-app-server-scripts">
+		<dirset id="osgi-core" dir="/opt/dev/projects/github/liferay-portal/bundles/osgi/core" includes="*"/>
+
+		<property name="osgi-core-contents" refid="osgi-core"/>
+
+		<echo>##############osgi/core dir content: ${osgi-core-contents}</echo>
+
 		<if>
 			<or>
 				<equals arg1="${app.server.type}" arg2="jboss" />
@@ -1338,6 +1344,11 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 						</then>
 					</elseif>
 				</if>
+
+				<echo>################startServer.log###############</echo>
+				<echo file="/opt/dev/projects/github/liferay-portal/bundles/websphere-9.0.0.0/profiles/liferay/logs/server1/startServer.log" />
+				<echo>################stopServer.log###############</echo>
+				<echo file="/opt/dev/projects/github/liferay-portal/bundles/websphere-9.0.0.0/profiles/liferay/logs/server1/stopServer.log" />
 
 				<delete file="wsadmin.py" />
 			</then>
