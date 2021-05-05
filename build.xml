@@ -1351,6 +1351,9 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 				<echo>################stopServer.log###############</echo>
 				<loadfile property="stopServer-content" srcFile="/opt/dev/projects/github/liferay-portal/bundles/websphere-9.0.0.0/profiles/liferay/logs/server1/stopServer.log" />
 				<echo message="${stopServer-content}" />
+				<echo>################SystemOut.log###############</echo>
+				<loadfile property="SystemOut-content" srcFile="/opt/dev/projects/github/liferay-portal/bundles/websphere-9.0.0.0/profiles/liferay/logs/server1/SystemOut.log" />
+				<echo message="${SystemOut-content}" />
 
 				<delete file="wsadmin.py" />
 			</then>
