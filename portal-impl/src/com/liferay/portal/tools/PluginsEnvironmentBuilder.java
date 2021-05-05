@@ -616,7 +616,7 @@ public class PluginsEnvironmentBuilder {
 				if (dirName.equals("global")) {
 					extGlobalJars.addAll(ListUtil.sort(jars));
 
-					File dir = new File(PropsValues.LIFERAY_LIB_GLOBAL_DIR);
+					File dir = new File(PropsValues.LIFERAY_LIB_PORTAL_DIR);
 
 					String[] fileNames = dir.list(filenameFilter);
 
