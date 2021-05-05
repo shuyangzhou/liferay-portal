@@ -1778,6 +1778,11 @@ public interface PropsKeys {
 
 	public static final String LIFERAY_HOME = "liferay.home";
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 *             #LIFERAY_LIB_PORTAL_DIR}
+	 */
+	@Deprecated
 	public static final String LIFERAY_LIB_GLOBAL_DIR =
 		"liferay.lib.global.dir";
 
