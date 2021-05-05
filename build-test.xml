@@ -4363,11 +4363,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						/>
 					</delete>
 
-					<dirset id="liferay-log" dir="${test.app.server.dir}/logs" includes="*" erroronmissingdir="false" />
+					<fileset id="liferay-log" dir="${test.app.server.dir}/logs" includes="*" erroronmissingdir="false" />
 
-					<property name="liferay-log-content" refid="liferay-log"/>
-
-					<echo>##############liferay log dir content before starting appserver: ${liferay-log-content}</echo>
+					<echo>##############liferay log dir content before starting appserver: ${toString:liferay-log}</echo>
 
 					<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
 
@@ -13939,11 +13937,9 @@ url=${short.hostname}:8080</echo>
 	</target>
 
 	<target name="upgrade-legacy-database">
-		<dirset id="liferay-log" dir="${test.app.server.dir}/logs" includes="*" erroronmissingdir="false" />
+		<fileset id="liferay-log" dir="${test.app.server.dir}/logs" includes="*" erroronmissingdir="false" />
 
-		<property name="liferay-log-content" refid="liferay-log"/>
-
-		<echo>##############liferay log dir content before starting upgrade-legacy-database: ${liferay-log-content}</echo>
+		<echo>##############liferay log dir content before starting upgrade-legacy-database: ${toString:liferay-log}</echo>
 
 		<prepare-database-upgrade-configuration />
 

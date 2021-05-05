@@ -1204,11 +1204,9 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 	</target>
 
 	<target name="update-app-server-scripts">
-		<dirset id="osgi-core" dir="/opt/dev/projects/github/liferay-portal/bundles/osgi/core" includes="*" erroronmissingdir="false" />
+		<fileset id="osgi-core" dir="/opt/dev/projects/github/liferay-portal/bundles/osgi/core" includes="*" erroronmissingdir="false" />
 
-		<property name="osgi-core-contents" refid="osgi-core"/>
-
-		<echo>##############osgi/core dir content: ${osgi-core-contents}</echo>
+		<echo>##############osgi/core dir content: ${toString:osgi-core}</echo>
 
 		<if>
 			<or>
