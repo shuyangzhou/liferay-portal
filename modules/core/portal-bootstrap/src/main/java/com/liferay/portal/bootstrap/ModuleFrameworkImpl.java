@@ -258,7 +258,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		Thread currentThread = Thread.currentThread();
 
 		List<FrameworkFactory> frameworkFactories = ServiceLoader.load(
-			new URLClassLoader(_getClassPathURLs(), null),
 			currentThread.getContextClassLoader(), FrameworkFactory.class);
 
 		FrameworkFactory frameworkFactory = frameworkFactories.get(0);
@@ -994,27 +993,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		return string.substring(beginIndex, endIndex);
 	}
 
-	private URL[] _getClassPathURLs() throws Exception {
-		File coreDir = new File(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "core");
-
-		File[] files = coreDir.listFiles();
-
-		if (files == null) {
-			throw new IllegalStateException(
-				"Missing " + coreDir.getCanonicalPath());
-		}
-
-		URL[] urls = new URL[files.length];
-
-		for (int i = 0; i < urls.length; i++) {
-			URI uri = files[i].toURI();
-
-			urls[i] = uri.toURL();
-		}
-
-		return urls;
-	}
-
 	private Attributes _getExtraManifestAttributes() {
 		try (InputStream inputStream =
 				ModuleFrameworkImpl.class.getResourceAsStream(
@@ -1169,14 +1147,22 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		String[] dirNames = StringUtil.split(_getFileInstallDir());
 
 		for (String dirName : dirNames) {
-			FileUtil.mkdirs(dirName);
+			_mkdirs(dirName);
 		}
 
-		FileUtil.mkdirs(PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static");
-		FileUtil.mkdirs(
+		_mkdirs(PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static");
+		_mkdirs(
 			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR + "/override");
 	}
 
+	private void _mkdirs(String dirPath) {
+		try {
+			Files.createDirectories(Paths.get(dirPath));
+		}
+		catch (IOException ioException) {
+			_log.error(ioException, ioException);
+		}
+	}
 	private void _installBundlesFromDir(
 			String dirPath, Map<String, Long> checksums,
 			Set<String> fragmentHosts)

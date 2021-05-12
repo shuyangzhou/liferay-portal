@@ -16,6 +16,7 @@ package com.liferay.portal.module.framework;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import java.io.InputStream;
 
 import java.net.URL;
@@ -58,7 +59,7 @@ public class ModuleFrameworkUtilAdapter {
 		ClassLoader classLoader = currentThread.getContextClassLoader();
 
 		currentThread.setContextClassLoader(
-			ModuleFrameworkAdapterHelper.getClassLoader());
+			PortalClassLoaderUtil.getClassLoader());
 
 		try {
 			_moduleFramework.initFramework();
