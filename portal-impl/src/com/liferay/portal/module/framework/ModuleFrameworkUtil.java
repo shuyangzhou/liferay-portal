@@ -15,11 +15,14 @@
 package com.liferay.portal.module.framework;
 
 import com.liferay.portal.kernel.exception.PortalException;
-
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+
 import java.io.InputStream;
 
 import java.net.URL;
+
+import java.util.Iterator;
+import java.util.ServiceLoader;
 
 /**
  * This class is a simple wrapper in order to make the framework module running
@@ -27,9 +30,8 @@ import java.net.URL;
  *
  * @author Miguel Pastor
  * @author Raymond Augé
- * @see    ModuleFrameworkClassLoader
  */
-public class ModuleFrameworkUtilAdapter {
+public class ModuleFrameworkUtil {
 
 	public static long addBundle(String location) throws PortalException {
 		return _moduleFramework.addBundle(location);
@@ -77,14 +79,6 @@ public class ModuleFrameworkUtilAdapter {
 		throws PortalException {
 
 		_moduleFramework.setBundleStartLevel(bundleId, startLevel);
-	}
-
-	public static void setModuleFramework(ModuleFramework moduleFramework) {
-		_moduleFramework = moduleFramework;
-
-		_moduleFrameworkAdapterHelper.exec(
-			"setModuleFramework", new Class<?>[] {ModuleFramework.class},
-			_moduleFramework);
 	}
 
 	public static void startBundle(long bundleId) throws PortalException {
@@ -141,14 +135,21 @@ public class ModuleFrameworkUtilAdapter {
 		_moduleFramework.updateBundle(bundleId, inputStream);
 	}
 
-	private static ModuleFramework _moduleFramework;
-	private static final ModuleFrameworkAdapterHelper
-		_moduleFrameworkAdapterHelper = new ModuleFrameworkAdapterHelper(
-			"com.liferay.portal.bootstrap.ModuleFrameworkUtil");
+	private static final ModuleFramework _moduleFramework;
 
 	static {
-		_moduleFramework = (ModuleFramework)_moduleFrameworkAdapterHelper.exec(
-			"getModuleFramework", new Class<?>[0]);
+		ServiceLoader<ModuleFramework> serviceLoader = ServiceLoader.load(
+			ModuleFramework.class, ModuleFrameworkUtil.class.getClassLoader());
+
+		Iterator<ModuleFramework> iterator = serviceLoader.iterator();
+
+		if (!iterator.hasNext()) {
+			throw new ExceptionInInitializerError(
+				"Unable to locate ModuleFramework implementation on class " +
+					"path");
+		}
+
+		_moduleFramework = iterator.next();
 	}
 
 }
