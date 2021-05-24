@@ -70,7 +70,11 @@ public class AbsoluteRedirectsFilter
 		PortalUtil.getCurrentCompleteURL(httpServletRequest);
 		PortalUtil.getCurrentURL(httpServletRequest);
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession session = httpServletRequest.getSession(false);
+
+		if (session == null) {
+			return null;
+		}
 
 		Boolean httpsInitial = (Boolean)session.getAttribute(
 			WebKeys.HTTPS_INITIAL);
