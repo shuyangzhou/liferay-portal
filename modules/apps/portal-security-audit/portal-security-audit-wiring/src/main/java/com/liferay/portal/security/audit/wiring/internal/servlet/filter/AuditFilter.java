@@ -59,7 +59,11 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 		auditRequestThreadLocal.setQueryString(
 			httpServletRequest.getQueryString());
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession session = httpServletRequest.getSession(false);
+
+		if (session == null) {
+			return null;
+		}
 
 		Long userId = (Long)session.getAttribute(WebKeys.USER_ID);
 
