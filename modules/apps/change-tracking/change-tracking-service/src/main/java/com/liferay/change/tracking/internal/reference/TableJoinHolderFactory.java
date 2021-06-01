@@ -26,6 +26,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.FromStep;
 import com.liferay.petra.sql.dsl.query.JoinStep;
 import com.liferay.petra.sql.dsl.query.WhereStep;
+import com.liferay.petra.sql.dsl.spi.expression.DSLFunction;
 import com.liferay.petra.sql.dsl.spi.expression.DefaultPredicate;
 import com.liferay.petra.sql.dsl.spi.expression.Operand;
 import com.liferay.petra.sql.dsl.spi.expression.Scalar;
@@ -344,21 +345,16 @@ public class TableJoinHolderFactory {
 				return;
 			}
 
-			Expression<?> leftExpression = defaultPredicate.getLeftExpression();
-			Expression<?> rightExpression =
-				defaultPredicate.getRightExpression();
+			List<Column<?, ?>> columns = new ArrayList<>();
 
-			if ((leftExpression instanceof Column<?, ?>) &&
-				(rightExpression instanceof Column<?, ?>)) {
+			_collectColumns(columns, defaultPredicate.getLeftExpression());
+			_collectColumns(columns, defaultPredicate.getRightExpression());
 
-				Column<?, ?> leftColumn = (Column<?, ?>)leftExpression;
-				Column<?, ?> rightColumn = (Column<?, ?>)rightExpression;
-
-				if (leftColumn.getTable() == _childTable) {
-					_childPredicateColumns.add(leftColumn);
-				}
-				else if (rightColumn.getTable() == _childTable) {
-					_childPredicateColumns.add(rightColumn);
+			if (!columns.isEmpty()) {
+				for (Column<?, ?> column : columns) {
+					if (column.getTable() == _childTable) {
+						_childPredicateColumns.add(column);
+					}
 				}
 
 				if (_joinPredicate == null) {
@@ -381,6 +377,23 @@ public class TableJoinHolderFactory {
 
 			_childTable = childTable;
 			_childPredicateColumns = childPredicateColumns;
+		}
+
+		private void _collectColumns(
+			List<Column<?, ?>> columns, Expression<?> expression) {
+
+			if (expression instanceof Column) {
+				columns.add((Column<?, ?>)expression);
+			}
+			else if (expression instanceof DSLFunction) {
+				DSLFunction<?> dslFunction = (DSLFunction<?>)expression;
+
+				for (Expression<?> dslFunctionExpression :
+						dslFunction.getExpressions()) {
+
+					_collectColumns(columns, dslFunctionExpression);
+				}
+			}
 		}
 
 		private final Set<Column<?, ?>> _childPredicateColumns;
