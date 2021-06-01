@@ -160,7 +160,7 @@ public class TableJoinHolderFactory {
 			FromStep fromStep = DSLQueryFactoryUtil.select(
 				primaryKeyColumn, new Scalar<>(parentTable.getTableName()));
 
-			List<Column<?, ?>> childPredicateColumns = new ArrayList<>();
+			Set<Column<?, ?>> childPredicateColumns = new HashSet<>();
 
 			Deque<Map.Entry<Table<?>, PredicateASTNodeListener>> joinEntries =
 				new LinkedList<>();
@@ -377,13 +377,13 @@ public class TableJoinHolderFactory {
 		}
 
 		private PredicateASTNodeListener(
-			Table<?> childTable, List<Column<?, ?>> childPredicateColumns) {
+			Table<?> childTable, Set<Column<?, ?>> childPredicateColumns) {
 
 			_childTable = childTable;
 			_childPredicateColumns = childPredicateColumns;
 		}
 
-		private final List<Column<?, ?>> _childPredicateColumns;
+		private final Set<Column<?, ?>> _childPredicateColumns;
 		private final Table<?> _childTable;
 		private Predicate _joinPredicate;
 		private Predicate _wherePredicate;
