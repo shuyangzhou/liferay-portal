@@ -112,9 +112,7 @@ definition {
 	test DefaultTitlePersistsUponFirstlyTranslatingForAnotherLocale {
 		WebContentStructures.addCP();
 
-		Navigator.gotoNavTab(navTab = "Fieldsets");
-
-		Click(locator1 = "FormViewBuilder#CREATE_NEW_FIELD_SETS");
+		DataEngine.gotoCreateNewFieldset();
 
 		Navigator.gotoNavTab(navTab = "Fields");
 
@@ -169,6 +167,8 @@ definition {
 	@description = "This test ensures its possible to translate the Fieldset to N languages."
 	@priority = "5"
 	test TranslateFieldsetToNLanguages {
+		property portal.upstream = "quarantine";
+
 		var fieldsetNameEN = "Fieldset Name";
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
@@ -201,8 +201,6 @@ definition {
 			fieldNameList = "Text,Numeric",
 			fieldsetName = "${fieldsetNameEN}",
 			localeList = "pt-BR,de-DE,es-ES");
-
-		Refresh();
 
 		WebContentStructures.saveCP();
 
@@ -1119,8 +1117,6 @@ definition {
 			fieldNameList = "Text",
 			fieldsetName = "Fieldset Name",
 			localeList = "pt-BR");
-
-		Refresh();
 
 		WebContentStructures.addLocalization(
 			locale = "pt-BR",

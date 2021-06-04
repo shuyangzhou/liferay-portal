@@ -216,12 +216,12 @@ definition {
 		AssertElementPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 	}
 
-	macro viewFormTableBody {
-		var key_fieldBody = "${fieldBody}";
+	macro viewFormEntryWorkflowStatus {
+		var key_formEntryWorkflowStatus = "${formEntryWorkflowStatus}";
 
 		AssertTextEquals(
-			locator1 = "FormsAdmin#FORM_ENTRY_TABLE_BODY",
-			value1 = "${fieldBody}");
+			locator1 = "FormsAdmin#FORM_ENTRY_STATUS",
+			value1 = "${formEntryWorkflowStatus}");
 	}
 
 	macro viewFormTableEntry {

@@ -57,7 +57,8 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 		SourceFormatterArgs sourceFormatterArgs = getSourceFormatterArgs();
 
 		if (fileNames.isEmpty() ||
-			(!sourceFormatterArgs.isFormatCurrentBranch() &&
+			((sourceFormatterArgs.getCommitCount() == 0) &&
+			 !sourceFormatterArgs.isFormatCurrentBranch() &&
 			 !sourceFormatterArgs.isFormatLatestAuthor() &&
 			 !sourceFormatterArgs.isFormatLocalChanges())) {
 
@@ -109,7 +110,8 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 		SourceFormatterArgs sourceFormatterArgs = getSourceFormatterArgs();
 
-		if (sourceFormatterArgs.isFormatCurrentBranch() ||
+		if ((sourceFormatterArgs.getCommitCount() > 0) ||
+			sourceFormatterArgs.isFormatCurrentBranch() ||
 			sourceFormatterArgs.isFormatLatestAuthor() ||
 			sourceFormatterArgs.isFormatLocalChanges()) {
 
@@ -160,7 +162,12 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 		List<String> fileNames = Collections.emptyList();
 		SourceFormatterArgs sourceFormatterArgs = getSourceFormatterArgs();
 
-		if (sourceFormatterArgs.isFormatCurrentBranch()) {
+		if (sourceFormatterArgs.getCommitCount() > 0) {
+			fileNames = GitUtil.getModifiedFileNames(
+				sourceFormatterArgs.getBaseDirName(),
+				sourceFormatterArgs.getCommitCount(), true);
+		}
+		else if (sourceFormatterArgs.isFormatCurrentBranch()) {
 			fileNames = GitUtil.getCurrentBranchFileNames(
 				sourceFormatterArgs.getBaseDirName(),
 				sourceFormatterArgs.getGitWorkingBranchName(), true);
@@ -199,9 +206,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 			getSourceFormatterExcludes(), true);
 
 		for (String filteredFileName : filteredFileNames) {
-			String content = GitUtil.getCurrentBranchFileContent(
-				sourceFormatterArgs.getGitWorkingBranchName(),
-				filteredFileName);
+			String content = GitUtil.getFileContent(filteredFileName);
 			String fileName = StringUtil.replace(
 				sourceFormatterArgs.getBaseDirName() + filteredFileName,
 				CharPool.BACK_SLASH, CharPool.SLASH);

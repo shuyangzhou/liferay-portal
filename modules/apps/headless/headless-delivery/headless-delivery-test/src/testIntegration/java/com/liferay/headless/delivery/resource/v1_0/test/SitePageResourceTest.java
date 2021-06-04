@@ -50,7 +50,6 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import java.io.InputStream;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Ignore;

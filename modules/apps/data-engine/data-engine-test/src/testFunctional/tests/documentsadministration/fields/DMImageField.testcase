@@ -312,7 +312,7 @@ definition {
 
 		FormViewBuilder.editFieldLabel(
 			fieldLabel = "Image",
-			label = "New Image Label");
+			label = "New Image");
 
 		DDLDataDefinition.save();
 
@@ -321,7 +321,7 @@ definition {
 		MenuItem.click(menuItem = "Edit");
 
 		DataEngine.viewField(
-			fieldFieldLabel = "New Image Label",
+			fieldFieldLabel = "New Image",
 			fieldName = "Image");
 	}
 

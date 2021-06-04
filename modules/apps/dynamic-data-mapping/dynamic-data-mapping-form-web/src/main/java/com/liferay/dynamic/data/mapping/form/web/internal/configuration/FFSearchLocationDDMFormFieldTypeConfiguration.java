@@ -12,30 +12,22 @@
  * details.
  */
 
-package com.liferay.layout.reports.web.internal.util;
+package com.liferay.dynamic.data.mapping.form.web.internal.configuration;
 
-import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import aQute.bnd.annotation.metatype.Meta;
 
-import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
- * @author Alejandro Tardín
+ * @author Marcela Cunha
  */
-public class MarkdownUtilTest {
+@ExtendedObjectClassDefinition(generateUI = false)
+@Meta.OCD(
+	id = "com.liferay.dynamic.data.mapping.form.web.internal.configuration.FFSearchLocationDDMFormFieldTypeConfiguration"
+)
+public interface FFSearchLocationDDMFormFieldTypeConfiguration {
 
-	@ClassRule
-	@Rule
-	public static final LiferayUnitTestRule liferayUnitTestRule =
-		LiferayUnitTestRule.INSTANCE;
-
-	@Test
-	public void testMarkdownLinksAreOpenInAnotherTab() {
-		Assert.assertEquals(
-			"<p><a href=\"url\" target=\"_blank\">text</a></p>\n",
-			MarkdownUtil.markdownToHtml("[text](url)"));
-	}
+	@Meta.AD(deflt = "false", required = false)
+	public boolean enabled();
 
 }

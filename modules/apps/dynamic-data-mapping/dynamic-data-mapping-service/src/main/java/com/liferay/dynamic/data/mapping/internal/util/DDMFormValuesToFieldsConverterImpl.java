@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -55,10 +57,8 @@ public class DDMFormValuesToFieldsConverterImpl
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmStructure.getFullHierarchyDDMFormFieldsMap(true);
 
-		List<DDMFormFieldValue> ddmFormFieldValues =
-			ddmFormValues.getDDMFormFieldValues();
-
-		_filterDDMFormFieldValues(ddmFormFieldsMap, ddmFormFieldValues);
+		List<DDMFormFieldValue> ddmFormFieldValues = _filterDDMFormFieldValues(
+			ddmFormFieldsMap, ddmFormValues.getDDMFormFieldValues());
 
 		Fields ddmFields = createDDMFields(ddmStructure);
 
@@ -257,24 +257,29 @@ public class DDMFormValuesToFieldsConverterImpl
 		}
 	}
 
-	private void _filterDDMFormFieldValues(
+	private List<DDMFormFieldValue> _filterDDMFormFieldValues(
 		Map<String, DDMFormField> ddmFormFieldsMap,
 		List<DDMFormFieldValue> ddmFormFieldValues) {
 
-		ddmFormFieldValues.removeIf(
-			ddmFormFieldValue -> !ddmFormFieldsMap.containsKey(
-				ddmFormFieldValue.getName()));
+		Stream<DDMFormFieldValue> stream = ddmFormFieldValues.stream();
 
-		ddmFormFieldValues.forEach(
+		return stream.filter(
+			ddmFormFieldValue -> ddmFormFieldsMap.containsKey(
+				ddmFormFieldValue.getName())
+		).peek(
 			ddmFormFieldValue -> {
 				List<DDMFormFieldValue> nestedDDMFormFieldValues =
 					ddmFormFieldValue.getNestedDDMFormFieldValues();
 
 				if (!nestedDDMFormFieldValues.isEmpty()) {
-					_filterDDMFormFieldValues(
-						ddmFormFieldsMap, nestedDDMFormFieldValues);
+					ddmFormFieldValue.setNestedDDMFormFields(
+						_filterDDMFormFieldValues(
+							ddmFormFieldsMap, nestedDDMFormFieldValues));
 				}
-			});
+			}
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 }

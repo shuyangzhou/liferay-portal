@@ -112,6 +112,12 @@ definition {
 		Button.clickDone();
 	}
 
+	macro configureRequireAuthentication {
+		FormFields.enableSwitcher(fieldName = "requireAuthentication");
+
+		Button.clickDone();
+	}
+
 	macro configureRequireCaptcha {
 		FormFields.enableSwitcher(fieldName = "requireCaptcha");
 
@@ -679,19 +685,6 @@ definition {
 
 	macro viewAltSuccessPagePagination {
 		AssertElementPresent(locator1 = "Form#ALT_PAGINATION_SUCCESS_PAGE");
-	}
-
-	macro viewFieldReferenceFromTextField {
-		Click(
-			key_fieldName = "Text",
-			key_fieldPositionNumber = "1",
-			locator1 = "Form#FIELD_BODY_IN_SPECIFIC_POSITION");
-
-		Form.gotoAdvancedTab();
-
-		AssertTextEquals(
-			locator1 = "Form#FIELD_REFERENCE",
-			value1 = "${key_fieldReferenceText}");
 	}
 
 	macro viewFormDescription {

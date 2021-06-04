@@ -537,7 +537,7 @@ definition {
 
 		WebContentStructures.saveCP();
 
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title - en-US");
 
 		DataEngine.viewField(
 			fieldFieldLabel = "Text",
@@ -583,7 +583,7 @@ definition {
 
 		WebContentStructures.saveCP();
 
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title - en-US");
 
 		DataEngine.viewField(
 			fieldFieldLabel = "Edited Text",
@@ -629,7 +629,7 @@ definition {
 
 		WebContentStructures.saveCP();
 
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title - en-US");
 
 		DataEngine.viewField(
 			fieldFieldLabel = "Edited Text",
@@ -661,10 +661,10 @@ definition {
 
 		WebContentStructures.saveCP();
 
-		WebContentStructures.deleteCP(structureName = "WC Structure Title");
+		WebContentStructures.deleteCP(structureName = "WC Structure Title - en-US");
 
 		AssertElementNotPresent(
-			key_ddlDataDefinitionName = "WC Structure Title",
+			key_ddlDataDefinitionName = "WC Structure Title - en-US",
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME_LINK");
 
 		ApplicationsMenu.gotoPortlet(

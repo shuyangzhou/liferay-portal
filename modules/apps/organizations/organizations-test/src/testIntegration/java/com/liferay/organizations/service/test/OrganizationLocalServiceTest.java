@@ -305,6 +305,31 @@ public class OrganizationLocalServiceTest {
 	}
 
 	@Test
+	public void testAddUserOrganizationByEmailAddress() throws Exception {
+		Organization organization = OrganizationTestUtil.addOrganization();
+
+		User user = UserTestUtil.addUser();
+
+		Assert.assertFalse(
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				user.getUserId(), organization.getOrganizationId()));
+
+		OrganizationLocalServiceUtil.addUserOrganizationByEmailAddress(
+			user.getEmailAddress(), organization.getOrganizationId());
+
+		Assert.assertTrue(
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				user.getUserId(), organization.getOrganizationId()));
+
+		OrganizationLocalServiceUtil.deleteUserOrganizationByEmailAddress(
+			user.getEmailAddress(), organization.getOrganizationId());
+
+		Assert.assertFalse(
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				user.getUserId(), organization.getOrganizationId()));
+	}
+
+	@Test
 	public void testGetNoAssetOrganizations() throws Exception {
 		for (Organization organization :
 				OrganizationLocalServiceUtil.getNoAssetOrganizations()) {

@@ -388,6 +388,14 @@ AUI.add(
 			},
 		});
 
+		const inputElement = document.querySelector('.lfr-input-text');
+
+		inputElement.addEventListener('keydown', (event) => {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+			}
+		});
+
 		Liferay.KaleoFormsAdmin = KaleoFormsAdmin;
 	},
 	'',

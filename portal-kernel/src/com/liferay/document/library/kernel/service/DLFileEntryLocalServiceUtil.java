@@ -110,6 +110,12 @@ public class DLFileEntryLocalServiceUtil {
 		return getService().cancelCheckOut(userId, fileEntryId);
 	}
 
+	public static void checkFileEntries(long checkInterval)
+		throws PortalException {
+
+		getService().checkFileEntries(checkInterval);
+	}
+
 	public static void checkInFileEntry(
 			long userId, long fileEntryId,
 			com.liferay.document.library.kernel.model.DLVersionNumberIncrease

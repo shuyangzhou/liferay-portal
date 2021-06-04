@@ -1,8 +1,11 @@
 let content = null;
 let errorMessage = null;
 let loadingIndicator = null;
+let resizeIntervalId = null;
 let videoContainer = null;
 let videoMask = null;
+
+const editMode = document.body.classList.contains('has-edit-mode-menu');
 
 const height = configuration.videoHeight
 	? configuration.videoHeight.replace('px', '')
@@ -12,7 +15,24 @@ const width = configuration.videoWidth
 	? configuration.videoWidth.replace('px', '')
 	: configuration.videoWidth;
 
+function debounce(fn, timeout) {
+	let timeoutId = null;
+
+	return function () {
+		clearTimeout(timeoutId);
+
+		timeoutId = setTimeout(fn, timeout);
+	};
+}
+
 function main() {
+	clearInterval(resizeIntervalId);
+	window.removeEventListener('resize', resize);
+
+	if (!document.body.contains(fragmentElement)) {
+		return;
+	}
+
 	content = fragmentElement.querySelector('.video');
 
 	if (!content) {
@@ -23,8 +43,6 @@ function main() {
 	loadingIndicator = content.querySelector('.loading-animation');
 	videoContainer = content.querySelector('.video-container');
 	videoMask = content.querySelector('.video-mask');
-
-	window.removeEventListener('resize', resize);
 
 	try {
 		if (configuration.video) {
@@ -48,7 +66,14 @@ function main() {
 	}
 }
 
-function resize() {
+const resize = debounce(function () {
+	if (!document.body.contains(fragmentElement)) {
+		clearInterval(resizeIntervalId);
+		window.removeEventListener('resize', resize);
+
+		return;
+	}
+
 	content.style.height = '';
 	content.style.width = '';
 
@@ -64,10 +89,11 @@ function resize() {
 			content.style.width = contentWidth + 'px';
 		}
 		catch (error) {
+			clearInterval(resizeIntervalId);
 			window.removeEventListener('resize', resize);
 		}
 	});
-}
+}, 300);
 
 function showError() {
 	if (document.body.classList.contains('has-edit-mode-menu')) {
@@ -90,6 +116,10 @@ function showVideo() {
 	}
 
 	window.addEventListener('resize', resize);
+
+	if (editMode) {
+		resizeIntervalId = setInterval(resize, 2000);
+	}
 
 	resize();
 }

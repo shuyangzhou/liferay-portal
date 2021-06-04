@@ -203,7 +203,7 @@ export default ({
 				/>
 			</div>
 
-			<ClayToolbar className="rounded">
+			<ClayToolbar>
 				<ClayToolbar.Nav>
 					<ClayToolbar.Item>
 						<ClayToolbar.Section>
@@ -229,7 +229,7 @@ export default ({
 							<ClayButtonWithIcon
 								displayType={null}
 								onClick={handleRotate}
-								symbol="reload"
+								symbol="rotate"
 							/>
 						</ClayToolbar.Section>
 					</ClayToolbar.Item>

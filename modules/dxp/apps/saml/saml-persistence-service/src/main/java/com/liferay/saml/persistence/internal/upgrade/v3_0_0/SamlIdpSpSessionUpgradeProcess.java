@@ -60,24 +60,29 @@ public class SamlIdpSpSessionUpgradeProcess extends UpgradeProcess {
 					"insert into SamlPeerBinding (samlPeerBindingId, ",
 					"companyId, createDate, userId, userName, deleted, ",
 					"samlNameIdFormat, samlNameIdNameQualifier, ",
-					"samlNameIdSpProvidedId, samlNameIdValue, ",
-					"samlPeerEntityId) select min(samlIdpSpSessionId) + ",
+					"samlNameIdSpNameQualifier, samlNameIdSpProvidedId, ",
+					"samlNameIdValue, samlPeerEntityId) select ",
+					"min(samlIdpSpSessionId) + ",
 					-samlIdpSpSessionIdOffset + latestSamlPeerBindingId,
 					", companyId, min(createDate), userId, userName, '0' as ",
 					"deleted, nameIdFormat, null as nameIdNameQualifier, null ",
-					"as nameIdSpProvidedId, nameIdValue, samlSpEntityId from ",
+					"as samlNameIdSpNameQualifier, null as ",
+					"nameIdSpProvidedId, nameIdValue, samlSpEntityId from ",
 					"SamlIdpSpSession group by companyId, userId, userName, ",
 					"samlSpEntityId, nameIdFormat, nameIdValue"));
 
 			runSQL(
 				StringBundler.concat(
-					"update SamlIdpSpSession sidp set samlPeerBindingId = (",
-					"select samlPeerBindingId from SamlPeerBinding spb where ",
-					"sidp.companyId = spb.companyId and sidp.userId = ",
-					"spb.userId and sidp.samlSpEntityId = ",
-					"spb.samlPeerEntityId and sidp.nameIdFormat = ",
-					"spb.samlNameIdFormat and sidp.nameIdValue = ",
-					"spb.samlNameIdValue)"));
+					"update SamlIdpSpSession set samlPeerBindingId = (",
+					"select samlPeerBindingId from SamlPeerBinding where ",
+					"SamlIdpSpSession.companyId = SamlPeerBinding.companyId ",
+					"and SamlIdpSpSession.userId = SamlPeerBinding.userId and ",
+					"SamlIdpSpSession.samlSpEntityId = ",
+					"SamlPeerBinding.samlPeerEntityId and ",
+					"SamlIdpSpSession.nameIdFormat = ",
+					"SamlPeerBinding.samlNameIdFormat and ",
+					"SamlIdpSpSession.nameIdValue = ",
+					"SamlPeerBinding.samlNameIdValue)"));
 
 			CounterLocalServiceUtil.reset(
 				"com.liferay.saml.persistence.model.SamlPeerBinding",

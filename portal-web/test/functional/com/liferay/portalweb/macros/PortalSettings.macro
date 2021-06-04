@@ -6,6 +6,7 @@ definition {
 
 	macro addLDAPServer {
 		PortalSettings.gotoConfiguration(
+			baseURL = "${baseURL}",
 			configurationCategory = "LDAP",
 			configurationName = "Servers",
 			configurationScope = "Virtual Instance Scope");
@@ -405,15 +406,6 @@ definition {
 			value1 = "${roleTitle}");
 
 		PortletEntry.save();
-
-		PortalSettings.gotoConfiguration(
-			configurationCategory = "Users",
-			configurationName = "Default User Associations",
-			configurationScope = "Virtual Instance Scope");
-
-		Type.clickAtType(
-			locator1 = "PortalSettingsUsers#DEFAULT_USER_ASSOCIATIONS_ROLES_FIELD",
-			value1 = "${roleTitle}");
 	}
 
 	macro editConfigurationUsersDefaultUserAssociationsSitesCP {
@@ -539,6 +531,7 @@ definition {
 
 	macro editLDAPServer {
 		PortalSettings.gotoConfiguration(
+			baseURL = "${baseURL}",
 			configurationCategory = "LDAP",
 			configurationName = "Servers",
 			configurationScope = "Virtual Instance Scope");
@@ -679,7 +672,7 @@ definition {
 	}
 
 	macro gotoConfiguration {
-		PortalSettings.openInstanceSettingsAdmin();
+		PortalSettings.openInstanceSettingsAdmin(baseURL = "${baseURL}");
 
 		SystemSettings.gotoConfiguration(
 			configurationCategory = "${configurationCategory}",
@@ -700,7 +693,9 @@ definition {
 	}
 
 	macro openInstanceSettingsAdmin {
-		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_InstanceSettingsPortlet");
+		Navigator.openWithAppendToBaseURL(
+			baseURL = "${baseURL}",
+			urlAppend = "group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_InstanceSettingsPortlet");
 	}
 
 	macro setCurrentInstanceLanguageCP {

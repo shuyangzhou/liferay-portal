@@ -13,11 +13,10 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayDropDown from '@clayui/drop-down';
+import {ClayDropDownWithDrilldown} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import ClayLayout from '@clayui/layout';
 import classNames from 'classnames';
-import {openModal} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useEffect, useMemo, useState} from 'react';
 
@@ -34,19 +33,25 @@ import {
 	useEditableProcessorUniqueId,
 	useSetEditableProcessorUniqueId,
 } from '../../../../../app/contexts/EditableProcessorContext';
-import {useSelector} from '../../../../../app/contexts/StoreContext';
+import {
+	useSelector,
+	useSelectorCallback,
+} from '../../../../../app/contexts/StoreContext';
+import {selectPageContentDropdownItems} from '../../../../../app/selectors/selectPageContentDropdownItems';
 
 export default function PageContent({
-	actions,
 	classNameId,
 	classPK,
 	editableId,
 	icon,
 	subtype,
 	title,
-	type,
 }) {
-	const [active, setActive] = useState(false);
+	const [addItemsMenu, setAddItemsMenu] = useState([]);
+	const dropdownItems = useSelectorCallback(
+		selectPageContentDropdownItems(classPK),
+		[classPK]
+	);
 	const editableProcessorUniqueId = useEditableProcessorUniqueId();
 	const hoverItem = useHoverItem();
 	const hoveredItemId = useHoveredItemId();
@@ -64,16 +69,6 @@ export default function PageContent({
 		() => toControlsId(editableId) === editableProcessorUniqueId,
 		[toControlsId, editableId, editableProcessorUniqueId]
 	);
-
-	let editURL = null;
-	let permissionsURL = null;
-	let viewUsagesURL = null;
-
-	if (actions) {
-		editURL = actions.editURL;
-		permissionsURL = actions.permissionsURL;
-		viewUsagesURL = actions.viewUsagesURL;
-	}
 
 	useEffect(() => {
 		if (editableProcessorUniqueId || !nextEditbleProcessorUniqueId) {
@@ -157,6 +152,24 @@ export default function PageContent({
 		setEditableNextProcessorUniqueId(toControlsId(editableId));
 	};
 
+	const mainMenu = useMemo(() => {
+		const addItemsAction = dropdownItems?.find(
+			(item) => item.label === Liferay.Language.get('add-items')
+		);
+
+		if (addItemsAction) {
+			setAddItemsMenu(addItemsAction.menuItems);
+		}
+
+		return dropdownItems?.map((item) => {
+			const dropdownItem = {...item, title: item.label};
+
+			delete dropdownItem.menuItems;
+
+			return dropdownItem;
+		});
+	}, [dropdownItems]);
+
 	return (
 		<li
 			className={classNames('page-editor__page-contents__page-content', {
@@ -189,13 +202,16 @@ export default function PageContent({
 					)}
 				</ClayLayout.ContentCol>
 
-				{editURL || permissionsURL || viewUsagesURL || type ? (
-					<ClayDropDown
-						active={active}
-						onActiveChange={setActive}
+				{dropdownItems ? (
+					<ClayDropDownWithDrilldown
+						initialActiveMenu="mainMenu"
+						menus={{
+							addItemsMenu,
+							mainMenu,
+						}}
 						trigger={
 							<ClayButton
-								className="btn-sm mr-2 text-secondary"
+								className="btn-monospaced btn-sm text-secondary"
 								displayType="unstyled"
 							>
 								<span className="sr-only">
@@ -204,47 +220,7 @@ export default function PageContent({
 								<ClayIcon symbol="ellipsis-v" />
 							</ClayButton>
 						}
-					>
-						<ClayDropDown.ItemList>
-							{editURL && (
-								<ClayDropDown.Item href={editURL} key="editURL">
-									{Liferay.Language.get('edit')}
-								</ClayDropDown.Item>
-							)}
-
-							{permissionsURL && (
-								<ClayDropDown.Item
-									key="permissionsURL"
-									onClick={() => {
-										openModal({
-											title: Liferay.Language.get(
-												'permissions'
-											),
-											url: permissionsURL,
-										});
-									}}
-								>
-									{Liferay.Language.get('permissions')}
-								</ClayDropDown.Item>
-							)}
-
-							{viewUsagesURL && (
-								<ClayDropDown.Item
-									key="viewUsagesURL"
-									onClick={() => {
-										openModal({
-											title: Liferay.Language.get(
-												'view-usages'
-											),
-											url: viewUsagesURL,
-										});
-									}}
-								>
-									{Liferay.Language.get('view-usages')}
-								</ClayDropDown.Item>
-							)}
-						</ClayDropDown.ItemList>
-					</ClayDropDown>
+					/>
 				) : (
 					<ClayButton
 						className={classNames('btn-sm mr-2 text-secondary', {

@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -68,7 +69,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.api.support.membermodification.MemberMatcher;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -388,17 +388,13 @@ public class DDMFormRendererTagTest extends PowerMockito {
 	}
 
 	protected void setUpHttpServletRequest() throws IllegalAccessException {
-		ThemeDisplay themeDisplay = new ThemeDisplay();
-
 		_httpServletRequest.setAttribute(
 			JavaConstants.JAVAX_PORTLET_RESPONSE, new MockRenderResponse());
-		_httpServletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
+		_httpServletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, new ThemeDisplay());
 
-		MemberMatcher.field(
-			DDMFormRendererTag.class, "request"
-		).set(
-			_ddmFormRendererTag, _httpServletRequest
-		);
+		ReflectionTestUtil.setFieldValue(
+			_ddmFormRendererTag, "_httpServletRequest", _httpServletRequest);
 	}
 
 	protected void setUpLanguageUtil() {

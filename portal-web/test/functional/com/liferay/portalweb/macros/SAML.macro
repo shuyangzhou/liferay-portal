@@ -92,12 +92,14 @@ definition {
 			idpEntityID = "samlidp",
 			idpKeepAliveURL = "${idpKeepAliveURL}",
 			idpURL = "http://localhost:8080",
+			index = "${index}",
 			nameIdentifierAttributeName = "${nameIdentifierAttributeName}",
 			nameIdentifierFormat = "${nameIdentifierFormat}",
 			spAttributes = "${spAttributes}",
 			spEntityID = "${samlEntityID}",
 			spKeepAliveURL = "${spKeepAliveURL}",
-			spURL = "${spURL}");
+			spURL = "${spURL}",
+			userResolution = "${userResolution}");
 	}
 
 	@description = "Connect SP and IdP."
@@ -127,7 +129,9 @@ definition {
 			idpKeepAliveURL = "${idpKeepAliveURL}",
 			idpMetadataURL = "${idpURL}/c/portal/saml/metadata",
 			idpNameID = "${idpEntityID}",
-			nameIdentifierFormat = "${nameIdentifierFormat}");
+			index = "${index}",
+			nameIdentifierFormat = "${nameIdentifierFormat}",
+			userResolution = "${userResolution}");
 
 		SAMLNavigation.gotoGeneral();
 

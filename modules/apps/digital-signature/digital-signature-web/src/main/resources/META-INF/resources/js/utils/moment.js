@@ -25,4 +25,4 @@ const getLanguage = () => {
 };
 
 export const getDateFromNow = (date) =>
-	moment(date).locale(getLanguage()).fromNow();
+	moment.utc(date).locale(getLanguage()).fromNow();

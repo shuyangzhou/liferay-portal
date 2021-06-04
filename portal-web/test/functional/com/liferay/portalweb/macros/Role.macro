@@ -1,5 +1,13 @@
 definition {
 
+	macro _goToRoleAssigneeType {
+		LexiconEntry.gotoEntry(rowEntry = "${roleTitle}");
+
+		Navigator.gotoNavItem(navItem = "Assignees");
+
+		Navigator.gotoNavItem(navItem = "${assigneeType}");
+	}
+
 	macro add {
 		if ((!(isSet(roleKey))) && (!(isSet(roleTitle)))) {
 			fail("Please declear the roleKey or roleTitle when refering this macro.");
@@ -32,7 +40,11 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro addAssignees {
+	macro addAssignee {
+		Role._goToRoleAssigneeType(
+			assigneeType = "${assigneeType}",
+			roleTitle = "${roleTitle}");
+
 		LexiconEntry.gotoAdd();
 
 		WaitForLiferayEvent.initializeLiferayEventLog();
@@ -54,46 +66,6 @@ definition {
 		Button.clickAdd();
 
 		Alert.viewSuccessMessage();
-	}
-
-	macro assignRegRoleCP {
-		Search.searchCP(searchTerm = "${roleTitle}");
-
-		var key_itemName = "${roleTitle}";
-
-		AssertClick(
-			locator1 = "ListGroupItem#ITEM_NAME_LINK",
-			value1 = "${roleTitle}");
-
-		Navigator.gotoNavItem(navItem = "Assignees");
-
-		LexiconEntry.gotoAdd();
-
-		SelectFrame(locator1 = "IFrame#SELECT_ASSIGNEES");
-
-		Pause(locator1 = "3000");
-
-		var key_userScreenName = "${userScreenName}";
-
-		Search.searchCP(searchTerm = "${userScreenName}");
-
-		AssertTextPresent(value1 = "Results for ${userScreenName}");
-
-		AssertTextEquals(
-			locator1 = "RolesAssignMembers#USER_TABLE_SCREEN_NAME",
-			value1 = "${userScreenName}");
-
-		Check(locator1 = "RolesAssignMembers#USER_TABLE_CHECKBOX");
-
-		SelectFrameTop(value1 = "relative=top");
-
-		Button.clickAdd();
-
-		Alert.viewSuccessMessage();
-
-		AssertTextEquals(
-			locator1 = "RolesAssignMembers#USER_TABLE_SCREEN_NAME",
-			value1 = "${userScreenName}");
 	}
 
 	macro definePermissionCmdCP {
@@ -429,9 +401,9 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		RoleNavigator.gotoAssignees(roleTitle = "${roleTitle}");
-
-		RoleNavigator.gotoAssigneeType(assigneeType = "${assigneeType}");
+		Role._goToRoleAssigneeType(
+			assigneeType = "${assigneeType}",
+			roleTitle = "${roleTitle}");
 
 		Search.searchCP(searchTerm = "${assigneeName}");
 
@@ -498,9 +470,9 @@ definition {
 	}
 
 	macro viewAssignee {
-		RoleNavigator.gotoAssignees(roleTitle = "${roleTitle}");
-
-		RoleNavigator.gotoAssigneeType(assigneeType = "${assigneeType}");
+		Role._goToRoleAssigneeType(
+			assigneeType = "${assigneeType}",
+			roleTitle = "${roleTitle}");
 
 		LexiconEntry.viewEntryName(rowEntry = "${assigneeName}");
 	}
@@ -694,7 +666,7 @@ definition {
 		if (isSet(assigneeName)) {
 			Navigator.gotoNavItem(navItem = "Assignees");
 
-			RoleNavigator.gotoAssigneeType(assigneeType = "${assigneeType}");
+			Navigator.gotoNavItem(navItem = "${assigneeType}");
 
 			LexiconEntry.viewEntryName(rowEntry = "${assigneeName}");
 		}

@@ -22,12 +22,12 @@ import com.liferay.portal.crypto.hash.CryptoHashGenerator;
 import com.liferay.portal.crypto.hash.CryptoHashResponse;
 import com.liferay.portal.crypto.hash.CryptoHashVerificationContext;
 import com.liferay.portal.crypto.hash.CryptoHashVerifier;
+import com.liferay.portal.crypto.hash.exception.CryptoHashException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.test.rule.Inject;
@@ -36,6 +36,8 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.io.IOException;
 
 import java.nio.charset.StandardCharsets;
+
+import java.security.MessageDigest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +49,8 @@ import java.util.ListIterator;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import jodd.util.BCrypt;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -83,6 +87,24 @@ public class CryptoHashTest {
 		Bundle bundle = FrameworkUtil.getBundle(CryptoHashTest.class);
 
 		_bundleContext = bundle.getBundleContext();
+
+		_password = "This is a test".getBytes(StandardCharsets.US_ASCII);
+		_salt = RandomTestUtil.randomBytes();
+
+		String bCryptSalt = BCrypt.gensalt();
+
+		_bCryptSalt = bCryptSalt.getBytes(StandardCharsets.US_ASCII);
+
+		String expectedBCryptHash = BCrypt.hashpw(
+			new String(_password, StandardCharsets.US_ASCII), bCryptSalt);
+
+		_expectedBCryptHash = expectedBCryptHash.getBytes(
+			StandardCharsets.US_ASCII);
+
+		MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+
+		_expectedMessageDigestHash = messageDigest.digest(
+			ArrayUtil.append(_salt, _password));
 	}
 
 	@After
@@ -104,7 +126,7 @@ public class CryptoHashTest {
 
 	@Test
 	public void testCryptoHashGeneratorWithConfiguration() throws Exception {
-		_createFactoryConfiguration(
+		_addFactoryConfiguration(
 			"com.liferay.portal.crypto.hash.provider.message.digest.internal." +
 				"configuration.MessageDigestCryptoHashProviderConfiguration",
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -136,7 +158,7 @@ public class CryptoHashTest {
 	public void testCryptoHashGeneratorWithMultipleConfigurations()
 		throws Exception {
 
-		_createFactoryConfiguration(
+		_addFactoryConfiguration(
 			"com.liferay.portal.crypto.hash.provider.message.digest.internal." +
 				"configuration.MessageDigestCryptoHashProviderConfiguration",
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -147,7 +169,7 @@ public class CryptoHashTest {
 			).put(
 				"message.digest.salt.size", "32"
 			).build());
-		_createFactoryConfiguration(
+		_addFactoryConfiguration(
 			"com.liferay.portal.crypto.hash.provider.bcrypt.internal." +
 				"configuration.BCryptCryptoHashProviderConfiguration",
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -190,7 +212,7 @@ public class CryptoHashTest {
 	public void testCryptoHashGeneratorWithNoConfigurations() throws Exception {
 		_callService(
 			CryptoHashGenerator.class,
-			"(crypto.hash.provider.configuration.name=test-message-digest)",
+			"(crypto.hash.provider.configuration.name=empty-message-digest)",
 			object -> {
 				Assert.assertNull(object);
 
@@ -200,7 +222,7 @@ public class CryptoHashTest {
 
 	@Test
 	public void testCryptoHashVerifierWithNoConfigurations() throws Exception {
-		_createFactoryConfiguration(
+		_addFactoryConfiguration(
 			"com.liferay.portal.crypto.hash.provider.message.digest.internal." +
 				"configuration.MessageDigestCryptoHashProviderConfiguration",
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -215,7 +237,7 @@ public class CryptoHashTest {
 		AutoCloseable autoCloseable1 = _autoCloseables.remove(
 			_autoCloseables.size() - 1);
 
-		_createFactoryConfiguration(
+		_addFactoryConfiguration(
 			"com.liferay.portal.crypto.hash.provider.bcrypt.internal." +
 				"configuration.BCryptCryptoHashProviderConfiguration",
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -260,68 +282,100 @@ public class CryptoHashTest {
 					cryptoHashResponse2.getCryptoHashVerificationContext())));
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = CryptoHashException.class)
 	public void testCryptoHashVerifierWithNonexistingCryptoHashFactory()
 		throws Exception {
 
-		Assert.assertTrue(
-			_cryptoHashVerifier.verify(
-				"This is a test".getBytes(StandardCharsets.UTF_8),
-				Base64.decode(
-					"83XLsWN2CdnxOOMcjYZ82PqSlQxrD6/9VhZ33Rp+V6uBZPzzzJhe0aMx" +
-						"ZtOX4fwaiTytq6REBAKyej5/UVmoLw=="),
-				new CryptoHashVerificationContext(
-					RandomTestUtil.randomString(), Collections.emptyMap(),
-					Base64.decode(
-						"PZ0KUrMwjvcAaJdiYuRuxgUA6EQu3GzhWtduzJXwzX+4NfqWwl94" +
-							"XxpjABA1gLeXMpfsjc4PmXhNIlKZpU1k6Q=="))));
+		_cryptoHashVerifier.verify(
+			_password, _expectedMessageDigestHash,
+			new CryptoHashVerificationContext(
+				RandomTestUtil.randomString(), Collections.emptyMap(), _salt));
 	}
 
 	@Test
 	public void testCryptoHashVerifierWithStaticInput() throws Exception {
 		Assert.assertTrue(
 			_cryptoHashVerifier.verify(
-				"This is a test".getBytes(StandardCharsets.UTF_8),
-				Base64.decode(
-					"83XLsWN2CdnxOOMcjYZ82PqSlQxrD6/9VhZ33Rp+V6uBZPzzzJhe0aMx" +
-						"ZtOX4fwaiTytq6REBAKyej5/UVmoLw=="),
+				_password, _expectedMessageDigestHash,
 				new CryptoHashVerificationContext(
 					"MessageDigest",
 					HashMapBuilder.<String, Object>put(
 						"message.digest.algorithm", "SHA-512"
 					).build(),
-					Base64.decode(
-						"PZ0KUrMwjvcAaJdiYuRuxgUA6EQu3GzhWtduzJXwzX+4NfqWwl94" +
-							"XxpjABA1gLeXMpfsjc4PmXhNIlKZpU1k6Q=="))));
+					_salt)));
 
 		Assert.assertFalse(
 			_cryptoHashVerifier.verify(
-				"This is a test".getBytes(StandardCharsets.UTF_8),
-				Base64.decode(
-					"83XLsWN2CdnxOOMcjYZ82PqSlQxrD6/9VhZ33Rp+V6uBZPzzzJhe0aMx" +
-						"ZtOX4fwaiTytq6REBAKyej5/UVmoLw=="),
+				_password, _expectedMessageDigestHash,
 				new CryptoHashVerificationContext(
 					"MessageDigest",
 					HashMapBuilder.<String, Object>put(
 						"message.digest.algorithm", "SHA-256"
 					).build(),
-					Base64.decode(
-						"PZ0KUrMwjvcAaJdiYuRuxgUA6EQu3GzhWtduzJXwzX+4NfqWwl94" +
-							"XxpjABA1gLeXMpfsjc4PmXhNIlKZpU1k6Q=="))));
+					_salt)));
 
 		Assert.assertTrue(
 			_cryptoHashVerifier.verify(
-				"This is a test".getBytes(StandardCharsets.UTF_8),
-				Base64.decode(
-					"JDJhJDEwJHVxZVh5YjF1dUdHZjZ2UWtvalljU09lbjdaUjVaTEE0Lmxi" +
-						"S3IzUFpCWDRaNk1XVTlrYnJD"),
+				_password, _expectedBCryptHash,
 				new CryptoHashVerificationContext(
-					"BCrypt",
-					HashMapBuilder.<String, Object>put(
-						"bcrypt.rounds", "15"
-					).build(),
-					Base64.decode(
-						"JDJhJDEwJHVxZVh5YjF1dUdHZjZ2UWtvalljU08="))));
+					"BCrypt", Collections.emptyMap(), _bCryptSalt)));
+	}
+
+	private Configuration _addFactoryConfiguration(
+		String factoryPid, Dictionary<String, ?> properties) {
+
+		Configuration configuration = _registerFactoryConfiguration(
+			factoryPid, properties);
+
+		String configurationPid = configuration.getPid();
+
+		_autoCloseables.add(
+			() -> {
+				CountDownLatch countDownLatch = new CountDownLatch(1);
+
+				ServiceRegistration<ManagedServiceFactory> serviceRegistration =
+					_bundleContext.registerService(
+						ManagedServiceFactory.class,
+						new ManagedServiceFactory() {
+
+							@Override
+							public void deleted(String pid) {
+								if (configurationPid.equals(pid)) {
+									countDownLatch.countDown();
+								}
+							}
+
+							@Override
+							public String getName() {
+								return "Test managed service factory for PID " +
+									factoryPid;
+							}
+
+							@Override
+							public void updated(
+								String pid,
+								Dictionary<String, ?> updatedProperties) {
+							}
+
+						},
+						HashMapDictionaryBuilder.put(
+							Constants.SERVICE_PID, factoryPid
+						).build());
+
+				try {
+					configuration.delete();
+
+					countDownLatch.await(10, TimeUnit.SECONDS);
+				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+				}
+				finally {
+					serviceRegistration.unregister();
+				}
+			});
+
+		return configuration;
 	}
 
 	private <S, R, E extends Throwable> R _callService(
@@ -368,15 +422,32 @@ public class CryptoHashTest {
 		return null;
 	}
 
-	private Configuration _createFactoryConfiguration(
+	private boolean _contains(
+		Dictionary<String, ?> properties1, Dictionary<String, ?> properties2) {
+
+		if (properties2.size() > properties1.size()) {
+			return false;
+		}
+
+		Enumeration<String> enumeration = properties2.keys();
+
+		while (enumeration.hasMoreElements()) {
+			String key = enumeration.nextElement();
+
+			if (!Objects.deepEquals(
+					properties2.get(key), properties1.get(key))) {
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private Configuration _registerFactoryConfiguration(
 		String factoryPid, Dictionary<String, ?> properties) {
 
 		CountDownLatch countDownLatch = new CountDownLatch(1);
-
-		Dictionary<String, String> registrationProperties =
-			HashMapDictionaryBuilder.put(
-				Constants.SERVICE_PID, factoryPid
-			).build();
 
 		ServiceRegistration<ManagedServiceFactory> serviceRegistration =
 			_bundleContext.registerService(
@@ -401,13 +472,15 @@ public class CryptoHashTest {
 							return;
 						}
 
-						if (_isIncluded(properties, updatedProperties)) {
+						if (_contains(updatedProperties, properties)) {
 							countDownLatch.countDown();
 						}
 					}
 
 				},
-				registrationProperties);
+				HashMapDictionaryBuilder.put(
+					Constants.SERVICE_PID, factoryPid
+				).build());
 
 		try {
 			ServiceReference<ConfigurationAdmin> serviceReference =
@@ -450,31 +523,14 @@ public class CryptoHashTest {
 		}
 	}
 
-	private boolean _isIncluded(
-		Dictionary<String, ?> properties1, Dictionary<String, ?> properties2) {
-
-		if (properties1.size() > properties2.size()) {
-			return false;
-		}
-
-		Enumeration<String> enumeration = properties1.keys();
-
-		while (enumeration.hasMoreElements()) {
-			String key = enumeration.nextElement();
-
-			if (!Objects.deepEquals(
-					properties1.get(key), properties2.get(key))) {
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(CryptoHashTest.class);
 
+	private static byte[] _bCryptSalt;
 	private static BundleContext _bundleContext;
+	private static byte[] _expectedBCryptHash;
+	private static byte[] _expectedMessageDigestHash;
+	private static byte[] _password;
+	private static byte[] _salt;
 
 	private final List<AutoCloseable> _autoCloseables = new ArrayList<>();
 

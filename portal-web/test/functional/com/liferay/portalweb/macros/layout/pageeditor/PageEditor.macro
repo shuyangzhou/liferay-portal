@@ -194,6 +194,10 @@ definition {
 		}
 
 		if (("${navTab}" == "Widgets") && ("${displayStyle}" == "list")) {
+			Type.sendKeysApplicationSearch(
+				locator1 = "PageEditor#WIDGETS_APPLICATION_SEARCH_FIELD",
+				value1 = "${portletName}");
+
 			if ((isSet(targetFragmentName)) && ("${height}" == "Short")) {
 				DragAndDrop.javaScriptDragAndDropObjectBelowShortNestedObject(
 					key_portletName = "${portletName}",
@@ -1730,6 +1734,10 @@ definition {
 					locator1 = "Icon#ANY_ITEM_SELECTOR");
 			}
 
+			if (IsElementPresent(key_menuItem = "Select Content...",locator1 = "MenuItem#ANY_MENU_ITEM")) {
+				MenuItem.click(menuItem = "Select Content...");
+			}
+
 			SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
 			if (isSet(documentandmedia)) {
@@ -2771,6 +2779,14 @@ definition {
 		else {
 			DoubleClick(locator1 = "Fragment#CONTRIBUTED_FRAGMENT_EDITABLE_FIELD");
 		}
+	}
+
+	macro gotoEllipsisMenuItemInItemSelector {
+		Click(
+			key_fieldLabel = "${fieldLabel}",
+			locator1 = "PageEditor#ITEM_SELECTOR_DROPDOWN_TOGGLE");
+
+		MenuItem.click(menuItem = "${menuItem}");
 	}
 
 	macro gotoSaveAsFragment {

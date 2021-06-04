@@ -46,14 +46,6 @@ definition {
 			category = "Content &amp; Data",
 			portlet = "Kaleo Forms Admin");
 
-		KaleoFormsAdmin.addProcess();
-
-		KaleoFormsAdmin.addProcessDetails(
-			kfProcessDescription = "Kaleo Forms Process Description",
-			kfProcessName = "Kaleo Forms Process");
-
-		KaleoFormsAdmin.next();
-
 		KaleoFormsAdmin.addFieldSet(
 			kfFieldSetName = "New Kaleo Field Set",
 			kfProcessName = "Kaleo Forms Process");
@@ -64,6 +56,14 @@ definition {
 			fieldName = "DMTestField");
 
 		KaleoFormsAdmin.saveFieldSet();
+
+		KaleoFormsAdmin.addProcess();
+
+		KaleoFormsAdmin.addProcessDetails(
+			kfProcessDescription = "Kaleo Forms Process Description",
+			kfProcessName = "Kaleo Forms Process");
+
+		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.chooseFieldSet(
 			kfFieldSetName = "New Kaleo Field Set",
@@ -96,6 +96,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
+	@ignore = "true"
 	@priority = "3"
 	test AddProcessWithNewFieldSetAndWorkflowViaSourceTab {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#AddProcessWithNewFieldSetAndWorkflowViaSourceTab";
@@ -296,6 +297,7 @@ definition {
 		KaleoFormsAdmin.viewNoUnpublishedWorkflowDefinitions();
 	}
 
+	@ignore = "true"
 	@priority = "3"
 	test DeleteCreateFormViaDDL {
 		var kfFieldSetName = "${kfFieldSetName}";
@@ -594,14 +596,6 @@ definition {
 			category = "Content &amp; Data",
 			portlet = "Kaleo Forms Admin");
 
-		KaleoFormsAdmin.addProcess();
-
-		KaleoFormsAdmin.addProcessDetails(
-			kfProcessDescription = "${kfProcessDescription}",
-			kfProcessName = "${kfProcessName}");
-
-		KaleoFormsAdmin.next();
-
 		KaleoFormsAdmin.addFieldSet(
 			kfFieldSetName = "${kfFieldSetName}",
 			kfProcessName = "${kfProcessName}");
@@ -612,6 +606,14 @@ definition {
 			fieldName = "Boolean");
 
 		KaleoFormsAdmin.saveFieldSet();
+
+		KaleoFormsAdmin.addProcess();
+
+		KaleoFormsAdmin.addProcessDetails(
+			kfProcessDescription = "${kfProcessDescription}",
+			kfProcessName = "${kfProcessName}");
+
+		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.chooseFieldSet(
 			kfFieldSetName = "${kfFieldSetName}",
@@ -979,6 +981,7 @@ definition {
 			fieldName = "Separator");
 	}
 
+	@ignore = "true"
 	@priority = "3"
 	test EditFieldSetViaAddProcess {
 		Navigator.openURL();
@@ -1308,6 +1311,7 @@ definition {
 			kfProcessName = "Kaleo Forms Process Edited");
 	}
 
+	@ignore = "true"
 	@priority = "4"
 	test EditProcessNewFieldSet {
 		Navigator.openURL();
@@ -1430,6 +1434,7 @@ definition {
 			kfProcessName = "Kaleo Forms Process");
 	}
 
+	@ignore = "true"
 	@priority = "5"
 	test EditProcessNewWorkflowViaSourceTab {
 		property portal.acceptance = "true";

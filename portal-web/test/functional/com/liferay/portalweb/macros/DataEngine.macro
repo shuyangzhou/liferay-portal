@@ -896,7 +896,7 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Advanced");
 
-		Type.sendKeys(
+		Type(
 			key_fieldLabel = "Field Reference",
 			key_fieldName = "fieldReference",
 			locator1 = "Sidebar#TEXT_INPUT",
@@ -945,28 +945,6 @@ definition {
 		if (isSet(fieldFieldLabel)) {
 			Click(locator1 = "Sidebar#BACK");
 		}
-	}
-
-	macro editFieldReferenceWithInvalidCharacters {
-		Click(
-			key_fieldFieldLabel = "${fieldFieldLabel}",
-			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER");
-
-		Navigator.gotoNavTab(navTab = "Advanced");
-
-		Type.sendKeys(
-			key_fieldLabel = "Field Reference",
-			key_fieldName = "fieldReference",
-			locator1 = "Sidebar#TEXT_INPUT",
-			value1 = "${fieldReference}");
-
-		AssertTextEquals.assertValue(
-			key_fieldLabel = "Field Reference",
-			key_fieldName = "fieldReference",
-			locator1 = "Sidebar#TEXT_INPUT",
-			value1 = "${assertFieldReference}");
-
-		Click(locator1 = "Sidebar#BACK");
 	}
 
 	macro editFieldRequired {

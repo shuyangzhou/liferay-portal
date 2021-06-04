@@ -93,7 +93,6 @@ definition {
 	}
 
 	@description = "This test ensures it's possible to delete a field group on a Document Type."
-	@ignore = "true"
 	@priority = "5"
 	test DeleteFieldGroupOnDocumentType {
 		property portal.acceptance = "true";
@@ -131,7 +130,8 @@ definition {
 
 		Click(
 			index = "1",
-			locator1 = "DataEngineBuilder#FORM_FIELDS_GROUP_INDEX");
+			key_fieldLabel = "Fields Group",
+			locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED");
 
 		Click(locator1 = "DataEngineBuilder#FORM_FIELDS_GROUP_VERTICAL_ELLIPSIS");
 
@@ -145,8 +145,8 @@ definition {
 
 		AssertElementNotPresent(
 			index = "1",
-			locator1 = "DataEngineBuilder#FORM_FIELDS_GROUP_INDEX",
-			value1 = "Field Group");
+			key_fieldLabel = "Fields Group",
+			locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED");
 	}
 
 	@description = "This test ensures its possible to delete a field group inside another field group."
@@ -179,8 +179,9 @@ definition {
 		DMNavigator.gotoEditDocumentType(dmDocumentTypeName = "DM Document Type Name");
 
 		AssertElementNotPresent(
-			key_FieldGroupIndex = "2",
-			locator1 = "DataEngineBuilder#FORM_FIELDS_GROUP_INDEX");
+			index = "1",
+			key_fieldLabel = "Fields Group",
+			locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED");
 	}
 
 	@description = "This test ensures it's possible to duplicate a field group."

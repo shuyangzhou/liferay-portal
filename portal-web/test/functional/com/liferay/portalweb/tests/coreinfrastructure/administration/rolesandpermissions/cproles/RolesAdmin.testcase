@@ -24,35 +24,8 @@ definition {
 		}
 	}
 
-	@description = "This is a use case for LPS-105001 and LPS-104999."
-	@priority = "3"
-	test AssertRoleTitleNotRequired {
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Roles");
-
-		Role.viewCP(
-			roleKey = "Administrator",
-			toolTip = "A title is a localizable human-readable name for a role. If not provided, the key will be displayed by default.");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Roles");
-
-		Role.add(roleKey = "Role Key Value");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Roles");
-
-		Role.viewCP(roleKey = "Role Key Value");
-	}
-
 	@priority = "4"
-	test AssignExistingSegmentToRegularRole {
+	test ExistingSegmentCanBeAssignedToARegularRole {
 		ProductMenu.gotoSite(site = "Global");
 
 		ProductMenu.gotoPortlet(
@@ -82,11 +55,10 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		RoleNavigator.gotoAssignees(roleTitle = "Roles Regrole Name");
-
-		RoleNavigator.gotoAssigneeType(assigneeType = "Segments");
-
-		Role.addAssignees(assigneeName = "RoleSegment Test");
+		Role.addAssignee(
+			assigneeName = "RoleSegment Test",
+			assigneeType = "Segments",
+			roleTitle = "Roles Regrole Name");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
@@ -100,7 +72,7 @@ definition {
 	}
 
 	@priority = "4"
-	test AssignNewSegmentToRegularRole {
+	test NewSegmentCanBeAssignedToARegularRole {
 		JSONRole.addRegularRole(
 			roleKey = "Roles Regrole Name",
 			roleTitle = "Roles Regrole Name");
@@ -110,9 +82,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		RoleNavigator.gotoAssignees(roleTitle = "Roles Regrole Name");
+		LexiconEntry.gotoEntry(rowEntry = "Roles Regrole Name");
 
-		RoleNavigator.gotoAssigneeType(assigneeType = "Segments");
+		Navigator.gotoNavItem(navItem = "Assignees");
+
+		Navigator.gotoNavItem(navItem = "Segments");
 
 		LexiconEntry.gotoAdd();
 
@@ -135,11 +109,10 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		RoleNavigator.gotoAssignees(roleTitle = "Roles Regrole Name");
-
-		RoleNavigator.gotoAssigneeType(assigneeType = "Segments");
-
-		Role.addAssignees(assigneeName = "New RoleSegment Test");
+		Role.addAssignee(
+			assigneeName = "New RoleSegment Test",
+			assigneeType = "Segments",
+			roleTitle = "Roles Regrole Name");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
@@ -152,43 +125,8 @@ definition {
 			roleTitle = "Roles Regrole Name");
 	}
 
-	@description = "This is a use case for LPS-109572."
 	@priority = "5"
-	test AssignUserToRegularRole {
-		property portal.acceptance = "true";
-
-		JSONRole.addRegularRole(
-			roleKey = "Regular Role",
-			roleTitle = "Regular Role");
-
-		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
-			userFirstName = "userfn",
-			userLastName = "userln",
-			userScreenName = "usersn");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Roles");
-
-		JSONRole.assignRoleToUser(
-			roleTitle = "Regular Role",
-			userEmailAddress = "userea@liferay.com");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Roles");
-
-		Role.viewAssignee(
-			assigneeName = "userfn userln",
-			assigneeType = "Users",
-			roleTitle = "Regular Role");
-	}
-
-	@priority = "5"
-	test DeleteOrganizationRole {
+	test OrganizationRoleCanBeDeleted {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
 
@@ -230,7 +168,7 @@ definition {
 	}
 
 	@priority = "5"
-	test DeleteRegularRole {
+	test RegularRoleCanBeDeleted {
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
@@ -267,8 +205,55 @@ definition {
 		Role.viewDefaultCP(roleTitle = "Roles Regrole Name");
 	}
 
+	@priority = "4"
+	test SegmentCanBeRemovedFromRegularRole {
+		ProductMenu.gotoSite(site = "Global");
+
+		ProductMenu.gotoPortlet(
+			category = "People",
+			portlet = "Segments");
+
+		LexiconEntry.gotoAdd();
+
+		Segmentation.addProperties(propertyOption = "Email Address");
+
+		Segmentation.fillTitle(titleField = "Role Assignee Test");
+
+		Segmentation.changeCriterionInput(criterionInputOption = "Contains");
+
+		Segmentation.fillProperty(propertyField = "liferay");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+
+		JSONRole.addRegularRole(
+			roleKey = "Remove Regrole Assignee",
+			roleTitle = "Remove Regrole Assignee");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
+
+		Role.addAssignee(
+			assigneeName = "Role Assignee Test",
+			assigneeType = "Segments",
+			roleTitle = "Remove Regrole Assignee");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
+
+		Role.removeAssignee(
+			assigneeName = "Role Assignee Test",
+			assigneeType = "Segments",
+			roleTitle = "Remove Regrole Assignee");
+	}
+
 	@priority = "5"
-	test DeleteSiteRole {
+	test SiteRoleCanBeDeleted {
 		property portal.acceptance = "true";
 
 		ApplicationsMenu.gotoPortlet(
@@ -308,52 +293,66 @@ definition {
 		Role.viewDefaultCP(roleTitle = "Roles Siterole Name");
 	}
 
-	@priority = "4"
-	test RemoveSegmentFromRegularRole {
-		ProductMenu.gotoSite(site = "Global");
+	@description = "This is a use case for LPS-105001 and LPS-104999."
+	@priority = "3"
+	test UserCanAddARoleWithoutATitle {
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
 
-		ProductMenu.gotoPortlet(
-			category = "People",
-			portlet = "Segments");
+		Role.viewCP(
+			roleKey = "Administrator",
+			toolTip = "A title is a localizable human-readable name for a role. If not provided, the key will be displayed by default.");
 
-		LexiconEntry.gotoAdd();
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
 
-		Segmentation.addProperties(propertyOption = "Email Address");
+		Role.add(roleKey = "Role Key Value");
 
-		Segmentation.fillTitle(titleField = "Role Assignee Test");
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
 
-		Segmentation.changeCriterionInput(criterionInputOption = "Contains");
+		Role.viewCP(roleKey = "Role Key Value");
+	}
 
-		Segmentation.fillProperty(propertyField = "liferay");
-
-		Button.clickSave();
-
-		Alert.viewSuccessMessage();
+	@description = "This is a use case for LPS-109572."
+	@priority = "5"
+	test UserCanBeAssignedToARegularRole {
+		property portal.acceptance = "true";
 
 		JSONRole.addRegularRole(
-			roleKey = "Remove Regrole Assignee",
-			roleTitle = "Remove Regrole Assignee");
+			roleKey = "Regular Role",
+			roleTitle = "Regular Role");
+
+		JSONUser.addUser(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		RoleNavigator.gotoAssignees(roleTitle = "Remove Regrole Assignee");
-
-		RoleNavigator.gotoAssigneeType(assigneeType = "Segments");
-
-		Role.addAssignees(assigneeName = "Role Assignee Test");
+		JSONRole.assignRoleToUser(
+			roleTitle = "Regular Role",
+			userEmailAddress = "userea@liferay.com");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.removeAssignee(
-			assigneeName = "Role Assignee Test",
-			assigneeType = "Segments",
-			roleTitle = "Remove Regrole Assignee");
+		Role.viewAssignee(
+			assigneeName = "userfn userln",
+			assigneeType = "Users",
+			roleTitle = "Regular Role");
 	}
 
 }

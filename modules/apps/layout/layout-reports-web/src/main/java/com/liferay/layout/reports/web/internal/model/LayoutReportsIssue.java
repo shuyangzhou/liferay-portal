@@ -14,11 +14,12 @@
 
 package com.liferay.layout.reports.web.internal.model;
 
-import com.liferay.layout.reports.web.internal.util.MarkdownUtil;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.Collections;
@@ -138,9 +139,7 @@ public class LayoutReportsIssue {
 
 	public static class Detail {
 
-		public Detail(String description, Detail.Key key, long total) {
-			_description = description;
-
+		public Detail(Detail.Key key, long total) {
 			if (key == null) {
 				throw new IllegalArgumentException("Key is null");
 			}
@@ -177,12 +176,11 @@ public class LayoutReportsIssue {
 
 		public JSONObject toJSONObject(ResourceBundle resourceBundle) {
 			return JSONUtil.put(
-				"description", _description
+				"description", _key.getDescription(resourceBundle)
 			).put(
 				"key", _key.toString()
 			).put(
-				"tips",
-				MarkdownUtil.markdownToHtml(_key.getTips(resourceBundle))
+				"tips", _key.getTips(resourceBundle)
 			).put(
 				"title", _key.getTitle(resourceBundle)
 			).put(
@@ -207,12 +205,33 @@ public class LayoutReportsIssue {
 					return "illegible-font-sizes";
 				}
 
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/font-size")
+					};
+				}
+
 			},
 			INCORRECT_IMAGE_ASPECT_RATIOS {
 
 				@Override
 				public String toString() {
 					return "incorrect-image-aspect-ratios";
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle,
+							"https://web.dev/image-aspect-ratio")
+					};
 				}
 
 			},
@@ -223,12 +242,32 @@ public class LayoutReportsIssue {
 					return "invalid-canonical-url";
 				}
 
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/canonical")
+					};
+				}
+
 			},
 			INVALID_HREFLANG {
 
 				@Override
 				public String toString() {
 					return "invalid-hreflang";
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/hreflang")
+					};
 				}
 
 			},
@@ -239,12 +278,32 @@ public class LayoutReportsIssue {
 					return "link-texts";
 				}
 
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/link-text")
+					};
+				}
+
 			},
 			LOW_CONTRAST_RATIO {
 
 				@Override
 				public String toString() {
 					return "low-contrast-ratio";
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/color-contrast")
+					};
 				}
 
 			},
@@ -255,12 +314,33 @@ public class LayoutReportsIssue {
 					return "missing-img-alt-attributes";
 				}
 
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/image-alt")
+					};
+				}
+
 			},
 			MISSING_INPUT_ALT_ATTRIBUTES {
 
 				@Override
 				public String toString() {
 					return "missing-input-alt-attributes";
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getHtmlCode("<input>"),
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/input-image-alt")
+					};
 				}
 
 			},
@@ -271,27 +351,46 @@ public class LayoutReportsIssue {
 					return "missing-meta-description";
 				}
 
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/meta-description")
+					};
+				}
+
 			},
 			MISSING_TITLE_ELEMENT {
 
 				@Override
-				public String getTitle(ResourceBundle resourceBundle) {
-					return ResourceBundleUtil.getString(
-						resourceBundle, "detail-missing-x-element", "<title>");
+				protected String[] getTitleArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {"<title>"};
 				}
 
 				@Override
-				public String getTips(
-					ResourceBundle resourceBundle, Object... args) {
+				protected String[] getTipsArguments(
+					ResourceBundle resourceBundle) {
 
-					return ResourceBundleUtil.getString(
-						resourceBundle, "detail-missing-x-element-tip",
-						"`<title>`");
+					return new String[] {getHtmlCode("<title>")};
 				}
 
 				@Override
 				public String toString() {
 					return "missing-title-element";
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/document-title")
+					};
 				}
 
 			},
@@ -303,12 +402,26 @@ public class LayoutReportsIssue {
 				}
 
 				@Override
-				public String getTips(
-					ResourceBundle resourceBundle, Object... args) {
+				protected String[] getTipsArguments(
+					ResourceBundle resourceBundle) {
 
-					return super.getTips(
-						resourceBundle, "`<a>`", "`href`",
-						"`<a href=\"https://example.com\">`");
+					return new String[] {
+						getHtmlCode("<a>"), getHtmlCode("href"),
+						getHtmlCode("<a href=\"https://example.com\">")
+					};
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getHtmlCode("href"),
+						getLearnMoreLink(
+							resourceBundle,
+							"https://support.google.com/webmasters/answer" +
+								"/9112205")
+					};
 				}
 
 			},
@@ -320,10 +433,20 @@ public class LayoutReportsIssue {
 				}
 
 				@Override
-				public String getTips(
-					ResourceBundle resourceBundle, Object... args) {
+				protected String[] getTipsArguments(
+					ResourceBundle resourceBundle) {
 
-					return super.getTips(resourceBundle, "`noindex`");
+					return new String[] {getHtmlCode("noindex")};
+				}
+
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/is-crawlable")
+					};
 				}
 
 			},
@@ -334,18 +457,63 @@ public class LayoutReportsIssue {
 					return "small-tap-targets";
 				}
 
+				@Override
+				protected String[] getDescriptionArguments(
+					ResourceBundle resourceBundle) {
+
+					return new String[] {
+						getLearnMoreLink(
+							resourceBundle, "https://web.dev/tap-targets")
+					};
+				}
+
 			};
 
-			public String getTips(
-				ResourceBundle resourceBundle, Object... args) {
+			public String getDescription(ResourceBundle resourceBundle) {
+				return LanguageUtil.format(
+					resourceBundle, _getDetailLanguageKey() + "-description",
+					getDescriptionArguments(resourceBundle), false);
+			}
 
+			public String getTips(ResourceBundle resourceBundle) {
 				return ResourceBundleUtil.getString(
-					resourceBundle, _getDetailLanguageKey() + "-tip", args);
+					resourceBundle, _getDetailLanguageKey() + "-tip",
+					getTipsArguments(resourceBundle));
 			}
 
 			public String getTitle(ResourceBundle resourceBundle) {
-				return ResourceBundleUtil.getString(
-					resourceBundle, _getDetailLanguageKey());
+				return LanguageUtil.format(
+					resourceBundle, _getDetailLanguageKey(),
+					getTitleArguments(resourceBundle), false);
+			}
+
+			protected String[] getDescriptionArguments(
+				ResourceBundle resourceBundle) {
+
+				return new String[0];
+			}
+
+			protected String getHtmlCode(String html) {
+				return "<code>" + HtmlUtil.escape(html) + "</code>";
+			}
+
+			protected String getLearnMoreLink(
+				ResourceBundle resourceBundle, String url) {
+
+				return StringBundler.concat(
+					"<a href=\"", url, "\" target=\"_blank\">",
+					ResourceBundleUtil.getString(resourceBundle, "learn-more"),
+					"</a>");
+			}
+
+			protected String[] getTipsArguments(ResourceBundle resourceBundle) {
+				return new String[0];
+			}
+
+			protected String[] getTitleArguments(
+				ResourceBundle resourceBundle) {
+
+				return new String[0];
 			}
 
 			private String _getDetailLanguageKey() {
@@ -354,7 +522,6 @@ public class LayoutReportsIssue {
 
 		}
 
-		private final String _description;
 		private final Detail.Key _key;
 		private final long _total;
 

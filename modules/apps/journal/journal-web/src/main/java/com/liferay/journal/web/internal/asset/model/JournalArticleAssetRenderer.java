@@ -403,9 +403,7 @@ public class JournalArticleAssetRenderer
 			layout = themeDisplay.getLayout();
 		}
 
-		Group group = themeDisplay.getScopeGroup();
-
-		if (!_isShowDisplayPage(group.getGroupId(), _article)) {
+		if (!_isShowDisplayPage(_article.getGroupId(), _article)) {
 			String hitLayoutURL = getHitLayoutURL(
 				layout.isPrivateLayout(), noSuchEntryRedirect, themeDisplay);
 
@@ -416,10 +414,6 @@ public class JournalArticleAssetRenderer
 			}
 
 			return hitLayoutURL;
-		}
-
-		if (group.getGroupId() != _article.getGroupId()) {
-			group = GroupLocalServiceUtil.getGroup(_article.getGroupId());
 		}
 
 		if (_assetDisplayPageFriendlyURLProvider != null) {
@@ -440,7 +434,7 @@ public class JournalArticleAssetRenderer
 
 		String groupFriendlyURL = PortalUtil.getGroupFriendlyURL(
 			LayoutSetLocalServiceUtil.getLayoutSet(
-				group.getGroupId(), layout.isPrivateLayout()),
+				_article.getGroupId(), layout.isPrivateLayout()),
 			themeDisplay);
 
 		StringBundler sb = new StringBundler(3);

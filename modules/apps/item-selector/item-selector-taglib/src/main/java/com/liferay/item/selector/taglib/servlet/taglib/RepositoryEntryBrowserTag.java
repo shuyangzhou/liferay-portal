@@ -174,7 +174,7 @@ public class RepositoryEntryBrowserTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		servletContext = ServletContextUtil.getServletContext();
+		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPortletURL(PortletURL portletURL) {
@@ -234,10 +234,14 @@ public class RepositoryEntryBrowserTag extends IncludeTag {
 	}
 
 	protected String getDisplayStyle() {
-		PortalPreferences portalPreferences =
-			PortletPreferencesFactoryUtil.getPortalPreferences(request);
+		HttpServletRequest httpServletRequest = getRequest();
 
-		String displayStyle = ParamUtil.getString(request, "displayStyle");
+		PortalPreferences portalPreferences =
+			PortletPreferencesFactoryUtil.getPortalPreferences(
+				httpServletRequest);
+
+		String displayStyle = ParamUtil.getString(
+			httpServletRequest, "displayStyle");
 
 		if (Validator.isNotNull(displayStyle)) {
 			displayStyle = getSafeDisplayStyle(displayStyle);

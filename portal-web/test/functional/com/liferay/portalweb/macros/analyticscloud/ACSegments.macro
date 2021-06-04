@@ -68,6 +68,16 @@ definition {
 		Click(locator1 = "ACSegments#CALENDAR_INPUT");
 	}
 
+	macro editFormControlCriterion {
+		var key_Criterion = "${criterionName}";
+
+		var key_option = "${option}";
+
+		Click(locator1 = "ACSegments#FORM_CONTROL_CRITERION");
+
+		Click(locator1 = "ACSegments#FORM_CONTROL_CRITERION_OPTION");
+	}
+
 	macro editSegment {
 		if (!IsTextEqual.isPartialText(locator1 = "ACSegments#SEGMENT_LABEL", value1 = "SEGMENT")) {
 			ACSegments.searchSegment(findSegment = "${searchTerm}");
@@ -117,7 +127,7 @@ definition {
 	}
 
 	macro includeAnonymous {
-		Click(locator1 = "ACSegments#ANONYMOUS_SWITCH");
+		Check.checkToggleSwitch(locator1 = "ACSegments#ANONYMOUS_SWITCH");
 	}
 
 	macro nameSegment {
@@ -205,9 +215,7 @@ definition {
 	}
 
 	macro viewIncludeAnonymousLabel {
-		AssertTextPresent(
-			locator1 = "ACSegments#ANONYMOUS_LABEL",
-			value1 = "Include Anonymous");
+		AssertElementPresent(locator1 = "ACSegments#ANONYMOUS_LABEL");
 	}
 
 	macro viewSegmentComposition {
@@ -239,6 +247,23 @@ definition {
 		AssertTextEquals(
 			locator1 = "ACSegments#SEGMENT_CRITERIA_CRITERIA_VALUE",
 			value1 = "${criteriaValue}");
+	}
+
+	macro viewSegmentMembershipLegendNumbers {
+		AssertTextEquals(
+			key_memberType = "Known Members:",
+			locator1 = "ACSegments#SEGMENT_MEMBERSHIP_LEGEND",
+			value1 = "${knownNumber}");
+
+		AssertTextEquals(
+			key_memberType = "Anonymous Members:",
+			locator1 = "ACSegments#SEGMENT_MEMBERSHIP_LEGEND",
+			value1 = "${anonymousNumber}");
+
+		AssertTextEquals(
+			key_memberType = "Total Members:",
+			locator1 = "ACSegments#SEGMENT_MEMBERSHIP_LEGEND",
+			value1 = "${totalNumber}");
 	}
 
 	macro viewSegmentProfileCards {

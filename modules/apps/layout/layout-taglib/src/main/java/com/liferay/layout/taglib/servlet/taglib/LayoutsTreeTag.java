@@ -164,7 +164,7 @@ public class LayoutsTreeTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		servletContext = ServletContextUtil.getServletContext();
+		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPortletURL(PortletURL portletURL) {
@@ -242,7 +242,7 @@ public class LayoutsTreeTag extends IncludeTag {
 		String checkedLayoutIds = GetterUtil.getString(
 			_selectedLayoutIds,
 			SessionTreeJSClicks.getOpenNodes(
-				request, _treeId + "SelectedNode"));
+				getRequest(), _treeId + "SelectedNode"));
 
 		if (Validator.isNull(checkedLayoutIds)) {
 			return checkedNodesJSONArray.toString();

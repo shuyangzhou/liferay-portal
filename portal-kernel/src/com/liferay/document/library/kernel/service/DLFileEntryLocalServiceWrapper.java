@@ -106,6 +106,13 @@ public class DLFileEntryLocalServiceWrapper
 	}
 
 	@Override
+	public void checkFileEntries(long checkInterval)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_dlFileEntryLocalService.checkFileEntries(checkInterval);
+	}
+
+	@Override
 	public void checkInFileEntry(
 			long userId, long fileEntryId,
 			com.liferay.document.library.kernel.model.DLVersionNumberIncrease

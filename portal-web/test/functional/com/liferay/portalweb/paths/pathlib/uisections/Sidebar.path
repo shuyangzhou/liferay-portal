@@ -50,7 +50,7 @@
 </tr>
 <tr>
     <td>FIELDSET_ITEM_ELLIPSIS</td>
-    <td>//div[contains(@class, 'field-type')][contains(.,'${key_fieldsetName}')]//button[contains(@class, 'dropdown-toggle')]</td>
+    <td>//div[contains(@class, 'sidebar-body')]//div[contains(@class, 'field-type')][contains(.,'${key_fieldsetName}')]//button[contains(@class, 'dropdown-toggle')]</td>
     <td></td>
 </tr>
 <tr>

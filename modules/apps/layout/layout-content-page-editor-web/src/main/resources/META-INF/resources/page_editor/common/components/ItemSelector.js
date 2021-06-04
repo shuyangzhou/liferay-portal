@@ -21,6 +21,7 @@ import React, {useCallback} from 'react';
 
 import {config} from '../../app/config/index';
 import {useSelectorCallback} from '../../app/contexts/StoreContext';
+import {selectPageContentDropdownItems} from '../../app/selectors/selectPageContentDropdownItems';
 import {useId} from '../../app/utils/useId';
 import {openItemSelector} from '../../core/openItemSelector';
 
@@ -88,7 +89,10 @@ export default function ItemSelector({
 						type: 'divider',
 					},
 					{
-						label: `${Liferay.Language.get('select-content')}...`,
+						label: `${Liferay.Util.sub(
+							Liferay.Language.get('select-x'),
+							label
+						)}...`,
 						onClick: () => openModal(),
 					}
 				);
@@ -102,19 +106,41 @@ export default function ItemSelector({
 			a.every((item, index) => item.itemId === b[index].itemId)
 	);
 
-	const selectContentIcon = selectedItem?.title ? 'change' : 'plus';
+	const optionsMenu = useSelectorCallback(
+		(state) => {
+			const menuItems = [];
 
-	const getContentButtonName = (label) =>
-		Liferay.Util.sub(
-			selectedItem?.title
-				? Liferay.Language.get('change-x')
-				: Liferay.Language.get('select-x'),
-			label
-		);
+			if (config.contentBrowsingEnabled && selectedItem?.classPK) {
+				const contentMenuItems = selectPageContentDropdownItems(
+					selectedItem.classPK,
+					label
+				)(state);
 
-	const contentButtonTitle = getContentButtonName(label);
-	const contentButtonAriaLabel = getContentButtonName(
-		Liferay.Language.get('content-button')
+				if (contentMenuItems?.length) {
+					menuItems.push(...contentMenuItems, {type: 'divider'});
+				}
+			}
+
+			menuItems.push({
+				label: Liferay.Util.sub(
+					Liferay.Language.get('remove-x'),
+					label
+				),
+				onClick: () => onItemSelect({}),
+			});
+
+			return menuItems;
+		},
+		[label, onItemSelect, selectedItem]
+	);
+
+	const selectContentButtonIcon = selectedItem?.title ? 'change' : 'plus';
+
+	const selectContentButtonLabel = Liferay.Util.sub(
+		selectedItem?.title
+			? Liferay.Language.get('change-x')
+			: Liferay.Language.get('select-x'),
+		label
 	);
 
 	return (
@@ -148,38 +174,46 @@ export default function ItemSelector({
 							items={mappedItemsMenu}
 							trigger={
 								<ClayButtonWithIcon
-									aria-label={contentButtonAriaLabel}
+									aria-label={selectContentButtonLabel}
 									className="page-editor__item-selector__content-button"
 									displayType="secondary"
 									small
-									symbol={selectContentIcon}
-									title={contentButtonTitle}
+									symbol={selectContentButtonIcon}
+									title={selectContentButtonLabel}
 								/>
 							}
 						/>
 					) : (
 						<ClayButtonWithIcon
-							aria-label={contentButtonAriaLabel}
+							aria-label={selectContentButtonLabel}
 							className="page-editor__item-selector__content-button"
 							displayType="secondary"
 							onClick={openModal}
 							small
-							symbol={selectContentIcon}
-							title={contentButtonTitle}
+							symbol={selectContentButtonIcon}
+							title={selectContentButtonLabel}
 						/>
 					))}
 
 				{selectedItem?.title && (
-					<ClayButtonWithIcon
-						aria-label={Liferay.Language.get(
-							'clear-content-button'
-						)}
-						className="ml-2 page-editor__item-selector__content-button"
-						displayType="secondary"
-						onClick={() => onItemSelect({})}
-						small
-						symbol="times-circle"
-						title={Liferay.Language.get('clear-selection')}
+					<ClayDropDownWithItems
+						items={optionsMenu}
+						trigger={
+							<ClayButtonWithIcon
+								aria-label={Liferay.Util.sub(
+									Liferay.Language.get('view-x-options'),
+									label
+								)}
+								className="ml-2 page-editor__item-selector__content-button"
+								displayType="secondary"
+								small
+								symbol="ellipsis-v"
+								title={Liferay.Util.sub(
+									Liferay.Language.get('view-x-options'),
+									label
+								)}
+							/>
+						}
 					/>
 				)}
 			</div>

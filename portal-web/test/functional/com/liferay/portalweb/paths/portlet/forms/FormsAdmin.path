@@ -20,8 +20,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>FORM_ENTRY_TABLE_BODY</td>
-	<td>//table[contains(@class,'table')]//tbody//*[contains(text(),'${key_fieldBody}')]</td>
+	<td>FORM_ENTRY_STATUS</td>
+	<td>//table[contains(@class,'table')]//tbody//*[contains(text(),'${key_formEntryWorkflowStatus}')]</td>
 	<td></td>
 </tr>
 <tr>

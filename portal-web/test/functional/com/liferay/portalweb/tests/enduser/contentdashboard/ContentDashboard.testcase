@@ -33,6 +33,9 @@ definition {
 		if ("${testPortalInstance}" == "true") {
 			PortalInstances.tearDownCP();
 		}
+		else {
+			JSONGroup.deleteGroupByName(groupName = "Test Site Name");
+		}
 	}
 
 	@description = "LPS-132597 When a web content is associated to a Display Page and its status is Approved, a display page icon is displayed"
@@ -225,11 +228,12 @@ definition {
 		}
 	}
 
-	@description = "Validate if the user can edit a web content through the Edit option"
-	@priority = "5"
-	test ContentDashboardClickTitleApprovedDPTWithNoPermissions {
+	@description = "LPS-121658 When a user with no edit permissions clicks on the title of a content in status Approved with associated DPT, the user is led to the page view"
+	@priority = "4"
+	@uitest
+	test ClickTitleApprovedDPTWithNoPermissions {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ContentDashboard#ContentDashboardClickTitleApprovedDPTWithNoPermissions";
+		property test.name.skip.portal.instance = "ContentDashboard#ClickTitleApprovedDPTWithNoPermissions";
 
 		JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
 			contentType = "Web Content Article",
@@ -338,11 +342,12 @@ definition {
 			webContentTitle = "WC Title");
 	}
 
-	@description = "Validate if the user can edit a web content through the Edit option"
-	@priority = "5"
-	test ContentDashboardClickTitleApprovedDPTWithPermissions {
+	@description = "LPS-121658 When a user with edit permissions clicks on the title of a content in status Approved with associated DPT, the user is led to the page view"
+	@priority = "4"
+	@uitest
+	test ClickTitleApprovedDPTWithPermissions {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ContentDashboard#ContentDashboardClickTitleApprovedDPTWithPermissions";
+		property test.name.skip.portal.instance = "ContentDashboard#ClickTitleApprovedDPTWithPermissions";
 
 		JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
 			contentType = "Web Content Article",
@@ -464,9 +469,173 @@ definition {
 			webContentTitle = "WC Title");
 	}
 
+	@description = "LPS-121658 When a user with edit permissions (owner) clicks on the title of a content in status Approved with no associated DPT, the user is led to the web content editor"
+	@priority = "3"
+	@uitest
+	test ClickTitleApprovedNoDPT {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "ContentDashboard#ClickTitleApprovedNoDPT";
+
+		task ("Add web content Approved") {
+			JSONWebcontent.addWebContent(
+				content = "WC Content",
+				groupName = "Test Site Name",
+				title = "WC Title");
+		}
+
+		task ("Go to Content Dashboard and click on the title") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			LexiconTable.clickTableEntryColumnLink(
+				columnName = "title",
+				tableEntry = "");
+		}
+
+		task ("Assert the web content is opened in the web content editor") {
+			AssertElementPresent(
+				locator1 = "Button#PUBLISH",
+				value1 = "Publish");
+		}
+	}
+
+	@description = "LPS-121658 When a user with edit permissions(owner) clicks on the title of a content in status Draft, associated DPT or not, the user is led to web content editor"
+	@priority = "3"
+	@uitest
+	test ClickTitleDraftNoDPT {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "ContentDashboard#ClickTitleDraftNoDPT";
+
+		task ("Add web content Draft") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addDraft(
+				webContentContent = "WC Content",
+				webContentTitle = "WC Title");
+
+			VerifyElementPresent(locator1 = "Message#SUCCESS");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+		}
+
+		task ("Go to Content Dashboard and click on the title") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			LexiconTable.clickTableEntryColumnLink(
+				columnName = "title",
+				tableEntry = "");
+		}
+
+		task ("Assert the web content is opened in the web content editor") {
+			AssertElementPresent(
+				locator1 = "Button#PUBLISH",
+				value1 = "Publish");
+		}
+	}
+
+	@description = "LPS-121658 When a user with edit permissions(owner) clicks on the title of a content in status Pending, associated DPT or not, the user is led to web content editor"
+	@priority = "3"
+	@uitest
+	test ClickTitlePendingNoDPT {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "ContentDashboard#ClickTitlePendingNoDPT";
+
+		task ("Create a Web Content") {
+			JSONWebcontent.addWebContent(
+				content = "WC Content",
+				groupName = "Test Site Name",
+				title = "WC Title");
+		}
+
+		task ("Configure Web Content Article workflow to Single Approver") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			ProductMenu.gotoPortlet(
+				category = "Configuration",
+				portlet = "Workflow");
+
+			Workflow.configureWorkflow(
+				workflowDefinition = "Single Approver",
+				workflowResourceValue = "Web Content Article");
+		}
+
+		task ("Edit the Web Content article and submit it for publication") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "WC Title");
+
+			Button.clickSubmitForPublication();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+		}
+
+		task ("Go to Content Dashboard and click on the title") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			LexiconTable.clickTableEntryColumnLink(
+				columnName = "title",
+				tableEntry = "");
+		}
+
+		task ("Assert the web content is opened in the web content editor") {
+			AssertElementPresent(
+				locator1 = "Button#SUBMIT_FOR_PUBLICATION",
+				value1 = "Submit for Publication");
+		}
+	}
+
+	@description = "LPS-121658 When a user with edit permissions(owner) clicks on the title of a content in status Scheduled, associated DPT or not, the user is led to web content editor"
+	@priority = "3"
+	@uitest
+	test ClickTitleScheduledNoDPT {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "ContentDashboard#ClickTitleScheduledNoDPT";
+
+		task ("Add web content Scheduled") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addCP(
+				webContentContent = "WC Content",
+				webContentTitle = "WC Title");
+
+			WebContent.editDisplayDate(displayDate = "01/01/2100");
+
+			PortletEntry.publish();
+		}
+
+		task ("Go to Content Dashboard and click on the title") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			LexiconTable.clickTableEntryColumnLink(
+				columnName = "title",
+				tableEntry = "");
+		}
+
+		task ("Assert the web content is opened in the web content editor") {
+			AssertElementPresent(
+				locator1 = "Button#PUBLISH",
+				value1 = "Publish");
+		}
+	}
+
 	@description = "Validate if the user can edit a web content through the Edit option"
 	@priority = "5"
-	test ContentDashboardEditWebContent {
+	test EditWebContent {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -498,7 +667,7 @@ definition {
 
 	@description = "Validate if the user can access to the Content Dashboard after s/he has expired a Web Content"
 	@priority = "5"
-	test ContentDashboardExpiredWebContent {
+	test ExpiredWebContent {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -532,7 +701,7 @@ definition {
 
 	@description = "Validate if the user can filter by Author, using different display types"
 	@priority = "5"
-	test ContentDashboardFilterByAuthor {
+	test FilterByAuthor {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -586,7 +755,7 @@ definition {
 
 	@description = "Validate if the user can filter by category"
 	@priority = "5"
-	test ContentDashboardFilterByCategory {
+	test FilterByCategory {
 		property portal.acceptance = "true";
 
 		JSONCategory.addVocabulary(
@@ -634,7 +803,7 @@ definition {
 
 	@description = "Validate if the user can filter by category and subtype"
 	@priority = "5"
-	test ContentDashboardFilterByCategoryAndSubtype {
+	test FilterByCategoryAndSubtype {
 		property portal.acceptance = "true";
 
 		JSONCategory.addVocabulary(
@@ -754,7 +923,7 @@ definition {
 
 	@description = "Validate if the user can filter by multiple tags"
 	@priority = "5"
-	test ContentDashboardFilterByMultipleTags {
+	test FilterByMultipleTags {
 		property portal.acceptance = "true";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -825,7 +994,7 @@ definition {
 
 	@description = "Validate if the user can filter by Site"
 	@priority = "5"
-	test ContentDashboardFilterBySite {
+	test FilterBySite {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -853,7 +1022,7 @@ definition {
 
 	@description = "Validate if the user can filter by Status: Any"
 	@priority = "5"
-	test ContentDashboardFilterByStatusAny {
+	test FilterByStatusAny {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -903,7 +1072,7 @@ definition {
 
 	@description = "Validate if the user can filter by Status: Approved"
 	@priority = "5"
-	test ContentDashboardFilterByStatusApproved {
+	test FilterByStatusApproved {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -931,7 +1100,7 @@ definition {
 
 	@description = "Validate if the user can filter by Status: Draft"
 	@priority = "5"
-	test ContentDashboardFilterByStatusDraft {
+	test FilterByStatusDraft {
 		property portal.acceptance = "true";
 
 		JSONWebcontent.addWebContent(
@@ -964,7 +1133,7 @@ definition {
 
 	@description = "Validate if the user can filter by Status: Scheduled"
 	@priority = "5"
-	test ContentDashboardFilterByStatusScheduled {
+	test FilterByStatusScheduled {
 		property portal.acceptance = "true";
 
 		task ("Add a web content article with a future display date") {
@@ -1005,7 +1174,7 @@ definition {
 
 	@description = "Validate if the user can filter by tag"
 	@priority = "5"
-	test ContentDashboardFilterByTag {
+	test FilterByTag {
 		property portal.acceptance = "true";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -1059,7 +1228,7 @@ definition {
 
 	@description = "Validate if the user can order by Modification Date"
 	@priority = "5"
-	test ContentDashboardOrderByModificationDate {
+	test OrderByModificationDate {
 		for (var count : list "1,2,3,4,5") {
 			JSONWebcontent.addWebContent(
 				content = "WC Content ${count}",
@@ -1103,7 +1272,7 @@ definition {
 
 	@description = "Validate if the user can order by title"
 	@priority = "5"
-	test ContentDashboardOrderByTitle {
+	test OrderByTitle {
 		for (var count : list "1,2,3,4,5") {
 			JSONWebcontent.addWebContent(
 				content = "WC Content ${count}",
@@ -1143,70 +1312,6 @@ definition {
 				siteURLKey = "test-site-name",
 				webContentTitle = "WC Title ${count}");
 		}
-	}
-
-	@description = "Validate if the user can open de Info side panel of a web content"
-	@priority = "5"
-	test ContentDashboardSaveFiltersAfterEditing {
-		property portal.acceptance = "true";
-
-		JSONWebcontent.addWebContent(
-			content = "WC Content",
-			groupName = "Test Site Name",
-			title = "WC Title");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Content",
-			panel = "Applications",
-			portlet = "Content Dashboard");
-
-		Pause(locator1 = "3000");
-
-		ContentDashboard.filterByAuthorTable(filterOption = "Author");
-
-		ContentDashboard.editWebContent(webContentTitle = "WC Title Edited");
-
-		AssertTextPresent(
-			locator1 = "ContentDashboard#FILTER_TEXT",
-			value1 = "Author:Test Test");
-
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		WebContent.viewTitle(webContentTitle = "WC Title Edited");
-
-		WebContent.deleteCP(
-			siteURLKey = "test-site-name",
-			webContentTitle = "WC Title Edited");
-	}
-
-	@description = "Validate if the user can open de Info side panel of a web content"
-	@priority = "5"
-	test ContentDashboardViewInfoPanel {
-		property portal.acceptance = "true";
-
-		JSONWebcontent.addWebContent(
-			content = "WC Content",
-			groupName = "Test Site Name",
-			title = "WC Title");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Content",
-			panel = "Applications",
-			portlet = "Content Dashboard");
-
-		Pause(locator1 = "3000");
-
-		ContentDashboard.openInfoPanelByDropdownMenu();
-
-		AssertTextPresent(
-			locator1 = "ContentDashboard#INFO_PANEL_TITLE",
-			value1 = "Content Info");
-
-		Click(locator1 = "ContentDashboard#CLOSE_INFO_PANEL_BUTTON");
-
-		JSONWebcontent.deleteWebContent(
-			groupName = "Test Site Name",
-			title = "WC Title");
 	}
 
 	@description = "LPS-132254 When a user selects the value of the number of rows (4, 8, 40, 60) displayed in the list, the Content Dashboard will display the number of rows selected"
@@ -1301,6 +1406,40 @@ definition {
 		}
 	}
 
+	@description = "Validate if the user can open de Info side panel of a web content"
+	@priority = "5"
+	test SaveFiltersAfterEditing {
+		property portal.acceptance = "true";
+
+		JSONWebcontent.addWebContent(
+			content = "WC Content",
+			groupName = "Test Site Name",
+			title = "WC Title");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Content",
+			panel = "Applications",
+			portlet = "Content Dashboard");
+
+		Pause(locator1 = "3000");
+
+		ContentDashboard.filterByAuthorTable(filterOption = "Author");
+
+		ContentDashboard.editWebContent(webContentTitle = "WC Title Edited");
+
+		AssertTextPresent(
+			locator1 = "ContentDashboard#FILTER_TEXT",
+			value1 = "Author:Test Test");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContent.viewTitle(webContentTitle = "WC Title Edited");
+
+		WebContent.deleteCP(
+			siteURLKey = "test-site-name",
+			webContentTitle = "WC Title Edited");
+	}
+
 	@description = "LPS-131886 Validade if when Web Content is updated its being corectly displayed"
 	@priority = "3"
 	test ShouldExhibitUpdatedWebContent {
@@ -1393,6 +1532,36 @@ definition {
 
 			AssertElementNotPresent(locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED_DISPLAY_PAGE");
 		}
+	}
+
+	@description = "Validate if the user can open de Info side panel of a web content"
+	@priority = "5"
+	test ViewInfoPanel {
+		property portal.acceptance = "true";
+
+		JSONWebcontent.addWebContent(
+			content = "WC Content",
+			groupName = "Test Site Name",
+			title = "WC Title");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Content",
+			panel = "Applications",
+			portlet = "Content Dashboard");
+
+		Pause(locator1 = "3000");
+
+		ContentDashboard.openInfoPanelByDropdownMenu();
+
+		AssertTextPresent(
+			locator1 = "ContentDashboard#INFO_PANEL_TITLE",
+			value1 = "Content Info");
+
+		Click(locator1 = "ContentDashboard#CLOSE_INFO_PANEL_BUTTON");
+
+		JSONWebcontent.deleteWebContent(
+			groupName = "Test Site Name",
+			title = "WC Title");
 	}
 
 }

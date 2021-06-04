@@ -57,6 +57,8 @@ public class DDMFormFieldTypeConstants {
 
 	public static final String RICH_TEXT = "rich_text";
 
+	public static final String SEARCH_LOCATION = "search_location";
+
 	public static final String SELECT = "select";
 
 	public static final String SEPARATOR = "separator";

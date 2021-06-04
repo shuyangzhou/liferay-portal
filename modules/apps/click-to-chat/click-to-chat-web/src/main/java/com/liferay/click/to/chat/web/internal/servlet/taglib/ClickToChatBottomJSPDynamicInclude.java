@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author José Abelenda
  */
 @Component(immediate = true, service = DynamicInclude.class)
-public class ClickToChatTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
+public class ClickToChatBottomJSPDynamicInclude extends BaseJSPDynamicInclude {
 
 	@Override
 	public void include(
@@ -99,8 +99,7 @@ public class ClickToChatTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 
 	@Override
 	public void register(DynamicIncludeRegistry dynamicIncludeRegistry) {
-		dynamicIncludeRegistry.register(
-			"/html/common/themes/top_head.jsp#post");
+		dynamicIncludeRegistry.register("/html/common/themes/bottom.jsp#post");
 	}
 
 	@Override
@@ -123,6 +122,6 @@ public class ClickToChatTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ClickToChatTopHeadJSPDynamicInclude.class);
+		ClickToChatBottomJSPDynamicInclude.class);
 
 }

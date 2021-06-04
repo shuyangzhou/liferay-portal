@@ -222,9 +222,11 @@ public class AssetBrowserDisplayContext {
 			return _groupId;
 		}
 
-		_groupId = ParamUtil.getLong(
-			_renderRequest, "groupId",
-			ParamUtil.getLong(_httpServletRequest, "groupId"));
+		_groupId = ParamUtil.getLong(_renderRequest, "groupId");
+
+		if (_groupId == 0) {
+			_groupId = ParamUtil.getLong(_httpServletRequest, "groupId");
+		}
 
 		return _groupId;
 	}

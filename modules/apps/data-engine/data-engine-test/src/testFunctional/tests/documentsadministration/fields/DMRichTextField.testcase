@@ -154,7 +154,7 @@ definition {
 			fieldName = "Rich Text",
 			fieldReference = "TestValidReference");
 
-		DataEngine.editFieldReferenceWithInvalidCharacters(
+		DataEngine.editFieldReference(
 			assertFieldReference = "TestInvalidReference",
 			fieldFieldLabel = "Rich Text",
 			fieldReference = "Test!Invalid@#Reference");

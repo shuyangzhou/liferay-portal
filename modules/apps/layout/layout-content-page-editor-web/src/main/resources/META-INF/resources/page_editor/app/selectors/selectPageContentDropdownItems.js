@@ -16,7 +16,9 @@ import {openModal} from 'frontend-js-web';
 
 import {selectPageContents} from './selectPageContents';
 
-export const selectPageContentDropdownItems = (classPK) => (state) => {
+export const selectPageContentDropdownItems = (classPK, label = '') => (
+	state
+) => {
 	const pageContent = selectPageContents(state)?.find(
 		(pageContent) => pageContent.classPK === classPK
 	);
@@ -25,23 +27,55 @@ export const selectPageContentDropdownItems = (classPK) => (state) => {
 		return null;
 	}
 
-	const {editURL, permissionsURL, viewUsagesURL} = pageContent.actions;
+	const {addItems, editURL, permissionsURL, viewItemsURL, viewUsagesURL} =
+		pageContent.actions || {};
 
 	const dropdownItems = [];
 
 	if (editURL) {
 		dropdownItems.push({
 			href: editURL,
-			label: Liferay.Language.get('edit'),
+			label: label
+				? Liferay.Util.sub(Liferay.Language.get('edit-x'), label)
+				: Liferay.Language.get('edit'),
+		});
+	}
+
+	if (viewItemsURL) {
+		dropdownItems.push({
+			label: Liferay.Language.get('view-items'),
+			onClick: () =>
+				openModal({
+					title: Liferay.Language.get('view-items'),
+					url: viewItemsURL,
+				}),
+		});
+	}
+
+	if (addItems) {
+		dropdownItems.push({
+			child: 'addItemsMenu',
+			label: Liferay.Language.get('add-items'),
+			menuItems: addItems,
 		});
 	}
 
 	if (permissionsURL) {
 		dropdownItems.push({
-			label: Liferay.Language.get('permissions'),
+			label: label
+				? Liferay.Util.sub(
+						Liferay.Language.get('edit-x-permissions'),
+						label
+				  )
+				: Liferay.Language.get('permissions'),
 			onClick: () =>
 				openModal({
-					title: Liferay.Language.get('permissions'),
+					title: label
+						? Liferay.Util.sub(
+								Liferay.Language.get('edit-x-permissions'),
+								label
+						  )
+						: Liferay.Language.get('permissions'),
 					url: permissionsURL,
 				}),
 		});
@@ -49,10 +83,17 @@ export const selectPageContentDropdownItems = (classPK) => (state) => {
 
 	if (viewUsagesURL) {
 		dropdownItems.push({
-			label: Liferay.Language.get('view-usages'),
+			label: label
+				? Liferay.Util.sub(Liferay.Language.get('view-x-usages'), label)
+				: Liferay.Language.get('view-usages'),
 			onClick: () =>
 				openModal({
-					title: Liferay.Language.get('view-usages'),
+					title: label
+						? Liferay.Util.sub(
+								Liferay.Language.get('view-x-usages'),
+								label
+						  )
+						: Liferay.Language.get('view-usages'),
 					url: viewUsagesURL,
 				}),
 		});

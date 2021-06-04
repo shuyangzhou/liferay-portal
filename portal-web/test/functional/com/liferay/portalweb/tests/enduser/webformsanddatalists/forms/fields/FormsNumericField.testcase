@@ -76,14 +76,43 @@ definition {
 	}
 
 	@description = "Verify that a Numeric Field can be required"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanBeRequired {
 		property forms.functional = "true";
 		property portal.acceptance = "false";
 
-		// TODO LPS-132832 CanBeRequired pending implementation
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
 
+		FormsAdminNavigator.gotoAddForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		FormFields.enableSwitcher(fieldName = "Required Field");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormViewBuilder.validateFieldLabelRequired(fieldLabel = "Numeric");
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "This field is required.");
+
+		FormFields.editText(
+			fieldName = "Numeric",
+			fieldValue = "123");
+
+		FormPortlet.submitSuccessfully();
 	}
 
 	@description = "Verify that a Numeric Field can accept decimals when the numeric type set to Decimal"
@@ -241,14 +270,37 @@ definition {
 	}
 
 	@description = "Verify that a Numeric Field only accepts numbers"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test OnlyAcceptsNumbers {
 		property forms.functional = "true";
 		property portal.acceptance = "false";
 
-		// TODO LPS-132833 OnlyAcceptsNumbers pending implementation
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
 
+		FormsAdminNavigator.gotoAddForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormViewBuilder.editText(
+			fieldName = "Numeric",
+			fieldValue = "123abc");
+
+		FormFields.viewTextValue(
+			fieldName = "Numeric",
+			fieldValue = "123");
 	}
 
 	@description = "Verify that a Placeholder Text can be set"

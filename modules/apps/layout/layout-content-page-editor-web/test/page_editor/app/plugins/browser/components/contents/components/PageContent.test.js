@@ -12,32 +12,85 @@
  * details.
  */
 
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import {useSelectItem} from '../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/contexts/ControlsContext';
+import {
+	useEditableProcessorUniqueId,
+	useSetEditableProcessorUniqueId,
+} from '../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/contexts/EditableProcessorContext';
 import {StoreContextProvider} from '../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/contexts/StoreContext';
 import PageContent from '../../../../../../../../src/main/resources/META-INF/resources/page_editor/plugins/browser/components/contents/components/PageContent';
 
-const renderPageContent = (props) =>
+jest.mock(
+	'../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/contexts/ControlsContext',
+	() => {
+		const selectItem = jest.fn();
+		const hoverItem = jest.fn();
+		const hoveredItemId = null;
+
+		return {
+			useHoverItem: () => hoverItem,
+			useHoveredItemId: () => hoveredItemId,
+			useSelectItem: () => selectItem,
+		};
+	}
+);
+
+jest.mock(
+	'../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/contexts/EditableProcessorContext'
+);
+
+const contents = [
+	{
+		actions: {
+			editURL: 'editURL',
+			permissionsURL: 'permissionsURL',
+			viewUsagesURL: 'viewUsagesURL',
+		},
+		classPK: '11111',
+		subtype: 'Web Content Article',
+		title: 'Test Web Content',
+	},
+	{
+		actions: {
+			addItems: [
+				{
+					title: 'Basic Web Content to be added',
+					url: 'URL',
+				},
+			],
+			editURL: 'editURL',
+			otherAction: 'other-action',
+			permissionsURL: 'permissionsURL',
+			viewItemsURL: 'viewItemsURL',
+			viewUsagesURL: 'viewUsagesURL',
+		},
+		classPK: '11112',
+		subtype: 'Collection',
+		title: 'Test Collection',
+	},
+];
+
+const inlineText = {
+	editableId: '11113-element-text',
+	title: 'Heading Example',
+};
+
+const renderPageContent = (props = contents[0], pageContents = contents) =>
 	render(
-		<StoreContextProvider initialState={[{}, {}]}>
-			<PageContent
-				actions={{
-					editURL: 'editURL',
-					permissionsURL: 'permissionsURL',
-					viewUsagesURL: 'viewUsagesURL',
-				}}
-				subtype="Web Content Article"
-				title="Test Web Content"
-				{...props}
-			></PageContent>
+		<StoreContextProvider initialState={{pageContents}}>
+			<PageContent {...props} />
 		</StoreContextProvider>
 	);
 
 describe('PageContent', () => {
 	afterEach(cleanup);
+
+	useSetEditableProcessorUniqueId.mockImplementation(() => jest.fn);
 
 	it('shows properly the title of the content', () => {
 		const {getByText} = renderPageContent();
@@ -48,36 +101,65 @@ describe('PageContent', () => {
 	it('shows properly the content subtype', () => {
 		const {getByText} = renderPageContent();
 
-		expect(getByText('Web Content Article')).toBeInTheDocument();
+		expect(getByText('Test Web Content')).toBeInTheDocument();
 	});
 
-	it('shows Edit action in dropdown menu if receives an Edit URL', () => {
-		const {getByText} = renderPageContent();
+	it('shows all expected editing actions in dropdown menu', () => {
+		const shownActions = [
+			'edit',
+			'permissions',
+			'add-items',
+			'view-items',
+			'view-usages',
+		];
+		const {queryByText} = renderPageContent(contents[1]);
 
-		fireEvent.click(getByText('open-actions-menu'));
+		fireEvent.click(queryByText('open-actions-menu'));
 
-		expect(getByText('edit')).toBeInTheDocument();
+		shownActions.forEach((action) => {
+			expect(queryByText(action)).toBeInTheDocument();
+		});
+		expect(queryByText('other-action')).not.toBeInTheDocument();
 	});
 
-	it('shows Permissions action in dropdown menu if receives a Permissions URL', () => {
-		const {getByText} = renderPageContent();
+	it('shows all items to be added when the Add Item action is clicked', () => {
+		const {queryByText} = renderPageContent(contents[1]);
 
-		fireEvent.click(getByText('open-actions-menu'));
+		fireEvent.click(queryByText('open-actions-menu'));
+		fireEvent.click(queryByText('add-items'));
 
-		expect(getByText('permissions')).toBeInTheDocument();
+		expect(
+			queryByText('Basic Web Content to be added')
+		).toBeInTheDocument();
 	});
 
-	it('shows View Usages action in dropdown menu if receives a View Usages URL', () => {
-		const {getByText} = renderPageContent();
-
-		fireEvent.click(getByText('open-actions-menu'));
-
-		expect(getByText('view-usages')).toBeInTheDocument();
-	});
-
-	it('shows Edit action if the content is inline text', () => {
-		const {getByText} = renderPageContent({actions: {}});
+	it('shows the edit button if the content is inline text', () => {
+		const {getByText} = renderPageContent(inlineText);
 
 		expect(getByText('edit-inline-text')).toBeInTheDocument();
+	});
+
+	it('selects the corresponding element on the page when edit button is clicked', async () => {
+		const selectItem = useSelectItem();
+		const {getByText} = renderPageContent(inlineText);
+
+		fireEvent.click(getByText('edit-inline-text'));
+
+		await wait(() => {
+			expect(selectItem).toHaveBeenCalledWith('11113-element-text', {
+				itemType: 'editable',
+				origin: 'sidebar',
+			});
+		});
+	});
+
+	it('disables edit button when an inline text is being edited', () => {
+		useEditableProcessorUniqueId.mockImplementation(
+			() => '11113-element-text'
+		);
+
+		const {getByText} = renderPageContent(inlineText);
+
+		expect(getByText('edit-inline-text').parentElement).toBeDisabled();
 	});
 });

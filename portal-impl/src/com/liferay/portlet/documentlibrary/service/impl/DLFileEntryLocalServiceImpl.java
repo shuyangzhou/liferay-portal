@@ -28,6 +28,7 @@ import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
+import com.liferay.document.library.kernel.model.DLFileEntryTable;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
 import com.liferay.document.library.kernel.model.DLFileVersion;
@@ -51,6 +52,7 @@ import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.util.ExpandoBridgeUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
@@ -107,6 +109,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.view.count.ViewCountManager;
@@ -339,6 +342,20 @@ public class DLFileEntryLocalServiceImpl
 		removeFileVersion(dlFileEntry, dlFileVersion);
 
 		return dlFileVersion;
+	}
+
+	@Override
+	public void checkFileEntries(long checkInterval) throws PortalException {
+		Date date = new Date();
+
+		if (_previousCheckDate == null) {
+			_previousCheckDate = new Date(
+				date.getTime() - (checkInterval * Time.MINUTE));
+		}
+
+		_checkFileEntriesByReviewDate(date);
+
+		_previousCheckDate = date;
 	}
 
 	@Override
@@ -2503,7 +2520,7 @@ public class DLFileEntryLocalServiceImpl
 					FileUtil.stripExtension(sourceFileName), extension);
 			}
 
-			Date now = new Date();
+			Date date = new Date();
 
 			validateFile(
 				dlFileEntry.getGroupId(), dlFileEntry.getFolderId(),
@@ -2522,7 +2539,7 @@ public class DLFileEntryLocalServiceImpl
 				mimeType, title, description, changeLog, extraSettings,
 				fileEntryTypeId, ddmFormValuesMap, version, size,
 				expirationDate, reviewDate, dlFileVersion.getStatus(),
-				serviceContext.getModifiedDate(now), serviceContext);
+				serviceContext.getModifiedDate(date), serviceContext);
 
 			// Folder
 
@@ -2532,7 +2549,7 @@ public class DLFileEntryLocalServiceImpl
 
 				dlFolderLocalService.updateLastPostDate(
 					dlFileEntry.getFolderId(),
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 
 			// File
@@ -2680,6 +2697,32 @@ public class DLFileEntryLocalServiceImpl
 				StringBundler.concat(
 					extension, " of file ", fileName, " exceeds max length of ",
 					maxLength));
+		}
+	}
+
+	private void _checkFileEntriesByReviewDate(Date reviewDate)
+		throws PortalException {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				StringBundler.concat(
+					"Sending review notification for file entries with review ",
+					"date between ", _previousCheckDate, " and ", reviewDate));
+		}
+
+		List<DLFileEntry> fileEntries = _getFileEntriesByReviewDate(
+			reviewDate, _previousCheckDate);
+
+		for (DLFileEntry fileEntry : fileEntries) {
+			if (fileEntry.isInTrash()) {
+				continue;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Sending review notification for file entry " +
+						fileEntry.getFileEntryId());
+			}
 		}
 	}
 
@@ -2838,6 +2881,23 @@ public class DLFileEntryLocalServiceImpl
 
 		return versioningStrategy.computeDLVersionNumberIncrease(
 			previousDLFileVersion, nextDLFileVersion);
+	}
+
+	private List<DLFileEntry> _getFileEntriesByReviewDate(
+		Date reviewDateLT, Date reviewDateGT) {
+
+		return dlFileEntryPersistence.dslQuery(
+			DSLQueryFactoryUtil.select(
+				DLFileEntryTable.INSTANCE
+			).from(
+				DLFileEntryTable.INSTANCE
+			).where(
+				DLFileEntryTable.INSTANCE.reviewDate.gte(
+					reviewDateGT
+				).and(
+					DLFileEntryTable.INSTANCE.reviewDate.lte(reviewDateLT)
+				)
+			));
 	}
 
 	private boolean _isValidFileVersionNumber(String version) {
@@ -3009,5 +3069,7 @@ public class DLFileEntryLocalServiceImpl
 		ServiceProxyFactory.newServiceTrackedInstance(
 			ViewCountManager.class, DLFileEntryLocalServiceImpl.class,
 			"_viewCountManager", false, true);
+
+	private Date _previousCheckDate;
 
 }

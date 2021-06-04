@@ -50,7 +50,7 @@
 </tr>
 <tr>
 	<td>CHAT_TIDIO</td>
-	<td>//body[contains(@class,'awesome-iframe')]</td>
+	<td>//iframe[contains(@id,'tidio-chat-code')]</td>
 	<td></td>
 </tr>
 <tr>
