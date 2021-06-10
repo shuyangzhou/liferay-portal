@@ -155,7 +155,8 @@ public class ConfigurationEnvBuilderTest {
 	}
 
 	private static final String _MESSAGE =
-		"Run \"ant generate-config-env\" to regenerate portal.properties.";
+		"Run \"ant generate-config-override-properties\" to regenerate " +
+			"portal.properties.";
 
 	private static final Pattern _pattern = Pattern.compile(
 		StringBundler.concat(
