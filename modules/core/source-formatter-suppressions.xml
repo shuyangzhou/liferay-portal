@@ -12,5 +12,6 @@
 		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/proxy/ServletContextInvocationHandler\.java" />
 		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/proxy/ServletInvocationHandler\.java" />
 		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/ShieldedContainerServletContainerInitializer\.java" />
+		<suppress checks="JavaXMLSecurityCheck" files="portal-jsp-engine/src/main/java/com/liferay/portal/jsp/engine/internal/delegate/JspConfigDescriptorServletContextDelegate\.java" />
 	</source-check>
 </suppressions>
