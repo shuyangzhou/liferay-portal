@@ -8,5 +8,9 @@
 	<source-check>
 		<suppress checks="BNDDefinitionKeysCheck" files="portal-bootstrap/system.packages.extra.bnd" />
 		<suppress checks="JavaDiamondOperatorCheck" files="registry-impl/src/main/java/com/liferay/registry/internal/RegistryImpl\.java" />
+		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/proxy/FilterInvocationHandler\.java" />
+		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/proxy/ServletContextInvocationHandler\.java" />
+		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/proxy/ServletInvocationHandler\.java" />
+		<suppress checks="JavaIllegalImportsCheck" files="shielded-container-impl/src/main/java/com/liferay/shielded/container/internal/ShieldedContainerServletContainerInitializer\.java" />
 	</source-check>
 </suppressions>
