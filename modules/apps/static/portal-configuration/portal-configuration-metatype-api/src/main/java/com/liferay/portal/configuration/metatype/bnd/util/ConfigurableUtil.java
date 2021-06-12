@@ -142,6 +142,10 @@ public class ConfigurableUtil {
 			false);
 
 		for (Method method : declaredMethods) {
+			if (method.isSynthetic()) {
+				continue;
+			}
+
 			Class<?> returnType = method.getReturnType();
 
 			constructorMethodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
