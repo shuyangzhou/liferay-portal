@@ -14107,6 +14107,11 @@ url=${short.hostname}:8080</echo>
 			</then>
 		</if>
 
+		<loadfile property="ibm-web-ext.xml-content" srcFile="/opt/dev/projects/github/liferay-portal/bundles/websphere-9.0.0.0/profiles/liferay/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/ibm-web-ext.xml"/>
+
+		<echo>##################################################################</echo>
+		<echo message="${ibm-web-ext.xml-content}" />
+		<echo>##################################################################</echo>
 		<start-app-server
 			app.server.bundle.index="${app.server.bundle.index}"
 			delete.liferay.home="false"
