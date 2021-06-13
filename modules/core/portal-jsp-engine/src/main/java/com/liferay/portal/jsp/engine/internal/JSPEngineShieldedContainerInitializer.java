@@ -155,7 +155,7 @@ public class JSPEngineShieldedContainerInitializer
 			});
 
 		filterDynamic.addMappingForUrlPatterns(
-			EnumSet.allOf(DispatcherType.class), false, "*.jsp", "*.jspx");
+			EnumSet.allOf(DispatcherType.class), true, "*.jsp", "*.jspx");
 	}
 
 }
