@@ -313,6 +313,12 @@ message.
 		<if>
 			<equals arg1="${app.server.type}" arg2="websphere" />
 			<then>
+				<loadfile failonerror="false" property="ibm-web-ext.xml-content-before" srcFile="${app.server.websphere.instance.dir}/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/ibm-web-ext.xml"/>
+
+				<echo>##################################################################Before</echo>
+				<echo message="${ibm-web-ext.xml-content-before}" />
+				<echo>##################################################################Before</echo>
+
 				<replace
 					file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/ibm-web-ext.xml"
 				>
@@ -320,8 +326,16 @@ message.
 					<replacevalue><![CDATA[  <jsp-attribute name="jdkSourceLevel" value="18" />
 </web-ext>]]></replacevalue>
 				</replace>
+
+				<loadfile failonerror="false" property="ibm-web-ext.xml-content-after" srcFile="${app.server.websphere.instance.dir}/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/ibm-web-ext.xml"/>
+
+				<echo>##################################################################After</echo>
+				<echo message="${ibm-web-ext.xml-content-after}" />
+				<echo>##################################################################After</echo>
 			</then>
 		</if>
+
+
 
 		<ant dir="portal-web" inheritAll="false" target="war" />
 
