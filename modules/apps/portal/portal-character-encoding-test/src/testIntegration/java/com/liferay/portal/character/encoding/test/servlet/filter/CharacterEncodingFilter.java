@@ -36,7 +36,8 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"after-filter=Absolute Redirects Filter", "dispatcher=FORWARD",
 		"dispatcher=REQUEST", "servlet-context-name=",
-		"servlet-filter-name=Character Encoding Filter", "url-pattern=/*"
+		"servlet-filter-name=Character Encoding Filter",
+		"url-pattern=/character-encoding-test"
 	},
 	service = Filter.class
 )
