@@ -14,11 +14,12 @@
 
 package com.liferay.journal.web.internal.portlet.action;
 
+import com.liferay.info.field.InfoFieldValue;
+import com.liferay.info.item.GroupKeyInfoItemIdentifier;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
+import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.journal.constants.JournalPortletKeys;
-import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -28,6 +29,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.zip.ZipWriter;
@@ -67,23 +69,36 @@ public class ExportTranslationMVCResourceCommand implements MVCResourceCommand {
 		throws PortletException {
 
 		try {
-			InfoItemFieldValuesProvider<JournalArticle>
-				infoItemFieldValuesProvider =
-					(InfoItemFieldValuesProvider<JournalArticle>)
-						_infoItemServiceTracker.getFirstInfoItemService(
-							InfoItemFieldValuesProvider.class,
-							JournalArticle.class.getName());
-
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)resourceRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			JournalArticle article = _journalArticleLocalService.getArticle(
-				themeDisplay.getScopeGroupId(),
-				ParamUtil.getString(resourceRequest, "articleId"));
+			long classNameId = ParamUtil.getLong(
+				resourceRequest, "classNameId");
+
+			String className = _portal.getClassName(classNameId);
+
+			InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
+				_infoItemServiceTracker.getFirstInfoItemService(
+					InfoItemFieldValuesProvider.class, className);
+
+			InfoItemObjectProvider<Object> infoItemObjectProvider =
+				_infoItemServiceTracker.getFirstInfoItemService(
+					InfoItemObjectProvider.class, className);
+
+			Object object = infoItemObjectProvider.getInfoItem(
+				new GroupKeyInfoItemIdentifier(
+					ParamUtil.getLong(
+						resourceRequest, "groupId",
+						themeDisplay.getScopeGroupId()),
+					ParamUtil.getString(resourceRequest, "key")));
+
+			InfoFieldValue<Object> infoItemFieldValue =
+				infoItemFieldValuesProvider.getInfoItemFieldValue(
+					object, "title");
 
 			String escapedTitle = StringUtil.removeSubstrings(
-				article.getTitle(themeDisplay.getLocale()),
+				(String)infoItemFieldValue.getValue(themeDisplay.getLocale()),
 				PropsValues.DL_CHAR_BLACKLIST);
 
 			String sourceLanguageId = ParamUtil.getString(
@@ -118,7 +133,7 @@ public class ExportTranslationMVCResourceCommand implements MVCResourceCommand {
 					translationInfoItemFieldValuesExporter.
 						exportInfoItemFieldValues(
 							infoItemFieldValuesProvider.getInfoItemFieldValues(
-								article),
+								object),
 							LocaleUtil.fromLanguageId(sourceLanguageId),
 							LocaleUtil.fromLanguageId(targetLanguageId)));
 			}
@@ -145,7 +160,7 @@ public class ExportTranslationMVCResourceCommand implements MVCResourceCommand {
 	private InfoItemServiceTracker _infoItemServiceTracker;
 
 	@Reference
-	private JournalArticleLocalService _journalArticleLocalService;
+	private Portal _portal;
 
 	@Reference
 	private TranslationInfoItemFieldValuesExporterTracker

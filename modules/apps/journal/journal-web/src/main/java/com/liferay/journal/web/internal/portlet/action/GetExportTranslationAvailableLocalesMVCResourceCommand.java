@@ -14,8 +14,10 @@
 
 package com.liferay.journal.web.internal.portlet.action;
 
+import com.liferay.info.item.GroupKeyInfoItemIdentifier;
+import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.journal.constants.JournalPortletKeys;
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.web.internal.util.ExportTranslationUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
@@ -23,11 +25,12 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.translation.info.item.provider.InfoItemLanguagesProvider;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,6 +38,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Tardín
@@ -58,28 +62,49 @@ public class GetExportTranslationAvailableLocalesMVCResourceCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		JournalArticle article = ActionUtil.getArticle(resourceRequest);
+		long classNameId = ParamUtil.getLong(resourceRequest, "classNameId");
+
+		String className = _portal.getClassName(classNameId);
+
+		InfoItemObjectProvider<Object> infoItemObjectProvider =
+			_infoItemServiceTracker.getFirstInfoItemService(
+				InfoItemObjectProvider.class, className);
+
+		long groupId = ParamUtil.getLong(
+			resourceRequest, "groupId", themeDisplay.getScopeGroupId());
+		String key = ParamUtil.getString(resourceRequest, "key");
+
+		Object object = infoItemObjectProvider.getInfoItem(
+			new GroupKeyInfoItemIdentifier(groupId, key));
+
+		InfoItemLanguagesProvider<Object> infoItemLanguagesProvider =
+			_infoItemServiceTracker.getFirstInfoItemService(
+				InfoItemLanguagesProvider.class, className);
+
+		Stream<String> stream = Arrays.stream(
+			infoItemLanguagesProvider.getAvailableLanguageIds(object));
 
 		JSONPortletResponseUtil.writeJSON(
 			resourceRequest, resourceResponse,
 			JSONUtil.put(
 				"availableLocales",
 				ExportTranslationUtil.getLocalesJSONArray(
-					themeDisplay.getLocale(), _getAvailableLocales(article))
+					themeDisplay.getLocale(),
+					stream.map(
+						LocaleUtil::fromLanguageId
+					).collect(
+						Collectors.toList()
+					))
 			).put(
-				"defaultLanguageId", article.getDefaultLanguageId()
+				"defaultLanguageId",
+				infoItemLanguagesProvider.getDefaultLanguageId(object)
 			));
 	}
 
-	private List<Locale> _getAvailableLocales(JournalArticle journalArticle) {
-		Stream<String> stream = Arrays.stream(
-			journalArticle.getAvailableLanguageIds());
+	@Reference
+	private InfoItemServiceTracker _infoItemServiceTracker;
 
-		return stream.map(
-			LocaleUtil::fromLanguageId
-		).collect(
-			Collectors.toList()
-		);
-	}
+	@Reference
+	private Portal _portal;
 
 }

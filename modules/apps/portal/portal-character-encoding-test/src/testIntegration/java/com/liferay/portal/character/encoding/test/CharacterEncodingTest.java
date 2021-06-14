@@ -61,7 +61,7 @@ public class CharacterEncodingTest {
 	private String _testCharacterEncoding(boolean addCharacterEncoding)
 		throws IOException {
 
-		URL url = new URL("http://localhost:8080");
+		URL url = new URL("http://localhost:8080/character-encoding-test");
 
 		HttpURLConnection httpURLConnection =
 			(HttpURLConnection)url.openConnection();

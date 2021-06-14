@@ -13,6 +13,7 @@
  */
 
 import {
+	VALIDATION_PROPERTIES_MAXIMUM_LENGTH,
 	VALIDATION_PROPERTY_NAME_MAXIMUM_LENGTH,
 	VALIDATION_PROPERTY_VALUE_MAXIMUM_LENGTH,
 } from './constants';
@@ -22,6 +23,7 @@ const isValidEvent = ({eventId, eventProps}) => {
 		validateEmptyString('eventId'),
 		validateMaxLength(),
 	]);
+	const validationsEventProps = _validate([validatePropsLength()]);
 	const validationsKey = _validate([
 		validateEmptyString('eventPropKey'),
 		validateMaxLength(),
@@ -31,7 +33,10 @@ const isValidEvent = ({eventId, eventProps}) => {
 	]);
 	let errors = [];
 
-	errors = errors.concat(validationsEventId(eventId));
+	errors = errors.concat(
+		validationsEventId(eventId),
+		validationsEventProps({eventId, eventProps})
+	);
 
 	for (const key in eventProps) {
 		errors = errors.concat(
@@ -71,6 +76,18 @@ const validateMaxLength = (
 	return error;
 };
 
+const validatePropsLength = (
+	maxAllowed = VALIDATION_PROPERTIES_MAXIMUM_LENGTH
+) => ({eventId, eventProps = {}}) => {
+	let error = '';
+
+	if (Object.keys(eventProps).length > maxAllowed) {
+		error = `The Event ${eventId} attributes list exceeds maximum length of ${maxAllowed}`;
+	}
+
+	return error;
+};
+
 const _validate = (validators) => (value) =>
 	validators
 		.map((validator) => {
@@ -83,4 +100,9 @@ const _validate = (validators) => (value) =>
 const _showErrors = (errorsArr) =>
 	errorsArr.forEach((errMsg) => console.error(new Error(errMsg)));
 
-export {isValidEvent, validateEmptyString, validateMaxLength};
+export {
+	isValidEvent,
+	validateEmptyString,
+	validateMaxLength,
+	validatePropsLength,
+};

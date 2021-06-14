@@ -234,6 +234,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutFriendlyURLModel;
 import com.liferay.portal.kernel.model.LayoutModel;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetModel;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
@@ -304,6 +305,7 @@ import com.liferay.portal.search.web.internal.suggestions.constants.SuggestionsP
 import com.liferay.portal.search.web.internal.tag.facet.constants.TagFacetPortletKeys;
 import com.liferay.portal.search.web.internal.type.facet.constants.TypeFacetPortletKeys;
 import com.liferay.portal.search.web.internal.user.facet.constants.UserFacetPortletKeys;
+import com.liferay.portal.service.impl.LayoutLocalServiceImpl;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletPreferencesFactoryImpl;
@@ -385,8 +387,11 @@ public class DataFactory {
 		_counter = new SimpleCounter(BenchmarksPropsValues.MAX_GROUP_COUNT + 1);
 		_timeCounter = new SimpleCounter();
 		_futureDateCounter = new SimpleCounter();
-		_resourcePermissionCounter = new SimpleCounter();
-		_socialActivityCounter = new SimpleCounter();
+		_layoutPlidCounter = new SimpleCounter();
+		_layoutSetIdCounter = new SimpleCounter();
+		_portletPreferenceValueIdCounter = new SimpleCounter();
+		_resourcePermissionIdCounter = new SimpleCounter();
+		_socialActivityIdCounter = new SimpleCounter();
 		_userScreenNameCounter = new SimpleCounter();
 
 		List<String> models = ModelHintsUtil.getModels();
@@ -2205,13 +2210,9 @@ public class DataFactory {
 	public LayoutModel newContentLayoutModel(
 		long groupId, String name, String fragmentEntries) {
 
-		SimpleCounter simpleCounter = _layoutCounters.get(groupId);
-
-		if (simpleCounter == null) {
-			simpleCounter = new SimpleCounter();
-
-			_layoutCounters.put(groupId, simpleCounter);
-		}
+		SimpleCounter simpleCounter = _layoutIdCounters.computeIfAbsent(
+			LayoutLocalServiceImpl.getCounterName(groupId, false),
+			counterName -> new SimpleCounter());
 
 		LayoutModel layoutModel = new LayoutModelImpl();
 
@@ -2221,7 +2222,7 @@ public class DataFactory {
 
 		// PK fields
 
-		layoutModel.setPlid(_counter.get());
+		layoutModel.setPlid(_layoutPlidCounter.get());
 
 		// Group instance
 
@@ -2273,14 +2274,48 @@ public class DataFactory {
 	}
 
 	public List<CounterModel> newCounterModels() {
-		return Arrays.asList(
-			_newCounterModel(Counter.class.getName()),
-			_newCounterModel(DDMField.class.getName()),
-			_newCounterModel(DDMFieldAttribute.class.getName()),
-			_newCounterModel(FriendlyURLEntryLocalization.class.getName()),
-			_newCounterModel(PortletPreferenceValue.class.getName()),
-			_newCounterModel(ResourcePermission.class.getName()),
-			_newCounterModel(SocialActivity.class.getName()));
+		List<CounterModel> counterModels = new ArrayList<>();
+
+		counterModels.add(
+			_newCounterModel(Counter.class.getName(), _counter.get()));
+		counterModels.add(
+			_newCounterModel(DDMField.class.getName(), _counter.get()));
+		counterModels.add(
+			_newCounterModel(
+				DDMFieldAttribute.class.getName(), _counter.get()));
+		counterModels.add(
+			_newCounterModel(
+				FriendlyURLEntryLocalization.class.getName(), _counter.get()));
+		counterModels.add(
+			_newCounterModel(
+				PortletPreferenceValue.class.getName(),
+				_portletPreferenceValueIdCounter.get()));
+		counterModels.add(
+			_newCounterModel(
+				ResourcePermission.class.getName(),
+				_resourcePermissionIdCounter.get()));
+		counterModels.add(
+			_newCounterModel(
+				SocialActivity.class.getName(),
+				_socialActivityIdCounter.get()));
+
+		for (Map.Entry<String, SimpleCounter> entry :
+				_layoutIdCounters.entrySet()) {
+
+			SimpleCounter simpleCounter = entry.getValue();
+
+			counterModels.add(
+				_newCounterModel(entry.getKey(), simpleCounter.get()));
+		}
+
+		counterModels.add(
+			_newCounterModel(Layout.class.getName(), _layoutPlidCounter.get()));
+
+		counterModels.add(
+			_newCounterModel(
+				LayoutSet.class.getName(), _layoutSetIdCounter.get()));
+
+		return counterModels;
 	}
 
 	public CountryModel newCountryModel() {
@@ -3984,7 +4019,7 @@ public class DataFactory {
 		if (BenchmarksPropsValues.SEARCH_BAR_ENABLED) {
 			layoutModels.add(
 				newLayoutModel(
-					groupId, "search", true, "1_2_columns_i",
+					groupId, "search", false, "1_2_columns_i",
 					new String[] {
 						StringBundler.concat(
 							SearchBarPortletKeys.SEARCH_BAR, StringPool.COMMA,
@@ -4779,7 +4814,8 @@ public class DataFactory {
 		PortletPreferenceValueModel portletPreferenceValueModel =
 			new PortletPreferenceValueModelImpl();
 
-		portletPreferenceValueModel.setPortletPreferenceValueId(_counter.get());
+		portletPreferenceValueModel.setPortletPreferenceValueId(
+			_portletPreferenceValueIdCounter.get());
 		portletPreferenceValueModel.setPortletPreferencesId(
 			portletPreferencesModel.getPortletPreferencesId());
 		portletPreferenceValueModel.setName(name);
@@ -6250,13 +6286,9 @@ public class DataFactory {
 		long groupId, long parentLayoutId, String name, boolean privateLayout,
 		boolean hidden, String layoutTemplateId, String... columns) {
 
-		SimpleCounter simpleCounter = _layoutCounters.get(groupId);
-
-		if (simpleCounter == null) {
-			simpleCounter = new SimpleCounter();
-
-			_layoutCounters.put(groupId, simpleCounter);
-		}
+		SimpleCounter simpleCounter = _layoutIdCounters.computeIfAbsent(
+			LayoutLocalServiceImpl.getCounterName(groupId, privateLayout),
+			counterName -> new SimpleCounter());
 
 		LayoutModel layoutModel = new LayoutModelImpl();
 
@@ -6266,7 +6298,7 @@ public class DataFactory {
 
 		// PK fields
 
-		layoutModel.setPlid(_counter.get());
+		layoutModel.setPlid(_layoutPlidCounter.get());
 
 		// Group instance
 
@@ -6284,6 +6316,7 @@ public class DataFactory {
 
 		layoutModel.setLayoutId(simpleCounter.get());
 		layoutModel.setParentLayoutId(parentLayoutId);
+		layoutModel.setPrivateLayout(privateLayout);
 		layoutModel.setName(
 			"<?xml version=\"1.0\"?><root><name>" + name + "</name></root>");
 		layoutModel.setType(LayoutConstants.TYPE_PORTLET);
@@ -6340,7 +6373,7 @@ public class DataFactory {
 
 		// PK fields
 
-		layoutSetModel.setLayoutSetId(_counter.get());
+		layoutSetModel.setLayoutSetId(_layoutSetIdCounter.get());
 
 		// Group instance
 
@@ -6517,7 +6550,7 @@ public class DataFactory {
 		// PK fields
 
 		resourcePermissionModel.setResourcePermissionId(
-			_resourcePermissionCounter.get());
+			_resourcePermissionIdCounter.get());
 
 		// Audit fields
 
@@ -6593,7 +6626,7 @@ public class DataFactory {
 
 		// PK fields
 
-		socialActivityModel.setActivityId(_socialActivityCounter.get());
+		socialActivityModel.setActivityId(_socialActivityIdCounter.get());
 
 		// Group instance
 
@@ -6967,11 +7000,11 @@ public class DataFactory {
 		return sb.toString();
 	}
 
-	private CounterModel _newCounterModel(String name) {
+	private CounterModel _newCounterModel(String name, long currentId) {
 		CounterModel counterModel = new CounterModelImpl();
 
 		counterModel.setName(name);
-		counterModel.setCurrentId(_counter.get());
+		counterModel.setCurrentId(currentId);
 
 		return counterModel;
 	}
@@ -7045,15 +7078,19 @@ public class DataFactory {
 	private final String _journalDDMStructureContent;
 	private final String _journalDDMStructureLayoutContent;
 	private List<String> _lastNames;
-	private final Map<Long, SimpleCounter> _layoutCounters = new HashMap<>();
+	private final Map<String, SimpleCounter> _layoutIdCounters =
+		new HashMap<>();
 	private final String _layoutPageTemplateStructureRelData;
+	private final SimpleCounter _layoutPlidCounter;
+	private final SimpleCounter _layoutSetIdCounter;
 	private RoleModel _ownerRoleModel;
+	private final SimpleCounter _portletPreferenceValueIdCounter;
 	private RoleModel _powerUserRoleModel;
-	private final SimpleCounter _resourcePermissionCounter;
+	private final SimpleCounter _resourcePermissionIdCounter;
 	private long _sampleUserId;
 	private final Format _simpleDateFormat;
 	private RoleModel _siteMemberRoleModel;
-	private final SimpleCounter _socialActivityCounter;
+	private final SimpleCounter _socialActivityIdCounter;
 	private final SimpleCounter _timeCounter;
 	private RoleModel _userRoleModel;
 	private final SimpleCounter _userScreenNameCounter;

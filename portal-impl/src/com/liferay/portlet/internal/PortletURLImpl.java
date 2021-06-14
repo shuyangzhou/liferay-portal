@@ -352,6 +352,15 @@ public class PortletURLImpl
 			return true;
 		}
 
+		if (name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+			name = name.substring(
+				PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE.length());
+
+			if (_parametersIncludedInPath.contains(name)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
@@ -1161,7 +1170,13 @@ public class PortletURLImpl
 
 				sb.append(StringPool.EQUAL);
 
-				if (value != null) {
+				if (value == null) {
+					sb.append(
+						processValue(
+							key,
+							LiferayMutablePortletParameters.NULL_PARAM_VALUE));
+				}
+				else {
 					sb.append(processValue(key, value));
 				}
 
