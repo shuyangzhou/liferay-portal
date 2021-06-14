@@ -310,19 +310,6 @@ message.
 		<mkdir dir="${app.server.temp.dir}" />
 		<mkdir dir="${app.server.work.dir}" />
 
-		<if>
-			<equals arg1="${app.server.type}" arg2="websphere" />
-			<then>
-				<replace
-					file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/ibm-web-ext.xml"
-				>
-					<replacetoken><![CDATA[</web-ext>]]></replacetoken>
-					<replacevalue><![CDATA[  <jsp-attribute name="jdkSourceLevel" value="18" />
-</web-ext>]]></replacevalue>
-				</replace>
-			</then>
-		</if>
-
 		<ant dir="portal-web" inheritAll="false" target="war" />
 
 		<stopwatch name="modules.stopwatch" />
@@ -1362,6 +1349,14 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 				-->
 
 				<delete dir="${liferay.home}/logs" />
+
+				<replace
+					file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/ibm-web-ext.xml"
+				>
+					<replacetoken><![CDATA[</web-ext>]]></replacetoken>
+					<replacevalue><![CDATA[  <jsp-attribute name="jdkSourceLevel" value="18" />
+</web-ext>]]></replacevalue>
+				</replace>
 			</then>
 		</if>
 	</target>
