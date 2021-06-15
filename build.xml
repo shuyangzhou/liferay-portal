@@ -118,6 +118,15 @@ message.
 		<antcall target="compile" />
 
 		<antcall target="deploy" />
+
+		<move
+			todir="${app.server.shielded-container-lib.portal.dir}"
+		>
+			<fileset
+				dir="${app.server.lib.portal.dir}"
+				excludes="com.liferay.shielded.container.api.jar,com.liferay.shielded.container.impl.jar,support-tomcat.jar"
+			/>
+		</move>
 	</target>
 
 	<target name="baseline-current-branch">
