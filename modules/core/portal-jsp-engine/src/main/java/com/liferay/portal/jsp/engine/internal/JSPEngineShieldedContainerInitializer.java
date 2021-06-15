@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.shielded.container.Ordered;
 import com.liferay.shielded.container.ShieldedContainerInitializer;
@@ -134,32 +135,38 @@ public class JSPEngineShieldedContainerInitializer
 
 		servletDynamic.setLoadOnStartup(1);
 
-		FilterRegistration.Dynamic filterDynamic = servletContext.addFilter(
-			"Portal Jasper Filter",
-			new Filter() {
+		if (ServerDetector.isTomcat()) {
+			servletDynamic.addMapping("*.jsp", "*.jspx");
+		}
+		else {
+			FilterRegistration.Dynamic filterDynamic = servletContext.addFilter(
+				"Portal Jasper Filter",
+				new Filter() {
 
-				@Override
-				public void destroy() {
-				}
+					@Override
+					public void destroy() {
+					}
 
-				@Override
-				public void doFilter(
-						ServletRequest servletRequest,
-						ServletResponse servletResponse,
-						FilterChain filterChain)
-					throws IOException, ServletException {
+					@Override
+					public void doFilter(
+							ServletRequest servletRequest,
+							ServletResponse servletResponse,
+							FilterChain filterChain)
+						throws IOException, ServletException {
 
-					portalJSPServlet.service(servletRequest, servletResponse);
-				}
+						portalJSPServlet.service(
+							servletRequest, servletResponse);
+					}
 
-				@Override
-				public void init(FilterConfig filterConfig) {
-				}
+					@Override
+					public void init(FilterConfig filterConfig) {
+					}
 
-			});
+				});
 
-		filterDynamic.addMappingForUrlPatterns(
-			EnumSet.allOf(DispatcherType.class), true, "*.jsp", "*.jspx");
+			filterDynamic.addMappingForUrlPatterns(
+				EnumSet.allOf(DispatcherType.class), true, "*.jsp", "*.jspx");
+		}
 	}
 
 }
