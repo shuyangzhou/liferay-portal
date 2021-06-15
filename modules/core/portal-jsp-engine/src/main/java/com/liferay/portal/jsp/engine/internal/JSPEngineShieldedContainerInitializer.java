@@ -18,6 +18,7 @@ import com.liferay.portal.asm.ASMWrapperUtil;
 import com.liferay.portal.jsp.engine.internal.delegate.CheckEnabledServletDelegate;
 import com.liferay.portal.jsp.engine.internal.delegate.JspConfigDescriptorServletContextDelegate;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
@@ -71,6 +72,9 @@ public class JSPEngineShieldedContainerInitializer
 		catch (IOException ioException) {
 			throw new ServletException(ioException);
 		}
+
+		PortalClassLoaderUtil.setShieldedContainerClassLoader(
+			servletContext.getClassLoader());
 
 		PropsUtil.setProps(new PropsImpl());
 

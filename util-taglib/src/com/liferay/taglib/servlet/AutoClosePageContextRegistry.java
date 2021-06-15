@@ -62,17 +62,19 @@ public class AutoClosePageContextRegistry {
 	private static final Map<PageContext, List<Runnable>> _runnables;
 
 	static {
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader shieldedContainerClassLoader =
+			PortalClassLoaderUtil.getShieldedContainerClassLoader();
 
 		if (AutoClosePageContextRegistry.class.getClassLoader() ==
-				portalClassLoader) {
+				shieldedContainerClassLoader) {
 
 			_runnables = new ConcurrentHashMap<>();
 		}
 		else {
 			try {
-				Class<?> portalDeclaringClass = portalClassLoader.loadClass(
-					AutoClosePageContextRegistry.class.getName());
+				Class<?> portalDeclaringClass =
+					shieldedContainerClassLoader.loadClass(
+						AutoClosePageContextRegistry.class.getName());
 
 				Field field = portalDeclaringClass.getDeclaredField(
 					"_runnables");

@@ -23,6 +23,10 @@ public class PortalClassLoaderUtil {
 		return _classLoader;
 	}
 
+	public static ClassLoader getShieldedContainerClassLoader() {
+		return _shieldedContainerClassLoader;
+	}
+
 	public static boolean isPortalClassLoader(ClassLoader classLoader) {
 		if (classLoader == _classLoader) {
 			return true;
@@ -35,6 +39,13 @@ public class PortalClassLoaderUtil {
 		_classLoader = classLoader;
 	}
 
+	public static void setShieldedContainerClassLoader(
+		ClassLoader shieldedContainerClassLoader) {
+
+		_shieldedContainerClassLoader = shieldedContainerClassLoader;
+	}
+
 	private static ClassLoader _classLoader;
+	private static ClassLoader _shieldedContainerClassLoader;
 
 }

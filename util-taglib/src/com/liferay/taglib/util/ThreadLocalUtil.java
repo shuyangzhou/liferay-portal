@@ -30,15 +30,17 @@ public class ThreadLocalUtil {
 		Class<?> declaringClass, String fieldName,
 		Function<String, ThreadLocal<T>> function) {
 
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader shieldedContainerClassLoader =
+			PortalClassLoaderUtil.getShieldedContainerClassLoader();
 
-		if (declaringClass.getClassLoader() == portalClassLoader) {
+		if (declaringClass.getClassLoader() == shieldedContainerClassLoader) {
 			return function.apply(declaringClass.getName() + "." + fieldName);
 		}
 
 		try {
-			Class<?> portalDeclaringClass = portalClassLoader.loadClass(
-				declaringClass.getName());
+			Class<?> portalDeclaringClass =
+				shieldedContainerClassLoader.loadClass(
+					declaringClass.getName());
 
 			Field field = portalDeclaringClass.getDeclaredField(fieldName);
 
