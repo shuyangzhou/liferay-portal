@@ -143,12 +143,6 @@
 		</copy>
 
 		<copy
-			file="${jar.file}.jar"
-			preservelastmodified="true"
-			todir="${project.dir}/portal-web/docroot/WEB-INF/lib"
-		/>
-
-		<copy
 			overwrite="true"
 			preservelastmodified="true"
 			todir="${project.dir}/portal-web/docroot/WEB-INF/tld"
