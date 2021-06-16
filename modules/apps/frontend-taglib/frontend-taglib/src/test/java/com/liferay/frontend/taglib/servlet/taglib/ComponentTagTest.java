@@ -61,7 +61,8 @@ public class ComponentTagTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		PortalClassLoaderUtil.setClassLoader(PortalImpl.class.getClassLoader());
+		PortalClassLoaderUtil.setShieldedContainerClassLoader(
+			PortalImpl.class.getClassLoader());
 
 		PortalUtil portalUtil = new PortalUtil();
 
