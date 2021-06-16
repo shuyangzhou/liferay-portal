@@ -15,21 +15,15 @@
 package com.liferay.shielded.container.internal.proxy;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
@@ -40,11 +34,13 @@ import javax.servlet.ServletRegistration;
 /**
  * @author Shuyang Zhou
  */
-public class ServletContextInvocationHandler implements InvocationHandler {
+public class ServletContextDelegate {
 
-	public ServletContextInvocationHandler(
-		ServletContext servletContext, ClassLoader classLoader) {
+	public ServletContextDelegate(
+		ProxyFactory proxyFactory, ServletContext servletContext,
+		ClassLoader classLoader) {
 
+		_proxyFactory = proxyFactory;
 		_servletContext = servletContext;
 		_classLoader = classLoader;
 	}
@@ -55,9 +51,9 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 		try {
 			return _servletContext.addFilter(
 				filterName,
-				_createContextClassLoaderProxy(
-					_createFilterProxy(new LazyInstanceSupplier<>(filterClass)),
-					Filter.class));
+				new FilterWrapper(
+					_proxyFactory, new LazyInstanceSupplier<>(filterClass),
+					_proxiedServletContext));
 		}
 		catch (NoSuchMethodException noSuchMethodException) {
 			throw new RuntimeException(noSuchMethodException);
@@ -69,8 +65,8 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 
 		return _servletContext.addFilter(
 			filterName,
-			_createContextClassLoaderProxy(
-				_createFilterProxy(() -> filter), Filter.class));
+			new FilterWrapper(
+				_proxyFactory, () -> filter, _proxiedServletContext));
 	}
 
 	public FilterRegistration.Dynamic addFilter(
@@ -111,7 +107,22 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 	}
 
 	public <T extends EventListener> void addListener(T t) {
-		_servletContext.addListener(_createContextClassLoaderProxy(t));
+		Class<?> clazz = t.getClass();
+
+		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
+
+		while (clazz != null) {
+			for (Class<?> interfaceClass : clazz.getInterfaces()) {
+				interfaceClasses.add(interfaceClass);
+			}
+
+			clazz = clazz.getSuperclass();
+		}
+
+		_servletContext.addListener(
+			(T)Proxy.newProxyInstance(
+				_classLoader, interfaceClasses.toArray(new Class<?>[0]),
+				new ContextClassLoaderInvocationHandler(_classLoader, t)));
 	}
 
 	public ServletRegistration.Dynamic addServlet(
@@ -120,10 +131,9 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 		try {
 			return _servletContext.addServlet(
 				servletName,
-				_createContextClassLoaderProxy(
-					_createServletProxy(
-						new LazyInstanceSupplier<>(servletClass)),
-					Servlet.class));
+				new ServletWrapper(
+					_proxyFactory, new LazyInstanceSupplier<>(servletClass),
+					_proxiedServletContext));
 		}
 		catch (NoSuchMethodException noSuchMethodException) {
 			throw new RuntimeException(noSuchMethodException);
@@ -135,8 +145,8 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 
 		return _servletContext.addServlet(
 			servletName,
-			_createContextClassLoaderProxy(
-				_createServletProxy(() -> servlet), Servlet.class));
+			new ServletWrapper(
+				_proxyFactory, () -> servlet, _proxiedServletContext));
 	}
 
 	public ServletRegistration.Dynamic addServlet(
@@ -190,19 +200,6 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 		return Collections.enumeration(names);
 	}
 
-	@Override
-	public Object invoke(Object proxy, Method method, Object[] args)
-		throws Throwable {
-
-		Method mappingMethod = _methodMappingsMap.get(method);
-
-		if (mappingMethod == null) {
-			return method.invoke(_servletContext, args);
-		}
-
-		return mappingMethod.invoke(this, args);
-	}
-
 	public void removeAttribute(String name) {
 		_servletContext.removeAttribute(_encodeName(name));
 	}
@@ -217,46 +214,6 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 
 	public void setProxiedServletContext(ServletContext proxiedServletContext) {
 		_proxiedServletContext = proxiedServletContext;
-	}
-
-	private <T> T _createContextClassLoaderProxy(T t, Class<?>... interfaces) {
-		if (interfaces.length == 0) {
-			Class<?> clazz = t.getClass();
-
-			Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
-
-			while (clazz != null) {
-				for (Class<?> interfaceClass : clazz.getInterfaces()) {
-					interfaceClasses.add(interfaceClass);
-				}
-
-				clazz = clazz.getSuperclass();
-			}
-
-			interfaces = interfaceClasses.toArray(new Class<?>[0]);
-		}
-
-		return (T)Proxy.newProxyInstance(
-			_classLoader, interfaces,
-			new ContextClassLoaderInvocationHandler(_classLoader, t));
-	}
-
-	private Filter _createFilterProxy(
-		Supplier<? extends Filter> filterSupplier) {
-
-		return (Filter)Proxy.newProxyInstance(
-			_classLoader, new Class<?>[] {Filter.class},
-			new FilterInvocationHandler(
-				filterSupplier, _proxiedServletContext));
-	}
-
-	private Servlet _createServletProxy(
-		Supplier<? extends Servlet> servletSupplier) {
-
-		return (Servlet)Proxy.newProxyInstance(
-			_classLoader, new Class<?>[] {Servlet.class},
-			new ServletInvocationHandler(
-				servletSupplier, _proxiedServletContext));
 	}
 
 	private String _decodeName(String name) {
@@ -279,42 +236,9 @@ public class ServletContextInvocationHandler implements InvocationHandler {
 
 	private static final String _LIFERAY_NAMESPACE = "com.liferay.";
 
-	private static final Map<Method, Method> _methodMappingsMap =
-		new HashMap<>();
-
-	static {
-		try {
-			Method invokeMethod =
-				ServletContextInvocationHandler.class.getDeclaredMethod(
-					"invoke", Object.class, Method.class, Object[].class);
-			Method setProxiedServletContextMethod =
-				ServletContextInvocationHandler.class.getDeclaredMethod(
-					"setProxiedServletContext", ServletContext.class);
-
-			for (Method method :
-					ServletContextInvocationHandler.class.
-						getDeclaredMethods()) {
-
-				if (!Modifier.isPublic(method.getModifiers()) ||
-					method.equals(invokeMethod) ||
-					method.equals(setProxiedServletContextMethod)) {
-
-					continue;
-				}
-
-				_methodMappingsMap.put(
-					ServletContext.class.getMethod(
-						method.getName(), method.getParameterTypes()),
-					method);
-			}
-		}
-		catch (NoSuchMethodException noSuchMethodException) {
-			throw new ExceptionInInitializerError(noSuchMethodException);
-		}
-	}
-
 	private final ClassLoader _classLoader;
 	private ServletContext _proxiedServletContext;
+	private final ProxyFactory _proxyFactory;
 	private final ServletContext _servletContext;
 
 }

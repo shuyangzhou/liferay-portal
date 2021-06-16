@@ -16,11 +16,10 @@ package com.liferay.shielded.container.internal;
 
 import com.liferay.shielded.container.Ordered;
 import com.liferay.shielded.container.ShieldedContainerInitializer;
-import com.liferay.shielded.container.internal.proxy.ServletContextInvocationHandler;
+import com.liferay.shielded.container.internal.proxy.ProxyFactory;
+import com.liferay.shielded.container.internal.proxy.ServletContextDelegate;
 
 import java.io.File;
-
-import java.lang.reflect.Proxy;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -48,16 +47,18 @@ public class ShieldedContainerServletContainerInitializer
 		ClassLoader shieldedContainerClassLoader =
 			_buildShieldContainerClassLoader(servletContext);
 
-		ServletContextInvocationHandler servletContextInvocationHandler =
-			new ServletContextInvocationHandler(
-				servletContext, shieldedContainerClassLoader);
+		ProxyFactory proxyFactory = new ProxyFactory(
+			shieldedContainerClassLoader);
 
-		servletContext = (ServletContext)Proxy.newProxyInstance(
-			shieldedContainerClassLoader, new Class<?>[] {ServletContext.class},
-			servletContextInvocationHandler);
+		ServletContextDelegate servletContextDelegate =
+			new ServletContextDelegate(
+				proxyFactory, servletContext, shieldedContainerClassLoader);
 
-		servletContextInvocationHandler.setProxiedServletContext(
-			servletContext);
+		servletContext = proxyFactory.createASMWrapper(
+			shieldedContainerClassLoader, ServletContext.class,
+			servletContextDelegate, servletContext);
+
+		servletContextDelegate.setProxiedServletContext(servletContext);
 
 		ServiceLoader<ShieldedContainerInitializer> serviceLoader =
 			ServiceLoader.load(
