@@ -15,8 +15,6 @@
 package com.liferay.portal.template;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.bean.BeanLocatorImpl;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.BaseLocalService;
@@ -64,29 +62,15 @@ public class ServiceLocator {
 		return bean;
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public Object findService(String servletContextName, String serviceName) {
-		Object bean = null;
-
-		try {
-			bean = PortletBeanLocatorUtil.locate(
-				servletContextName, _getServiceName(serviceName));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		return bean;
+		return findService(serviceName);
 	}
 
 	private ServiceLocator() {
-	}
-
-	private String _getServiceName(String serviceName) {
-		if (!serviceName.endsWith(BeanLocatorImpl.VELOCITY_SUFFIX)) {
-			serviceName += BeanLocatorImpl.VELOCITY_SUFFIX;
-		}
-
-		return serviceName;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ServiceLocator.class);
