@@ -14,11 +14,13 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.bean.BeanLocatorImpl;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
@@ -41,9 +43,18 @@ public class ServiceLocator {
 
 			bean = registry.callService(serviceName, Function.identity());
 
-			if (bean == null) {
-				bean = PortalBeanLocatorUtil.locate(
-					_getServiceName(serviceName));
+			if (!(bean instanceof BaseService) &&
+				!(bean instanceof BaseLocalService)) {
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Denied access to service \"", serviceName,
+							"\" as it is not a service builder generated ",
+							"service"));
+				}
+
+				bean = null;
 			}
 		}
 		catch (Exception exception) {
