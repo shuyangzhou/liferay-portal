@@ -301,9 +301,9 @@
 	<td></td>
 </tr>
 <tr>
-    <td>HIDDEN</td>
-    <td>//input[@type='hidden']</td>
-    <td></td>
+	<td>HIDDEN</td>
+	<td>//input[@type='hidden']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>IMAGE_DESCRIPTION</td>
