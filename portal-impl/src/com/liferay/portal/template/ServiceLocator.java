@@ -14,6 +14,14 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.util.PropsUtil;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
@@ -31,7 +39,24 @@ public class ServiceLocator {
 	public Object findService(String serviceName) {
 		Registry registry = RegistryUtil.getRegistry();
 
-		return registry.callService(serviceName, Function.identity());
+		Object object = registry.callService(serviceName, Function.identity());
+
+		if (_TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT &&
+			!(object instanceof BaseService) &&
+			!(object instanceof BaseLocalService)) {
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Denied access to service \"", serviceName,
+						"\" as it is not a service builder generated ",
+						"service"));
+			}
+
+			object = null;
+		}
+
+		return object;
 	}
 
 	public Object findService(String servletContextName, String serviceName) {
@@ -40,6 +65,12 @@ public class ServiceLocator {
 
 	private ServiceLocator() {
 	}
+
+	private static final boolean _TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT));
+
+	private static final Log _log = LogFactoryUtil.getLog(ServiceLocator.class);
 
 	private static final ServiceLocator _serviceLocator = new ServiceLocator();
 
