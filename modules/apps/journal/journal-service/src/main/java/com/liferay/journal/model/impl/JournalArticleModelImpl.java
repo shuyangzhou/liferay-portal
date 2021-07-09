@@ -2128,9 +2128,15 @@ public class JournalArticleModelImpl
 			journalArticleCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
-		journalArticleCacheModel._document = getDocument();
+		populateCacheFields(journalArticleCacheModel);
 
 		return journalArticleCacheModel;
+	}
+
+	protected void populateCacheFields(
+		JournalArticleCacheModel journalArticleCacheModel) {
+
+		journalArticleCacheModel._document = getDocument();
 	}
 
 	@Override

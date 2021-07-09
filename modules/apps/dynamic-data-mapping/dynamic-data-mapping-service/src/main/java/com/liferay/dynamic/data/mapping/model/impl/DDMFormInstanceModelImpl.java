@@ -1367,9 +1367,15 @@ public class DDMFormInstanceModelImpl
 			ddmFormInstanceCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
-		ddmFormInstanceCacheModel._ddmFormValues = getDDMFormValues();
+		populateCacheFields(ddmFormInstanceCacheModel);
 
 		return ddmFormInstanceCacheModel;
+	}
+
+	protected void populateCacheFields(
+		DDMFormInstanceCacheModel ddmFormInstanceCacheModel) {
+
+		ddmFormInstanceCacheModel._ddmFormValues = getDDMFormValues();
 	}
 
 	@Override

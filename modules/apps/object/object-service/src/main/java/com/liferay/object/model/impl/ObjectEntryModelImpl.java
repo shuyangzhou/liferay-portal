@@ -1064,9 +1064,15 @@ public class ObjectEntryModelImpl
 			objectEntryCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
-		objectEntryCacheModel._values = getValues();
+		populateCacheFields(objectEntryCacheModel);
 
 		return objectEntryCacheModel;
+	}
+
+	protected void populateCacheFields(
+		ObjectEntryCacheModel objectEntryCacheModel) {
+
+		objectEntryCacheModel._values = getValues();
 	}
 
 	@Override

@@ -785,11 +785,15 @@ public class CompanyModelImpl
 
 		companyCacheModel.active = isActive();
 
+		populateCacheFields(companyCacheModel);
+
+		return companyCacheModel;
+	}
+
+	protected void populateCacheFields(CompanyCacheModel companyCacheModel) {
 		companyCacheModel._companySecurityBag = getCompanySecurityBag();
 
 		companyCacheModel._virtualHostname = getVirtualHostname();
-
-		return companyCacheModel;
 	}
 
 	@Override

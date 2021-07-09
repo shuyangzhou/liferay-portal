@@ -1558,11 +1558,17 @@ public class DDMStructureModelImpl
 			ddmStructureCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
+		populateCacheFields(ddmStructureCacheModel);
+
+		return ddmStructureCacheModel;
+	}
+
+	protected void populateCacheFields(
+		DDMStructureCacheModel ddmStructureCacheModel) {
+
 		ddmStructureCacheModel._className = getClassName();
 
 		ddmStructureCacheModel._ddmForm = getDDMForm();
-
-		return ddmStructureCacheModel;
 	}
 
 	@Override

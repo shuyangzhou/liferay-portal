@@ -994,12 +994,18 @@ public class LayoutSetModelImpl
 		layoutSetCacheModel.layoutSetPrototypeLinkEnabled =
 			isLayoutSetPrototypeLinkEnabled();
 
+		populateCacheFields(layoutSetCacheModel);
+
+		return layoutSetCacheModel;
+	}
+
+	protected void populateCacheFields(
+		LayoutSetCacheModel layoutSetCacheModel) {
+
 		layoutSetCacheModel._companyFallbackVirtualHostname =
 			getCompanyFallbackVirtualHostname();
 
 		layoutSetCacheModel._virtualHostnames = getVirtualHostnames();
-
-		return layoutSetCacheModel;
 	}
 
 	@Override

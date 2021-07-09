@@ -1501,9 +1501,15 @@ public class DDMStructureVersionModelImpl
 			ddmStructureVersionCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
-		ddmStructureVersionCacheModel._ddmForm = getDDMForm();
+		populateCacheFields(ddmStructureVersionCacheModel);
 
 		return ddmStructureVersionCacheModel;
+	}
+
+	protected void populateCacheFields(
+		DDMStructureVersionCacheModel ddmStructureVersionCacheModel) {
+
+		ddmStructureVersionCacheModel._ddmForm = getDDMForm();
 	}
 
 	@Override

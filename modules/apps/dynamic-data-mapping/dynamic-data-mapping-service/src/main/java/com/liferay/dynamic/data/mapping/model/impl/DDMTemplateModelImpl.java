@@ -1786,9 +1786,15 @@ public class DDMTemplateModelImpl
 			ddmTemplateCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
-		ddmTemplateCacheModel._resourceClassName = getResourceClassName();
+		populateCacheFields(ddmTemplateCacheModel);
 
 		return ddmTemplateCacheModel;
+	}
+
+	protected void populateCacheFields(
+		DDMTemplateCacheModel ddmTemplateCacheModel) {
+
+		ddmTemplateCacheModel._resourceClassName = getResourceClassName();
 	}
 
 	@Override

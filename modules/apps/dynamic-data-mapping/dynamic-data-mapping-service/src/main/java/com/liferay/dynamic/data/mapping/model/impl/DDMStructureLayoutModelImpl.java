@@ -1371,9 +1371,15 @@ public class DDMStructureLayoutModelImpl
 			ddmStructureLayoutCacheModel.definition = null;
 		}
 
-		ddmStructureLayoutCacheModel._ddmFormLayout = getDDMFormLayout();
+		populateCacheFields(ddmStructureLayoutCacheModel);
 
 		return ddmStructureLayoutCacheModel;
+	}
+
+	protected void populateCacheFields(
+		DDMStructureLayoutCacheModel ddmStructureLayoutCacheModel) {
+
+		ddmStructureLayoutCacheModel._ddmFormLayout = getDDMFormLayout();
 	}
 
 	@Override
