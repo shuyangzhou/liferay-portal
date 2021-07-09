@@ -48,8 +48,12 @@ import javax.servlet.ServletRegistration;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.jasper.compiler.JarScannerFactory;
 import org.apache.jasper.servlet.JasperInitializer;
 import org.apache.jasper.servlet.JspServlet;
+import org.apache.tomcat.JarScanFilter;
+import org.apache.tomcat.JarScanType;
+import org.apache.tomcat.JarScanner;
 
 /**
  * @author Shuyang Zhou
@@ -78,6 +82,25 @@ public class JSPEngineShieldedContainerInitializer
 			"ShieldedContainerClassLoader", servletContext.getClassLoader());
 
 		PropsUtil.setProps(new PropsImpl());
+
+		JarScanner jarScanner = JarScannerFactory.getJarScanner(servletContext);
+
+		jarScanner.setJarScanFilter(
+			new JarScanFilter() {
+
+				@Override
+				public boolean check(JarScanType jarScanType, String jarName) {
+					return false;
+				}
+
+				@Override
+				public boolean isSkipAll() {
+					return true;
+				}
+
+			});
+
+		servletContext.setAttribute(JarScanner.class.getName(), jarScanner);
 
 		JasperInitializer jasperInitializer = new JasperInitializer();
 
