@@ -1753,14 +1753,28 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			</#if>
 		</#list>
 
+		<#if serviceBuilder.isVersionGTE_7_4_0() && (cacheFields?size > 0)>
+			populateCacheFields(${entity.variableName}CacheModel);
+		<#else>
+			<#list cacheFields as cacheField>
+				<#assign methodName = serviceBuilder.getCacheFieldMethodName(cacheField) />
+
+				${entity.variableName}CacheModel.${cacheField.name} = get${methodName}();
+			</#list>
+		</#if>
+
+		return ${entity.variableName}CacheModel;
+	}
+
+	<#if serviceBuilder.isVersionGTE_7_4_0() && (cacheFields?size > 0)>
+		protected void populateCacheFields(${entity.name}CacheModel ${entity.variableName}CacheModel) {
 		<#list cacheFields as cacheField>
 			<#assign methodName = serviceBuilder.getCacheFieldMethodName(cacheField) />
 
 			${entity.variableName}CacheModel.${cacheField.name} = get${methodName}();
 		</#list>
-
-		return ${entity.variableName}CacheModel;
-	}
+		}
+	</#if>
 
 	<#if hasLazy>
 		@Override
