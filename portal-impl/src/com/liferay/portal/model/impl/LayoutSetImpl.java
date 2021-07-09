@@ -415,6 +415,16 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 		return getTheme();
 	}
 
+	@Override
+	protected void populateCacheFields(
+		LayoutSetCacheModel layoutSetCacheModel) {
+
+		layoutSetCacheModel._companyFallbackVirtualHostname =
+			_companyFallbackVirtualHostname;
+
+		layoutSetCacheModel._virtualHostnames = _virtualHostnames;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(LayoutSetImpl.class);
 
 	@CacheField(propagateToInterface = true)

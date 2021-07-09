@@ -69,6 +69,13 @@ public class DDMStructureVersionImpl extends DDMStructureVersionBaseImpl {
 		_ddmForm = ddmForm;
 	}
 
+	@Override
+	protected void populateCacheFields(
+		DDMStructureVersionCacheModel ddmStructureVersionCacheModel) {
+
+		ddmStructureVersionCacheModel._ddmForm = _ddmForm;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureVersionImpl.class);
 

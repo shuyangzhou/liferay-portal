@@ -107,6 +107,13 @@ public class DDMFormInstanceImpl extends DDMFormInstanceBaseImpl {
 		_formInstanceSettings = null;
 	}
 
+	@Override
+	protected void populateCacheFields(
+		DDMFormInstanceCacheModel ddmFormInstanceCacheModel) {
+
+		ddmFormInstanceCacheModel._ddmFormValues = _ddmFormValues;
+	}
+
 	@CacheField(methodName = "DDMFormValues", propagateToInterface = true)
 	private DDMFormValues _ddmFormValues;
 

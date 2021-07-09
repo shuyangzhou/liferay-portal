@@ -512,6 +512,15 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 			getParentStructureId());
 	}
 
+	@Override
+	protected void populateCacheFields(
+		DDMStructureCacheModel ddmStructureCacheModel) {
+
+		ddmStructureCacheModel._className = _className;
+
+		ddmStructureCacheModel._ddmForm = _ddmForm;
+	}
+
 	private DDMFormField _fetchDDMFormField(
 		BiFunction<List<DDMFormField>, String, DDMFormField> biFunction,
 		List<DDMFormField> ddmFormFields,

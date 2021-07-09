@@ -109,6 +109,13 @@ public class DDLRecordSetImpl extends DDLRecordSetBaseImpl {
 		_recordSetSettings = null;
 	}
 
+	@Override
+	protected void populateCacheFields(
+		DDLRecordSetCacheModel ddlRecordSetCacheModel) {
+
+		ddlRecordSetCacheModel._ddmFormValues = _ddmFormValues;
+	}
+
 	@CacheField(methodName = "DDMFormValues", propagateToInterface = true)
 	private DDMFormValues _ddmFormValues;
 

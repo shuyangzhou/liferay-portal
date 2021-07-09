@@ -63,6 +63,13 @@ public class DDMStructureLayoutImpl extends DDMStructureLayoutBaseImpl {
 		return ddmStructure.getStructureId();
 	}
 
+	@Override
+	protected void populateCacheFields(
+		DDMStructureLayoutCacheModel ddmStructureLayoutCacheModel) {
+
+		ddmStructureLayoutCacheModel._ddmFormLayout = _ddmFormLayout;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureLayoutImpl.class);
 

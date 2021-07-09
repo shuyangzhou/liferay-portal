@@ -468,6 +468,13 @@ public class CompanyImpl extends CompanyBaseImpl {
 
 	}
 
+	@Override
+	protected void populateCacheFields(CompanyCacheModel companyCacheModel) {
+		companyCacheModel._companySecurityBag = _companySecurityBag;
+
+		companyCacheModel._virtualHostname = _virtualHostname;
+	}
+
 	private static boolean _getPrefsPropsBoolean(
 		PortletPreferences portletPreferences, Company company, String name,
 		boolean defaultValue) {

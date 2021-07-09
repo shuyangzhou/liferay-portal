@@ -804,6 +804,13 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		_titleMap = titleMap;
 	}
 
+	@Override
+	protected void populateCacheFields(
+		JournalArticleCacheModel journalArticleCacheModel) {
+
+		journalArticleCacheModel._document = _document;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleImpl.class);
 

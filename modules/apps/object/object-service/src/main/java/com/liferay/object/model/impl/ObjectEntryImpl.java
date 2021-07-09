@@ -65,6 +65,13 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 		_values = values;
 	}
 
+	@Override
+	protected void populateCacheFields(
+		ObjectEntryCacheModel objectEntryCacheModel) {
+
+		objectEntryCacheModel._values = _values;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryImpl.class);
 
