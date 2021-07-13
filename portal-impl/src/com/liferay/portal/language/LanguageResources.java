@@ -349,7 +349,7 @@ public class LanguageResources {
 	private static final Map<Locale, Locale> _superLocales =
 		new ConcurrentHashMap<>();
 
-	private ServiceTracker<ResourceBundle, ResourceBundle> _serviceTracker;
+	private ServiceTracker<ResourceBundle, Map<String, String>> _serviceTracker;
 
 	private static class LanguageResourcesBundle extends ResourceBundle {
 
@@ -403,10 +403,11 @@ public class LanguageResources {
 	}
 
 	private static class LanguageResourceServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<ResourceBundle, ResourceBundle> {
+		implements ServiceTrackerCustomizer
+			<ResourceBundle, Map<String, String>> {
 
 		@Override
-		public ResourceBundle addingService(
+		public Map<String, String> addingService(
 			ServiceReference<ResourceBundle> serviceReference) {
 
 			Registry registry = RegistryUtil.getRegistry();
@@ -437,24 +438,19 @@ public class LanguageResources {
 				languageMap.put(key, value);
 			}
 
-			Map<String, String> diffLanguageMap = _putLanguageMap(
-				locale, languageMap);
-
-			_diffLanguageMap.put(serviceReference, diffLanguageMap);
-
-			return resourceBundle;
+			return _putLanguageMap(locale, languageMap);
 		}
 
 		@Override
 		public void modifiedService(
 			ServiceReference<ResourceBundle> serviceReference,
-			ResourceBundle resourceBundle) {
+			Map<String, String> diffLanguageMap) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<ResourceBundle> serviceReference,
-			ResourceBundle resourceBundle) {
+			Map<String, String> diffLanguageMap) {
 
 			Registry registry = RegistryUtil.getRegistry();
 
@@ -471,14 +467,8 @@ public class LanguageResources {
 				locale = new Locale(StringPool.BLANK);
 			}
 
-			Map<String, String> languageMap = _diffLanguageMap.remove(
-				serviceReference);
-
-			_putLanguageMap(locale, languageMap);
+			_putLanguageMap(locale, diffLanguageMap);
 		}
-
-		private final Map<ServiceReference<?>, Map<String, String>>
-			_diffLanguageMap = new HashMap<>();
 
 	}
 
