@@ -7,5 +7,6 @@
 	</checkstyle>
 	<source-check>
 		<suppress checks="JavaXMLSecurityCheck" files="portal-monitoring/src/main/java/com/liferay/portal/monitoring/internal/MonitoringGateKeeper\.java" />
+		<suppress checks="ResourceBundleCheck" files="portal-lang/src/main/java/com/liferay/portal/lang/internal/activator/PortalLangBundleActivator\.java" />
 	</source-check>
 </suppressions>
