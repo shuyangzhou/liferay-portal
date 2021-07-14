@@ -12,88 +12,72 @@
  * details.
  */
 
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
-import {useChannel} from '../hooks/useChannel';
+import {AppContextProvider} from './AppContext';
 import {ClosableAlert} from './ClosableAlert';
 import {Editor} from './Editor';
-import {Sidebar} from './Sidebar';
+import Sidebar from './Sidebar';
+import {PANEL_IDS} from './panelIds';
 
 export default function App({
 	editorAutocompleteData,
 	editorMode: initialEditorMode,
 	portletNamespace,
+	propertiesViewURL,
 	script: initialScript,
 	showCacheableWarning,
 	showLanguageChangeWarning,
+	showPropertiesPanel,
 	templateVariableGroups,
 }) {
-	const [editorMode, setEditorMode] = useState(initialEditorMode);
-	const inputChannel = useChannel();
-
-	useEffect(() => {
-		const modeSelect = document.getElementById(
-			`${portletNamespace}language`
-		);
-
-		const onModeChange = (event) => {
-			setEditorMode(
-				{
-					ftl: 'ftl',
-					vm: 'velocity',
-				}[event.target.value]
-			);
-		};
-
-		if (modeSelect) {
-			modeSelect.addEventListener('change', onModeChange);
-
-			return () => {
-				modeSelect.removeEventListener('change', onModeChange);
-			};
-		}
-	}, [portletNamespace]);
+	const [selectedSidebarPanelId, setSelectedSidebarPanelId] = useState(
+		showPropertiesPanel ? PANEL_IDS.properties : PANEL_IDS.elements
+	);
 
 	return (
-		<div className="ddm_template_editor__App">
-			{editorMode !== 'xml' && (
-				<div className="ddm_template_editor__App-sidebar">
-					<Sidebar
-						onButtonClick={(item) =>
-							inputChannel.sendData(item.content)
-						}
-						templateVariableGroups={templateVariableGroups}
+		<AppContextProvider
+			editorMode={initialEditorMode}
+			portletNamespace={portletNamespace}
+			propertiesViewURL={propertiesViewURL}
+			templateVariableGroups={templateVariableGroups}
+		>
+			<div className="ddm_template_editor__App">
+				<div
+					className={classNames('ddm_template_editor__App-content', {
+						'ddm_template_editor__App-content--sidebar-open': selectedSidebarPanelId,
+					})}
+				>
+					<ClosableAlert
+						message={Liferay.Language.get(
+							'changing-the-language-does-not-automatically-translate-the-existing-template-script'
+						)}
+						visible={showLanguageChangeWarning}
+					/>
+
+					<ClosableAlert
+						id={`${portletNamespace}-cacheableWarningMessage`}
+						linkedCheckboxId={`${portletNamespace}cacheable`}
+						message={Liferay.Language.get(
+							'this-template-is-marked-as-cacheable.-avoid-using-code-that-uses-request-handling,-the-cms-query-api,-taglibs,-or-other-dynamic-features.-uncheck-the-cacheable-property-if-dynamic-behavior-is-needed'
+						)}
+						visible={showCacheableWarning}
+					/>
+
+					<Editor
+						autocompleteData={editorAutocompleteData}
+						initialScript={initialScript}
 					/>
 				</div>
-			)}
 
-			<div className="ddm_template_editor__App-content">
-				<ClosableAlert
-					message={Liferay.Language.get(
-						'changing-the-language-does-not-automatically-translate-the-existing-template-script'
-					)}
-					visible={showLanguageChangeWarning}
-				/>
-
-				<ClosableAlert
-					id={`${portletNamespace}-cacheableWarningMessage`}
-					linkedCheckboxId={`${portletNamespace}cacheable`}
-					message={Liferay.Language.get(
-						'this-template-is-marked-as-cacheable.-avoid-using-code-that-uses-request-handling,-the-cms-query-api,-taglibs,-or-other-dynamic-features.-uncheck-the-cacheable-property-if-dynamic-behavior-is-needed'
-					)}
-					visible={showCacheableWarning}
-				/>
-
-				<Editor
-					autocompleteData={editorAutocompleteData}
-					editorMode={editorMode}
-					initialScript={initialScript}
-					inputChannel={inputChannel}
-					portletNamespace={portletNamespace}
+				<Sidebar
+					selectedSidebarPanelId={selectedSidebarPanelId}
+					setSelectedSidebarPanelId={setSelectedSidebarPanelId}
 				/>
 			</div>
-		</div>
+		</AppContextProvider>
 	);
 }
 

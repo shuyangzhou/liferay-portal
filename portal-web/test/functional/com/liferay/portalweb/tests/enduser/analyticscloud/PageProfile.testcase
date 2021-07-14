@@ -1,0 +1,57 @@
+@component-name = "portal-analytics-cloud"
+definition {
+
+	property analytics.cloud.enabled = "true";
+	property minimum.slave.ram = "32";
+	property portal.release = "false";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Analytics Cloud";
+
+	setUp {
+		ACUtils.launchAC();
+
+		ACSettings.takeTokenFromAnalyticsCloud();
+
+		TestCase.setUpPortalInstance();
+
+		ACUtils.launchDXP();
+
+		ACUtils.addSiteAndPage();
+
+		ACUtils.createBlogsAndAddToPage();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		ACUtils.tearDownDXP();
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			JSONGroup.deleteGroupByName(groupName = "Site Name");
+		}
+
+		ACUtils.tearDownAC();
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8113 | Test Summary: Assert clicking a blog in the blogs list navigates to the blogs overview page"
+	@ignore = "true"
+	@priority = "5"
+	test CanNavigatesToBlogsOverviewPage {
+
+		// TODO LRAC-8113 CanNavigatesToBlogsOverviewPage pending implementation
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8112 | Test Summary: Assert clicking on a page in the pages lists navigates to the page profile"
+	@ignore = "true"
+	@priority = "5"
+	test ClickOnPageInPagesListsNavigatesToPageProfile {
+
+		// TODO LRAC-8112 ClickOnPageInPagesListsNavigatesToPageProfile pending implementation
+
+	}
+
+}

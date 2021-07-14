@@ -14,7 +14,11 @@
 
 package com.liferay.layout.reports.web.internal.product.navigation.control.menu;
 
+import com.liferay.blogs.model.BlogsEntry;
+import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
+import com.liferay.journal.constants.JournalConstants;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.layout.reports.web.internal.configuration.provider.LayoutReportsGooglePageSpeedConfigurationProvider;
 import com.liferay.layout.reports.web.internal.constants.LayoutReportsPortletKeys;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
@@ -31,6 +35,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
@@ -211,9 +216,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		if (!_isShow(themeDisplay.getPlid()) ||
-			!_isShowPanel(httpServletRequest)) {
-
+		if (!_isShow(themeDisplay) || !_isShowPanel(httpServletRequest)) {
 			return false;
 		}
 
@@ -262,12 +265,12 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		).buildString();
 	}
 
-	private boolean _hasViewPermission(
+	private boolean _hasEditPermission(
 			Layout layout, PermissionChecker permissionChecker)
 		throws PortalException {
 
 		if (!LayoutPermissionUtil.contains(
-				permissionChecker, layout, ActionKeys.VIEW)) {
+				permissionChecker, layout, ActionKeys.UPDATE)) {
 
 			return false;
 		}
@@ -292,9 +295,25 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		return false;
 	}
 
-	private boolean _isShow(long plid) {
+	private boolean _isShow(ThemeDisplay themeDisplay) {
+		PermissionChecker permissionChecker =
+			themeDisplay.getPermissionChecker();
+
+		if (permissionChecker.hasPermission(
+				themeDisplay.getScopeGroup(), BlogsEntry.class.getName(),
+				BlogsEntry.class.getName(), ActionKeys.UPDATE) ||
+			permissionChecker.hasPermission(
+				themeDisplay.getScopeGroup(), DLFileEntry.class.getName(),
+				DLFileEntry.class.getName(), ActionKeys.UPDATE) ||
+			permissionChecker.hasPermission(
+				themeDisplay.getScopeGroup(), JournalArticle.class.getName(),
+				JournalArticle.class.getName(), ActionKeys.UPDATE)) {
+
+			return true;
+		}
+
 		return Optional.ofNullable(
-			_layoutLocalService.fetchLayout(plid)
+			_layoutLocalService.fetchLayout(themeDisplay.getPlid())
 		).filter(
 			layout ->
 				layout.isTypeAssetDisplay() || layout.isTypeContent() ||
@@ -304,7 +323,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		).filter(
 			layout -> {
 				try {
-					return _hasViewPermission(
+					return _hasEditPermission(
 						layout, PermissionThreadLocal.getPermissionChecker());
 				}
 				catch (PortalException portalException) {
@@ -444,6 +463,11 @@ public class LayoutReportsProductNavigationControlMenuEntry
 	private Portal _portal;
 
 	private String _portletNamespace;
+
+	@Reference(
+		target = "(resource.name=" + JournalConstants.RESOURCE_NAME + ")"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 	@Reference
 	private PortletURLFactory _portletURLFactory;

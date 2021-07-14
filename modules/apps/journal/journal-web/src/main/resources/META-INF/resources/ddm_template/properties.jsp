@@ -16,20 +16,11 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-JournalEditDDMTemplateDisplayContext journalEditDDMTemplateDisplayContext = new JournalEditDDMTemplateDisplayContext(request);
-%>
-
-<aui:input name="scriptContent" type="hidden" value="<%= journalEditDDMTemplateDisplayContext.getScript() %>" />
-
-<div id="<portlet:namespace />ddmTemplateEditor">
-	<div class="inline-item my-5 p-5 w-100">
-		<span aria-hidden="true" class="loading-animation"></span>
-	</div>
-
-	<react:component
-		componentId="ddmTemplateEditor"
-		module="ddm_template_editor/components/App"
-		props="<%= journalEditDDMTemplateDisplayContext.getDDMTemplateEditorContext() %>"
+<div class="journal-ddm-template-properties">
+	<liferay-frontend:form-navigator
+		fieldSetCssClass="form-group-sm mb-0 panel-group-flush"
+		formModelBean='<%= DDMTemplateLocalServiceUtil.fetchDDMTemplate(ParamUtil.getLong(request, "ddmTemplateId")) %>'
+		id="<%= JournalWebConstants.FORM_NAVIGATOR_ID_JOURNAL_DDM_TEMPLATE %>"
+		showButtons="<%= false %>"
 	/>
 </div>

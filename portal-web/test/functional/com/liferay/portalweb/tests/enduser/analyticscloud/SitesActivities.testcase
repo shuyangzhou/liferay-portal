@@ -1,0 +1,48 @@
+@component-name = "portal-analytics-cloud"
+definition {
+
+	property analytics.cloud.enabled = "true";
+	property minimum.slave.ram = "32";
+	property portal.release = "false";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Analytics Cloud";
+
+	setUp {
+		ACUtils.launchAC();
+
+		ACSettings.takeTokenFromAnalyticsCloud();
+
+		TestCase.setUpPortalInstance();
+
+		ACUtils.launchDXP();
+
+		ACUtils.addSiteAndPage();
+
+		ACUtils.createBlogsAndAddToPage();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		ACUtils.tearDownDXP();
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			JSONGroup.deleteGroupByName(groupName = "Site Name");
+		}
+
+		ACUtils.tearDownAC();
+	}
+
+	@description = "Bug ID: LRAC-7996 | Automation ID: LRAC-8110 | Test Summary: Assert Sites Activity loads activity data properly when the time filter is set to 'Last 24 hours'"
+	@ignore = "true"
+	@priority = "5"
+	test CanLoadDataProperlyWhenTimeFilterIsLast24Hours {
+
+		// TODO LRAC-8110 CanLoadDataProperlyWhenTimeFilterIsLast24Hours pending implementation
+
+	}
+
+}

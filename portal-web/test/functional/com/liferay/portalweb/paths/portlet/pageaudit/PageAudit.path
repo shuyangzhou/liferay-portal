@@ -16,6 +16,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>BADGE_NUMBER</td>
+	<td>//span[contains(@class, 'badge')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CHECK_ISSUES_TEXT</td>
 	<td>//*[contains(@class, 'text-center')]//*[contains(@class, 'font-weight-semi-bold')]</td>
 	<td></td>
@@ -26,6 +31,26 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PANEL_TITLE</td>
+	<td>//div[contains(@class, 'panel-title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FAILING_CHECK_NAME</td>
+	<td>//span[contains(@class, 'text-secondary') and contains(@class, 'w-100') and contains(@class, 'c-inner') and contains (text(), '${failingCheckName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FAILING_CHECK_TITLE</td>
+	<td>//span[contains(@class, 'font-weight-semi-bold')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FAILING_ELEMENT_NAME</td>
+	<td>//*[contains(@class, 'font-weight-semi-bold') and contains(@class, 'list-group-text')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>GOOGLE_PAGESPEED_TITLE</td>
 	<td>//h2[contains(text(), 'Google PageSpeed Insights')]</td>
 	<td></td>
@@ -33,6 +58,11 @@
 <tr>
 	<td>LAUNCH_PAGE_AUDIT_BUTTON</td>
 	<td>//*[contains(@class, 'btn-secondary') and contains (text(), 'Launch')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NO_ISSUES_MESSAGE</td>
+	<td>//div[contains(@class, 'font-weight-semi-bold')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,6 +83,11 @@
 <tr>
 	<td>RELAUNCH_PAGE_AUDIT_BUTTON</td>
 	<td>//*[contains(@class, 'lexicon-icon-reload')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUCCESS_IMAGE</td>
+	<td>//img[contains(@alt, 'success-page-audit-image-alt-description')]</td>
 	<td></td>
 </tr>
 </tbody>

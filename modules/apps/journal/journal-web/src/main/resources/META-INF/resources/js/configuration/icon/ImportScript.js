@@ -13,13 +13,19 @@
  */
 
 import {openToast} from 'frontend-js-web';
-import PropTypes from 'prop-types';
-import React from 'react';
 
-const SCRIPT_INPUT_ID = 'ddm_template_editor__ScriptInput';
+export default function ({namespace}) {
+	const button = document.getElementById(`${namespace}importScript`);
 
-export const ScriptInput = ({onSelectScript}) => {
-	const handleChange = (event) => {
+	const fileInput = document.getElementById(`${namespace}importScriptInput`);
+
+	const onButtonClick = () => {
+		fileInput.click();
+	};
+
+	button.addEventListener('click', onButtonClick);
+
+	const onChange = (event) => {
 		const target = event.target;
 		const [file] = target.files || [];
 
@@ -27,15 +33,9 @@ export const ScriptInput = ({onSelectScript}) => {
 			file.text()
 				.then((text) => {
 					if (text) {
-						onSelectScript(text);
-
-						openToast({
-							message: Liferay.Util.sub(
-								Liferay.Language.get('x-imported'),
-								file.name
-							),
-							title: Liferay.Language.get('success'),
-							type: 'success',
+						Liferay.fire(`${namespace}scriptImported`, {
+							fileName: file.name,
+							script: text,
 						});
 					}
 					else {
@@ -56,25 +56,15 @@ export const ScriptInput = ({onSelectScript}) => {
 		}
 	};
 
-	return (
-		<div className="form-group input-text-wrapper mt-4">
-			<label className="control-label" htmlFor={SCRIPT_INPUT_ID}>
-				Script File
-			</label>
+	fileInput.addEventListener('change', onChange);
 
-			<input
-				className="field form-control"
-				id={SCRIPT_INPUT_ID}
-				onChange={handleChange}
-				type="file"
-			/>
-		</div>
-	);
-};
-
-ScriptInput.propTypes = {
-	onSelectScript: PropTypes.func.isRequired,
-};
+	return {
+		dispose() {
+			button.removeEventListener('click', onButtonClick);
+			fileInput.removeEventListener('change', onChange);
+		},
+	};
+}
 
 function showInvalidFileError() {
 	openToast({

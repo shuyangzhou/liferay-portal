@@ -25,14 +25,24 @@ export const ClosableAlert = ({
 	const [visible, setVisible] = useState(!!initialVisible);
 
 	useEffect(() => {
-		if (id && linkedCheckboxId) {
-			Liferay.Util.toggleBoxes(linkedCheckboxId, id);
-		}
+		const toggleBoxes = () => {
+			const checkbox = document.getElementById(linkedCheckboxId);
+
+			if (checkbox) {
+				Liferay.Util.toggleBoxes(linkedCheckboxId, id);
+			}
+			else {
+				setTimeout(toggleBoxes, 1000);
+			}
+		};
+
+		toggleBoxes();
 	}, [id, linkedCheckboxId]);
 
 	return (
 		visible && (
 			<ClayAlert
+				className="mb-3 mx-3"
 				displayType="warning"
 				id={id}
 				onClose={() => setVisible(false)}

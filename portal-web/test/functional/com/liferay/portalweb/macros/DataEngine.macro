@@ -1,9 +1,7 @@
 definition {
 
 	macro addField {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fields");
 
@@ -142,9 +140,7 @@ definition {
 	}
 
 	macro addFieldNested {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fields");
 
@@ -246,9 +242,7 @@ definition {
 	}
 
 	macro addFields {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fields");
 
@@ -373,9 +367,7 @@ definition {
 	}
 
 	macro addFieldsetNested {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fieldsets");
 
@@ -414,9 +406,7 @@ definition {
 	}
 
 	macro addFieldsetToBuilder {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fieldsets");
 
@@ -432,9 +422,7 @@ definition {
 	}
 
 	macro addFieldToFieldsGroup {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fields");
 
@@ -579,9 +567,7 @@ definition {
 	}
 
 	macro assertFieldOptionLabels {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		AssertClick.assertPartialTextClickAt(
 			key_fieldFieldLabel = "${fieldFieldLabel}",
@@ -681,6 +667,25 @@ definition {
 		}
 	}
 
+	macro assertInlineOptions {
+		if (!(isSet(fieldIndex))) {
+			var fieldIndex = "1";
+		}
+
+		if (!(isSet(optionIndex))) {
+			var optionIndex = "1";
+		}
+
+		for (var optionLabel : list "${optionLabelList}") {
+			AssertElementPresent(
+				fieldIndex = "${fieldIndex}",
+				key_fieldLabel = "${fieldLabel}",
+				key_optionLabel = "${optionLabel}",
+				locator1 = "DataEngineBuilder#OPTIONS_INLINE_INDEXED",
+				optionIndex = "${optionIndex}");
+		}
+	}
+
 	macro assertLocalizableField {
 		var checkboxName = "Localizable";
 
@@ -709,6 +714,25 @@ definition {
 			locator1 = "Checkbox#ANY_CHECKBOX_UNCHECKED");
 
 		Click(locator1 = "Sidebar#BACK");
+	}
+
+	macro assertNonInlineOptions {
+		if (!(isSet(fieldIndex))) {
+			var fieldIndex = "1";
+		}
+
+		if (!(isSet(optionIndex))) {
+			var optionIndex = "1";
+		}
+
+		for (var optionLabel : list "${optionLabelList}") {
+			AssertElementPresent(
+				fieldIndex = "${fieldIndex}",
+				key_fieldLabel = "${fieldLabel}",
+				key_optionLabel = "${optionLabel}",
+				locator1 = "DataEngineBuilder#OPTIONS_NOT_INLINE_INDEXED",
+				optionIndex = "${optionIndex}");
+		}
 	}
 
 	macro assertNonLocalizableField {
@@ -856,9 +880,7 @@ definition {
 	}
 
 	macro editFieldLabel {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		if (isSet(fieldsetModal)) {
 			Click(
@@ -1015,9 +1037,7 @@ definition {
 	}
 
 	macro editFieldsetsLabel {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Click(
 			key_fieldsetLabel = "${fieldsetLabel}",
@@ -1060,9 +1080,7 @@ definition {
 	}
 
 	macro editFieldsGroupLabel {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		if (isSet(fieldsetModal)) {
 			Click(
@@ -1201,9 +1219,7 @@ definition {
 	}
 
 	macro gotoCreateNewFieldset {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fieldsets");
 
@@ -1217,9 +1233,7 @@ definition {
 	}
 
 	macro gotoFieldsetItemEllipsis {
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		Navigator.gotoNavTab(navTab = "Fieldsets");
 
@@ -1320,6 +1334,42 @@ definition {
 		Click(locator1 = "Sidebar#BACK");
 	}
 
+	macro toggleInline {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		if (IsElementPresent(locator1 = "Modal#MODAL")) {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_IN_MODAL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+		else {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+
+		Navigator.gotoNavTab(navTab = "Advanced");
+
+		if (IsChecked(checkboxName = "Inline", locator1 = "Checkbox#ANY_CHECKBOX")) {
+			Uncheck.uncheckToggleSwitch(
+				checkboxName = "Inline",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+		else {
+			Check.checkToggleSwitch(
+				checkboxName = "Inline",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+
+		Click(locator1 = "Sidebar#BACK");
+	}
+
 	macro toggleMultipleSelectionOption {
 		AssertVisible(locator1 = "WCEditWebContent#SIDEBAR");
 
@@ -1397,9 +1447,7 @@ definition {
 			key_fieldFieldLabel = "${fieldFieldLabel}",
 			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 
-		if (IsElementNotPresent(key_tabName = "Builder", locator1 = "Sidebar#ACTIVE_TAB")) {
-			Navigator.gotoSidebarTab(tabName = "Builder");
-		}
+		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		AssertTextEquals(
 			key_text = "${fieldName}",

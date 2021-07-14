@@ -26,12 +26,13 @@ import {useId} from '../../app/utils/useId';
 import {openItemSelector} from '../../core/openItemSelector';
 
 export default function ItemSelector({
+	className,
 	eventName,
 	itemSelectorURL,
 	label,
+	modalProps,
 	onItemSelect,
 	quickMappedInfoItems = [],
-	modalProps,
 	selectedItem,
 	showEditControls = true,
 	showMappedItems = true,
@@ -171,7 +172,7 @@ export default function ItemSelector({
 	);
 
 	return (
-		<ClayForm.Group className="mb-2">
+		<ClayForm.Group className={className} small>
 			<label htmlFor={itemSelectorInputId}>{label}</label>
 
 			<ClayInput.Group small>
@@ -257,6 +258,7 @@ export default function ItemSelector({
 }
 
 ItemSelector.propTypes = {
+	className: PropTypes.string,
 	eventName: PropTypes.string,
 	itemSelectorURL: PropTypes.string,
 	label: PropTypes.string.isRequired,

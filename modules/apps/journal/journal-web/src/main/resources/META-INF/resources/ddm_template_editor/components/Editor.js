@@ -12,42 +12,20 @@
  * details.
  */
 
+import {openToast} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 
+import {AppContext} from './AppContext';
 import {CodeMirrorEditor} from './CodeMirrorEditor';
-import {ScriptInput} from './ScriptInput';
 
-export const Editor = ({
-	autocompleteData,
-	editorMode,
-	initialScript,
-	inputChannel,
-	portletNamespace,
-}) => {
+export const Editor = ({autocompleteData, initialScript}) => {
+	const {editorMode, inputChannel, portletNamespace} = useContext(AppContext);
+
 	const [script, setScript] = useState(initialScript);
 
 	const scriptRef = useRef(script);
 	scriptRef.current = script;
-
-	useEffect(() => {
-		const eventHandler = Liferay.on(
-			`${portletNamespace}saveTemplate`,
-			() => {
-				const scriptInputElement = document.getElementById(
-					`${portletNamespace}scriptContent`
-				);
-
-				if (scriptInputElement) {
-					scriptInputElement.value = scriptRef.current;
-				}
-			}
-		);
-
-		return () => {
-			eventHandler.detach();
-		};
-	}, [portletNamespace]);
 
 	useEffect(() => {
 		const refreshHandler = Liferay.on(
@@ -79,6 +57,41 @@ export const Editor = ({
 		};
 	}, [initialScript, portletNamespace]);
 
+	useEffect(() => {
+		const scriptImportedHandler = Liferay.on(
+			`${portletNamespace}scriptImported`,
+			(event) => {
+				setScript(event.script);
+
+				openToast({
+					message: Liferay.Util.sub(
+						Liferay.Language.get('x-imported'),
+						event.fileName
+					),
+					title: Liferay.Language.get('success'),
+					type: 'success',
+				});
+			}
+		);
+
+		return () => {
+			scriptImportedHandler.detach();
+		};
+	}, [initialScript, portletNamespace]);
+
+	useEffect(() => {
+		const exportScriptHandler = Liferay.on(
+			`${portletNamespace}exportScript`,
+			() => {
+				exportScript(scriptRef.current, editorMode);
+			}
+		);
+
+		return () => {
+			exportScriptHandler.detach();
+		};
+	}, [initialScript, portletNamespace, editorMode]);
+
 	return (
 		<>
 			<CodeMirrorEditor
@@ -89,15 +102,31 @@ export const Editor = ({
 				onChange={setScript}
 			/>
 
-			<ScriptInput onSelectScript={setScript} />
+			<input
+				id={`${portletNamespace}scriptContent`}
+				name={`${portletNamespace}scriptContent`}
+				type="hidden"
+				value={script}
+			/>
 		</>
 	);
 };
 
 Editor.propTypes = {
 	autocompleteData: PropTypes.object.isRequired,
-	editorMode: PropTypes.oneOf(['ftl', 'xml', 'velocity']).isRequired,
 	initialScript: PropTypes.string.isRequired,
-	inputChannel: PropTypes.object.isRequired,
-	portletNamespace: PropTypes.string.isRequired,
+};
+
+const exportScript = (script, editorMode) => {
+	const link = document.createElement('a');
+	const blob = new Blob([script]);
+
+	const fileURL = URL.createObjectURL(blob);
+
+	link.href = fileURL;
+	link.download = `script.${editorMode}`;
+
+	link.click();
+
+	URL.revokeObjectURL(fileURL);
 };

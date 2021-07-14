@@ -12,92 +12,109 @@
  * details.
  */
 
-import ClayForm, {ClayInput} from '@clayui/form';
+import {ClayButtonWithIcon} from '@clayui/button';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect} from 'react';
 
-import {ButtonList} from './ButtonList';
-import {CollapsableButtonList} from './CollapsableButtonList';
+import {ElementsSidebarPanel} from './ElementsSidebarPanel';
+import PropertiesSidebarPanel from './PropertiesSidebarPanel';
+import {PANEL_IDS} from './panelIds';
 
-const SEARCH_INPUT_ID = 'ddm_template_editor_Sidebar-SearchInputId';
+export default function Sidebar({
+	selectedSidebarPanelId,
+	setSelectedSidebarPanelId,
+}) {
+	useEffect(() => {
+		const sideNavigation = Liferay.SideNavigation.instance(
+			document.querySelector('.product-menu-toggle')
+		);
 
-export const Sidebar = ({
-	onButtonClick,
-	templateVariableGroups: initialTemplateVariableGroups,
-}) => {
-	const [filteredItems, setFilteredItems] = useState(null);
+		if (sideNavigation) {
+			if (selectedSidebarPanelId && sideNavigation.visible()) {
+				sideNavigation.hide();
+			}
 
-	const templateVariableGroups = useMemo(
-		() =>
-			initialTemplateVariableGroups.map((group) => ({
-				...group,
-				items: group.items.map((item) =>
-					item.repeatable ? {...item, label: `${item.label}*`} : item
-				),
-			})),
-		[initialTemplateVariableGroups]
-	);
-
-	const handleSearchInputChange = (event) => {
-		const slugify = (str) => str.toLowerCase().replace(/\s/g, '');
-		const query = slugify(event.target.value);
-
-		if (query) {
-			setFilteredItems(
-				templateVariableGroups
-					.map(({items}) =>
-						items.filter((item) =>
-							slugify(item.label).includes(query)
-						)
-					)
-					.reduce((a, b) => a.concat(b), [])
+			const sideNavigationListener = sideNavigation.on(
+				'openStart.lexicon.sidenav',
+				() => setSelectedSidebarPanelId(null)
 			);
+
+			return () => {
+				sideNavigationListener.removeListener();
+			};
 		}
-		else {
-			setFilteredItems(null);
-		}
-	};
+	}, [selectedSidebarPanelId, setSelectedSidebarPanelId]);
 
 	return (
-		<>
-			<ClayForm.Group>
-				<label className="sr-only" htmlFor={SEARCH_INPUT_ID}>
-					{Liferay.Language.get('search')}
-				</label>
-
-				<ClayInput
-					id={SEARCH_INPUT_ID}
-					onChange={handleSearchInputChange}
-					placeholder={`${Liferay.Language.get('search')}...`}
-					type="search"
+		<div className="ddm_template_editor__App-sidebar">
+			<div
+				className={classNames(
+					'ddm_template_editor__App-sidebar-content',
+					{
+						open: selectedSidebarPanelId,
+					}
+				)}
+			>
+				<ElementsSidebarPanel
+					className={classNames({
+						'd-none': PANEL_IDS.elements !== selectedSidebarPanelId,
+					})}
 				/>
-			</ClayForm.Group>
 
-			{filteredItems ? (
-				<ButtonList
-					items={filteredItems}
-					onButtonClick={onButtonClick}
+				<PropertiesSidebarPanel
+					className={classNames({
+						'd-none':
+							PANEL_IDS.properties !== selectedSidebarPanelId,
+					})}
 				/>
-			) : (
-				templateVariableGroups.map(({items, label}) => (
-					<CollapsableButtonList
-						items={items}
-						key={label}
-						label={label}
-						onButtonClick={onButtonClick}
-					/>
-				))
-			)}
-		</>
+			</div>
+			<div className="ddm_template_editor__App-sidebar-buttons pt-2">
+				<ClayButtonWithIcon
+					aria-pressed={PANEL_IDS.elements === selectedSidebarPanelId}
+					borderless
+					className="mb-2"
+					data-tooltip-align="left"
+					displayType="secondary"
+					monospaced
+					onClick={() => {
+						setSelectedSidebarPanelId((selectedSidebarPanelId) =>
+							selectedSidebarPanelId === PANEL_IDS.elements
+								? null
+								: PANEL_IDS.elements
+						);
+					}}
+					outline
+					symbol="list-ul"
+					title={Liferay.Language.get('elements')}
+				/>
+
+				<ClayButtonWithIcon
+					aria-pressed={
+						PANEL_IDS.properties === selectedSidebarPanelId
+					}
+					borderless
+					className="mb-2"
+					data-tooltip-align="left"
+					displayType="secondary"
+					monospaced
+					onClick={() => {
+						setSelectedSidebarPanelId((selectedSidebarPanelId) =>
+							selectedSidebarPanelId === PANEL_IDS.properties
+								? null
+								: PANEL_IDS.properties
+						);
+					}}
+					outline
+					symbol="cog"
+					title={Liferay.Language.get('properties')}
+				/>
+			</div>
+		</div>
 	);
-};
+}
 
 Sidebar.propTypes = {
-	onButtonClick: PropTypes.func.isRequired,
-	templateVariableGroups: PropTypes.arrayOf(
-		PropTypes.shape({
-			items: PropTypes.array.isRequired,
-			label: PropTypes.string.isRequired,
-		})
-	),
+	selectedSidebarPanelId: PropTypes.string,
+	setSelectedSidebarPanelId: PropTypes.func.isRequired,
 };

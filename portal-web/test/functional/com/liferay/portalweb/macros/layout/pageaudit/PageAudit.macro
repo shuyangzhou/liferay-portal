@@ -74,22 +74,48 @@ definition {
 		}
 	}
 
+	macro goToDetailView {
+		Click(locator1 = "PageAudit#FAILING_CHECK_NAME");
+	}
+
 	macro openPanelAfterConfiguration {
-		if (IsElementNotPresent(locator1 = "PageAudit#PANEL_PAGE_TITLE")) {
+		if (IsElementNotPresent(locator1 = "PageAudit#LAUNCH_PAGE_AUDIT_BUTTON")) {
 			Click(locator1 = "PageAudit#PAGE_AUDIT_BUTTON");
 		}
 
-		if (IsElementPresent(locator1 = "PageAudit#LAUNCH_PAGE_AUDIT_BUTTON")) {
-			Click(locator1 = "PageAudit#LAUNCH_PAGE_AUDIT_BUTTON");
-		}
-		else {
-			Click(locator1 = "PageAudit#RELAUNCH_PAGE_AUDIT_BUTTON");
-		}
+		ClickNoError(locator1 = "PageAudit#LAUNCH_PAGE_AUDIT_BUTTON");
+
+		AssertElementPresent(locator1 = "PageAudit#PROGRESS_BAR");
 	}
 
 	macro openPanelBeforeConfiguration {
 		if (IsElementNotPresent(locator1 = "PageAudit#CONNECT_TO_GOOGLE_PAGESPEED_BUTTON")) {
 			Click(locator1 = "PageAudit#PAGE_AUDIT_BUTTON");
+		}
+	}
+
+	macro setAPIViaSiteSettings {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			portlet = "Site Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Pages",
+			configurationName = "Google PageSpeed Insights",
+			configurationScope = "Site Scope");
+
+		Click(locator1 = "PageAudit#API_FIELD");
+
+		Type(
+			locator1 = "PageAudit#API_FIELD",
+			value1 = "${apiKey}");
+
+		if (IsElementPresent(locator1 = "Button#SAVE")) {
+			Click(locator1 = "Button#SAVE");
+		}
+
+		if (IsElementPresent(locator1 = "Button#UPDATE")) {
+			Click(locator1 = "Button#UPDATE");
 		}
 	}
 
@@ -134,7 +160,7 @@ definition {
 
 		Type(
 			locator1 = "TextInput#CUSTOM_CANONICAL_URL",
-			value1 = "https://liferay-tango.github.io/liferay-portal/page-audit-test");
+			value1 = "${URL}");
 
 		PortletEntry.save();
 	}
