@@ -107,9 +107,7 @@ public class DynamicResourceServlet extends WebServerServlet {
 
 				return;
 			}
-		}
 
-		if (lastModified > 0) {
 			httpServletResponse.setDateHeader(
 				HttpHeaders.LAST_MODIFIED, lastModified);
 		}

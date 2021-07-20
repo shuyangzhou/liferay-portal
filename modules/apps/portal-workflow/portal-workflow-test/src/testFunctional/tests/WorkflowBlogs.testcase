@@ -122,48 +122,133 @@ definition {
 	}
 
 	@description = "Verify that a workflow can be assigned to Blog Entry in the Portal configurations"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanAssignWorkflowThroughPortalConfiguration {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68526 CanAssignWorkflowThroughPortalConfiguration pending implementation
+		Navigator.gotoNavItem(navItem = "Configuration");
 
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		Alert.viewSuccessMessage();
 	}
 
 	@description = "Verify that the user can assign a Workflow to Blog Entry"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanAssignWorkflowToBlogEntry {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68523 CanAssignWorkflowToBlogEntry pending implementation
+		Navigator.gotoNavItem(navItem = "Configuration");
 
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		Workflow.viewConfigurationSelected(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
 	}
 
 	@description = "Verify that the user can modify the workflow of a Blog Entry"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanHaveDifferentBlogsWithDifferentWorkflows {
+		property test.name.skip.portal.instance = "WorkflowBlogs#CanHaveDifferentBlogsWithDifferentWorkflows";
 
-		// TODO LRQA-68525 CanHaveDifferentBlogsWithDifferentWorkflows pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs 1");
 
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
+
+		ApplicationsMenu.gotoSite(site = "Liferay DXP");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Site Administration",
+			portlet = "Workflow");
+
+		Workflow.configureWorkflow(
+			workflowDefinition = "Copy of Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs 2");
+
+		WorkflowMetrics.goToWorkflowAllItems(workflowProcessName = "Single Approver");
+
+		WorkflowMetrics.viewAllItemsItemSubject(workflowItemSubject = "Blogs Entry: Blogs 1");
+
+		WorkflowMetrics.goToWorkflowAllItems(workflowProcessName = "Copy of Single Approver");
+
+		WorkflowMetrics.viewAllItemsItemSubject(workflowItemSubject = "Blogs Entry: Blogs 2");
 	}
 
 	@description = "Verify that the user can publish a Blogs Entry with Workflow assigned"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanPublishBlogsEntryWithWorkflowAssigned {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68524 CanPublishBlogsEntryWithWorkflowAssigned pending implementation
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Blogs");
 
+		AssertElementPresent(
+			key_title = "Blogs Entry Title",
+			locator1 = "AssetWorkflow#BLOGS_ENTRY_TITLE");
 	}
 
 	@description = "Verify that a Blog Entry saved as draft is not submitted to the Workflow"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test DraftBlogEntryIsNotSubmittedToWorkflow {
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Blogs");
 
-		// TODO LRQA-68527 DraftBlogEntryIsNotSubmittedToWorkflow pending implementation
+		Blogs.addDraft(
+			entryContent = "Blogs Entry Content",
+			entrySubtitle = "Blogs Entry Subtitle",
+			entryTitle = "Blogs Entry Title");
 
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Blogs");
+
+		AssertElementPresent(
+			key_status = "Draft",
+			locator1 = "AssetWorkflow#BLOGS_ENTRY_STATUS_TABLE");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		AssertElementNotPresent(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Review",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		AssertElementNotPresent(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Review",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE");
 	}
 
 	@priority = "4"

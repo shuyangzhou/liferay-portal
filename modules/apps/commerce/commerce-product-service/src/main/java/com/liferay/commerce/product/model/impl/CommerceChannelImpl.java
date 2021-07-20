@@ -27,9 +27,6 @@ import com.liferay.portal.model.impl.GroupImpl;
  */
 public class CommerceChannelImpl extends CommerceChannelBaseImpl {
 
-	public CommerceChannelImpl() {
-	}
-
 	@Override
 	public Group getGroup() {
 		if (getCommerceChannelId() > 0) {

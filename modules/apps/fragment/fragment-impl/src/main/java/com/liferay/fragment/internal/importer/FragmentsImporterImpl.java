@@ -933,9 +933,6 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 
 		public FragmentCollectionFolder(String fileName) {
 			_fileName = fileName;
-
-			_fragmentCompositions = new HashMap<>();
-			_fragmentEntries = new HashMap<>();
 		}
 
 		public void addFragmentComposition(String key, String fileName) {
@@ -959,8 +956,9 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 		}
 
 		private final String _fileName;
-		private final Map<String, String> _fragmentCompositions;
-		private final Map<String, String> _fragmentEntries;
+		private final Map<String, String> _fragmentCompositions =
+			new HashMap<>();
+		private final Map<String, String> _fragmentEntries = new HashMap<>();
 
 	}
 

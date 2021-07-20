@@ -59,6 +59,10 @@ public class ConfigYAML {
 		return _licenseURL;
 	}
 
+	public String getResourceApplicationSelect() {
+		return _resourceApplicationSelect;
+	}
+
 	public String getTestDir() {
 		return _testDir;
 	}
@@ -189,6 +193,10 @@ public class ConfigYAML {
 		_liferayEnterpriseApp = liferayEnterpriseApp;
 	}
 
+	public void setResourceApplicationSelect(String resourceApplicationSelect) {
+		_resourceApplicationSelect = resourceApplicationSelect;
+	}
+
 	public void setTestDir(String testDir) {
 		_testDir = testDir;
 	}
@@ -217,6 +225,7 @@ public class ConfigYAML {
 	private String _licenseURL =
 		"http://www.apache.org/licenses/LICENSE-2.0.html";
 	private boolean _liferayEnterpriseApp;
+	private String _resourceApplicationSelect;
 	private String _testDir;
 	private boolean _warningsEnabled = true;
 

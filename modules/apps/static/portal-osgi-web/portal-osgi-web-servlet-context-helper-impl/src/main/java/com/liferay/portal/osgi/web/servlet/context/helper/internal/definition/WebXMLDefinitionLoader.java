@@ -83,8 +83,6 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 		_saxParserFactory = saxParserFactory;
 		_classes = classes;
 		_annotatedClasses = annotatedClasses;
-
-		_webXMLDefinition = new WebXMLDefinition();
 	}
 
 	@Override
@@ -1176,7 +1174,7 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 	private String _taglibLocation;
 	private String _taglibUri;
 	private WebResourceCollection _webResourceCollection;
-	private final WebXMLDefinition _webXMLDefinition;
+	private final WebXMLDefinition _webXMLDefinition = new WebXMLDefinition();
 
 	private static class FilterMapping {
 

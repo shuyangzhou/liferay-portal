@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Workflow Kaleo Demo Data Creator Implementation
 Bundle-SymbolicName: com.liferay.portal.workflow.kaleo.demo.data.creator.impl
-Bundle-Version: 2.0.2
+Bundle-Version: 2.0.4
 Provide-Capability:\
 	liferay.resource.bundle;\
 		resource.bundle.base.name="content.Language",\

@@ -30,6 +30,8 @@ public @interface DDMFormField {
 
 	public String dataType() default StringPool.BLANK;
 
+	public DDMFormFieldProperty[] ddmFormFieldProperties() default {};
+
 	public String label() default StringPool.BLANK;
 
 	public String name() default StringPool.BLANK;
@@ -40,6 +42,10 @@ public @interface DDMFormField {
 
 	public String predefinedValue() default StringPool.BLANK;
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link #ddmFormFieldProperties()}
+	 */
+	@Deprecated
 	public String[] properties() default {};
 
 	public boolean required() default false;

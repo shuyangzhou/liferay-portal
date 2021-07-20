@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(immediate = true, service = ModelListener.class)
 public class ResourcePermissionModelListener
-	extends SyncBaseModelListener<ResourcePermission> {
+	extends BaseSyncModelListener<ResourcePermission> {
 
 	@Override
 	public void onBeforeCreate(ResourcePermission resourcePermission)

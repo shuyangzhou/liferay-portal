@@ -132,7 +132,7 @@
 </tr>
 <tr>
 	<td>SLA_DROPDOWN_STOP_OPTION</td>
-	<td>//ul[@id='dropDownListstop']//span[text() = '${key_slaDefinitionEnd}']</td>
+	<td>//ul[contains(@id,'dropDownListstop')]//span[contains(text(),'${key_slaDefinitionEnd}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -173,6 +173,11 @@
 <tr>
 	<td>SLA_POSITION_BY_TITLE</td>
 	<td>//div[@class='table-responsive']//tbody//tr[contains(.,'')][${key_slaPosition}]//div[@class='table-list-title']//a[contains(text(),'${key_slaTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SLA_PROCESS_DATE_MESSAGE</td>
+	<td>//span[@class='metrics-calculated-info']</td>
 	<td></td>
 </tr>
 <tr>

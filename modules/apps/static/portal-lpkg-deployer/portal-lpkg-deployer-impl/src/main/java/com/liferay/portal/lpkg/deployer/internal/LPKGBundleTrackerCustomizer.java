@@ -104,8 +104,6 @@ public class LPKGBundleTrackerCustomizer
 
 		_dataFile = bundle.getDataFile(_FILE_NAME_LPKG_DATA);
 
-		_properties = new Properties();
-
 		if (_dataFile.exists()) {
 			try (InputStream inputStream = new FileInputStream(_dataFile)) {
 				_properties.load(inputStream);
@@ -947,7 +945,7 @@ public class LPKGBundleTrackerCustomizer
 	private final File _dataFile;
 	private final Set<String> _outdatedRemoteAppIds = new HashSet<>();
 	private final Set<String> _overrideFileNames;
-	private final Properties _properties;
+	private final Properties _properties = new Properties();
 	private final Map<String, URL> _urls;
 
 }

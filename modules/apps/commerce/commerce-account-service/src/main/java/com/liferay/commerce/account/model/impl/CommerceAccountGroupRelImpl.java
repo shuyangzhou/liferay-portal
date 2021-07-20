@@ -66,9 +66,6 @@ public class CommerceAccountGroupRelImpl
 		return commerceAccountGroupRel;
 	}
 
-	public CommerceAccountGroupRelImpl() {
-	}
-
 	@Override
 	public CommerceAccountGroup getCommerceAccountGroup()
 		throws PortalException {

@@ -79,9 +79,12 @@ public class CopyrightCheck extends BaseFileCheck {
 		}
 		else if (!content.startsWith(copyright) &&
 				 !content.startsWith("<%--\n" + copyright) &&
+				 !content.startsWith(_XML_DECLARATION + "<!--\n" + copyright) &&
 				 ((customCopyright == null) ||
 				  (!content.startsWith(customCopyright) &&
-				   !content.startsWith("<%--\n" + customCopyright)))) {
+				   !content.startsWith("<%--\n" + customCopyright) &&
+				   !content.startsWith(
+					   _XML_DECLARATION + "<!--\n" + customCopyright)))) {
 
 			addMessage(fileName, "File must start with copyright");
 		}
@@ -183,6 +186,9 @@ public class CopyrightCheck extends BaseFileCheck {
 	}
 
 	private static final String _COPYRIGHT_FILE_NAME_KEY = "copyrightFileName";
+
+	private static final String _XML_DECLARATION =
+		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
 	private static final Log _log = LogFactoryUtil.getLog(CopyrightCheck.class);
 

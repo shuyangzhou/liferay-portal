@@ -527,8 +527,9 @@ definition {
 		ContentPages.clickPencil();
 
 		PageEditor.viewFragmentEditableText(
+			contributed = "false",
 			editableText = "Edited Banner Title",
-			fragmentName = "Banner Center",
+			fragmentName = "Element",
 			id = "01-title");
 	}
 
@@ -550,8 +551,9 @@ definition {
 		ContentPages.clickPencil();
 
 		PageEditor.viewFragmentEditableText(
+			contributed = "false",
 			editableText = "Edited Banner Title",
-			fragmentName = "Banner Center",
+			fragmentName = "Element",
 			id = "01-title");
 	}
 

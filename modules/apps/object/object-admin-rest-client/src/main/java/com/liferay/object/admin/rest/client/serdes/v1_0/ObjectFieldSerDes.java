@@ -55,6 +55,16 @@ public class ObjectFieldSerDes {
 
 		sb.append("{");
 
+		if (objectField.getActions() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"actions\": ");
+
+			sb.append(_toJSON(objectField.getActions()));
+		}
+
 		if (objectField.getId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -156,6 +166,13 @@ public class ObjectFieldSerDes {
 
 		Map<String, String> map = new TreeMap<>();
 
+		if (objectField.getActions() == null) {
+			map.put("actions", null);
+		}
+		else {
+			map.put("actions", String.valueOf(objectField.getActions()));
+		}
+
 		if (objectField.getId() == null) {
 			map.put("id", null);
 		}
@@ -230,7 +247,14 @@ public class ObjectFieldSerDes {
 			ObjectField objectField, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "id")) {
+			if (Objects.equals(jsonParserFieldName, "actions")) {
+				if (jsonParserFieldValue != null) {
+					objectField.setActions(
+						(Map)ObjectFieldSerDes.toMap(
+							(String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "id")) {
 				if (jsonParserFieldValue != null) {
 					objectField.setId(
 						Long.valueOf((String)jsonParserFieldValue));

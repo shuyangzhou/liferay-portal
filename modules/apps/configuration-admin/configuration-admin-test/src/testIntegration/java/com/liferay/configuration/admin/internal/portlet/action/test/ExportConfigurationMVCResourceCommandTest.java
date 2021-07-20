@@ -78,7 +78,7 @@ public class ExportConfigurationMVCResourceCommandTest {
 		sb.append(pid);
 
 		if (Validator.isNotNull(subname)) {
-			sb.append(StringPool.DASH);
+			sb.append(StringPool.TILDE);
 			sb.append(subname);
 		}
 

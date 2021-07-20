@@ -50,16 +50,6 @@ import java.util.Locale;
  */
 public class SegmentsExperimentImpl extends SegmentsExperimentBaseImpl {
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a segments
-	 * experiment model instance should use the {@link
-	 * com.liferay.segments.model.SegmentsExperiment} interface instead.
-	 */
-	public SegmentsExperimentImpl() {
-	}
-
 	@Override
 	public double getConfidenceLevel() {
 		UnicodeProperties typeSettingsUnicodeProperties =

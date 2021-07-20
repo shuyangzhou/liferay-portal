@@ -35,7 +35,7 @@ import javax.portlet.RenderResponse;
  * @author Eudaldo Alonso
  */
 public class ContributedFragmentEntryVerticalCard
-	extends FragmentEntryVerticalCard {
+	extends BaseFragmentEntryVerticalCard {
 
 	public ContributedFragmentEntryVerticalCard(
 		FragmentEntry fragmentEntry, RenderRequest renderRequest,

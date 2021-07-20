@@ -28,7 +28,7 @@ import org.osgi.framework.BundleContext;
  * @author Andrew Betts
  */
 public class ReindexPortalBackgroundTaskExecutor
-	extends ReindexBackgroundTaskExecutor {
+	extends BaseReindexBackgroundTaskExecutor {
 
 	public ReindexPortalBackgroundTaskExecutor(
 		BundleContext bundleContext,

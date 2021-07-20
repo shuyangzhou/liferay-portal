@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.exception.DuplicateObjectDefinitionException;
 import com.liferay.object.exception.NoSuchObjectFieldException;
 import com.liferay.object.exception.ObjectDefinitionNameException;
+import com.liferay.object.exception.ObjectDefinitionStatusException;
 import com.liferay.object.exception.ObjectDefinitionVersionException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.sql.Connection;
@@ -140,9 +142,14 @@ public class ObjectDefinitionLocalServiceTest {
 
 		// Duplicate name
 
-		ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
-			TestPropsValues.getUserId(), "Test",
-			Collections.<ObjectField>emptyList());
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
+				TestPropsValues.getUserId(), "Test",
+				Collections.<ObjectField>emptyList());
+
+		ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+			TestPropsValues.getUserId(),
+			objectDefinition.getObjectDefinitionId());
 
 		try {
 			_testAddCustomObjectDefinition("Test");
@@ -155,14 +162,24 @@ public class ObjectDefinitionLocalServiceTest {
 				duplicateObjectDefinitionException.getMessage());
 		}
 
-		// Database table
+		// Database table name and status
 
-		ObjectDefinition objectDefinition =
+		objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 				TestPropsValues.getUserId(), _randomName(),
 				Arrays.asList(
 					_createObjectField("able", "String"),
 					_createObjectField("baker", "String")));
+
+		Assert.assertEquals(
+			false, _hasTable(objectDefinition.getDBTableName()));
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_DRAFT, objectDefinition.getStatus());
+
+		objectDefinition =
+			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId());
 
 		Assert.assertEquals(
 			false, _hasColumn(objectDefinition.getDBTableName(), "able"));
@@ -173,6 +190,8 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertEquals(
 			true, _hasColumn(objectDefinition.getDBTableName(), "baker_"));
 		Assert.assertEquals(true, _hasTable(objectDefinition.getDBTableName()));
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_APPROVED, objectDefinition.getStatus());
 	}
 
 	@Test
@@ -427,7 +446,7 @@ public class ObjectDefinitionLocalServiceTest {
 				objectDefinitionVersionException.getMessage());
 		}
 
-		// Database table name
+		// Database table name and status
 
 		ObjectDefinition objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addSystemObjectDefinition(
@@ -436,6 +455,21 @@ public class ObjectDefinitionLocalServiceTest {
 
 		Assert.assertEquals(
 			false, _hasTable(objectDefinition.getDBTableName()));
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_APPROVED, objectDefinition.getStatus());
+
+		try {
+			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId());
+
+			Assert.fail();
+		}
+		catch (ObjectDefinitionStatusException
+					objectDefinitionStatusException) {
+
+			Assert.assertNotNull(objectDefinitionStatusException);
+		}
 	}
 
 	private void _assertObjectField(
@@ -494,6 +528,11 @@ public class ObjectDefinitionLocalServiceTest {
 				ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 					TestPropsValues.getUserId(), name,
 					Collections.<ObjectField>emptyList());
+
+			objectDefinition =
+				ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+					TestPropsValues.getUserId(),
+					objectDefinition.getObjectDefinitionId());
 		}
 		finally {
 			if (objectDefinition != null) {

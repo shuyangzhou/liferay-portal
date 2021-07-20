@@ -21,9 +21,6 @@ import java.util.Date;
  */
 public class SamlSpMessageImpl extends SamlSpMessageBaseImpl {
 
-	public SamlSpMessageImpl() {
-	}
-
 	@Override
 	public boolean isExpired() {
 		Date date = new Date();

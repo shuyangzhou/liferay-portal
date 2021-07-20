@@ -1841,6 +1841,10 @@ public class DLFileEntryLocalServiceImpl
 		return dlFileEntry;
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void updateSmallImage(long smallImageId, long largeImageId)
 		throws PortalException {
@@ -2732,13 +2736,17 @@ public class DLFileEntryLocalServiceImpl
 		String entryURL = PortalUtil.getControlPanelFullURL(
 			fileVersion.getGroupId(), portletId, null);
 
-		entryURL = HttpUtil.addParameter(
-			entryURL,
-			PortalUtil.getPortletNamespace(portletId) + "mvcRenderCommandName",
-			"/document_library/edit_file_entry");
-
 		String namespace = PortalUtil.getPortletNamespace(portletId);
 
+		entryURL = HttpUtil.addParameter(
+			entryURL, namespace + "mvcRenderCommandName",
+			"/document_library/edit_file_entry");
+		entryURL = HttpUtil.addParameter(
+			entryURL, namespace + "redirect",
+			HttpUtil.addParameter(
+				PortalUtil.getControlPanelFullURL(
+					fileVersion.getGroupId(), portletId, null),
+				namespace + "folderId", fileVersion.getFolderId()));
 		entryURL = HttpUtil.addParameter(
 			entryURL, namespace + "groupId", fileVersion.getGroupId());
 		entryURL = HttpUtil.addParameter(

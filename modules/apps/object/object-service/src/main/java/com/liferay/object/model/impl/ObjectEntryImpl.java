@@ -30,9 +30,6 @@ import java.util.Map;
  */
 public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 
-	public ObjectEntryImpl() {
-	}
-
 	@Override
 	public Map<String, Serializable> getValues() {
 

@@ -152,6 +152,26 @@ public class ObjectDefinitionSerDes {
 			sb.append("]");
 		}
 
+		if (objectDefinition.getStatus() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"status\": ");
+
+			sb.append(String.valueOf(objectDefinition.getStatus()));
+		}
+
+		if (objectDefinition.getSystem() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"system\": ");
+
+			sb.append(objectDefinition.getSystem());
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -224,6 +244,20 @@ public class ObjectDefinitionSerDes {
 				String.valueOf(objectDefinition.getObjectFields()));
 		}
 
+		if (objectDefinition.getStatus() == null) {
+			map.put("status", null);
+		}
+		else {
+			map.put("status", String.valueOf(objectDefinition.getStatus()));
+		}
+
+		if (objectDefinition.getSystem() == null) {
+			map.put("system", null);
+		}
+		else {
+			map.put("system", String.valueOf(objectDefinition.getSystem()));
+		}
+
 		return map;
 	}
 
@@ -285,6 +319,17 @@ public class ObjectDefinitionSerDes {
 						).toArray(
 							size -> new ObjectField[size]
 						));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "status")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setStatus(
+						StatusSerDes.toDTO((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "system")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setSystem((Boolean)jsonParserFieldValue);
 				}
 			}
 		}

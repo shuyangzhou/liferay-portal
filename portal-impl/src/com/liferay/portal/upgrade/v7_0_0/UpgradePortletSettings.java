@@ -159,9 +159,7 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Upgrading display portlet " + portletId + " settings");
-			}
 
-			if (_log.isDebugEnabled()) {
 				_log.debug("Delete service keys from portlet settings");
 			}
 

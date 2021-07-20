@@ -53,7 +53,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=com.liferay.journal.model.JournalFolder",
 	service = TrashHandler.class
 )
-public class JournalFolderTrashHandler extends JournalBaseTrashHandler {
+public class JournalFolderTrashHandler extends BaseJournalTrashHandler {
 
 	@Override
 	public void checkRestorableEntry(

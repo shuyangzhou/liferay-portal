@@ -109,8 +109,6 @@ public class PortalRequestProcessor {
 
 		// auth.public.path.
 
-		_publicPaths = new HashSet<>();
-
 		_publicPaths.add(_PATH_C);
 		_publicPaths.add(_PATH_PORTAL_API_JSONWS);
 		_publicPaths.add(_PATH_PORTAL_J_LOGIN);
@@ -891,7 +889,7 @@ public class PortalRequestProcessor {
 	private final Map<String, Definition> _definitions;
 	private final Set<String> _lastPaths;
 	private final ModuleConfig _moduleConfig;
-	private final Set<String> _publicPaths;
+	private final Set<String> _publicPaths = new HashSet<>();
 	private final ServletContext _servletContext;
 	private final Set<String> _trackerIgnorePaths;
 

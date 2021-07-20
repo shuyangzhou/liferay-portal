@@ -387,34 +387,6 @@ definition {
 			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 	}
 
-	@description = "This test ensures that user can toggle show/hide of field label."
-	@priority = "3"
-	test ShowAndHideImageFieldLabel {
-		WebContentStructures.addCP(structureName = "WC Structure Name");
-
-		DataEngine.addField(
-			fieldFieldLabel = "Image",
-			fieldName = "Image");
-
-		DataEngine.toggleShowLabel(fieldLabel = "Image");
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
-
-		DataEngine.assertFieldNotPresent(fieldFieldLabel = "Image");
-
-		DataEngine.toggleShowLabel();
-
-		WebContentStructures.saveCP(structureName = "WC Structure Name");
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "Image",
-			fieldName = "Image");
-	}
-
 	@description = "This test ensures that a user can upload an image from Liferay Documents and Media."
 	@priority = "5"
 	test UploadImageFromDocumentsAndMedia {

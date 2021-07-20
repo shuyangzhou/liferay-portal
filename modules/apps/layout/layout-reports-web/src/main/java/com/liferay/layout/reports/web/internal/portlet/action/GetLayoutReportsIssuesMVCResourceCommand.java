@@ -131,6 +131,23 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 					group, resourceBundle, themeDisplay,
 					ParamUtil.getString(resourceRequest, "url")));
 		}
+		catch (LayoutReportsDataProvider.LayoutReportsDataProviderException
+					layoutReportsDataProviderException) {
+
+			_log.error(
+				layoutReportsDataProviderException,
+				layoutReportsDataProviderException);
+
+			JSONPortletResponseUtil.writeJSON(
+				resourceRequest, resourceResponse,
+				JSONUtil.put(
+					"error", layoutReportsDataProviderException.getMessage()
+				).put(
+					"googlePageSpeedError",
+					layoutReportsDataProviderException.
+						getGooglePageSpeedErrorJSONObject()
+				));
+		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 
@@ -160,12 +177,7 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 
 		Stream<LayoutReportsIssue> stream = layoutReportsIssues.stream();
 
-		Format dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
-			"MMMM d, yyyy HH:mm a", resourceBundle.getLocale());
-
 		return JSONUtil.put(
-			"date", dateFormat.format(new Date())
-		).put(
 			"issues",
 			JSONUtil.putAll(
 				stream.map(
@@ -175,6 +187,8 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 				).toArray(
 					size -> new JSONObject[size]
 				))
+		).put(
+			"timestamp", System.currentTimeMillis()
 		);
 	}
 
@@ -277,9 +291,23 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 					group, resourceBundle, themeDisplay, url));
 		}
 
+		JSONObject layoutReportsIssuesJSONObject =
+			_layoutReportsIssuesPortalCache.get(cacheKey);
+
+		if (layoutReportsIssuesJSONObject != null) {
+			Format format = DateFormatFactoryUtil.getSimpleDateFormat(
+				"MMMM d, yyyy HH:mm a", resourceBundle.getLocale(),
+				themeDisplay.getTimeZone());
+
+			layoutReportsIssuesJSONObject.put(
+				"date",
+				format.format(
+					new Date(
+						layoutReportsIssuesJSONObject.getLong("timestamp"))));
+		}
+
 		return JSONUtil.put(
-			"layoutReportsIssues",
-			_layoutReportsIssuesPortalCache.get(cacheKey));
+			"layoutReportsIssues", layoutReportsIssuesJSONObject);
 	}
 
 	private boolean _hasViewPermission(

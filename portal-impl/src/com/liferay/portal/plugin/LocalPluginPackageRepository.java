@@ -34,9 +34,6 @@ import java.util.Map;
  */
 public class LocalPluginPackageRepository {
 
-	public LocalPluginPackageRepository() {
-	}
-
 	public void addPluginPackage(PluginPackage pluginPackage) {
 		if (pluginPackage.getContext() == null) {
 			if (_log.isDebugEnabled()) {

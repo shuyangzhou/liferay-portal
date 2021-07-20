@@ -359,12 +359,13 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Map the Title field of document to link editable field of Banner Center") {
 			PageEditorMapping.gotoEditableFieldMapping(
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			PageEditorMapping.mapEditableFieldToAsset(
@@ -379,7 +380,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "Document Title",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			PageEditor.clickPublish();
@@ -463,12 +464,13 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Map manual URL to link editable field of Banner Center") {
 			PageEditorEditableLink.gotoEditableFieldLink(
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			PageEditorEditableLink.updateURL(
@@ -967,12 +969,13 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Assert map the fields of web content to link fragment") {
 			PageEditorMapping.gotoEditableFieldMapping(
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			PageEditorMapping.mapEditableFieldToAsset(
@@ -987,7 +990,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "This is a Text field",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			Select(
@@ -998,7 +1001,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "This is a Text Box field",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			Select(
@@ -1009,7 +1012,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "This is a Rich Text field",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			Select(
@@ -1020,7 +1023,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "10/10/20",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			Select(
@@ -1031,7 +1034,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "9",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			Select(
@@ -1042,7 +1045,7 @@ definition {
 
 			PageEditor.viewFragmentEditableText(
 				editableText = "0.5",
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 		}
 	}
@@ -1326,23 +1329,17 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Map the Image field to the background image field") {
-			PageEditorMapping.gotoEditableFieldMapping(
-				fragmentName = "Banner Center",
-				id = "banner-center");
-
-			PageEditorMapping.mapEditableFieldToAsset(
+			PageEditor.editLayoutContainer(
+				backgroundImage = "Mapping",
 				entryTitle = "WC WebContent Title",
-				navItem = "Web Content");
-
-			Select(
-				locator1 = "PageEditorEditableLink#FIELD",
-				value1 = "Image");
-
-			PageEditor.waitForAutoSave();
+				fieldName = "Image",
+				navItem = "Web Content",
+				panel = "Styles");
 
 			PageEditor.clickPublish();
 		}
@@ -1377,12 +1374,13 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Map the Title field of web content to link type editable field") {
 			PageEditorMapping.gotoEditableFieldMapping(
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link");
 
 			PageEditorMapping.mapEditableFieldToAsset(

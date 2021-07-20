@@ -14,12 +14,7 @@
 		],
 		"testPathIgnorePatterns": [
 			"fieldSupport",
-			"LayoutProvider/handlers/fieldBlurredHandler",
-			"LayoutProvider/handlers/fieldEditedHandler",
-			"LayoutProvider/handlers/fieldSetAddedHandler",
-			"LayoutProvider/handlers/focusedFieldEvaluationEndedHandler",
 			"LayoutProvider/util",
-			"PageRenderer",
 			"RuleBuilder/RulesSupport."
 		]
 	},
@@ -31,5 +26,5 @@
 		"format": "liferay-npm-scripts fix",
 		"test": "liferay-npm-scripts test"
 	},
-	"version": "4.0.6"
+	"version": "4.0.9"
 }

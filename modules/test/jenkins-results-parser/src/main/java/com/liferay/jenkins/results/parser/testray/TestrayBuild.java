@@ -19,7 +19,6 @@ import com.liferay.jenkins.results.parser.StopWatchRecord;
 import com.liferay.jenkins.results.parser.StopWatchRecordsGroup;
 
 import java.io.File;
-import java.io.IOException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,40 +50,9 @@ public class TestrayBuild {
 	}
 
 	public List<Long> getDownstreamBuildDurations() {
-		JSONObject buildResultJSONObject = _getBuildResultJSONObject();
+		_initBuildResultData();
 
-		if ((buildResultJSONObject == null) ||
-			!buildResultJSONObject.has("batchResults")) {
-
-			return new ArrayList<>();
-		}
-
-		JSONArray batchResultsJSONArray = buildResultJSONObject.getJSONArray(
-			"batchResults");
-
-		List<Long> downstreamBuildDurations = new ArrayList<>();
-
-		for (int i = 0; i < batchResultsJSONArray.length(); i++) {
-			JSONObject batchResultJSONObject =
-				batchResultsJSONArray.getJSONObject(i);
-
-			JSONArray buildResultsJSONArray =
-				batchResultJSONObject.getJSONArray("buildResults");
-
-			for (int j = 0; j < buildResultsJSONArray.length(); j++) {
-				JSONObject buildResultsJSONObject =
-					buildResultsJSONArray.getJSONObject(j);
-
-				if (!buildResultsJSONObject.has("duration")) {
-					continue;
-				}
-
-				downstreamBuildDurations.add(
-					buildResultsJSONObject.getLong("duration"));
-			}
-		}
-
-		return downstreamBuildDurations;
+		return _downstreamBuildDurations;
 	}
 
 	public int getID() {
@@ -96,62 +64,39 @@ public class TestrayBuild {
 	}
 
 	public String getResult() {
-		if (_result != null) {
-			return _result;
-		}
-
-		JSONObject buildResultJSONObject = _getBuildResultJSONObject();
-
-		if ((buildResultJSONObject != null) &&
-			buildResultJSONObject.has("result")) {
-
-			_result = buildResultJSONObject.getString("result");
-
-			return _result;
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		String urlString = String.valueOf(getURL());
-
-		sb.append(urlString.replace("runs", "case_results.json"));
-
-		sb.append("&statuses=");
-
-		for (TestrayCaseResult.Status failedStatus :
-				TestrayCaseResult.Status.getFailedStatuses()) {
-
-			sb.append(failedStatus.getID());
-			sb.append(",");
-		}
-
-		try {
-			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
-				sb.toString());
-
-			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
-
-			if ((dataJSONArray != null) && (dataJSONArray.length() > 0)) {
-				_result = "FAILURE";
-
-				return _result;
-			}
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
-
-		_result = "SUCCESS";
+		_initBuildResultData();
 
 		return _result;
 	}
 
 	public List<TestrayCaseResult> getTestrayCaseResults() {
-		if (_testrayCaseResults == null) {
-			_initTestrayCaseResults();
+		List<TestrayCaseResult> testrayCaseResults = new ArrayList<>();
+
+		String urlString = String.valueOf(getURL());
+
+		String caseResultsAPIURLString = urlString.replace(
+			"runs", "case_results.json");
+
+		try {
+			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+				caseResultsAPIURLString);
+
+			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+
+			for (int i = 0; i < dataJSONArray.length(); i++) {
+				JSONObject dataJSONObject = dataJSONArray.getJSONObject(i);
+
+				TestrayCaseResult testrayCaseResult = new TestrayCaseResult(
+					this, dataJSONObject);
+
+				testrayCaseResults.add(testrayCaseResult);
+			}
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
 		}
 
-		return _testrayCaseResults;
+		return testrayCaseResults;
 	}
 
 	public TestrayProductVersion getTestrayProductVersion() {
@@ -171,28 +116,15 @@ public class TestrayBuild {
 	}
 
 	public Long getTopLevelActiveBuildDuration() {
-		Long topLevelBuildDuration = getTopLevelBuildDuration();
-		Long topLevelPassiveBuildDuration = _getTopLevelPassiveBuildDuration();
+		_initBuildResultData();
 
-		if ((topLevelBuildDuration == null) ||
-			(topLevelPassiveBuildDuration == null)) {
-
-			return null;
-		}
-
-		return topLevelBuildDuration - topLevelPassiveBuildDuration;
+		return _topLevelActiveBuildDuration;
 	}
 
 	public Long getTopLevelBuildDuration() {
-		JSONObject buildResultJSONObject = _getBuildResultJSONObject();
+		_initBuildResultData();
 
-		if ((buildResultJSONObject == null) ||
-			!buildResultJSONObject.has("duration")) {
-
-			return null;
-		}
-
-		return buildResultJSONObject.getLong("duration");
+		return _topLevelBuildDuration;
 	}
 
 	public URL getURL() {
@@ -263,12 +195,17 @@ public class TestrayBuild {
 
 			return _buildResultJSONObject;
 		}
-		catch (IOException ioException) {
-			ioException.printStackTrace();
+		catch (Exception exception) {
+			exception.printStackTrace();
 		}
 		finally {
-			JenkinsResultsParserUtil.delete(jsonFile);
-			JenkinsResultsParserUtil.delete(jsonGzFile);
+			if (jsonFile.exists()) {
+				JenkinsResultsParserUtil.delete(jsonFile);
+			}
+
+			if (jsonGzFile.exists()) {
+				JenkinsResultsParserUtil.delete(jsonGzFile);
+			}
 		}
 
 		return null;
@@ -299,18 +236,94 @@ public class TestrayBuild {
 		return _buildResultURL;
 	}
 
-	private StopWatchRecordsGroup _getStopWatchRecordsGroup() {
-		if (_stopWatchRecordsGroup != null) {
-			return _stopWatchRecordsGroup;
+	private List<Long> _getDownstreamBuildDurations(
+		JSONObject buildResultJSONObject) {
+
+		if ((buildResultJSONObject == null) ||
+			!buildResultJSONObject.has("batchResults")) {
+
+			return new ArrayList<>();
 		}
 
-		Long topLevelBuildDuration = getTopLevelBuildDuration();
+		JSONArray batchResultsJSONArray = buildResultJSONObject.getJSONArray(
+			"batchResults");
+
+		List<Long> downstreamBuildDurations = new ArrayList<>();
+
+		for (int i = 0; i < batchResultsJSONArray.length(); i++) {
+			JSONObject batchResultJSONObject =
+				batchResultsJSONArray.getJSONObject(i);
+
+			JSONArray buildResultsJSONArray =
+				batchResultJSONObject.getJSONArray("buildResults");
+
+			for (int j = 0; j < buildResultsJSONArray.length(); j++) {
+				JSONObject buildResultsJSONObject =
+					buildResultsJSONArray.getJSONObject(j);
+
+				if (!buildResultsJSONObject.has("duration")) {
+					continue;
+				}
+
+				downstreamBuildDurations.add(
+					buildResultsJSONObject.getLong("duration"));
+			}
+		}
+
+		return downstreamBuildDurations;
+	}
+
+	private String _getResult(JSONObject buildResultJSONObject) {
+		if ((buildResultJSONObject != null) &&
+			buildResultJSONObject.has("result")) {
+
+			return buildResultJSONObject.getString("result");
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		String urlString = String.valueOf(getURL());
+
+		sb.append(urlString.replace("runs", "case_results.json"));
+
+		sb.append("&statuses=");
+
+		for (TestrayCaseResult.Status failedStatus :
+				TestrayCaseResult.Status.getFailedStatuses()) {
+
+			sb.append(failedStatus.getID());
+			sb.append(",");
+		}
+
+		try {
+			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+				sb.toString());
+
+			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+
+			if ((dataJSONArray != null) && (dataJSONArray.length() > 0)) {
+				return "FAILURE";
+			}
+		}
+		catch (Exception exception) {
+			return "FAILURE";
+		}
+
+		return "SUCCESS";
+	}
+
+	private StopWatchRecordsGroup _getStopWatchRecordsGroup(
+		JSONObject buildResultJSONObject) {
+
+		Long topLevelBuildDuration = _getTopLevelBuildDuration(
+			buildResultJSONObject);
 
 		if (topLevelBuildDuration == null) {
 			return null;
 		}
 
-		_stopWatchRecordsGroup = new StopWatchRecordsGroup();
+		StopWatchRecordsGroup stopWatchRecordsGroup =
+			new StopWatchRecordsGroup();
 
 		StopWatchRecord stopWatchRecord = new StopWatchRecord(
 			"top.level.build", _startTimestamp);
@@ -319,14 +332,12 @@ public class TestrayBuild {
 
 		stopWatchRecord.setDuration(topLevelBuildDuration);
 
-		_stopWatchRecordsGroup.add(stopWatchRecord);
-
-		JSONObject buildResultJSONObject = _getBuildResultJSONObject();
+		stopWatchRecordsGroup.add(stopWatchRecord);
 
 		if ((buildResultJSONObject == null) ||
 			!buildResultJSONObject.has("stopWatchRecords")) {
 
-			return _stopWatchRecordsGroup;
+			return stopWatchRecordsGroup;
 		}
 
 		JSONArray stopWatchRecordsJSONArray =
@@ -352,19 +363,48 @@ public class TestrayBuild {
 
 			stopWatchRecord.addChildStopWatchRecord(childStopWatchRecord);
 
-			_stopWatchRecordsGroup.add(childStopWatchRecord);
+			stopWatchRecordsGroup.add(childStopWatchRecord);
 
 			_addChildStopWatchRecords(
-				_stopWatchRecordsGroup, childStopWatchRecord,
+				stopWatchRecordsGroup, childStopWatchRecord,
 				childStopWatchRecordJSONObject);
 		}
 
-		return _stopWatchRecordsGroup;
+		return stopWatchRecordsGroup;
 	}
 
-	private Long _getTopLevelPassiveBuildDuration() {
-		StopWatchRecordsGroup stopWatchRecordsGroup =
-			_getStopWatchRecordsGroup();
+	private Long _getTopLevelActiveBuildDuration(
+		JSONObject buildResultJSONObject) {
+
+		Long topLevelBuildDuration = _getTopLevelBuildDuration(
+			buildResultJSONObject);
+		Long topLevelPassiveBuildDuration = _getTopLevelPassiveBuildDuration(
+			buildResultJSONObject);
+
+		if ((topLevelBuildDuration == null) ||
+			(topLevelPassiveBuildDuration == null)) {
+
+			return null;
+		}
+
+		return topLevelBuildDuration - topLevelPassiveBuildDuration;
+	}
+
+	private Long _getTopLevelBuildDuration(JSONObject buildResultJSONObject) {
+		if ((buildResultJSONObject == null) ||
+			!buildResultJSONObject.has("duration")) {
+
+			return null;
+		}
+
+		return buildResultJSONObject.getLong("duration");
+	}
+
+	private Long _getTopLevelPassiveBuildDuration(
+		JSONObject buildResultJSONObject) {
+
+		StopWatchRecordsGroup stopWatchRecordsGroup = _getStopWatchRecordsGroup(
+			buildResultJSONObject);
 
 		if (stopWatchRecordsGroup == null) {
 			return null;
@@ -403,44 +443,36 @@ public class TestrayBuild {
 		return null;
 	}
 
-	private void _initTestrayCaseResults() {
-		_testrayCaseResults = new ArrayList<>();
-
-		String urlString = String.valueOf(getURL());
-
-		String caseResultsAPIURLString = urlString.replace(
-			"runs", "case_results.json");
-
-		try {
-			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
-				caseResultsAPIURLString);
-
-			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
-
-			for (int i = 0; i < dataJSONArray.length(); i++) {
-				JSONObject dataJSONObject = dataJSONArray.getJSONObject(i);
-
-				TestrayCaseResult testrayCaseResult = new TestrayCaseResult(
-					this, dataJSONObject);
-
-				_testrayCaseResults.add(testrayCaseResult);
-			}
+	private synchronized void _initBuildResultData() {
+		if (_buildResultDataPopulated) {
+			return;
 		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
+
+		_buildResultDataPopulated = true;
+
+		JSONObject buildResultJSONObject = _getBuildResultJSONObject();
+
+		_downstreamBuildDurations = _getDownstreamBuildDurations(
+			buildResultJSONObject);
+		_result = _getResult(buildResultJSONObject);
+		_topLevelActiveBuildDuration = _getTopLevelActiveBuildDuration(
+			buildResultJSONObject);
+		_topLevelBuildDuration = _getTopLevelBuildDuration(
+			buildResultJSONObject);
 	}
 
+	private boolean _buildResultDataPopulated;
 	private JSONObject _buildResultJSONObject;
 	private URL _buildResultURL;
+	private List<Long> _downstreamBuildDurations;
 	private final JSONObject _jsonObject;
 	private String _result;
 	private int _startTimestamp;
-	private StopWatchRecordsGroup _stopWatchRecordsGroup;
-	private List<TestrayCaseResult> _testrayCaseResults;
 	private final TestrayProductVersion _testrayProductVersion;
 	private final TestrayProject _testrayProject;
 	private final TestrayRoutine _testrayRoutine;
 	private final TestrayServer _testrayServer;
+	private Long _topLevelActiveBuildDuration;
+	private Long _topLevelBuildDuration;
 
 }

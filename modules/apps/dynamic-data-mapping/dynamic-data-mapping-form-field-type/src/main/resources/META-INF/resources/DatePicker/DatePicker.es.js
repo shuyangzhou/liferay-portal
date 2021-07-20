@@ -141,6 +141,7 @@ const DatePicker = ({
 	disabled,
 	formatInEditingLocale,
 	locale,
+	localizedValue: localizedValueInitial = {},
 	name,
 	onChange,
 	spritemap,
@@ -151,7 +152,7 @@ const DatePicker = ({
 
 	const [expanded, setExpand] = useState(false);
 
-	const [localizedValue, setLocalizedValue] = useState({});
+	const [localizedValue, setLocalizedValue] = useState(localizedValueInitial);
 
 	const initialValueMemoized = useMemo(
 		() =>
@@ -188,7 +189,11 @@ const DatePicker = ({
 			});
 
 			if (localizedValue[locale]) {
-				if (typeof localizedValue[locale] === 'string') {
+				if (
+					typeof localizedValue[locale] === 'string' &&
+					(localizedValue[locale].includes('/') ||
+						localizedValue[locale].includes('.'))
+				) {
 					inputRef.current.value = localizedValue[locale];
 				}
 				else {
@@ -198,7 +203,9 @@ const DatePicker = ({
 				}
 			}
 			else if (initialValueMemoized) {
-				inputRef.current.value = initialValueMemoized;
+				inputRef.current.value = moment(initialValueMemoized).format(
+					dateMask.toUpperCase()
+				);
 			}
 			else {
 				inputRef.current.value = '';
@@ -316,6 +323,7 @@ const Main = ({
 				localizedValue && localizedValue[locale] != undefined
 			}
 			locale={locale}
+			localizedValue={localizedValue}
 			name={name}
 			onChange={(value) => onChange({}, value)}
 			placeholder={placeholder}

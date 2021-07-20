@@ -29,9 +29,6 @@ import java.util.List;
  */
 public class RowMover {
 
-	public RowMover() {
-	}
-
 	public void addRowMoverDropTarget(RowMoverDropTarget rowMoverDropTarget) {
 		_rowMoverDropTargets.add(rowMoverDropTarget);
 	}

@@ -23,9 +23,6 @@ import java.util.Date;
  */
 public class Field {
 
-	public Field() {
-	}
-
 	public String getContext() {
 		return _context;
 	}

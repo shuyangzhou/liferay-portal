@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Commerce Salesforce Connector
 Bundle-SymbolicName: com.liferay.commerce.salesforce.connector
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.4
 Liferay-Enterprise-App: dxp.only=true
 -includeresource:\
 	etl-salesforce-account-connector-*.zip,\

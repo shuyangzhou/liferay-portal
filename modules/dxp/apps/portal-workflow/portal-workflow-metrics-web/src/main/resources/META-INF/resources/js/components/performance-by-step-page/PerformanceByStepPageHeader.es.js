@@ -38,6 +38,11 @@ export default function Header({
 
 					<ProcessVersionFilter
 						filterKey={filterConstants.processVersion.key}
+						options={{
+							hideControl: true,
+							multiple: false,
+							withAllVersions: true,
+						}}
 						processId={routeParams.processId}
 					/>
 				</ClayManagementToolbar.ItemList>

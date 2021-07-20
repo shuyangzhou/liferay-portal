@@ -18,12 +18,12 @@
 </tr>
 <tr>
 	<td>ASSETS_TABLE</td>
-	<td>//a[@class='text-truncate']</td>
+	<td>//a[text()='${key_assetName}']</td>
 	<td></td>
 </tr>
 <tr>
-	<td>MATRIC_VALUE</td>
-	<td>//span[@class='title'and text()='${matricTitle}']/..//div[@class='metric-value']</td>
+	<td>METRIC_VALUE</td>
+	<td>//span[@class='title'and text()='${key_metricTitle}']/..//div[@class='metric-value']</td>
 	<td></td>
 </tr>
 </tbody>

@@ -276,28 +276,6 @@ definition {
 			fieldName = "Rich Text");
 	}
 
-	@description = "This test verifies that a user can toggle hide/show the field label."
-	@priority = "3"
-	test ShowAndHideRichTextLabel {
-		DataEngine.toggleShowLabel(fieldLabel = "Rich Text");
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
-
-		DataEngine.assertFieldNotPresent(fieldFieldLabel = "Rich Text");
-
-		DataEngine.toggleShowLabel();
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "Rich Text",
-			fieldName = "Rich Text");
-	}
-
 	@description = "This test verifies that a user can see the Tip(Help Text) if it was defined."
 	@priority = "4"
 	test VerifyHelpTextofRichTextOnWebContent {

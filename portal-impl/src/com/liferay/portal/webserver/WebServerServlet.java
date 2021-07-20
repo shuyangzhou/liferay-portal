@@ -301,9 +301,7 @@ public class WebServerServlet extends HttpServlet {
 
 						return;
 					}
-				}
 
-				if (lastModified > 0) {
 					httpServletResponse.setDateHeader(
 						HttpHeaders.LAST_MODIFIED, lastModified);
 				}

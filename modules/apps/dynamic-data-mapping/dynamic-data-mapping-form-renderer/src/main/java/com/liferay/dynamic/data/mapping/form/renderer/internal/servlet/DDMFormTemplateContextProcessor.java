@@ -53,8 +53,6 @@ public class DDMFormTemplateContextProcessor {
 
 		_jsonObject = jsonObject;
 
-		_ddmForm = new DDMForm();
-		_ddmFormLayout = new DDMFormLayout();
 		_ddmFormValues = new DDMFormValues(_ddmForm);
 
 		_locale = LocaleUtil.fromLanguageId(languageId);
@@ -665,9 +663,9 @@ public class DDMFormTemplateContextProcessor {
 		}
 	}
 
-	private final DDMForm _ddmForm;
+	private final DDMForm _ddmForm = new DDMForm();
 	private long _ddmFormInstanceId;
-	private final DDMFormLayout _ddmFormLayout;
+	private final DDMFormLayout _ddmFormLayout = new DDMFormLayout();
 	private final DDMFormValues _ddmFormValues;
 	private long _groupId;
 	private final JSONObject _jsonObject;

@@ -120,8 +120,8 @@ const NumericInputMask: React.FC<IProps> = ({
 
 	return (
 		<>
-			<div className="position-relative row">
-				<div className="col-ddm col-md-6">
+			<div className="align-items-end d-flex position-relative">
+				<div className="pr-2 w-50">
 					<Select
 
 						// @ts-ignore
@@ -149,7 +149,7 @@ const NumericInputMask: React.FC<IProps> = ({
 						visible={visible}
 					/>
 				</div>
-				<div className="col-ddm col-md-6">
+				<div className="pl-2 w-50">
 					<Select
 
 						// @ts-ignore
@@ -160,7 +160,11 @@ const NumericInputMask: React.FC<IProps> = ({
 						onChange={(event: any, value: any) => {
 							handleChange('symbols', {
 								decimalSymbol: value[0],
-								thousandsSeparator: thousandsSeparator?.[0],
+								thousandsSeparator: thousandsSeparator?.includes(
+									'none'
+								)
+									? 'none'
+									: thousandsSeparator?.[0],
 							});
 
 							setDecimalSymbol(value[0]);

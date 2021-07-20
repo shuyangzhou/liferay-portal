@@ -26,6 +26,7 @@
 		<column method-name="PKObjectFieldName" name="pkObjectFieldName" type="String" />
 		<column name="system" type="boolean" />
 		<column name="version" type="int" />
+		<column name="status" type="int" />
 
 		<!-- Finder methods -->
 
@@ -39,12 +40,20 @@
 			<finder-column name="companyId" />
 			<finder-column name="name" />
 		</finder>
+		<finder name="S_S" return-type="Collection">
+			<finder-column name="system" />
+			<finder-column name="status" />
+		</finder>
 
 		<!-- Order -->
 
 		<order by="asc">
 			<order-column name="name" />
 		</order>
+
+		<!-- References -->
+
+		<reference entity="Resource" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="ObjectEntry" remote-service="true" uuid="true">
 
@@ -66,6 +75,7 @@
 
 		<!-- Other fields -->
 
+		<column name="externalReferenceCode" type="String" />
 		<column name="objectDefinitionId" type="long" />
 		<column name="lastPublishDate" type="Date" />
 		<column name="status" type="int" />
@@ -77,6 +87,11 @@
 
 		<finder name="ObjectDefinitionId" return-type="Collection">
 			<finder-column name="objectDefinitionId" />
+		</finder>
+		<finder name="G_C_ERC" return-type="ObjectEntry">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="externalReferenceCode" />
 		</finder>
 
 		<!-- Order -->
@@ -186,6 +201,7 @@
 		<exception>DuplicateObjectDefinition</exception>
 		<exception>DuplicateObjectField</exception>
 		<exception>ObjectDefinitionName</exception>
+		<exception>ObjectDefinitionStatus</exception>
 		<exception>ObjectDefinitionVersion</exception>
 		<exception>ObjectEntryValues</exception>
 		<exception>ObjectFieldName</exception>

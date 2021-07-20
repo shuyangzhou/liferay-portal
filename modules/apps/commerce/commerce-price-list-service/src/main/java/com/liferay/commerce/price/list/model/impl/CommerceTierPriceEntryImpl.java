@@ -25,9 +25,6 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public class CommerceTierPriceEntryImpl extends CommerceTierPriceEntryBaseImpl {
 
-	public CommerceTierPriceEntryImpl() {
-	}
-
 	@Override
 	public CommercePriceEntry getCommercePriceEntry() throws PortalException {
 		return CommercePriceEntryLocalServiceUtil.getCommercePriceEntry(

@@ -27,9 +27,6 @@ import java.util.Map;
  */
 public class Individual {
 
-	public Individual() {
-	}
-
 	public List<DataSourceIndividualPK> getDataSourceIndividualPKs() {
 		return _dataSourceIndividualPKs;
 	}
@@ -102,9 +99,6 @@ public class Individual {
 	}
 
 	public static class DataSourceIndividualPK {
-
-		public DataSourceIndividualPK() {
-		}
 
 		public String getDataSourceId() {
 			return _dataSourceId;

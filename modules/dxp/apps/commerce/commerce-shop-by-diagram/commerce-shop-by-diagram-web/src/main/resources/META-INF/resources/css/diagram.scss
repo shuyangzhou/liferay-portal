@@ -31,9 +31,12 @@
 
 	.box {
 		background-color: #444;
+		border: none;
 		color: #fff;
 		color: #000;
 		justify-content: space-between;
+		margin: 0;
+		padding: 0;
 
 		.icon {
 			fill: cyan;
@@ -91,6 +94,14 @@
 			height: 50px;
 			stroke: black;
 			vertical-align: middle;
+		}
+
+		:focus,
+		:active {
+			border: none !important;
+			box-shadow: none;
+			outline: 0 !important;
+			outline-color: transparent;
 		}
 
 		&.plus {

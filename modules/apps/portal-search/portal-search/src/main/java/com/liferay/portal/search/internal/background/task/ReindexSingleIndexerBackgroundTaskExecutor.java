@@ -55,7 +55,7 @@ import org.osgi.service.component.annotations.Reference;
 	}
 )
 public class ReindexSingleIndexerBackgroundTaskExecutor
-	extends ReindexBackgroundTaskExecutor {
+	extends BaseReindexBackgroundTaskExecutor {
 
 	public ReindexSingleIndexerBackgroundTaskExecutor() {
 		setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_TASK_NAME);

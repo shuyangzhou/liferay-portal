@@ -35,9 +35,6 @@ import java.util.Set;
 public class MessageDatagramReceiveHandler
 	extends BaseAsyncDatagramReceiveHandler {
 
-	public MessageDatagramReceiveHandler() {
-	}
-
 	@Override
 	protected void doReceive(
 			RegistrationReference registrationReference, Datagram datagram)

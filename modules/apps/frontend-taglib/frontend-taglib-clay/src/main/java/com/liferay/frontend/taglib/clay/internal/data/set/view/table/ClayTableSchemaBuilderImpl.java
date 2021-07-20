@@ -26,11 +26,6 @@ import java.util.Map;
  */
 public class ClayTableSchemaBuilderImpl implements ClayTableSchemaBuilder {
 
-	public ClayTableSchemaBuilderImpl() {
-		_clayTableSchema = new ClayTableSchema();
-		_clayTableSchemaFieldsMap = new LinkedHashMap<>();
-	}
-
 	@Override
 	public void addClayTableSchemaField(
 		ClayTableSchemaField clayTableSchemaField) {
@@ -79,7 +74,8 @@ public class ClayTableSchemaBuilderImpl implements ClayTableSchemaBuilder {
 		_clayTableSchema = clayTableSchema;
 	}
 
-	private ClayTableSchema _clayTableSchema;
-	private final Map<String, ClayTableSchemaField> _clayTableSchemaFieldsMap;
+	private ClayTableSchema _clayTableSchema = new ClayTableSchema();
+	private final Map<String, ClayTableSchemaField> _clayTableSchemaFieldsMap =
+		new LinkedHashMap<>();
 
 }

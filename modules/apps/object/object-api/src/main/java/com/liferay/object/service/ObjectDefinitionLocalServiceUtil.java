@@ -262,6 +262,12 @@ public class ObjectDefinitionLocalServiceUtil {
 		return getService().fetchObjectDefinition(objectDefinitionId);
 	}
 
+	public static ObjectDefinition fetchObjectDefinition(
+		long companyId, String name) {
+
+		return getService().fetchObjectDefinition(companyId, name);
+	}
+
 	/**
 	 * Returns the object definition with the matching UUID and company.
 	 *
@@ -282,8 +288,10 @@ public class ObjectDefinitionLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static List<ObjectDefinition> getCustomObjectDefinitions() {
-		return getService().getCustomObjectDefinitions();
+	public static List<ObjectDefinition> getCustomObjectDefinitions(
+		int status) {
+
+		return getService().getCustomObjectDefinitions(status);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
@@ -382,6 +390,14 @@ public class ObjectDefinitionLocalServiceUtil {
 
 	public static List<ObjectDefinition> getSystemObjectDefinitions() {
 		return getService().getSystemObjectDefinitions();
+	}
+
+	public static ObjectDefinition publishCustomObjectDefinition(
+			long userId, long objectDefinitionId)
+		throws PortalException {
+
+		return getService().publishCustomObjectDefinition(
+			userId, objectDefinitionId);
 	}
 
 	public static void undeployObjectDefinition(

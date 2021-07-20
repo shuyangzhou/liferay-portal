@@ -48,7 +48,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import javax.portlet.RenderURL;
 import javax.portlet.ResourceURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -249,24 +248,22 @@ public class ViewConflictsDisplayContext {
 					}
 				}
 
-				RenderURL discardURL = _renderResponse.createRenderURL();
-
-				discardURL.setParameter(
-					"mvcRenderCommandName", "/change_tracking/view_discard");
-				discardURL.setParameter(
-					"redirect", _portal.getCurrentURL(_renderRequest));
-				discardURL.setParameter(
-					"ctCollectionId",
-					String.valueOf(ctEntry.getCtCollectionId()));
-				discardURL.setParameter(
-					"modelClassNameId",
-					String.valueOf(ctEntry.getModelClassNameId()));
-				discardURL.setParameter(
-					"modelClassPK", String.valueOf(ctEntry.getModelClassPK()));
-
 				actionsJSONArray.put(
 					JSONUtil.put(
-						"href", discardURL.toString()
+						"href",
+						PortletURLBuilder.createRenderURL(
+							_renderResponse
+						).setMVCRenderCommandName(
+							"/change_tracking/view_discard"
+						).setRedirect(
+							_portal.getCurrentURL(_renderRequest)
+						).setParameter(
+							"ctCollectionId", ctEntry.getCtCollectionId()
+						).setParameter(
+							"modelClassNameId", ctEntry.getModelClassNameId()
+						).setParameter(
+							"modelClassPK", ctEntry.getModelClassPK()
+						).buildString()
 					).put(
 						"label",
 						_language.get(_httpServletRequest, "discard-change")

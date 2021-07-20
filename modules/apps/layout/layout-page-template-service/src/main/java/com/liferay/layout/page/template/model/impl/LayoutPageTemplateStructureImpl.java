@@ -29,9 +29,6 @@ import java.util.stream.LongStream;
 public class LayoutPageTemplateStructureImpl
 	extends LayoutPageTemplateStructureBaseImpl {
 
-	public LayoutPageTemplateStructureImpl() {
-	}
-
 	@Override
 	public String getData(long segmentsExperienceId) {
 		LayoutPageTemplateStructureRel layoutPageTemplateStructureRel =

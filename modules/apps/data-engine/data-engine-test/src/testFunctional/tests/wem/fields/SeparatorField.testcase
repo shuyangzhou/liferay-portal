@@ -158,28 +158,4 @@ definition {
 			index = "2");
 	}
 
-	@description = "This is a test for LPS-98081. Verify 'Show label' toggle button"
-	@priority = "3"
-	test ShowAndHideSeparatorLabel {
-		property portal.acceptance = "false";
-
-		DataEngine.toggleShowLabel(fieldLabel = "Separator");
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
-
-		DataEngine.assertFieldNotPresent(fieldFieldLabel = "Separator");
-
-		DataEngine.toggleShowLabel();
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "Separator",
-			fieldName = "Separator");
-	}
-
 }

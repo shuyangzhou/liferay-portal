@@ -156,7 +156,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-129049. Verify Crisp provider can be enabled and disabled."
-	@ignore = "true"
 	@priority = "5"
 	test CrispCanBeEnabledAndDisabled {
 		Select(
@@ -423,7 +422,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-129049. Verify LiveChat provider can be enabled and disabled."
-	@ignore = "true"
 	@priority = "5"
 	test LiveChatCanBeEnabledAndDisabled {
 		Select(
@@ -452,7 +450,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-133453. Verify if LiveChat Provider Keeps Enabled After Logout"
-	@ignore = "true"
 	@priority = "5"
 	test LiveChatProviderKeepsEnabledAfterLogout {
 		Select(
@@ -481,7 +478,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-133453. Verify LiveChat provider persistence after logout and login"
-	@ignore = "true"
 	@priority = "5"
 	test LiveChatProviderKeepsEnabledAfterLogoutAndLogin {
 		Select(
@@ -764,7 +760,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-129049. Verify Tidio provider can be enabled and disabled."
-	@ignore = "true"
 	@priority = "5"
 	test TidioCanBeEnabledAndDisabled {
 		Select(
@@ -793,7 +788,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-133453. Verify if Tidio Provider Keeps Enabled After Logout"
-	@ignore = "true"
 	@priority = "5"
 	test TidioProviderKeepsEnabledAfterLogout {
 		Select(
@@ -822,7 +816,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-133453. Verify Tidio provider persistence after logout and login"
-	@ignore = "true"
 	@priority = "5"
 	test TidioProviderKeepsEnabledAfterLogoutAndLogin {
 		Select(

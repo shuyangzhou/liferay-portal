@@ -85,9 +85,6 @@ public class FileEntrySoap implements Serializable {
 		return soapModels.toArray(new FileEntrySoap[0]);
 	}
 
-	public FileEntrySoap() {
-	}
-
 	public long getCompanyId() {
 		return _companyId;
 	}

@@ -94,7 +94,13 @@ public class JSPTagAttributesCheck extends BaseTagAttributesCheck {
 	}
 
 	@Override
-	protected Tag formatTagAttributeType(Tag tag) throws Exception {
+	protected Tag formatTagAttributeType(String absolutePath, Tag tag)
+		throws Exception {
+
+		if (absolutePath.endsWith(".jspx")) {
+			return tag;
+		}
+
 		Map<String, String> setMethodsMap = _getSetMethodsMap(tag.getName());
 
 		Map<String, String> attributesMap = tag.getAttributesMap();

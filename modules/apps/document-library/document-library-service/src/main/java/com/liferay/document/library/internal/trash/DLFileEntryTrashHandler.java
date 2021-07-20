@@ -73,7 +73,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=com.liferay.document.library.kernel.model.DLFileEntry",
 	service = TrashHandler.class
 )
-public class DLFileEntryTrashHandler extends DLBaseTrashHandler {
+public class DLFileEntryTrashHandler extends BaseDLTrashHandler {
 
 	@Override
 	public void checkRestorableEntry(

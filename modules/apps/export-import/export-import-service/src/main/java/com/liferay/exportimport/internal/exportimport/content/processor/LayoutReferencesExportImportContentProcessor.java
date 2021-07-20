@@ -393,6 +393,31 @@ public class LayoutReferencesExportImportContentProcessor
 
 						layoutSet = group.getPrivateLayoutSet();
 					}
+					else if (urlSBString.contains(
+								_DATA_HANDLER_COMPANY_SECURE_URL) ||
+							 urlSBString.contains(_DATA_HANDLER_COMPANY_URL)) {
+
+						if (StringUtil.equals(
+								group.getGroupKey(),
+								PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+
+							layoutSet = group.getPublicLayoutSet();
+						}
+					}
+					else {
+						LayoutSet publicLayoutSet = group.getPublicLayoutSet();
+
+						TreeMap<String, String> publicVirtualHostnames =
+							publicLayoutSet.getVirtualHostnames();
+
+						if (!publicVirtualHostnames.isEmpty() ||
+							StringUtil.equals(
+								group.getGroupKey(),
+								PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+
+							layoutSet = group.getPublicLayoutSet();
+						}
+					}
 
 					if (layoutSet == null) {
 						continue;
@@ -669,6 +694,13 @@ public class LayoutReferencesExportImportContentProcessor
 			if (content.charAt(groupUuidPos) == CharPool.AT) {
 				endIndex = content.indexOf(StringPool.AT, groupUuidPos + 1);
 			}
+			else {
+				content = StringUtil.replaceFirst(
+					content, _DATA_HANDLER_GROUP_FRIENDLY_URL,
+					group.getFriendlyURL(), groupFriendlyUrlPos);
+
+				continue;
+			}
 
 			if (endIndex < (groupUuidPos + 1)) {
 				content = StringUtil.replaceFirst(
@@ -927,6 +959,31 @@ public class LayoutReferencesExportImportContentProcessor
 							 _DATA_HANDLER_PRIVATE_LAYOUT_SET_URL)) {
 
 					layoutSet = group.getPrivateLayoutSet();
+				}
+				else if (urlSBString.contains(
+							_DATA_HANDLER_COMPANY_SECURE_URL) ||
+						 urlSBString.contains(_DATA_HANDLER_COMPANY_URL)) {
+
+					if (StringUtil.equals(
+							group.getGroupKey(),
+							PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+
+						layoutSet = group.getPublicLayoutSet();
+					}
+				}
+				else {
+					LayoutSet publicLayoutSet = group.getPublicLayoutSet();
+
+					TreeMap<String, String> publicVirtualHostnames =
+						publicLayoutSet.getVirtualHostnames();
+
+					if (!publicVirtualHostnames.isEmpty() ||
+						StringUtil.equals(
+							group.getGroupKey(),
+							PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+
+						layoutSet = group.getPublicLayoutSet();
+					}
 				}
 
 				if (layoutSet == null) {

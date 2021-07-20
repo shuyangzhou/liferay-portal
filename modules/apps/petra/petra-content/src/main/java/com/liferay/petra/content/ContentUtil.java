@@ -42,7 +42,6 @@ public class ContentUtil {
 	}
 
 	private ContentUtil() {
-		_contentPool = new HashMap<>();
 	}
 
 	private String _get(ClassLoader classLoader, String location, boolean all) {
@@ -70,6 +69,6 @@ public class ContentUtil {
 
 	private static final ContentUtil _contentUtil = new ContentUtil();
 
-	private final Map<String, String> _contentPool;
+	private final Map<String, String> _contentPool = new HashMap<>();
 
 }

@@ -248,12 +248,16 @@ public class MVCCommandNameCheck extends BaseCheck {
 		DetailAST annotationArrayInitDetailAST, String className,
 		String modulePath, boolean validateActionName) {
 
-		if (!mvcCommandName.startsWith(StringPool.SLASH)) {
+		if (!mvcCommandName.startsWith(StringPool.SLASH) &&
+			!mvcCommandName.startsWith(StringPool.TILDE)) {
+
 			return false;
 		}
 
+		char delimiter = mvcCommandName.charAt(0);
+
 		String[] parts = StringUtil.split(
-			mvcCommandName.substring(1), StringPool.SLASH);
+			mvcCommandName.substring(1), delimiter);
 
 		if (parts.length != 2) {
 			return false;
@@ -264,7 +268,8 @@ public class MVCCommandNameCheck extends BaseCheck {
 
 		if ((!validateActionName ||
 			 _hasValidActionName(actionName, path, className)) &&
-			_hasValidPath(path, annotationArrayInitDetailAST, modulePath)) {
+			_hasValidPath(
+				path, annotationArrayInitDetailAST, delimiter, modulePath)) {
 
 			return true;
 		}
@@ -312,11 +317,11 @@ public class MVCCommandNameCheck extends BaseCheck {
 	}
 
 	private boolean _hasValidPath(
-		String path, DetailAST annotationArrayInitDetailAST,
+		String path, DetailAST annotationArrayInitDetailAST, char delimiter,
 		String modulePath) {
 
 		String moduleName = modulePath.substring(
-			modulePath.lastIndexOf(CharPool.SLASH) + 1);
+			modulePath.lastIndexOf(delimiter) + 1);
 
 		if (path.equals(StringUtil.replace(moduleName, '-', '_'))) {
 			return true;

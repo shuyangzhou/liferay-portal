@@ -37,7 +37,5 @@ public class BatchEngineImportTaskImpl extends BatchEngineImportTaskBaseImpl {
 	 * engine import task model instance should use the {@link
 	 * com.liferay.batch.engine.model.BatchEngineImportTask} interface instead.
 	 */
-	public BatchEngineImportTaskImpl() {
-	}
 
 }

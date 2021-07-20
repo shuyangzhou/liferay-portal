@@ -35,6 +35,8 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -76,24 +78,71 @@ public class GetLayoutReportsIssuesMVCResourceCommandTest {
 
 					String url = "http://localhost:8080/test";
 
-					portalCache.put(
-						LocaleUtil.getDefault() + "-" + url,
-						JSONUtil.put("test", "test"));
+					String key = LocaleUtil.getDefault() + "-" + url;
 
-					JSONObject jsonObject = _serveResource(
-						LayoutTestUtil.addLayout(TestPropsValues.getGroupId()),
-						url);
+					try {
+						portalCache.put(key, JSONUtil.put("test", "test"));
 
-					JSONObject layoutReportsIssuesJSONObject =
-						jsonObject.getJSONObject("layoutReportsIssues");
+						JSONObject jsonObject = _serveResource(
+							LayoutTestUtil.addLayout(
+								TestPropsValues.getGroupId()),
+							false, url);
 
-					Assert.assertEquals(
-						"test",
-						layoutReportsIssuesJSONObject.getString("test"));
+						JSONObject layoutReportsIssuesJSONObject =
+							jsonObject.getJSONObject("layoutReportsIssues");
+
+						Assert.assertEquals(
+							"test",
+							layoutReportsIssuesJSONObject.getString("test"));
+					}
+					finally {
+						portalCache.remove(key);
+					}
 				});
 	}
 
-	private JSONObject _serveResource(Layout layout, String url)
+	@Test
+	public void testGetLayoutReportsIssuesError() throws Exception {
+		LayoutReportsTestUtil.
+			withLayoutReportsGooglePageSpeedGroupConfiguration(
+				"apiKey", true, TestPropsValues.getGroupId(),
+				() -> {
+					try (LogCapture logCapture =
+							LoggerTestUtil.configureLog4JLogger(
+								ClassUtil.getClassName(
+									_getLayoutReportsIssuesMVCResourceCommand),
+								LoggerTestUtil.ERROR)) {
+
+						JSONObject jsonObject = _serveResource(
+							LayoutTestUtil.addLayout(
+								TestPropsValues.getGroupId()),
+							true, "http://localhost:8080/test");
+
+						JSONObject layoutReportsIssuesJSONObject =
+							jsonObject.getJSONObject("layoutReportsIssues");
+
+						Assert.assertNull(layoutReportsIssuesJSONObject);
+
+						Assert.assertNotNull(jsonObject.getString("error"));
+
+						JSONObject googlePageSpeedErrorJSONObject =
+							jsonObject.getJSONObject("googlePageSpeedError");
+
+						JSONObject errorJSONObject =
+							googlePageSpeedErrorJSONObject.getJSONObject(
+								"error");
+
+						Assert.assertEquals(
+							400, errorJSONObject.getInt("code"));
+						Assert.assertEquals(
+							"INVALID_ARGUMENT",
+							errorJSONObject.getString("status"));
+					}
+				});
+	}
+
+	private JSONObject _serveResource(
+			Layout layout, boolean refreshCache, String url)
 		throws Exception {
 
 		MockLiferayResourceRequest mockLiferayResourceRequest =
@@ -101,6 +150,8 @@ public class GetLayoutReportsIssuesMVCResourceCommandTest {
 
 		mockLiferayResourceRequest.setParameter(
 			"groupId", String.valueOf(layout.getGroupId()));
+		mockLiferayResourceRequest.setParameter(
+			"refreshCache", String.valueOf(refreshCache));
 		mockLiferayResourceRequest.setParameter("url", url);
 
 		ThemeDisplay themeDisplay = new ThemeDisplay();

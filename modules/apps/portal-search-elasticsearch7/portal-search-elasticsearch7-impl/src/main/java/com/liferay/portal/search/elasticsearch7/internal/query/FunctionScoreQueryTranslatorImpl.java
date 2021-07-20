@@ -75,11 +75,6 @@ public class FunctionScoreQueryTranslatorImpl
 				functionScoreQuery.getMaxBoost());
 		}
 
-		if (functionScoreQuery.getMaxBoost() != null) {
-			functionScoreQueryBuilder.maxBoost(
-				functionScoreQuery.getMaxBoost());
-		}
-
 		if (functionScoreQuery.getScoreMode() != null) {
 			functionScoreQueryBuilder.scoreMode(
 				translate(functionScoreQuery.getScoreMode()));

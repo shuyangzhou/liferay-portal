@@ -1535,36 +1535,26 @@ definition {
 		Button.clickSave();
 
 		if ("${changeable}" == "false") {
-			Alert.viewRequestFailedToComplete();
-
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#ERROR_1",
 				value1 = "Passwords may not be changed under the current password policy.");
 		}
 		else if ("${passwordTooShort}" == "true") {
-			Alert.viewRequestFailedToComplete();
-
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#ERROR_1",
 				value1 = "That password is too short. Please make sure your password is at least 6 characters long.");
 		}
 		else if (isSet(minimumNumbers)) {
-			Alert.viewRequestFailedToComplete();
-
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#ERROR_1",
 				value1 = "That password must contain at least ${minimumNumbers} numbers.");
 		}
 		else if (isSet(regex)) {
-			Alert.viewRequestFailedToComplete();
-
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#ERROR_1",
 				value1 = "That password does not comply with the regular expression ${regex}. Please enter a different password.");
 		}
 		else {
-			Alert.viewRequestFailedToComplete();
-
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#ERROR_1",
 				value1 = "That password is invalid. Please enter in a different password.");
@@ -1962,7 +1952,10 @@ definition {
 			Navigator.openURL();
 		}
 
-		User._clickSignInLink(localization = "${localization}");
+		User._clickSignInLink(
+			idpName = "${idpName}",
+			localization = "${localization}",
+			samlMultiIdPs = "${samlMultiIdPs}");
 
 		if ("${authenticationMethod}" == "By Screen Name") {
 			Type(
@@ -1991,11 +1984,21 @@ definition {
 
 		User._clickSignInButton(localization = "${localization}");
 
-		if (IsElementPresent(locator1 = "Button#I_AGREE")) {
+		if (isSet(localizedAgree)) {
+			User.acceptEndUserLicenseAgreementLocalized(localizedAgree = "${localizedAgree}");
+		}
+
+		else if (IsElementPresent(locator1 = "Button#I_AGREE")) {
 			SignIn.agreeToTermsOfUse();
 		}
 
-		if (IsElementPresent(locator1 = "Select#QUESTION")) {
+		if (isSet(localizedAnswer)) {
+			User.answerPasswordReminderLocalized(
+				localizedAnswer = "${localizedAnswer}",
+				localizedSaveButton = "${localizedSaveButton}");
+		}
+
+		else if (IsElementPresent(locator1 = "Select#QUESTION")) {
 			SignIn.setPasswordReminder();
 		}
 
@@ -2283,19 +2286,14 @@ definition {
 			userEmailAddress = "${userEmailAddress}",
 			userPassword = "${userPassword}");
 
-		SelectWindow.selectWindowTopNoSPARefresh();
-
-		if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#EMAIL_ADDRESS")) {
-			SelectWindow.selectWindowNoSPARefresh(locator1 = "title=Terms of Use");
-
-			GoogleLogin.acceptConditions();
-		}
+		GoogleLogin.acceptConditions();
 
 		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
 	}
 
 	macro loginUserWithOpenIDConnectEnabledPG {
 		OpenIDConnect.accountSignIn(
+			specificURL = "${specificURL}",
 			userEmailAddress = "${userEmailAddress}",
 			userPassword = "${userPassword}");
 

@@ -28,9 +28,6 @@ import java.util.Date;
  */
 public class DispatchTriggerImpl extends DispatchTriggerBaseImpl {
 
-	public DispatchTriggerImpl() {
-	}
-
 	@Override
 	public UnicodeProperties getDispatchTaskSettingsUnicodeProperties() {
 		if (_dispatchTaskSettingsUnicodeProperties == null) {

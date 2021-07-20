@@ -30,7 +30,8 @@ import java.util.List;
 /**
  * @author Michael C. Han
  */
-public class GeoDistanceSortImpl extends SortImpl implements GeoDistanceSort {
+public class GeoDistanceSortImpl
+	extends BaseSortImpl implements GeoDistanceSort {
 
 	public GeoDistanceSortImpl(String field) {
 		_field = field;

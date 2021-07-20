@@ -27,9 +27,6 @@ import java.io.IOException;
  */
 public class SegmentsExperienceImpl extends SegmentsExperienceBaseImpl {
 
-	public SegmentsExperienceImpl() {
-	}
-
 	@Override
 	public UnicodeProperties getTypeSettingsUnicodeProperties() {
 		if (_typeSettingsUnicodeProperties == null) {

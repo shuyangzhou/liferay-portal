@@ -33,9 +33,6 @@ import java.util.stream.Stream;
  */
 public final class Criteria implements Serializable {
 
-	public Criteria() {
-	}
-
 	public void addCriterion(
 		String key, Type type, String filterString, Conjunction conjunction) {
 

@@ -24,6 +24,7 @@ const Diagram = ({
 	enableResetZoom,
 	imageSettings,
 	imageURL,
+	isAdmin,
 	namespace,
 	navigationController,
 	newPinSettings,
@@ -36,6 +37,7 @@ const Diagram = ({
 		handler: false,
 		pin: null,
 	});
+	const [diagramSizes, setDiagramSizes] = useState({k: 1, x: 0, y: 0});
 	const [resetZoom, setResetZoom] = useState(false);
 	const [zoomInHandler, setZoomInHandler] = useState(false);
 	const [zoomOutHandler, setZoomOutHandler] = useState(false);
@@ -91,6 +93,7 @@ const Diagram = ({
 			<ClayIconSpriteContext.Provider value={spritemap}>
 				<DiagramHeader
 					addNewPinState={addNewPinState}
+					isAdmin={isAdmin}
 					namespace={namespace}
 					newPinSettings={newPinSettings}
 					setAddNewPinState={setAddNewPinState}
@@ -103,10 +106,12 @@ const Diagram = ({
 					addPinHandler={addPinHandler}
 					cPins={cPins}
 					changedScale={changedScale}
+					diagramSizes={diagramSizes}
 					enablePanZoom={enablePanZoom}
 					enableResetZoom={enableResetZoom}
 					imageSettings={imageSettings}
 					imageURL={imageURL}
+					isAdmin={isAdmin}
 					namespace={namespace}
 					navigationController={navigationController}
 					removePinHandler={removePinHandler}
@@ -116,6 +121,7 @@ const Diagram = ({
 					setAddPinHandler={setAddPinHandler}
 					setChangedScale={setChangedScale}
 					setCpins={setCpins}
+					setDiagramSizes={setDiagramSizes}
 					setRemovePinHandler={setRemovePinHandler}
 					setResetZoom={setResetZoom}
 					setScale={setScale}
@@ -132,6 +138,7 @@ const Diagram = ({
 				<DiagramFooter
 					changedScale={changedScale}
 					enableResetZoom={enableResetZoom}
+					isAdmin={isAdmin}
 					selectedOption={selectedOption}
 					setAddPinHandler={setAddPinHandler}
 					setChangedScale={setChangedScale}
@@ -219,6 +226,7 @@ Diagram.propTypes = {
 		width: PropTypes.string,
 	}),
 	imageURL: PropTypes.string.isRequired,
+	isAdmin: PropTypes.bool.isRequired,
 	namespace: PropTypes.string.isRequired,
 	navigationController: PropTypes.shape({
 		dragStep: PropTypes.number,

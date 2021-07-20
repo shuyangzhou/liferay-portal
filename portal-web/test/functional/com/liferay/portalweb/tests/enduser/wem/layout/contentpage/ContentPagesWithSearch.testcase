@@ -281,12 +281,13 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Search the grandchild widget page in select modal then map it to link type editable field") {
 			PageEditorEditableLink.mapEditableFieldToPage(
-				fragmentName = "Banner Center",
+				fragmentName = "Button",
 				id = "link",
 				keywords = "Grand Child",
 				pageName = "Test Grand Child Page Name");

@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {render} from '@testing-library/react';
+import {act, render} from '@testing-library/react';
 import React from 'react';
 
 import PerformanceByStepPage from '../../../src/main/resources/META-INF/resources/js/components/performance-by-step-page/PerformanceByStepPage.es';
@@ -71,7 +71,7 @@ describe('The PerformanceByStepPage component having data should', () => {
 		<MockRouter client={clientMock}>{children}</MockRouter>
 	);
 
-	beforeAll(() => {
+	beforeAll(async () => {
 		jsonSessionStorage.set('timeRanges', timeRangeData);
 		const renderResult = render(
 			<PerformanceByStepPage routeParams={{processId: '1234'}} />,
@@ -79,21 +79,25 @@ describe('The PerformanceByStepPage component having data should', () => {
 		);
 
 		getAllByRole = renderResult.getAllByRole;
+
+		await act(async () => {
+			jest.runAllTimers();
+		});
 	});
 
-	test('Be rendered with step names', async () => {
+	it('Be rendered with step names', async () => {
 		rows = getAllByRole('row');
 
 		expect(rows[1]).toHaveTextContent('Review');
 		expect(rows[2]).toHaveTextContent('Update');
 	});
 
-	test('Be rendered with SLA Breached (%)', () => {
+	it('Be rendered with SLA Breached (%)', () => {
 		expect(rows[1]).toHaveTextContent('4 (0%)');
 		expect(rows[2]).toHaveTextContent('2 (0%)');
 	});
 
-	test('Be rendered with average completion time', () => {
+	it('Be rendered with average completion time', () => {
 		expect(rows[1]).toHaveTextContent('3h');
 		expect(rows[2]).toHaveTextContent('5d 12h');
 	});

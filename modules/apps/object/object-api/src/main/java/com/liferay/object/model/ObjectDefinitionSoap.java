@@ -48,6 +48,7 @@ public class ObjectDefinitionSoap implements Serializable {
 		soapModel.setPKObjectFieldName(model.getPKObjectFieldName());
 		soapModel.setSystem(model.isSystem());
 		soapModel.setVersion(model.getVersion());
+		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
 	}
@@ -225,6 +226,14 @@ public class ObjectDefinitionSoap implements Serializable {
 		_version = version;
 	}
 
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
+	}
+
 	private long _mvccVersion;
 	private String _uuid;
 	private long _objectDefinitionId;
@@ -239,5 +248,6 @@ public class ObjectDefinitionSoap implements Serializable {
 	private String _pkObjectFieldName;
 	private boolean _system;
 	private int _version;
+	private int _status;
 
 }

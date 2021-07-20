@@ -398,7 +398,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		_framework.start();
 
-		_setUpPrerequisiteFrameworkServices(_framework.getBundleContext());
+		_setUpPrerequisiteFrameworkService(_framework.getBundleContext());
 
 		Bundle fileInstallBundle = _setUpInitialBundles();
 
@@ -1885,11 +1885,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		return fileInstallBundle;
 	}
 
-	private void _setUpPrerequisiteFrameworkServices(
+	private void _setUpPrerequisiteFrameworkService(
 		BundleContext bundleContext) {
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Setting up required services");
+			_log.debug("Setting up required service");
 		}
 
 		Props props = PropsUtil.getProps();
@@ -1903,10 +1903,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			_log.debug(
 				"Registered required service as " +
 					serviceRegistration.getReference());
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Registered required services");
 		}
 	}
 

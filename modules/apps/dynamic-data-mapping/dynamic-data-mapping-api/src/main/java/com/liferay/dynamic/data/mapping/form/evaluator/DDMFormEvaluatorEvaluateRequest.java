@@ -45,12 +45,20 @@ public final class DDMFormEvaluatorEvaluateRequest {
 		return _ddmFormValues;
 	}
 
+	public String getGooglePlacesAPIKey() {
+		return _googlePlacesAPIKey;
+	}
+
 	public long getGroupId() {
 		return _groupId;
 	}
 
 	public Locale getLocale() {
 		return _locale;
+	}
+
+	public String getTimeZoneId() {
+		return _timeZoneId;
 	}
 
 	public long getUserId() {
@@ -103,8 +111,21 @@ public final class DDMFormEvaluatorEvaluateRequest {
 			return this;
 		}
 
+		public Builder withGooglePlacesAPIKey(String googlePlacesAPIKey) {
+			_ddmFormEvaluatorEvaluateRequest._googlePlacesAPIKey =
+				googlePlacesAPIKey;
+
+			return this;
+		}
+
 		public Builder withGroupId(long groupId) {
 			_ddmFormEvaluatorEvaluateRequest._groupId = groupId;
+
+			return this;
+		}
+
+		public Builder withTimeZoneId(String timeZoneId) {
+			_ddmFormEvaluatorEvaluateRequest._timeZoneId = timeZoneId;
 
 			return this;
 		}
@@ -144,8 +165,10 @@ public final class DDMFormEvaluatorEvaluateRequest {
 	private DDMFormLayout _ddmFormLayout;
 	private DDMFormValues _ddmFormValues;
 	private boolean _editingFieldValue;
+	private String _googlePlacesAPIKey;
 	private long _groupId;
 	private Locale _locale;
+	private String _timeZoneId;
 	private long _userId;
 	private boolean _viewMode;
 

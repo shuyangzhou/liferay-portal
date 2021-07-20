@@ -35,9 +35,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(enabled = false, immediate = true, service = JsonHelper.class)
 public class JsonHelperImpl implements JsonHelper {
 
-	public JsonHelperImpl() {
-	}
-
 	@Override
 	public String getFirstElementStringValue(String jsonArrayString) {
 		if (!isArray(jsonArrayString)) {

@@ -29,9 +29,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
  */
 public class CPInstanceImpl extends CPInstanceBaseImpl {
 
-	public CPInstanceImpl() {
-	}
-
 	@Override
 	public CommerceCatalog getCommerceCatalog() throws PortalException {
 		CPDefinition cpDefinition = getCPDefinition();

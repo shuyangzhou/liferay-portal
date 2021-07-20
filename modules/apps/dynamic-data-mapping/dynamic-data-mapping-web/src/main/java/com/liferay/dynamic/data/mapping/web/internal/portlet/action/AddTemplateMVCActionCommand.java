@@ -55,7 +55,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class AddTemplateMVCActionCommand extends DDMBaseMVCActionCommand {
+public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 
 	protected DDMTemplate addTemplate(ActionRequest actionRequest)
 		throws Exception {

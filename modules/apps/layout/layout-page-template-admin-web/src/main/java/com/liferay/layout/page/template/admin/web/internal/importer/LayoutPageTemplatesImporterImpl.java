@@ -1628,8 +1628,6 @@ public class LayoutPageTemplatesImporterImpl
 
 			_key = key;
 			_pageTemplateCollection = pageTemplateCollection;
-
-			_pageTemplateEntries = new HashMap<>();
 		}
 
 		public void addPageTemplateEntry(
@@ -1652,7 +1650,8 @@ public class LayoutPageTemplatesImporterImpl
 
 		private final String _key;
 		private final PageTemplateCollection _pageTemplateCollection;
-		private final Map<String, PageTemplateEntry> _pageTemplateEntries;
+		private final Map<String, PageTemplateEntry> _pageTemplateEntries =
+			new HashMap<>();
 
 	}
 

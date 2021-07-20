@@ -27,10 +27,23 @@ components:
                     items:
                         $ref: "#/components/schemas/ObjectField"
                     type: array
+                status:
+                    $ref: "#/components/schemas/Status"
+                    readOnly: true
+                system:
+                    readOnly: true
+                    type: boolean
             type: object
         ObjectField:
             # @review
             properties:
+                actions:
+                    additionalProperties:
+                        additionalProperties:
+                            type: string
+                        type: object
+                    readOnly: true
+                    type: object
                 id:
                     format: int64
                     readOnly: true
@@ -49,6 +62,17 @@ components:
                     description:
                         "The available default types are: BigDecimal, Boolean, Date, Double, Integer, Long and String."
                     type: string
+        Status:
+            properties:
+                code:
+                    format: int32
+                    readOnly: true
+                    type: integer
+                label:
+                    type: string
+                label_i18n:
+                    type: string
+            type: object
 info:
     description:
         "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
@@ -153,3 +177,37 @@ paths:
                     description:
                         ""
             tags: ["ObjectDefinition"]
+    "/object-definitions/{objectDefinitionId}/object-fields":
+        get:
+            operationId: getObjectDefinitionObjectFieldsPage
+            parameters:
+                - in: path
+                  name: objectDefinitionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ObjectField"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ObjectField"
+                                type: array
+                    description:
+                        ""
+            tags: ["ObjectField"]

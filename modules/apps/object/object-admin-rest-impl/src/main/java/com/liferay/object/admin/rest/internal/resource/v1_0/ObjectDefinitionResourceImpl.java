@@ -72,11 +72,18 @@ public class ObjectDefinitionResourceImpl
 			ObjectDefinition objectDefinition)
 		throws Exception {
 
+		com.liferay.object.model.ObjectDefinition
+			serviceBuilderObjectDefinition =
+				_objectDefinitionLocalService.addCustomObjectDefinition(
+					contextUser.getUserId(), objectDefinition.getName(),
+					transformToList(
+						objectDefinition.getObjectFields(),
+						this::_toObjectField));
+
 		return _toObjectDefinition(
-			_objectDefinitionLocalService.addCustomObjectDefinition(
-				contextUser.getUserId(), objectDefinition.getName(),
-				transformToList(
-					objectDefinition.getObjectFields(), this::_toObjectField)));
+			_objectDefinitionLocalService.publishCustomObjectDefinition(
+				serviceBuilderObjectDefinition.getUserId(),
+				serviceBuilderObjectDefinition.getObjectDefinitionId()));
 	}
 
 	private static ObjectField _toObjectField(
@@ -126,7 +133,8 @@ public class ObjectDefinitionResourceImpl
 		serviceBuilderObjectField.setIndexedLanguageId(
 			objectField.getIndexedLanguageId());
 		serviceBuilderObjectField.setName(objectField.getName());
-		serviceBuilderObjectField.setRequired(objectField.getRequired());
+		serviceBuilderObjectField.setRequired(
+			GetterUtil.getBoolean(objectField.getRequired()));
 		serviceBuilderObjectField.setType(objectField.getType());
 
 		return serviceBuilderObjectField;

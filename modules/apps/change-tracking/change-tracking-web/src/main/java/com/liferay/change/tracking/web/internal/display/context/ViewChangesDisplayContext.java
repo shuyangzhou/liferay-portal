@@ -33,10 +33,13 @@ import com.liferay.change.tracking.web.internal.scheduler.ScheduledPublishInfo;
 import com.liferay.change.tracking.web.internal.security.permission.resource.CTCollectionPermission;
 import com.liferay.change.tracking.web.internal.util.PublicationsPortletURLUtil;
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.change.tracking.sql.CTSQLModeThreadLocal;
+import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -60,7 +63,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.taglib.ui.UserPortraitTag;
 
 import java.io.Serializable;
 
@@ -84,7 +86,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import javax.portlet.RenderURL;
 import javax.portlet.ResourceURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -303,20 +304,7 @@ public class ViewChangesDisplayContext {
 		).put(
 			"ctCollectionId", _ctCollection.getCtCollectionId()
 		).put(
-			"currentUser",
-			() -> {
-				User user = _themeDisplay.getUser();
-
-				return JSONUtil.put(
-					"userId", user.getUserId()
-				).put(
-					"userName", user.getFullName()
-				).put(
-					"userPortraitHTML",
-					UserPortraitTag.getUserPortraitHTML(
-						StringPool.BLANK, StringPool.BLANK, user, _themeDisplay)
-				);
-			}
+			"currentUserId", _themeDisplay.getUserId()
 		).put(
 			"dataURL",
 			() -> {
@@ -335,7 +323,6 @@ public class ViewChangesDisplayContext {
 				deleteCTCommentURL.setParameter(
 					"ctCollectionId",
 					String.valueOf(_ctCollection.getCtCollectionId()));
-				deleteCTCommentURL.setParameter("ctEntryId", "0");
 				deleteCTCommentURL.setResourceID(
 					"/change_tracking/delete_ct_comment");
 
@@ -343,19 +330,15 @@ public class ViewChangesDisplayContext {
 			}
 		).put(
 			"discardURL",
-			() -> {
-				RenderURL discardURL = _renderResponse.createRenderURL();
-
-				discardURL.setParameter(
-					"mvcRenderCommandName", "/change_tracking/view_discard");
-				discardURL.setParameter(
-					"redirect", _themeDisplay.getURLCurrent());
-				discardURL.setParameter(
-					"ctCollectionId",
-					String.valueOf(_ctCollection.getCtCollectionId()));
-
-				return discardURL.toString();
-			}
+			PortletURLBuilder.createRenderURL(
+				_renderResponse
+			).setMVCRenderCommandName(
+				"/change_tracking/view_discard"
+			).setRedirect(
+				_themeDisplay.getURLCurrent()
+			).setParameter(
+				"ctCollectionId", _ctCollection.getCtCollectionId()
+			).buildString()
 		).put(
 			"expired",
 			_ctCollection.getStatus() == WorkflowConstants.STATUS_EXPIRED
@@ -368,7 +351,6 @@ public class ViewChangesDisplayContext {
 				getCTCommentsURL.setParameter(
 					"ctCollectionId",
 					String.valueOf(_ctCollection.getCtCollectionId()));
-				getCTCommentsURL.setParameter("ctEntryId", "0");
 				getCTCommentsURL.setResourceID(
 					"/change_tracking/get_ct_comments");
 
@@ -476,7 +458,6 @@ public class ViewChangesDisplayContext {
 				updateCTCommentURL.setParameter(
 					"ctCollectionId",
 					String.valueOf(_ctCollection.getCtCollectionId()));
-				updateCTCommentURL.setParameter("ctEntryId", "0");
 				updateCTCommentURL.setResourceID(
 					"/change_tracking/update_ct_comment");
 
@@ -721,6 +702,15 @@ public class ViewChangesDisplayContext {
 		return jsonArray;
 	}
 
+	private String _getMissingModelMessage(
+		long classPK, long modelClassNameId) {
+
+		return StringBundler.concat(
+			"Missing model from ", _ctCollection.getName(), ": {classPK=",
+			classPK, ", ctCollectionId=", _ctCollection.getCtCollectionId(),
+			", modelClassNameId=", modelClassNameId, "}");
+	}
+
 	private Set<Long> _getRootClassNameIds(CTClosure ctClosure) {
 		if (ctClosure == null) {
 			return Collections.emptySet();
@@ -891,21 +881,47 @@ public class ViewChangesDisplayContext {
 
 				T model = null;
 
-				if ((ctCollectionId == _ctCollection.getCtCollectionId()) &&
-					(ctSQLMode == CTSQLModeThreadLocal.CTSQLMode.DEFAULT)) {
+				try {
+					if ((ctCollectionId == _ctCollection.getCtCollectionId()) &&
+						(ctSQLMode == CTSQLModeThreadLocal.CTSQLMode.DEFAULT)) {
 
-					if (ctModelMap == null) {
-						ctModelMap = _ctDisplayRendererRegistry.fetchCTModelMap(
-							_ctCollection.getCtCollectionId(),
-							CTSQLModeThreadLocal.CTSQLMode.DEFAULT,
-							modelClassNameId, classPKs);
+						if (ctModelMap == null) {
+							ctModelMap =
+								_ctDisplayRendererRegistry.fetchCTModelMap(
+									_ctCollection.getCtCollectionId(),
+									CTSQLModeThreadLocal.CTSQLMode.DEFAULT,
+									modelClassNameId, classPKs);
+						}
+
+						model = ctModelMap.get(classPK);
+					}
+					else {
+						model = _ctDisplayRendererRegistry.fetchCTModel(
+							ctCollectionId, ctSQLMode, modelClassNameId,
+							classPK);
+					}
+				}
+				catch (SystemException systemException) {
+					if (systemException.getCause() instanceof ORMException) {
+						if (_ctCollection.getStatus() !=
+								WorkflowConstants.STATUS_EXPIRED) {
+
+							_log.error(
+								_getMissingModelMessage(
+									classPK, modelClassNameId),
+								systemException.getCause());
+						}
+						else if (_log.isDebugEnabled()) {
+							_log.debug(
+								_getMissingModelMessage(
+									classPK, modelClassNameId),
+								systemException.getCause());
+						}
+
+						continue;
 					}
 
-					model = ctModelMap.get(classPK);
-				}
-				else {
-					model = _ctDisplayRendererRegistry.fetchCTModel(
-						ctCollectionId, ctSQLMode, modelClassNameId, classPK);
+					throw systemException;
 				}
 
 				if (model == null) {
@@ -914,12 +930,7 @@ public class ViewChangesDisplayContext {
 						_log.isWarnEnabled()) {
 
 						_log.warn(
-							StringBundler.concat(
-								"Missing model from ", _ctCollection.getName(),
-								": {ctCollectionId=",
-								_ctCollection.getCtCollectionId(), ", classPK=",
-								classPK, ", modelClassNameId=",
-								modelClassNameId, "}"));
+							_getMissingModelMessage(classPK, modelClassNameId));
 					}
 
 					continue;

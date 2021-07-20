@@ -41,9 +41,6 @@ public class ElasticsearchInstanceSettingsBuilder {
 		return new ElasticsearchInstanceSettingsBuilder();
 	}
 
-	public ElasticsearchInstanceSettingsBuilder() {
-	}
-
 	public Settings build() {
 		load();
 

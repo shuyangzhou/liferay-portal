@@ -12,7 +12,7 @@
 <tbody>
 <tr>
 	<td>AUDIT_GRAPH_CATEGORY_CHECKBOX</td>
-	<td>//*[contains(@class, 'inline-item-after') and contains(text(),'${auditGraphCheckboxName}')]</td>
+	<td>//label/descendant-or-self::*[contains(text(),'${auditGraphCheckboxName}']</td>
 	<td></td>
 </tr>
 <tr>
@@ -322,6 +322,11 @@
 <tr>
 	<td>ICON_VIEW_LISTED_MODIFIED_DATE</td>
 	<td>//a[contains(@label,'View')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PANEL_INFO_VIEW</td>
+	<td>//*[contains(@title,'View')]</td>
 	<td></td>
 </tr>
 </tbody>

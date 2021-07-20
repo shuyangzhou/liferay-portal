@@ -316,6 +316,10 @@ public class ObjectFieldLocalServiceUtil {
 		return getService().getObjectFieldsCount();
 	}
 
+	public static int getObjectFieldsCount(long objectDefinitionId) {
+		return getService().getObjectFieldsCount(objectDefinitionId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

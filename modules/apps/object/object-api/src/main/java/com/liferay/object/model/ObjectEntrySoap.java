@@ -42,6 +42,7 @@ public class ObjectEntrySoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setExternalReferenceCode(model.getExternalReferenceCode());
 		soapModel.setObjectDefinitionId(model.getObjectDefinitionId());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setStatus(model.getStatus());
@@ -173,6 +174,14 @@ public class ObjectEntrySoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public String getExternalReferenceCode() {
+		return _externalReferenceCode;
+	}
+
+	public void setExternalReferenceCode(String externalReferenceCode) {
+		_externalReferenceCode = externalReferenceCode;
+	}
+
 	public long getObjectDefinitionId() {
 		return _objectDefinitionId;
 	}
@@ -230,6 +239,7 @@ public class ObjectEntrySoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private String _externalReferenceCode;
 	private long _objectDefinitionId;
 	private Date _lastPublishDate;
 	private int _status;

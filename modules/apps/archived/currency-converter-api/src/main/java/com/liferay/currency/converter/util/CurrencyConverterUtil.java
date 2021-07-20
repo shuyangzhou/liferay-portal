@@ -79,8 +79,6 @@ public class CurrencyConverterUtil {
 	}
 
 	private CurrencyConverterUtil() {
-		_currencyIds = new HashSet<>();
-
 		_currencyIds.add("AUD");
 		_currencyIds.add("BGN");
 		_currencyIds.add("BRL");
@@ -124,6 +122,6 @@ public class CurrencyConverterUtil {
 	private static final Map<String, Map<String, String>> _symbolsPool =
 		new ConcurrentHashMap<>();
 
-	private final Set<String> _currencyIds;
+	private final Set<String> _currencyIds = new HashSet<>();
 
 }

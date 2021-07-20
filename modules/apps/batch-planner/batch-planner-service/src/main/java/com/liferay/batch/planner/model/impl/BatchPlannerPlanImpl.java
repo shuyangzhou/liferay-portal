@@ -18,8 +18,4 @@ package com.liferay.batch.planner.model.impl;
  * @author Igor Beslic
  */
 public class BatchPlannerPlanImpl extends BatchPlannerPlanBaseImpl {
-
-	public BatchPlannerPlanImpl() {
-	}
-
 }

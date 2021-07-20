@@ -143,30 +143,6 @@ definition {
 			value1 = "${key_fieldName}");
 	}
 
-	@description = "This test ensures that the field label can be displayed or hidden."
-	@priority = "3"
-	test ShowAndHideGeolocationLabel {
-		var key_fieldName = "Geolocation";
-
-		DataEngine.toggleShowLabel(fieldLabel = "${key_fieldName}");
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
-
-		DataEngine.assertFieldNotPresent(fieldFieldLabel = "${key_fieldName}");
-
-		DataEngine.toggleShowLabel();
-
-		WebContentStructures.saveCP();
-
-		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "${key_fieldName}",
-			fieldName = "${key_fieldName}");
-	}
-
 	@description = "This test ensures a repeatable geolocation field can be duplicated on the Web Content."
 	@priority = "4"
 	test VerifyDuplicatedGeolocationOnWebContent {

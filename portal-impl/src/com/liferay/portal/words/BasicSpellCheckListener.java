@@ -32,7 +32,6 @@ public class BasicSpellCheckListener implements SpellCheckListener {
 		_text = text;
 
 		_textCharArray = text.toCharArray();
-		_invalidWords = new ArrayList<>();
 	}
 
 	public List<InvalidWord> getInvalidWords() {
@@ -96,7 +95,7 @@ public class BasicSpellCheckListener implements SpellCheckListener {
 		return insideHtmlTag;
 	}
 
-	private final List<InvalidWord> _invalidWords;
+	private final List<InvalidWord> _invalidWords = new ArrayList<>();
 	private final String _text;
 	private final char[] _textCharArray;
 

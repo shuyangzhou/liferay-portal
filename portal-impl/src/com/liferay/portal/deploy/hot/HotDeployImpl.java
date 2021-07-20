@@ -52,10 +52,6 @@ public class HotDeployImpl implements HotDeploy {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Initializing hot deploy manager " + hashCode());
 		}
-
-		_dependentHotDeployEvents = new ConcurrentLinkedQueue<>();
-		_deployedServletContextNames = new HashSet<>();
-		_hotDeployListeners = new ArrayList<>();
 	}
 
 	@Override
@@ -314,8 +310,10 @@ public class HotDeployImpl implements HotDeploy {
 	private static final Log _log = LogFactoryUtil.getLog(HotDeployImpl.class);
 
 	private boolean _capturePrematureEvents = true;
-	private final Queue<HotDeployEvent> _dependentHotDeployEvents;
-	private final Set<String> _deployedServletContextNames;
-	private final List<HotDeployListener> _hotDeployListeners;
+	private final Queue<HotDeployEvent> _dependentHotDeployEvents =
+		new ConcurrentLinkedQueue<>();
+	private final Set<String> _deployedServletContextNames = new HashSet<>();
+	private final List<HotDeployListener> _hotDeployListeners =
+		new ArrayList<>();
 
 }

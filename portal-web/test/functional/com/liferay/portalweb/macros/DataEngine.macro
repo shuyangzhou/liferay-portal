@@ -548,6 +548,25 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro assertCheckboxOptions {
+		if (!(isSet(fieldIndex))) {
+			var fieldIndex = "1";
+		}
+
+		if (!(isSet(optionIndex))) {
+			var optionIndex = "1";
+		}
+
+		for (var optionLabel : list "${optionLabelList}") {
+			AssertElementPresent(
+				fieldIndex = "${fieldIndex}",
+				key_fieldLabel = "${fieldLabel}",
+				key_optionLabel = "${optionLabel}",
+				locator1 = "DataEngineBuilder#OPTIONS_CHECKBOX_INDEXED",
+				optionIndex = "${optionIndex}");
+		}
+	}
+
 	macro assertFieldNotPresent {
 		if (isSet(fieldFieldLabel)) {
 			AssertElementNotPresent(
@@ -741,6 +760,25 @@ definition {
 			locator1 = "DataEngineRenderer#WEB_CONTENT_DISABLED_FIELD");
 	}
 
+	macro assertSwitcherOptions {
+		if (!(isSet(fieldIndex))) {
+			var fieldIndex = "1";
+		}
+
+		if (!(isSet(optionIndex))) {
+			var optionIndex = "1";
+		}
+
+		for (var optionLabel : list "${optionLabelList}") {
+			AssertElementPresent(
+				fieldIndex = "${fieldIndex}",
+				key_fieldLabel = "${fieldLabel}",
+				key_optionLabel = "${optionLabel}",
+				locator1 = "DataEngineBuilder#OPTIONS_SWITCHER_INDEXED",
+				optionIndex = "${optionIndex}");
+		}
+	}
+
 	macro createNewFieldset {
 		DataEngine.gotoCreateNewFieldset();
 
@@ -880,6 +918,8 @@ definition {
 	}
 
 	macro editFieldLabel {
+		WaitForVisible(locator1 = "Sidebar#PANEL_OPEN");
+
 		Navigator.gotoSidebarTab(tabName = "Builder");
 
 		if (isSet(fieldsetModal)) {
@@ -976,6 +1016,10 @@ definition {
 				key_optionFieldLabel = "${optionFieldLabel}",
 				locator1 = "Sidebar#OPTION_FIELD_REFERENCE_INPUT",
 				value1 = "${fieldReferenceOfFieldOption}");
+
+			Click.pauseClickAt(
+				key_tab = "Basic",
+				locator1 = "NavTab#TAB_LINK");
 		}
 		else {
 			TripleClick(
@@ -986,6 +1030,10 @@ definition {
 				index = "${index}",
 				locator1 = "Sidebar#OPTION_WITHOUT_LABEL_FIELD_REFERENCE_INPUT",
 				value1 = "${fieldReferenceOfFieldOption}");
+
+			Click.pauseClickAt(
+				key_tab = "Basic",
+				locator1 = "NavTab#TAB_LINK");
 		}
 
 		if (isSet(fieldFieldLabel)) {
@@ -1218,6 +1266,34 @@ definition {
 		}
 	}
 
+	macro editNumericType {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		if (IsElementPresent(locator1 = "Modal#MODAL")) {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_IN_MODAL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+		else {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+
+		Check.checkNotVisible(
+			key_fieldFieldLabel = "My numeric type is:",
+			key_optionValue = "${fieldNumericType}",
+			locator1 = "WCEditWebContent#SELECTION_OPTION");
+
+		Click(locator1 = "Sidebar#BACK");
+	}
+
 	macro gotoCreateNewFieldset {
 		Navigator.gotoSidebarTab(tabName = "Builder");
 
@@ -1381,6 +1457,42 @@ definition {
 			key_fieldFieldLabel = "${webContentMultipleSelectionFieldLabel}",
 			key_optionValue = "${webContentMultipleSelection}",
 			locator1 = "WCEditWebContent#SELECTION_OPTION");
+	}
+
+	macro toggleShowAsSwitcher {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		if (IsElementPresent(locator1 = "Modal#MODAL")) {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_IN_MODAL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+		else {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+
+		Navigator.gotoNavTab(navTab = "Basic");
+
+		if (IsChecked(checkboxName = "Show as a Switcher", locator1 = "Checkbox#ANY_CHECKBOX")) {
+			Uncheck.uncheckToggleSwitch(
+				checkboxName = "Show as a Switcher",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+		else {
+			Check.checkToggleSwitch(
+				checkboxName = "Show as a Switcher",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+
+		Click(locator1 = "Sidebar#BACK");
 	}
 
 	macro toggleShowLabel {
@@ -1567,6 +1679,34 @@ definition {
 			key_nestedFieldName = "${nestedField}",
 			locator1 = "DDMField#NESTED_INPUT",
 			value1 = "${nestedFieldData}");
+	}
+
+	macro viewNumericType {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		if (IsElementPresent(locator1 = "Modal#MODAL")) {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_IN_MODAL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+		else {
+			AssertClick.assertPartialTextClickAt(
+				index = "${index}",
+				key_fieldLabel = "${fieldLabel}",
+				locator1 = "DataEngineBuilder#FIELD_LABEL_INDEXED",
+				value1 = "${fieldLabel}");
+		}
+
+		AssertChecked.assertCheckedNotVisible(
+			key_fieldFieldLabel = "My numeric type is:",
+			key_optionValue = "${fieldNumericType}",
+			locator1 = "WCEditWebContent#SELECTION_OPTION");
+
+		Click(locator1 = "Sidebar#BACK");
 	}
 
 }

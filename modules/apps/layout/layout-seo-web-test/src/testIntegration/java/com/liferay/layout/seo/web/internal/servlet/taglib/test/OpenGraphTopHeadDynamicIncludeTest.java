@@ -105,6 +105,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -134,6 +135,18 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		_group = GroupTestUtil.addGroup();
 
 		_layout = LayoutTestUtil.addLayout(_group);
+
+		_serviceContext = ServiceContextTestUtil.getServiceContext(
+			_group.getGroupId());
+
+		_serviceContext.setRequest(_getHttpServletRequest());
+
+		ServiceContextThreadLocal.pushServiceContext(_serviceContext);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		ServiceContextThreadLocal.popServiceContext();
 	}
 
 	@Test
@@ -151,15 +164,9 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 			Collections.emptyMap(),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setRequest(_getHttpServletRequest());
-
-		ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
 		_testWithLayoutSEOCompanyConfiguration(
 			() -> _dynamicInclude.include(
-				serviceContext.getRequest(), mockHttpServletResponse,
+				_serviceContext.getRequest(), mockHttpServletResponse,
 				RandomTestUtil.randomString()),
 			true);
 
@@ -179,18 +186,12 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 			Collections.emptyMap(), 0, false, Collections.emptyMap(),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setRequest(_getHttpServletRequest());
-
-		ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
 		_testWithLayoutSEOCompanyConfiguration(
 			() -> _dynamicInclude.include(
-				serviceContext.getRequest(), mockHttpServletResponse,
+				_serviceContext.getRequest(), mockHttpServletResponse,
 				RandomTestUtil.randomString()),
 			true);
 
@@ -219,12 +220,6 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 			Collections.emptyMap(), false, Collections.emptyMap(),
 			Collections.emptyMap(), 0, false, Collections.emptyMap(),
 			serviceContext);
-
-		serviceContext = new ServiceContext();
-
-		serviceContext.setRequest(_getHttpServletRequest());
-
-		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
@@ -274,17 +269,11 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		_layoutLocalService.updateLayout(_layout);
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setRequest(_getHttpServletRequest());
-
-		ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
 		_testWithMockInfoItem(
-			serviceContext.getRequest(),
+			_serviceContext.getRequest(),
 			() -> _testWithLayoutSEOCompanyConfiguration(
 				() -> _dynamicInclude.include(
-					serviceContext.getRequest(), mockHttpServletResponse,
+					_serviceContext.getRequest(), mockHttpServletResponse,
 					RandomTestUtil.randomString()),
 				true));
 
@@ -300,15 +289,9 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setRequest(_getHttpServletRequest());
-
-		ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
 		_testWithLayoutSEOCompanyConfiguration(
 			() -> _dynamicInclude.include(
-				serviceContext.getRequest(), mockHttpServletResponse,
+				_serviceContext.getRequest(), mockHttpServletResponse,
 				RandomTestUtil.randomString()),
 			true);
 
@@ -682,7 +665,9 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 	}
 
 	@Test
-	public void testIncludeMappedTitleAndDescription() throws Exception {
+	public void testIncludeMappedTitleAndDescriptionWithoutSEOInlineFieldMapping()
+		throws Exception {
+
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
@@ -702,17 +687,58 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		_testWithMockInfoItem(
 			httpServletRequest,
-			() -> _testWithLayoutSEOCompanyConfiguration(
-				() -> _dynamicInclude.include(
-					httpServletRequest, mockHttpServletResponse,
-					RandomTestUtil.randomString()),
-				true));
+			() -> _testWithSEOInlineMappingConfiguration(
+				() -> _testWithLayoutSEOCompanyConfiguration(
+					() -> _dynamicInclude.include(
+						httpServletRequest, mockHttpServletResponse,
+						RandomTestUtil.randomString()),
+					true),
+				false));
 
 		Document document = Jsoup.parse(
 			mockHttpServletResponse.getContentAsString());
 
 		_assertMetaTag(document, "og:description", "mappedDescription");
 		_assertMetaTag(document, "og:title", "mappedTitle");
+	}
+
+	@Test
+	public void testIncludeMappedTitleAndDescriptionWithSEOInlineFieldMapping()
+		throws Exception {
+
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		_layout.setType(LayoutConstants.TYPE_ASSET_DISPLAY);
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			_layout.getTypeSettingsProperties();
+
+		typeSettingsUnicodeProperties.put(
+			"mapped-openGraphDescription", "mappedDescriptionFieldName");
+		typeSettingsUnicodeProperties.put(
+			"mapped-openGraphTitle", "mappedTitleFieldName");
+
+		_layoutLocalService.updateLayout(_layout);
+
+		HttpServletRequest httpServletRequest = _getHttpServletRequest();
+
+		_testWithMockInfoItem(
+			httpServletRequest,
+			() -> _testWithSEOInlineMappingConfiguration(
+				() -> _testWithLayoutSEOCompanyConfiguration(
+					() -> _dynamicInclude.include(
+						httpServletRequest, mockHttpServletResponse,
+						RandomTestUtil.randomString()),
+					true),
+				true));
+
+		Document document = Jsoup.parse(
+			mockHttpServletResponse.getContentAsString());
+
+		_assertMetaTag(
+			document, "og:description", "mappedDescriptionFieldName");
+		_assertMetaTag(document, "og:title", "mappedTitleFieldName");
 	}
 
 	@Test
@@ -882,20 +908,13 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 	public void testMetaTagValuesAreEscaped() throws Exception {
 		String xssContent = "'\"><img src=x onerror=alert()>";
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		serviceContext.setRequest(_getHttpServletRequest());
-
-		ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
 		_layoutSEOEntryLocalService.updateLayoutSEOEntry(
 			TestPropsValues.getUserId(), _layout.getGroupId(), false,
 			_layout.getLayoutId(), true,
 			Collections.singletonMap(LocaleUtil.US, "http://example.com"),
 			false, Collections.emptyMap(), Collections.emptyMap(), 0, true,
 			Collections.singletonMap(LocaleUtil.US, xssContent),
-			serviceContext);
+			_serviceContext);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
@@ -1288,9 +1307,28 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		}
 	}
 
+	private void _testWithSEOInlineMappingConfiguration(
+			UnsafeRunnable<Exception> unsafeRunnable, boolean enable)
+		throws Exception {
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					_SEO_INLINE_FIELD_MAPPING_PID,
+					HashMapDictionaryBuilder.<String, Object>put(
+						"enabled", enable
+					).build())) {
+
+			unsafeRunnable.run();
+		}
+	}
+
 	private static final String _LAYOUT_SEO_CONFIGURATION_PID =
 		"com.liferay.layout.seo.internal.configuration." +
 			"LayoutSEOCompanyConfiguration";
+
+	private static final String _SEO_INLINE_FIELD_MAPPING_PID =
+		"com.liferay.layout.seo.web.internal.configuration." +
+			"FFSEOInlineFieldMapping";
 
 	@Inject
 	private AssetDisplayPageEntryLocalService
@@ -1352,6 +1390,8 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 	@Inject
 	private LayoutSetLocalService _layoutSetLocalService;
+
+	private ServiceContext _serviceContext;
 
 	private static class MockInfoItemFieldValuesProvider
 		implements InfoItemFieldValuesProvider<MockObject> {

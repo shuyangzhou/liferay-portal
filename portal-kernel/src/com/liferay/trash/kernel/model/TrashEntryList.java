@@ -24,9 +24,6 @@ import java.io.Serializable;
 @Deprecated
 public class TrashEntryList implements Serializable {
 
-	public TrashEntryList() {
-	}
-
 	public TrashEntrySoap[] getArray() {
 		return _array;
 	}

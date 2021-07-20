@@ -62,9 +62,7 @@ public class PortalSessionDestroyer extends BasePortalLifecycle {
 				if (_log.isWarnEnabled()) {
 					_log.warn("User id is not in the session");
 				}
-			}
 
-			if (userIdObj == null) {
 				return;
 			}
 

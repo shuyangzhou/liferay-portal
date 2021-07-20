@@ -88,6 +88,11 @@ public class ObjectEntryLocalServiceTest {
 				TestPropsValues.getUserId(), "Irrelevant",
 				Collections.<ObjectField>emptyList());
 
+		_irrelevantObjectDefinition =
+			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				_irrelevantObjectDefinition.getObjectDefinitionId());
+
 		List<ObjectField> objectFields = Arrays.asList(
 			_createObjectField(true, false, "ageOfDeath", false, "Long"),
 			_createObjectField(true, false, "authorOfGospel", false, "Boolean"),
@@ -108,6 +113,11 @@ public class ObjectEntryLocalServiceTest {
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 				TestPropsValues.getUserId(), "Test", objectFields);
+
+		_objectDefinition =
+			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				_objectDefinition.getObjectDefinitionId());
 	}
 
 	@Test
@@ -155,6 +165,71 @@ public class ObjectEntryLocalServiceTest {
 					"\"emailAddress\"",
 				objectEntryValuesException.getMessage());
 		}
+	}
+
+	@Test
+	public void testAddOrUpdateObjectEntry() throws Exception {
+		_assertCount(0);
+
+		ObjectEntry objectEntry = _addOrUpdateObjectEntry(
+			"peter", 0,
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddress", "peter@liferay.com"
+			).put(
+				"firstName", "Peter"
+			).build());
+
+		_assertCount(1);
+
+		Map<String, Serializable> values =
+			ObjectEntryLocalServiceUtil.getValues(
+				objectEntry.getObjectEntryId());
+
+		Assert.assertEquals("peter@liferay.com", values.get("emailAddress"));
+		Assert.assertEquals("Peter", values.get("firstName"));
+
+		_addOrUpdateObjectEntry(
+			"peter", 0,
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddress", "pedro@liferay.com"
+			).put(
+				"firstName", "Pedro"
+			).build());
+
+		_assertCount(1);
+
+		values = ObjectEntryLocalServiceUtil.getValues(
+			objectEntry.getObjectEntryId());
+
+		Assert.assertEquals("pedro@liferay.com", values.get("emailAddress"));
+		Assert.assertEquals("Pedro", values.get("firstName"));
+
+		_addOrUpdateObjectEntry(
+			"james", 0,
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddress", "james@liferay.com"
+			).put(
+				"firstName", "James"
+			).build());
+
+		_assertCount(2);
+
+		_addOrUpdateObjectEntry(
+			"john", 0,
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddress", "john@liferay.com"
+			).put(
+				"firstName", "John"
+			).build());
+
+		_assertCount(3);
+
+		// TODO Test where group ID is not 0
+
+		// TODO Test where group ID does not belong to right company
+
+		// TODO Test object entries scoped to company vs. scoped to group
+
 	}
 
 	@Test
@@ -773,6 +848,17 @@ public class ObjectEntryLocalServiceTest {
 
 		return ObjectEntryLocalServiceUtil.addObjectEntry(
 			TestPropsValues.getUserId(), TestPropsValues.getGroupId(),
+			_objectDefinition.getObjectDefinitionId(), values,
+			ServiceContextTestUtil.getServiceContext());
+	}
+
+	private ObjectEntry _addOrUpdateObjectEntry(
+			String externalReferenceCode, long groupId,
+			Map<String, Serializable> values)
+		throws Exception {
+
+		return ObjectEntryLocalServiceUtil.addOrUpdateObjectEntry(
+			externalReferenceCode, TestPropsValues.getUserId(), groupId,
 			_objectDefinition.getObjectDefinitionId(), values,
 			ServiceContextTestUtil.getServiceContext());
 	}

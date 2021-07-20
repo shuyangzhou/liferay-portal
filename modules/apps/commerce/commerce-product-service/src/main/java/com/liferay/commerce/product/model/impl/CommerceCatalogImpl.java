@@ -27,9 +27,6 @@ import com.liferay.portal.model.impl.GroupImpl;
  */
 public class CommerceCatalogImpl extends CommerceCatalogBaseImpl {
 
-	public CommerceCatalogImpl() {
-	}
-
 	@Override
 	public String getCatalogDefaultLanguageId() {
 		String catalogDefaultLanguageId = super.getCatalogDefaultLanguageId();

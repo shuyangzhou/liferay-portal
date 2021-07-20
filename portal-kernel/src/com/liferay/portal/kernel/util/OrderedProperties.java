@@ -25,10 +25,6 @@ import java.util.Vector;
  */
 public class OrderedProperties extends Properties {
 
-	public OrderedProperties() {
-		_names = new Vector<>();
-	}
-
 	@Override
 	public synchronized Enumeration<Object> keys() {
 		return _names.elements();
@@ -62,6 +58,6 @@ public class OrderedProperties extends Properties {
 		return new LinkedHashSet(_names);
 	}
 
-	private final Vector<Object> _names;
+	private final Vector<Object> _names = new Vector<>();
 
 }

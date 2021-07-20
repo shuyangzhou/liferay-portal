@@ -369,16 +369,13 @@ public class MainServlet extends HttpServlet {
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Initialize themes");
-		}
-
-		if (_log.isDebugEnabled()) {
 			_log.debug("Initialize web settings");
 		}
 
 		try {
 			String xml = StreamUtil.toString(
-				servletContext.getResourceAsStream("/WEB-INF/web.xml"));
+				servletContext.getResourceAsStream(
+					"/WEB-INF/shielded-container-web.xml"));
 
 			_checkWebSettings(xml);
 		}
@@ -547,10 +544,6 @@ public class MainServlet extends HttpServlet {
 		}
 
 		httpServletRequest.setAttribute(WebKeys.CTX, getServletContext());
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Handle non-serializable request");
-		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Encrypt request");

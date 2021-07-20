@@ -22,9 +22,6 @@ import com.liferay.portal.kernel.model.Resource;
  */
 public class ResourceImpl implements Resource {
 
-	public ResourceImpl() {
-	}
-
 	@Override
 	public long getCodeId() {
 		return _codeId;

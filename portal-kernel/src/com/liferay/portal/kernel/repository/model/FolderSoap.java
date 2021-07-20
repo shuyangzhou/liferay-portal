@@ -82,9 +82,6 @@ public class FolderSoap implements Serializable {
 		return soapModels.toArray(new FolderSoap[0]);
 	}
 
-	public FolderSoap() {
-	}
-
 	public long getCompanyId() {
 		return _companyId;
 	}

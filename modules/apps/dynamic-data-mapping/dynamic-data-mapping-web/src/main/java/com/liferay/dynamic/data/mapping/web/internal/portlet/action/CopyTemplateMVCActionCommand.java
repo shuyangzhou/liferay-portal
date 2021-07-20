@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class CopyTemplateMVCActionCommand extends DDMBaseMVCActionCommand {
+public class CopyTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 
 	protected DDMTemplate copyTemplate(ActionRequest actionRequest)
 		throws Exception {

@@ -30,8 +30,6 @@ public class FallbackSettingsTest extends PowerMockito {
 	public FallbackSettingsTest() {
 		_settings = mock(Settings.class);
 
-		_fallbackKeys = new FallbackKeys();
-
 		_fallbackKeys.add("key1", "key2", "key3");
 		_fallbackKeys.add("key2", "key7");
 		_fallbackKeys.add("key3", "key5");
@@ -109,7 +107,7 @@ public class FallbackSettingsTest extends PowerMockito {
 		}
 	}
 
-	private final FallbackKeys _fallbackKeys;
+	private final FallbackKeys _fallbackKeys = new FallbackKeys();
 	private final FallbackSettings _fallbackSettings;
 	private final Settings _settings;
 

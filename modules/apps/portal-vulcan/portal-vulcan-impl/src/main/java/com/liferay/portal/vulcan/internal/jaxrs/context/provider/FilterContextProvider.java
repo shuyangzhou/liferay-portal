@@ -73,7 +73,7 @@ public class FilterContextProvider implements ContextProvider<Filter> {
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("OData entity model name: " + entityModel.getName());
+			_log.debug("OData entity model: " + entityModel);
 		}
 
 		FilterParser filterParser = _filterParserProvider.provide(entityModel);
@@ -88,10 +88,6 @@ public class FilterContextProvider implements ContextProvider<Filter> {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("OData filter: " + oDataFilter);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Entity model: " + entityModel);
 		}
 
 		Filter filter = _expressionConvert.convert(

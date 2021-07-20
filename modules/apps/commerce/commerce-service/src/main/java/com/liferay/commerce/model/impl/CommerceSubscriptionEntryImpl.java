@@ -27,9 +27,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 public class CommerceSubscriptionEntryImpl
 	extends CommerceSubscriptionEntryBaseImpl {
 
-	public CommerceSubscriptionEntryImpl() {
-	}
-
 	@Override
 	public CommerceOrderItem fetchCommerceOrderItem() {
 		return CommerceOrderItemLocalServiceUtil.fetchCommerceOrderItem(

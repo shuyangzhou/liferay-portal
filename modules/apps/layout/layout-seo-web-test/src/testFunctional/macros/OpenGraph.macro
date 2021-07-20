@@ -10,6 +10,13 @@ definition {
 			locator1 = "Translation#LOCALIZATION_NAME");
 	}
 
+	macro clearImage {
+		Click(
+			key_fieldLabel = "Image",
+			key_text = "Clear",
+			locator1 = "Button#ANY_WITH_LABEL");
+	}
+
 	macro configureOpenGraph {
 		if (isSet(customTitle)) {
 			var checkboxName = "Use Custom Title";
@@ -53,8 +60,6 @@ definition {
 				locator1 = "Modal#HEADER",
 				value1 = "Open Graph Image");
 
-			Pause(locator1 = "3000");
-
 			SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
 			AssertElementPresent(locator1 = "ItemSelector#SELECT_FILE_UPLOAD_IMAGE");
@@ -69,8 +74,6 @@ definition {
 				UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
 					locator1 = "TextInput#FILE",
 					value1 = "${uploadFileName}");
-
-				Pause(locator1 = "2000");
 
 				AssertElementPresent.pauseAssertVisible(
 					locator1 = "ItemSelector#ADD_BUTTON",
@@ -117,6 +120,24 @@ definition {
 		Button.click(button = "Save");
 	}
 
+	macro disableOpenGraphCustomSettings {
+		if (isSet(customTitle)) {
+			var checkboxName = "Use Custom Title";
+
+			if (IsChecked(locator1 = "Checkbox#ANY_CHECKBOX")) {
+				Click(locator1 = "Checkbox#ANY_CHECKBOX");
+			}
+		}
+
+		if (isSet(customDescription)) {
+			var checkboxName = "Use Custom Description";
+
+			if (IsChecked(locator1 = "Checkbox#ANY_CHECKBOX")) {
+				Click(locator1 = "Checkbox#ANY_CHECKBOX");
+			}
+		}
+	}
+
 	macro mapEditableTextToField {
 		Click(
 			key_mappedField = "${mappedField}",
@@ -130,6 +151,16 @@ definition {
 		Click(
 			key_mappedField = "${mappedField}",
 			locator1 = "PageEditor#EDITABLE_FIELD_TOOLBAR_MAP_BUTTON_SPECIFIC");
+	}
+
+	macro openToConfigInSystemSettings {
+		var baseURL = PropsUtil.get("portal.url");
+
+		if ("${portlet}" == "SEO") {
+			var portletId = "com.liferay.layout.seo.internal.configuration.LayoutSEOCompanyConfiguration";
+		}
+
+		Open(locator1 = "${baseURL}/group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet&_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_factoryPid=${portletId}&_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_mvcRenderCommandName=%2Fconfiguration_admin%2Fedit_configuration");
 	}
 
 	macro viewDefaultConfiguration {
@@ -178,6 +209,16 @@ definition {
 		}
 	}
 
+	macro viewImageAltDescriptionDefault {
+		AssertElementPresent(
+			key_text = "openGraphImageAlt",
+			locator1 = "TextInput#OPEN_GRAPH_IMAGE_ALT_DESCRIPTION_DISABLED");
+	}
+
+	macro viewImageFieldDefault {
+		AssertElementPresent(locator1 = "TextInput#OPEN_GRAPH_CUSTOM_IMAGE_DEFAULT_VALUE");
+	}
+
 	macro viewMappedField {
 		AssertTextEquals(
 			key_mappedField = "${mappedField}",
@@ -203,10 +244,28 @@ definition {
 		}
 	}
 
+	macro viewNoPreviewDescription {
+		AssertTextEquals(
+			locator1 = "SitePagesEditPage#PREVIEW_DESCRIPTION",
+			value1 = "");
+	}
+
+	macro viewNoPreviewImage {
+		AssertElementNotPresent(
+			key_imageName = "${imageName}",
+			locator1 = "SitePagesEditPage#PREVIEW_IMAGE");
+	}
+
 	macro viewOpenGraphProperties {
 		for (var ogProperty : list "${ogPropertyList}" ) {
 			AssertHTMLSourceTextPresent(value1 = "${ogProperty}");
 		}
+	}
+
+	macro viewPreviewImage {
+		AssertVisible(
+			key_imageName = "${imageName}",
+			locator1 = "SitePagesEditPage#PREVIEW_IMAGE");
 	}
 
 }

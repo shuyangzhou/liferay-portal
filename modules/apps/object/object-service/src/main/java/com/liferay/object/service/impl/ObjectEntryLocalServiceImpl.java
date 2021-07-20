@@ -44,15 +44,18 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelper;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
@@ -147,6 +150,40 @@ public class ObjectEntryLocalServiceImpl
 		_startWorkflowInstance(userId, objectEntry, serviceContext);
 
 		return objectEntry;
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public ObjectEntry addOrUpdateObjectEntry(
+			String externalReferenceCode, long userId, long groupId,
+			long objectDefinitionId, Map<String, Serializable> values,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		User user = _userLocalService.getUser(userId);
+
+		if (groupId != 0) {
+			Group group = _groupLocalService.getGroup(groupId);
+
+			if (user.getCompanyId() != group.getCompanyId()) {
+				throw new PrincipalException();
+			}
+		}
+
+		ObjectEntry objectEntry = objectEntryPersistence.fetchByG_C_ERC(
+			groupId, user.getCompanyId(), externalReferenceCode);
+
+		if (objectEntry != null) {
+			return updateObjectEntry(
+				userId, objectEntry.getObjectEntryId(), values, serviceContext);
+		}
+
+		objectEntry = addObjectEntry(
+			userId, groupId, objectDefinitionId, values, serviceContext);
+
+		objectEntry.setExternalReferenceCode(externalReferenceCode);
+
+		return objectEntryPersistence.update(objectEntry);
 	}
 
 	@Override
@@ -972,6 +1009,9 @@ public class ObjectEntryLocalServiceImpl
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private InlineSQLHelper _inlineSQLHelper;

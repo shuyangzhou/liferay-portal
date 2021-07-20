@@ -42,9 +42,6 @@ import java.util.ResourceBundle;
  */
 public class SegmentsExperimentRelImpl extends SegmentsExperimentRelBaseImpl {
 
-	public SegmentsExperimentRelImpl() {
-	}
-
 	@Override
 	public String getName(Locale locale) throws PortalException {
 		if (isControl()) {

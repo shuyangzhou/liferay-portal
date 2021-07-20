@@ -29,10 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CustomJspRegistryImpl implements CustomJspRegistry {
 
-	public CustomJspRegistryImpl() {
-		_servletContextNames = new ConcurrentHashMap<>();
-	}
-
 	@Override
 	public String getCustomJspFileName(
 		String servletContextName, String fileName) {
@@ -76,6 +72,7 @@ public class CustomJspRegistryImpl implements CustomJspRegistry {
 		_servletContextNames.remove(servletContextName);
 	}
 
-	private final Map<String, String> _servletContextNames;
+	private final Map<String, String> _servletContextNames =
+		new ConcurrentHashMap<>();
 
 }

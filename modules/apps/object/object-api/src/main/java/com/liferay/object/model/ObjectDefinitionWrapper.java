@@ -58,6 +58,7 @@ public class ObjectDefinitionWrapper
 		attributes.put("pkObjectFieldName", getPKObjectFieldName());
 		attributes.put("system", isSystem());
 		attributes.put("version", getVersion());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -147,6 +148,12 @@ public class ObjectDefinitionWrapper
 
 		if (version != null) {
 			setVersion(version);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
@@ -268,6 +275,16 @@ public class ObjectDefinitionWrapper
 	@Override
 	public String getShortName() {
 		return model.getShortName();
+	}
+
+	/**
+	 * Returns the status of this object definition.
+	 *
+	 * @return the status of this object definition
+	 */
+	@Override
+	public int getStatus() {
+		return model.getStatus();
 	}
 
 	/**
@@ -443,6 +460,16 @@ public class ObjectDefinitionWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the status of this object definition.
+	 *
+	 * @param status the status of this object definition
+	 */
+	@Override
+	public void setStatus(int status) {
+		model.setStatus(status);
 	}
 
 	/**

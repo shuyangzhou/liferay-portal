@@ -403,7 +403,7 @@ public class JournalArticleAssetRenderer
 			layout = themeDisplay.getLayout();
 		}
 
-		if (!_isShowDisplayPage(_article.getGroupId(), _article)) {
+		if (!_isShowDisplayPage(themeDisplay.getScopeGroupId(), _article)) {
 			String hitLayoutURL = getHitLayoutURL(
 				layout.isPrivateLayout(), noSuchEntryRedirect, themeDisplay);
 
@@ -663,10 +663,9 @@ public class JournalArticleAssetRenderer
 		AssetEntry assetEntry = assetRendererFactory.getAssetEntry(
 			JournalArticle.class.getName(), article.getResourcePrimKey());
 
-		boolean hasDisplayPage = AssetDisplayPageUtil.hasAssetDisplayPage(
-			groupId, assetEntry);
+		if (Validator.isNull(article.getLayoutUuid()) &&
+			!AssetDisplayPageUtil.hasAssetDisplayPage(groupId, assetEntry)) {
 
-		if (Validator.isNull(article.getLayoutUuid()) && !hasDisplayPage) {
 			return false;
 		}
 

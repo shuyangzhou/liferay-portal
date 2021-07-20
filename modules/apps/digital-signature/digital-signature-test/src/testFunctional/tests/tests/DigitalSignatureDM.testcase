@@ -117,6 +117,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-133993. Verify if not supported file disable the Digital Signature collect icon"
+	@ignore = "true"
 	@priority = "5"
 	test CanUnsupportedFileDisableCollectIcon {
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");

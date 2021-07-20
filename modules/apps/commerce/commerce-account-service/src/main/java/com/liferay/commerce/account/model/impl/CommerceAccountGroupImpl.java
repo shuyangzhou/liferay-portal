@@ -113,9 +113,6 @@ public class CommerceAccountGroupImpl extends CommerceAccountGroupBaseImpl {
 		return CommerceAccountConstants.ACCOUNT_GROUP_TYPE_STATIC;
 	}
 
-	public CommerceAccountGroupImpl() {
-	}
-
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(

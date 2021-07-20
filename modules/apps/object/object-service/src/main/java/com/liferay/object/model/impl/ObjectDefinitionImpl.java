@@ -33,9 +33,6 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 		return shortName;
 	}
 
-	public ObjectDefinitionImpl() {
-	}
-
 	@Override
 	public String getClassName() {
 		if (isSystem()) {

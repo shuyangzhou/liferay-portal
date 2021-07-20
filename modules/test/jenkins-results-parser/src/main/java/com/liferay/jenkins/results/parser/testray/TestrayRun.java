@@ -36,8 +36,6 @@ public class TestrayRun {
 		_testrayBuild = testrayBuild;
 		_batchName = batchName;
 
-		_properties = new Properties();
-
 		for (int i = propertiesList.size() - 1; i >= 0; i--) {
 			_properties.putAll(propertiesList.get(i));
 		}
@@ -195,7 +193,7 @@ public class TestrayRun {
 			"\\[(?<nameKey>[^\\]]+)\\](\\[(?<valueKey>[^\\]]+)\\])?");
 
 	private final String _batchName;
-	private final Properties _properties;
+	private final Properties _properties = new Properties();
 	private final TestrayBuild _testrayBuild;
 
 }

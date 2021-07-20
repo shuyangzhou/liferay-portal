@@ -289,6 +289,14 @@ public class ObjectDefinitionLocalServiceWrapper
 			objectDefinitionId);
 	}
 
+	@Override
+	public com.liferay.object.model.ObjectDefinition fetchObjectDefinition(
+		long companyId, String name) {
+
+		return _objectDefinitionLocalService.fetchObjectDefinition(
+			companyId, name);
+	}
+
 	/**
 	 * Returns the object definition with the matching UUID and company.
 	 *
@@ -313,9 +321,9 @@ public class ObjectDefinitionLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.object.model.ObjectDefinition>
-		getCustomObjectDefinitions() {
+		getCustomObjectDefinitions(int status) {
 
-		return _objectDefinitionLocalService.getCustomObjectDefinitions();
+		return _objectDefinitionLocalService.getCustomObjectDefinitions(status);
 	}
 
 	@Override
@@ -431,6 +439,15 @@ public class ObjectDefinitionLocalServiceWrapper
 		getSystemObjectDefinitions() {
 
 		return _objectDefinitionLocalService.getSystemObjectDefinitions();
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectDefinition
+			publishCustomObjectDefinition(long userId, long objectDefinitionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectDefinitionLocalService.publishCustomObjectDefinition(
+			userId, objectDefinitionId);
 	}
 
 	@Override

@@ -255,7 +255,8 @@ public class DDMTemplateStagedModelDataHandler
 				replaceExportContentReferences(
 					portletDataContext, template, template.getScript(),
 					portletDataContext.getBooleanParameter(
-						DDMPortletDataHandler.NAMESPACE, "referenced-content"),
+						BaseDDMPortletDataHandler.NAMESPACE,
+						"referenced-content"),
 					false);
 
 		template.setScript(script);

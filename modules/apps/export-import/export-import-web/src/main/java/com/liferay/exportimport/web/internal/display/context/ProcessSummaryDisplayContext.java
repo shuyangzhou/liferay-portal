@@ -43,9 +43,6 @@ import java.util.Set;
  */
 public class ProcessSummaryDisplayContext {
 
-	public ProcessSummaryDisplayContext() {
-	}
-
 	public List<String> getPageNames(
 		long groupId, boolean privateLayout, long[] selectedLayoutIds,
 		String languageId) {

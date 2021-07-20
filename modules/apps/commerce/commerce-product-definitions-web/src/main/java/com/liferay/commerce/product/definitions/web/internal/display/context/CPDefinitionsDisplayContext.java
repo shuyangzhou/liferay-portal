@@ -67,7 +67,6 @@ import javax.portlet.ActionURL;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderResponse;
-import javax.portlet.RenderURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -304,19 +303,22 @@ public class CPDefinitionsDisplayContext
 	public CreationMenu getCreationMenu() throws Exception {
 		CreationMenu creationMenu = new CreationMenu();
 
-		RenderURL renderURL = liferayPortletResponse.createRenderURL();
-
-		renderURL.setParameter(
-			"mvcRenderCommandName", "/cp_definitions/add_cp_definition");
-		renderURL.setParameter("backURL", cpRequestHelper.getCurrentURL());
-		renderURL.setWindowState(LiferayWindowState.POP_UP);
+		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+			liferayPortletResponse
+		).setMVCRenderCommandName(
+			"/cp_definitions/add_cp_definition"
+		).setBackURL(
+			cpRequestHelper.getCurrentURL()
+		).setWindowState(
+			LiferayWindowState.POP_UP
+		).build();
 
 		for (CPType cpType : getCPTypes()) {
-			renderURL.setParameter("productTypeName", cpType.getName());
+			portletURL.setParameter("productTypeName", cpType.getName());
 
 			creationMenu.addDropdownItem(
 				dropdownItem -> {
-					dropdownItem.setHref(renderURL.toString());
+					dropdownItem.setHref(portletURL.toString());
 					dropdownItem.setLabel(
 						cpType.getLabel(cpRequestHelper.getLocale()));
 					dropdownItem.setTarget("modal");

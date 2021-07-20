@@ -16,6 +16,7 @@
 		<field name="pkObjectFieldName" type="String" />
 		<field name="system" type="boolean" />
 		<field name="version" type="int" />
+		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.object.model.ObjectEntry">
 		<field name="mvccVersion" type="long" />
@@ -27,6 +28,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
+		<field name="externalReferenceCode" type="String" />
 		<field name="objectDefinitionId" type="long" />
 		<field name="lastPublishDate" type="Date" />
 		<field name="status" type="int" />

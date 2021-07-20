@@ -176,6 +176,17 @@ public class PortletLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.model.Portlet deployRemotePortlet(
+			long[] companyIds, com.liferay.portal.kernel.model.Portlet portlet,
+			java.lang.String[] categoryNames, boolean eagerDestroy,
+			boolean clearCache)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _portletLocalService.deployRemotePortlet(
+			companyIds, portlet, categoryNames, eagerDestroy, clearCache);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Portlet deployRemotePortlet(
 			com.liferay.portal.kernel.model.Portlet portlet,
 			java.lang.String categoryName)
 		throws com.liferay.portal.kernel.exception.PortalException {

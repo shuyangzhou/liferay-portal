@@ -15,11 +15,22 @@
 package com.liferay.fragment.collection.filter.category;
 
 import com.liferay.fragment.collection.filter.FragmentCollectionFilter;
+import com.liferay.fragment.collection.filter.category.display.context.FragmentCollectionFilterCategoryDisplayContext;
+import com.liferay.fragment.renderer.FragmentRendererContext;
+import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Locale;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Pablo Molina
@@ -35,5 +46,41 @@ public class FragmentCollectionFilterCategory
 	public String getLabel(Locale locale) {
 		return LanguageUtil.get(locale, "category");
 	}
+
+	@Override
+	public void render(
+		FragmentRendererContext fragmentRendererContext,
+		HttpServletRequest httpServletRequest,
+		HttpServletResponse httpServletResponse) {
+
+		try {
+			httpServletRequest.setAttribute(
+				FragmentCollectionFilterCategoryDisplayContext.class.getName(),
+				new FragmentCollectionFilterCategoryDisplayContext(
+					_fragmentEntryConfigurationParser,
+					fragmentRendererContext.getFragmentEntryLink(),
+					httpServletRequest));
+
+			RequestDispatcher requestDispatcher =
+				_servletContext.getRequestDispatcher("/page.jsp");
+
+			requestDispatcher.include(httpServletRequest, httpServletResponse);
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to render collection filter fragment", exception);
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FragmentCollectionFilterCategory.class);
+
+	@Reference
+	private FragmentEntryConfigurationParser _fragmentEntryConfigurationParser;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.fragment.collection.filter.category)"
+	)
+	private ServletContext _servletContext;
 
 }

@@ -324,6 +324,28 @@ definition {
 			locator1 = "WorkflowMetricsSLA#SLA_POSITION_BY_TITLE");
 	}
 
+	macro assertSLAProcessingDate {
+		while (IsElementNotPresent(
+				key_warningMessage = "${warningMessage}",
+				locator1 = "Message#WARNING_SPECIFIC")) {
+			Pause(locator1 = "10000");
+			Refresh();
+		}
+
+		AssertTextEquals.assertPartialText(
+			key_warningMessage = "${warningMessage}",
+			locator1 = "Message#WARNING_SPECIFIC",
+			value1 = "${warningMessage}");
+
+		while (IsElementNotPresent(
+				locator1 = "WorkflowMetricsSLA#SLA_PROCESS_DATE_MESSAGE")) {
+			Pause(locator1 = "10000");
+			Refresh();
+		}
+
+		AssertElementPresent(locator1 = "WorkflowMetricsSLA#SLA_PROCESS_DATE_MESSAGE");
+	}
+
 	macro assertTableOrder {
 		AssertTextEquals(
 			key_rowNumber = "${rowNumber}",
@@ -1133,6 +1155,14 @@ definition {
 			value1 = "${transitionOption}");
 	}
 
+	macro selectTransitionTask {
+		Click(
+			locator1 = "WorkflowAllItems#KEBAB_DROPDOWN",
+			task = "${task}");
+
+		Click(locator1 = "WorkflowAllItems#REASSIGN_TASK_DROPDOWN");
+	}
+
 	macro selectVelocityUnit {
 		var key_velocityUnit = "${velocityUnit}";
 
@@ -1492,6 +1522,12 @@ definition {
 		}
 	}
 
+	macro viewAllItemsItemSubject {
+		AssertElementPresent(
+			key_workflowItemSubject = "${workflowItemSubject}",
+			locator1 = "WorkflowMetrics#METRICS_WORKFLOW_ALL_ITEMS_ITEM_SUBJECT");
+	}
+
 	macro viewCreatedBySort {
 		AssertElementPresent(
 			key_value = "${position}",
@@ -1610,6 +1646,55 @@ definition {
 
 	macro viewSLASuccessMessage {
 		WaitForElementPresent(locator1 = "WorkflowMetricsSLA#SLA_SUCCESS_MESSAGE");
+	}
+
+	macro viewTaskFilterOnReassignTasks {
+		var key_processStep = "${processStep}";
+		var key_assigneeName = "${assigneeName}";
+
+		if (isSet(processStep)) {
+			Click(locator1 = "WorkflowReassignModal#PROCESS_STEP_DROPDOWN");
+
+			for (var processStep : list "${processStep}") {
+				Click(
+					key_processName = "${processStep}",
+					locator1 = "WorkflowReassignModal#PROCESS_STEP_DROPDOWN_OPTION");
+			}
+
+			Click(locator1 = "WorkflowReassignModal#PROCESS_STEP_DROPDOWN");
+
+			for (var processStep : list "${processStep}") {
+				AssertElementPresent(
+					key_itemName = "${processStep}",
+					locator1 = "WorkflowReassignModal#ITEM_SUBJECT_CHECK");
+			}
+		}
+
+		if (isSet(assigneeName)) {
+			Click(locator1 = "WorkflowReassignModal#ASSIGNEE_DROPDOWN");
+
+			for (var assigneeName : list "${assigneeName}") {
+				Click(
+					key_processName = "${processStep}",
+					locator1 = "WorkflowReassignModal#PROCESS_STEP_DROPDOWN_OPTION");
+			}
+
+			Click(locator1 = "WorkflowReassignModal#ASSIGNEE_DROPDOWN");
+
+			for (var assigneeName : list "${assigneeName}") {
+				AssertElementPresent(
+					key_itemName = "${assigneeName}",
+					locator1 = "WorkflowReassignModal#ITEM_SUBJECT_CHECK");
+			}
+		}
+	}
+
+	macro viewTooltipCompletionVelocity {
+		MouseOver(locator1 = "WorkflowMetrics#METRICS_COMPLETION_VELOCITY_TOOLTIP");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#TOOLTIP",
+			value1 = "Completion velocity tracks the number of completed workflow instances over the selected time period.");
 	}
 
 	macro viewUserWorkloadByStepOnAllItems {

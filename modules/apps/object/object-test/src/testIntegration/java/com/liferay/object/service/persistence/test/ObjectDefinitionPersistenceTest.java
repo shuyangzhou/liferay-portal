@@ -151,6 +151,8 @@ public class ObjectDefinitionPersistenceTest {
 
 		newObjectDefinition.setVersion(RandomTestUtil.nextInt());
 
+		newObjectDefinition.setStatus(RandomTestUtil.nextInt());
+
 		_objectDefinitions.add(_persistence.update(newObjectDefinition));
 
 		ObjectDefinition existingObjectDefinition =
@@ -196,6 +198,9 @@ public class ObjectDefinitionPersistenceTest {
 		Assert.assertEquals(
 			existingObjectDefinition.getVersion(),
 			newObjectDefinition.getVersion());
+		Assert.assertEquals(
+			existingObjectDefinition.getStatus(),
+			newObjectDefinition.getStatus());
 	}
 
 	@Test
@@ -240,6 +245,14 @@ public class ObjectDefinitionPersistenceTest {
 	}
 
 	@Test
+	public void testCountByS_S() throws Exception {
+		_persistence.countByS_S(
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextInt());
+
+		_persistence.countByS_S(RandomTestUtil.randomBoolean(), 0);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		ObjectDefinition newObjectDefinition = addObjectDefinition();
 
@@ -268,7 +281,8 @@ public class ObjectDefinitionPersistenceTest {
 			"objectDefinitionId", true, "companyId", true, "userId", true,
 			"userName", true, "createDate", true, "modifiedDate", true,
 			"dbTableName", true, "name", true, "pkObjectFieldDBColumnName",
-			true, "pkObjectFieldName", true, "system", true, "version", true);
+			true, "pkObjectFieldName", true, "system", true, "version", true,
+			"status", true);
 	}
 
 	@Test
@@ -583,6 +597,8 @@ public class ObjectDefinitionPersistenceTest {
 		objectDefinition.setSystem(RandomTestUtil.randomBoolean());
 
 		objectDefinition.setVersion(RandomTestUtil.nextInt());
+
+		objectDefinition.setStatus(RandomTestUtil.nextInt());
 
 		_objectDefinitions.add(_persistence.update(objectDefinition));
 

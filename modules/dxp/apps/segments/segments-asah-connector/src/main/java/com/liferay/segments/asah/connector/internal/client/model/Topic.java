@@ -24,9 +24,6 @@ import java.util.List;
  */
 public class Topic {
 
-	public Topic() {
-	}
-
 	public int getId() {
 		return _id;
 	}
@@ -67,9 +64,6 @@ public class Topic {
 	}
 
 	public static class TopicTerm {
-
-		public TopicTerm() {
-		}
 
 		public String getKeyword() {
 			return _keyword;

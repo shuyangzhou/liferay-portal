@@ -109,6 +109,12 @@ public class ObjectFieldLocalServiceImpl
 	}
 
 	@Override
+	public int getObjectFieldsCount(long objectDefinitionId) {
+		return objectFieldPersistence.countByObjectDefinitionId(
+			objectDefinitionId);
+	}
+
+	@Override
 	public void validateType(String type) throws PortalException {
 		if (!_types.contains(type)) {
 			throw new ObjectFieldTypeException("Invalid type " + type);

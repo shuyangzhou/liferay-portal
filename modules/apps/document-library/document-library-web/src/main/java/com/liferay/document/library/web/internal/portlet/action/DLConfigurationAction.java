@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = ConfigurationAction.class
 )
 public class DLConfigurationAction
-	extends ValidateRootFolderConfigurationAction {
+	extends BaseValidateRootFolderConfigurationAction {
 
 	@Override
 	public String getJspPath(HttpServletRequest httpServletRequest) {

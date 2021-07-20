@@ -516,6 +516,25 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro duplicateNotPublishedWorkflow {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Click(
+			key_workflowDefinitionTitle = "${workflowName}",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Duplicate");
+
+		Button.click(button = "Duplicate");
+
+		Type(
+			locator1 = "WorkflowDefinition#DEFINITION_TITLE",
+			value1 = "${workflowCopyName}");
+	}
+
 	macro duplicateSingleApproverWorkflow {
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
@@ -632,6 +651,24 @@ definition {
 
 	macro openWorkflowAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/${siteURLKey}/~/control_panel/manage?p_p_id=com_liferay_portal_workflow_web_internal_portlet_SiteAdministrationWorkflowPortlet");
+	}
+
+	macro permissionsWorkflowDefinition {
+		var key_workflowDefinitionTitle = "${workflowDefinitionTitle}";
+
+		Click(locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.click(menuItem = "Permissions");
+
+		AssertElementPresent(locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE_PERMISSIONS");
+	}
+
+	macro processBuilderFilterAndOrder {
+		var key_optionOrder = "${optionOrder}";
+
+		Click(locator1 = "AssetWorkflow#PROCESS_BUILDER_FILTER_AND_ORDER_BUTTON");
+
+		Click(locator1 = "AssetWorkflow#PROCESS_BUILDER_FILTER_AND_ORDER_OPTION");
 	}
 
 	macro publishExistingWorkflowDefinition {
@@ -882,6 +919,12 @@ definition {
 		MenuItem.clickNoError(menuItem = "Unpublish");
 
 		Alert.viewSuccessMessage();
+	}
+
+	macro updateDefinition {
+		PortletEntry.inputTitle(title = "${workflowDefinitionTitle}");
+
+		Button.click(button = "Update");
 	}
 
 	macro updateDueDateAssignedToMeTaskByActions {
@@ -1526,6 +1569,14 @@ definition {
 		AssertTextEquals(
 			locator1 = "TextInput#TITLE",
 			value1 = "${webContentTitle}");
+	}
+
+	macro viewWorkflowDefinition {
+		var key_workflowDefinitionTitle = "${workflowDefinitionTitle}";
+
+		Click(locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "View");
 	}
 
 	macro webContentGoToAddCP {

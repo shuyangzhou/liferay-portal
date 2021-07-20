@@ -314,6 +314,16 @@ definition {
 			webContentContent = "${webContentContent}",
 			webContentTitle = "${webContentTitle}");
 
+		if (isSet(webContentRichText)) {
+			Click(
+				key_fieldFieldLabel = "${fieldFieldLabel}",
+				locator1 = "WCEditWebContent#SOURCE_BUTTON");
+
+			Type.typeCodeMirrorEditorNoError(
+				locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+				value1 = "${webContentRichText}");
+		}
+
 		if (isSet(templateName)) {
 			if (IsTextNotEqual(inputFieldId = "ddmTemplateName", locator1 = "TextInput#INPUT_ID", value1 = "${templateName}")) {
 				WebContent.selectTemplateCP(
@@ -952,6 +962,14 @@ definition {
 				locator1 = "WCEditWebContent#HELP_TEXT",
 				value1 = "${fieldHelpText}");
 		}
+	}
+
+	macro checkLanguage {
+		Click.clickNoMouseOver(locator1 = "ContentDashboard#ROW_PANEL_WC");
+
+		Click(locator1 = "ContentDashboard#ICON_INFO_LISTED_MODIFIED_DATE");
+
+		Click(locator1 = "ContentDashboard#PANEL_INFO_VIEW");
 	}
 
 	macro clickMarginOfContentContainer {
@@ -1687,6 +1705,20 @@ definition {
 			key_fieldName = "FieldsGroup",
 			key_index = "${index}",
 			locator1 = "FormFields#FIELD_REMOVE");
+	}
+
+	macro saveAsDraft {
+		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
+
+		Click(locator1 = "ContentDashboard#EDIT_OPTION");
+
+		CKEditor.addContentInWebContent(
+			content = "Web Content Content",
+			fieldLabel = "content");
+
+		Click(locator1 = "Button#SAVE_AS_DRAFT");
+
+		Click(locator1 = "Icon#BACK");
 	}
 
 	macro saveAsDraftViaAP {

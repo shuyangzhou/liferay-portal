@@ -115,6 +115,8 @@ public class LayoutReportsDataMVCResourceCommand
 				"pageURLs",
 				_getPageURLsJSONArray(resourceRequest, resourceResponse, layout)
 			).put(
+				"privateLayout", layout.isPrivateLayout()
+			).put(
 				"validConnection", layoutReportsDataProvider.isValidConnection()
 			));
 	}

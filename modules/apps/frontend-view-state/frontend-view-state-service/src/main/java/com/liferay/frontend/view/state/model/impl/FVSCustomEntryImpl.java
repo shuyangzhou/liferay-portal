@@ -18,8 +18,4 @@ package com.liferay.frontend.view.state.model.impl;
  * @author Brian Wing Shun Chan
  */
 public class FVSCustomEntryImpl extends FVSCustomEntryBaseImpl {
-
-	public FVSCustomEntryImpl() {
-	}
-
 }

@@ -36,7 +36,5 @@ public class BlogsStatsUserImpl extends BlogsStatsUserBaseImpl {
 	 * stats user model instance should use the {@link
 	 * com.liferay.blogs.model.BlogsStatsUser} interface instead.
 	 */
-	public BlogsStatsUserImpl() {
-	}
 
 }

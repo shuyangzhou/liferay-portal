@@ -52,8 +52,6 @@ public class TestFileEntry implements FileEntry {
 		_folderId = folderId;
 		_groupId = groupId;
 		_inputStream = inputStream;
-
-		_date = new Date();
 	}
 
 	@Override
@@ -435,7 +433,7 @@ public class TestFileEntry implements FileEntry {
 
 	private static final Log _log = LogFactoryUtil.getLog(TestFileEntry.class);
 
-	private final Date _date;
+	private final Date _date = new Date();
 	private final String _fileName;
 	private final long _folderId;
 	private long _groupId;

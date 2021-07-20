@@ -52,23 +52,39 @@ definition {
 
 		var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Site Name");
 
-		Navigator.gotoSitePage(
-			pageName = "AC Page",
-			siteName = "Site Name");
+		for (var name : list "ac,liferay,dxp") {
+			JSONUser.addUser(
+				userEmailAddress = "${name}@liferay.com",
+				userFirstName = "${name}",
+				userLastName = "${name}",
+				userScreenName = "${name}");
+		}
 
-		FormPortlet.waitFormRenderer(text = "Submit");
+		ACDXPSettings.syncNewContactData();
 
-		FormFields.viewTextLabel(
-			fieldLabel = "Text",
-			fieldName = "Text");
+		for (var name : list "ac,liferay,dxp") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "${name}@liferay.com",
+				userLoginFullName = "${name} ${name}");
 
-		FormFields.editText(
-			fieldName = "Text",
-			fieldValue = "Test Assets");
+			Navigator.gotoSitePage(
+				pageName = "AC Page",
+				siteName = "Site Name");
 
-		FormPortlet.submitLocalizedSuccessfully(buttonName = "Submit");
+			FormPortlet.waitFormRenderer(text = "Submit");
 
-		Pause(locator1 = "10000");
+			FormFields.viewTextLabel(
+				fieldLabel = "Text",
+				fieldName = "Text");
+
+			FormFields.editText(
+				fieldName = "Text",
+				fieldValue = "Test Assets");
+
+			FormPortlet.submitLocalizedSuccessfully(buttonName = "Submit");
+
+			Pause(locator1 = "10000");
+		}
 
 		ACUtils.closeAllSessions();
 
@@ -94,9 +110,11 @@ definition {
 
 		ACTimeFilter.setLast24Hours();
 
-		AssertElementPresent(
-			key_userName = "Test Test",
-			locator1 = "ACSegments#SEGMENT_MEMBERS");
+		for (var name : list "ac,liferay,dxp") {
+			AssertElementPresent(
+				key_userName = "${name} ${name}",
+				locator1 = "ACSegments#SEGMENT_MEMBERS");
+		}
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8120 | Test Summary: Assert forms list shows all of the forms in a list"
@@ -141,10 +159,9 @@ definition {
 
 		ACAssets.accessAssets(titleName = "Created Form Name");
 
-		AssertTextEquals(
-			locator1 = "ACAssets#MATRIC_VALUE",
-			matricTitle = "Views",
-			value1 = "4");
+		ACAssets.viewVisitorsBehaviorMetric(
+			metricTitle = "Views",
+			metricValue = "4");
 	}
 
 }

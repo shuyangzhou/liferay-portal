@@ -2434,8 +2434,9 @@ public class GitHubWebhookPayloadProcessor {
 		Collections.emptyList();
 	private static final MultiPattern _whiteListedRepositoryMultiPattern =
 		new MultiPattern(
+			"com-liferay-.*", "liferay-fix-pack-builder-ee",
 			"liferay-jenkins-ee", "liferay-plugins(-ee)?",
-			"liferay-portal(-ee)?", "com-liferay-.*");
+			"liferay-portal(-ee)?");
 
 	private boolean _ciForwardEligible;
 	private final Properties _jenkinsBuildProperties;

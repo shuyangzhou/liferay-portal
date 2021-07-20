@@ -30,243 +30,603 @@ definition {
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanDuplicateNonPublishedProcess {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68247 CanDuplicateNonPublishedProcess pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "Single Approver");
+
+		Workflow.duplicateNotPublishedWorkflow(
+			workflowCopyName = "Copy of Single Approver",
+			workflowName = "Single Approver");
+
+		Navigator.gotoBack();
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "Single Approver");
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "Copy of Single Approver");
 	}
 
 	@description = "Verify that the user can select Duplicate option in the kebab menu for a particular row"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanDuplicateProcess {
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
 
-		// TODO LRQA-68241 CanDuplicateProcess pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		AssertElementPresent(
+			key_workflowInstanceName = "Copy of Single Approver",
+			locator1 = "AssetWorkflow#DETAILS_WORKFLOW_TITLE");
 	}
 
 	@description = "Verify that, when duplicating a process, the user is able to edit its title"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanEditTitleOfDuplicatedProcess {
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Single Approver 2");
 
-		// TODO LRQA-68244 CanEditTitleOfDuplicatedProcess pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		AssertElementPresent(
+			key_workflowInstanceName = "Single Approver 2",
+			locator1 = "AssetWorkflow#DETAILS_WORKFLOW_TITLE");
 	}
 
 	@description = "Verify that the user is able to filter by Not Published processes"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanFilterByNonPublishedProcesses {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68233 CanFilterByNonPublishedProcesses pending implementation
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
 
+		Navigator.gotoBack();
+
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Copy of Single Approver");
+
+		ProcessBuilderListView.filterAndOrder(filterOption = "Not Published");
+
+		ProcessBuilderListView.viewWorkflowIsPresent(workflowDefinitionTitle = "Copy of Single Approver");
+
+		ProcessBuilderListView.viewWorkflowIsNotPresent(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that the user is able to filter by Published processes"
 	@ignore = "Test Stub"
 	@priority = "3"
 	test CanFilterByPublishedProcesses {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68234 CanFilterByPublishedProcesses pending implementation
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
 
+		Navigator.gotoBack();
+
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Copy of Single Approver");
+
+		Click(locator1 = "Dropdown#FILTER_AND_ORDER");
+
+		MenuItem.click(menuItem = "Published");
+
+		AssertElementPresent(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE_PUBLISHED");
+
+		AssertElementNotPresent(
+			key_workflowDefinitionTitle = "Copy of Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE_PUBLISHED");
 	}
 
 	@description = "Verify that the user can not delete a published process"
 	@ignore = "Test Stub"
 	@priority = "5"
 	test CanNotDeletePublishedProcess {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68231 CanNotDeletePublishedProcess pending implementation
+		AssertElementPresent(
+			key_processName = "Single Approver",
+			key_section = "Published",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_IN_SECTION");
 
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		AssertElementNotPresent(
+			key_value = "Delete",
+			locator1 = "ProcessBuilderListView#UNPUBLISHED_OPTION");
 	}
 
 	@description = "Verify that the user is not able to search by Workflow description"
 	@ignore = "Test Stub"
 	@priority = "3"
 	test CanNotSearchByDescription {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68226 CanNotSearchByDescription pending implementation
+		ProcessBuilderListView.searchForWorkflow(workflowName = "workflow content");
 
+		ProcessBuilderListView.validateIfSearchItem(
+			numberResults = "0",
+			workflowName = "workflow content");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No workflow definitions are defined.");
 	}
 
 	@description = "Verify that the user can not unpublish a Workflow in use and system displays an error message"
 	@ignore = "Test Stub"
 	@priority = "5"
 	test CanNotUnpublishWorkflowInUse {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68243 CanNotUnpublishWorkflowInUse pending implementation
+		Navigator.gotoNavItem(navItem = "Configuration");
 
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
+
+		AssertElementPresent(
+			locator1 = "Message#ERROR",
+			value1 = "Workflow in use. Remove its assignment to this asset: Blogs Entry.");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that the user is able to order by Last Modified"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanOrderByLastModified {
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
 
-		// TODO LRQA-68236 CanOrderByLastModified pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.processBuilderFilterAndOrder(optionOrder = "Last Modified");
+
+		AssertElementPresent(
+			key_order = "2",
+			key_title = "Single Approver",
+			locator1 = "AssetWorkflow#DETAILS_WORKFLOW_TITLE_ORDER");
+
+		AssertElementPresent(
+			key_order = "3",
+			key_title = "Copy of Single Approver",
+			locator1 = "AssetWorkflow#DETAILS_WORKFLOW_TITLE_ORDER");
 	}
 
 	@description = "Verify that the user is able to order by Title"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanOrderByTitle {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68235 CanOrderByTitle pending implementation
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "A Workflow");
 
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Z Workflow");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Click(
+			key_text = "Filter and Order",
+			locator1 = "Button#ANY_WITH_SPAN");
+
+		Click(
+			key_value = "Title",
+			locator1 = "ProcessBuilderListView#DROPDOWN_ITEM");
+
+		AssertElementPresent(
+			key_index = "1",
+			key_processName = "A Workflow",
+			key_section = "Published",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_IN_SECTION_BY_INDEX");
+
+		AssertElementPresent(
+			key_index = "2",
+			key_processName = "Single Approver",
+			key_section = "Published",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_IN_SECTION_BY_INDEX");
+
+		AssertElementPresent(
+			key_index = "3",
+			key_processName = "Z Workflow",
+			key_section = "Published",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_IN_SECTION_BY_INDEX");
 	}
 
 	@description = "Verify that the user is able to reverse sort direction"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanReverseSortDirection {
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
 
-		// TODO LRQA-68237 CanReverseSortDirection pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.clickRevertSortDirection();
+
+		AssertTextEquals(
+			key_rowNumber = "2",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_TABLE_ROW",
+			value1 = "Copy of Single Approver");
+
+		AssertTextEquals(
+			key_rowNumber = "3",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_TABLE_ROW",
+			value1 = "Single Approver");
 	}
 
 	@description = "Verify that the user is able to search by Workflow title"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSearchByTitle {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68224 CanSearchByTitle pending implementation
+		ProcessBuilderListView.searchForWorkflow(workflowName = "Approver");
 
+		ProcessBuilderListView.validateIfSearchItem(
+			numberResults = "1",
+			workflowName = "Approver");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that search can be done using non-ASCII character"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSearchNonAsciiChar {
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "単一承認者");
 
-		// TODO LRQA-68225 CanSearchNonAsciiChar pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		ProcessBuilderListView.searchForWorkflow(workflowName = "単一");
+
+		AssertTextEquals(
+			key_rowNumber = "2",
+			locator1 = "ProcessBuilderListView#PROCESS_NAME_TABLE_ROW",
+			value1 = "単一承認者");
 	}
 
 	@description = "Verify that the user can select Edit option in the kebab menu for a particular row"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSelectEditOption {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68240 CanSelectEditOption pending implementation
+		Workflow.gotoEditWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		Workflow.updateDefinition(workflowDefinitionTitle = "New Process Title");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "New Process Title");
 	}
 
 	@description = "Verify that the user can select Edit option in the kebab menu for a Not Published process"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSelectEditOptionForNonPublishedProcess {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68246 CanSelectEditOptionForNonPublishedProcess pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		AssertTextEquals(
+			key_workflowDefinitionTitle = "Not Published",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE",
+			value1 = "Not Published");
+
+		Workflow.gotoEditWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
+
+		AssertTextEquals(
+			locator1 = "ProcessBuilderListView#WORKFLOW_HEADER_TITLE",
+			value1 = "Single Approver");
+
+		AssertEditable(locator1 = "WorkflowDefinition#DEFINITION_TITLE");
+
+		AssertElementPresent(locator1 = "Button#PUBLISH");
+
+		AssertElementPresent(locator1 = "Button#SAVE");
 	}
 
 	@description = "Verify that the user can select Permissions option in the kebab menu for a particular row"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSelectPermissionsOption {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68242 CanSelectPermissionsOption pending implementation
-
+		ProcessBuilderListView.gotoPermissions(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that the user can select Permissions option in the kebab menu for a Not Published process"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSelectPermissionsOptionForNonPublishedProcess {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68248 CanSelectPermissionsOptionForNonPublishedProcess pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		Workflow.permissionsWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that the user can select View option in the kebab menu for a particular row"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSelectViewOption {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68239 CanSelectViewOption pending implementation
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
 
+		MenuItem.clickNoError(menuItem = "View");
+
+		AssertElementPresent(
+			key_pageName = "Single Approver",
+			locator1 = "ProcessBuilderListView#PROCESS_BUILDER_HEADER_TITLE");
+
+		AssertNotEditable(locator1 = "WorkflowDefinition#DEFINITION_TITLE");
 	}
 
 	@description = "Verify that a duplicated definition can be Unpublished"
 	@ignore = "Test Stub"
 	@priority = "3"
 	test CanUnpublishDuplicatedDefinition {
+		Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver");
 
-		// TODO LRQA-68249 CanUnpublishDuplicatedDefinition pending implementation
+		Navigator.gotoBack();
 
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Copy of Single Approver");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "Copy of Single Approver");
 	}
 
 	@description = "Verify that the user can select View option in the kebab menu for a Not Published process"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanViewNonPublishedProcess {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68245 CanViewNonPublishedProcess pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		AssertTextEquals(
+			key_workflowDefinitionTitle = "Not Published",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE",
+			value1 = "Not Published");
+
+		Workflow.viewWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
+
+		AssertNotEditable(locator1 = "WorkflowDefinition#DEFINITION_TITLE");
+
+		AssertElementPresent(locator1 = "WorkflowDefinition#DEFINITION_VIEW_EDIT_BUTTON");
 	}
 
 	@description = "Verify that the Clear option cleans the search results"
 	@ignore = "Test Stub"
 	@priority = "3"
 	test ClearSearchResults {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68229 ClearSearchResults pending implementation
+		ProcessBuilderListView.searchForWorkflow(workflowName = "Approver");
 
+		Click(locator1 = "ProcessBuilderListView#CLEAR_BUTTON_PROCESS_BUILDER");
+
+		AssertElementNotPresent(locator1 = "ProcessBuilderListView#CLEAR_BUTTON_PROCESS_BUILDER");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that the correct columns are displayed: Title, Description, Last Modified"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test DisplaysColumnsTitleDescriptionLastModified {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68230 DisplaysColumnsTitleDescriptionLastModified pending implementation
+		AssertElementPresent(
+			key_columnName = "title",
+			locator1 = "ProcessBuilderListView#PROCESS_BUILDER_COLUMN_NAME");
 
+		AssertElementPresent(
+			key_columnName = "description",
+			locator1 = "ProcessBuilderListView#PROCESS_BUILDER_COLUMN_NAME");
+
+		AssertElementPresent(
+			key_columnName = "last-modified",
+			locator1 = "ProcessBuilderListView#PROCESS_BUILDER_COLUMN_NAME");
 	}
 
 	@description = "Verify that Not Published processes are displayed on table"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test DisplaysNonPublishedProcessesOnTable {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68232 DisplaysNonPublishedProcessesOnTable pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		AssertTextEquals(
+			key_workflowDefinitionTitle = "Not Published",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE",
+			value1 = "Not Published");
+
+		WorkflowMetrics.assertWorkflowProcessPresent(workflowProcessName = "Single Approver");
 	}
 
 	@description = "Verify that hovering the + button will display the text New Workflow"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test DisplaysText {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68227 DisplaysText pending implementation
-
+		AssertElementPresent(
+			key_tooltip = "New Workflow",
+			locator1 = "ProcessBuilderListView#TOOLTIP_MESSAGE");
 	}
 
 	@description = "Verify that the pagination component is displayed when the table has 5 items or more"
 	@ignore = "Test Stub"
 	@priority = "3"
 	test PaginationComponentIsDisplayed {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68238 PaginationComponentIsDisplayed pending implementation
+		var count = "2";
 
+		while ("${count}" != "6") {
+			Workflow.duplicateSingleApproverWorkflow(workflowName = "Copy of Single Approver ${count}");
+
+			Navigator.gotoBack();
+
+			Type(
+				locator1 = "TextInput#SEARCH",
+				value1 = "Single Approver ${count}");
+
+			Click(locator1 = "WorkflowMetricsProcessListView#SEARCH_BUTTON");
+
+			var count = ${count} + 1;
+		}
+
+		AssertElementPresent(
+			locator1 = "Pagination#ITEMS_PER_PAGE_SELECT",
+			value1 = "20 Entries");
+
+		Pagination.viewResults(results = "Showing 1 to 5 of 5 entries.");
 	}
 
 	@description = "Verify that the users are able to click on the + button and be directed to the New Workflow page"
 	@ignore = "Test Stub"
 	@priority = "5"
 	test RedirectToNewWorkflowPage {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68228 RedirectToNewWorkflowPage pending implementation
+		Click(locator1 = "Button#PLUS");
 
+		AssertElementPresent(
+			key_pageName = "New Workflow",
+			locator1 = "ProcessBuilderListView#PROCESS_BUILDER_HEADER_TITLE");
 	}
 
 	@description = "Verify that, in the error message when you try to unpublish a workflow in use, there is a link to the configuration tab"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test UserIsDirectedToConfigurationTab {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68264 UserIsDirectedToConfigurationTab pending implementation
+		Navigator.gotoNavItem(navItem = "Configuration");
 
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Unpublish");
+
+		Click(locator1 = "MyWorkflowTasks#UNPUBLISH_ALERT_ERROR_MESSAGE_LINK");
+
+		AssertElementPresent(
+			key_navItem = "Configuration",
+			locator1 = "NavBar#NAV_ITEM_LINK");
 	}
 
 }

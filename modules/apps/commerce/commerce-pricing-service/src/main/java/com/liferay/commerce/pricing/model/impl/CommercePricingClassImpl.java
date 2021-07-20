@@ -18,8 +18,4 @@ package com.liferay.commerce.pricing.model.impl;
  * @author Riccardo Alberti
  */
 public class CommercePricingClassImpl extends CommercePricingClassBaseImpl {
-
-	public CommercePricingClassImpl() {
-	}
-
 }

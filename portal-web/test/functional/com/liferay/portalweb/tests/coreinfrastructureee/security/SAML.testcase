@@ -2,6 +2,7 @@
 definition {
 
 	property app.server.bundles.size = "1";
+	property custom.properties = "javascript.single.page.application.enabled=false";
 	property databases.size = "1";
 	property dummy.socket.proxy.disabled = "true";
 	property portal.release = "true";
@@ -166,7 +167,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "SAML Admin");
 
-		Click(locator1 = "Icon#TOOLTIP");
+		MouseOver(locator1 = "Icon#TOOLTIP");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#TOOLTIP",
@@ -410,6 +411,7 @@ definition {
 
 	@priority = "4"
 	test AssertSSOIdleSessionTakesPrecedenceOverIdPSessionTimeout {
+		property custom.properties = "session.timeout=2";
 		property test.name.skip.portal.instance = "SAML#AssertSSOIdleSessionTakesPrecedenceOverIdPSessionTimeout";
 		property web.xml.timeout = "2";
 
@@ -496,6 +498,7 @@ definition {
 
 	@priority = "4"
 	test AssertSSOSessionExistsAfterSPSessionTimeout {
+		property custom.properties = "session.timeout=2";
 		property test.name.skip.portal.instance = "SAML#AssertSSOSessionExistsAfterSPSessionTimeout";
 		property web.xml.timeout = "2";
 
@@ -536,6 +539,7 @@ definition {
 
 	@priority = "4"
 	test AssertSSOSessionExpiresAfterMaximumSessionAge {
+		property custom.properties = "session.timeout=2";
 		property test.name.skip.portal.instance = "SAML#AssertSSOSessionExpiresAfterMaximumSessionAge";
 		property web.xml.timeout = "2";
 

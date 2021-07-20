@@ -135,9 +135,6 @@ public class CPDefinitionImpl extends CPDefinitionBaseImpl {
 		return null;
 	}
 
-	public CPDefinitionImpl() {
-	}
-
 	@Override
 	public Object clone() {
 		CPDefinitionImpl cpDefinitionImpl = (CPDefinitionImpl)super.clone();

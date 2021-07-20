@@ -264,23 +264,22 @@ public class CommercePriceListDisplayContext
 			getPriceListClayDataSetActionDropdownItems()
 		throws PortalException {
 
-		RenderResponse renderResponse =
-			commercePricingRequestHelper.getRenderResponse();
-
-		RenderURL portletURL = renderResponse.createRenderURL();
-
-		portletURL.setParameter(
-			"mvcRenderCommandName",
-			"/commerce_price_list/edit_commerce_price_list");
-		portletURL.setParameter(
-			"redirect", commercePricingRequestHelper.getCurrentURL());
-		portletURL.setParameter("commercePriceListId", "{id}");
-		portletURL.setParameter(
-			"screenNavigationCategoryKey",
-			CommercePriceListScreenNavigationConstants.CATEGORY_KEY_DETAILS);
-
 		List<ClayDataSetActionDropdownItem> clayDataSetActionDropdownItems =
-			getClayDataSetActionDropdownItems(portletURL.toString(), false);
+			getClayDataSetActionDropdownItems(
+				PortletURLBuilder.createRenderURL(
+					commercePricingRequestHelper.getRenderResponse()
+				).setMVCRenderCommandName(
+					"/commerce_price_list/edit_commerce_price_list"
+				).setRedirect(
+					commercePricingRequestHelper.getCurrentURL()
+				).setParameter(
+					"commercePriceListId", "{id}"
+				).setParameter(
+					"screenNavigationCategoryKey",
+					CommercePriceListScreenNavigationConstants.
+						CATEGORY_KEY_DETAILS
+				).buildString(),
+				false);
 
 		clayDataSetActionDropdownItems.add(
 			new ClayDataSetActionDropdownItem(

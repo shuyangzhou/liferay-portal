@@ -457,7 +457,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			UnsafeConsumer<Company, E> unsafeConsumer)
 		throws E {
 
-		forEachCompany(unsafeConsumer, companyLocalService.getCompanies(false));
+		List<Company> companies = null;
+
+		if (!CompanyThreadLocal.isLocked()) {
+			companies = companyLocalService.getCompanies(false);
+		}
+
+		forEachCompany(unsafeConsumer, companies);
 	}
 
 	@Override
@@ -488,11 +494,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			UnsafeConsumer<Long, E> unsafeConsumer)
 		throws E {
 
-		forEachCompanyId(
-			unsafeConsumer,
-			ListUtil.toLongArray(
-				companyLocalService.getCompanies(false),
-				Company::getCompanyId));
+		long[] companyIds = null;
+
+		if (!CompanyThreadLocal.isLocked()) {
+			companyIds = ListUtil.toLongArray(
+				companyLocalService.getCompanies(false), Company::getCompanyId);
+		}
+
+		forEachCompanyId(unsafeConsumer, companyIds);
 	}
 
 	@Override
@@ -1005,7 +1014,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = checkLogo(companyId);
 
-		imageLocalService.updateImage(company.getLogoId(), file);
+		imageLocalService.updateImage(
+			company.getCompanyId(), company.getLogoId(), file);
 
 		return company;
 	}
@@ -1023,7 +1033,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = checkLogo(companyId);
 
-		imageLocalService.updateImage(company.getLogoId(), inputStream);
+		imageLocalService.updateImage(
+			company.getCompanyId(), company.getLogoId(), inputStream);
 
 		return company;
 	}

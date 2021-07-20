@@ -22,9 +22,6 @@ import com.liferay.petra.string.StringBundler;
  */
 public class Author {
 
-	public Author() {
-	}
-
 	public String getId() {
 		return _id;
 	}

@@ -24,9 +24,6 @@ public class AssetEntryListInfoFilter implements InfoFilter {
 	public static final String KEY =
 		"com.liferay.asset.list.info.filter.AssetEntryListInfoFilter";
 
-	public AssetEntryListInfoFilter() {
-	}
-
 	public long[][] getAssetCategoryIds() {
 		return _assetCategoryIds;
 	}

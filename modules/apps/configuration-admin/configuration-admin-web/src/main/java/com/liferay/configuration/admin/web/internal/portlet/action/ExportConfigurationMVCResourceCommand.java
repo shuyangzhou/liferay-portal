@@ -263,7 +263,7 @@ public class ExportConfigurationMVCResourceCommand
 					factoryInstanceId, "scoped.");
 			}
 
-			fileName = factoryPid + StringPool.DASH + factoryInstanceId;
+			fileName = factoryPid + StringPool.TILDE + factoryInstanceId;
 		}
 
 		return fileName + ".config";

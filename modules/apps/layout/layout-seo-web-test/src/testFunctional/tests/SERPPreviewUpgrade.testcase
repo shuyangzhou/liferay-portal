@@ -2,6 +2,8 @@
 definition {
 
 	property database.types = "mariadb,mysql,postgresql";
+	property portal.release = "true";
+	property portal.upstream = "true";
 	property testray.component.names = "SEO";
 	property testray.main.component.name = "Upgrades Collaboration";
 
@@ -10,7 +12,7 @@ definition {
 
 		var portalURL = PropsUtil.get("portal.url");
 
-		AssertLocation(value1 = "${portalURL}/web/guest/home");
+		AssertLocation.assertPartialLocation(value1 = "${portalURL}/web/guest");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",

@@ -176,9 +176,6 @@ public class CommerceAddressImpl extends CommerceAddressBaseImpl {
 		return CommerceAddressConstants.ADDRESS_TYPE_BILLING_AND_SHIPPING;
 	}
 
-	public CommerceAddressImpl() {
-	}
-
 	@Override
 	public Country fetchCountry() {
 		return CountryLocalServiceUtil.fetchCountry(getCountryId());

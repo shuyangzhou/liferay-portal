@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Store Azure
 Bundle-SymbolicName: com.liferay.portal.store.azure
-Bundle-Version: 2.0.2
+Bundle-Version: 2.0.4
 Import-Package:\
 	!com.conversantmedia.util.concurrent,\
 	\

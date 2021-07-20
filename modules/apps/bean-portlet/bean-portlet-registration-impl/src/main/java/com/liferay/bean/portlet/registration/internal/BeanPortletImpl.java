@@ -622,12 +622,6 @@ public class BeanPortletImpl implements BeanPortlet {
 				supportedPublishingEvents);
 		}
 
-		if (!supportedPublishingEvents.isEmpty()) {
-			dictionary.put(
-				"javax.portlet.supported-publishing-event",
-				supportedPublishingEvents);
-		}
-
 		if (!supportedProcessingEvents.isEmpty()) {
 			dictionary.put(
 				"javax.portlet.supported-processing-event",

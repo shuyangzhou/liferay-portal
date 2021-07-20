@@ -35,9 +35,6 @@ import javax.naming.NamingException;
  */
 public abstract class BaseDBProcess implements DBProcess {
 
-	public BaseDBProcess() {
-	}
-
 	@Override
 	public void runSQL(Connection connection, String template)
 		throws IOException, SQLException {

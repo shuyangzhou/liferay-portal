@@ -28,8 +28,6 @@ public class JSONTranslatorPacket implements TranslatorPacket {
 		_sourceLanguageId = jsonObject.getString("sourceLanguageId");
 		_targetLanguageId = jsonObject.getString("targetLanguageId");
 
-		_fieldsMap = new LinkedHashMap<>();
-
 		JSONObject fieldsJSONObject = jsonObject.getJSONObject("fields");
 
 		for (String key : fieldsJSONObject.keySet()) {
@@ -52,7 +50,7 @@ public class JSONTranslatorPacket implements TranslatorPacket {
 		return _targetLanguageId;
 	}
 
-	private final Map<String, String> _fieldsMap;
+	private final Map<String, String> _fieldsMap = new LinkedHashMap<>();
 	private final String _sourceLanguageId;
 	private final String _targetLanguageId;
 

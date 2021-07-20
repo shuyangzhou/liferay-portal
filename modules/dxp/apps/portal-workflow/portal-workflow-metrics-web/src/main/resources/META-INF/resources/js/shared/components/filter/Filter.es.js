@@ -126,7 +126,7 @@ const Filter = ({
 	useEffect(() => {
 		selectDefaultItem();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [defaultItem]);
+	}, [defaultItem, getSelectedItems(items).length]);
 
 	useEffect(() => {
 		setFilteredItems(

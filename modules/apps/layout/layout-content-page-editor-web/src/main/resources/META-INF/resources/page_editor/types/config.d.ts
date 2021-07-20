@@ -96,7 +96,6 @@ export interface Config {
 	deleteFragmentEntryLinkCommentURL: string;
 	deleteItemURL: string;
 	deleteSegmentsExperienceURL: string;
-	discardDraftRedirectURL: string;
 	discardDraftURL: string;
 	draft: boolean;
 	duplicateItemURL: string;
@@ -156,7 +155,6 @@ export interface Config {
 	previewPageURL: string;
 	publishURL: string;
 	redirectURL: string;
-	relatedItemCollectionProvidersEnabled: boolean;
 	renderFragmentEntryURL: string;
 	selectedSegmentsEntryId: string;
 

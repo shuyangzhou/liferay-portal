@@ -23,9 +23,6 @@ import java.util.List;
  */
 public class TrashEntryList implements Serializable {
 
-	public TrashEntryList() {
-	}
-
 	public TrashEntrySoap[] getArray() {
 		return _array;
 	}

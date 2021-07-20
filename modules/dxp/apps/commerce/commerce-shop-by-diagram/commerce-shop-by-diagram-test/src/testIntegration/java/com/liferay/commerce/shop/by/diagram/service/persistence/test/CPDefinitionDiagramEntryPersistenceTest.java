@@ -216,10 +216,11 @@ public class CPDefinitionDiagramEntryPersistenceTest {
 	}
 
 	@Test
-	public void testCountByNumber() throws Exception {
-		_persistence.countByNumber(RandomTestUtil.nextInt());
+	public void testCountByCPDI_N() throws Exception {
+		_persistence.countByCPDI_N(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
-		_persistence.countByNumber(0);
+		_persistence.countByCPDI_N(0L, 0);
 	}
 
 	@Test
@@ -554,6 +555,11 @@ public class CPDefinitionDiagramEntryPersistenceTest {
 	private void _assertOriginalValues(
 		CPDefinitionDiagramEntry cpDefinitionDiagramEntry) {
 
+		Assert.assertEquals(
+			Long.valueOf(cpDefinitionDiagramEntry.getCPDefinitionId()),
+			ReflectionTestUtil.<Long>invoke(
+				cpDefinitionDiagramEntry, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "CPDefinitionId"));
 		Assert.assertEquals(
 			Integer.valueOf(cpDefinitionDiagramEntry.getNumber()),
 			ReflectionTestUtil.<Integer>invoke(

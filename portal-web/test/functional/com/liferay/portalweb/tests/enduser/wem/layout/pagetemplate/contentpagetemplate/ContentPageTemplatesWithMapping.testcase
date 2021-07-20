@@ -124,10 +124,11 @@ definition {
 
 		PageEditor.addFragment(
 			collectionName = "Featured Content",
+			composition = "true",
 			fragmentName = "Banner Center");
 
 		PageEditorEditableLink.gotoEditableFieldLink(
-			fragmentName = "Banner Center",
+			fragmentName = "Button",
 			id = "link");
 
 		PageEditorEditableLink.updateURL(url = "https://liferay.com");
@@ -552,29 +553,21 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Map web content image to background image field of Banner Center") {
-			PageEditorMapping.gotoEditableFieldMapping(
-				fragmentName = "Banner Center",
-				id = "banner-center");
-
-			PageEditorMapping.mapEditableFieldToAsset(
+			PageEditor.editLayoutContainer(
+				backgroundImage = "Mapping",
 				entryTitle = "WC WebContent Title",
-				navItem = "Web Content");
-
-			Select(
-				locator1 = "PageEditorEditableLink#FIELD",
-				value1 = "Image");
-
-			PageEditor.waitForAutoSave();
+				fieldName = "Image",
+				navItem = "Web Content",
+				panel = "Styles");
 		}
 
 		task ("Assert the mapped image is shown in background image field") {
-			AssertVisible(
-				key_imageName = "Document_2.jpeg",
-				locator1 = "Fragment#FRAGMENT_SECTION_BACKGROUND_IMAGE");
+			PageEditor.viewContainerStyle(backgroundImage = "Document_2.jpeg");
 
 			PageEditor.clickPublish();
 		}

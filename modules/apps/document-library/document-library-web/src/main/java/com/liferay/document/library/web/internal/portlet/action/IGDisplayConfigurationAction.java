@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = ConfigurationAction.class
 )
 public class IGDisplayConfigurationAction
-	extends ValidateRootFolderConfigurationAction {
+	extends BaseValidateRootFolderConfigurationAction {
 
 	@Override
 	public String getJspPath(HttpServletRequest httpServletRequest) {

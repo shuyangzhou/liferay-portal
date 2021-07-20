@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=com.liferay.bookmarks.model.BookmarksFolder",
 	service = TrashHandler.class
 )
-public class BookmarksFolderTrashHandler extends BookmarksBaseTrashHandler {
+public class BookmarksFolderTrashHandler extends BaseBookmarksTrashHandler {
 
 	@Override
 	public void deleteTrashEntry(long classPK) throws PortalException {

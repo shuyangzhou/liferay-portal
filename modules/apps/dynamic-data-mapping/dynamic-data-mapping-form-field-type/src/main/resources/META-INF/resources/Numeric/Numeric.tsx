@@ -86,6 +86,11 @@ const getMaskedValue = ({
 			};
 
 			mask = createNumberMask(config);
+
+			value = value.replace(
+				new RegExp('[.,]', 'g'),
+				symbols.decimalSymbol
+			);
 		}
 		else {
 			mask = adaptiveMask(value, inputMaskFormat as string);
@@ -203,6 +208,13 @@ const Numeric: React.FC<IProps> = ({
 			value = inputValue.raw.slice(0, -1);
 		}
 
+		if (inputMask && dataType === 'double') {
+			value = value.replace(
+				new RegExp(`[${symbols.thousandsSeparator}]`, 'g'),
+				''
+			);
+		}
+
 		const newValue = getMaskedValue({
 			append,
 			appendType,
@@ -216,6 +228,27 @@ const Numeric: React.FC<IProps> = ({
 			onChange({target: {value: newValue.raw}});
 		}
 	};
+
+	const maskedPlaceholder = useMemo<string | undefined>(() => {
+		if (!inputMask) {
+			return undefined;
+		}
+
+		if (dataType === 'double') {
+			return getMaskedValue({
+				append,
+				appendType,
+				dataType,
+				inputMask,
+				inputMaskFormat,
+				symbols,
+				value: '0.00'.replace('.', symbols.decimalSymbol),
+			}).masked;
+		}
+		else {
+			return inputMaskFormat?.replace(/\d/g, '_');
+		}
+	}, [append, appendType, dataType, inputMask, inputMaskFormat, symbols]);
 
 	return (
 		<FieldBase
@@ -237,12 +270,7 @@ const Numeric: React.FC<IProps> = ({
 				onBlur={onBlur}
 				onChange={handleChange}
 				onFocus={onFocus}
-				placeholder={
-					placeholder ||
-					(inputMask
-						? inputMaskFormat?.replace(/\d/g, '_')
-						: undefined)
-				}
+				placeholder={placeholder || maskedPlaceholder}
 				type="text"
 				value={inputValue.masked}
 			/>

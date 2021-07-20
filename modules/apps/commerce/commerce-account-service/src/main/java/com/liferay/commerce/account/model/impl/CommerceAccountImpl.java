@@ -165,9 +165,6 @@ public class CommerceAccountImpl extends CommerceAccountBaseImpl {
 		return CommerceAccountConstants.ACCOUNT_TYPE_GUEST;
 	}
 
-	public CommerceAccountImpl() {
-	}
-
 	@Override
 	public Group getCommerceAccountGroup() throws PortalException {
 		return CommerceAccountLocalServiceUtil.getCommerceAccountGroup(

@@ -357,6 +357,12 @@ public class ObjectFieldLocalServiceWrapper
 		return _objectFieldLocalService.getObjectFieldsCount();
 	}
 
+	@Override
+	public int getObjectFieldsCount(long objectDefinitionId) {
+		return _objectFieldLocalService.getObjectFieldsCount(
+			objectDefinitionId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

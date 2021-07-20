@@ -12,8 +12,6 @@
  * details.
  */
 
-import ClayAlert from '@clayui/alert';
-import ClayButton from '@clayui/button';
 import {useIsMounted} from '@liferay/frontend-js-react-web';
 import {fetch} from 'frontend-js-web';
 import PropTypes from 'prop-types';
@@ -23,9 +21,11 @@ import {LOAD_DATA, SET_DATA, SET_ERROR} from '../constants/actionTypes';
 import {ConstantsContext} from '../context/ConstantsContext';
 import {StoreDispatchContext, StoreStateContext} from '../context/StoreContext';
 import loadIssues from '../utils/loadIssues';
+import BasicInformation from './BasicInformation';
 import IssueDetail from './IssueDetail';
 import IssuesList from './IssuesList';
 import NotConfigured from './NotConfigured';
+import ErrorAlert from './error-alert/ErrorAlert';
 
 export default function LayoutReports({eventTriggered}) {
 	const isMounted = useIsMounted();
@@ -106,62 +106,38 @@ export default function LayoutReports({eventTriggered}) {
 		}
 	}, [eventTriggered, data, layoutReportsDataURL, getData]);
 
-	const onRelaunchButtonClick = () => {
-		const url = data.pageURLs.find(
-			(pageURL) =>
-				pageURL.languageId === (languageId || data.defaultLanguageId)
-		);
-
-		loadIssues({
-			dispatch: safeDispatch,
-			languageId,
-			portletNamespace,
-			url,
-		});
-	};
-
 	if (!data) {
 		return null;
 	}
 
-	const hasError = data.validConnection && error;
+	const hasError = (data.validConnection && error) || data.privateLayout;
 	const notConfigured = !loading && !data.validConnection;
+	const hasApiKey = !notConfigured;
 
-	return hasError ? (
-		<ErrorAlert error={error} onRelaunch={onRelaunchButtonClick} />
-	) : notConfigured ? (
-		<NotConfigured />
-	) : selectedIssue ? (
-		<IssueDetail />
-	) : (
-		<IssuesList />
+	return (
+		<>
+			{hasApiKey && (
+				<div className="pb-3 px-3">
+					<BasicInformation
+						defaultLanguageId={data.defaultLanguageId}
+						pageURLs={data.pageURLs}
+						selectedLanguageId={languageId}
+					/>
+				</div>
+			)}
+			{hasError ? (
+				<ErrorAlert />
+			) : notConfigured ? (
+				<NotConfigured />
+			) : selectedIssue ? (
+				<IssueDetail />
+			) : (
+				<IssuesList />
+			)}
+		</>
 	);
 }
 
 LayoutReports.propTypes = {
 	eventTriggered: PropTypes.bool.isRequired,
-};
-
-const ErrorAlert = ({error, onRelaunch}) =>
-	error?.message ? (
-		<ClayAlert displayType="danger" variant="stripe">
-			{error.message}
-
-			<ClayAlert.Footer>
-				<ClayButton.Group>
-					<ClayButton alert onClick={onRelaunch}>
-						{error.buttonTitle}
-					</ClayButton>
-				</ClayButton.Group>
-			</ClayAlert.Footer>
-		</ClayAlert>
-	) : (
-		<ClayAlert displayType="danger" variant="stripe">
-			{error}
-		</ClayAlert>
-	);
-
-ErrorAlert.propTypes = {
-	error: PropTypes.object.isRequired,
-	onRelaunch: PropTypes.func.isRequired,
 };

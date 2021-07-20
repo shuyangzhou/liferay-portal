@@ -68,7 +68,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCRenderCommand.class
 )
 public class ViewFileEntryMVCRenderCommand
-	extends GetFileEntryMVCRenderCommand {
+	extends BaseFileEntryMVCRenderCommand {
 
 	@Override
 	public String render(

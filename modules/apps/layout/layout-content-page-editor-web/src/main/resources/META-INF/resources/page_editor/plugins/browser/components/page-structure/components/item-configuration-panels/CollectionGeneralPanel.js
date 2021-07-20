@@ -42,7 +42,7 @@ const LAYOUT_OPTIONS = [
 
 const PAGINATION_TYPE_OPTIONS = [
 	{label: Liferay.Language.get('none'), value: ''},
-	{label: Liferay.Language.get('regular'), value: 'regular'},
+	{label: Liferay.Language.get('numeric'), value: 'numeric'},
 	{label: Liferay.Language.get('simple'), value: 'simple'},
 ];
 
@@ -306,7 +306,7 @@ export const CollectionGeneralPanel = ({item}) => {
 
 					<ClayForm.Group small>
 						<label htmlFor={collectionNumberOfItemsId}>
-							{Liferay.Language.get('max-number-of-items')}
+							{Liferay.Language.get('maximum-number-of-items')}
 						</label>
 						<ClayInput
 							id={collectionNumberOfItemsId}
@@ -335,7 +335,7 @@ export const CollectionGeneralPanel = ({item}) => {
 									htmlFor={collectionNumberOfItemsPerPageId}
 								>
 									{Liferay.Language.get(
-										'max-number-of-items-per-page'
+										'maximum-number-of-items-per-page'
 									)}
 								</label>
 								<ClayInput

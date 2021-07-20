@@ -84,6 +84,51 @@ definition {
 			accountUserName = "userfn1");
 	}
 
+	@description = "This test adds and removes multiple organizations from an account via management toolbar."
+	@priority = "4"
+	test CanAddAndRemoveOrganizationsInBulk {
+		for (var organizationNumber : list "1,2,3,4") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Users and Organizations");
+
+			Organization.addCP(
+				orgName = "Organization ${organizationNumber}",
+				orgType = "Organization");
+		}
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.addBusinessAccount(accountName = "Account with Organization");
+
+		Accounts.assignMultipleOrganizations(
+			accountName = "Account with Organization",
+			organizationNumber = "1,3,4");
+
+		for (var organizationNumber : list "1,3,4") {
+			Accounts.viewAssignee(assigneeName = "Organization ${organizationNumber}");
+		}
+
+		for (var organizationNumber : list "1,3") {
+			LexiconEntry.selectEntry(rowEntry = "Organization ${organizationNumber}");
+		}
+
+		ClickNoError(
+			key_text = "times-circle",
+			locator1 = "Icon#ANY");
+
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to remove the selected organizations?");
+
+		Alert.viewSuccessMessage();
+
+		for (var organizationNumber : list "1,3") {
+			LexiconEntry.viewNoEntry(rowEntry = "Organization ${organizationNumber}");
+		}
+
+		LexiconEntry.viewEntryName(rowEntry = "Organization 4");
+	}
+
 	@description = "This test adds a Person Account by changing the type in the dropdown upon creation."
 	@priority = "4"
 	test CanAddAPersonAccount {
@@ -255,6 +300,62 @@ definition {
 			deactivateType = "Management Toolbar");
 
 		Accounts.viewInactiveAccount(accountName = "Accounts Name 3 for Test");
+	}
+
+	@description = "This test deactivates and activates multiple entries via management toolbar"
+	@priority = "4"
+	test CanDeactivateAndActivateAccountsInBulk {
+		for (var accountNumber : list "1,2,3,4,5,6") {
+			Accounts.openAccountsAdmin();
+
+			Accounts.addBusinessAccount(accountName = "Account ${accountNumber}");
+		}
+
+		Accounts.openAccountsAdmin();
+
+		for (var accountNumber : list "1,3,5") {
+			LexiconEntry.selectEntry(rowEntry = "Account ${accountNumber}");
+		}
+
+		ClickNoError(
+			key_text = "hidden",
+			locator1 = "Icon#ANY");
+
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to deactivate this?");
+
+		Alert.viewSuccessMessage();
+
+		for (var accountNumber : list "1,3,5") {
+			LexiconEntry.viewNoEntry(rowEntry = "Account ${accountNumber}");
+		}
+
+		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+		for (var accountNumber : list "1,3,5") {
+			LexiconEntry.viewEntryName(rowEntry = "Account ${accountNumber}");
+		}
+
+		for (var accountNumber : list "2,4,6") {
+			LexiconEntry.viewNoEntry(rowEntry = "Account ${accountNumber}");
+		}
+
+		for (var accountNumber : list "1,3,5") {
+			LexiconEntry.selectEntry(rowEntry = "Account ${accountNumber}");
+		}
+
+		ClickNoError(
+			key_text = "undo",
+			locator1 = "Icon#ANY");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No accounts were found.");
+
+		ManagementBar.setFilterAndOrder(filterBy = "Active");
+
+		for (var accountNumber : list "1,3,5") {
+			LexiconEntry.viewEntryName(rowEntry = "Account ${accountNumber}");
+		}
 	}
 
 	@description = "This test asserts an account can be deleted successfully via management toolbar and menu item."
@@ -700,6 +801,89 @@ definition {
 			assigneeType = "Organizations");
 	}
 
+	@description = "This test removes a user from a person account"
+	@priority = "4"
+	test CanRemoveUserFromPersonAccount {
+		Accounts.openAccountsAdmin();
+
+		Accounts.addPersonAccount(
+			accountDescription = "This is a Person Account.",
+			accountName = "Person Account");
+
+		Accounts.addNewUserToPersonAccount(
+			accountName = "Person Account",
+			accountUserName = "userfn1",
+			userEmailAddress = "userfn1@liferay.com",
+			userFirstName = "userfn1",
+			userLastName = "userln1",
+			userScreenName = "usersn1");
+
+		Click(
+			key_text = "times-circle",
+			locator1 = "Icon#ANY");
+
+		Alert.viewMutedMessage(muteMessage = "Assign a user to this person account.");
+
+		Button.clickSave();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Person Account");
+
+		AssertElementNotPresent(
+			key_userName = "userfn1",
+			locator1 = "Account#USER_TABLE_NAME");
+	}
+
+	@description = "This test removes multiple users from an account in bulk via management toolbar"
+	@priority = "3"
+	test CanRemoveUsersFromAccountsInBulk {
+		Accounts.openAccountsAdmin();
+
+		Accounts.addBusinessAccount(accountName = "Business Account");
+
+		for (var accountUser : list "1,2,3,4") {
+			AccountUsers.openAccountUsersAdmin();
+
+			AccountUsers.addUser(
+				accountName = "Business Account",
+				userEmailAddress = "userea${accountUser}@liferay.com",
+				userFirstName = "userfn${accountUser}",
+				userLastName = "userln${accountUser}",
+				userScreenName = "usersn${accountUser}");
+		}
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		for (var accountUser : list "1,3,4") {
+			LexiconEntry.selectEntry(rowEntry = "userfn${accountUser} userln${accountUser}");
+		}
+
+		ClickNoError(
+			key_text = "times-circle",
+			locator1 = "Icon#ANY");
+
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to remove the selected users?");
+
+		Alert.viewSuccessMessage();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		for (var accountUser : list "1,3,4") {
+			LexiconEntry.viewNoEntry(rowEntry = "userfn${accountUser} userln${accountUser}");
+		}
+
+		LexiconEntry.viewEntryName(rowEntry = "userfn2 userln2");
+	}
+
 	@description = "This test sets default shipping and default billing addresses for an account."
 	@priority = "3"
 	test CanSetDefaultAddresses {
@@ -848,6 +1032,73 @@ definition {
 		Search.searchCP(searchTerm = "Back Icon Account");
 
 		LexiconEntry.viewNoEntry(rowEntry = "Back Icon Account");
+	}
+
+	@description = "This test removes domain set to an account."
+	@priority = "4"
+	test DisablingDomainValidationRemovesWarningMessages {
+		AccountConfiguration.enableAccountEmailDomain();
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.addAccountWithDomain(
+			accountName = "Business Account",
+			domainNames = "liferay.com");
+
+		Accounts.addNewUserWithSameDomain(
+			accountName = "Business Account",
+			assigneeName = "userfn",
+			emailDomainName = "liferay.com",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn",
+			validDomainNames = "liferay.com");
+
+		AccountConfiguration.disableAccountEmailDomain();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+		AssertElementNotPresent(locator1 = "Account#DOMAIN_SECTION");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		LexiconEntry.gotoAdd();
+
+		SelectFrame(
+			key_title = "Assign Users to Business Account",
+			locator1 = "IFrame#MODAL_ANY");
+
+		LexiconEntry.gotoAdd();
+
+		AssertElementNotPresent(
+			key_text = "View Valid Domains",
+			locator1 = "Button#ANY",
+			value1 = "View Valid Domains");
+
+		Type(
+			locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD",
+			value1 = "usersn1");
+
+		Type(
+			locator1 = "UsersAndOrganizationsEditUser#DETAILS_EMAIL_ADDRESS_FIELD",
+			value1 = "userea1@liferay.com");
+
+		Type(
+			locator1 = "UsersAndOrganizationsEditUser#DETAILS_FIRST_NAME_FIELD",
+			value1 = "userfn1");
+
+		Type(
+			locator1 = "UsersAndOrganizationsEditUser#DETAILS_LAST_NAME_FIELD",
+			value1 = "userln1");
+
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
+
+		Alert.viewSuccessMessage();
 	}
 
 	@description = "This is a use case for LPS-117171. It asserts that Filter By Navigation does not display when assigning a user to a Person Account since domains are not applicable for this type of account."

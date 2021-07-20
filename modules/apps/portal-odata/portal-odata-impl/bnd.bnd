@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal OData Implementation
 Bundle-SymbolicName: com.liferay.portal.odata.impl
-Bundle-Version: 4.0.3
+Bundle-Version: 4.0.5
 Import-Package:\
 	!com.google.protobuf.*,\
 	\

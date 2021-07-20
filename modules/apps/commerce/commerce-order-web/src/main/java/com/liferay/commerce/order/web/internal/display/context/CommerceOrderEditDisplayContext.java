@@ -47,7 +47,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Region;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -68,7 +67,6 @@ import java.util.List;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
-import javax.portlet.RenderURL;
 
 /**
  * @author Andrea Di Giorgi
@@ -158,21 +156,20 @@ public class CommerceOrderEditDisplayContext {
 			String mvcRenderCommandName)
 		throws Exception {
 
-		LiferayPortletResponse liferayPortletResponse =
-			_commerceOrderRequestHelper.getLiferayPortletResponse();
-
-		RenderURL portletURL = liferayPortletResponse.createRenderURL();
-
-		portletURL.setParameter("mvcRenderCommandName", mvcRenderCommandName);
-		portletURL.setParameter(Constants.CMD, Constants.ADD);
-		portletURL.setParameter(
-			"commerceOrderId", String.valueOf(getCommerceOrderId()));
-
-		portletURL.setWindowState(LiferayWindowState.POP_UP);
-
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
-				dropdownItem.setHref(portletURL.toString());
+				dropdownItem.setHref(
+					PortletURLBuilder.createRenderURL(
+						_commerceOrderRequestHelper.getLiferayPortletResponse()
+					).setMVCRenderCommandName(
+						mvcRenderCommandName
+					).setCMD(
+						Constants.ADD
+					).setParameter(
+						"commerceOrderId", getCommerceOrderId()
+					).setWindowState(
+						LiferayWindowState.POP_UP
+					).buildString());
 				dropdownItem.setLabel(
 					LanguageUtil.get(
 						_commerceOrderRequestHelper.getRequest(),

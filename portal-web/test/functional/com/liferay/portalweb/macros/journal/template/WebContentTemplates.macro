@@ -34,6 +34,8 @@ definition {
 	@summary = "Helper function to add description '${description}' to the template"
 	macro _inputDescription {
 		if (isSet(templateDescription)) {
+			Navigator.gotoSidebarTab(tabName = "Properties");
+
 			PortletEntry.inputDescription(description = "${templateDescription}");
 		}
 	}
@@ -41,6 +43,8 @@ definition {
 	@summary = "Helper function to link structure '${structureName}' to the template"
 	macro _inputStructure {
 		if (isSet(structureName)) {
+			Navigator.gotoSidebarTab(tabName = "Properties");
+
 			WaitForLiferayEvent.initializeLiferayEventLog();
 
 			Click(
@@ -207,6 +211,8 @@ definition {
 		WebContentTemplates._inputDescription(templateDescription = "${templateDescription}");
 
 		if (isSet(imageSourceURL)) {
+			Navigator.gotoSidebarTab(tabName = "Properties");
+
 			WebContent.addFeaturedImageFromURL(imageSourceURL = "${imageSourceURL}");
 		}
 
@@ -334,12 +340,14 @@ definition {
 
 		LexiconEntry.changeDisplayStyle(displayStyle = "table");
 
-		AssertTextEquals(
-			locator1 = "DDMSelectTemplate#TEMPLATE_TABLE_NAME",
-			value1 = "${templateName}");
+		AssertVisible(
+			key_tableEntry = "${templateName}",
+			locator1 = "LexiconTable#TABLE_ENTRY");
 
 		AssertTextEquals(
-			locator1 = "DDMSelectTemplate#TEMPLATE_TABLE_DESCRIPTION",
+			key_columnName = "description",
+			key_tableEntry = "${templateName}",
+			locator1 = "LexiconTable#TABLE_ENTRY_INFO",
 			value1 = "${templateDescription}");
 
 		if (isSet(structureName)) {
@@ -414,9 +422,9 @@ definition {
 	macro viewTableEntryCP {
 		var key_ddlTemplateName = "${templateName}";
 
-		AssertTextEquals(
-			locator1 = "DDMSelectTemplate#TEMPLATE_TABLE_NAME",
-			value1 = "${templateName}");
+		AssertVisible(
+			key_tableEntry = "${templateName}",
+			locator1 = "LexiconTable#TABLE_ENTRY");
 
 		if (isSet(templateSmallImage)) {
 			AssertVisible(
@@ -424,10 +432,10 @@ definition {
 				value1 = "${templateSmallImage}");
 		}
 		else {
-			var key_ddlTemplateDescription = "${templateDescription}";
-
 			AssertTextEquals(
-				locator1 = "DDMSelectTemplate#TEMPLATE_TABLE_DESCRIPTION",
+				key_columnName = "description",
+				key_tableEntry = "${templateName}",
+				locator1 = "LexiconTable#TABLE_ENTRY_INFO",
 				value1 = "${templateDescription}");
 		}
 	}

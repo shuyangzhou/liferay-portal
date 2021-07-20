@@ -257,9 +257,6 @@ public class OAuth2ApplicationScopeAliasesLocalServiceImpl
 				simpleEntryScopeAliases) {
 
 			_simpleEntryScopeAliases = simpleEntryScopeAliases;
-
-			_scopes = new ArrayList<>();
-			_scopeAliases = new ArrayList<>();
 		}
 
 		public ApplicationScope assignScope(Collection<String> scope) {
@@ -308,9 +305,9 @@ public class OAuth2ApplicationScopeAliasesLocalServiceImpl
 			_scopeAliases = _scopes;
 		}
 
-		private Collection<String> _scopeAliases;
+		private Collection<String> _scopeAliases = new ArrayList<>();
 		private ScopeNamespace _scopeNamespace;
-		private final Collection<String> _scopes;
+		private final Collection<String> _scopes = new ArrayList<>();
 		private final Map<Map.Entry<ScopeNamespace, String>, List<String>>
 			_simpleEntryScopeAliases;
 

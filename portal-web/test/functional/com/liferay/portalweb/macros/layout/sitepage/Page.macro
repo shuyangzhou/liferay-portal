@@ -268,6 +268,10 @@ definition {
 			value1 = "${friendlyURLEdit}");
 
 		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+
+		Alert.closeMessage(messageType = "SUCCESS");
 	}
 
 	macro editName {
@@ -456,7 +460,7 @@ definition {
 			key_oldFriendlyURL = "${activeURL}",
 			locator1 = "SitePages#FRIENDLY_URL_HISTORY_ITEM");
 
-		Click(locator1 = "Icon#TIMES");
+		Click(locator1 = "Modal#CLOSE_BUTTON");
 
 		AssertVisible(
 			locator1 = "TextInput#FRIENDLY_URL",
@@ -465,9 +469,11 @@ definition {
 		Button.clickSave();
 
 		Alert.viewSuccessMessage();
+
+		Alert.closeMessage(messageType = "SUCCESS");
 	}
 
-	macro selectFilterInCollectionCategoryFilter {
+	macro selectFilterInCollectionFilter {
 		if (isSet(columnNumber)) {
 			Click.clickNoWaitForVisible(
 				key_columnNumber = "${columnNumber}",

@@ -62,7 +62,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=com.liferay.document.library.kernel.model.DLFileShortcut",
 	service = TrashHandler.class
 )
-public class DLFileShortcutTrashHandler extends DLBaseTrashHandler {
+public class DLFileShortcutTrashHandler extends BaseDLTrashHandler {
 
 	@Override
 	public void deleteTrashEntry(long classPK) throws PortalException {

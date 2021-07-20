@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class AddStructureMVCActionCommand extends DDMBaseMVCActionCommand {
+public class AddStructureMVCActionCommand extends BaseDDMMVCActionCommand {
 
 	protected DDMStructure addStructure(ActionRequest actionRequest)
 		throws Exception {

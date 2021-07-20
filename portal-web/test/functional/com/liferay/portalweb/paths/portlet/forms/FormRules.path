@@ -37,6 +37,26 @@
 	<td></td>
 </tr>
 <tr>
+	<td>RULE_BUILDER_CONDITION_FIELD_PARAMETERS</td>
+	<td>//ul[contains(@class, 'timeline')][1]//li[@class='timeline-item'][1+${key_conditionRowNumber}]//div[@class='panel-body']/div[@class='form-group-autofit' and //div[@class='option-selected' and text()='${key_conditionField}'] and //div[@class='option-selected' and text()='${key_conditionOperator}']]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_BUILDER_CONDITION_FIELD_PARAMETERS_EXTENDED</td>
+	<td>//ul[contains(@class, 'timeline')][1]//li[@class='timeline-item'][1+${key_conditionRowNumber}]//div[@class='panel-body']/div[@class='form-group-autofit' and //div[@class='option-selected' and text()='${key_conditionField}'] and //div[@class='option-selected' and text()='${key_conditionOperator}'] and //div[@class='option-selected' and text()='${key_conditionValueType}'] and //input[@type='text' and @value='${key_conditionFieldValue}']]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_BUILDER_DELETE_CONDITION</td>
+	<td>//ul[contains(@class, 'timeline')][1]//li[contains(@class,'timeline-item')][1]/following-sibling::li[contains(@class, 'timeline-item')][${key_conditionRowNumber}]//div[contains(@class,'trash')]//button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_BUILDER_DELETE_MODAL_CONFIRMATION</td>
+	<td>//div[contains(@class,'d-block')]/div[contains(@class,'modal-dialog')]/div[@class='modal-content']/div[@class='modal-footer']/div[@class='modal-item-last']//button[text()='Delete']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>RULE_BUILDER_RULE_CONDITION_DROPDOWN</td>
 	<td>//div[contains(@class,'timeline-dropdown')]//button</td>
 	<td></td>
@@ -150,6 +170,11 @@
 </tr>
 <!--RULE_BUILDER_SUMMARY-->
 <tr>
+	<td>RULE_BUILDER_SUMMARY_CONDITION</td>
+	<td>//li[contains(@class, 'list-group-item')][${key_ruleNumber}]//div[contains(@class,'autofit-col-expand') and //div[text()='${key_conditionField}'] and //em[text()='${key_conditionOperator}']]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>RULE_BUILDER_SUMMARY_CONDITION_FIELD</td>
 	<td>//li[contains(@class, 'list-group-item')][${key_ruleNumber}]//div[contains(@class,'autofit-col-expand')]//span[contains(@class,'inline-item')]//div[contains(text(),'${key_conditionField}')]</td>
 	<td></td>
@@ -192,6 +217,11 @@
 <tr>
 	<td>RULE_ACTION_TARGET_FIELD_VALUE</td>
 	<td>//ul[contains(@class, 'timeline')][2]//li[contains(@class,'timeline-item')]/following-sibling::li[contains(@class, 'timeline-item')][${key_actionRowNumber}]//div[contains(@class,'form-group-item') and not(contains(@class, 'form-group-item-label'))][2]//div[contains(@class,'select-field-trigger')]//div[contains(text(),"${key_selectActionTargetValue}")]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VIEW_RULE_BUILDER_ACTION_CONDITION</td>
+	<td>//div[@class='form-group-item'][${key_positionNumber}]//div[contains(@class,'form-control results-chosen select-field-trigger')]//div[text()='${key_value}']</td>
 	<td></td>
 </tr>
 </tbody>

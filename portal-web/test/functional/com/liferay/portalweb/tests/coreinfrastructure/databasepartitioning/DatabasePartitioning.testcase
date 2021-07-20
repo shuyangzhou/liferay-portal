@@ -52,9 +52,11 @@ definition {
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "DM Document Title");
 
-		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+		// Workaround for LPS-135684
 
-		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
+		/*DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+
+		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");*/
 
 		User.firstLoginUI(
 			password = "test",
@@ -73,14 +75,18 @@ definition {
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "DM Document Title");
 
-		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+		// Workaround for LPS-135684
 
-		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
+		/*DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+
+		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");*/
 
 		SQL.assertDatabaseCount(
 			databaseFilter = "testPartition%",
 			databaseSubstring = "testPartition",
 			expectedCount = "2");
+
+		DBPartition.validateSchemas(schemaNamePrefix = "testPartition");
 	}
 
 	@priority = "5"
@@ -165,10 +171,10 @@ definition {
 			virtualHost = "www.able.com",
 			webId = "www.able.com");
 
-		User.firstLoginPG(
+		User.firstLoginUI(
 			password = "test",
-			userEmailAddress = "test@www.able.com",
-			virtualHostsURL = "http://www.able.com:8080");
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
 
 		Navigator.openSpecificURL(url = "http://www.able.com:8080");
 
@@ -191,7 +197,7 @@ definition {
 			webContentContent = "WC WebContent Content",
 			webContentTitle = "WC WebContent Title");
 
-		User.loginPG(
+		User.firstLoginUI(
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			userEmailAddress = "test@www.able.com");

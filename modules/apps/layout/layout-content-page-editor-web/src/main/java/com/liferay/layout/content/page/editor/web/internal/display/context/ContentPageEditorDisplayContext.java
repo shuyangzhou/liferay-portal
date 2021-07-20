@@ -127,7 +127,6 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -153,7 +152,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -326,8 +324,6 @@ public class ContentPageEditorDisplayContext {
 				"deleteItemURL",
 				getFragmentEntryActionURL(
 					"/layout_content_page_editor/delete_item")
-			).put(
-				"discardDraftRedirectURL", themeDisplay.getURLCurrent()
 			).put(
 				"discardDraftURL", _getDiscardDraftURL()
 			).put(
@@ -523,10 +519,6 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"redirectURL", _getRedirect()
 			).put(
-				"relatedItemCollectionProvidersEnabled",
-				_ffLayoutContentPageEditorConfiguration.
-					relatedItemCollectionProvidersEnabled()
-			).put(
 				"renderFragmentEntryURL",
 				getResourceURL(
 					"/layout_content_page_editor/get_fragment_entry_link")
@@ -618,8 +610,6 @@ public class ContentPageEditorDisplayContext {
 
 					return layoutStructure.toJSONObject();
 				}
-			).put(
-				"mappedInfoItems", _getMappedInfoItems()
 			).put(
 				"mappingFields", _getMappingFieldsJSONObject()
 			).put(
@@ -1058,7 +1048,7 @@ public class ContentPageEditorDisplayContext {
 			).setActionName(
 				"/layout_admin/discard_draft_layout"
 			).setRedirect(
-				themeDisplay.getURLCurrent()
+				_getRedirect()
 			).setParameter(
 				"selPlid", themeDisplay.getPlid()
 			).buildString();
@@ -1203,6 +1193,16 @@ public class ContentPageEditorDisplayContext {
 			if (ListUtil.isEmpty(filteredFragmentEntries)) {
 				continue;
 			}
+
+			filteredFragmentEntries.sort(
+				(filteredFragmentEntry1, filteredFragmentEntry2) -> {
+					String name1 = String.valueOf(
+						filteredFragmentEntry1.get("name"));
+					String name2 = String.valueOf(
+						filteredFragmentEntry2.get("name"));
+
+					return name1.compareTo(name2);
+				});
 
 			fragmentCollectionContributorsMap.add(
 				HashMapBuilder.<String, Object>put(
@@ -1836,8 +1836,8 @@ public class ContentPageEditorDisplayContext {
 		).buildString();
 	}
 
-	private Set<Map<String, Object>> _getMappedInfoItems() throws Exception {
-		Set<Map<String, Object>> mappedInfoItems = new HashSet<>();
+	private JSONObject _getMappingFieldsJSONObject() throws Exception {
+		JSONObject mappingFieldsJSONObject = JSONFactoryUtil.createJSONObject();
 
 		Set<LayoutDisplayPageObjectProvider<?>>
 			layoutDisplayPageObjectProviders =
@@ -1856,40 +1856,10 @@ public class ContentPageEditorDisplayContext {
 				layoutDisplayPageObjectProvider :
 					layoutDisplayPageObjectProviders) {
 
-			mappedInfoItems.add(
-				HashMapBuilder.<String, Object>put(
-					"className",
-					PortalUtil.getClassName(
-						layoutDisplayPageObjectProvider.getClassNameId())
-				).put(
-					"classNameId",
-					layoutDisplayPageObjectProvider.getClassNameId()
-				).put(
-					"classPK", layoutDisplayPageObjectProvider.getClassPK()
-				).put(
-					"classTypeId",
-					layoutDisplayPageObjectProvider.getClassTypeId()
-				).put(
-					"title",
-					layoutDisplayPageObjectProvider.getTitle(
-						themeDisplay.getLocale())
-				).build());
-		}
-
-		return mappedInfoItems;
-	}
-
-	private JSONObject _getMappingFieldsJSONObject() throws Exception {
-		Set<Map<String, Object>> mappedInfoItems = _getMappedInfoItems();
-
-		JSONObject mappingFieldsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		for (Map<String, Object> mappedInfoItem : mappedInfoItems) {
-			long classNameId = MapUtil.getLong(mappedInfoItem, "classNameId");
-			long classTypeId = MapUtil.getLong(mappedInfoItem, "classTypeId");
-
 			String uniqueMappingFieldKey =
-				classNameId + StringPool.DASH + classTypeId;
+				layoutDisplayPageObjectProvider.getClassNameId() +
+					StringPool.DASH +
+						layoutDisplayPageObjectProvider.getClassTypeId();
 
 			if (mappingFieldsJSONObject.has(uniqueMappingFieldKey)) {
 				continue;
@@ -1898,9 +1868,11 @@ public class ContentPageEditorDisplayContext {
 			mappingFieldsJSONObject.put(
 				uniqueMappingFieldKey,
 				MappingContentUtil.getMappingFieldsJSONArray(
-					String.valueOf(classTypeId), themeDisplay.getScopeGroupId(),
-					infoItemServiceTracker,
-					PortalUtil.getClassName(classNameId),
+					String.valueOf(
+						layoutDisplayPageObjectProvider.getClassTypeId()),
+					themeDisplay.getScopeGroupId(), infoItemServiceTracker,
+					PortalUtil.getClassName(
+						layoutDisplayPageObjectProvider.getClassNameId()),
 					themeDisplay.getLocale()));
 		}
 

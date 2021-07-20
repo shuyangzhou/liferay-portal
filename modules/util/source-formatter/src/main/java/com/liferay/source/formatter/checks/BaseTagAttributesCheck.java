@@ -149,7 +149,7 @@ public abstract class BaseTagAttributesCheck extends BaseFileCheck {
 			return s;
 		}
 
-		tag = formatTagAttributeType(tag);
+		tag = formatTagAttributeType(absolutePath, tag);
 
 		tag = sortHTMLTagAttributes(tag);
 
@@ -160,7 +160,9 @@ public abstract class BaseTagAttributesCheck extends BaseFileCheck {
 		return tag.toString();
 	}
 
-	protected Tag formatTagAttributeType(Tag tag) throws Exception {
+	protected Tag formatTagAttributeType(String absolutePath, Tag tag)
+		throws Exception {
+
 		return tag;
 	}
 

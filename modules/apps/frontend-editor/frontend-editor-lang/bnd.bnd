@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Frontend Editor Lang
 Bundle-SymbolicName: com.liferay.frontend.editor.lang
-Bundle-Version: 6.0.4
+Bundle-Version: 6.0.6
 Import-Package:\
 	com.liferay.portal.kernel.util;version="[7.38.0,99.0.0)",\
 	\

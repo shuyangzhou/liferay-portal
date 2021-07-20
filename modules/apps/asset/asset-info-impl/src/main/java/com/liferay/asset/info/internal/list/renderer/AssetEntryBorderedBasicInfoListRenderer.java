@@ -25,6 +25,6 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(immediate = true, service = InfoListRenderer.class)
 public class AssetEntryBorderedBasicInfoListRenderer
-	extends AssetEntryBasicInfoListRenderer
+	extends BaseAssetEntryBasicInfoListRenderer
 	implements BorderedBasicInfoListRenderer<AssetEntry> {
 }

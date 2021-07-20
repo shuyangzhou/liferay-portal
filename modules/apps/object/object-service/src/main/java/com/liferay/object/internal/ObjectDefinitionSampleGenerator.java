@@ -66,13 +66,6 @@ public class ObjectDefinitionSampleGenerator {
 
 		Company company = companies.get(0);
 
-		int count = _objectDefinitionLocalService.getObjectDefinitionsCount(
-			company.getCompanyId());
-
-		if (count > 0) {
-			return;
-		}
-
 		User user = _userLocalService.fetchUserByEmailAddress(
 			company.getCompanyId(), "test@liferay.com");
 
@@ -81,20 +74,31 @@ public class ObjectDefinitionSampleGenerator {
 		}
 
 		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				company.getCompanyId(), "C_SampleObjectDefinition");
+
+		if (objectDefinition != null) {
+			return;
+		}
+
+		objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				user.getUserId(), "SampleObjectDefinition",
 				Arrays.asList(
 					_createObjectField("able", "Long"),
 					_createObjectField("baker", "Boolean"),
-					_createObjectField("dog", "Date"),
-					_createObjectField("easy", "String"),
-					_createObjectField(true, true, null, "fox", "String"),
-					_createObjectField(
-						true, false, "en_US", "george", "String"),
-					_createObjectField(false, false, null, "how", "String"),
-					_createObjectField("item", "Double"),
-					_createObjectField("jig", "Integer"),
-					_createObjectField("king", "BigDecimal")));
+					_createObjectField("charlie", "Date"),
+					_createObjectField("dog", "String"),
+					_createObjectField(true, true, null, "easy", "String"),
+					_createObjectField(true, false, "en_US", "fox", "String"),
+					_createObjectField(false, false, null, "george", "String"),
+					_createObjectField("how", "Double"),
+					_createObjectField("item", "Integer"),
+					_createObjectField("jig", "BigDecimal")));
+
+		objectDefinition =
+			_objectDefinitionLocalService.publishCustomObjectDefinition(
+				user.getUserId(), objectDefinition.getObjectDefinitionId());
 
 		for (int i = 0; i < 100; i++) {
 			_objectEntryLocalService.addObjectEntry(
@@ -104,24 +108,24 @@ public class ObjectDefinitionSampleGenerator {
 				).put(
 					"baker", (i % 2) == 0
 				).put(
-					"dog", new Date()
+					"charlie", new Date()
 				).put(
-					"easy",
+					"dog",
 					"The quick brown fox jumps over the lazy dog. " + i + "!"
 				).put(
-					"fox", "test" + i
+					"easy", "test" + i
 				).put(
-					"george",
+					"fox",
 					"The english brown fox trusted the lazy dog. " + i + "!"
 				).put(
-					"how",
+					"george",
 					"The unsearchable brown fox jumps over the lazy dog. " + i
 				).put(
-					"item", 180.5D + i
+					"how", 180.5D + i
 				).put(
-					"jig", 5 + i
+					"item", 5 + i
 				).put(
-					"king", BigDecimal.valueOf(45L + i)
+					"jig", BigDecimal.valueOf(45L + i)
 				).build(),
 				new ServiceContext());
 		}

@@ -17,7 +17,7 @@ package com.liferay.commerce.internal.upgrade.v7_0_0;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.service.AccountEntryLocalServiceUtil;
 import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.model.impl.CommerceAddressImpl;
+import com.liferay.commerce.constants.CommerceAddressConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -62,9 +62,7 @@ public class CommerceAddressUpgradeProcess extends UpgradeProcess {
 				address.setClassPK(resultSet.getLong("classPK"));
 				address.setCountryId(resultSet.getLong("countryId"));
 				address.setRegionId(resultSet.getLong("regionId"));
-				address.setTypeId(
-					CommerceAddressImpl.toAddressTypeId(
-						resultSet.getInt("type_")));
+				address.setTypeId(_getTypeId(resultSet.getInt("type_")));
 				address.setCity(resultSet.getString("city"));
 				address.setDescription(resultSet.getString("description"));
 				address.setLatitude(resultSet.getDouble("latitude"));
@@ -86,6 +84,21 @@ public class CommerceAddressUpgradeProcess extends UpgradeProcess {
 
 			runSQL("drop table CommerceAddress");
 		}
+	}
+
+	private int _getTypeId(int commerceAddressType) {
+		if (CommerceAddressConstants.ADDRESS_TYPE_BILLING ==
+				commerceAddressType) {
+
+			return 14000;
+		}
+		else if (CommerceAddressConstants.ADDRESS_TYPE_SHIPPING ==
+					commerceAddressType) {
+
+			return 14002;
+		}
+
+		return 14001;
 	}
 
 	private void _setDefaultBilling(Address address, boolean defaultBilling) {

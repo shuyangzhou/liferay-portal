@@ -36,9 +36,6 @@ import java.util.List;
  */
 public class CommerceOrderItemImpl extends CommerceOrderItemBaseImpl {
 
-	public CommerceOrderItemImpl() {
-	}
-
 	@Override
 	public CPInstance fetchCPInstance() {
 		return CPInstanceLocalServiceUtil.fetchCPInstance(getCPInstanceId());

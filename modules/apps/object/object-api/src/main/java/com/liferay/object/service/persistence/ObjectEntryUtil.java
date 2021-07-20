@@ -711,6 +711,86 @@ public class ObjectEntryUtil {
 	}
 
 	/**
+	 * Returns the object entry where groupId = &#63; and companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchObjectEntryException</code> if it could not be found.
+	 *
+	 * @param groupId the group ID
+	 * @param companyId the company ID
+	 * @param externalReferenceCode the external reference code
+	 * @return the matching object entry
+	 * @throws NoSuchObjectEntryException if a matching object entry could not be found
+	 */
+	public static ObjectEntry findByG_C_ERC(
+			long groupId, long companyId, String externalReferenceCode)
+		throws com.liferay.object.exception.NoSuchObjectEntryException {
+
+		return getPersistence().findByG_C_ERC(
+			groupId, companyId, externalReferenceCode);
+	}
+
+	/**
+	 * Returns the object entry where groupId = &#63; and companyId = &#63; and externalReferenceCode = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param companyId the company ID
+	 * @param externalReferenceCode the external reference code
+	 * @return the matching object entry, or <code>null</code> if a matching object entry could not be found
+	 */
+	public static ObjectEntry fetchByG_C_ERC(
+		long groupId, long companyId, String externalReferenceCode) {
+
+		return getPersistence().fetchByG_C_ERC(
+			groupId, companyId, externalReferenceCode);
+	}
+
+	/**
+	 * Returns the object entry where groupId = &#63; and companyId = &#63; and externalReferenceCode = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param companyId the company ID
+	 * @param externalReferenceCode the external reference code
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching object entry, or <code>null</code> if a matching object entry could not be found
+	 */
+	public static ObjectEntry fetchByG_C_ERC(
+		long groupId, long companyId, String externalReferenceCode,
+		boolean useFinderCache) {
+
+		return getPersistence().fetchByG_C_ERC(
+			groupId, companyId, externalReferenceCode, useFinderCache);
+	}
+
+	/**
+	 * Removes the object entry where groupId = &#63; and companyId = &#63; and externalReferenceCode = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param companyId the company ID
+	 * @param externalReferenceCode the external reference code
+	 * @return the object entry that was removed
+	 */
+	public static ObjectEntry removeByG_C_ERC(
+			long groupId, long companyId, String externalReferenceCode)
+		throws com.liferay.object.exception.NoSuchObjectEntryException {
+
+		return getPersistence().removeByG_C_ERC(
+			groupId, companyId, externalReferenceCode);
+	}
+
+	/**
+	 * Returns the number of object entries where groupId = &#63; and companyId = &#63; and externalReferenceCode = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param companyId the company ID
+	 * @param externalReferenceCode the external reference code
+	 * @return the number of matching object entries
+	 */
+	public static int countByG_C_ERC(
+		long groupId, long companyId, String externalReferenceCode) {
+
+		return getPersistence().countByG_C_ERC(
+			groupId, companyId, externalReferenceCode);
+	}
+
+	/**
 	 * Caches the object entry in the entity cache if it is enabled.
 	 *
 	 * @param objectEntry the object entry

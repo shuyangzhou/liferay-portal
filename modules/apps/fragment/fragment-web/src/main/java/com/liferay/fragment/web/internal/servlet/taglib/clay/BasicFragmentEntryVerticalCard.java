@@ -42,7 +42,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Eudaldo Alonso
  */
-public class BasicFragmentEntryVerticalCard extends FragmentEntryVerticalCard {
+public class BasicFragmentEntryVerticalCard
+	extends BaseFragmentEntryVerticalCard {
 
 	public BasicFragmentEntryVerticalCard(
 		FragmentEntry fragmentEntry, RenderRequest renderRequest,

@@ -4144,9 +4144,6 @@ public class StagingImpl implements Staging {
 
 	private class ScheduleInformation {
 
-		public ScheduleInformation() {
-		}
-
 		public String getCronText() {
 			return _cronText;
 		}

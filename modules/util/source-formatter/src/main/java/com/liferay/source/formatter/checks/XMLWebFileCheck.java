@@ -43,13 +43,113 @@ public class XMLWebFileCheck extends BaseFileCheck {
 		throws IOException {
 
 		if (fileName.endsWith("portal-web/docroot/WEB-INF/web.xml")) {
-			content = _formatWebXML(absolutePath, content);
+			content = _formatSecurityConstraints(
+				content, _getURLPatterns(absolutePath));
+		}
+		else if (fileName.endsWith(
+					"portal-web/docroot/WEB-INF/shielded-container-web.xml")) {
+
+			content = _formatServletMappings(
+				content, _getURLPatterns(absolutePath));
 		}
 
 		return content;
 	}
 
-	private String _formatWebXML(String absolutePath, String content)
+	private String _formatSecurityConstraints(
+		String content, Set<String> urlPatterns) {
+
+		int x = content.indexOf("<security-constraint>");
+
+		if (x == -1) {
+			return content;
+		}
+
+		x = content.indexOf("<web-resource-collection>", x);
+
+		if (x == -1) {
+			return content;
+		}
+
+		x = content.indexOf("<url-pattern>", x);
+
+		if (x == -1) {
+			return content;
+		}
+
+		int y = content.indexOf("</web-resource-collection>", x - 3);
+
+		if (y == -1) {
+			return content;
+		}
+
+		y = content.lastIndexOf("</url-pattern>", y);
+
+		if (y == -1) {
+			return content;
+		}
+
+		StringBundler sb = new StringBundler((3 * urlPatterns.size()) + 1);
+
+		sb.append("\t\t\t<url-pattern>/c/portal/protected</url-pattern>\n");
+
+		for (String urlPattern : urlPatterns) {
+			sb.append("\t\t\t<url-pattern>/");
+			sb.append(urlPattern);
+			sb.append("/c/portal/protected</url-pattern>\n");
+		}
+
+		return StringBundler.concat(
+			content.substring(0, x - 3), sb.toString(),
+			content.substring(y + 15));
+	}
+
+	private String _formatServletMappings(
+		String content, Set<String> urlPatterns) {
+
+		StringBundler sb = new StringBundler(6 * urlPatterns.size());
+
+		for (String urlPattern : urlPatterns) {
+			sb.append("\t<servlet-mapping>\n");
+			sb.append("\t\t<servlet-name>I18n Servlet</servlet-name>\n");
+			sb.append("\t\t<url-pattern>/");
+			sb.append(urlPattern);
+			sb.append("/*</url-pattern>\n");
+			sb.append("\t</servlet-mapping>\n");
+		}
+
+		int x = content.indexOf("<servlet-mapping>");
+
+		if (x == -1) {
+			return content;
+		}
+
+		x = content.indexOf("<servlet-name>I18n Servlet</servlet-name>", x);
+
+		if (x == -1) {
+			return content;
+		}
+
+		x = content.lastIndexOf("<servlet-mapping>", x) - 1;
+
+		int y = content.lastIndexOf(
+			"<servlet-name>I18n Servlet</servlet-name>");
+
+		if (y == -1) {
+			return content;
+		}
+
+		y = content.indexOf("</servlet-mapping>", y);
+
+		if (y == -1) {
+			return content;
+		}
+
+		return StringBundler.concat(
+			content.substring(0, x), sb.toString(), content.substring(y + 19));
+	}
+
+	private Set<String> _getURLPatterns(String absolutePath)
 		throws IOException {
 
 		Properties properties = new Properties();
@@ -80,53 +180,7 @@ public class XMLWebFileCheck extends BaseFileCheck {
 					locale, CharPool.UNDERLINE, CharPool.DASH));
 		}
 
-		StringBundler sb = new StringBundler(6 * urlPatterns.size());
-
-		for (String urlPattern : urlPatterns) {
-			sb.append("\t<servlet-mapping>\n");
-			sb.append("\t\t<servlet-name>I18n Servlet</servlet-name>\n");
-			sb.append("\t\t<url-pattern>/");
-			sb.append(urlPattern);
-			sb.append("/*</url-pattern>\n");
-			sb.append("\t</servlet-mapping>\n");
-		}
-
-		int x = content.indexOf("<servlet-mapping>");
-
-		x = content.indexOf("<servlet-name>I18n Servlet</servlet-name>", x);
-
-		x = content.lastIndexOf("<servlet-mapping>", x) - 1;
-
-		int y = content.lastIndexOf(
-			"<servlet-name>I18n Servlet</servlet-name>");
-
-		y = content.indexOf("</servlet-mapping>", y) + 19;
-
-		String newContent =
-			content.substring(0, x) + sb.toString() + content.substring(y);
-
-		x = newContent.indexOf("<security-constraint>");
-
-		x = newContent.indexOf("<web-resource-collection>", x);
-
-		x = newContent.indexOf("<url-pattern>", x) - 3;
-
-		y = newContent.indexOf("</web-resource-collection>", x);
-
-		y = newContent.lastIndexOf("</url-pattern>", y) + 15;
-
-		sb = new StringBundler((3 * urlPatterns.size()) + 1);
-
-		sb.append("\t\t\t<url-pattern>/c/portal/protected</url-pattern>\n");
-
-		for (String urlPattern : urlPatterns) {
-			sb.append("\t\t\t<url-pattern>/");
-			sb.append(urlPattern);
-			sb.append("/c/portal/protected</url-pattern>\n");
-		}
-
-		return newContent.substring(0, x) + sb.toString() +
-			newContent.substring(y);
+		return urlPatterns;
 	}
 
 }

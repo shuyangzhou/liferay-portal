@@ -23,9 +23,6 @@ import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
  */
 public class CommerceShippingMethodImpl extends CommerceShippingMethodBaseImpl {
 
-	public CommerceShippingMethodImpl() {
-	}
-
 	@Override
 	public String getImageURL(ThemeDisplay themeDisplay) {
 		if (getImageId() <= 0) {

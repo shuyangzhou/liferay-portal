@@ -134,9 +134,7 @@ public class BackgroundTaskThreadLocalManagerImpl
 
 		if (Validator.isNotNull(principalName)) {
 			PrincipalThreadLocal.setName(principalName);
-		}
 
-		if (Validator.isNotNull(principalName)) {
 			User user = _userLocalService.fetchUser(
 				PrincipalThreadLocal.getUserId());
 

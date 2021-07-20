@@ -51,7 +51,7 @@ import org.apache.chemistry.opencmis.client.api.Session;
 /**
  * @author Alexander Chow
  */
-public class CMISFolder extends CMISModel implements Folder {
+public class CMISFolder extends BaseCMISModel implements Folder {
 
 	public CMISFolder(
 		CMISRepository cmisRepository, String uuid, long folderId,

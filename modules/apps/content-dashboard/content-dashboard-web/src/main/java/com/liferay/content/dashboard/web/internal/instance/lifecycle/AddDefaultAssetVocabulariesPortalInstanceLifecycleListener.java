@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.model.AssetVocabularyConstants;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
+import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
@@ -56,15 +57,15 @@ public class AddDefaultAssetVocabulariesPortalInstanceLifecycleListener
 		_addAssetVocabulary(
 			company, "audience",
 			AssetVocabularyConstants.VISIBILITY_TYPE_INTERNAL,
-			JournalArticle.class);
+			JournalArticle.class, DLFileEntry.class);
 		_addAssetVocabulary(
 			company, "stage", AssetVocabularyConstants.VISIBILITY_TYPE_INTERNAL,
-			JournalArticle.class);
+			JournalArticle.class, DLFileEntry.class);
 	}
 
 	private void _addAssetVocabulary(
 			Company company, String name, int visibilityType,
-			Class<?> assetVocabularyTypeClass)
+			Class<?>... assetVocabularyTypeClasses)
 		throws Exception {
 
 		AssetVocabulary assetVocabulary =
@@ -93,11 +94,21 @@ public class AddDefaultAssetVocabulariesPortalInstanceLifecycleListener
 		AssetVocabularySettingsHelper assetVocabularySettingsHelper =
 			new AssetVocabularySettingsHelper();
 
-		if (assetVocabularyTypeClass != null) {
+		if (assetVocabularyTypeClasses != null) {
+			long[] classNameIds = new long[assetVocabularyTypeClasses.length];
+			long[] classTypePKs = new long[assetVocabularyTypeClasses.length];
+			boolean[] requireds =
+				new boolean[assetVocabularyTypeClasses.length];
+
+			for (int i = 0; i < assetVocabularyTypeClasses.length; i++) {
+				classNameIds[i] = _portal.getClassNameId(
+					assetVocabularyTypeClasses[i]);
+				classTypePKs[i] = AssetCategoryConstants.ALL_CLASS_TYPE_PK;
+				requireds[i] = false;
+			}
+
 			assetVocabularySettingsHelper.setClassNameIdsAndClassTypePKs(
-				new long[] {_portal.getClassNameId(assetVocabularyTypeClass)},
-				new long[] {AssetCategoryConstants.ALL_CLASS_TYPE_PK},
-				new boolean[] {false});
+				classNameIds, classTypePKs, requireds);
 		}
 
 		ServiceContext serviceContext = new ServiceContext();

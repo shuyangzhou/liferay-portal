@@ -19,8 +19,4 @@ package com.liferay.object.model.impl;
  * @author Brian Wing Shun Chan
  */
 public class ObjectLayoutImpl extends ObjectLayoutBaseImpl {
-
-	public ObjectLayoutImpl() {
-	}
-
 }

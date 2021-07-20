@@ -129,6 +129,13 @@ public class DataCleanupTest {
 	}
 
 	@Test
+	public void testDeprecatedModulesUpgradeOpenSocial() throws Exception {
+		_testDeprecatedModulesUpgrade(
+			"cleanUpOpenSocialModuleData", "opensocial-portlet",
+			"dependencies/opensocial-tables.sql", "3_WAR_opensocialportlet");
+	}
+
+	@Test
 	public void testDeprecatedModulesUpgradePrivateMessaging()
 		throws Exception {
 
@@ -248,7 +255,7 @@ public class DataCleanupTest {
 		"com.liferay.hello.world.web", "com.liferay.invitation.web",
 		"com.liferay.mail.reader.service", "com.liferay.shopping.service",
 		"com.liferay.social.privatemessaging.service",
-		"com.liferay.twitter.service"
+		"com.liferay.twitter.service", "opensocial-portlet"
 	};
 
 	@Inject

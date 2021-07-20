@@ -17,6 +17,7 @@ package com.liferay.object.service.impl;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.exception.DuplicateObjectDefinitionException;
 import com.liferay.object.exception.ObjectDefinitionNameException;
+import com.liferay.object.exception.ObjectDefinitionStatusException;
 import com.liferay.object.exception.ObjectDefinitionVersionException;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
@@ -36,12 +37,14 @@ import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -75,7 +78,8 @@ public class ObjectDefinitionLocalServiceImpl
 		throws PortalException {
 
 		return _addObjectDefinition(
-			userId, null, name, null, null, false, 0, objectFields);
+			userId, null, name, null, null, false, 0,
+			WorkflowConstants.STATUS_DRAFT, objectFields);
 	}
 
 	@Override
@@ -159,7 +163,8 @@ public class ObjectDefinitionLocalServiceImpl
 
 		return _addObjectDefinition(
 			userId, dbTableName, name, pkObjectFieldDBColumnName,
-			pkObjectFieldName, true, version, objectFields);
+			pkObjectFieldName, true, version, WorkflowConstants.STATUS_APPROVED,
+			objectFields);
 	}
 
 	@Override
@@ -205,6 +210,11 @@ public class ObjectDefinitionLocalServiceImpl
 
 		objectDefinitionPersistence.remove(objectDefinition);
 
+		resourceLocalService.deleteResource(
+			objectDefinition.getCompanyId(), ObjectDefinition.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			objectDefinition.getObjectDefinitionId());
+
 		if (!objectDefinition.isSystem()) {
 			_dropTable(objectDefinition);
 
@@ -223,7 +233,10 @@ public class ObjectDefinitionLocalServiceImpl
 	@Clusterable
 	@Override
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
-		if (objectDefinition.isSystem()) {
+		if ((objectDefinition.getStatus() !=
+				WorkflowConstants.STATUS_APPROVED) ||
+			objectDefinition.isSystem()) {
+
 			return;
 		}
 
@@ -244,8 +257,13 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	@Override
-	public List<ObjectDefinition> getCustomObjectDefinitions() {
-		return objectDefinitionPersistence.findBySystem(false);
+	public ObjectDefinition fetchObjectDefinition(long companyId, String name) {
+		return objectDefinitionPersistence.fetchByC_N(companyId, name);
+	}
+
+	@Override
+	public List<ObjectDefinition> getCustomObjectDefinitions(int status) {
+		return objectDefinitionPersistence.findByS_S(false, status);
 	}
 
 	@Override
@@ -265,6 +283,41 @@ public class ObjectDefinitionLocalServiceImpl
 	@Override
 	public List<ObjectDefinition> getSystemObjectDefinitions() {
 		return objectDefinitionPersistence.findBySystem(true);
+	}
+
+	@Override
+	public ObjectDefinition publishCustomObjectDefinition(
+			long userId, long objectDefinitionId)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId);
+
+		if (objectDefinition.isSystem()) {
+			throw new ObjectDefinitionStatusException();
+		}
+
+		objectDefinition.setStatus(WorkflowConstants.STATUS_APPROVED);
+
+		objectDefinition = objectDefinitionPersistence.update(objectDefinition);
+
+		List<ObjectField> objectFields =
+			_objectFieldPersistence.findByObjectDefinitionId(
+				objectDefinitionId);
+
+		_createTable(objectDefinition, objectFields);
+
+		ObjectDefinition finalObjectDefinition = objectDefinition;
+
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				objectDefinitionLocalService.deployObjectDefinition(
+					finalObjectDefinition);
+
+				return null;
+			});
+
+		return objectDefinition;
 	}
 
 	@Override
@@ -288,8 +341,8 @@ public class ObjectDefinitionLocalServiceImpl
 						serviceRegistrationsMap = new ConcurrentHashMap<>();
 
 					List<ObjectDefinition> objectDefinitions =
-						objectDefinitionLocalService.
-							getCustomObjectDefinitions();
+						objectDefinitionLocalService.getCustomObjectDefinitions(
+							WorkflowConstants.STATUS_APPROVED);
 
 					for (ObjectDefinition objectDefinition :
 							objectDefinitions) {
@@ -390,7 +443,8 @@ public class ObjectDefinitionLocalServiceImpl
 	private ObjectDefinition _addObjectDefinition(
 			long userId, String dbTableName, String name,
 			String pkObjectFieldDBColumnName, String pkObjectFieldName,
-			boolean system, int version, List<ObjectField> objectFields)
+			boolean system, int version, int status,
+			List<ObjectField> objectFields)
 		throws PortalException {
 
 		User user = _userLocalService.getUser(userId);
@@ -450,34 +504,26 @@ public class ObjectDefinitionLocalServiceImpl
 		objectDefinition.setPKObjectFieldName(pkObjectFieldName);
 		objectDefinition.setSystem(system);
 		objectDefinition.setVersion(version);
+		objectDefinition.setStatus(status);
 
-		ObjectDefinition updatedObjectDefinition =
-			objectDefinitionPersistence.update(objectDefinition);
+		objectDefinition = objectDefinitionPersistence.update(objectDefinition);
 
-		for (ObjectField objectField : objectFields) {
-			_objectFieldLocalService.addObjectField(
-				userId, objectDefinitionId, objectField.getDBColumnName(),
-				objectField.getIndexed(), objectField.getIndexedAsKeyword(),
-				objectField.getIndexedLanguageId(), objectField.getName(),
-				objectField.isRequired(), objectField.getType());
+		if (objectFields != null) {
+			for (ObjectField objectField : objectFields) {
+				_objectFieldLocalService.addObjectField(
+					userId, objectDefinitionId, objectField.getDBColumnName(),
+					objectField.getIndexed(), objectField.getIndexedAsKeyword(),
+					objectField.getIndexedLanguageId(), objectField.getName(),
+					objectField.isRequired(), objectField.getType());
+			}
 		}
 
-		objectFields = _objectFieldPersistence.findByObjectDefinitionId(
-			objectDefinitionId);
+		resourceLocalService.addResources(
+			objectDefinition.getCompanyId(), 0, objectDefinition.getUserId(),
+			ObjectDefinition.class.getName(),
+			objectDefinition.getObjectDefinitionId(), false, true, true);
 
-		if (!objectDefinition.isSystem()) {
-			_createTable(updatedObjectDefinition, objectFields);
-
-			TransactionCommitCallbackUtil.registerCallback(
-				() -> {
-					objectDefinitionLocalService.deployObjectDefinition(
-						updatedObjectDefinition);
-
-					return null;
-				});
-		}
-
-		return updatedObjectDefinition;
+		return objectDefinition;
 	}
 
 	private void _createTable(

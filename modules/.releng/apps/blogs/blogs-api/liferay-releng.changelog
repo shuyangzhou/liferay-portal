@@ -82,3 +82,8 @@ ac842fbd400b8549b0221e0e633af8f135b11f7d^..09b01e3dfac2d2d1c65235788c20631ce123b
 # Bundle Version 7.1.1
 #
 09b01e3dfac2d2d1c65235788c20631ce123b524^..e11e4f26cccbd5cabf550bf1b73f3b7f1f3abce5=LRQA-51488
+
+#
+# Bundle Version 8.0.0
+#
+e11e4f26cccbd5cabf550bf1b73f3b7f1f3abce5^..be38f92c6fb368fbae385616a693294faf069cd1=LPS-124110 LRQA-51488

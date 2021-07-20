@@ -77,9 +77,6 @@ public class KaleoTaskInstanceTokenFinderImpl
 	public static final String FIND_BY_C_KTAI =
 		KaleoTaskInstanceTokenFinder.class.getName() + ".findByC_KTAI";
 
-	public KaleoTaskInstanceTokenFinderImpl() {
-	}
-
 	@Override
 	public int countKaleoTaskInstanceTokens(
 		KaleoTaskInstanceTokenQuery kaleoTaskInstanceTokenQuery) {

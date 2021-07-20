@@ -238,9 +238,46 @@ definition {
 	@ignore = "Test Stub"
 	@priority = "3"
 	test CanAnonymizeAllEntriesFromAnApplication {
+		User.logoutPG();
 
-		// TODO LRQA-50727 Anonymize all entries from an Application
+		User.loginUserPG(
+			password = "test",
+			userEmailAddress = "userea@liferay.com");
 
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.addMultipleCP(dmDocumentFileList = "Document_1.jpeg,Document_2.docx,Document_3.mp3");
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.deletePersonalDataCP(
+			userFirstName = "userfn",
+			userLastName = "userln");
+
+		GDPR.anonymizeAllEntriesinApplicationCP(
+			applications = "Documents and Media",
+			itemsCount = "3");
+
+		GDPR.viewNoEntryInApplicationCP(applications = "Documents and Media");
+
+		for (var entryTitle : list "Document_1,Document_2,Document_3") {
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+			DMNavigator.gotoDocumentCP(dmDocumentTitle = "${entryTitle}");
+
+			DMDocument.expandInfo();
+
+			AssertTextEquals(
+				locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_UPLOADER_NO_PROFILE",
+				value1 = "Anonymous Anonymous");
+		}
 	}
 
 	@description = "This test anonymizes all staged data from an application"
@@ -473,6 +510,12 @@ definition {
 
 	@priority = "4"
 	test DeleteAllEntriesFromInstanceScope {
+		User.logoutPG();
+
+		User.firstLoginUI(
+			password = "test",
+			userEmailAddress = "userea@liferay.com");
+
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = "Announcements Page");
@@ -501,6 +544,10 @@ definition {
 			entryContent = "This is an announcement added via json.",
 			entryTitle = "Announcement Entry Title");
 
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -516,7 +563,7 @@ definition {
 			applications = "All Applications",
 			itemsCount = "1");
 
-		GDPR.deleteAllEntriesCP(anonymizeData = "true");
+		GDPR.deleteAllEntriesCP();
 
 		Navigator.gotoPage(pageName = "Announcements Page");
 
@@ -582,13 +629,19 @@ definition {
 			applications = "All Applications",
 			itemsCount = "4");
 
-		GDPR.deleteAllEntriesCP(anonymizeData = "true");
+		GDPR.deleteAllEntriesCP();
 
 		GDPR.viewNoEntryInApplicationCP(applications = "All Applications");
 	}
 
 	@priority = "4"
-	test DeleteAllEntriesFromRegularSiteScope {
+	test DeleteAllEntriesFromRegularSitesScope {
+		User.logoutPG();
+
+		User.firstLoginUI(
+			password = "test",
+			userEmailAddress = "userea@liferay.com");
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		JSONLayout.addPublicLayout(
@@ -606,6 +659,10 @@ definition {
 			userEmailAddress = "userea@liferay.com",
 			userPassword = "test");
 
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -621,7 +678,7 @@ definition {
 			applications = "All Applications",
 			itemsCount = "1");
 
-		GDPR.deleteAllEntriesCP(anonymizeData = "true");
+		GDPR.deleteAllEntriesCP();
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "site-name");
 

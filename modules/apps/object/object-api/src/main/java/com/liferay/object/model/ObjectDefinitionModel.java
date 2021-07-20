@@ -299,4 +299,18 @@ public interface ObjectDefinitionModel
 	 */
 	public void setVersion(int version);
 
+	/**
+	 * Returns the status of this object definition.
+	 *
+	 * @return the status of this object definition
+	 */
+	public int getStatus();
+
+	/**
+	 * Sets the status of this object definition.
+	 *
+	 * @param status the status of this object definition
+	 */
+	public void setStatus(int status);
+
 }

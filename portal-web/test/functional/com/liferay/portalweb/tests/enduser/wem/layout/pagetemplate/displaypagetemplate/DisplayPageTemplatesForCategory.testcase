@@ -333,39 +333,71 @@ definition {
 		task ("Add a Banner Center fragment to display page template") {
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center",
 				targetFragmentName = "Heading");
 		}
 
 		task ("View available mapping fields in Banner Center fragment") {
-			for (var id : list "01-title,03-link") {
-				PageEditorMapping.gotoEditableFieldMapping(
-					fragmentName = "Banner Center",
-					id = "${id}");
+			PageEditorMapping.gotoEditableFieldMapping(
+				fragmentName = "Paragraph",
+				id = "element-text");
 
-				AssertSelectedLabel(
-					key_fieldLabel = "Source",
-					locator1 = "Select#GENERIC_SELECT_FIELD",
-					value1 = "Category (Default)");
+			AssertSelectedLabel(
+				key_fieldLabel = "Source",
+				locator1 = "Select#GENERIC_SELECT_FIELD",
+				value1 = "Category (Default)");
 
-				for (var field : list "Name,Description,Vocabulary") {
-					AssertElementPresent(
-						key_fieldLabel = "Field",
-						key_groupLabel = "Basic Information",
-						key_value = "${field}",
-						locator1 = "Select#GROUPED_SELECT_VALUE");
-				}
-
+			for (var field : list "Name,Description,Vocabulary") {
 				AssertElementPresent(
 					key_fieldLabel = "Field",
-					key_groupLabel = "Fields",
-					key_value = "Friendly URL",
+					key_groupLabel = "Basic Information",
+					key_value = "${field}",
 					locator1 = "Select#GROUPED_SELECT_VALUE");
 			}
 
+			AssertElementPresent(
+				key_fieldLabel = "Field",
+				key_groupLabel = "Fields",
+				key_value = "Friendly URL",
+				locator1 = "Select#GROUPED_SELECT_VALUE");
+
 			PageEditorMapping.gotoEditableFieldMapping(
-				fragmentName = "Banner Center",
-				id = "banner-center");
+				fragmentName = "Button",
+				id = "link");
+
+			AssertSelectedLabel(
+				key_fieldLabel = "Source",
+				locator1 = "Select#GENERIC_SELECT_FIELD",
+				value1 = "Category (Default)");
+
+			for (var field : list "Name,Description,Vocabulary") {
+				AssertElementPresent(
+					key_fieldLabel = "Field",
+					key_groupLabel = "Basic Information",
+					key_value = "${field}",
+					locator1 = "Select#GROUPED_SELECT_VALUE");
+			}
+
+			AssertElementPresent(
+				key_fieldLabel = "Field",
+				key_groupLabel = "Fields",
+				key_value = "Friendly URL",
+				locator1 = "Select#GROUPED_SELECT_VALUE");
+
+			Click.clickNoWaitForVisible(
+				key_elementType = "Container",
+				key_position = "1",
+				locator1 = "PageEditor#LAYOUT_ELEMENTS_HEADER");
+
+			Click(
+				key_navItem = "Styles",
+				locator1 = "PageEditor#NAV_ITEM_BUTTON");
+
+			Select(
+				key_fieldLabel = "Image Source",
+				locator1 = "Select#GENERIC_SELECT_FIELD",
+				value1 = "Mapping");
 
 			AssertSelectedLabel(
 				key_fieldLabel = "Source",
@@ -383,7 +415,7 @@ definition {
 			PageEditor.addFragment(
 				collectionName = "Basic Components",
 				fragmentName = "Image",
-				targetFragmentName = "Banner Center");
+				targetFragmentName = "Container");
 
 			PageEditorMapping.gotoEditableFieldMapping(
 				fragmentName = "Image",
@@ -409,15 +441,13 @@ definition {
 
 			Click.clickNoWaitForVisible(
 				key_elementType = "Container",
-				key_position = "1",
+				key_position = "3",
 				locator1 = "PageEditor#LAYOUT_ELEMENTS_HEADER");
 
 			Click(
 				key_navItem = "Styles",
 				locator1 = "PageEditor#NAV_ITEM_BUTTON",
 				value1 = "Styles");
-
-			Pause(locator1 = "3000");
 
 			Select(
 				key_fieldLabel = "Image Source",
@@ -509,8 +539,7 @@ definition {
 	@description = "This is a test for LPS-132081. View mapped content of assets in display page template for Category when apply the Items with This Category to Collection Display."
 	@priority = "5"
 	test ViewMappedContentInCollectionDisplayWithItemsWithThisCategory {
-		property osgi.module.configuration.file.names = "com.liferay.layout.content.page.editor.web.internal.configuration.FFLayoutContentPageEditorConfiguration.config";
-		property osgi.module.configurations = "relatedItemCollectionProvidersEnabled=&quot;true&quot;";
+		property portal.acceptance = "true";
 
 		task ("Add a display page template for Category") {
 			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
@@ -642,28 +671,29 @@ definition {
 
 			PageEditor.addFragment(
 				collectionName = "Featured Content",
+				composition = "true",
 				fragmentName = "Banner Center");
 		}
 
 		task ("Mapping the Name field to title editable field") {
 			PageEditorMapping.mapEditableTextToField(
 				field = "Name",
-				fragmentName = "Banner Center",
-				id = "01-title");
+				fragmentName = "Heading",
+				id = "element-text");
 		}
 
 		task ("Mapping the Display Page URL field to link editable field") {
 			PageEditorMapping.mapEditableTextToField(
 				field = "Display Page URL",
-				fragmentName = "Banner Center",
-				id = "03-link");
+				fragmentName = "Button",
+				id = "link");
 		}
 
 		task ("Mapping the Main Image field to background image editable field") {
-			PageEditorMapping.mapEditableTextToField(
-				field = "Main Image",
-				fragmentName = "Banner Center",
-				id = "banner-center");
+			PageEditor.editLayoutContainer(
+				backgroundImage = "Mapping",
+				fieldName = "Main Image",
+				panel = "Styles");
 
 			PageEditor.clickPublish();
 		}
@@ -709,13 +739,13 @@ definition {
 			ControlMenu.viewHeaderTitle(headerTitle = "Display Page Name");
 
 			AssertVisible(
-				id = "01-title",
+				id = "element-text",
 				key_position = "1",
 				key_text = "Category Name",
 				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_EDITABLE_FIELD_AT_VIEW_MODE");
 
 			AssertVisible(
-				id = "03-link",
+				id = "link",
 				key_position = "1",
 				key_text = "/en/web/test-site-name/v/${categoryId}",
 				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_EDITABLE_FIELD_AT_VIEW_MODE");

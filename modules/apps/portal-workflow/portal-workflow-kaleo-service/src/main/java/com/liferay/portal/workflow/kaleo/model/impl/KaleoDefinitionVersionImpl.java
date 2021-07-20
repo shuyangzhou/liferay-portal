@@ -29,9 +29,6 @@ import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalServiceUtil;
  */
 public class KaleoDefinitionVersionImpl extends KaleoDefinitionVersionBaseImpl {
 
-	public KaleoDefinitionVersionImpl() {
-	}
-
 	/**
 	 * @deprecated As of Mueller (7.2.x), with no direct replacement
 	 */

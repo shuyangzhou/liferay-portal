@@ -18,7 +18,9 @@ const OPTIONS = [2, 1.75, 1.5, 1.25, 1, 0.75, 0.5];
 
 const DiagramFooter = ({
 	enableResetZoom,
+	isAdmin,
 	selectedOption,
+	setAddPinHandler,
 	setChangedScale,
 	setResetZoom,
 	setSelectedOption,
@@ -32,6 +34,18 @@ const DiagramFooter = ({
 
 	return (
 		<div className="d-flex diagram-footer justify-content-end mt-3">
+			{isAdmin && (
+				<ClayButton
+					className="mr-3"
+					onClick={() => setAddPinHandler(true)}
+				>
+					<span className="inline-item inline-item-before">
+						<ClayIcon symbol="pin" />
+					</span>
+
+					{Liferay.Language.get('add-pin')}
+				</ClayButton>
+			)}
 			<ClayButton className="mr-3">
 				<span className="inline-item inline-item-before">
 					<ClayIcon symbol="expand" />

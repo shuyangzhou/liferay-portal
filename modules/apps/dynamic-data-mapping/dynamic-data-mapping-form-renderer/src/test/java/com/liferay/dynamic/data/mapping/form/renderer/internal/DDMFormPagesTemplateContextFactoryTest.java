@@ -39,13 +39,16 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.google.places.util.GooglePlacesUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -96,8 +99,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest(
 	{
-		LocaleThreadLocal.class, ResourceBundleLoaderUtil.class,
-		ResourceBundleUtil.class
+		GooglePlacesUtil.class, LocaleThreadLocal.class,
+		ResourceBundleLoaderUtil.class, ResourceBundleUtil.class
 	}
 )
 @RunWith(PowerMockRunner.class)
@@ -107,12 +110,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class DDMFormPagesTemplateContextFactoryTest extends PowerMockito {
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		RegistryUtil.setRegistry(new BasicRegistryImpl());
 
 		setUpCalendarFactoryUtil();
 		setUpDDMFormFieldTypeServicesTracker();
 		setUpFastDateFormatFactoryUtil();
+		setUpGooglePlacesUtil();
 		setUpHtmlUtil();
 		setUpHttpServletRequest();
 		setUpLanguageResources();
@@ -945,7 +949,7 @@ public class DDMFormPagesTemplateContextFactoryTest extends PowerMockito {
 			new DDMFormPagesTemplateContextFactory(
 				ddmForm, ddmFormLayout, ddmFormRenderingContext,
 				_ddmStructureLayoutLocalService, _ddmStructureLocalService,
-				new JSONFactoryImpl());
+				_groupLocalService, new JSONFactoryImpl());
 
 		ddmFormPagesTemplateContextFactory.setDDMFormEvaluator(
 			getDDMFormEvaluator());
@@ -1055,18 +1059,31 @@ public class DDMFormPagesTemplateContextFactoryTest extends PowerMockito {
 			new FastDateFormatFactoryImpl());
 	}
 
+	protected void setUpGooglePlacesUtil() {
+		mockStatic(GooglePlacesUtil.class);
+
+		when(
+			GooglePlacesUtil.getGooglePlacesAPIKey(
+				Matchers.anyLong(), Matchers.anyLong(),
+				Matchers.any(GroupLocalService.class))
+		).thenReturn(
+			StringPool.BLANK
+		);
+	}
+
 	protected void setUpHtmlUtil() {
 		HtmlUtil htmlUtil = new HtmlUtil();
 
 		htmlUtil.setHtml(new HtmlImpl());
 	}
 
-	protected void setUpHttpServletRequest() {
+	protected void setUpHttpServletRequest() throws Exception {
 		_httpServletRequest = Mockito.mock(HttpServletRequest.class);
 
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		themeDisplay.setPathThemeImages(StringPool.BLANK);
+		themeDisplay.setUser(Mockito.mock(User.class));
 
 		when(
 			(ThemeDisplay)_httpServletRequest.getAttribute(
@@ -1197,6 +1214,9 @@ public class DDMFormPagesTemplateContextFactoryTest extends PowerMockito {
 
 	@Mock
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Mock
+	private GroupLocalService _groupLocalService;
 
 	private HttpServletRequest _httpServletRequest;
 

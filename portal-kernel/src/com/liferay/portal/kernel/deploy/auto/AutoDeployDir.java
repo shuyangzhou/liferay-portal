@@ -149,8 +149,6 @@ public class AutoDeployDir {
 		_interval = interval;
 
 		_autoDeployListeners = new CopyOnWriteArrayList<>(autoDeployListeners);
-
-		_blacklistFileTimestamps = new HashMap<>();
 	}
 
 	public File getDeployDir() {
@@ -382,7 +380,7 @@ public class AutoDeployDir {
 		"-[\\d]+((\\.[\\d]+)+(-.+)*)\\.war$");
 
 	private final List<AutoDeployListener> _autoDeployListeners;
-	private final Map<String, Long> _blacklistFileTimestamps;
+	private final Map<String, Long> _blacklistFileTimestamps = new HashMap<>();
 	private final File _deployDir;
 	private final File _destDir;
 	private final long _interval;

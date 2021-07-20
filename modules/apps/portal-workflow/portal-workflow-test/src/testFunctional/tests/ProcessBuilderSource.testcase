@@ -25,201 +25,668 @@ definition {
 	}
 
 	@description = "Verify that the user can delete a Not Published process"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanDeleteUnpublishedWorkflow {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68341 CanDeleteUnpublishedWorkflow pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		Alert.viewSuccessMessageText(successMessage = "Workflow unpublished successfully.");
+
+		Refresh();
+
+		Workflow.deleteWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
+
+		Workflow.viewDefinitionNotPresent(workflowDefinitionTitle = "Single Approver");
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow deleted successfully.");
+
+		Workflow.viewDefinitionNotPresent(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that, when duplicating a process, the user is able to edit its title"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanEditDuplicatedWorkflowTitle {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanEditDuplicatedWorkflowTitle";
 
-		// TODO LRQA-68336 CanEditDuplicatedWorkflowTitle pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Duplicate");
+
+		Button.click(button = "Duplicate");
+
+		Alert.viewSuccessMessageText(successMessage = "Duplicated from 'Single Approver'");
+
+		Type(
+			locator1 = "WorkflowDefinition#DEFINITION_TITLE",
+			value1 = "Single Approver Updated");
+
+		Button.click(button = "Update");
+
+		Navigator.gotoBack();
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "Single Approver Updated");
 	}
 
 	@description = "Verify that, when importing a non XML file, an error message is displayed and the Workflow is not published"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanImportNonXMLFile {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68324 CanImportNonXMLFile pending implementation
+		Workflow.addNewDefinition(workflowDefinitionTitle = "Document_1.doc");
 
+		if (IsElementPresent(locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB")) {
+			KaleoDesigner.viewSourceXMLTab();
+		}
+
+		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
+			locator1 = "TextInput#FILE",
+			value1 = "Document_1.doc");
+
+		Alert.viewSuccessMessageText(successMessage = "Definition imported successfully.");
+
+		PortletEntry.publish();
+
+		Alert.viewErrorMessage(errorMessage = "Please enter valid content.");
+
+		Navigator.gotoBack();
+
+		AssertElementNotPresent(
+			key_workflowResourceValue = "Document_1",
+			locator1 = "WorkflowConfiguration#RESOURCE_TABLE_WORKFLOW");
 	}
 
 	@description = "Verify that the user is able to import a XML file"
 	@ignore = "Test Stub"
 	@priority = "4"
 	test CanImportXMLFile {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanImportXMLFile";
 
-		// TODO LRQA-68323 CanImportXMLFile pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.uploadDefinition(
+			workflowDefinitionFile = "workflow_definition_1.xml",
+			workflowDefinitionTitle = "New Uploaded Definition");
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow published successfully.");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "New Uploaded Definition");
 	}
 
 	@description = "Verify that, when the definition is published, the Delete option is not present in kebab menu"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanNotDeletePublishedWorkflow {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68340 CanNotDeletePublishedWorkflow pending implementation
+		Navigator.gotoNavItem(navItem = "Configuration");
 
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		Navigator.gotoNavItem(navItem = "Workflows");
+
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Edit");
+
+		Click(locator1 = "ProcessBuilderSource#PROCESS_DETAILS_ELLIPSIS");
+
+		MenuItem.viewNotPresent(menuItem = "Delete");
 	}
 
 	@description = "Verify that the Workflow is not published without title"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanNotPublishWithoutTitle {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanNotPublishWithoutTitle";
 
-		// TODO LRQA-68322 CanNotPublishWithoutTitle pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Click(locator1 = "Button#PLUS");
+
+		KaleoDesigner.viewSourceXMLTab();
+
+		Button.clickPublish();
+
+		Alert.viewErrorMessage(errorMessage = "Please name your workflow before publishing.");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		AssertVisible(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_TITLE_PUBLISHED");
 	}
 
 	@description = "Verify that the user can not unpublish a Workflow in use and system displays an error message"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanNotUnpublishWorkflowInUse {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68339 CanNotUnpublishWorkflowInUse pending implementation
+		Navigator.gotoNavItem(navItem = "Configuration");
 
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Blogs Entry");
+
+		Navigator.gotoNavItem(navItem = "Workflows");
+
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Unpublish");
+
+		Alert.viewErrorMessage(errorMessage = "Workflow in use. Remove its assignment to this asset: Blogs Entry.");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that, when entering valid content, the Workflow is published"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanPublishWorkflow {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanPublishWorkflow";
 
-		// TODO LRQA-68321 CanPublishWorkflow pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.uploadDefinition(
+			workflowDefinitionFile = "workflow_definition_2.xml",
+			workflowDefinitionTitle = "Manuel Task");
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow published successfully.");
+
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "Manuel Task");
 	}
 
 	@description = "Verify that the user is able to restore a previous version of definition by clicking on Restore option, on kebab menu"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanRestorePreviousVersionOnMenu {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68333 CanRestorePreviousVersionOnMenu pending implementation
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
 
+		MenuItem.clickNoError(menuItem = "Edit");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "update");
+
+		Button.clickUpdate();
+
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		Navigator.gotoNavTab(navTab = "Revision History");
+
+		Click(locator1 = "ProcessBuilderSource#REVISION_HISTORY_KEBAB");
+
+		MenuItem.click(menuItem = "Restore");
+
+		Alert.viewSuccessMessageText(successMessage = "Restored to Revision from");
+
+		KaleoDesigner.viewNodePresent(key_nodeNodeLabel = "update");
 	}
 
 	@description = "Verify that the user is able to restore a previous version of definition by clicking on Restore button, on Preview modal"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanRestorePreviousVersionOnModal {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68332 CanRestorePreviousVersionOnModal pending implementation
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
 
+		MenuItem.clickNoError(menuItem = "Edit");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "update");
+
+		Button.clickUpdate();
+
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		Navigator.gotoNavTab(navTab = "Revision History");
+
+		Click(locator1 = "ProcessBuilderSource#REVISION_HISTORY_KEBAB");
+
+		MenuItem.click(menuItem = "Preview");
+
+		Click(
+			key_text = "Restore",
+			locator1 = "Button#ANY");
+
+		Alert.viewSuccessMessageText(successMessage = "Restored to Revision from");
+
+		KaleoDesigner.viewNodePresent(key_nodeNodeLabel = "update");
 	}
 
 	@description = "Verify that the user is able to save a untitled Workflow"
 	@ignore = "Test Stub"
 	@priority = "2"
 	test CanSaveUntitledWorkflow {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanSaveUntitledWorkflow";
 
-		// TODO LRQA-68344 CanSaveUntitledWorkflow pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		LexiconEntry.gotoAdd();
+
+		KaleoDesigner.viewSourceXMLTab();
+
+		Workflow.saveDefinition();
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow saved.");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "Untitled Workflow");
 	}
 
 	@description = "Verify that the user is able to save a Workflow without publishing it"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSaveWorkflow {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanSaveWorkflow ";
 
-		// TODO LRQA-68325 CanSaveWorkflow pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow");
+
+		Workflow.saveDefinition();
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow saved.");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "New Workflow");
 	}
 
 	@description = "Verify that the user can select Duplicate option in the kebab for a particular definition"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSelectDuplicate {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#CanSelectDuplicate";
 
-		// TODO LRQA-68335 CanSelectDuplicate pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.gotoAssetViaTableTitle(workflowAssetTitle = "Single Approver");
+
+		Click(locator1 = "Icon#SVG_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Duplicate");
+
+		Button.click(button = "Duplicate");
+
+		Alert.viewSuccessMessageText(successMessage = "Duplicated from 'Single Approver");
+
+		Navigator.gotoBack();
+
+		AssertElementPresent(
+			key_workflowResourceValue = "Single Approver",
+			locator1 = "WorkflowConfiguration#RESOURCE_TABLE_WORKFLOW");
+
+		AssertElementPresent(
+			key_workflowResourceValue = "Copy of Single Approver",
+			locator1 = "WorkflowConfiguration#RESOURCE_TABLE_WORKFLOW");
 	}
 
 	@description = "Verify that the user can select Permissions option in the kebab for a particular definition"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSelectPermissions {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68334 CanSelectPermissions pending implementation
+		Workflow.gotoAssetViaTableTitle(workflowAssetTitle = "Single Approver");
 
+		Click(locator1 = "Icon#SVG_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Permissions");
+
+		AssertElementPresent(
+			locator1 = "Modal#HEADER",
+			value1 = "Permissions");
 	}
 
 	@description = "Verify that the user can select Unpublish option in the kebab menu for a particular definition"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSelectUnpublish {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68338 CanSelectUnpublish pending implementation
+		Workflow.unpublishWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		Alert.viewSuccessMessageText(successMessage = "Workflow unpublished successfully.");
+
+		Workflow.viewDefinitionUnpublished(workflowDefinitionTitle = "Single Approver");
 	}
 
 	@description = "Verify that when clicking the info icon, the process details and revision history are displayed"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanViewDetailsAndHistory {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68326 CanViewDetailsAndHistory pending implementation
+		Click(
+			key_workflowResourceValue = "Single Approver",
+			locator1 = "WorkflowConfiguration#RESOURCE_TABLE_WORKFLOW");
 
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		AssertVisible(locator1 = "Sidebar#SIDEBAR");
+
+		AssertElementPresent(
+			key_tab = "Details",
+			locator1 = "NavTab#ACTIVE_TAB_LINK");
+
+		Navigator.gotoNavTab(navTab = "Revision History");
+
+		AssertElementPresent(
+			key_tab = "Revision History",
+			locator1 = "NavTab#ACTIVE_TAB_LINK");
 	}
 
 	@description = "Verify that the user is able to view a previous version of definition by clicking on Preview option, on kebab menu"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanViewPreviousVersion {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68331 CanViewPreviousVersion pending implementation
+		Workflow.gotoEditWorkflowDefinition(workflowDefinitionTitle = "Single Approver");
 
+		KaleoDesigner.selectNode(nodeNodeLabel = "update");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "update");
+
+		Button.click(button = "Update");
+
+		Click(locator1 = "Icon#INFO");
+
+		Click(locator1 = "KaleoDesignerEditWorkflow#REVISION_HISTORY");
+
+		KaleoDesigner.previewDraftWorkflow(rowIndexNumber = "1");
+
+		KaleoDesigner.viewUpdateLabelVisible();
 	}
 
 	@description = "Verify that the Details tab displays the Created date, Last Modified date and Total Modifications"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test DisplaysCreatedDateLastModifiedTotalModifications {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#DisplaysCreatedDateLastModifiedTotalModifications";
 
-		// TODO LRQA-68327 DisplaysCreatedDateLastModifiedTotalModifications pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow");
+
+		Workflow.saveDefinition();
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow saved.");
+
+		Click(locator1 = "Icon#INFO");
+
+		AssertElementPresent(locator1 = "AssetWorkflow#DETAILS_WORKFLOW_CREATED_DATE");
+
+		AssertElementPresent(locator1 = "AssetWorkflow#DETAILS_WORKFLOW_LAST_MODIFIED");
+
+		AssertElementPresent(locator1 = "AssetWorkflow#DETAILS_WORKFLOW_TOTAL_MODIFICATIONS");
 	}
 
 	@description = "Verify that the Revision History tab displays the list of modification dates"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test DisplaysModificationDates {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#DisplaysModificationDates";
 
-		// TODO LRQA-68329 DisplaysModificationDates pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessageText(successMessage = "Workflow saved.");
+
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		Navigator.gotoNavTab(navTab = "Revision History");
+
+		AssertElementPresent(
+			key_ruleNumber = "1",
+			locator1 = "ProcessBuilderSource#REVISION_HISTORY_ITEM");
+
+		PortletEntry.inputTitle(title = "New Workflow Definition Title 2");
+
+		Button.clickSave();
+
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		Navigator.gotoNavTab(navTab = "Revision History");
+
+		AssertElementPresent(
+			key_ruleNumber = "1",
+			locator1 = "ProcessBuilderSource#REVISION_HISTORY_ITEM");
+
+		AssertElementPresent(
+			key_ruleNumber = "2",
+			locator1 = "ProcessBuilderSource#REVISION_HISTORY_ITEM");
 	}
 
 	@description = "Verify that revision history is not copied to the duplicated definition"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test RevisionHistoryIsNotCopied {
+		property test.name.skip.portal.instance = "ProcessBuilderSource#RevisionHistoryIsNotCopied";
 
-		// TODO LRQA-68337 RevisionHistoryIsNotCopied pending implementation
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Edit");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "update");
+
+		Click(locator1 = "Button#UPDATE");
+
+		Click(locator1 = "Icon#INFO");
+
+		Click(
+			key_tabName = "Revision History",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_TAB");
+
+		AssertElementPresent(
+			key_rowNumber = "1",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_REVISION_BY_ROW");
+
+		AssertElementPresent(
+			key_rowNumber = "2",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_REVISION_BY_ROW");
+
+		Click(locator1 = "ProcessBuilderSource#PROCESS_DETAILS_ELLIPSIS");
+
+		MenuItem.click(menuItem = "Duplicate");
+
+		Click(locator1 = "ProcessBuilderSource#MODAL_DUPLICATE_BUTTON");
+
+		Click(locator1 = "Icon#INFO");
+
+		Click(
+			key_tabName = "Revision History",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_TAB");
+
+		AssertElementNotPresent(
+			key_rowNumber = "2",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_REVISION_BY_ROW");
 	}
 
 	@description = "Verify that the time format in Details tab is following the system language"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test TimeFormatFollowsSystemLanguageInDetails {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68328 TimeFormatFollowsSystemLanguageInDetails pending implementation
+		Click(
+			key_workflowResourceValue = "Single Approver",
+			locator1 = "WorkflowConfiguration#RESOURCE_TABLE_WORKFLOW");
 
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		AssertElementPresent(
+			key_infoValue = "PM",
+			key_titleValue = "Created",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS");
+
+		AssertElementPresent(
+			key_infoValue = "PM",
+			key_titleValue = "Last Modified",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS");
+
+		UserBar.gotoDropdownItem(dropdownItem = "Account Settings");
+
+		MyAccount.changeUserLanguage(
+			languageName = "português (Brasil)",
+			saveButton = "Save");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Fluxo de trabalho",
+			panel = "Aplicativos",
+			portlet = "Construtor de Processo");
+
+		Click(
+			key_workflowDefinitionTitle = "Aprovador Único",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Editar");
+
+		Click(locator1 = "Icon#INFO");
+
+		AssertElementNotPresent(
+			key_infoValue = "PM",
+			key_titleValue = "Criado",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS");
+
+		AssertElementNotPresent(
+			key_infoValue = "PM",
+			key_titleValue = "Última Modificação",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS");
 	}
 
 	@description = "Verify that the time format in Revision History tab is following the system language"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test TimeFormatFollowsSystemLanguageInRevision {
+		ApplicationsMenu.gotoPortlet(
+			category = "Workflow",
+			panel = "Applications",
+			portlet = "Process Builder");
 
-		// TODO LRQA-68330 TimeFormatFollowsSystemLanguageInRevision pending implementation
+		Click(
+			key_workflowDefinitionTitle = "Single Approver",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
 
+		MenuItem.clickNoError(menuItem = "Edit");
+
+		Click(locator1 = "Icon#INFO");
+
+		Click(
+			key_tabName = "Revision History",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_TAB");
+
+		AssertTextEquals.assertPartialText(
+			key_rowNumber = "1",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_REVISION_BY_ROW",
+			value1 = "PM");
+
+		UserBar.gotoDropdownItem(dropdownItem = "Account Settings");
+
+		MyAccount.changeUserLanguage(
+			languageName = "português (Brasil)",
+			saveButton = "Save");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Fluxo de trabalho",
+			panel = "Aplicativos",
+			portlet = "Construtor de Processo");
+
+		Click(
+			key_workflowDefinitionTitle = "Aprovador Único",
+			locator1 = "WorkflowDefinition#DEFINITION_TABLE_SPECIFIC_DEFINITION_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Editar");
+
+		Click(locator1 = "Icon#INFO");
+
+		Click(
+			key_tabName = "Histórico de revisão",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_TAB");
+
+		AssertTextNotEquals.assertNotPartialText(
+			key_rowNumber = "1",
+			locator1 = "ProcessBuilderSource#PROCESS_DETAILS_REVISION_BY_ROW",
+			value1 = "PM");
 	}
 
 }
