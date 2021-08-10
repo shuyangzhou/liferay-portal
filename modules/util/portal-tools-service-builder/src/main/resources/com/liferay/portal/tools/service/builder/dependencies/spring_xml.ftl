@@ -4,6 +4,14 @@
 	<#assign parent = " parent=\"basePersistence\"" />
 </#if>
 
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+	<#list entities as entity>
+		<#if entity.hasEntityColumns() && entity.hasPersistence()>
+			<bean class="${packagePath}.service.persistence.impl.${entity.name}ModelArgumentsResolver" id="${packagePath}.service.persistence.impl.${entity.name}ModelArgumentsResolver" />
+		</#if>
+	</#list>
+</#if>
+
 <#list entities as entity>
 	<#if entity.hasLocalService()>
 		<#assign sessionType = "Local" />
