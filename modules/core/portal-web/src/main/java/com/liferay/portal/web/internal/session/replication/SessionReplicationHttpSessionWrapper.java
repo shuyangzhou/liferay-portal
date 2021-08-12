@@ -90,7 +90,7 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 	}
 
 	private static final String _SERIALIZED_ATTRIBUTE_PREFIX =
-		SessionReplicationHttpSessionWrapper.class.getName() + "_";
+		"SERIALIZED_ATTRIBUTE_PREFIX_";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SessionReplicationHttpSessionWrapper.class);
