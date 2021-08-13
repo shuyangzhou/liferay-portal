@@ -84,6 +84,13 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 	}
 
 	@Override
+	public void removeAttribute(String name) {
+		super.removeAttribute(name);
+
+		super.removeAttribute(_SERIALIZED_ATTRIBUTE_PREFIX.concat(name));
+	}
+
+	@Override
 	public void setAttribute(String name, Object value) {
 		if (!(value instanceof Serializable) ||
 			_isSafeClass(value.getClass())) {
