@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * @author Dante Wang
@@ -39,11 +40,37 @@ public class SessionReplicationFilter implements Filter {
 			FilterChain filterChain)
 		throws IOException, ServletException {
 
-		if ((servletRequest instanceof HttpServletRequest) &&
-			!(servletRequest instanceof SessionReplicationHttpServletRequest)) {
+		if (servletRequest instanceof HttpServletRequest) {
+			HttpServletRequest httpServletRequest =
+				(HttpServletRequest)servletRequest;
 
-			servletRequest = new SessionReplicationHttpServletRequest(
-				(HttpServletRequest)servletRequest);
+			HttpServletRequestWrapper lastHttpServletRequestWrapper = null;
+
+			while (httpServletRequest instanceof HttpServletRequestWrapper) {
+				lastHttpServletRequestWrapper =
+					(HttpServletRequestWrapper)httpServletRequest;
+
+				httpServletRequest =
+					(HttpServletRequest)
+						lastHttpServletRequestWrapper.getRequest();
+			}
+
+			if (!(httpServletRequest instanceof
+					SessionReplicationHttpServletRequest)) {
+
+				SessionReplicationHttpServletRequest
+					sessionReplicationHttpServletRequest =
+						new SessionReplicationHttpServletRequest(
+							httpServletRequest);
+
+				if (lastHttpServletRequestWrapper == null) {
+					servletRequest = sessionReplicationHttpServletRequest;
+				}
+				else {
+					lastHttpServletRequestWrapper.setRequest(
+						sessionReplicationHttpServletRequest);
+				}
+			}
 		}
 
 		filterChain.doFilter(servletRequest, servletResponse);
