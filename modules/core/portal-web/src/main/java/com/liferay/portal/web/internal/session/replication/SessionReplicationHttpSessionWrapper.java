@@ -19,7 +19,6 @@ import com.liferay.petra.io.Serializer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
-import com.liferay.portal.kernel.util.JavaDetector;
 
 import java.io.Serializable;
 
@@ -28,7 +27,9 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -94,36 +95,25 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 
 	@Override
 	public void setAttribute(String name, Object value) {
-		if (!(value instanceof Serializable) ||
-			_isSafeClass(value.getClass())) {
+		if (value instanceof Serializable) {
+			Class<?> clazz = value.getClass();
 
-			super.setAttribute(name, value);
+			if (!_safeClassLoaders.contains(clazz.getClassLoader())) {
+				Serializer serializer = new Serializer();
 
-			return;
+				serializer.writeObject((Serializable)value);
+
+				ByteBuffer byteBuffer = serializer.toByteBuffer();
+
+				super.setAttribute(
+					_SERIALIZED_ATTRIBUTE_PREFIX.concat(name),
+					byteBuffer.array());
+
+				return;
+			}
 		}
 
-		Serializer serializer = new Serializer();
-
-		serializer.writeObject((Serializable)value);
-
-		ByteBuffer byteBuffer = serializer.toByteBuffer();
-
-		super.setAttribute(
-			_SERIALIZED_ATTRIBUTE_PREFIX.concat(name), byteBuffer.array());
-	}
-
-	private boolean _isSafeClass(Class<?> clazz) {
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		if ((classLoader == String.class.getClassLoader()) ||
-			(classLoader == HttpSession.class.getClassLoader()) ||
-			(JavaDetector.isJDK11() &&
-			 (classLoader == Logger.class.getClassLoader()))) {
-
-			return true;
-		}
-
-		return false;
+		super.setAttribute(name, value);
 	}
 
 	private static final String _SERIALIZED_ATTRIBUTE_PREFIX =
@@ -131,5 +121,14 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SessionReplicationHttpSessionWrapper.class);
+
+	private static final Set<ClassLoader> _safeClassLoaders =
+		new HashSet<ClassLoader>() {
+			{
+				add(String.class.getClassLoader());
+				add(HttpSession.class.getClassLoader());
+				add(Logger.class.getClassLoader());
+			}
+		};
 
 }
