@@ -24,6 +24,11 @@ import java.io.Serializable;
 
 import java.nio.ByteBuffer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 /**
@@ -55,6 +60,27 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 
 			return null;
 		}
+	}
+
+	@Override
+	public Enumeration<String> getAttributeNames() {
+		Enumeration<String> attributeNameEnumeration =
+			super.getAttributeNames();
+
+		List<String> attributeNames = new ArrayList<>();
+
+		while (attributeNameEnumeration.hasMoreElements()) {
+			String attributeName = attributeNameEnumeration.nextElement();
+
+			if (attributeName.startsWith(_SERIALIZED_ATTRIBUTE_PREFIX)) {
+				attributeName = attributeName.substring(
+					_SERIALIZED_ATTRIBUTE_PREFIX.length());
+			}
+
+			attributeNames.add(attributeName);
+		}
+
+		return Collections.enumeration(attributeNames);
 	}
 
 	@Override
