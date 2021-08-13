@@ -19,6 +19,7 @@ import com.liferay.petra.io.Serializer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
+import com.liferay.portal.kernel.util.JavaDetector;
 
 import java.io.Serializable;
 
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -114,7 +116,9 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 		ClassLoader classLoader = clazz.getClassLoader();
 
 		if ((classLoader == String.class.getClassLoader()) ||
-			(classLoader == HttpSession.class.getClassLoader())) {
+			(classLoader == HttpSession.class.getClassLoader()) ||
+			(JavaDetector.isJDK11() &&
+			 (classLoader == Logger.class.getClassLoader()))) {
 
 			return true;
 		}
