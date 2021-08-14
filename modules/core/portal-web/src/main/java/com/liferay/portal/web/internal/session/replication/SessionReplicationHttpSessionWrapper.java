@@ -58,8 +58,8 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 		try {
 			return deserializer.readObject();
 		}
-		catch (ClassNotFoundException classNotFoundException) {
-			_log.error("Unable to deserialize object", classNotFoundException);
+		catch (Exception exception) {
+			_log.error("Unable to deserialize object", exception);
 
 			return null;
 		}
