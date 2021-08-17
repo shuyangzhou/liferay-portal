@@ -36,10 +36,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceRegistrar;
-import com.liferay.registry.dependency.ServiceDependencyListener;
-import com.liferay.registry.dependency.ServiceDependencyManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,32 +54,7 @@ public abstract class BaseSearchEngineConfigurator
 
 	@Override
 	public void afterPropertiesSet() {
-		ServiceDependencyManager serviceDependencyManager =
-			new ServiceDependencyManager();
-
-		serviceDependencyManager.addServiceDependencyListener(
-			new ServiceDependencyListener() {
-
-				@Override
-				public void dependenciesFulfilled() {
-					Registry registry = RegistryUtil.getRegistry();
-
-					_messageBusServiceReference = registry.getServiceReference(
-						MessageBus.class);
-
-					_messageBus = registry.getService(
-						_messageBusServiceReference);
-
-					initialize();
-				}
-
-				@Override
-				public void destroy() {
-				}
-
-			});
-
-		serviceDependencyManager.registerDependencies(getDependencies());
+		initialize();
 	}
 
 	@Override
@@ -102,12 +74,6 @@ public abstract class BaseSearchEngineConfigurator
 				_originalSearchEngineId);
 
 			_originalSearchEngineId = null;
-		}
-
-		if (_messageBusServiceReference != null) {
-			Registry registry = RegistryUtil.getRegistry();
-
-			registry.ungetService(_messageBusServiceReference);
 		}
 
 		for (ServiceRegistrar<Destination> destinationServiceRegistrar :
@@ -447,6 +413,10 @@ public abstract class BaseSearchEngineConfigurator
 		}
 	}
 
+	protected void setMessageBus(MessageBus messageBus) {
+		_messageBus = messageBus;
+	}
+
 	protected void setSearchEngine(
 		String searchEngineId, SearchEngine searchEngine) {
 
@@ -491,7 +461,6 @@ public abstract class BaseSearchEngineConfigurator
 	private final Map<String, ServiceRegistrar<Destination>>
 		_destinationServiceRegistrars = new ConcurrentHashMap<>();
 	private volatile MessageBus _messageBus;
-	private volatile ServiceReference<MessageBus> _messageBusServiceReference;
 	private String _originalSearchEngineId;
 	private final List<SearchEngineRegistration> _searchEngineRegistrations =
 		new ArrayList<>();
