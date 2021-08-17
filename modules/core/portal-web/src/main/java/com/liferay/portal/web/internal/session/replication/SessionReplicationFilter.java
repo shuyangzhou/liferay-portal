@@ -14,6 +14,8 @@
 
 package com.liferay.portal.web.internal.session.replication;
 
+import com.liferay.portal.kernel.util.StringBundler;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -55,13 +57,14 @@ public class SessionReplicationFilter implements Filter {
 						lastHttpServletRequestWrapper.getRequest();
 			}
 
-			if (!(httpServletRequest instanceof
-					SessionReplicationHttpServletRequest)) {
+			Class<?> clazz = httpServletRequest.getClass();
 
-				SessionReplicationHttpServletRequest
-					sessionReplicationHttpServletRequest =
-						new SessionReplicationHttpServletRequest(
-							httpServletRequest);
+			String className = clazz.getName();
+
+			if (!className.equals(_ASM_WRAPPER_CLASS_NAME)) {
+				HttpServletRequest sessionReplicationHttpServletRequest =
+					SessionReplicationHttpServletRequestDelegate.create(
+						httpServletRequest);
 
 				if (lastHttpServletRequestWrapper == null) {
 					servletRequest = sessionReplicationHttpServletRequest;
@@ -78,6 +81,22 @@ public class SessionReplicationFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
+	}
+
+	private static final String _ASM_WRAPPER_CLASS_NAME;
+
+	static {
+		Package pkg =
+			SessionReplicationHttpServletRequestDelegate.class.getPackage();
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(pkg.getName());
+		sb.append(".");
+		sb.append(HttpServletRequest.class.getSimpleName());
+		sb.append("ASMWrapper");
+
+		_ASM_WRAPPER_CLASS_NAME = sb.toString();
 	}
 
 }

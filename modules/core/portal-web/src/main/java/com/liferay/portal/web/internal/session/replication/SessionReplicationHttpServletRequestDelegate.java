@@ -14,25 +14,50 @@
 
 package com.liferay.portal.web.internal.session.replication;
 
+import com.liferay.portal.asm.ASMWrapperUtil;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
 /**
  * @author Dante Wang
  */
-public class SessionReplicationHttpServletRequest
-	extends HttpServletRequestWrapper {
+public class SessionReplicationHttpServletRequestDelegate {
 
-	public SessionReplicationHttpServletRequest(
+	public static HttpServletRequest create(
 		HttpServletRequest httpServletRequest) {
 
-		super(httpServletRequest);
+		return ASMWrapperUtil.createASMWrapper(
+			SessionReplicationHttpServletRequestDelegate.class.getClassLoader(),
+			HttpServletRequest.class,
+			new SessionReplicationHttpServletRequestDelegate(
+				httpServletRequest),
+			httpServletRequest);
 	}
 
 	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof HttpServletRequest)) {
+			return false;
+		}
+
+		HttpServletRequest httpServletRequest = (HttpServletRequest)object;
+
+		return httpServletRequest.equals(_httpServletRequest);
+	}
+
 	public HttpSession getSession() {
-		HttpSession httpSession = super.getSession();
+		HttpSession httpSession = _httpServletRequest.getSession();
+
+		if (httpSession == null) {
+			return null;
+		}
+
+		return new SessionReplicationHttpSessionWrapper(httpSession);
+	}
+
+	public HttpSession getSession(boolean create) {
+		HttpSession httpSession = _httpServletRequest.getSession(create);
 
 		if (httpSession == null) {
 			return null;
@@ -42,14 +67,16 @@ public class SessionReplicationHttpServletRequest
 	}
 
 	@Override
-	public HttpSession getSession(boolean create) {
-		HttpSession httpSession = super.getSession(create);
-
-		if (httpSession == null) {
-			return null;
-		}
-
-		return new SessionReplicationHttpSessionWrapper(httpSession);
+	public int hashCode() {
+		return _httpServletRequest.hashCode();
 	}
+
+	private SessionReplicationHttpServletRequestDelegate(
+		HttpServletRequest httpServletRequest) {
+
+		_httpServletRequest = httpServletRequest;
+	}
+
+	private final HttpServletRequest _httpServletRequest;
 
 }
