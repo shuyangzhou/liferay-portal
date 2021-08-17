@@ -16,9 +16,7 @@ package com.liferay.layout.taglib.internal.display.context;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.info.constants.InfoDisplayWebKeys;
-import com.liferay.info.list.renderer.DefaultInfoListRendererContext;
 import com.liferay.info.list.renderer.InfoListRenderer;
-import com.liferay.info.list.renderer.InfoListRendererContext;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
 import com.liferay.info.pagination.Pagination;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
@@ -31,6 +29,7 @@ import com.liferay.layout.list.retriever.ListObjectReferenceFactory;
 import com.liferay.layout.list.retriever.ListObjectReferenceFactoryTracker;
 import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.layout.util.structure.CollectionStyledLayoutStructureItem;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -91,7 +90,7 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 				getNumberOfPages(),
 				ParamUtil.getInteger(
 					_httpServletRequest,
-					"page_number_" +
+					PAGE_NUMBER_PARAM_PREFIX +
 						_collectionStyledLayoutStructureItem.getItemId(),
 					1)));
 
@@ -177,6 +176,27 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 		return _collectionCount;
 	}
 
+	public String getCollectionItemType() {
+		if (_collectionItemType != null) {
+			return _collectionItemType;
+		}
+
+		JSONObject collectionJSONObject =
+			_collectionStyledLayoutStructureItem.getCollectionJSONObject();
+
+		String collectionItemType = StringPool.BLANK;
+
+		if ((collectionJSONObject != null) &&
+			collectionJSONObject.has("itemType")) {
+
+			collectionItemType = collectionJSONObject.getString("itemType");
+		}
+
+		_collectionItemType = collectionItemType;
+
+		return _collectionItemType;
+	}
+
 	public LayoutDisplayPageProvider<?>
 		getCollectionLayoutDisplayPageProvider() {
 
@@ -220,19 +240,6 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 
 		return infoListRendererTracker.getInfoListRenderer(
 			_collectionStyledLayoutStructureItem.getListStyle());
-	}
-
-	public InfoListRendererContext getInfoListRendererContext() {
-		DefaultInfoListRendererContext defaultInfoListRendererContext =
-			new DefaultInfoListRendererContext(
-				_httpServletRequest, _httpServletResponse);
-
-		defaultInfoListRendererContext.setListItemRendererKey(
-			_collectionStyledLayoutStructureItem.getListItemStyle());
-		defaultInfoListRendererContext.setTemplateKey(
-			_collectionStyledLayoutStructureItem.getTemplateKey());
-
-		return defaultInfoListRendererContext;
 	}
 
 	public int getMaxNumberOfItemsPerPage() {
@@ -482,6 +489,7 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 
 	private Integer _activePage;
 	private Integer _collectionCount;
+	private String _collectionItemType;
 	private final CollectionStyledLayoutStructureItem
 		_collectionStyledLayoutStructureItem;
 	private final HttpServletRequest _httpServletRequest;

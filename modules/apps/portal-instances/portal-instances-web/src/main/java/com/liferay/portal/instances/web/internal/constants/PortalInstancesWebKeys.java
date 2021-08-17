@@ -19,7 +19,7 @@ package com.liferay.portal.instances.web.internal.constants;
  */
 public class PortalInstancesWebKeys {
 
-	public static final String PORTAL_INSTANCE_INITIALIZER_REGISTRY =
-		"PORTAL_INSTANCE_INITIALIZER_REGISTRY";
+	public static final String SITE_INITIALIZER_REGISTRY =
+		"SITE_INITIALIZER_REGISTRY";
 
 }

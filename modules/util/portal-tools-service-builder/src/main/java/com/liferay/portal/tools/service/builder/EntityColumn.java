@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Brian Wing Shun Chan
@@ -93,6 +94,15 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		_uadNonanonymizable = uadNonanonymizable;
 
 		_humanName = ServiceBuilder.toHumanName(name);
+
+		if (Objects.equals(
+				_methodName, TextFormatter.format(name, TextFormatter.G))) {
+
+			_modelHintsName = name;
+		}
+		else {
+			_modelHintsName = methodName;
+		}
 	}
 
 	public EntityColumn(
@@ -247,6 +257,10 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 
 	public String getMethodUserUuidName() {
 		return _methodName.substring(0, _methodName.length() - 2) + "Uuid";
+	}
+
+	public String getModelHintsName() {
+		return _modelHintsName;
 	}
 
 	public String getName() {
@@ -625,6 +639,7 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 	private boolean _localized;
 	private final String _mappingTableName;
 	private final String _methodName;
+	private String _modelHintsName;
 	private final String _name;
 	private boolean _orderByAscending;
 	private boolean _orderColumn;

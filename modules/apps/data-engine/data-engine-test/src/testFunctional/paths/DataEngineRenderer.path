@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>DATE_INPUT_INDEXED</td>
+	<td>xpath=(//label[normalize-space(text())='${key_fieldLabel}']//following-sibling::div[contains(@class,'date-picker')]//input[@type='text'])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>GRID_OPTION_INDEXED</td>
 	<td>xpath=(//legend[normalize-space(text())='${key_fieldLabel}'])[${fieldIndex}]//following-sibling::div//tbody/tr[${key_row}]/td[${key_column}]//input</td>
 	<td></td>

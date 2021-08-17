@@ -31,6 +31,10 @@ components:
                     items:
                         $ref: "#/components/schemas/ObjectField"
                     type: array
+                pluralLabel:
+                    additionalProperties:
+                        type: string
+                    type: object
                 status:
                     $ref: "#/components/schemas/Status"
                     readOnly: true
@@ -195,14 +199,6 @@ paths:
                   schema:
                       format: int64
                       type: integer
-                - in: query
-                  name: page
-                  schema:
-                      type: integer
-                - in: query
-                  name: pageSize
-                  schema:
-                      type: integer
             responses:
                 200:
                     content:
@@ -276,6 +272,35 @@ paths:
                   schema:
                       format: int64
                       type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ObjectField"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ObjectField"
+                    description:
+                        ""
+            tags: ["ObjectField"]
+        patch:
+            operationId: patchObjectField
+            parameters:
+                - in: path
+                  name: objectFieldId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ObjectField"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/ObjectField"
             responses:
                 200:
                     content:

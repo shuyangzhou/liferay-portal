@@ -1,5 +1,17 @@
 definition {
 
+	macro assertDataInDateField {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		AssertTextEquals.assertValue(
+			index = "${index}",
+			key_fieldLabel = "${fieldLabel}",
+			locator1 = "DataEngineRenderer#DATE_INPUT_INDEXED",
+			value1 = "${value}");
+	}
+
 	macro assertDataInGridField {
 		if (!(isSet(fieldIndex))) {
 			var fieldIndex = "1";
@@ -88,6 +100,18 @@ definition {
 			key_optionValue = "${optionValue}",
 			locator1 = "DataEngineRenderer#MULTIPLE_SELECTION_OPTION_INDEXED",
 			optionIndex = "${optionIndex}");
+	}
+
+	macro inputDataInDateField {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		Type(
+			index = "${index}",
+			key_fieldLabel = "${fieldLabel}",
+			locator1 = "DataEngineRenderer#DATE_INPUT_INDEXED",
+			value1 = "${value}");
 	}
 
 	macro inputDataInGridField {

@@ -1,0 +1,59 @@
+@component-name = "portal-analytics-cloud"
+definition {
+
+	property analytics.cloud.enabled = "true";
+	property minimum.slave.ram = "32";
+	property portal.release = "false";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Analytics Cloud";
+
+	setUp {
+		ACUtils.launchAC();
+
+		ACSettings.takeTokenFromAnalyticsCloud();
+
+		TestCase.setUpPortalInstance();
+
+		ACUtils.launchDXP();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		ACUtils.tearDownDXP();
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+
+		ACUtils.tearDownAC();
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8494 | Test Summary: Assert Segment Overview shows include anonymous"
+	@ignore = "true"
+	@priority = "3"
+	test AssertSegmentOverviewShowsIncludeAnonymous {
+
+		// TODO LRAC-8494 PENDING IMPLEMENTATION
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8493 | Test Summary: Segment Composition shows Active and Known individuals"
+	@ignore = "true"
+	@priority = "3"
+	test SegmentCompositionShowsActiveAndKnownIndividuals {
+
+		// TODO LRAC-8493 PENDING IMPLEMENTATION
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8492 | Test Summary: Segment composition card updates in real time"
+	@ignore = "true"
+	@priority = "5"
+	test ViewSegmentCompositionCardUptadesRealTime {
+
+		// TODO LRAC-8492 PENDING IMPLEMENTATION
+
+	}
+
+}

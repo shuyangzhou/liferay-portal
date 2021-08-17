@@ -1366,9 +1366,10 @@ public class ServiceBuilder {
 		return mappingEntities;
 	}
 
-	public int getMaxLength(String model, String field) {
+	public int getMaxLength(String model, EntityColumn entityColumn) {
 		Map<String, String> hints = ModelHintsUtil.getHints(
-			_apiPackagePath + ".model." + model, field);
+			_apiPackagePath + ".model." + model,
+			entityColumn.getModelHintsName());
 
 		if (hints == null) {
 			return _DEFAULT_COLUMN_MAX_LENGTH;
@@ -1574,7 +1575,9 @@ public class ServiceBuilder {
 		return null;
 	}
 
-	public String getSqlType(String model, String field, String type) {
+	public String getSqlType(String model, EntityColumn entityColumn) {
+		String type = entityColumn.getType();
+
 		if (type.equals("boolean") || type.equals("Boolean")) {
 			return "BOOLEAN";
 		}
@@ -1606,7 +1609,7 @@ public class ServiceBuilder {
 			return "CLOB";
 		}
 		else if (type.equals("String")) {
-			int maxLength = getMaxLength(model, field);
+			int maxLength = getMaxLength(model, entityColumn);
 
 			if (maxLength == 2000000) {
 				return "CLOB";
@@ -2439,9 +2442,7 @@ public class ServiceBuilder {
 						entityColumns.size());
 
 					for (EntityColumn entityColumn : entityColumns) {
-						String sqlType = getSqlType(
-							name, entityColumn.getName(),
-							entityColumn.getType());
+						String sqlType = getSqlType(name, entityColumn);
 
 						columns.add(
 							HashMapBuilder.put(
@@ -4751,8 +4752,7 @@ public class ServiceBuilder {
 			String colType = entityColumn.getType();
 
 			if (colType.equals("String")) {
-				columnLengths[i] = getMaxLength(
-					entity.getName(), entityColumn.getName());
+				columnLengths[i] = getMaxLength(entity.getName(), entityColumn);
 			}
 		}
 
@@ -4981,7 +4981,7 @@ public class ServiceBuilder {
 				}
 				else if (type.equals("String")) {
 					int maxLength = getMaxLength(
-						entity.getName(), entityColumn.getName());
+						entity.getName(), entityColumn);
 
 					if (entityColumn.isLocalized()) {
 						maxLength = 4000;
@@ -5143,7 +5143,7 @@ public class ServiceBuilder {
 			else if (type.equals("BigDecimal")) {
 				Map<String, String> hints = ModelHintsUtil.getHints(
 					_apiPackagePath + ".model." + entity.getName(),
-					entityColumn.getName());
+					entityColumn.getModelHintsName());
 
 				String precision = "30";
 				String scale = "16";
@@ -5169,8 +5169,7 @@ public class ServiceBuilder {
 				sb.append("TEXT");
 			}
 			else if (type.equals("String")) {
-				int maxLength = getMaxLength(
-					entity.getName(), entityColumn.getName());
+				int maxLength = getMaxLength(entity.getName(), entityColumn);
 
 				if (entityColumn.isLocalized() && (maxLength < 4000)) {
 					maxLength = 4000;
@@ -5649,7 +5648,7 @@ public class ServiceBuilder {
 
 	private List<Path> _getUpdateSQLFilePaths() throws Exception {
 		if (!_osgiModule) {
-			final List<Path> updateSQLFilePaths = new ArrayList<>();
+			List<Path> updateSQLFilePaths = new ArrayList<>();
 
 			try (DirectoryStream<Path> paths = Files.newDirectoryStream(
 					Paths.get(_sqlDirName), "update-7.0.0-7.0.1*.sql")) {

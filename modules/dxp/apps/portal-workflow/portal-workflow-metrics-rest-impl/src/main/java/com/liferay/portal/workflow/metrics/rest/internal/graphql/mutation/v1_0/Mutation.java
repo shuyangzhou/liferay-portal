@@ -172,25 +172,25 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public boolean patchIndexesRefresh(@GraphQLName("index") Index index)
+	public boolean patchIndexRefresh(@GraphQLName("index") Index index)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
 			_indexResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			indexResource -> indexResource.patchIndexesRefresh(index));
+			indexResource -> indexResource.patchIndexRefresh(index));
 
 		return true;
 	}
 
 	@GraphQLField
-	public boolean patchIndexesReindex(@GraphQLName("index") Index index)
+	public boolean patchIndexReindex(@GraphQLName("index") Index index)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
 			_indexResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			indexResource -> indexResource.patchIndexesReindex(index));
+			indexResource -> indexResource.patchIndexReindex(index));
 
 		return true;
 	}
@@ -527,7 +527,7 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public java.util.Collection<Task> createProcessTasksPage(
+	public java.util.Collection<Task> createTasksPage(
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page,
 			@GraphQLName("taskBulkSelection") TaskBulkSelection
@@ -538,7 +538,7 @@ public class Mutation {
 			_taskResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			taskResource -> {
-				Page paginationPage = taskResource.postProcessTasksPage(
+				Page paginationPage = taskResource.postTasksPage(
 					Pagination.of(page, pageSize), taskBulkSelection);
 
 				return paginationPage.getItems();

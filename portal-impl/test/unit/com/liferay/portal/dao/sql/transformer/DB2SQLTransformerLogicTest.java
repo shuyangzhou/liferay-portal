@@ -14,8 +14,10 @@
 
 package com.liferay.portal.dao.sql.transformer;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBType;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
@@ -59,20 +61,31 @@ public class DB2SQLTransformerLogicTest
 			sqlTransformer.transform(getBitwiseCheckOriginalSQL()));
 	}
 
-	@Test
-	public void testReplaceLike() {
-		Assert.assertEquals(
-			"select foo from Foo where foo LIKE COALESCE(" +
-				"CAST(? AS VARCHAR(32672)),'')",
-			sqlTransformer.transform("select foo from Foo where foo LIKE ?"));
-	}
-
 	@Override
 	@Test
 	public void testReplaceModWithExtraWhitespace() {
 		Assert.assertEquals(
 			getModTransformedSQL(),
 			sqlTransformer.transform(getModOriginalSQL()));
+	}
+
+	@Test
+	public void testReplaceQuestionMark() {
+		_testReplaceQuestionMark("select foo from Foo where foo LIKE ?");
+		_testReplaceQuestionMark("select foo, ?, bar, ? from Foo");
+		_testReplaceQuestionMark("select * from Foo where foo = ? And bar = ?");
+		_testReplaceQuestionMark(
+			"select * from Foo where case when foo = ? then ? else ? end");
+		_testReplaceQuestionMark(
+			"select bar, ?, case when foo = ? then ? else ? end as columnA " +
+				"from Foo");
+
+		Assert.assertEquals(
+			"select * from Foo where foo = \" ?\"",
+			sqlTransformer.transform("select * from Foo where foo = \" ?\""));
+		Assert.assertEquals(
+			"select * from Foo where foo = \' ?\'",
+			sqlTransformer.transform("select * from Foo where foo = \' ?\'"));
 	}
 
 	@Override
@@ -93,6 +106,14 @@ public class DB2SQLTransformerLogicTest
 	@Override
 	protected String getNullDateTransformedSQL() {
 		return "select NULL from Foo";
+	}
+
+	private void _testReplaceQuestionMark(String sql) {
+		Assert.assertEquals(
+			StringUtil.replace(
+				sql, CharPool.QUESTION,
+				"COALESCE(CAST(? AS VARCHAR(32672)),'')"),
+			sqlTransformer.transform(sql));
 	}
 
 }

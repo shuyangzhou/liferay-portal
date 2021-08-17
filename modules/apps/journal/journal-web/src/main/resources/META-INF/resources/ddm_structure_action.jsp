@@ -88,6 +88,15 @@ DDMStructure ddmStructure = (DDMStructure)row.getObject();
 		/>
 	</c:if>
 
+	<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/journal/export_data_definition" var="exportDataDefinitionURL">
+		<portlet:param name="dataDefinitionId" value="<%= String.valueOf(ddmStructure.getStructureId()) %>" />
+	</liferay-portlet:resourceURL>
+
+	<liferay-ui:icon
+		message="export-as-json"
+		url="<%= exportDataDefinitionURL %>"
+	/>
+
 	<%
 	Group scopeGroup = themeDisplay.getScopeGroup();
 	%>

@@ -16,30 +16,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {Editor} from './Editor';
+import DEFAULT_BALLOON_EDITOR_CONFIG from './config/DefaultBalloonEditorConfiguration';
 
 import '../css/main.scss';
 
 const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
-	const defaultExtraPlugins = 'ballooneditor,videoembed';
-
-	const extraPlugins = config.extraPlugins ? `${config.extraPlugins},` : '';
-
-	const basicToolbars = {
-		toolbarImage:
-			'ImageAlignLeft,ImageAlignCenter,ImageAlignRight,LinkAddOrEdit,AltImg',
-		toolbarTable: 'TableHeaders,TableRow,TableColumn,TableCell,TableDelete',
-		toolbarText:
-			'Styles,Bold,Italic,Underline,BulletedList,NumberedList,TextLink,' +
-			'JustifyLeft,JustifyCenter,JustifyRight,LineHeight,RemoveFormat',
-		toolbarVideo: 'VideoAlignLeft,VideoAlignCenter,VideoAlignRight',
-	};
-
 	const editorConfig = {
-		...basicToolbars,
+		...DEFAULT_BALLOON_EDITOR_CONFIG,
 		...config,
-		extraAllowedContent: '*',
-		extraPlugins: `${extraPlugins}${defaultExtraPlugins}`,
-		title: false,
 	};
 
 	return (
@@ -62,6 +46,7 @@ const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
 			}}
 			onInstanceReady={(event) => {
 				const editor = event.editor;
+				const editable = editor.editable();
 
 				// Workaround to make the "CKEDITOR.ui.richCombo"
 				// plugin work with the CKEditor (React) component
@@ -69,33 +54,46 @@ const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
 
 				editor.element.setAttribute('id', `cke_${editor.name}`);
 
+				editable.attachClass('liferay-editable');
+
 				const balloonToolbars = editor.balloonToolbars;
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarText,
-					cssSelector: '*',
-				});
+				if (editorConfig.toolbarText) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarText,
+						cssSelector: '*',
+					});
+				}
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarImage,
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-					widgets: 'image,image2',
-				});
+				if (editorConfig.toolbarImage) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarImage,
+						priority:
+							window.CKEDITOR.plugins.balloontoolbar.PRIORITY
+								.HIGH,
+						widgets: 'image,image2',
+					});
+				}
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarTable,
-					cssSelector: 'td',
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-				});
+				if (editorConfig.toolbarTable) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarTable,
+						cssSelector: 'td',
+						priority:
+							window.CKEDITOR.plugins.balloontoolbar.PRIORITY
+								.HIGH,
+					});
+				}
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarVideo,
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-					widgets: 'videoembed',
-				});
+				if (editorConfig.toolbarVideo) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarVideo,
+						priority:
+							window.CKEDITOR.plugins.balloontoolbar.PRIORITY
+								.HIGH,
+						widgets: 'videoembed',
+					});
+				}
 			}}
 			type="inline"
 			{...otherProps}

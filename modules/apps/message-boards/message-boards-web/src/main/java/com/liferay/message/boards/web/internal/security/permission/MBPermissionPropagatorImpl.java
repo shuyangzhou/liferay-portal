@@ -91,11 +91,11 @@ public class MBPermissionPropagatorImpl extends BasePermissionPropagator {
 	}
 
 	protected void propagateCategoryRolePermissions(
-			final ActionRequest actionRequest, final String className,
-			String primKey, final long[] roleIds)
+			ActionRequest actionRequest, String className, String primKey,
+			long[] roleIds)
 		throws PortalException {
 
-		final long categoryId = GetterUtil.getLong(primKey);
+		long categoryId = GetterUtil.getLong(primKey);
 
 		MBCategory category = _mbCategoryLocalService.getCategory(categoryId);
 
@@ -157,11 +157,11 @@ public class MBPermissionPropagatorImpl extends BasePermissionPropagator {
 	}
 
 	protected void propagateMBRolePermissions(
-			final ActionRequest actionRequest, final String className,
-			String primKey, final long[] roleIds)
+			ActionRequest actionRequest, String className, String primKey,
+			long[] roleIds)
 		throws PortalException {
 
-		final long groupId = GetterUtil.getLong(primKey);
+		long groupId = GetterUtil.getLong(primKey);
 
 		List<MBCategory> categories = _mbCategoryLocalService.getCategories(
 			groupId);

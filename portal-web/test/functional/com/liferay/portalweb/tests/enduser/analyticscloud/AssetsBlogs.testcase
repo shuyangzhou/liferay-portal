@@ -36,6 +36,124 @@ definition {
 		ACUtils.tearDownAC();
 	}
 
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8387 | Test Summary: Blogs asset appears on list shows pages that the blog exists on"
+	@ignore = "true"
+	@priority = "5"
+	test AssertAppearsOnListShowsPagesBlogExists {
+
+		// TODO LRAC-8387 AssertAppearsOnListShowsPagesBlogExists
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8384 | Test Summary: Assert 180 day time filter in Blogs"
+	@ignore = "true"
+	@priority = "3"
+	test AssertBlogsPageTImeFilter180Days {
+
+		// TODO LRAC-8384 AssertBlogsPageTImeFilter180Days
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8374 | Test Summary: Blogs audience card shows expected amount of know and anonymous individuals"
+	@priority = "5"
+	test AudienceCardShowsExpectedAmountKnowAndAnonymousIndividualsInBlogs {
+		var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Site Name");
+
+		for (var name : list "ac,liferay") {
+			JSONUser.addUser(
+				userEmailAddress = "${name}@liferay.com",
+				userFirstName = "${name}",
+				userLastName = "${name}",
+				userScreenName = "${name}");
+		}
+
+		ACDXPSettings.syncNewContactData();
+
+		for (var name : list "ac,liferay") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "${name}@liferay.com",
+				userLoginFullName = "${name} ${name}");
+
+			Navigator.gotoSitePage(
+				pageName = "AC Page",
+				siteName = "Site Name");
+
+			BlogsNavigator.gotoPG(entryTitle = "Blogs AC Title");
+
+			Pause(locator1 = "5000");
+		}
+
+		User.logoutPG();
+
+		Navigator.gotoSitePage(
+			pageName = "AC Page",
+			siteName = "Site Name");
+
+		BlogsNavigator.gotoPG(entryTitle = "Blogs AC Title");
+
+		ACUtils.closeAllSessions();
+
+		Pause(locator1 = "30000");
+
+		ACUtils.launchAC();
+
+		ACProperties.switchProperty(propertyName = "${propertyName}");
+
+		ACNavigation.goToAssets();
+
+		ACNavigation.switchTab(tabName = "Blogs");
+
+		ACTimeFilter.clickTimeFilterButton();
+
+		ACTimeFilter.setLast24Hours();
+
+		ACNavigation.openItem(itemName = "Blogs AC Title");
+
+		ACIndividualsDashboard.goToOverviewTab();
+
+		ACNavigation.viewActiveSwitchTab(tabName = "Overview");
+
+		ACUtils.assertAudienceCard(
+			index = "1",
+			percentageList = "66.67%,33.33%");
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8375 | Test Summary: Blogs audience card shows expected amount of segmented and unsegmented individuals"
+	@ignore = "true"
+	@priority = "5"
+	test AudienceCardShowsExpectedAmountSegmentedAndUnsegmentedInBlogs {
+
+		// TODO LRAC-8375 AudienceCardShowsExpectedAmountSegmentedAndUnsegmentedInBlogs
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8378 | Test Summary: Blogs location card shows views by the expected location"
+	@ignore = "true"
+	@priority = "5"
+	test BlogsLocationCardShowsViewsByExpectedLocation {
+
+		// TODO LRAC-8378 BlogsLocationCardShowsViewsByExpectedLocation
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8386 | Test Summary: Blogs views by technology card shows views by the expected browser"
+	@ignore = "true"
+	@priority = "5"
+	test BlogsTechnologyCardShowsViewsByExpectedBrowser {
+
+		// TODO LRAC-8386 BlogsTechnologyCardShowsViewsByExpectedBrowser
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8385 | Test Summary: Blogs views by technology card shows views by the expected device"
+	@ignore = "true"
+	@priority = "5"
+	test BlogsTechnologyCardShowsViewsByExpectedDevice {
+
+		// TODO LRAC-8385 BlogsTechnologyCardShowsViewsByExpectedDevice
+
+	}
+
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8382 | Test Summary: The blogs list is searchable"
 	@priority = "5"
 	test CanBlogsListSearchable {
@@ -141,6 +259,15 @@ definition {
 		ACAssets.viewVisitorsBehaviorMetric(
 			metricTitle = "Views",
 			metricValue = "4");
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8383 | Test Summary: Custom Range time filter in Blogs assets page"
+	@ignore = "true"
+	@priority = "5"
+	test CanUseCustomRangeBlogsAssetsPage {
+
+		// TODO LRAC-8383 CanUseCustomRangeBlogsAssetsPage
+
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8114 | Test Summary: Blogs known individuals list shows individuals who have viewed the blog"
@@ -271,44 +398,6 @@ definition {
 		ACUtils.searchBar(searchItem = "Test 2");
 
 		ACAssets.viewAssets(assetName = "Test 2");
-	}
-
-	@description = "Blogs visitor behavior card shows expected amount of views"
-	@priority = "5"
-	test VisitorBehaviorCardShowsExpectedAmountOfViewsInBlogs {
-		var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Site Name");
-
-		for (var n : list "1,2,3,4") {
-			Navigator.gotoSitePage(
-				pageName = "AC Page",
-				siteName = "Site Name");
-
-			BlogsNavigator.gotoPG(entryTitle = "Blogs AC Title");
-		}
-
-		Pause(locator1 = "10000");
-
-		ACUtils.closeAllSessions();
-
-		Pause(locator1 = "30000");
-
-		ACUtils.launchAC();
-
-		ACProperties.switchProperty(propertyName = "${propertyName}");
-
-		ACNavigation.goToAssets();
-
-		ACNavigation.switchTab(tabName = "Blogs");
-
-		ACTimeFilter.clickTimeFilterButton();
-
-		ACTimeFilter.setLast24Hours();
-
-		ACNavigation.openItem(itemName = "Blogs AC Title");
-
-		ACAssets.viewVisitorsBehaviorMetric(
-			metricTitle = "Views",
-			metricValue = "4");
 	}
 
 }

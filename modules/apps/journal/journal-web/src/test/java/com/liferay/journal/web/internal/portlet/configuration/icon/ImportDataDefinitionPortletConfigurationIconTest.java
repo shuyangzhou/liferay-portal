@@ -14,19 +14,12 @@
 
 package com.liferay.journal.web.internal.portlet.configuration.icon;
 
-import com.liferay.journal.web.internal.configuration.FFImportDataDefinitionConfiguration;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
-import javax.portlet.PortletRequest;
-
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.mockito.Mockito;
 
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -38,14 +31,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 public class ImportDataDefinitionPortletConfigurationIconTest {
 
-	@Before
-	public void setUp() {
-		ReflectionTestUtil.setFieldValue(
-			_importDataDefinitionPortletConfigurationIcon,
-			"_ffImportDataDefinitionConfiguration",
-			_ffImportDataDefinitionConfiguration);
-	}
-
 	@Test
 	public void testGetJspPath() {
 		Assert.assertEquals(
@@ -54,38 +39,13 @@ public class ImportDataDefinitionPortletConfigurationIconTest {
 	}
 
 	@Test
-	public void testIsShowWithFFImportStructureConfigurationDisabled() {
-		mockFFImportDataDefinitionConfiguration(false);
-
-		Assert.assertFalse(
-			_importDataDefinitionPortletConfigurationIcon.isShow(
-				_portletRequest));
-	}
-
-	@Test
-	public void testIsShowWithFFImportStructureConfigurationEnabled() {
-		mockFFImportDataDefinitionConfiguration(true);
-
+	public void testIsShow() {
 		Assert.assertTrue(
-			_importDataDefinitionPortletConfigurationIcon.isShow(
-				_portletRequest));
+			_importDataDefinitionPortletConfigurationIcon.isShow(null));
 	}
 
-	protected void mockFFImportDataDefinitionConfiguration(boolean enabled) {
-		Mockito.when(
-			_ffImportDataDefinitionConfiguration.enabled()
-		).thenReturn(
-			enabled
-		);
-	}
-
-	private final FFImportDataDefinitionConfiguration
-		_ffImportDataDefinitionConfiguration = Mockito.mock(
-			FFImportDataDefinitionConfiguration.class);
 	private final ImportDataDefinitionPortletConfigurationIcon
 		_importDataDefinitionPortletConfigurationIcon =
 			new ImportDataDefinitionPortletConfigurationIcon();
-	private final PortletRequest _portletRequest = Mockito.mock(
-		PortletRequest.class);
 
 }

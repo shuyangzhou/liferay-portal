@@ -48,6 +48,13 @@ import java.util.stream.Stream;
 public class CommercePriceListServiceImpl
 	extends CommercePriceListServiceBaseImpl {
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			long groupId, long userId, long commerceCurrencyId,
@@ -69,6 +76,13 @@ public class CommercePriceListServiceImpl
 			serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			long groupId, long userId, long commerceCurrencyId,
@@ -89,6 +103,13 @@ public class CommercePriceListServiceImpl
 			serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			long groupId, long userId, long commerceCurrencyId, String name,
@@ -108,6 +129,37 @@ public class CommercePriceListServiceImpl
 			neverExpire, serviceContext);
 	}
 
+	@Override
+	public CommercePriceList addCommercePriceList(
+			String externalReferenceCode, long groupId, long commerceCurrencyId,
+			boolean netPrice, String type, long parentCommercePriceListId,
+			boolean catalogBasePriceList, String name, double priority,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, int expirationDateMonth,
+			int expirationDateDay, int expirationDateYear,
+			int expirationDateHour, int expirationDateMinute,
+			boolean neverExpire, ServiceContext serviceContext)
+		throws PortalException {
+
+		_checkPortletResourcePermission(
+			groupId, CommercePriceListActionKeys.ADD_COMMERCE_PRICE_LIST);
+
+		return commercePriceListLocalService.addCommercePriceList(
+			externalReferenceCode, groupId, getUserId(), commerceCurrencyId,
+			netPrice, type, parentCommercePriceListId, catalogBasePriceList,
+			name, priority, displayDateMonth, displayDateDay, displayDateYear,
+			displayDateHour, displayDateMinute, expirationDateMonth,
+			expirationDateDay, expirationDateYear, expirationDateHour,
+			expirationDateMinute, neverExpire, serviceContext);
+	}
+
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			String externalReferenceCode, long groupId, long userId,
@@ -132,6 +184,13 @@ public class CommercePriceListServiceImpl
 			neverExpire, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			String externalReferenceCode, long groupId, long userId,
@@ -145,9 +204,6 @@ public class CommercePriceListServiceImpl
 			boolean neverExpire, ServiceContext serviceContext)
 		throws PortalException {
 
-		_checkPortletResourcePermission(
-			groupId, CommercePriceListActionKeys.ADD_COMMERCE_PRICE_LIST);
-
 		return commercePriceListLocalService.addCommercePriceList(
 			externalReferenceCode, groupId, userId, commerceCurrencyId,
 			netPrice, type, parentCommercePriceListId, catalogBasePriceList,
@@ -157,6 +213,13 @@ public class CommercePriceListServiceImpl
 			expirationDateMinute, neverExpire, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			String externalReferenceCode, long groupId, long userId,
@@ -181,6 +244,13 @@ public class CommercePriceListServiceImpl
 			serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addCommercePriceList(String, long, long, long, boolean, String, long,
+	 boolean, String, double, int, int, int, int, int, int, int, int, int, int,
+	 boolean, serviceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addCommercePriceList(
 			String externalReferenceCode, long groupId, long userId,
@@ -202,7 +272,7 @@ public class CommercePriceListServiceImpl
 
 	@Override
 	public CommercePriceList addOrUpdateCommercePriceList(
-			String externalReferenceCode, long groupId, long userId,
+			String externalReferenceCode, long groupId,
 			long commercePriceListId, long commerceCurrencyId, boolean netPrice,
 			String type, long parentCommercePriceListId,
 			boolean catalogBasePriceList, String name, double priority,
@@ -259,14 +329,51 @@ public class CommercePriceListServiceImpl
 		// Add
 
 		return addCommercePriceList(
-			externalReferenceCode, groupId, userId, commerceCurrencyId,
-			netPrice, type, parentCommercePriceListId, catalogBasePriceList,
-			name, priority, displayDateMonth, displayDateDay, displayDateYear,
-			displayDateHour, displayDateMinute, expirationDateMonth,
-			expirationDateDay, expirationDateYear, expirationDateHour,
-			expirationDateMinute, neverExpire, serviceContext);
+			externalReferenceCode, groupId, commerceCurrencyId, netPrice, type,
+			parentCommercePriceListId, catalogBasePriceList, name, priority,
+			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
+			displayDateMinute, expirationDateMonth, expirationDateDay,
+			expirationDateYear, expirationDateHour, expirationDateMinute,
+			neverExpire, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addOrUpdateCommercePriceList(String, long, long, long, boolean, String,
+	 long, boolean, String, double, int, int, int,  int, int, int, int, int,
+	 int, int, boolean, ServiceContext)}
+	 */
+	@Deprecated
+	@Override
+	public CommercePriceList addOrUpdateCommercePriceList(
+			String externalReferenceCode, long groupId, long userId,
+			long commercePriceListId, long commerceCurrencyId, boolean netPrice,
+			String type, long parentCommercePriceListId,
+			boolean catalogBasePriceList, String name, double priority,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, int expirationDateMonth,
+			int expirationDateDay, int expirationDateYear,
+			int expirationDateHour, int expirationDateMinute,
+			boolean neverExpire, ServiceContext serviceContext)
+		throws PortalException {
+
+		return addOrUpdateCommercePriceList(
+			externalReferenceCode, groupId, commercePriceListId,
+			commerceCurrencyId, netPrice, type, parentCommercePriceListId,
+			catalogBasePriceList, name, priority, displayDateMonth,
+			displayDateDay, displayDateYear, displayDateHour, displayDateMinute,
+			expirationDateMonth, expirationDateDay, expirationDateYear,
+			expirationDateHour, expirationDateMinute, neverExpire,
+			serviceContext);
+	}
+
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addOrUpdateCommercePriceList(String, long, long, long, long, boolean,
+	 String, long, boolean, String, double, int, int, int, int, int, int, int,
+	 int, int, int, boolean, ServiceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addOrUpdateCommercePriceList(
 			String externalReferenceCode, long groupId, long userId,
@@ -280,7 +387,7 @@ public class CommercePriceListServiceImpl
 		throws PortalException {
 
 		return addOrUpdateCommercePriceList(
-			externalReferenceCode, groupId, userId, commercePriceListId,
+			externalReferenceCode, groupId, commercePriceListId,
 			commerceCurrencyId, true,
 			CommercePriceListConstants.TYPE_PRICE_LIST,
 			parentCommercePriceListId, false, name, priority, displayDateMonth,
@@ -290,6 +397,13 @@ public class CommercePriceListServiceImpl
 			serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #addOrUpdateCommercePriceList(String, long, long, long, long, boolean,
+	 String, long, boolean, String, double, int, int, int, int, int, int, int,
+	 int, int, int, boolean, ServiceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList addOrUpdateCommercePriceList(
 			String externalReferenceCode, long groupId, long userId,
@@ -561,6 +675,12 @@ public class CommercePriceListServiceImpl
 			neverExpire, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #updateCommercePriceList(long, long, boolean, long, String, double, int,
+	 int, int, int, int, int, int, int, int, int, boolean, ServiceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList updateCommercePriceList(
 			long commercePriceListId, long commerceCurrencyId,
@@ -583,6 +703,12 @@ public class CommercePriceListServiceImpl
 			expirationDateMinute, neverExpire, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #updateCommercePriceList(long, long, boolean, long, String, double, int,
+	 int, int, int, int, int, int, int, int, int, boolean, ServiceContext)}
+	 */
+	@Deprecated
 	@Override
 	public CommercePriceList updateCommercePriceList(
 			long commercePriceListId, long commerceCurrencyId, String name,

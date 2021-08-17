@@ -166,12 +166,68 @@ definition {
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8150 | Test Summary: Page views update in real time"
-	@ignore = "true"
 	@priority = "5"
 	test PageViewsUpdateInRealTime {
+		task ("Go to Usage, save the value of Page Views, remove the comma and add 3(correspond to the value of interaction with DXP)") {
+			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud();
 
-		// TODO LRAC-8150 Usage#PageViewsUpdateInRealTime pending implementation
+			ACUtils.launchAC();
 
+			ACProperties.switchProperty(propertyName = "${propertyName}");
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUsage();
+
+			var actualPageViews = selenium.getText("ACUsage#USAGE_CURRENT_PAGE_VIEWS");
+			var replacePageViews = StringUtil.replace("${actualPageViews}",",","");
+			var sumPageViews = ${replacePageViews} + 3;
+
+			ACUtils.launchDXP();
+
+			ACUtils.closeAllSessions();
+
+			Pause(locator1 = "30000");
+		}
+
+		task ("Go to AC > Usage again and get the new value of Page Views") {
+			ACUtils.launchAC();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUsage();
+
+			var expectedPageViews = selenium.getText("ACUsage#USAGE_CURRENT_PAGE_VIEWS");
+		}
+
+		task ("Remove the comma and compare the values") {
+			var replacePageViews2 = StringUtil.replace("${expectedPageViews}",",","");
+
+			TestUtils.assertEquals(
+				actual = "${sumPageViews}",
+				expected = "${replacePageViews2}");
+		}
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8146 | Test Summary: Total number of individuals is shown"
+	@priority = "5"
+	test PlanLimitNumberOfIndividualsIsShown {
+		task ("Go to Usage and assert that the plan number of individuals is '110,000'") {
+			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud();
+
+			ACUtils.launchAC();
+
+			ACProperties.switchProperty(propertyName = "${propertyName}");
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUsage();
+
+			AssertElementPresent(
+				key_metricName = "Individuals",
+				key_totalNumber = "110,000",
+				locator1 = "ACUsage#USAGE_TOTAL_NUMBER_METRICS");
+		}
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8149 | Test Summary: Total number of pages is shown"
@@ -191,15 +247,6 @@ definition {
 			key_metricName = "Page Views",
 			key_totalNumber = "75,000,000",
 			locator1 = "ACUsage#USAGE_TOTAL_NUMBER_METRICS");
-	}
-
-	@description = "Feature ID: Legacy | Automation ID: LRAC-8146 | Test Summary: Total number of individuals is shown"
-	@ignore = "true"
-	@priority = "5"
-	test TotalNumberOfIndividualsIsShown {
-
-		// TODO LRAC-8146 Usage#TotalNumberOfIndividualsIsShown pending implementation
-
 	}
 
 }

@@ -20,6 +20,10 @@ const loadScript = (readOnly, elementId, googlePlacesAPIKey, callback) => {
 	if (!script) {
 		script = document.createElement('script');
 
+		script.addEventListener('load', () => {
+			script.setAttribute('data-loaded', 'true');
+		});
+
 		script.setAttribute('id', 'googleMapsScript');
 		script.setAttribute('type', 'text/javascript');
 
@@ -32,18 +36,10 @@ const loadScript = (readOnly, elementId, googlePlacesAPIKey, callback) => {
 		script.setAttribute('src', url);
 	}
 
-	const scriptReadyState = script.getAttribute('readyState');
+	const dataLoaded = script.getAttribute('data-loaded');
 
-	if (scriptReadyState) {
-		script.setAttribute('onreadystatechange', () => {
-			if (
-				scriptReadyState === 'loaded' ||
-				scriptReadyState === 'complete'
-			) {
-				script.setAttribute('onreadystatechange', null);
-				callback();
-			}
-		});
+	if (dataLoaded) {
+		callback();
 	}
 	else {
 		script.addEventListener('load', callback);

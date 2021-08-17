@@ -137,7 +137,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 	<#compress>
 		public static final Object[][] TABLE_COLUMNS = {
 			<#list entity.databaseRegularEntityColumns as entityColumn>
-				<#assign sqlType = serviceBuilder.getSqlType(entity.getName(), entityColumn.getName(), entityColumn.getType()) />
+				<#assign sqlType = serviceBuilder.getSqlType(entity.getName(), entityColumn) />
 
 				{"${entityColumn.DBName}", Types.${sqlType}}
 
@@ -151,7 +151,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 		static {
 			<#list entity.databaseRegularEntityColumns as entityColumn>
-				<#assign sqlType = serviceBuilder.getSqlType(entity.getName(), entityColumn.getName(), entityColumn.getType()) />
+				<#assign sqlType = serviceBuilder.getSqlType(entity.getName(), entityColumn) />
 
 				TABLE_COLUMNS_MAP.put("${entityColumn.DBName}", Types.${sqlType});
 			</#list>
@@ -410,7 +410,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 					<#list mappingEntities?keys as mapEntityName>
 						<#list mappingEntities[mapEntityName] as mapColumn>
-							<#assign sqlType = serviceBuilder.getSqlType(mapEntityName, mapColumn.getName(), mapColumn.getType()) />
+							<#assign sqlType = serviceBuilder.getSqlType(mapEntityName, mapColumn) />
 
 							{"${mapColumn.DBName}", Types.${sqlType}}
 

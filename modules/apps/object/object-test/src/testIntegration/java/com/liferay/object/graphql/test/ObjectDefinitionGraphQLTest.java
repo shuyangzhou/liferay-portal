@@ -17,10 +17,10 @@ package com.liferay.object.graphql.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
-import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
-import com.liferay.object.service.ObjectFieldLocalServiceUtil;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -70,19 +69,22 @@ public class ObjectDefinitionGraphQLTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_objectDefinitionLabel = "A" + RandomTestUtil.randomString(5);
-		_objectDefinitionName = "A" + RandomTestUtil.randomString(5);
-		_objectFieldLabel = "A" + RandomTestUtil.randomString(5);
-		_objectFieldName = "a" + RandomTestUtil.randomString(5);
+		_objectDefinitionLabel = "A" + RandomTestUtil.randomString();
+		_objectDefinitionName = "A" + RandomTestUtil.randomString();
+		_objectDefinitionPluralLabel = RandomTestUtil.randomString() + "s";
+		_objectFieldLabel = "A" + RandomTestUtil.randomString();
+		_objectFieldName = "a" + RandomTestUtil.randomString();
 
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				Collections.singletonMap(LocaleUtil.US, _objectDefinitionLabel),
+				LocalizedMapUtil.getLocalizedMap(_objectDefinitionLabel),
 				_objectDefinitionName,
+				LocalizedMapUtil.getLocalizedMap(_objectDefinitionPluralLabel),
 				Collections.singletonList(
-					_createObjectField(
-						_objectFieldLabel, _objectFieldName, "String")));
+					ObjectFieldUtil.createObjectField(
+						true, true, _objectFieldLabel, _objectFieldName, false,
+						"String")));
 
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
@@ -302,21 +304,6 @@ public class ObjectDefinitionGraphQLTest {
 				"Object/" + _objectFieldName));
 	}
 
-	private ObjectField _createObjectField(
-		String label, String name, String type) {
-
-		ObjectField objectField = ObjectFieldLocalServiceUtil.createObjectField(
-			0);
-
-		objectField.setIndexed(true);
-		objectField.setIndexedAsKeyword(true);
-		objectField.setLabelMap(Collections.singletonMap(LocaleUtil.US, label));
-		objectField.setName(name);
-		objectField.setType(type);
-
-		return objectField;
-	}
-
 	private JSONObject _invoke(GraphQLField queryGraphQLField)
 		throws Exception {
 
@@ -343,6 +330,7 @@ public class ObjectDefinitionGraphQLTest {
 
 	private String _objectDefinitionLabel;
 	private String _objectDefinitionName;
+	private String _objectDefinitionPluralLabel;
 	private ObjectEntry _objectEntry;
 	private String _objectFieldLabel;
 	private String _objectFieldName;

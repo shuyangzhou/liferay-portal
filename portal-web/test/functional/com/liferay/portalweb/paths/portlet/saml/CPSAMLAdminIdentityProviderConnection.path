@@ -27,6 +27,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>IDENTITY_PROVIDER_CONNECTION_ERROR_NO_MAPPING_SELECTED</td>
+	<td>//div[contains(@class,'alert-danger')][contains(@class,'alert-dismissible')][contains(.,'No attribute mapping selected for user matching.')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>IDENTITY_PROVIDER_CONNECTION_FORCE_AUTHN_CHECKBOX</td>
 	<td>//input[contains(@id,'SamlAdminPortlet_forceAuthn')]</td>
 	<td></td>
@@ -48,7 +53,7 @@
 </tr>
 <tr>
 	<td>IDENTITY_PROVIDER_CONNECTION_USE_TO_MATCH_USERS_RADIO</td>
-	<td>//input[contains(@id,'userIdentifierExpressionIndex') and @value=${key_index}]</td>
+	<td>//input[contains(@id,'userIdentifierExpression') and @value=${key_index}]</td>
 	<td></td>
 </tr>
 <tr>

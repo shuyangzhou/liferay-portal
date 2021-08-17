@@ -24,6 +24,7 @@ import React, {useEffect, useState} from 'react';
 export default ({dataURL, getCache, spritemap, updateCache}) => {
 	const CHANGE_TYPE_ADDED = 'added';
 	const CHANGE_TYPE_DELETED = 'deleted';
+	const CHANGE_TYPE_MODIFIED = 'modified';
 	const CHANGE_TYPE_PRODUCTION = 'production';
 	const CONTENT_TYPE_DATA = 'data';
 	const CONTENT_TYPE_DISPLAY = 'display';
@@ -65,15 +66,34 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 				view: VIEW_UNIFIED,
 			};
 
-			if (!cachedData.content) {
+			if (
+				!Object.prototype.hasOwnProperty.call(
+					cachedData,
+					'leftContent'
+				) &&
+				!Object.prototype.hasOwnProperty.call(
+					cachedData,
+					'rightContent'
+				)
+			) {
 				newState.contentType = CONTENT_TYPE_DATA;
 			}
 
-			if (!cachedData.leftTitle) {
+			if (
+				!Object.prototype.hasOwnProperty.call(cachedData, 'leftTitle')
+			) {
 				newState.view = VIEW_RIGHT;
 			}
-			else if (!cachedData.rightTitle) {
+			else if (
+				!Object.prototype.hasOwnProperty.call(cachedData, 'rightTitle')
+			) {
 				newState.view = VIEW_LEFT;
+			}
+			else if (
+				cachedData.changeType === CHANGE_TYPE_MODIFIED &&
+				!Object.prototype.hasOwnProperty.call(cachedData, 'leftRender')
+			) {
+				newState.view = VIEW_SPLIT;
 			}
 
 			setState(newState);
@@ -111,15 +131,29 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 					view: VIEW_UNIFIED,
 				};
 
-				if (!json.content) {
+				if (
+					!Object.prototype.hasOwnProperty.call(
+						json,
+						'leftContent'
+					) &&
+					!Object.prototype.hasOwnProperty.call(json, 'rightContent')
+				) {
 					newState.contentType = CONTENT_TYPE_DATA;
 				}
 
-				if (!json.leftTitle) {
+				if (!Object.prototype.hasOwnProperty.call(json, 'leftTitle')) {
 					newState.view = VIEW_RIGHT;
 				}
-				else if (!json.rightTitle) {
+				else if (
+					!Object.prototype.hasOwnProperty.call(json, 'rightTitle')
+				) {
 					newState.view = VIEW_LEFT;
+				}
+				else if (
+					json.changeType === CHANGE_TYPE_MODIFIED &&
+					!Object.prototype.hasOwnProperty.call(json, 'leftRender')
+				) {
+					newState.view = VIEW_SPLIT;
 				}
 
 				setState(newState);
@@ -148,34 +182,9 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 
 	const getContentSelectTitle = (view) => {
 		if (view === VIEW_LEFT) {
-			if (
-				state.renderData.changeType === CHANGE_TYPE_ADDED &&
-				state.renderData.versioned
-			) {
-				return (
-					state.renderData.leftTitle +
-					' (' +
-					Liferay.Language.get('previous') +
-					')'
-				);
-			}
-
 			return state.renderData.leftTitle;
 		}
 		else if (view === VIEW_RIGHT) {
-			if (
-				state.renderData.changeType === CHANGE_TYPE_ADDED &&
-				state.renderData.versioned &&
-				state.renderData.leftTitle
-			) {
-				return (
-					state.renderData.rightTitle +
-					' (' +
-					Liferay.Language.get('current') +
-					')'
-				);
-			}
-
 			return state.renderData.rightTitle;
 		}
 		else if (view === VIEW_SPLIT) {
@@ -223,6 +232,19 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 		}
 		else if (loading) {
 			return '';
+		}
+		else if (
+			state.renderData.changeType === CHANGE_TYPE_MODIFIED &&
+			!Object.prototype.hasOwnProperty.call(
+				state.renderData,
+				'leftRender'
+			)
+		) {
+			return (
+				<ClayAlert displayType="danger" spritemap={spritemap}>
+					{Liferay.Language.get('this-item-is-missing-or-is-deleted')}
+				</ClayAlert>
+			);
 		}
 
 		return (
@@ -375,7 +397,16 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 	};
 
 	const renderViewDropdown = () => {
-		if (!state.renderData.leftTitle || !state.renderData.rightTitle) {
+		if (
+			!Object.prototype.hasOwnProperty.call(
+				state.renderData,
+				'leftTitle'
+			) ||
+			!Object.prototype.hasOwnProperty.call(
+				state.renderData,
+				'rightTitle'
+			)
+		) {
 			let title = null;
 
 			if (state.view === VIEW_LEFT) {
@@ -422,11 +453,16 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 
 		const items = [];
 
-		pushItem(items, VIEW_UNIFIED);
+		if (
+			state.renderData.changeType !== CHANGE_TYPE_MODIFIED ||
+			Object.prototype.hasOwnProperty.call(state.renderData, 'leftRender')
+		) {
+			pushItem(items, VIEW_UNIFIED);
 
-		items.push({
-			type: 'divider',
-		});
+			items.push({
+				type: 'divider',
+			});
+		}
 
 		pushItem(items, VIEW_LEFT);
 		pushItem(items, VIEW_RIGHT);
@@ -523,7 +559,14 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 								>
 									<ClayLink
 										className={
-											!state.renderData.content
+											!Object.prototype.hasOwnProperty.call(
+												state.renderData,
+												'leftContent'
+											) &&
+											!Object.prototype.hasOwnProperty.call(
+												state.renderData,
+												'rightContent'
+											)
 												? 'nav-link btn-link disabled'
 												: 'nav-link'
 										}
@@ -532,7 +575,14 @@ export default ({dataURL, getCache, spritemap, updateCache}) => {
 											setContentType(CONTENT_TYPE_DISPLAY)
 										}
 										title={
-											!state.renderData.content
+											!Object.prototype.hasOwnProperty.call(
+												state.renderData,
+												'leftContent'
+											) &&
+											!Object.prototype.hasOwnProperty.call(
+												state.renderData,
+												'rightContent'
+											)
 												? Liferay.Language.get(
 														'item-does-not-have-a-content-display'
 												  )

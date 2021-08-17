@@ -616,7 +616,7 @@ paths:
             tags: ["Index"]
     "/indexes/refresh":
         patch:
-            operationId: patchIndexesRefresh
+            operationId: patchIndexRefresh
             requestBody:
                 content:
                     application/json:
@@ -635,7 +635,7 @@ paths:
             tags: ["Index"]
     "/indexes/reindex":
         patch:
-            operationId: patchIndexesReindex
+            operationId: patchIndexReindex
             requestBody:
                 content:
                     application/json:
@@ -652,25 +652,6 @@ paths:
                     description:
                         ""
             tags: ["Index"]
-    "/indexes/reindex/status":
-        get:
-            operationId: getReindexStatusPage
-            responses:
-                200:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    $ref: "#/components/schemas/ReindexStatus"
-                                type: array
-                        application/xml:
-                            schema:
-                                items:
-                                    $ref: "#/components/schemas/ReindexStatus"
-                                type: array
-                    description:
-                        ""
-            tags: ["ReindexStatus"]
     "/processes":
         post:
             operationId: postProcess
@@ -1336,7 +1317,7 @@ paths:
             tags: ["Node"]
     "/processes/{processId}/process-versions":
         get:
-            operationId: getProcessVersionsPage
+            operationId: getProcessProcessVersionsPage
             parameters:
                 - in: path
                   name: processId
@@ -1656,6 +1637,25 @@ paths:
                     description:
                         ""
             tags: ["Process"]
+    "/reindex/statuses":
+        get:
+            operationId: getReindexStatusesPage
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ReindexStatus"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ReindexStatus"
+                                type: array
+                    description:
+                        ""
+            tags: ["ReindexStatus"]
     "/slas/{slaId}":
         delete:
             operationId: deleteSLA
@@ -1736,7 +1736,7 @@ paths:
             tags: ["SLA"]
     "/tasks":
         post:
-            operationId: postProcessTasksPage
+            operationId: postTasksPage
             parameters:
                 - in: query
                   name: page

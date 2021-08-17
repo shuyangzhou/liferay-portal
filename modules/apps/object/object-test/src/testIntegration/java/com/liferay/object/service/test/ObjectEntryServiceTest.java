@@ -17,11 +17,11 @@ package com.liferay.object.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
-import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryServiceUtil;
-import com.liferay.object.service.ObjectFieldLocalServiceUtil;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -35,16 +35,12 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.Serializable;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -79,16 +75,15 @@ public class ObjectEntryServiceTest {
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				Collections.singletonMap(LocaleUtil.US, "Test"), "Test",
+				LocalizedMapUtil.getLocalizedMap("Test"), "Test",
+				LocalizedMapUtil.getLocalizedMap("Tests"),
 				Arrays.asList(
-					_createObjectField(
-						true, false,
-						Collections.singletonMap(LocaleUtil.US, "First Name"),
-						"firstName", false, "String"),
-					_createObjectField(
-						true, false,
-						Collections.singletonMap(LocaleUtil.US, "Last Name"),
-						"lastName", false, "String")));
+					ObjectFieldUtil.createObjectField(
+						true, false, "First Name", "firstName", false,
+						"String"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "Last Name", "lastName", false,
+						"String")));
 
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
@@ -190,23 +185,6 @@ public class ObjectEntryServiceTest {
 			).build(),
 			ServiceContextTestUtil.getServiceContext(
 				TestPropsValues.getGroupId(), user.getUserId()));
-	}
-
-	private ObjectField _createObjectField(
-		boolean indexed, boolean indexedAsKeyword, Map<Locale, String> labelMap,
-		String name, boolean required, String type) {
-
-		ObjectField objectField = ObjectFieldLocalServiceUtil.createObjectField(
-			0);
-
-		objectField.setIndexed(indexed);
-		objectField.setIndexedAsKeyword(indexedAsKeyword);
-		objectField.setLabelMap(labelMap);
-		objectField.setName(name);
-		objectField.setRequired(required);
-		objectField.setType(type);
-
-		return objectField;
 	}
 
 	private void _setUser(User user) {

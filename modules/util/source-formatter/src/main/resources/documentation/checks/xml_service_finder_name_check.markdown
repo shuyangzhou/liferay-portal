@@ -1,8 +1,12 @@
 ## XMLServiceFinderNameCheck
 
-Finder names in `service.xml` should be combined by finder colume names(at least the first character) following by each comparator prefix with delimiter `_`.
+The rules for finder name:
 
-- Comparator prefixes:
+- Only one finder column: Finder name should be finder-colum.
+
+- Two or more finder columns: Finder names in `service.xml` should be combined by finder colume names(at least the first character) following by each comparator prefix with delimiter `_`.
+
+### Comparator prefixes:
 
 Comparator | Prefix
 -------------- | ------------
@@ -15,7 +19,13 @@ Comparator | Prefix
 `is` | `Is`
 `LIKE` | `Like`
 
-### Example
+### Examples
+
+```
+<finder name="AccountEntryId" return-type="Collection">
+	<finder-column name="accountEntryId" />
+</finder>
+```
 
 ```
 <finder db-index="false" name="GtF_C_P" return-type="Collection">

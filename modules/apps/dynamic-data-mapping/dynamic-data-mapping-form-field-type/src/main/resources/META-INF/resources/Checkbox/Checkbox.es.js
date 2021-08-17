@@ -28,7 +28,6 @@ const Switcher = ({
 	required,
 	showLabel,
 	showMaximumRepetitionsInfo,
-	spritemap,
 	systemSettingsURL,
 	visible,
 }) => {
@@ -63,11 +62,9 @@ const Switcher = ({
 							{showLabel && label}
 
 							{required && (
-								<ClayIcon
-									className="reference-mark"
-									spritemap={spritemap}
-									symbol="asterisk"
-								/>
+								<span className="ddm-label-required reference-mark">
+									<ClayIcon symbol="asterisk" />
+								</span>
 							)}
 						</span>
 					)}
@@ -104,7 +101,6 @@ const Checkbox = ({
 	onChange,
 	required,
 	showLabel,
-	spritemap,
 }) => {
 	const [checked, setChecked] = useState(initialChecked);
 
@@ -120,11 +116,9 @@ const Checkbox = ({
 			}}
 		>
 			{showLabel && required && (
-				<ClayIcon
-					className="reference-mark"
-					spritemap={spritemap}
-					symbol="asterisk"
-				/>
+				<span className="ddm-label-required reference-mark">
+					<ClayIcon symbol="asterisk" />
+				</span>
 			)}
 		</ClayCheckbox>
 	);
@@ -150,11 +144,8 @@ const Main = ({
 
 	return (
 		<FieldBase
-			label={label}
 			name={name}
-			required={required}
 			showLabel={false}
-			spritemap={spritemap}
 			visible={visible}
 			{...otherProps}
 		>

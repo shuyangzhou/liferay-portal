@@ -10,11 +10,11 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="dbTableName" type="String" />
+		<field name="DBTableName" type="String" />
 		<field localized="true" name="label" type="String" />
 		<field name="name" type="String" />
-		<field name="pkObjectFieldDBColumnName" type="String" />
-		<field name="pkObjectFieldName" type="String" />
+		<field name="PKObjectFieldDBColumnName" type="String" />
+		<field name="PKObjectFieldName" type="String" />
 		<field localized="true" name="pluralLabel" type="String" />
 		<field name="scope" type="String" />
 		<field name="system" type="boolean" />
@@ -49,8 +49,8 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="objectDefinitionId" type="long" />
-		<field name="dbColumnName" type="String" />
-		<field name="dbTableName" type="String" />
+		<field name="DBColumnName" type="String" />
+		<field name="DBTableName" type="String" />
 		<field name="indexed" type="boolean" />
 		<field name="indexedAsKeyword" type="boolean" />
 		<field name="indexedLanguageId" type="String" />

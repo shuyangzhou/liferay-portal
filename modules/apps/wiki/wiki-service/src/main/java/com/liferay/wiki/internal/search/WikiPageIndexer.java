@@ -363,7 +363,7 @@ public class WikiPageIndexer
 		}
 	}
 
-	protected void reindexNodes(final long companyId) throws PortalException {
+	protected void reindexNodes(long companyId) throws PortalException {
 		ActionableDynamicQuery actionableDynamicQuery =
 			_wikiNodeLocalService.getActionableDynamicQuery();
 
@@ -375,10 +375,10 @@ public class WikiPageIndexer
 		actionableDynamicQuery.performActions();
 	}
 
-	protected void reindexPages(long companyId, long groupId, final long nodeId)
+	protected void reindexPages(long companyId, long groupId, long nodeId)
 		throws PortalException {
 
-		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_wikiPageLocalService.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setAddCriteriaMethod(

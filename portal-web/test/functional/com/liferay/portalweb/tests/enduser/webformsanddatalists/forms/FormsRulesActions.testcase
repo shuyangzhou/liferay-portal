@@ -39,7 +39,6 @@ definition {
 	@priority = "5"
 	test BackspaceCanDeleteAllEntriesInCalculator {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -128,7 +127,6 @@ definition {
 	@priority = "5"
 	test CanBeDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -208,7 +206,6 @@ definition {
 	@priority = "5"
 	test CanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -380,7 +377,6 @@ definition {
 	@priority = "4"
 	test CanCreateAJumpToPageRule {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -457,7 +453,6 @@ definition {
 	@priority = "4"
 	test CanCreateAnEnableRule {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -596,7 +591,6 @@ definition {
 	@priority = "5"
 	test CanCreateARuleWithMoreThanOneAction {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -682,7 +676,6 @@ definition {
 	@priority = "5"
 	test CanCreateAShowRule {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -749,7 +742,6 @@ definition {
 	@priority = "5"
 	test CanIncludeDecimalPointInCalculations {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -825,7 +817,6 @@ definition {
 	@priority = "5"
 	test CanIncludeNumericFieldsInCalculations {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -904,7 +895,6 @@ definition {
 	@priority = "5"
 	test CanIncludeOperatorsInCalculations {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -993,7 +983,6 @@ definition {
 	@priority = "5"
 	test CanIncludeParenthesisInCalculations {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",

@@ -177,7 +177,7 @@
 </tr>
 <tr>
 	<td>VIRTUAL_SELECT_BY_PANEL</td>
-	<td>//div[contains(@class,'panel-heading')]//a[contains(.,'${key_panel}')]//../../..//span[@class='lfr-btn-label']</td>
+	<td>//div[contains(@class,'content')]//a[contains(.,'${key_panel}')]//..//button[contains(.,'Select')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -523,6 +523,11 @@
 <tr>
 	<td>HEADER_ID</td>
 	<td>//div[@class='header-info']//div//span[contains(.,'ID')]/following-sibling::strong</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DELIVERY_PANEL_CLOSED</td>
+	<td>//div[contains(@class,'content')]//a[contains(.,'${key_contentType}') and contains(@class,'collapsed')]//span[contains(@class,'closed')]//*[name()='svg']</td>
 	<td></td>
 </tr>
 <!--CATALOGS-->

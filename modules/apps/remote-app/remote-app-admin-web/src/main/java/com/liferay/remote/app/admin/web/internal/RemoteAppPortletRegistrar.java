@@ -49,7 +49,7 @@ public class RemoteAppPortletRegistrar {
 		_bundleContext = bundleContext;
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Starting remote app entries");
+			_log.info("Registering remote app entries");
 		}
 
 		for (RemoteAppEntry remoteAppEntry :
@@ -63,7 +63,7 @@ public class RemoteAppPortletRegistrar {
 	@Deactivate
 	protected void deactivate() {
 		if (_log.isInfoEnabled()) {
-			_log.info("Stopping remote app entries");
+			_log.info("Unregistering remote app entries");
 		}
 
 		for (long remoteAppEntryId : _remoteAppPortlets.keySet()) {
@@ -92,7 +92,8 @@ public class RemoteAppPortletRegistrar {
 		remoteAppPortlet.register(_bundleContext);
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Started remote app entry " + remoteAppPortlet.getName());
+			_log.info(
+				"Registered remote app entry " + remoteAppPortlet.getName());
 		}
 	}
 
@@ -105,7 +106,8 @@ public class RemoteAppPortletRegistrar {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Stopped remote app entry " + remoteAppPortlet.getName());
+					"Unregistered remote app entry " +
+						remoteAppPortlet.getName());
 			}
 		}
 	}

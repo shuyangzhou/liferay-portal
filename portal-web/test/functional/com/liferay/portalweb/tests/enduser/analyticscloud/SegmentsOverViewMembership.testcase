@@ -1,0 +1,77 @@
+@component-name = "portal-analytics-cloud"
+definition {
+
+	property analytics.cloud.enabled = "true";
+	property minimum.slave.ram = "32";
+	property portal.release = "false";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Analytics Cloud";
+
+	setUp {
+		ACUtils.launchAC();
+
+		ACSettings.takeTokenFromAnalyticsCloud();
+
+		TestCase.setUpPortalInstance();
+
+		ACUtils.launchDXP();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		ACUtils.tearDownDXP();
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+
+		ACUtils.tearDownAC();
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8490 | Test Summary: Order a Dynamic Segment's Membership Preview Modal"
+	@ignore = "true"
+	@priority = "3"
+	test OrderDynamicSegmentMembershipPreview.feature {
+
+		// TODO LRAC-8490 PENDING IMPLEMENTATION
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8486 | Test Summary: Membership card exists and shows members added"
+	@ignore = "true"
+	@priority = "5"
+	test ViewMembershipCardExistsShowsMembersAdded {
+
+		// TODO LRAC-8486 PENDING IMPLEMENTATION
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8489 | Test Summary: Points on membership card can be hovered for more details"
+	@ignore = "true"
+	@priority = "4"
+	test ViewMembershipCardHoverDetails {
+
+		// TODO LRAC-8489 PENDING IMPLEMENTATION
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8488 | Test Summary: Membership card shows anonymous users"
+	@ignore = "true"
+	@priority = "5"
+	test ViewMembershipCardShowsAnonymousUsers {
+
+		// TODO LRAC-8488 PENDING IMPLEMENTATION
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8487 | Test Summary: Membership card shows members removed"
+	@ignore = "true"
+	@priority = "5"
+	test ViewMembershipCardShowsMembersRemoved {
+
+		// TODO LRAC-8487 PENDING IMPLEMENTATION
+
+	}
+
+}

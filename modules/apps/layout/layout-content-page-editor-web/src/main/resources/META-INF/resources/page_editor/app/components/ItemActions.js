@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import React, {useMemo, useState} from 'react';
 
 import {getLayoutDataItemPropTypes} from '../../prop-types/index';
+import {config} from '../config/index';
 import {useSelectItem} from '../contexts/ControlsContext';
 import {useDispatch, useSelector} from '../contexts/StoreContext';
 import {useWidgets} from '../contexts/WidgetsContext';
@@ -27,6 +28,7 @@ import duplicateItem from '../thunks/duplicateItem';
 import canBeDuplicated from '../utils/canBeDuplicated';
 import canBeRemoved from '../utils/canBeRemoved';
 import canBeSaved from '../utils/canBeSaved';
+import updateItemStyle from '../utils/updateItemStyle';
 import SaveFragmentCompositionModal from './SaveFragmentCompositionModal';
 
 export default function ItemActions({item}) {
@@ -36,23 +38,51 @@ export default function ItemActions({item}) {
 	const state = useSelector((state) => state);
 	const widgets = useWidgets();
 
-	const {fragmentEntryLinks, layoutData, segmentsExperienceId} = state;
+	const {
+		fragmentEntryLinks,
+		layoutData,
+		segmentsExperienceId,
+		selectedViewportSize,
+	} = state;
 
 	const [openSaveModal, setOpenSaveModal] = useState(false);
 
-	const itemActions = useMemo(() => {
-		const actions = [];
+	const dropdownItems = useMemo(() => {
+		const items = [];
+
+		if (config.fragmentsHidingEnabled) {
+			items.push({
+				action: () => {
+					updateItemStyle({
+						dispatch,
+						itemId: item.itemId,
+						segmentsExperienceId,
+						selectedViewportSize,
+						styleName: 'display',
+						styleValue: 'none',
+					});
+				},
+				icon: 'hidden',
+				label: Liferay.Language.get('hide-fragment'),
+			});
+		}
 
 		if (canBeSaved(item, layoutData)) {
-			actions.push({
+			items.push({
 				action: () => setOpenSaveModal(true),
 				icon: 'disk',
 				label: Liferay.Language.get('save-composition'),
 			});
 		}
 
+		if (items.length) {
+			items.push({
+				type: 'separator',
+			});
+		}
+
 		if (canBeDuplicated(fragmentEntryLinks, item, layoutData, widgets)) {
-			actions.push({
+			items.push({
 				action: () =>
 					dispatch(
 						duplicateItem({
@@ -64,10 +94,14 @@ export default function ItemActions({item}) {
 				icon: 'paste',
 				label: Liferay.Language.get('duplicate'),
 			});
+
+			items.push({
+				type: 'separator',
+			});
 		}
 
 		if (canBeRemoved(item, layoutData)) {
-			actions.push({
+			items.push({
 				action: () =>
 					dispatch(
 						deleteItem({
@@ -81,19 +115,24 @@ export default function ItemActions({item}) {
 			});
 		}
 
-		return actions;
+		return items;
 	}, [
 		dispatch,
 		fragmentEntryLinks,
 		item,
 		layoutData,
 		segmentsExperienceId,
+		selectedViewportSize,
 		selectItem,
 		state,
 		widgets,
 	]);
 
-	return itemActions?.length ? (
+	if (!dropdownItems.length) {
+		return null;
+	}
+
+	return (
 		<>
 			<ClayDropDown
 				active={active}
@@ -118,26 +157,28 @@ export default function ItemActions({item}) {
 				}
 			>
 				<ClayDropDown.ItemList>
-					{itemActions.map((itemAction, index, array) => (
-						<React.Fragment key={itemAction.label}>
-							<ClayDropDown.Item
-								onClick={() => {
-									setActive(false);
-
-									itemAction.action();
-								}}
-								symbolLeft={itemAction.icon}
-							>
-								<p className="d-inline-block m-0 ml-4">
-									{itemAction.label}
-								</p>
-							</ClayDropDown.Item>
-
-							{index !== array.length - 1 && (
+					{dropdownItems.map((dropdownItem, index, array) =>
+						dropdownItem.type === 'separator' ? (
+							index !== array.length - 1 && (
 								<ClayDropDown.Divider />
-							)}
-						</React.Fragment>
-					))}
+							)
+						) : (
+							<React.Fragment key={dropdownItem.label}>
+								<ClayDropDown.Item
+									onClick={() => {
+										setActive(false);
+
+										dropdownItem.action();
+									}}
+									symbolLeft={dropdownItem.icon}
+								>
+									<p className="d-inline-block m-0 ml-4">
+										{dropdownItem.label}
+									</p>
+								</ClayDropDown.Item>
+							</React.Fragment>
+						)
+					)}
 				</ClayDropDown.ItemList>
 			</ClayDropDown>
 
@@ -147,7 +188,7 @@ export default function ItemActions({item}) {
 				/>
 			)}
 		</>
-	) : null;
+	);
 }
 
 ItemActions.propTypes = {

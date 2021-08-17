@@ -13,7 +13,12 @@
 <!-- ASSETS PAGE -->
 <tr>
 	<td>ASSETS_TABLE</td>
-	<td>//a[text()='${key_assetName}']</td>
+	<td>//div[contains(@class,'table-title')][normalize-space()='${key_assetName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSETS_INFO</td>
+	<td>xpath=(//td[contains(@class,'name-cell')][.//*[text()='${key_assetName}']]//following-sibling::td[not(contains(@class,'actions'))])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -26,6 +31,63 @@
 	<td>//div[@class='no-results-content']//h4[text()='${key_noResultMessage}']</td>
 	<td></td>
 </tr>
+<!-- VIEWS BY TECHNOLOGY -->
+<tr>
+	<td>BROWSERS_METRIC_VALUE</td>
+	<td>//div[contains(.,'${key_cardTitle}')]//span[@class='recharts-legend-item-text']//span[@class='text-truncate']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BROWSERS_PERCENTAGE_METRIC_VALUE</td>
+	<td>//div[contains(.,'${key_cardTitle}')]//span[@class='recharts-legend-item-text']//span[@class='legend-percentage']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BROWSERS_PIE_CHART</td>
+	<td>//div[contains(@class,'analytics-devices-card')]//*[name()='path'][contains(@class,'recharts-sector')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TECHNOLOGY_TAB_ACTIVE</td>
+	<td>//h5[@class='card-title' and text()='${key_cardTitle}']/parent::div/parent::div[@class='card card-root analytics-devices-card']//li[@class='card-tab active' and @data-testid='${key_tabName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TECHNOLOGY_BAR_CHART</td>
+	<td>//h5[@class='card-title' and text()='${key_cardTitle}']/parent::div/parent::div[@class='card card-root analytics-devices-card']//*[@class='recharts-layer recharts-bar-rectangle']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TECHNOLOGY_DEVICE_CHART_TOOLTIP_DEVICE_HEADER</td>
+	<td>//h5[@class='card-title' and text()='${key_cardTitle}']/parent::div/parent::div[@class='card card-root analytics-devices-card']//thead[@class='analytics-tooltip-chart-header']//div[@class='analytics-tooltip-chart-content analytics-tooltip-chart-column text-left font-weight-normal']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TECHNOLOGY_DEVICE_CHART_TOOLTIP_VIEWS_HEADER</td>
+	<td>xpath=(//h5[@class='card-title' and text()='${key_cardTitle}']/parent::div/parent::div[@class='card card-root analytics-devices-card']//thead[@class='analytics-tooltip-chart-header']//div[@class='analytics-tooltip-chart-content analytics-tooltip-chart-column text-right font-weight-normal'])[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TECHNOLOGY_DEVICE_CHART_TOOLTIP_PERCENTAGE_HEADER</td>
+	<td>xpath=(//h5[@class='card-title' and text()='${key_cardTitle}']/parent::div/parent::div[@class='card card-root analytics-devices-card']//thead[@class='analytics-tooltip-chart-header']//div[@class='analytics-tooltip-chart-content analytics-tooltip-chart-column text-right font-weight-normal'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VIEWS_BY_TECHNOLOGY_CARD</td>
+	<td>//h5[@class='card-title' and text()='Views by Technology']/parent::div/parent::div[@class='card card-root analytics-devices-card']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VIEWS_BY_TECHNOLOGY_TAB</td>
+	<td>//h5[@class='card-title' and text()='Views by Technology']/parent::div/parent::div[@class='card card-root analytics-devices-card']//li[@class='card-tab' and @data-testid='${key_tabName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VIEWS_BY_TECHNOLOGY_PIE_CHART</td>
+	<td>//h5[@class='card-title' and text()='Views by Technology']/parent::div/parent::div[@class='card card-root analytics-devices-card']//*[@class='recharts-layer recharts-pie-sector']</td>
+	<td></td>
+</tr>
+
 </tbody>
 </table>
 </body>

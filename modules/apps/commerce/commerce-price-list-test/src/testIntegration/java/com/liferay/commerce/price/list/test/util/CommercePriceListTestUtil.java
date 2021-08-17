@@ -361,8 +361,9 @@ public class CommercePriceListTestUtil {
 
 		return CommercePriceListLocalServiceUtil.addOrUpdateCommercePriceList(
 			externalReferenceCode, commerceCatalog.getGroupId(),
-			user.getUserId(), commercePriceListId, commerceCurrencyId,
-			parentCommercePriceListId, name, priority,
+			user.getUserId(), commercePriceListId, commerceCurrencyId, true,
+			CommercePriceListConstants.TYPE_PRICE_LIST,
+			parentCommercePriceListId, false, name, priority,
 			displayDateElements.getMonth(), displayDateElements.getDay(),
 			displayDateElements.getYear(), displayDateElements.getHour(),
 			displayDateElements.getMinute(), expirationDateElements.getMonth(),
@@ -418,12 +419,13 @@ public class CommercePriceListTestUtil {
 			serviceContext.getCompanyId(), currency);
 
 		return CommercePriceListLocalServiceUtil.updateCommercePriceList(
-			commercePriceListId, commerceCurrencyId, parentCommercePriceListId,
-			name, priority, displayDateElements.getMonth(),
-			displayDateElements.getDay(), displayDateElements.getYear(),
-			displayDateElements.getHour(), displayDateElements.getMinute(),
-			expirationDateElements.getMonth(), expirationDateElements.getDay(),
-			expirationDateElements.getYear(), expirationDateElements.getHour(),
+			commercePriceListId, commerceCurrencyId, true,
+			parentCommercePriceListId, name, priority,
+			displayDateElements.getMonth(), displayDateElements.getDay(),
+			displayDateElements.getYear(), displayDateElements.getHour(),
+			displayDateElements.getMinute(), expirationDateElements.getMonth(),
+			expirationDateElements.getDay(), expirationDateElements.getYear(),
+			expirationDateElements.getHour(),
 			expirationDateElements.getMinute(), neverExpire, serviceContext);
 	}
 

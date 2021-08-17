@@ -60,8 +60,8 @@
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 		<field name="fileEntryId" type="long" />
-		<field name="cdnEnabled" type="boolean" />
-		<field name="cdnURL" type="String">
+		<field name="CDNEnabled" type="boolean" />
+		<field name="CDNURL" type="String">
 			<hint-collection name="URL" />
 		</field>
 		<field name="displayDate" type="Date" />

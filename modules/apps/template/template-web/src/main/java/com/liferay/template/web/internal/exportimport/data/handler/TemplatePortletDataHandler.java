@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistry;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.xml.Element;
@@ -125,15 +124,18 @@ public class TemplatePortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			_getDDMTemplateActionableDynamicQuery(
-				portletDataContext,
-				ArrayUtil.toArray(_templateHandlerRegistry.getClassNameIds()),
-				new StagedModelType(
-					_portal.getClassNameId(DDMTemplate.class),
-					StagedModelType.REFERRER_CLASS_NAME_ID_ALL));
+		List<Long> classNameIds = _getClassNameIds(portletDataContext);
 
-		actionableDynamicQuery.performActions();
+		if (!classNameIds.isEmpty()) {
+			ActionableDynamicQuery actionableDynamicQuery =
+				_getDDMTemplateActionableDynamicQuery(
+					portletDataContext, classNameIds.toArray(new Long[0]),
+					new StagedModelType(
+						_portal.getClassNameId(DDMTemplate.class),
+						StagedModelType.REFERRER_CLASS_NAME_ID_ALL));
+
+			actionableDynamicQuery.performActions();
+		}
 
 		return getExportDataRootElementString(rootElement);
 	}
@@ -144,14 +146,21 @@ public class TemplatePortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws Exception {
 
+		List<Long> classNameIds = _getClassNameIds(portletDataContext);
+
 		Element ddmTemplatesElement =
 			portletDataContext.getImportDataGroupElement(DDMTemplate.class);
 
 		List<Element> ddmTemplateElements = ddmTemplatesElement.elements();
 
 		for (Element ddmTemplateElement : ddmTemplateElements) {
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, ddmTemplateElement);
+			long classNameId = _portal.getClassNameId(
+				ddmTemplateElement.attributeValue("attached-class-name"));
+
+			if (classNameIds.contains(classNameId)) {
+				StagedModelDataHandlerUtil.importStagedModel(
+					portletDataContext, ddmTemplateElement);
+			}
 		}
 
 		return null;
@@ -188,9 +197,34 @@ public class TemplatePortletDataHandler extends BasePortletDataHandler {
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
+	private List<Long> _getClassNameIds(PortletDataContext portletDataContext) {
+		List<Long> classNameIds = new ArrayList<>();
+
+		for (TemplateHandler templateHandler :
+				_templateHandlerRegistry.getTemplateHandlers()) {
+
+			ClassName className = _classNameLocalService.fetchClassName(
+				templateHandler.getClassName());
+
+			if (className == null) {
+				continue;
+			}
+
+			if (portletDataContext.getBooleanParameter(
+					NAMESPACE,
+					templateHandler.getName(LocaleUtil.getSiteDefault()))) {
+
+				classNameIds.add(
+					_portal.getClassNameId(templateHandler.getClassName()));
+			}
+		}
+
+		return classNameIds;
+	}
+
 	private ActionableDynamicQuery _getDDMTemplateActionableDynamicQuery(
-		final PortletDataContext portletDataContext, final Long[] classNameIds,
-		final StagedModelType stagedModelType) {
+		PortletDataContext portletDataContext, Long[] classNameIds,
+		StagedModelType stagedModelType) {
 
 		ExportActionableDynamicQuery exportActionableDynamicQuery =
 			_ddmTemplateLocalService.getExportActionableDynamicQuery(

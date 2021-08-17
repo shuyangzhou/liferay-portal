@@ -14,6 +14,7 @@
 
 package com.liferay.template.web.internal.display.context;
 
+import com.liferay.dynamic.data.mapping.configuration.DDMGroupServiceConfiguration;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.util.DDMTemplateHelper;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.template.TemplateVariableDefinition;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -46,6 +48,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import javax.portlet.PortletConfig;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,6 +65,9 @@ public class EditDDMTemplateDisplayContext {
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 
+		_ddmGroupServiceConfiguration =
+			(DDMGroupServiceConfiguration)liferayPortletRequest.getAttribute(
+				DDMGroupServiceConfiguration.class.getName());
 		_ddmTemplateHelper =
 			(DDMTemplateHelper)liferayPortletRequest.getAttribute(
 				DDMTemplateHelper.class.getName());
@@ -117,8 +124,8 @@ public class EditDDMTemplateDisplayContext {
 			"propertiesViewURL",
 			() -> PortletURLBuilder.createRenderURL(
 				_liferayPortletResponse
-			).setMVCPath(
-				"/ddm_template/edit_properties.jsp"
+			).setMVCRenderCommandName(
+				"/template/edit_ddm_template_properties"
 			).setTabs1(
 				getTabs1()
 			).setParameter(
@@ -161,6 +168,22 @@ public class EditDDMTemplateDisplayContext {
 		return new String[] {
 			TemplateConstants.LANG_TYPE_FTL, TemplateConstants.LANG_TYPE_VM
 		};
+	}
+
+	public String getRefererWebDAVToken() {
+		if (_refererWebDAVToken != null) {
+			return _refererWebDAVToken;
+		}
+
+		PortletConfig portletConfig =
+			(PortletConfig)_httpServletRequest.getAttribute(
+				JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		_refererWebDAVToken = ParamUtil.getString(
+			_httpServletRequest, "refererWebDAVToken",
+			portletConfig.getInitParameter("refererWebDAVToken"));
+
+		return _refererWebDAVToken;
 	}
 
 	public String getSmallImageSource() {
@@ -226,6 +249,14 @@ public class EditDDMTemplateDisplayContext {
 			getDDMTemplate(), _liferayPortletRequest, "smallImage");
 
 		return _smallImage;
+	}
+
+	public String[] smallImageExtensions() {
+		return _ddmGroupServiceConfiguration.smallImageExtensions();
+	}
+
+	public int smallImageMaxSize() {
+		return _ddmGroupServiceConfiguration.smallImageMaxSize();
 	}
 
 	protected long getClassPK() {
@@ -381,6 +412,7 @@ public class EditDDMTemplateDisplayContext {
 	}
 
 	private Long _classNameId;
+	private final DDMGroupServiceConfiguration _ddmGroupServiceConfiguration;
 	private DDMTemplate _ddmTemplate;
 	private final DDMTemplateHelper _ddmTemplateHelper;
 	private Long _ddmTemplateId;
@@ -388,6 +420,7 @@ public class EditDDMTemplateDisplayContext {
 	private String _languageType;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
+	private String _refererWebDAVToken;
 	private String _script;
 	private Boolean _smallImage;
 	private String _smallImageSource;

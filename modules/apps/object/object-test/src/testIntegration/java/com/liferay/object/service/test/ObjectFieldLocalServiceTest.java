@@ -23,14 +23,14 @@ import com.liferay.object.exception.ReservedObjectFieldException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
-import com.liferay.object.service.ObjectFieldLocalServiceUtil;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -256,17 +256,9 @@ public class ObjectFieldLocalServiceTest {
 		boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 		String label, String name, String type) {
 
-		ObjectField objectField = ObjectFieldLocalServiceUtil.createObjectField(
-			0);
-
-		objectField.setIndexed(indexed);
-		objectField.setIndexedAsKeyword(indexedAsKeyword);
-		objectField.setIndexedLanguageId(indexedLanguageId);
-		objectField.setLabelMap(Collections.singletonMap(LocaleUtil.US, label));
-		objectField.setName(name);
-		objectField.setType(type);
-
-		return objectField;
+		return ObjectFieldUtil.createObjectField(
+			null, indexed, indexedAsKeyword, indexedLanguageId, label, name,
+			false, type);
 	}
 
 	private ObjectField _createObjectField(String name, String type) {
@@ -276,7 +268,7 @@ public class ObjectFieldLocalServiceTest {
 	private ObjectField _createObjectField(
 		String label, String name, String type) {
 
-		return _createObjectField(false, false, null, label, name, type);
+		return ObjectFieldUtil.createObjectField(label, name, false, type);
 	}
 
 	private void _testAddSystemObjectField(ObjectField... objectFields)
@@ -288,8 +280,9 @@ public class ObjectFieldLocalServiceTest {
 			objectDefinition =
 				ObjectDefinitionLocalServiceUtil.addSystemObjectDefinition(
 					TestPropsValues.getUserId(), null,
-					Collections.singletonMap(LocaleUtil.US, "Test"), "Test",
-					null, null, 1, Arrays.asList(objectFields));
+					LocalizedMapUtil.getLocalizedMap("Test"), "Test", null,
+					null, LocalizedMapUtil.getLocalizedMap("Tests"), 1,
+					Arrays.asList(objectFields));
 		}
 		finally {
 			if (objectDefinition != null) {

@@ -36,7 +36,7 @@ public class DB2SQLTransformerLogic extends BaseSQLTransformerLogic {
 			getBooleanFunction(), getCastClobTextFunction(),
 			getCastLongFunction(), getCastTextFunction(), getConcatFunction(),
 			getDropTableIfExistsTextFunction(), getIntegerDivisionFunction(),
-			getNullDateFunction(), _getLikeFunction()
+			getNullDateFunction(), _getQuestionMarkFunction()
 		};
 
 		if (!db.isSupportsStringCaseSensitiveQuery()) {
@@ -75,16 +75,18 @@ public class DB2SQLTransformerLogic extends BaseSQLTransformerLogic {
 		return matcher.replaceAll(dropTableIfExists);
 	}
 
-	private Function<String, String> _getLikeFunction() {
+	private Function<String, String> _getQuestionMarkFunction() {
 		return (String sql) -> {
-			Matcher matcher = _likePattern.matcher(sql);
+			Matcher matcher = _questionMarkPattern.matcher(sql);
 
 			return matcher.replaceAll(
-				"LIKE COALESCE(CAST(? AS VARCHAR(32672)),'')");
+				" COALESCE(CAST(? AS VARCHAR(32672)),'')");
 		};
 	}
 
-	private static final Pattern _likePattern = Pattern.compile(
-		"LIKE \\?", Pattern.CASE_INSENSITIVE);
+	private static final Pattern _questionMarkPattern = Pattern.compile(
+		"((?![\\'|\\\"][\\w\\s]*[\\\\'|\\\\\"]*[\\w\\s]*) \\?" +
+			"(?![\\w\\s]*[\\\\'|\\\\\"]*[\\w\\s]*[\\'|\\\"]))",
+		Pattern.CASE_INSENSITIVE);
 
 }

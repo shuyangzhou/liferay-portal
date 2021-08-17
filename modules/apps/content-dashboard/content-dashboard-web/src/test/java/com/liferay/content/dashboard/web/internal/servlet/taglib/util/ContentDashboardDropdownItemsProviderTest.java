@@ -22,12 +22,15 @@ import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItem
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderResponse;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletURL;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -289,6 +292,11 @@ public class ContentDashboardDropdownItemsProviderTest {
 			}
 
 			@Override
+			public String getDescription(Locale locale) {
+				return "Description";
+			}
+
+			@Override
 			public Object getDisplayFieldValue(
 				String fieldName, Locale locale) {
 
@@ -308,6 +316,14 @@ public class ContentDashboardDropdownItemsProviderTest {
 
 			@Override
 			public String getScopeName(Locale locale) {
+				return null;
+			}
+
+			@Override
+			public JSONObject getSpecificInformationJSONObject(
+				String backURL, LiferayPortletResponse liferayPortletResponse,
+				Locale locale, ThemeDisplay themeDisplay) {
+
 				return null;
 			}
 

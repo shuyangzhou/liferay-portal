@@ -26,19 +26,19 @@ definition {
 		}
 	}
 
-	@description = "This is a test for LRQA-68598. This test verifies that is possible to delete the field"
+	@description = "This is a test for LRQA-68598. This test verifies that is possible to delete the field."
 	@priority = "5"
 	test CanBeDeleted {
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Text",
+		DEBuilder.addField(
+			fieldLabel = "Text",
 			fieldName = "Text");
 
 		WebContentStructures.saveCP();
@@ -51,18 +51,18 @@ definition {
 
 		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
 
-		DataEngine.assertFieldNotPresent(fieldFieldLabel = "Date");
+		DEBuilder.assertFieldNotPresent(fieldLabel = "Date");
 	}
 
-	@description = "This is a test for LRQA-68598. This test verifies that is possible to duplicate the field"
+	@description = "This is a test for LRQA-68598. This test verifies that is possible to duplicate the field."
 	@priority = "4"
 	test CanBeDuplicated {
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
 		DataEngine.duplicate(fieldFieldLabel = "Date");
@@ -80,15 +80,55 @@ definition {
 			fieldName = "Date");
 	}
 
-	@description = "This is a test for LRQA-68598. This test verifies that Label and Help text can be edited"
+	@description = "This is a test for LRQA-69097. This test verifies that edited data persists."
+	@priority = "5"
+	test CanEditData {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			value = "08/06/2021");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			value = "08/07/2021");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInDateField(
+			fieldLabel = "Date",
+			value = "08/07/2021");
+	}
+
+	@description = "This is a test for LRQA-68598. This test verifies that Label and Help text can be edited."
 	@priority = "5"
 	test CanEditLabelAndHelpText {
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
 		DataEngine.editFieldTip(
@@ -117,7 +157,226 @@ definition {
 			fieldName = "Date");
 	}
 
-	@description = "This is a test for LRQA-68598. This test verifies that Default Searchable property is Disable when System Setting is left unchecked"
+	@description = "This is a test for LRQA-69097. This test verifies that input data persists."
+	@priority = "5"
+	test CanInputData {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			value = "08/06/2021");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInDateField(
+			fieldLabel = "Date",
+			value = "08/06/2021");
+	}
+
+	@description = "This is a test for LRQA-69097. This test verifies that upon duplicating a repeatable field, inputted data on both fields persists."
+	@priority = "5"
+	test CanInputDataOnDuplicatedField {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DataEngine.addRepeatableField(fieldLabel = "Date");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			index = "1",
+			value = "08/06/2021");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			index = "2",
+			value = "08/07/2021");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInDateField(
+			fieldLabel = "Date",
+			index = "1",
+			value = "08/06/2021");
+
+		DERenderer.assertDataInDateField(
+			fieldLabel = "Date",
+			index = "2",
+			value = "08/07/2021");
+	}
+
+	@description = "This is a test for LRQA-69097. This test verifies that is not possible to publish the Web Content with a required field blank."
+	@priority = "4"
+	test CanNotPublishBlankRequiredField {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		DataEngine.editFieldRequired(fieldFieldLabel = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		Button.clickPublish();
+
+		FormViewBuilder.validateObjectLabelOptionTextIsShown(text = "This field is required.");
+	}
+
+	@description = "This is a test for LRQA-69097. This test verifies that upon clicking the calendar icon on the Date field the calendar widget is displayed."
+	@priority = "4"
+	test CanPickDateUsingCalendarWidget {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		FormFields.editDateCalendar(
+			fieldName = "Date",
+			fieldValue = "08/07/2021",
+			valueDay = "7",
+			valueMonth = "August",
+			valueYear = "2021");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInDateField(
+			fieldLabel = "Date",
+			value = "08/07/2021");
+	}
+
+	@description = "This is a test for LRQA-69097. This test verifies that is possible to remove a duplicated field (repeatable)."
+	@priority = "4"
+	test CanRemoveDuplicatedField {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DataEngine.addRepeatableField(fieldLabel = "Date");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.removeRepeatableField(fieldLabel = "Date");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DEBuilder.assertFieldNotPresent(
+			fieldLabel = "Date",
+			index = "2");
+	}
+
+	@description = "This is a test for LRQA-69097. This test verifies that is possible to remove inputted data from the field."
+	@priority = "4"
+	test CanRemoveInputtedData {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Date",
+			fieldName = "Date");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			value = "08/06/2021");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.inputDataInDateField(
+			fieldLabel = "Date",
+			value = "");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInDateField(
+			fieldLabel = "Date",
+			value = "__/__/____");
+	}
+
+	@description = "This is a test for LRQA-68598. This test verifies that Default Searchable property is Disable when System Setting is left unchecked."
 	@priority = "3"
 	test CanSetDefaultSearchablePropertyToDisable {
 		property test.name.skip.portal.instance = "DEDateField#CanSetDefaultSearchablePropertyToDisable";
@@ -142,8 +401,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
 		DataEngine.viewFieldSearchable(
@@ -151,7 +410,7 @@ definition {
 			searchableType = "Disable");
 	}
 
-	@description = "This is a test for LRQA-68598. This test verifies that Default Searchable property is Keyword when System Setting is checked"
+	@description = "This is a test for LRQA-68598. This test verifies that Default Searchable property is Keyword when System Setting is checked."
 	@priority = "3"
 	test CanSetDefaultSearchablePropertyToKeyword {
 		property test.name.skip.portal.instance = "DEDateField#CanSetDefaultSearchablePropertyToKeyword";
@@ -176,8 +435,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
 		DataEngine.viewFieldSearchable(
@@ -185,15 +444,15 @@ definition {
 			searchableType = "Keyword");
 	}
 
-	@description = "This is a test for LRQA-68598. This test verifies that Label and Help text can be set"
+	@description = "This is a test for LRQA-68598. This test verifies that Label and Help text can be set."
 	@priority = "5"
 	test CanSetLabelAndHelpText {
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
 		DataEngine.editFieldTip(
@@ -217,8 +476,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Date",
+		DEBuilder.addField(
+			fieldLabel = "Date",
 			fieldName = "Date");
 
 		DataEngine.toggleShowLabel(fieldLabel = "Date");
@@ -227,7 +486,7 @@ definition {
 
 		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
 
-		DataEngine.assertFieldNotPresent(fieldFieldLabel = "Date");
+		DEBuilder.assertFieldNotPresent(fieldLabel = "Date");
 
 		DataEngine.toggleShowLabel();
 

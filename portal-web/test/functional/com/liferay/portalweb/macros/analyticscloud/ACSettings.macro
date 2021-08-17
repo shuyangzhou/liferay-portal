@@ -26,6 +26,36 @@ definition {
 		AssertElementPresent(locator1 = "ACUsage#USAGE_ADDONS_PRICE");
 	}
 
+	macro assertCanChooseDataSourceOptions {
+		Click(
+			key_sourceType = "Liferay DXP",
+			locator1 = "ACSettings#DXP_DATA_SOURCE_CHOOSE_OPTION");
+
+		AssertElementPresent(locator1 = "ACSettings#TOKEN_INPUT_FIELD");
+
+		Click(locator1 = "ACUtils#MODAL_CLOSE_BUTTON");
+
+		Click(
+			key_sourceType = "Salesforce",
+			locator1 = "ACSettings#DXP_DATA_SOURCE_CHOOSE_OPTION");
+
+		AssertElementPresent(
+			itemName = "Configure Salesforce",
+			locator1 = "ACSettings#ITEM_ON_LIST");
+
+		Click(
+			key_breadcrumbName = "Add Data Source",
+			locator1 = "BreadcrumbPortlet#BREADCRUMB_PAGE");
+
+		Click(
+			key_sourceType = "CSV File",
+			locator1 = "ACSettings#DXP_DATA_SOURCE_CHOOSE_OPTION");
+
+		AssertElementPresent(
+			key_title = "CSV File",
+			locator1 = "Header#H3_TITLE");
+	}
+
 	@summary = "Asserts the individuals usage value \
 	@param individualUsageValue"
 	macro assertIndividualsUsage() {
@@ -120,12 +150,16 @@ definition {
 			value1 = "${userEmail}");
 	}
 
+	macro clickGenericAddOrConfirmationButton {
+		Click(locator1 = "ACDXPSettings#AC_GENERIC_ADD_OR_CONFIRMATION_BUTTON");
+	}
+
 	macro createRequestLogByEmail {
 		var key_fieldType = "${fieldType}";
 
 		ACSettings.goToDataControlAndPrivacy();
 
-		Click(locator1 = "ACDataControlAndPrivacy#RESQUEST_LOG");
+		Click(locator1 = "ACDataControlAndPrivacy#REQUEST_LOG");
 
 		Click(locator1 = "ACDataControlAndPrivacy#CREATE_REQUEST");
 

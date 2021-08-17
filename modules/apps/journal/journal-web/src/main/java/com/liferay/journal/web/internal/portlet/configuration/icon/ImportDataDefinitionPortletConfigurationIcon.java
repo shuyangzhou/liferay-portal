@@ -15,18 +15,13 @@
 package com.liferay.journal.web.internal.portlet.configuration.icon;
 
 import com.liferay.journal.constants.JournalPortletKeys;
-import com.liferay.journal.web.internal.configuration.FFImportDataDefinitionConfiguration;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BaseJSPPortletConfigurationIcon;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
-
-import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
 import javax.servlet.ServletContext;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -34,7 +29,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Marcela Cunha
  */
 @Component(
-	configurationPid = "com.liferay.journal.web.internal.configuration.FFImportDataDefinitionConfiguration",
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + JournalPortletKeys.JOURNAL,
@@ -52,7 +46,7 @@ public class ImportDataDefinitionPortletConfigurationIcon
 
 	@Override
 	public boolean isShow(PortletRequest portletRequest) {
-		return _ffImportDataDefinitionConfiguration.enabled();
+		return true;
 	}
 
 	@Override
@@ -62,15 +56,5 @@ public class ImportDataDefinitionPortletConfigurationIcon
 	public void setServletContext(ServletContext servletContext) {
 		super.setServletContext(servletContext);
 	}
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_ffImportDataDefinitionConfiguration =
-			ConfigurableUtil.createConfigurable(
-				FFImportDataDefinitionConfiguration.class, properties);
-	}
-
-	private FFImportDataDefinitionConfiguration
-		_ffImportDataDefinitionConfiguration;
 
 }

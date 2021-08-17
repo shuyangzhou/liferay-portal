@@ -1,0 +1,50 @@
+@component-name = "portal-analytics-cloud"
+definition {
+
+	property analytics.cloud.enabled = "true";
+	property minimum.slave.ram = "32";
+	property portal.release = "false";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Analytics Cloud";
+
+	setUp {
+		ACUtils.launchAC();
+
+		ACSettings.takeTokenFromAnalyticsCloud();
+
+		TestCase.setUpPortalInstance();
+
+		ACUtils.launchDXP();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		ACUtils.tearDownDXP();
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+
+		ACUtils.tearDownAC();
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8498 | Test Summary: Link to view all criteria allows the user to scroll down and see more"
+	@ignore = "true"
+	@priority = "4"
+	test LinkToViewAllCriteriaAllowsUserScrollDownAndSeeMore {
+
+		// TODO LRAC-8498
+
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-8497 | Test Summary: Segment criterias nest correctly in the criteria card"
+	@ignore = "true"
+	@priority = "4"
+	test SegmentCriteriasNestCorrectlyInTheCriteriaCard {
+
+		// TODO LRAC-8497
+
+	}
+
+}

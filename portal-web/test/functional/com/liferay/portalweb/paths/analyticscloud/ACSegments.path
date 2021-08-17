@@ -37,6 +37,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CRITERIA_ELLIPSIS</td>
+	<td>xpath=(//div[contains(@class,'criterion')][.//div[contains(@class,'display-value')][normalize-space(text())='${criteriaName}']]//button[contains(@class,'dropdown-toggle')])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CRITERION_TYPE_DROPDOWN</td>
 	<td>//div[@class='dropdown dropdown-root']/button</td>
 	<td></td>
@@ -47,13 +52,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DELETE_SEGMENT_INLINE_BUTTON</td>
+	<td>//td[contains(.,'${key_segmentName}')]/following-sibling::td//button[contains(@aria-label,'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DELETED_CRITERIA</td>
 	<td>//div[@class='criteria-message']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>DUPLICATED_CRITERIA</td>
-	<td>(//div[@class='criteria-statement']//div[text()='${criteriaName}'])[${totalCriteriaCount}]</td>
+	<td>xpath=(//div[@class='criteria-statement']//div[text()='${criteriaName}'])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -69,6 +79,11 @@
 <tr>
 	<td>EDIT_NAME_BUTTON</td>
 	<td>//div[contains(@class,'editor')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FORM_HEADER_LOADING_ANIMATION</td>
+	<td>//div[contains(@class,'form-header')]//span[contains(@class,'loading-animation')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -107,23 +122,28 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SEGMENT_CRITERIA_ATTRIBUTE_NAME</td>
+	<td>xpath=(//div[@class='criteria-row']//b[1])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SEGMENT_CRITERIA_ATTRIBUTE_VALUE</td>
-	<td>//div[@class='criteria-row']</td>
+	<td>xpath=(//div[@class='criteria-row']//b[2])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_CRITERIA_CRITERIA_NAME</td>
-	<td>//div[@class='criteria-row']//self::b</td>
+	<td>SEGMENT_CRITERIA_CONDITION</td>
+	<td>xpath=(//div[@class='criteria-row']//span[1])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_CRITERIA_CRITERIA_DETAIL</td>
-	<td>//div[@class='criteria-row']//self::b//following-sibling::span</td>
+	<td>SEGMENT_CRITERIA_CONJUNCTION</td>
+	<td>xpath=(//div[contains(@class,'conjunction')])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_CRITERIA_CRITERIA_VALUE</td>
-	<td>//div[@class='criteria-row']//self::b//following-sibling::span//following-sibling::b</td>
+	<td>SEGMENT_CRITERIA_TYPE</td>
+	<td>xpath=(//div[@class='criteria-row'][normalize-space(text())='${type}'])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -157,7 +177,7 @@
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_ELLIPSES</td>
+	<td>SEGMENT_ELLIPSIS</td>
 	<td>//div[contains(@class,'dropdown')]/button[contains(@class,'component')]</td>
 	<td></td>
 </tr>
@@ -198,6 +218,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DATE_PICKER</td>
+	<td>//div[contains(@class,'date-picker')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MONTH_AND_YEAR_CALENDAR</td>
 	<td>//select[contains(@class,'date-picker-select-root')][${key_indexCalendar}]</td>
 	<td></td>
@@ -218,33 +243,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>DUPLICATE_SEGMENT_CRITERION</td>
-	<td>//button[@aria-label='Duplicate']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>DELETE_SEGMENT_CRITERION</td>
-	<td>//button[@aria-label='Delete']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>SEGMENT_CRITERION_ITEM</td>
 	<td>//div[@class='sidebar-collapse']//li[text()='${segmentField}']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>SEGMENT_DROP_AREA</td>
-	<td>//div[@class='drop-zone-target p-5']</td>
+	<td>xpath=(//div[contains(@class,'drop-zone-target')])[last()]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_MEMBERSHIP_BUTTON</td>
-	<td>//div[@class='total-members']/following-sibling::button</td>
+	<td>TOTAL_MEMBERS</td>
+	<td>//div[contains(@class,'total-members')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>TEXT_INPUT</td>
-	<td>//div[@class='criteria-statement']//div[@class='input-group-item']/input</td>
+	<td>xpath=(//div[contains(@class,'criteria-statement')]//div[contains(@class,'input-group-item')]//input[@type='text'])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -296,6 +311,17 @@
 <tr>
 	<td>ADD_MEMBERS_BUTTON</td>
 	<td>//ul/li/button[contains(@class,'btn-primary')]|//ul/li/button[contains(@class,'btn-secondary')]</td>
+	<td></td>
+</tr>
+<!-- Segments List -->
+<tr>
+	<td>FILTER_AND_ORDER_BUTTON</td>
+	<td>//button[contains(@data-testid,'filter-and-order-button')]/span[@class='text-truncate' and text()='Filter and Order']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FILTER_DROPDOWN_OPTION</td>
+	<td>//div[contains(@class,'dropdown-item')]//label/input//following-sibling::span/span[text()='${key_filterName}']</td>
 	<td></td>
 </tr>
 </tbody>

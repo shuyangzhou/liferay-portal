@@ -35,8 +35,6 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
-import javax.validation.Valid;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -169,27 +167,21 @@ public class PortalInstance implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String portalInstanceId;
 
-	@Schema(
-		description = "optional portal initializer key for an portal instance initialization."
-	)
-	public String getPortalInstanceInitializerKey() {
-		return portalInstanceInitializerKey;
+	@Schema
+	public String getSiteInitializerKey() {
+		return siteInitializerKey;
 	}
 
-	public void setPortalInstanceInitializerKey(
-		String portalInstanceInitializerKey) {
-
-		this.portalInstanceInitializerKey = portalInstanceInitializerKey;
+	public void setSiteInitializerKey(String siteInitializerKey) {
+		this.siteInitializerKey = siteInitializerKey;
 	}
 
 	@JsonIgnore
-	public void setPortalInstanceInitializerKey(
-		UnsafeSupplier<String, Exception>
-			portalInstanceInitializerKeyUnsafeSupplier) {
+	public void setSiteInitializerKey(
+		UnsafeSupplier<String, Exception> siteInitializerKeyUnsafeSupplier) {
 
 		try {
-			portalInstanceInitializerKey =
-				portalInstanceInitializerKeyUnsafeSupplier.get();
+			siteInitializerKey = siteInitializerKeyUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -199,49 +191,9 @@ public class PortalInstance implements Serializable {
 		}
 	}
 
-	@GraphQLField(
-		description = "optional portal initializer key for an portal instance initialization."
-	)
+	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	protected String portalInstanceInitializerKey;
-
-	@Schema(
-		description = "optional portal initializer payload(contains required data for a portal instance initializer)."
-	)
-	@Valid
-	public Map<String, String> getPortalInstanceInitializerPayload() {
-		return portalInstanceInitializerPayload;
-	}
-
-	public void setPortalInstanceInitializerPayload(
-		Map<String, String> portalInstanceInitializerPayload) {
-
-		this.portalInstanceInitializerPayload =
-			portalInstanceInitializerPayload;
-	}
-
-	@JsonIgnore
-	public void setPortalInstanceInitializerPayload(
-		UnsafeSupplier<Map<String, String>, Exception>
-			portalInstanceInitializerPayloadUnsafeSupplier) {
-
-		try {
-			portalInstanceInitializerPayload =
-				portalInstanceInitializerPayloadUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(
-		description = "optional portal initializer payload(contains required data for a portal instance initializer)."
-	)
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	protected Map<String, String> portalInstanceInitializerPayload;
+	protected String siteInitializerKey;
 
 	@Schema
 	public String getVirtualHost() {
@@ -346,28 +298,18 @@ public class PortalInstance implements Serializable {
 			sb.append("\"");
 		}
 
-		if (portalInstanceInitializerKey != null) {
+		if (siteInitializerKey != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"portalInstanceInitializerKey\": ");
+			sb.append("\"siteInitializerKey\": ");
 
 			sb.append("\"");
 
-			sb.append(_escape(portalInstanceInitializerKey));
+			sb.append(_escape(siteInitializerKey));
 
 			sb.append("\"");
-		}
-
-		if (portalInstanceInitializerPayload != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"portalInstanceInitializerPayload\": ");
-
-			sb.append(_toJSON(portalInstanceInitializerPayload));
 		}
 
 		if (virtualHost != null) {

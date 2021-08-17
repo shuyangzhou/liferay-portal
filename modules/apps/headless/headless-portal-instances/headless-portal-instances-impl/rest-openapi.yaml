@@ -19,24 +19,16 @@ components:
                     description:
                         public unique key (corresponds to company's webId field)
                     type: string
-                portalInstanceInitializerKey:
-                    description:
-                        optional portal initializer key for an portal instance initialization.
+                siteInitializerKey:
                     type: string
-                    writeOnly: true
-                portalInstanceInitializerPayload:
-                    additionalProperties:
-                        type: string
-                    description:
-                        optional portal initializer payload(contains required data for a portal instance initializer).
-                    type: object
                     writeOnly: true
                 virtualHost:
                     type: string
             type: object
 info:
     description:
-        ""
+        "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
+        'com.liferay.headless.portal.instances.client', and version '1.0.0'."
     license:
         name: Apache 2.0
         url: http://www.apache.org/licenses/LICENSE-2.0.html

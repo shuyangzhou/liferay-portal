@@ -236,20 +236,38 @@ public class PortletTracker
 
 		_portletInstanceFactory.destroy(portletModel);
 
-		_companyLocalService.forEachCompanyId(
-			companyId -> {
-				PortletCategory portletCategory =
-					(PortletCategory)WebAppPool.get(
-						companyId, WebKeys.PORTLET_CATEGORY);
+		Long companyId = (Long)serviceReference.getProperty(
+			"com.liferay.portlet.company");
 
-				if (portletCategory == null) {
-					_log.error(
-						"Unable to get portlet category for " + companyId);
-				}
-				else {
-					portletCategory.separate(portletModel.getRootPortletId());
-				}
-			});
+		if (companyId == null) {
+			_companyLocalService.forEachCompanyId(
+				curCompanyId -> {
+					PortletCategory portletCategory =
+						(PortletCategory)WebAppPool.get(
+							curCompanyId, WebKeys.PORTLET_CATEGORY);
+
+					if (portletCategory == null) {
+						_log.error(
+							"Unable to get portlet category for " +
+								curCompanyId);
+					}
+					else {
+						portletCategory.separate(
+							portletModel.getRootPortletId());
+					}
+				});
+		}
+		else {
+			PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
+				companyId, WebKeys.PORTLET_CATEGORY);
+
+			if (portletCategory == null) {
+				_log.error("Unable to get portlet category for " + companyId);
+			}
+			else {
+				portletCategory.separate(portletModel.getRootPortletId());
+			}
+		}
 
 		serviceRegistrations.removeServiceReference(serviceReference);
 	}
@@ -355,7 +373,10 @@ public class PortletTracker
 			}
 
 			com.liferay.portal.kernel.model.Portlet portletModel =
-				buildPortletModel(portletApp, portletId, bundle);
+				buildPortletModel(
+					portletApp, portletId, bundle,
+					(Long)serviceReference.getProperty(
+						"com.liferay.portlet.company"));
 
 			portletModel.setPortletName(portletName);
 
@@ -417,14 +438,21 @@ public class PortletTracker
 	}
 
 	protected com.liferay.portal.kernel.model.Portlet buildPortletModel(
-		PortletApp portletApp, String portletId, Bundle bundle) {
+		PortletApp portletApp, String portletId, Bundle bundle,
+		Long companyId) {
 
 		com.liferay.portal.kernel.model.Portlet portletModel =
 			_portletLocalService.createPortlet(0);
 
 		portletModel.setPortletId(portletId);
 
-		portletModel.setCompanyId(CompanyConstants.SYSTEM);
+		if (companyId == null) {
+			portletModel.setCompanyId(CompanyConstants.SYSTEM);
+		}
+		else {
+			portletModel.setCompanyId(companyId);
+		}
+
 		portletModel.setPluginPackage(
 			new BundlePluginPackage(bundle, portletApp));
 		portletModel.setPortletApp(portletApp);
@@ -1277,11 +1305,22 @@ public class PortletTracker
 			com.liferay.portal.kernel.model.Portlet portletModel)
 		throws PortalException {
 
+		Long companyId = (Long)serviceReference.getProperty(
+			"com.liferay.portlet.company");
+
 		List<String> categoryNames = StringPlus.asList(
 			get(serviceReference, "display-category"));
 
 		if (categoryNames.isEmpty()) {
 			categoryNames.add("category.undefined");
+		}
+
+		if (companyId != null) {
+			_portletLocalService.deployRemotePortlet(
+				new long[] {companyId}, portletModel,
+				ArrayUtil.toStringArray(categoryNames), false, false);
+
+			return;
 		}
 
 		List<Future<Void>> futures = new ArrayList<>();

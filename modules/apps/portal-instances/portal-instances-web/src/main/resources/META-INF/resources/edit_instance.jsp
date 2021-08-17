@@ -76,19 +76,19 @@ renderResponse.setTitle((selCompany == null) ? LanguageUtil.get(request, "new-in
 			<c:if test="<%= selCompany == null %>">
 
 				<%
-				PortalInstanceInitializerRegistry portalInstanceInitializerRegistry = (PortalInstanceInitializerRegistry)request.getAttribute(PortalInstancesWebKeys.PORTAL_INSTANCE_INITIALIZER_REGISTRY);
+				SiteInitializerRegistry siteInitializerRegistry = (SiteInitializerRegistry)request.getAttribute(PortalInstancesWebKeys.SITE_INITIALIZER_REGISTRY);
 
-				List<PortalInstanceInitializer> portalInstanceInitializers = portalInstanceInitializerRegistry.getPortalInstanceInitializers(true);
+				List<SiteInitializer> siteInitializers = siteInitializerRegistry.getSiteInitializers(company.getCompanyId(), true);
 				%>
 
-				<c:if test="<%= !portalInstanceInitializers.isEmpty() %>">
-					<aui:select label="virtual-instance-initializer" name="portalInstanceInitializerKey" showEmptyOption="<%= true %>">
+				<c:if test="<%= !siteInitializers.isEmpty() %>">
+					<aui:select label="virtual-instance-initializer" name="siteInitializerKey" showEmptyOption="<%= true %>">
 
 						<%
-						for (PortalInstanceInitializer portalInstanceInitializer : portalInstanceInitializers) {
+						for (SiteInitializer siteInitializer : siteInitializers) {
 						%>
 
-							<aui:option label="<%= portalInstanceInitializer.getName(locale) %>" value="<%= portalInstanceInitializer.getKey() %>" />
+							<aui:option label="<%= siteInitializer.getName(locale) %>" value="<%= siteInitializer.getKey() %>" />
 
 						<%
 						}

@@ -64,9 +64,10 @@ public class ProcessVersionResourceTest
 
 	@Override
 	@Test
-	public void testGetProcessVersionsPage() throws Exception {
+	public void testGetProcessProcessVersionsPage() throws Exception {
 		Page<ProcessVersion> page =
-			processVersionResource.getProcessVersionsPage(_process.getId());
+			processVersionResource.getProcessProcessVersionsPage(
+				_process.getId());
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(
@@ -84,7 +85,7 @@ public class ProcessVersionResourceTest
 			3, TimeUnit.SECONDS,
 			() -> {
 				Page<ProcessVersion> processVersionsPage =
-					processVersionResource.getProcessVersionsPage(
+					processVersionResource.getProcessProcessVersionsPage(
 						_process.getId());
 
 				assertEqualsIgnoringOrder(
@@ -105,12 +106,11 @@ public class ProcessVersionResourceTest
 			});
 	}
 
-	@Override
 	@Test
-	public void testGraphQLGetProcessVersionsPage() throws Exception {
+	public void testGraphQLGetProcessProcessVersionsPage() throws Exception {
 		BaseProcessVersionResourceTestCase.GraphQLField graphQLField =
 			new BaseProcessVersionResourceTestCase.GraphQLField(
-				"processVersions",
+				"processProcessVersions",
 				HashMapBuilder.<String, Object>put(
 					"processId", _process.getId()
 				).build(),
@@ -119,7 +119,7 @@ public class ProcessVersionResourceTest
 
 		JSONObject processVersionsJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/processVersions");
+			"JSONObject/processProcessVersions");
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(

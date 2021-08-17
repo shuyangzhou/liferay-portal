@@ -63,7 +63,7 @@ public class BundleSiteInitializerTest {
 
 		SiteInitializer siteInitializer =
 			_siteInitializerRegistry.getSiteInitializer(
-				_bundle.getSymbolicName());
+				bundle.getSymbolicName());
 
 		Group group = GroupTestUtil.addGroup();
 
@@ -92,8 +92,6 @@ public class BundleSiteInitializerTest {
 			return bundleContext.installBundle(location, inputStream);
 		}
 	}
-
-	private Bundle _bundle;
 
 	@Inject
 	private SiteInitializerRegistry _siteInitializerRegistry;

@@ -20,9 +20,7 @@ import com.liferay.portal.kernel.security.auto.login.BaseAutoLogin;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnect;
-import com.liferay.portal.security.sso.openid.connect.OpenIdConnectFlowState;
-import com.liferay.portal.security.sso.openid.connect.OpenIdConnectSession;
-import com.liferay.portal.security.sso.openid.connect.provider.OpenIdConnectSessionProvider;
+import com.liferay.portal.security.sso.openid.connect.constants.OpenIdConnectWebKeys;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,9 +34,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = AutoLogin.class)
 public class OpenIdConnectAutoLogin extends BaseAutoLogin {
-
-	public static final String USER_ID =
-		OpenIdConnectAutoLogin.class.getName() + "#USER_ID";
 
 	@Override
 	protected String[] doLogin(
@@ -58,11 +53,13 @@ public class OpenIdConnectAutoLogin extends BaseAutoLogin {
 			return null;
 		}
 
-		Long userId = (Long)httpSession.getAttribute(USER_ID);
-
-		httpSession.removeAttribute(USER_ID);
+		Long userId = (Long)httpSession.getAttribute(
+			OpenIdConnectWebKeys.OPEN_ID_CONNECT_AUTHENTICATING_USER_ID);
 
 		if (userId != null) {
+			httpSession.removeAttribute(
+				OpenIdConnectWebKeys.OPEN_ID_CONNECT_AUTHENTICATING_USER_ID);
+
 			User user = _userLocalService.getUserById(userId);
 
 			String[] credentials = new String[3];
@@ -70,13 +67,6 @@ public class OpenIdConnectAutoLogin extends BaseAutoLogin {
 			credentials[0] = String.valueOf(user.getUserId());
 			credentials[1] = user.getPassword();
 			credentials[2] = Boolean.TRUE.toString();
-
-			OpenIdConnectSession openIdConnectSession =
-				_openIdConnectSessionProvider.getOpenIdConnectSession(
-					httpSession);
-
-			openIdConnectSession.setOpenIdConnectFlowState(
-				OpenIdConnectFlowState.PORTAL_AUTH_COMPLETE);
 
 			return credentials;
 		}
@@ -86,9 +76,6 @@ public class OpenIdConnectAutoLogin extends BaseAutoLogin {
 
 	@Reference
 	private OpenIdConnect _openIdConnect;
-
-	@Reference
-	private OpenIdConnectSessionProvider _openIdConnectSessionProvider;
 
 	@Reference
 	private Portal _portal;

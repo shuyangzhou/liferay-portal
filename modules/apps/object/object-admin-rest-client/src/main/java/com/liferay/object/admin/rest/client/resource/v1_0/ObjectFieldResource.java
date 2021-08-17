@@ -17,7 +17,6 @@ package com.liferay.object.admin.rest.client.resource.v1_0;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectField;
 import com.liferay.object.admin.rest.client.http.HttpInvoker;
 import com.liferay.object.admin.rest.client.pagination.Page;
-import com.liferay.object.admin.rest.client.pagination.Pagination;
 import com.liferay.object.admin.rest.client.problem.Problem;
 import com.liferay.object.admin.rest.client.serdes.v1_0.ObjectFieldSerDes;
 
@@ -41,12 +40,12 @@ public interface ObjectFieldResource {
 	}
 
 	public Page<ObjectField> getObjectDefinitionObjectFieldsPage(
-			Long objectDefinitionId, Pagination pagination)
+			Long objectDefinitionId)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
 			getObjectDefinitionObjectFieldsPageHttpResponse(
-				Long objectDefinitionId, Pagination pagination)
+				Long objectDefinitionId)
 		throws Exception;
 
 	public ObjectField postObjectDefinitionObjectField(
@@ -70,6 +69,14 @@ public interface ObjectFieldResource {
 
 	public HttpInvoker.HttpResponse getObjectFieldHttpResponse(
 			Long objectFieldId)
+		throws Exception;
+
+	public ObjectField patchObjectField(
+			Long objectFieldId, ObjectField objectField)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse patchObjectFieldHttpResponse(
+			Long objectFieldId, ObjectField objectField)
 		throws Exception;
 
 	public ObjectField putObjectField(
@@ -159,12 +166,12 @@ public interface ObjectFieldResource {
 	public static class ObjectFieldResourceImpl implements ObjectFieldResource {
 
 		public Page<ObjectField> getObjectDefinitionObjectFieldsPage(
-				Long objectDefinitionId, Pagination pagination)
+				Long objectDefinitionId)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				getObjectDefinitionObjectFieldsPageHttpResponse(
-					objectDefinitionId, pagination);
+					objectDefinitionId);
 
 			String content = httpResponse.getContent();
 
@@ -205,7 +212,7 @@ public interface ObjectFieldResource {
 
 		public HttpInvoker.HttpResponse
 				getObjectDefinitionObjectFieldsPageHttpResponse(
-					Long objectDefinitionId, Pagination pagination)
+					Long objectDefinitionId)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -228,13 +235,6 @@ public interface ObjectFieldResource {
 			}
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
-
-			if (pagination != null) {
-				httpInvoker.parameter(
-					"page", String.valueOf(pagination.getPage()));
-				httpInvoker.parameter(
-					"pageSize", String.valueOf(pagination.getPageSize()));
-			}
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
@@ -480,6 +480,90 @@ public interface ObjectFieldResource {
 			}
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/object-admin/v1.0/object-fields/{objectFieldId}");
+
+			httpInvoker.path("objectFieldId", objectFieldId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public ObjectField patchObjectField(
+				Long objectFieldId, ObjectField objectField)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				patchObjectFieldHttpResponse(objectFieldId, objectField);
+
+			String content = httpResponse.getContent();
+
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
+
+			try {
+				return ObjectFieldSerDes.toDTO(content);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+		}
+
+		public HttpInvoker.HttpResponse patchObjectFieldHttpResponse(
+				Long objectFieldId, ObjectField objectField)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(objectField.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.PATCH);
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +

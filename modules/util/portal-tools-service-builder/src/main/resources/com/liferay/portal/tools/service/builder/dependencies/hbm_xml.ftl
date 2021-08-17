@@ -101,7 +101,7 @@
 
 				name="${entityColumn.name}"
 
-				<#if (serviceBuilder.getSqlType(entity.getName(), entityColumn.getName(), entityColumn.getType()) == "CLOB") && !stringUtil.equals(entityColumn.type, "Map")>
+				<#if (serviceBuilder.getSqlType(entity.getName(), entityColumn) == "CLOB") && !stringUtil.equals(entityColumn.type, "Map")>
 					type="com.liferay.portal.dao.orm.hibernate.StringClobType"
 				<#elseif entityColumn.isPrimitiveType() || stringUtil.equals(entityColumn.type, "Map") || stringUtil.equals(entityColumn.type, "String")>
 					type="com.liferay.portal.dao.orm.hibernate.${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}Type"

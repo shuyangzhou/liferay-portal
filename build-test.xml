@@ -6269,14 +6269,14 @@ war.path=${app.server.portal.dir}/</echo>
 				<then>
 					<loadfile
 						failonerror="false"
-						property="have.binary.commerce.license"
+						property="commerce.license.binary"
 					>
 						<zipentry name="data/license/LiferayCommerceSubscriptionDevelopment_developercluster.li" zipfile="${portal.legacy.dir}/${portal.version}/data-archive/${data.archive.type}-${database.type}.zip" />
 					</loadfile>
 
 					<loadfile
 						failonerror="false"
-						property="have.binary.portal.license"
+						property="dxp.license.binary"
 					>
 						<zipentry name="data/license/Liferaycom_PortalDevelopment_developercluster.li" zipfile="${portal.legacy.dir}/${portal.version}/data-archive/${data.archive.type}-${database.type}.zip" />
 					</loadfile>
@@ -6288,8 +6288,8 @@ war.path=${app.server.portal.dir}/</echo>
 					<equals arg1="${poshi.method.name}" arg2="DeployCommerceLicenseBinaryFile" />
 					<and>
 						<isset property="data.archive.type" />
-						<isset property="have.binary.commerce.license" />
-						<isset property="have.binary.portal.license" />
+						<isset property="commerce.license.binary" />
+						<isset property="dxp.license.binary" />
 					</and>
 				</or>
 				<then>
@@ -6298,9 +6298,9 @@ war.path=${app.server.portal.dir}/</echo>
 				<elseif>
 					<and>
 						<isset property="data.archive.type" />
-						<isset property="have.binary.commerce.license" />
+						<isset property="commerce.license.binary" />
 						<not>
-							<isset property="have.binary.portal.license" />
+							<isset property="dxp.license.binary" />
 						</not>
 					</and>
 					<then>
@@ -9950,6 +9950,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<antcall target="prepare-selenium-digital-signature-properties" />
 		<antcall target="prepare-selenium-email-properties" />
 		<antcall target="prepare-selenium-facebook-properties" />
+		<antcall target="prepare-selenium-google-cloud-autotagging-properties" />
 		<antcall target="prepare-selenium-google-cloud-translation-properties" />
 		<antcall target="prepare-selenium-google-properties" />
 		<antcall target="prepare-selenium-onedrive-properties" />
@@ -10715,6 +10716,17 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					facebook.password=${facebook.password}
+				</echo>
+			</then>
+		</if>
+	</target>
+
+	<target name="prepare-selenium-google-cloud-autotagging-properties">
+		<if>
+			<isset property="google.cloud.autotagging.service.key" />
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					google.cloud.autotagging.service.key=${google.cloud.autotagging.service.key}
 				</echo>
 			</then>
 		</if>

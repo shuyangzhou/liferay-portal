@@ -14,8 +14,6 @@
 
 package com.liferay.portal.instances.web.internal.portlet.action;
 
-import com.liferay.portal.instances.initializer.PortalInstanceInitializer;
-import com.liferay.portal.instances.initializer.PortalInstanceInitializerRegistry;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.instances.web.internal.constants.PortalInstancesPortletKeys;
 import com.liferay.portal.kernel.exception.CompanyMxException;
@@ -27,11 +25,14 @@ import com.liferay.portal.kernel.exception.RequiredCompanyException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.CompanyService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
@@ -39,8 +40,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-
-import java.util.Collections;
+import com.liferay.site.initializer.SiteInitializer;
+import com.liferay.site.initializer.SiteInitializerRegistry;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -165,25 +166,23 @@ public class EditInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 			// Initialize instance with portal instance initializer
 
-			String portalInstanceInitializerKey = ParamUtil.getString(
-				actionRequest, "portalInstanceInitializerKey");
+			String siteInitializerKey = ParamUtil.getString(
+				actionRequest, "siteInitializerKey");
 
-			if (Validator.isNotNull(portalInstanceInitializerKey)) {
-				PortalInstanceInitializer portalInstanceInitializer =
-					_portalInstanceInitializerRegistry.
-						getPortalInstanceInitializer(
-							portalInstanceInitializerKey);
+			if (Validator.isNotNull(siteInitializerKey)) {
+				SiteInitializer siteInitializer =
+					_siteInitializerRegistry.getSiteInitializer(
+						siteInitializerKey);
 
-				if (portalInstanceInitializer == null) {
+				if (siteInitializer == null) {
 					throw new PortalException(
-						"Invalid portal instance initializer key " +
-							portalInstanceInitializerKey);
+						"Invalid site initializer key " + siteInitializerKey);
 				}
 
-				portalInstanceInitializer.initialize(
-					company.getCompanyId(),
-					_portal.getHttpServletRequest(actionRequest),
-					Collections.emptyMap());
+				Group group = _groupLocalService.getGroup(
+					company.getCompanyId(), GroupConstants.GUEST);
+
+				siteInitializer.initialize(group.getGroupId());
 			}
 		}
 		else {
@@ -207,13 +206,15 @@ public class EditInstanceMVCActionCommand extends BaseMVCActionCommand {
 	private CompanyService _companyService;
 
 	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
 	private Portal _portal;
 
 	@Reference
-	private PortalInstanceInitializerRegistry
-		_portalInstanceInitializerRegistry;
+	private PortalInstancesLocalService _portalInstancesLocalService;
 
 	@Reference
-	private PortalInstancesLocalService _portalInstancesLocalService;
+	private SiteInitializerRegistry _siteInitializerRegistry;
 
 }

@@ -16,14 +16,17 @@ package com.liferay.headless.portal.instances.internal.resource.v1_0;
 
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstance;
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceResource;
-import com.liferay.portal.instances.initializer.PortalInstanceInitializer;
-import com.liferay.portal.instances.initializer.PortalInstanceInitializerRegistry;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.site.initializer.SiteInitializer;
+import com.liferay.site.initializer.SiteInitializerRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +70,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public Page<PortalInstance> getPortalInstancesPage(Boolean skipDefault)
 		throws Exception {
 
-		final boolean finalSkipDefault = GetterUtil.getBoolean(skipDefault);
+		boolean finalSkipDefault = GetterUtil.getBoolean(skipDefault);
 
 		List<PortalInstance> portalInstances = new ArrayList<>();
 
@@ -107,17 +110,14 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public PortalInstance postPortalInstance(PortalInstance portalInstance)
 		throws Exception {
 
-		PortalInstanceInitializer portalInstanceInitializer = null;
+		SiteInitializer siteInitializer = null;
 
-		if (Validator.isNotNull(
-				portalInstance.getPortalInstanceInitializerKey())) {
+		if (Validator.isNotNull(portalInstance.getSiteInitializerKey())) {
+			siteInitializer = _siteInitializerRegistry.getSiteInitializer(
+				portalInstance.getSiteInitializerKey());
 
-			portalInstanceInitializer =
-				_portalInstanceInitializerRegistry.getPortalInstanceInitializer(
-					portalInstance.getPortalInstanceInitializerKey());
-
-			if (portalInstanceInitializer == null) {
-				throw new ValidationException("Invalid initializer key");
+			if (siteInitializer == null) {
+				throw new ValidationException("Invalid site initializer key");
 			}
 		}
 
@@ -131,10 +131,11 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 
 		_portalInstancesLocalService.synchronizePortalInstances();
 
-		if (portalInstanceInitializer != null) {
-			portalInstanceInitializer.initialize(
-				company.getCompanyId(), contextHttpServletRequest,
-				portalInstance.getPortalInstanceInitializerPayload());
+		if (siteInitializer != null) {
+			Group group = _groupLocalService.getGroup(
+				company.getCompanyId(), GroupConstants.GUEST);
+
+			siteInitializer.initialize(group.getGroupId());
 		}
 
 		return _toPortalInstance(company);
@@ -180,8 +181,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
-	private PortalInstanceInitializerRegistry
-		_portalInstanceInitializerRegistry;
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
@@ -190,5 +190,8 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 		target = "(&(original.bean=true)(bean.id=javax.servlet.ServletContext))"
 	)
 	private ServletContext _servletContext;
+
+	@Reference
+	private SiteInitializerRegistry _siteInitializerRegistry;
 
 }

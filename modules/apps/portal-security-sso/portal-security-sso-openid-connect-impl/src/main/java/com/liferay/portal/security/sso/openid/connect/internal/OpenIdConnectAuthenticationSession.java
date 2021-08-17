@@ -24,14 +24,11 @@ import java.io.Serializable;
  */
 public class OpenIdConnectAuthenticationSession implements Serializable {
 
-	public static final String SESSION =
-		OpenIdConnectAuthenticationSession.class.getName() + "#SESSION";
-
 	public OpenIdConnectAuthenticationSession(
-		String providerName, Nonce nonce, State state) {
+		Nonce nonce, String providerName, State state) {
 
-		_providerName = providerName;
 		_nonce = nonce;
+		_providerName = providerName;
 		_state = state;
 	}
 

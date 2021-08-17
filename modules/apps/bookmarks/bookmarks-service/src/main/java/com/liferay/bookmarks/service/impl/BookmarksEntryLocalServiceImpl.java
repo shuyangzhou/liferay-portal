@@ -518,15 +518,14 @@ public class BookmarksEntryLocalServiceImpl
 	}
 
 	@Override
-	public void setTreePaths(
-			final long folderId, final String treePath, final boolean reindex)
+	public void setTreePaths(long folderId, String treePath, boolean reindex)
 		throws PortalException {
 
 		if (treePath == null) {
 			throw new IllegalArgumentException("Tree path is null");
 		}
 
-		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setAddCriteriaMethod(
@@ -545,7 +544,7 @@ public class BookmarksEntryLocalServiceImpl
 						treePathProperty.ne(treePath)));
 			});
 
-		final Indexer<BookmarksEntry> indexer = IndexerRegistryUtil.getIndexer(
+		Indexer<BookmarksEntry> indexer = IndexerRegistryUtil.getIndexer(
 			BookmarksEntry.class);
 
 		indexableActionableDynamicQuery.setPerformActionMethod(

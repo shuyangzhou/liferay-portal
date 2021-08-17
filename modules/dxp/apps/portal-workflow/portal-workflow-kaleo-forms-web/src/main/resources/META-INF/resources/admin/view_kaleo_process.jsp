@@ -131,8 +131,14 @@ KaleoProcess kaleoProcess = kaleoFormsViewRecordsDisplayContext.getKaleoProcess(
 
 					<liferay-ui:search-container-column-text
 						name="<%= HtmlUtil.escape(kaleoFormsViewRecordsDisplayContext.getColumnName(ddmFormField)) %>"
-						value="<%= value %>"
-					/>
+						truncate="<%= true %>"
+					>
+						<span class="lfr-portal-tooltip text-truncate-inline" title="<%= value %>">
+							<span class="text-truncate">
+								<%= value %>
+							</span>
+						</span>
+					</liferay-ui:search-container-column-text>
 
 				<%
 				}

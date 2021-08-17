@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.Validator;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.ActionURL;
 import javax.portlet.MimeResponse;
 import javax.portlet.MutableActionParameters;
@@ -81,17 +82,17 @@ public class ActionURLBuilder {
 	}
 
 	public static class ActionURLStep
-		implements AfterBackURLStep, AfterBeanParameterStep, AfterCMDStep,
-				   AfterKeywordsStep, AfterMVCActionCommandNameStep,
+		implements ActionNameStep, AfterActionNameStep, AfterBackURLStep,
+				   AfterBeanParameterStep, AfterCMDStep, AfterKeywordsStep,
 				   AfterMVCPathStep, AfterNavigationStep, AfterParameterStep,
 				   AfterPortletModeStep, AfterPortletResourceStep,
 				   AfterRedirectStep, AfterRenderParameterStep, AfterSecureStep,
 				   AfterTabs1Step, AfterTabs2Step, AfterWindowStateStep,
 				   BackURLStep, BeanParameterStep, BuildStep, CMDStep,
-				   KeywordsStep, MVCActionCommandNameStep, MVCPathStep,
-				   NavigationStep, ParameterStep, PortletModeStep,
-				   PortletResourceStep, RedirectStep, RenderParameterStep,
-				   SecureStep, Tabs1Step, Tabs2Step, WindowStateStep {
+				   KeywordsStep, MVCPathStep, NavigationStep, ParameterStep,
+				   PortletModeStep, PortletResourceStep, RedirectStep,
+				   RenderParameterStep, SecureStep, Tabs1Step, Tabs2Step,
+				   WindowStateStep {
 
 		public ActionURLStep(ActionURL actionURL) {
 			_actionURL = actionURL;
@@ -123,6 +124,34 @@ public class ActionURLBuilder {
 				_actionURL.getRenderParameters();
 
 			mutableRenderParameters.removeParameter(name);
+
+			return this;
+		}
+
+		@Override
+		public AfterActionNameStep setActionName(String value) {
+			_setParameter(ActionRequest.ACTION_NAME, value, false);
+
+			return this;
+		}
+
+		@Override
+		public AfterActionNameStep setActionName(
+			String value, boolean allowNullValue) {
+
+			if (allowNullValue || Validator.isNotNull(value)) {
+				_setParameter(ActionRequest.ACTION_NAME, value, false);
+			}
+
+			return this;
+		}
+
+		@Override
+		public AfterActionNameStep setActionName(
+			UnsafeSupplier<Object, Exception> valueUnsafeSupplier) {
+
+			_setParameter(
+				ActionRequest.ACTION_NAME, valueUnsafeSupplier, false);
 
 			return this;
 		}
@@ -180,35 +209,6 @@ public class ActionURLBuilder {
 			UnsafeSupplier<Object, Exception> valueUnsafeSupplier) {
 
 			_setParameter("keywords", valueUnsafeSupplier, false);
-
-			return this;
-		}
-
-		@Override
-		public AfterMVCActionCommandNameStep setMVCActionCommandName(
-			String value) {
-
-			_setParameter("mvcActionCommandName", value, false);
-
-			return this;
-		}
-
-		@Override
-		public AfterMVCActionCommandNameStep setMVCActionCommandName(
-			String value, boolean allowNullValue) {
-
-			if (allowNullValue || Validator.isNotNull(value)) {
-				_setParameter("mvcActionCommandName", value, false);
-			}
-
-			return this;
-		}
-
-		@Override
-		public AfterMVCActionCommandNameStep setMVCActionCommandName(
-			UnsafeSupplier<Object, Exception> valueUnsafeSupplier) {
-
-			_setParameter("mvcActionCommandName", valueUnsafeSupplier, false);
 
 			return this;
 		}
@@ -594,9 +594,9 @@ public class ActionURLBuilder {
 		}
 
 		private static final String[][] _RESERVED_KEYWORDS = {
+			{ActionRequest.ACTION_NAME, "setActionName"},
 			{Constants.CMD, "setCMD"}, {"backURL", "setBackURL"},
 			{"keywords", "setKeywords"}, {"mvcPath", "setMVCPath"},
-			{"mvcActionCommandName", "setMVCActionCommandName"},
 			{"navigation", "setNavigation"}, {"p_p_mode", "setPortletMode"},
 			{"p_p_state", "setWindowState"},
 			{"portletResource", "setPortletResource"},
@@ -606,6 +606,25 @@ public class ActionURLBuilder {
 
 		private final ActionURL _actionURL;
 
+	}
+
+	public interface ActionNameStep {
+
+		public AfterActionNameStep setActionName(String value);
+
+		public AfterActionNameStep setActionName(
+			String value, boolean allowNullValue);
+
+		public AfterActionNameStep setActionName(
+			UnsafeSupplier<Object, Exception> valueUnsafeSupplier);
+
+	}
+
+	public interface AfterActionNameStep
+		extends BackURLStep, BeanParameterStep, BuildStep, CMDStep,
+				KeywordsStep, NavigationStep, ParameterStep, PortletModeStep,
+				PortletResourceStep, RedirectStep, RenderParameterStep,
+				SecureStep, Tabs1Step, Tabs2Step, WindowStateStep {
 	}
 
 	public interface AfterBackURLStep
@@ -633,19 +652,12 @@ public class ActionURLBuilder {
 				SecureStep, Tabs1Step, Tabs2Step, WindowStateStep {
 	}
 
-	public interface AfterMVCActionCommandNameStep
-		extends BackURLStep, BeanParameterStep, BuildStep, CMDStep,
-				KeywordsStep, NavigationStep, ParameterStep, PortletModeStep,
-				PortletResourceStep, RedirectStep, RenderParameterStep,
-				SecureStep, Tabs1Step, Tabs2Step, WindowStateStep {
-	}
-
 	public interface AfterMVCPathStep
-		extends BackURLStep, BeanParameterStep, BuildStep, CMDStep,
-				KeywordsStep, MVCActionCommandNameStep, NavigationStep,
-				ParameterStep, PortletModeStep, PortletResourceStep,
-				RedirectStep, RenderParameterStep, SecureStep, Tabs1Step,
-				Tabs2Step, WindowStateStep {
+		extends ActionNameStep, BackURLStep, BeanParameterStep, BuildStep,
+				CMDStep, KeywordsStep, NavigationStep, ParameterStep,
+				PortletModeStep, PortletResourceStep, RedirectStep,
+				RenderParameterStep, SecureStep, Tabs1Step, Tabs2Step,
+				WindowStateStep {
 	}
 
 	public interface AfterNavigationStep
@@ -734,19 +746,6 @@ public class ActionURLBuilder {
 		public AfterKeywordsStep setKeywords(String value);
 
 		public AfterKeywordsStep setKeywords(
-			UnsafeSupplier<Object, Exception> valueUnsafeSupplier);
-
-	}
-
-	public interface MVCActionCommandNameStep {
-
-		public AfterMVCActionCommandNameStep setMVCActionCommandName(
-			String value);
-
-		public AfterMVCActionCommandNameStep setMVCActionCommandName(
-			String value, boolean allowNullValue);
-
-		public AfterMVCActionCommandNameStep setMVCActionCommandName(
 			UnsafeSupplier<Object, Exception> valueUnsafeSupplier);
 
 	}

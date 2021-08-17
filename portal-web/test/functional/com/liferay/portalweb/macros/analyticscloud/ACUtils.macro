@@ -27,6 +27,16 @@ definition {
 			siteName = "Site Name");
 	}
 
+	macro assertAudienceCard {
+		var key_index = "${index}";
+
+		for (var percentage : list "${percentageList}") {
+			var key_percentage = "${percentage}";
+
+			AssertElementPresent(locator1 = "ACUtils#METRIC_VALUE_PERCENTAGE");
+		}
+	}
+
 	macro assertDataSourceName {
 		var itemName = "${dataSourceName}";
 
@@ -42,9 +52,40 @@ definition {
 		}
 	}
 
+	macro assertPageTitle {
+		var key_pageTitle = "${pageTitle}";
+		AssertTextEquals(
+			locator1 = "ACUtils#PAGE_TITLE",
+			value1 = "${pageTitle}");
+	}
+
 	macro assertXAxisTimedGraph {
 		var key_parentName = "${parentName}";
 		AssertElementPresent(locator1 = "ACUtils#SVG_TIMED_GRAPH");
+	}
+
+	macro changePagination {
+		Click(locator1 = "ACUtils#PAGINATION_ITEMS_PER_PAGE_SELECT");
+
+		MenuItem.click(menuItem = "${itemsPerPage}");
+
+		ACUtils.viewPaginationItemsPerPage(itemsPerPage = "${itemsPerPage}");
+	}
+
+	macro checkAnyPage {
+		var key_pageNumber = "${pageNumber}";
+
+		Click(locator1 = "ACUtils#ANY_PAGE");
+	}
+
+	macro checkPreviousNextButton {
+		if (isSet(previousButton)) {
+			Click(locator1 = "ACUtils#PREVIOUS_PAGES");
+		}
+
+		if (isSet(nextButton)) {
+			Click(locator1 = "ACUtils#NEXT_PAGES");
+		}
 	}
 
 	macro clearSearchBar {
@@ -237,6 +278,26 @@ definition {
 		ACUtils.launchDXP();
 
 		ACDXPSettings.disconnectDXPFromAnalyticsCloud();
+	}
+
+	macro viewPaginationItemsPerPage {
+		AssertTextEquals(
+			locator1 = "ACUtils#PAGINATION_ITEMS_PER_PAGE_SELECT",
+			value1 = "${itemsPerPage} Items");
+	}
+
+	macro viewResultsMessage {
+		AssertTextEquals(
+			locator1 = "ACUtils#RESULT_MESSAGE",
+			value1 = "${results}");
+	}
+
+	macro viewResultsPages {
+		var key_pageNumber = "${pageNumber}";
+
+		AssertTextEquals(
+			locator1 = "ACUtils#ANY_PAGE",
+			value1 = "${key_pageNumber}");
 	}
 
 }

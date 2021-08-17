@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectDefinitionServiceUtil;
+import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -28,11 +29,9 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
@@ -161,7 +160,7 @@ public class ObjectDefinitionServiceTest {
 			user.getUserId(), objectDefinition.getObjectDefinitionId());*/
 
 		return ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
-			user.getUserId(), _labelMap, "Test", null);
+			user.getUserId(), _labelMap, "Test", _pluralLabelMap, null);
 	}
 
 	private void _setUser(User user) {
@@ -179,7 +178,7 @@ public class ObjectDefinitionServiceTest {
 
 			objectDefinition =
 				ObjectDefinitionServiceUtil.addCustomObjectDefinition(
-					_labelMap, "Test", null);
+					_labelMap, "Test", _pluralLabelMap, null);
 
 			objectDefinition =
 				ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
@@ -243,7 +242,7 @@ public class ObjectDefinitionServiceTest {
 
 			objectDefinition =
 				ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
-					user.getUserId(), _labelMap, "Test", null);
+					user.getUserId(), _labelMap, "Test", _pluralLabelMap, null);
 
 			objectDefinition =
 				ObjectDefinitionServiceUtil.publishCustomObjectDefinition(
@@ -258,10 +257,12 @@ public class ObjectDefinitionServiceTest {
 	}
 
 	private User _defaultUser;
-	private final Map<Locale, String> _labelMap = Collections.singletonMap(
-		LocaleUtil.US, "Test");
+	private final Map<Locale, String> _labelMap =
+		LocalizedMapUtil.getLocalizedMap("Test");
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
+	private final Map<Locale, String> _pluralLabelMap =
+		LocalizedMapUtil.getLocalizedMap("Tests");
 	private User _user;
 
 	@Inject(type = UserLocalService.class)

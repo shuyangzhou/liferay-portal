@@ -58,13 +58,13 @@ import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -88,19 +88,14 @@ public abstract class BaseObjectFieldResourceImpl
 	@GET
 	@Override
 	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.PATH, name = "objectDefinitionId"),
-			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
-		}
+		value = {@Parameter(in = ParameterIn.PATH, name = "objectDefinitionId")}
 	)
 	@Path("/object-definitions/{objectDefinitionId}/object-fields")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ObjectField")})
 	public Page<ObjectField> getObjectDefinitionObjectFieldsPage(
 			@NotNull @Parameter(hidden = true) @PathParam("objectDefinitionId")
-				Long objectDefinitionId,
-			@Context Pagination pagination)
+				Long objectDefinitionId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -189,6 +184,67 @@ public abstract class BaseObjectFieldResourceImpl
 		throws Exception {
 
 		return new ObjectField();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/object-admin/v1.0/object-fields/{objectFieldId}' -d $'{"indexed": ___, "indexedAsKeyword": ___, "indexedLanguageId": ___, "label": ___, "name": ___, "required": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 */
+	@Consumes({"application/json", "application/xml"})
+	@Override
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "objectFieldId")}
+	)
+	@PATCH
+	@Path("/object-fields/{objectFieldId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectField")})
+	public ObjectField patchObjectField(
+			@NotNull @Parameter(hidden = true) @PathParam("objectFieldId") Long
+				objectFieldId,
+			ObjectField objectField)
+		throws Exception {
+
+		ObjectField existingObjectField = getObjectField(objectFieldId);
+
+		if (objectField.getActions() != null) {
+			existingObjectField.setActions(objectField.getActions());
+		}
+
+		if (objectField.getIndexed() != null) {
+			existingObjectField.setIndexed(objectField.getIndexed());
+		}
+
+		if (objectField.getIndexedAsKeyword() != null) {
+			existingObjectField.setIndexedAsKeyword(
+				objectField.getIndexedAsKeyword());
+		}
+
+		if (objectField.getIndexedLanguageId() != null) {
+			existingObjectField.setIndexedLanguageId(
+				objectField.getIndexedLanguageId());
+		}
+
+		if (objectField.getLabel() != null) {
+			existingObjectField.setLabel(objectField.getLabel());
+		}
+
+		if (objectField.getName() != null) {
+			existingObjectField.setName(objectField.getName());
+		}
+
+		if (objectField.getRequired() != null) {
+			existingObjectField.setRequired(objectField.getRequired());
+		}
+
+		if (objectField.getType() != null) {
+			existingObjectField.setType(objectField.getType());
+		}
+
+		preparePatch(objectField, existingObjectField);
+
+		return putObjectField(objectFieldId, existingObjectField);
 	}
 
 	/**
@@ -293,8 +349,7 @@ public abstract class BaseObjectFieldResourceImpl
 		throws Exception {
 
 		return getObjectDefinitionObjectFieldsPage(
-			Long.parseLong((String)parameters.get("objectDefinitionId")),
-			pagination);
+			Long.parseLong((String)parameters.get("objectDefinitionId")));
 	}
 
 	@Override
@@ -405,6 +460,10 @@ public abstract class BaseObjectFieldResourceImpl
 
 		return addAction(
 			actionName, siteId, methodName, null, permissionName, siteId);
+	}
+
+	protected void preparePatch(
+		ObjectField objectField, ObjectField existingObjectField) {
 	}
 
 	protected <T, R> List<R> transform(

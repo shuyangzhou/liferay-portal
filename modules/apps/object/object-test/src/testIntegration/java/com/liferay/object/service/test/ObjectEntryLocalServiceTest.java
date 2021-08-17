@@ -25,6 +25,8 @@ import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalServiceUtil;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -39,7 +41,6 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
@@ -87,8 +88,9 @@ public class ObjectEntryLocalServiceTest {
 		_irrelevantObjectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				Collections.singletonMap(LocaleUtil.US, "Irrelevant"),
-				"Irrelevant", Collections.<ObjectField>emptyList());
+				LocalizedMapUtil.getLocalizedMap("Irrelevant"), "Irrelevant",
+				LocalizedMapUtil.getLocalizedMap("Irrelevants"),
+				Collections.<ObjectField>emptyList());
 
 		_irrelevantObjectDefinition =
 			ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
@@ -98,36 +100,37 @@ public class ObjectEntryLocalServiceTest {
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				Collections.singletonMap(LocaleUtil.US, "Test"), "Test",
+				LocalizedMapUtil.getLocalizedMap("Test"), "Test",
+				LocalizedMapUtil.getLocalizedMap("Tests"),
 				Arrays.asList(
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Age of Death", "ageOfDeath", false,
 						"Long"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Author of Gospel", "authorOfGospel",
 						false, "Boolean"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Birthday", "birthday", false, "Date"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, true, "Email Address", "emailAddress", true,
 						"String"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, true, "Email Address Domain",
 						"emailAddressDomain", false, "String"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "First Name", "firstName", false,
 						"String"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Height", "height", false, "Double"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Last Name", "lastName", false, "String"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Middle Name", "middleName", false,
 						"String"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						true, false, "Number of Books Written",
 						"numberOfBooksWritten", false, "Integer"),
-					_createObjectField(
+					ObjectFieldUtil.createObjectField(
 						false, false, "Portrait", "portrait", false, "Blob")));
 
 		_objectDefinition =
@@ -138,12 +141,12 @@ public class ObjectEntryLocalServiceTest {
 		ObjectFieldLocalServiceUtil.addCustomObjectField(
 			TestPropsValues.getUserId(),
 			_objectDefinition.getObjectDefinitionId(), true, false, null,
-			Collections.singletonMap(LocaleUtil.US, "Speed"), "speed", false,
+			LocalizedMapUtil.getLocalizedMap("Speed"), "speed", false,
 			"BigDecimal");
 		ObjectFieldLocalServiceUtil.addCustomObjectField(
 			TestPropsValues.getUserId(),
 			_objectDefinition.getObjectDefinitionId(), true, false, null,
-			Collections.singletonMap(LocaleUtil.US, "Weight"), "weight", false,
+			LocalizedMapUtil.getLocalizedMap("Weight"), "weight", false,
 			"Double");
 	}
 
@@ -905,23 +908,6 @@ public class ObjectEntryLocalServiceTest {
 
 			return resultSet.getInt(1);
 		}
-	}
-
-	private ObjectField _createObjectField(
-		boolean indexed, boolean indexedAsKeyword, String label, String name,
-		boolean required, String type) {
-
-		ObjectField objectField = ObjectFieldLocalServiceUtil.createObjectField(
-			0);
-
-		objectField.setIndexed(indexed);
-		objectField.setIndexedAsKeyword(indexedAsKeyword);
-		objectField.setLabelMap(Collections.singletonMap(LocaleUtil.US, label));
-		objectField.setName(name);
-		objectField.setRequired(required);
-		objectField.setType(type);
-
-		return objectField;
 	}
 
 	private BigDecimal _getBigDecimal(long value) {

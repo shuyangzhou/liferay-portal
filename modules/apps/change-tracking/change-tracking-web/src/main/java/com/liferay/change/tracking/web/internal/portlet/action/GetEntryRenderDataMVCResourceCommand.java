@@ -39,8 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
@@ -48,6 +46,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.util.Locale;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -108,19 +108,25 @@ public class GetEntryRenderDataMVCResourceCommand
 	}
 
 	private <T extends BaseModel<T>> String _getContent(
-		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		CTDisplayRenderer<T> ctDisplayRenderer, T model) {
+		long ctCollectionId, CTDisplayRenderer<T> ctDisplayRenderer,
+		CTSQLModeThreadLocal.CTSQLMode ctSQLMode,
+		HttpServletRequest httpServletRequest,
+		HttpServletResponse httpServletResponse, Locale locale, T model) {
 
-		try {
+		try (SafeCloseable safeCloseable1 =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+					ctCollectionId);
+			SafeCloseable safeCloseable2 =
+				CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(ctSQLMode)) {
+
 			return ctDisplayRenderer.getContent(
-				liferayPortletRequest, liferayPortletResponse, model);
+				httpServletRequest, httpServletResponse, locale, model);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
-		}
 
-		return null;
+			return null;
+		}
 	}
 
 	private <T extends BaseModel<T>> JSONObject _getCTEntryRenderDataJSONObject(
@@ -148,46 +154,35 @@ public class GetEntryRenderDataMVCResourceCommand
 			changeType = "deleted";
 		}
 
-		JSONObject jsonObject = JSONUtil.put(
-			"changeType", changeType
-		).put(
-			"content", ctDisplayRenderer.hasContent()
-		).put(
-			"versioned", ctDisplayRenderer.isVersioned()
-		);
-
 		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
 			resourceRequest);
 		HttpServletResponse httpServletResponse =
 			_portal.getHttpServletResponse(resourceResponse);
-		LiferayPortletRequest liferayPortletRequest =
-			_portal.getLiferayPortletRequest(resourceRequest);
-		LiferayPortletResponse liferayPortletResponse =
-			_portal.getLiferayPortletResponse(resourceResponse);
 
-		long rightCtCollectionId = ctCollection.getCtCollectionId();
+		Locale locale = _portal.getLocale(httpServletRequest);
+
+		String editURL = null;
 		String rightContent = null;
 		String rightRender = null;
 		T rightModel = null;
+		String rightTitle = null;
 
 		if (ctEntry.getChangeType() != CTConstants.CT_CHANGE_TYPE_DELETION) {
-			jsonObject.put(
-				"rightTitle",
-				StringBundler.concat(
-					_language.get(httpServletRequest, "publication"), ": ",
-					ctCollection.getName()));
+			rightTitle = _language.get(httpServletRequest, "publication");
+
+			long ctCollectionId = ctCollection.getCtCollectionId();
 
 			if (ctCollection.getStatus() == WorkflowConstants.STATUS_APPROVED) {
-				rightCtCollectionId =
-					_ctEntryLocalService.getCTRowCTCollectionId(ctEntry);
+				ctCollectionId = _ctEntryLocalService.getCTRowCTCollectionId(
+					ctEntry);
 			}
 
 			CTSQLModeThreadLocal.CTSQLMode ctSQLMode =
 				_ctDisplayRendererRegistry.getCTSQLMode(
-					rightCtCollectionId, ctEntry);
+					ctCollectionId, ctEntry);
 
 			rightModel = _ctDisplayRendererRegistry.fetchCTModel(
-				rightCtCollectionId, ctSQLMode, ctEntry.getModelClassNameId(),
+				ctCollectionId, ctSQLMode, ctEntry.getModelClassNameId(),
 				ctEntry.getModelClassPK());
 
 			if (rightModel != null) {
@@ -195,178 +190,217 @@ public class GetEntryRenderDataMVCResourceCommand
 					resourceRequest, "activeCTCollection");
 
 				if (activeCTCollection) {
-					String editURL = ctDisplayRenderer.getEditURL(
+					editURL = ctDisplayRenderer.getEditURL(
 						httpServletRequest, rightModel);
-
-					if (Validator.isNotNull(editURL)) {
-						jsonObject.put("editURL", editURL);
-					}
 				}
 
+				rightContent = _getContent(
+					ctCollectionId, ctDisplayRenderer, ctSQLMode,
+					httpServletRequest, httpServletResponse, locale,
+					rightModel);
 				rightRender = _getRender(
-					httpServletRequest, httpServletResponse,
-					rightCtCollectionId, ctDisplayRenderer, ctEntryId,
-					ctSQLMode, rightModel, CTConstants.TYPE_AFTER);
-
-				jsonObject.put("rightRender", rightRender);
-
-				if (ctDisplayRenderer.hasContent()) {
-					rightContent = _getContent(
-						liferayPortletRequest, liferayPortletResponse,
-						ctDisplayRenderer, rightModel);
-
-					if (rightContent != null) {
-						jsonObject.put("rightContent", rightContent);
-					}
-				}
+					httpServletRequest, httpServletResponse, ctCollectionId,
+					ctDisplayRenderer, ctEntryId, ctSQLMode, rightModel,
+					CTConstants.TYPE_AFTER);
 			}
 		}
 
+		long leftCtCollectionId = CTConstants.CT_COLLECTION_ID_PRODUCTION;
+
+		if (ctCollection.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			leftCtCollectionId = ctEntry.getCtCollectionId();
+		}
+
+		CTSQLModeThreadLocal.CTSQLMode leftCTSQLMode =
+			_ctDisplayRendererRegistry.getCTSQLMode(
+				leftCtCollectionId, ctEntry);
+
+		String leftContent = null;
+		T leftModel = null;
+		String leftRender = null;
+		String leftTitle = null;
+
 		if ((ctEntry.getChangeType() == CTConstants.CT_CHANGE_TYPE_ADDITION) &&
-			(rightModel != null) && ctDisplayRenderer.isVersioned()) {
+			(rightModel != null)) {
 
-			T leftModel = null;
+			String rightVersionName = ctDisplayRenderer.getVersionName(
+				rightModel);
 
-			try (SafeCloseable safeCloseable =
-					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
-						rightCtCollectionId)) {
+			if (Validator.isNotNull(rightVersionName)) {
+				try (SafeCloseable safeCloseable1 =
+						CTCollectionThreadLocal.
+							setCTCollectionIdWithSafeCloseable(
+								leftCtCollectionId);
+					SafeCloseable safeCloseable2 =
+						CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(
+							leftCTSQLMode)) {
 
-				leftModel = ctDisplayRenderer.getPreviousVersionedModel(
-					rightModel);
-			}
-
-			if (leftModel != null) {
-				jsonObject.put(
-					"leftTitle",
-					StringBundler.concat(
-						_language.get(httpServletRequest, "version"), ": ",
-						ctDisplayRenderer.getVersionName(leftModel))
-				).put(
-					"rightTitle",
-					StringBundler.concat(
-						_language.get(httpServletRequest, "version"), ": ",
-						ctDisplayRenderer.getVersionName(rightModel))
-				);
-
-				if (ctDisplayRenderer.hasContent()) {
-					String leftContent = _getPreviousContent(
-						liferayPortletRequest, liferayPortletResponse,
-						ctDisplayRenderer, rightModel, leftModel);
-
-					if (leftContent != null) {
-						jsonObject.put("leftContent", leftContent);
-
-						if (rightContent != null) {
-							jsonObject.put(
-								"unifiedContent",
-								DiffHtmlUtil.diff(
-									new UnsyncStringReader(leftContent),
-									new UnsyncStringReader(rightContent)));
-						}
-					}
+					leftModel = ctDisplayRenderer.fetchLatestVersionedModel(
+						rightModel);
 				}
 
-				String leftRender = _getRender(
-					httpServletRequest, httpServletResponse,
-					rightCtCollectionId, ctDisplayRenderer, ctEntryId,
-					CTSQLModeThreadLocal.CTSQLMode.DEFAULT, leftModel,
-					CTConstants.TYPE_AFTER);
+				if (leftModel != null) {
+					String leftVersionName = ctDisplayRenderer.getVersionName(
+						leftModel);
 
-				jsonObject.put("leftRender", leftRender);
+					if (Validator.isNull(leftVersionName)) {
+						leftTitle = _language.get(
+							httpServletRequest, "production");
+					}
+					else {
+						leftTitle = StringBundler.concat(
+							_language.get(httpServletRequest, "version"), ": ",
+							leftVersionName, " (",
+							_language.get(httpServletRequest, "production"),
+							")");
+					}
 
-				if (rightRender != null) {
-					jsonObject.put(
-						"unifiedRender",
-						DiffHtmlUtil.diff(
-							new UnsyncStringReader(leftRender),
-							new UnsyncStringReader(rightRender)));
+					rightTitle = StringBundler.concat(
+						_language.get(httpServletRequest, "version"), ": ",
+						rightVersionName, " (",
+						_language.get(httpServletRequest, "publication"), ")");
+
+					leftContent = _getContent(
+						leftCtCollectionId, ctDisplayRenderer, leftCTSQLMode,
+						httpServletRequest, httpServletResponse, locale,
+						leftModel);
+					leftRender = _getRender(
+						httpServletRequest, httpServletResponse,
+						leftCtCollectionId, ctDisplayRenderer, ctEntryId,
+						leftCTSQLMode, leftModel, CTConstants.TYPE_AFTER);
 				}
 			}
 		}
 		else if (ctEntry.getChangeType() !=
 					CTConstants.CT_CHANGE_TYPE_ADDITION) {
 
-			jsonObject.put(
-				"leftTitle", _language.get(httpServletRequest, "production"));
+			leftTitle = _language.get(httpServletRequest, "production");
 
-			long ctCollectionId = CTConstants.CT_COLLECTION_ID_PRODUCTION;
-
-			if (ctCollection.getStatus() == WorkflowConstants.STATUS_APPROVED) {
-				ctCollectionId = ctEntry.getCtCollectionId();
-			}
-
-			CTSQLModeThreadLocal.CTSQLMode ctSQLMode =
-				_ctDisplayRendererRegistry.getCTSQLMode(
-					ctCollectionId, ctEntry);
-
-			T leftModel = _ctDisplayRendererRegistry.fetchCTModel(
-				ctCollectionId, ctSQLMode, ctEntry.getModelClassNameId(),
-				ctEntry.getModelClassPK());
+			leftModel = _ctDisplayRendererRegistry.fetchCTModel(
+				leftCtCollectionId, leftCTSQLMode,
+				ctEntry.getModelClassNameId(), ctEntry.getModelClassPK());
 
 			if (leftModel != null) {
-				String leftContent = null;
+				leftContent = _getContent(
+					leftCtCollectionId, ctDisplayRenderer, leftCTSQLMode,
+					httpServletRequest, httpServletResponse, locale, leftModel);
+				leftRender = _getRender(
+					httpServletRequest, httpServletResponse, leftCtCollectionId,
+					ctDisplayRenderer, ctEntryId, leftCTSQLMode, leftModel,
+					CTConstants.TYPE_BEFORE);
+			}
+		}
 
-				if (ctDisplayRenderer.hasContent()) {
-					if (rightModel != null) {
-						leftContent = _getPreviousContent(
-							liferayPortletRequest, liferayPortletResponse,
-							ctDisplayRenderer, rightModel, leftModel);
+		if ((ctEntry.getChangeType() == CTConstants.CT_CHANGE_TYPE_DELETION) &&
+			(leftModel != null)) {
+
+			String leftVersionName = ctDisplayRenderer.getVersionName(
+				leftModel);
+
+			if (Validator.isNotNull(leftVersionName)) {
+				long ctCollectionId = ctCollection.getCtCollectionId();
+
+				if (ctCollection.getStatus() ==
+						WorkflowConstants.STATUS_APPROVED) {
+
+					ctCollectionId =
+						_ctEntryLocalService.getCTRowCTCollectionId(ctEntry);
+				}
+
+				CTSQLModeThreadLocal.CTSQLMode ctSQLMode =
+					CTSQLModeThreadLocal.CTSQLMode.DEFAULT;
+
+				try (SafeCloseable safeCloseable1 =
+						CTCollectionThreadLocal.
+							setCTCollectionIdWithSafeCloseable(ctCollectionId);
+					SafeCloseable safeCloseable2 =
+						CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(
+							ctSQLMode)) {
+
+					rightModel = ctDisplayRenderer.fetchLatestVersionedModel(
+						leftModel);
+				}
+
+				if (rightModel != null) {
+					String rightVersionName = ctDisplayRenderer.getVersionName(
+						rightModel);
+
+					if (Validator.isNull(rightVersionName)) {
+						rightTitle = _language.get(
+							httpServletRequest, "publication");
 					}
 					else {
-						leftContent = _getContent(
-							liferayPortletRequest, liferayPortletResponse,
-							ctDisplayRenderer, leftModel);
+						rightTitle = StringBundler.concat(
+							_language.get(httpServletRequest, "version"), ": ",
+							rightVersionName, " (",
+							_language.get(httpServletRequest, "publication"),
+							")");
 					}
-				}
 
-				if (leftContent != null) {
-					jsonObject.put("leftContent", leftContent);
+					leftTitle = StringBundler.concat(
+						_language.get(httpServletRequest, "version"), ": ",
+						leftVersionName, " (",
+						_language.get(httpServletRequest, "deleted"), ")");
 
-					if (rightContent != null) {
-						jsonObject.put(
-							"unifiedContent",
-							DiffHtmlUtil.diff(
-								new UnsyncStringReader(leftContent),
-								new UnsyncStringReader(rightContent)));
-					}
-				}
-
-				String leftRender = _getRender(
-					httpServletRequest, httpServletResponse, ctCollectionId,
-					ctDisplayRenderer, ctEntryId, ctSQLMode, leftModel,
-					CTConstants.TYPE_BEFORE);
-
-				jsonObject.put("leftRender", leftRender);
-
-				if (rightRender != null) {
-					jsonObject.put(
-						"unifiedRender",
-						DiffHtmlUtil.diff(
-							new UnsyncStringReader(leftRender),
-							new UnsyncStringReader(rightRender)));
+					rightContent = _getContent(
+						ctCollectionId, ctDisplayRenderer, ctSQLMode,
+						httpServletRequest, httpServletResponse, locale,
+						rightModel);
+					rightRender = _getRender(
+						httpServletRequest, httpServletResponse, ctCollectionId,
+						ctDisplayRenderer, ctEntryId, ctSQLMode, rightModel,
+						CTConstants.TYPE_AFTER);
 				}
 			}
+		}
+
+		JSONObject jsonObject = JSONUtil.put("changeType", changeType);
+
+		if (editURL != null) {
+			jsonObject.put("editURL", editURL);
+		}
+
+		if (leftContent != null) {
+			jsonObject.put("leftContent", leftContent);
+		}
+
+		if (leftRender != null) {
+			jsonObject.put("leftRender", leftRender);
+		}
+
+		if (leftTitle != null) {
+			jsonObject.put("leftTitle", leftTitle);
+		}
+
+		if (rightContent != null) {
+			jsonObject.put("rightContent", rightContent);
+		}
+
+		if (rightRender != null) {
+			jsonObject.put("rightRender", rightRender);
+		}
+
+		if (rightTitle != null) {
+			jsonObject.put("rightTitle", rightTitle);
+		}
+
+		if ((leftContent != null) && (rightContent != null)) {
+			jsonObject.put(
+				"unifiedContent",
+				DiffHtmlUtil.diff(
+					new UnsyncStringReader(leftContent),
+					new UnsyncStringReader(rightContent)));
+		}
+
+		if ((leftRender != null) && (rightRender != null)) {
+			jsonObject.put(
+				"unifiedRender",
+				DiffHtmlUtil.diff(
+					new UnsyncStringReader(leftRender),
+					new UnsyncStringReader(rightRender)));
 		}
 
 		return jsonObject;
-	}
-
-	private <T extends BaseModel<T>> String _getPreviousContent(
-		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		CTDisplayRenderer<T> ctDisplayRenderer, T currentModel,
-		T previousModel) {
-
-		try {
-			return ctDisplayRenderer.getPreviousContent(
-				liferayPortletRequest, liferayPortletResponse, currentModel,
-				previousModel);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		return null;
 	}
 
 	private <T extends BaseModel<T>> JSONObject

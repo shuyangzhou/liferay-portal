@@ -55,7 +55,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Cristina González
  */
 public class JournalArticleContentDashboardItem
-	implements ContentDashboardItem<JournalArticle> {
+	extends ContentDashboardBaseItem<JournalArticle> {
 
 	public JournalArticleContentDashboardItem(
 		List<AssetCategory> assetCategories, List<AssetTag> assetTags,
@@ -275,6 +275,16 @@ public class JournalArticleContentDashboardItem
 		}
 
 		return infoFieldValue.getValue(locale);
+	}
+
+	@Override
+	public JournalArticle getInfoItem() {
+		return _journalArticle;
+	}
+
+	@Override
+	public InfoItemFieldValuesProvider getInfoItemFieldValuesProvider() {
+		return _infoItemFieldValuesProvider;
 	}
 
 	@Override

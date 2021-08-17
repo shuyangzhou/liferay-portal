@@ -18,7 +18,8 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
-import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -26,14 +27,12 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.io.Serializable;
 
 import java.math.BigDecimal;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -86,9 +85,9 @@ public class ObjectDefinitionSampleGenerator {
 		objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				user.getUserId(),
-				Collections.singletonMap(
-					LocaleUtil.getSiteDefault(), "Sample Object Definition"),
+				LocalizedMapUtil.getLocalizedMap("Sample Object Definition"),
 				"SampleObjectDefinition",
+				LocalizedMapUtil.getLocalizedMap("Sample Object Definitions"),
 				Arrays.asList(
 					_createObjectField("Able", "able", "Long"),
 					_createObjectField("Baker", "baker", "Boolean"),
@@ -143,23 +142,16 @@ public class ObjectDefinitionSampleGenerator {
 		boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
 		String label, String name, String type) {
 
-		ObjectField objectField = _objectFieldLocalService.createObjectField(0);
-
-		objectField.setIndexed(indexed);
-		objectField.setIndexedAsKeyword(indexedAsKeyword);
-		objectField.setIndexedLanguageId(indexedLanguageId);
-		objectField.setLabelMap(
-			Collections.singletonMap(LocaleUtil.getSiteDefault(), label));
-		objectField.setName(name);
-		objectField.setType(type);
-
-		return objectField;
+		return ObjectFieldUtil.createObjectField(
+			null, indexed, indexedAsKeyword, indexedLanguageId, label, name,
+			false, type);
 	}
 
 	private ObjectField _createObjectField(
 		String label, String name, String type) {
 
-		return _createObjectField(true, false, null, label, name, type);
+		return ObjectFieldUtil.createObjectField(
+			true, false, label, name, false, type);
 	}
 
 	@Reference
@@ -173,9 +165,6 @@ public class ObjectDefinitionSampleGenerator {
 
 	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;
-
-	@Reference
-	private ObjectFieldLocalService _objectFieldLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;
