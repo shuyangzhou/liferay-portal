@@ -490,6 +490,8 @@ public class CacheFieldEntryModelImpl
 			cacheFieldEntryCacheModel.name = null;
 		}
 
+		setNickname(null);
+
 		cacheFieldEntryCacheModel._nickname = getNickname();
 
 		return cacheFieldEntryCacheModel;
