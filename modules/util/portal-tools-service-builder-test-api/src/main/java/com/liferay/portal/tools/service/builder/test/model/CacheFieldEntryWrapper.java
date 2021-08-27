@@ -99,6 +99,11 @@ public class CacheFieldEntryWrapper
 		return model.getName();
 	}
 
+	@Override
+	public String getNickname() {
+		return model.getNickname();
+	}
+
 	/**
 	 * Returns the primary key of this cache field entry.
 	 *
@@ -142,6 +147,11 @@ public class CacheFieldEntryWrapper
 	@Override
 	public void setName(String name) {
 		model.setName(name);
+	}
+
+	@Override
+	public void setNickname(String nickname) {
+		model.setNickname(nickname);
 	}
 
 	/**
