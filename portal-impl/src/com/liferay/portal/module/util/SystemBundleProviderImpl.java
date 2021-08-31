@@ -12,22 +12,21 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.form.web.internal.configuration;
+package com.liferay.portal.module.util;
 
-import aQute.bnd.annotation.metatype.Meta;
+import com.liferay.portal.kernel.module.util.SystemBundleProvider;
+import com.liferay.portal.module.framework.ModuleFrameworkUtil;
 
-import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import org.osgi.framework.Bundle;
 
 /**
- * @author Marcela Cunha
+ * @author Shuyang Zhou
  */
-@ExtendedObjectClassDefinition(generateUI = false)
-@Meta.OCD(
-	id = "com.liferay.dynamic.data.mapping.form.web.internal.configuration.FFSearchLocationDDMFormFieldTypeConfiguration"
-)
-public interface FFSearchLocationDDMFormFieldTypeConfiguration {
+public class SystemBundleProviderImpl implements SystemBundleProvider {
 
-	@Meta.AD(deflt = "false", required = false)
-	public boolean enabled();
+	@Override
+	public Bundle getSystemBundle() {
+		return ModuleFrameworkUtil.getFramework();
+	}
 
 }

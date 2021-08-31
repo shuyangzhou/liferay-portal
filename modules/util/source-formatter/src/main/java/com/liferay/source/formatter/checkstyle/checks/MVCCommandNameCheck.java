@@ -79,7 +79,7 @@ public class MVCCommandNameCheck extends BaseCheck {
 		}
 
 		DetailAST propertyAnnotationMemberValuePairDetailAST =
-			_getAnnotationMemberValuePairDetailAST(
+			getAnnotationMemberValuePairDetailAST(
 				annotationDetailAST, "property");
 
 		if (propertyAnnotationMemberValuePairDetailAST == null) {
@@ -119,30 +119,6 @@ public class MVCCommandNameCheck extends BaseCheck {
 				log(entry.getValue(), _MSG_INCORRECT_VALUE, mvcCommandName);
 			}
 		}
-	}
-
-	private DetailAST _getAnnotationMemberValuePairDetailAST(
-		DetailAST annotationDetailAST, String key) {
-
-		List<DetailAST> annotationMemberValuePairDetailASTList =
-			getAllChildTokens(
-				annotationDetailAST, false,
-				TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR);
-
-		for (DetailAST annotationMemberValuePairDetailAST :
-				annotationMemberValuePairDetailASTList) {
-
-			DetailAST firstChildDetailAST =
-				annotationMemberValuePairDetailAST.getFirstChild();
-
-			if ((firstChildDetailAST.getType() == TokenTypes.IDENT) &&
-				Objects.equals(firstChildDetailAST.getText(), key)) {
-
-				return annotationMemberValuePairDetailAST;
-			}
-		}
-
-		return null;
 	}
 
 	private String _getExpectedActionName(String className) {
@@ -286,7 +262,7 @@ public class MVCCommandNameCheck extends BaseCheck {
 			}
 
 			DetailAST targetAnnotationMemberValuePairDetailAST =
-				_getAnnotationMemberValuePairDetailAST(
+				getAnnotationMemberValuePairDetailAST(
 					annotationDetailAST, "target");
 
 			if (targetAnnotationMemberValuePairDetailAST == null) {

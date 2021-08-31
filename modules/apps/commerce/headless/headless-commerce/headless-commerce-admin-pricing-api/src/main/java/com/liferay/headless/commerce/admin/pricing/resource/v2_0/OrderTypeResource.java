@@ -48,6 +48,9 @@ public interface OrderTypeResource {
 		return FactoryHolder.factory.create();
 	}
 
+	public OrderType getDiscountOrderTypeOrderType(Long discountOrderTypeId)
+		throws Exception;
+
 	public OrderType getPriceListOrderTypeOrderType(Long priceListOrderTypeId)
 		throws Exception;
 

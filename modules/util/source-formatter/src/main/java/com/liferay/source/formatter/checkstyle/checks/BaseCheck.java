@@ -128,6 +128,30 @@ public abstract class BaseCheck extends AbstractCheck {
 			detailAST, recursive, tokenTypes);
 	}
 
+	protected DetailAST getAnnotationMemberValuePairDetailAST(
+		DetailAST annotationDetailAST, String key) {
+
+		List<DetailAST> annotationMemberValuePairDetailASTList =
+			getAllChildTokens(
+				annotationDetailAST, false,
+				TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR);
+
+		for (DetailAST annotationMemberValuePairDetailAST :
+				annotationMemberValuePairDetailASTList) {
+
+			DetailAST firstChildDetailAST =
+				annotationMemberValuePairDetailAST.getFirstChild();
+
+			if ((firstChildDetailAST.getType() == TokenTypes.IDENT) &&
+				Objects.equals(firstChildDetailAST.getText(), key)) {
+
+				return annotationMemberValuePairDetailAST;
+			}
+		}
+
+		return null;
+	}
+
 	protected String getAttributeValue(String attributeKey) {
 		return getAttributeValue(attributeKey, StringPool.BLANK);
 	}

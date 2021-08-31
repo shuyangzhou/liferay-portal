@@ -37,6 +37,8 @@ definition {
 
 			BlogsEntry.tearDownCP();
 
+			CommerceConfiguration.commerceInitializersTearDown();
+
 			Workflow.tearDownPortalWorkflow();
 
 			Workflow.tearDownSiteWorkflow();
@@ -48,12 +50,132 @@ definition {
 	}
 
 	@description = "LPS-135888 - Verify that the user with Account role type can Approve the task"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test AccountUserCanApproveTask {
+		property test.name.skip.portal.instance = "MyWorkflowTasks#AccountUserCanApproveTask";
 
-		// TODO LRQA-69107 AccountUserCanApproveTask pending implementation
+		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
+		ApplicationsMenu.gotoPortlet(
+			category = "Accounts",
+			panel = "Applications",
+			portlet = "Accounts");
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Test",
+			accountEntryType = "Business");
+
+		Refresh();
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "Test");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Test",
+			assigneeName = "userfn",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn_");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Assign Users",
+			rowEntry = "Account Administrator");
+
+		LexiconEntry.gotoAdd();
+
+		SelectFrame(
+			key_title = "Assign Users to Account Administrator",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Search.searchCP(searchTerm = "userfn");
+
+		Check(
+			key_tableEntry = "userfn",
+			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+
+		SelectFrameTop();
+
+		Button.click(button = "Assign");
+
+		Alert.viewSuccessMessage();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Store Management",
+			panel = "Commerce",
+			portlet = "Channels");
+
+		CommerceNavigator.gotoTableListEntry(entryName = "Minium Portal");
+
+		Select(
+			key_title = "Buyer Order Approval Workflow",
+			locator1 = "CommerceEntry#CATALOGS_FORM",
+			value1 = "Single Approver (Version 1)");
+
+		Button.clickSave();
+
+		ApplicationsMenu.gotoSite(site = "Minium");
+
+		FrontStore.addInitializerProductToCart(
+			productName = "U-Joint",
+			productQuantity = "1");
+
+		FrontStore.addInitializerProductToCart(
+			productName = "Transmission Cooler Line Assembly",
+			productQuantity = "1");
+
+		CommerceNavigator.gotoMiniCart();
+
+		Button.click(button = "Review Order");
+
+		Button.click(button = "Submit");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Instance Settings");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "User Authentication",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.uncheckStrangersVerifyEmailCheckbox();
+
+		Navigator.openURL();
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "userea@liferay.com",
+			userLoginFullName = "userfn userln");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Order",
+			workflowAssetType = "Commerce Order",
+			workflowTask = "Review");
+
+		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Approve");
+
+		Workflow.confirmWorkflowAction();
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Order Management",
+			panel = "Commerce",
+			portlet = "Orders");
+
+		AssertElementPresent(
+			key_status = "Approved",
+			locator1 = "CommerceEntry#WORKFLOW_STATUS");
 	}
 
 	@description = "LPS-135888 - Verify that the user with Account role can view the order details through the My Workflow Tasks page"
@@ -243,66 +365,270 @@ definition {
 	}
 
 	@description = "Verify that when there are no completed tasks Assigned to My Roles, the page is displaying -There are no completed tasks.-"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test AssignedToMyRolesShowsMessageWhenNoCompletedTasks {
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
-		// TODO LRQA-68831 AssignedToMyRolesShowsMessageWhenNoCompletedTasks pending implementation
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
 
+		Workflow.gotoCompletedFilter();
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no completed tasks.");
 	}
 
 	@description = "Verify that when there are no pending tasks Assigned to My Roles, the page is displaying -There are no pending tasks assigned to your roles.-"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test AssignedToMyRolesShowsMessageWhenNoPendingTasks {
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
-		// TODO LRQA-68832 AssignedToMyRolesShowsMessageWhenNoPendingTasks pending implementation
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
 
+		Workflow._gotoPendingFilter();
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no pending tasks assigned to your roles.");
 	}
 
 	@description = "Verify that the user can assign a task to current user in the Assigned to My Roles tab"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanAssignTaskToCurrentUser {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68842 CanAssignTaskToCurrentUser pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		AssertElementNotPresent(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Blogs Entry",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE");
+
+		Navigator.gotoNavTab(navTab = "Assigned to Me");
+
+		AssertElementPresent(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Blogs Entry",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE");
 	}
 
 	@description = "Verify that the user can assign a task to another user in the Assigned to My Roles tab"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanAssignTaskToOtherUser {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68843 CanAssignTaskToOtherUser pending implementation
+		JSONUser.addUser(
+			userEmailAddress = "usersn@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
 
+		JSONRole.assignRoleToUser(
+			roleTitle = "Administrator",
+			userEmailAddress = "usersn@liferay.com");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignByDetails(user = "usersn (userfn userln)");
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "usersn@liferay.com",
+			userLoginFullName = "userfn userln");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Workflow.viewTaskAssignedToMe(
+			workflowAssetTitle = "Blogs Entry Title",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
 	}
 
 	@description = "LPS-135888 - Verify that the task is assigned to the user with Account role type"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanAssignTaskToUserWithAccountRole {
+		property test.name.skip.portal.instance = "MyWorkflowTasks#CanAssignTaskToUserWithAccountRole";
 
-		// TODO LRQA-69106 CanAssignTaskToUserWithAccountRole pending implementation
+		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
+		ApplicationsMenu.gotoPortlet(
+			category = "Accounts",
+			panel = "Applications",
+			portlet = "Accounts");
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Test",
+			accountEntryType = "Business");
+
+		Refresh();
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "Test");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Test",
+			assigneeName = "userfn",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn_");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Assign Users",
+			rowEntry = "Account Administrator");
+
+		LexiconEntry.gotoAdd();
+
+		SelectFrame(
+			key_title = "Assign Users to Account Administrator",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Search.searchCP(searchTerm = "userfn");
+
+		Check(
+			key_tableEntry = "userfn",
+			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+
+		SelectFrameTop();
+
+		Button.click(button = "Assign");
+
+		Alert.viewSuccessMessage();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Store Management",
+			panel = "Commerce",
+			portlet = "Channels");
+
+		CommerceNavigator.gotoTableListEntry(entryName = "Minium Portal");
+
+		Select(
+			key_title = "Buyer Order Approval Workflow",
+			locator1 = "CommerceEntry#CATALOGS_FORM",
+			value1 = "Single Approver (Version 1)");
+
+		Button.clickSave();
+
+		ApplicationsMenu.gotoSite(site = "Minium");
+
+		FrontStore.addInitializerProductToCart(
+			productName = "U-Joint",
+			productQuantity = "1");
+
+		FrontStore.addInitializerProductToCart(
+			productName = "Transmission Cooler Line Assembly",
+			productQuantity = "1");
+
+		CommerceNavigator.gotoMiniCart();
+
+		Button.click(button = "Review Order");
+
+		AssertElementPresent(
+			key_status = "Draft",
+			locator1 = "CommerceEntry#WORKFLOW_STATUS");
+
+		Button.click(button = "Submit");
+
+		ApplicationsMenu.gotoSite(site = "Minium");
+
+		AssertElementPresent(
+			key_status = "Pending",
+			locator1 = "CommerceEntry#WORKFLOW_STATUS");
+
+		Navigator.openURL();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Order Management",
+			panel = "Commerce",
+			portlet = "Orders");
+
+		AssertElementPresent(
+			key_status = "Pending",
+			locator1 = "CommerceEntry#WORKFLOW_STATUS");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "User Authentication",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.uncheckStrangersVerifyEmailCheckbox();
+
+		Navigator.openURL();
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "userea@liferay.com",
+			userLoginFullName = "userfn userln");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Workflow.viewTaskAssignedToMyRoles(
+			workflowAssetTitle = "Order",
+			workflowAssetType = "Commerce Order",
+			workflowTask = "Review");
 	}
 
 	@description = "Verify that the user can view the Assigned to My Roles page in List View"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanChangeToListView {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68841 CanChangeToListView pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Click(
+			key_text = "table",
+			locator1 = "Icon#ANY");
+
+		Click(
+			key_selectOption = "List",
+			locator1 = "MyWorkflowTasks#DROPDOWN_MENU_OPTION");
+
+		AssertElementPresent(
+			key_text = "list",
+			locator1 = "Icon#ANY");
 	}
 
 	@description = "Verify that the Clear All option cleans the search results"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanClearAllSearchResults {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68856 CanClearAllSearchResults pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "@");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no tasks assigned to your roles with the specified search criteria.");
+
+		MyWorkflowTasks.clearSearchResultMyWorkflowTasks();
+
+		AssertElementPresent(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Blogs Entry",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE");
 	}
 
 	@description = "Verify that in Update Due Date modal, the user can expand the comment box"
@@ -315,66 +641,216 @@ definition {
 	}
 
 	@description = "Verify that the user can filter the results inside Assigned to Me by status"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanFilterAssignedtoMeTasksByAssetStatus {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 1");
 
-		// TODO LRQA-68847 CanFilterAssignedtoMeTasksByAssetStatus pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 2");
 
-	}
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
-	@description = "Verify that the user can filter the results inside Assigned to My Roles by status"
-	@ignore = "Test Stub"
-	@priority = "3"
-	test CanFilterAssignedToMyRolesTaskByAssetStatus {
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
 
-		// TODO LRQA-68838 CanFilterAssignedToMyRolesTaskByAssetStatus pending implementation
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 2",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
 
+		Workflow.approveTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Workflow._gotoPendingFilter();
+
+		Workflow.viewPendingTasks(
+			workflowAssetTitle = "Blogs Entry Title 2",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Workflow.gotoCompletedFilter();
+
+		Workflow.viewCompletedTask(
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
 	}
 
 	@description = "Verify that the user can open the task details by the table"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanOpenTaskDetailsByTable {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry");
 
-		// TODO LRQA-68859 CanOpenTaskDetailsByTable pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Click(
+			key_workflowAssetTitle = "Blogs Entry",
+			locator1 = "MyWorkflowTasks#TABLE_GENERIC_ASSET_TITLE");
+
+		AssertElementPresent(
+			key_titleValue = "Blogs Entry",
+			locator1 = "AssetWorkflow#ASSET_TITLE_HEADER");
 	}
 
 	@description = "Verify that the user can order the results inside Assigned to Me by Due Date"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanOrderAssignedtoMeTasksByDueDate {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 1");
 
-		// TODO LRQA-68849 CanOrderAssignedtoMeTasksByDueDate pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 2");
 
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.updateDueDateTaskByActions(
+			workflowAssetTitle = "Blogs Entry 2",
+			workflowAssetType = "Blogs Entry",
+			workflowDueDateTime = "1:45 PM",
+			workflowTask = "Review");
+
+		Workflow.updateDueDateTaskByActions(
+			workflowAssetTitle = "Blogs Entry 1",
+			workflowAssetType = "Blogs Entry",
+			workflowDueDateTime = "2:45 PM",
+			workflowTask = "Review");
+
+		Workflow.assignToMeTaskByDetails(
+			workflowAssetTitle = "Blogs Entry 1",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Workflow.assignToMeTaskByDetails(
+			workflowAssetTitle = "Blogs Entry 2",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Notifications.goToFilterValues(filterValues = "Due Date");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "2",
+			title = "Blogs Entry 1");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "1",
+			title = "Blogs Entry 2");
 	}
 
 	@description = "Verify that the user can order the results inside Assigned to Me by Last Activity Date"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanOrderAssignedtoMeTasksByLastActivityDate {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 1");
 
-		// TODO LRQA-68848 CanOrderAssignedtoMeTasksByLastActivityDate pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 2");
 
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry 1",
+			workflowAssetType = "BLogs Entry",
+			workflowTask = "Review");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry 2",
+			workflowAssetType = "BLogs Entry",
+			workflowTask = "Review");
+
+		Notifications.goToFilterValues(filterValues = "Last Activity Date");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "1",
+			title = "Blogs Entry 1");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "2",
+			title = "Blogs Entry 2");
 	}
 
 	@description = "Verify that the user can order the results inside Assigned to My Roles by Due Date"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanOrderAssignedtoMyRolesTasksByDueDate {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 1");
 
-		// TODO LRQA-68840 CanOrderAssignedtoMyRolesTasksByDueDate pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 2");
 
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.updateDueDateTaskByActions(
+			workflowAssetTitle = "Blogs Entry 2",
+			workflowAssetType = "Blogs Entry",
+			workflowDueDateTime = "1:45 PM",
+			workflowTask = "Review");
+
+		Workflow.updateDueDateTaskByActions(
+			workflowAssetTitle = "Blogs Entry 1",
+			workflowAssetType = "Blogs Entry",
+			workflowDueDateTime = "2:45 PM",
+			workflowTask = "Review");
+
+		Notifications.goToFilterValues(filterValues = "Due Date");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "1",
+			title = "Blogs Entry 2");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "2",
+			title = "Blogs Entry 1");
 	}
 
 	@description = "Verify that the user can order the results inside Assigned to My Roles by Last Activity Date"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanOrderAssignedtoMyRolesTasksByLastActivityDate {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 1");
 
-		// TODO LRQA-68839 CanOrderAssignedtoMyRolesTasksByLastActivityDate pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry 2");
 
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Notifications.goToFilterValues(filterValues = "Last Activity Date");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "1",
+			title = "Blogs Entry 1");
+
+		MyWorkflowTasks.viewMyWorkflowTaskItemPosition(
+			rowPosition = "2",
+			title = "Blogs Entry 2");
 	}
 
 	@description = "Verify that the user can assign a task to another user in the Assigned to Me tab"
@@ -387,129 +863,375 @@ definition {
 	}
 
 	@description = "Verify that the user is able to Reverse Sort Direction by clicking the icon"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanReverseSortDirection {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 1");
 
-		// TODO LRQA-68836 CanReverseSortDirection pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 2");
 
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.clickRevertSortDirection();
+
+		AssertTextEquals(
+			key_rowNumber = "2",
+			locator1 = "MyWorkflowTasks#PROCESS_NAME_TABLE_ROW",
+			value1 = "Blogs Entry Title 2");
 	}
 
 	@description = "Verify that the user can search for results inside Assigned to My Roles by Asset Title"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanSearchForAssetTitleOnAssignedToMyRolesTab {
+		property test.name.skip.portal.instance = "MyWorkflowTasks#CanSearchForAssetTitleOnAssignedToMyRolesTab";
 
-		// TODO LRQA-68835 CanSearchForAssetTitleOnAssignedToMyRolesTab pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "Blogs Entry Title");
+
+		AssertElementPresent(
+			key_resultBarMessage = "1 Results for Blogs Entry Title",
+			locator1 = "MyWorkflowTasks#MY_WORKFLOW_TASKS_SEARCH_RESULT_BAR");
 	}
 
 	@description = "Verify that the user can search for results inside Assigned to My Roles by Asset Type"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSearchForAssetTypeOnAssignedToMyRolesTab {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry");
 
-		// TODO LRQA-68834 CanSearchForAssetTypeOnAssignedToMyRolesTab pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "Blogs Entry");
+
+		AssertElementPresent(
+			key_resultBarMessage = "1 Results for Blogs Entry",
+			locator1 = "MyWorkflowTasks#MY_WORKFLOW_TASKS_SEARCH_RESULT_BAR");
 	}
 
 	@description = "Verify that the user can search for Task on Assigned to My Roles page"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanSearchForTaskOnAssignedToMyRolesTab {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68833 CanSearchForTaskOnAssignedToMyRolesTab pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "Review");
+
+		AssertElementPresent(
+			key_resultBarMessage = "1 Results for Review",
+			locator1 = "MyWorkflowTasks#MY_WORKFLOW_TASKS_SEARCH_RESULT_BAR");
 	}
 
 	@description = "Verify that the user can search for results inside Assigned to Me by Task"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSearchTasksAssignedToMe {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68845 CanSearchTasksAssignedToMe pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "Review");
+
+		AssertElementPresent(
+			key_resultBarMessage = "1 Results for Review",
+			locator1 = "MyWorkflowTasks#MY_WORKFLOW_TASKS_SEARCH_RESULT_BAR");
 	}
 
 	@description = "Verify that the user can search for results inside Assigned to Me by Asset Title"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSearchTasksAssignedtoMeByAssetTitle {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "New Blog Title");
 
-		// TODO LRQA-68846 CanSearchTasksAssignedtoMeByAssetTitle pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "New Blog Title");
+
+		AssertElementPresent(
+			key_resultBarMessage = "1 Results for New Blog Title",
+			locator1 = "MyWorkflowTasks#MY_WORKFLOW_TASKS_SEARCH_RESULT_BAR");
 	}
 
 	@description = "Verify that the user can search for results inside Assigned to Me by Asset Type"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSearchTasksAssignedtoMeByAssetType {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry");
 
-		// TODO LRQA-68879 CanSearchTasksAssignedtoMeByAssetType pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "Blogs Entry");
+
+		AssertElementPresent(
+			key_resultBarMessage = "1 Results for Blogs Entry",
+			locator1 = "MyWorkflowTasks#MY_WORKFLOW_TASKS_SEARCH_RESULT_BAR");
 	}
 
 	@description = "Verify that, in the Assigned to Me table, users can hover over the Last Activity Date and the Due Date row to see the exact time of the action"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanViewActivityTimeByHoveringAssignedToMeTable {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68857 CanViewActivityTimeByHoveringAssignedToMeTable pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		MouseOver(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Blogs Entry Title",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_LAST_ACTIVITY_DATE");
+
+		var displayDate = DateUtil.getFormattedCurrentDate("MM/DD/YY - HH:MM am");
+
+		BridgeDemos.viewDateFormat(
+			dateFormat = "MM/dd/yyyy",
+			displayDate = "${displayDate}");
 	}
 
 	@description = "Verify that, in the Assigned to My Roles table, users can hover over the Last Activity Date and the Due Date row to see the exact time of the action"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanViewActivityTimeByHoveringAssignedToMyRolesTable {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68858 CanViewActivityTimeByHoveringAssignedToMyRolesTable pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		MouseOver(
+			key_workflowAssetTitle = "Blogs Entry Title",
+			key_workflowTask = "Blogs Entry Title",
+			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_LAST_ACTIVITY_DATE");
+
+		var displayDate = DateUtil.getFormattedCurrentDate("MM/DD/YY - HH:MM am");
+
+		BridgeDemos.viewDateFormat(
+			dateFormat = "MM/dd/yyyy",
+			displayDate = "${displayDate}");
 	}
 
 	@description = "Verify that in Update Due Date, the due date is required"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test DueDateIsRequired {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 1");
 
-		// TODO LRQA-68861 DueDateIsRequired pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		MyWorkflowTasks.updateDueDateAtMyWorkflowTasks(
+			dueDate = "  ",
+			dueDateTime = "05:30 PM",
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowTask = "Review");
+
+		Alert.viewErrorMessage(errorMessage = "Please enter a valid due date.");
 	}
 
 	@description = "Verify that in Update Due Date modal, the user can not insert a past date"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test DueDateMustBeInFuture {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 1");
 
-		// TODO LRQA-68862 DueDateMustBeInFuture pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		MyWorkflowTasks.updateDueDateAtMyWorkflowTasks(
+			dueDate = "01/01/2010",
+			dueDateTime = "05:30 PM",
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowTask = "Review");
+
+		MyWorkflowTasks.viewErrorRequestFailed();
+
+		MyWorkflowTasks.viewErrorValidDueDate();
 	}
 
 	@description = "Verify that the pagination button indicates the selected page, even when there is only 1 page"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test PaginationButtonIndicatesSelectedPage {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68855 PaginationButtonIndicatesSelectedPage pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 2");
 
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 3");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 4");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 5");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		AssertElementPresent(
+			key_pageNumber = "1",
+			locator1 = "MyWorkflowTasks#COMPLETED_TABLE_PAGINATION");
 	}
 
 	@description = "Verify that pagination follows in asc/desc sequence in the Assigned to Me tab"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test PaginationFollowsAscDescSequence {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 1");
 
-		// TODO LRQA-68851 PaginationFollowsAscDescSequence pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 2");
 
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 3");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 4");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 5");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 2",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 3",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 4",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "Blogs Entry Title 5",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review");
+
+		AssertTextEquals(
+			key_rowNumber = "2",
+			locator1 = "MyWorkflowTasks#PROCESS_NAME_TABLE_ROW",
+			value1 = "Blogs Entry Title 1");
+
+		AssertTextEquals(
+			key_rowNumber = "3",
+			locator1 = "MyWorkflowTasks#PROCESS_NAME_TABLE_ROW",
+			value1 = "Blogs Entry Title 2");
+
+		AssertTextEquals(
+			key_rowNumber = "4",
+			locator1 = "MyWorkflowTasks#PROCESS_NAME_TABLE_ROW",
+			value1 = "Blogs Entry Title 3");
+
+		AssertTextEquals(
+			key_rowNumber = "5",
+			locator1 = "MyWorkflowTasks#PROCESS_NAME_TABLE_ROW",
+			value1 = "Blogs Entry Title 4");
+
+		AssertTextEquals(
+			key_rowNumber = "6",
+			locator1 = "MyWorkflowTasks#PROCESS_NAME_TABLE_ROW",
+			value1 = "Blogs Entry Title 5");
 	}
 
 	@description = "Verify that the pagination component is displayed when the table has 5 items or more"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test PaginationIsDisplayedWhenTableHas5Items {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
 
-		// TODO LRQA-68852 PaginationIsDisplayedWhenTableHas5Items pending implementation
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 2");
 
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 3");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 4");
+
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 5");
+
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		AssertElementPresent(locator1 = "Pagination#FIRST_LINK");
 	}
 
 	@priority = "4"
@@ -562,6 +1284,7 @@ definition {
 	@priority = "5"
 	test ResubmitTaskByDetails {
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "MyWorkflowTasks#ResubmitTaskByDetails";
 
 		Navigator.openURL();
 
@@ -802,21 +1525,63 @@ definition {
 	}
 
 	@description = "Verify that when there are no results for the search in Assigned to My Roles tab, the page displays the message -There are no tasks assigned to your roles with the specified search criteria-"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test ShowsMessageWhenSearchReturnsNoResults {
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
-		// TODO LRQA-68830 ShowsMessageWhenSearchReturnsNoResults pending implementation
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
 
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "12345");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no tasks assigned to your roles with the specified search criteria.");
 	}
 
 	@description = "Verify that when the user updates the due date of a task, the time until the due date shows in the table"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test TableShowsTimeLeft {
+		JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title 1");
 
-		// TODO LRQA-68863 TableShowsTimeLeft pending implementation
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
+		MyWorkflowTasks.updateDueDateMyWorkflowTasksFutureDate(
+			ddlDataDefinitionName = "Data Definition Name",
+			key_timePeriod = "day",
+			key_workflowAssetTitle = "Blogs Entry Title 1",
+			key_workflowTask = "Review",
+			workflowAssetType = "Blogs Entry");
+
+		MyWorkflowTasks.viewDueDateValue(
+			dueDateValue = "Within 23 Hours",
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowTask = "Blogs Entry");
+
+		MyWorkflowTasks.updateDueDateMyWorkflowTasksFutureDate(
+			ddlDataDefinitionName = "Data Definition Name",
+			key_timePeriod = "month",
+			key_workflowAssetTitle = "Blogs Entry Title 1",
+			key_workflowTask = "Review",
+			workflowAssetType = "Blogs Entry");
+
+		MyWorkflowTasks.viewDueDateValue(
+			dueDateValue = "Within 1 Month",
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowTask = "Blogs Entry");
+
+		MyWorkflowTasks.updateDueDateMyWorkflowTasksFutureDate(
+			ddlDataDefinitionName = "Data Definition Name",
+			key_timePeriod = "year",
+			key_workflowAssetTitle = "Blogs Entry Title 1",
+			key_workflowTask = "Review",
+			workflowAssetType = "Blogs Entry");
+
+		MyWorkflowTasks.viewDueDateValue(
+			dueDateValue = "Within 12 Months",
+			workflowAssetTitle = "Blogs Entry Title 1",
+			workflowTask = "Blogs Entry");
 	}
 
 	@description = "LPS-135888 - Verify that when the user delete the order, the task is not displayed under My Workflow Tasks"
@@ -854,12 +1619,15 @@ definition {
 	}
 
 	@description = "Verify that when there are no results for the search in Assigned to Me, the page is displaying -There are no tasks assigned to you with the specified search criteria.-"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test ViewMessageNoTasksAssignedToYouWithSearchCriteria {
+		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
-		// TODO LRQA-68844 ViewMessageNoTasksAssignedToYouWithSearchCriteria pending implementation
+		MyWorkflowTasks.searchMyWorkflowTasks(searchTerm = "54321");
 
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no tasks assigned to you with the specified search criteria.");
 	}
 
 }

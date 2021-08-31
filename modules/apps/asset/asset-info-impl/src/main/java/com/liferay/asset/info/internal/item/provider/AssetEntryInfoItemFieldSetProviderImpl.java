@@ -229,8 +229,8 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 		).infoFieldSetEntry(
 			_categoriesInfoField
 		).infoFieldSetEntry(
-			consumer -> assetVocabularies.forEach(
-				assetVocabulary -> consumer.accept(
+			unsafeConsumer -> assetVocabularies.forEach(
+				assetVocabulary -> unsafeConsumer.accept(
 					InfoField.builder(
 					).infoFieldType(
 						CategoriesInfoFieldType.INSTANCE

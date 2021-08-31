@@ -531,6 +531,13 @@
 			<property name="description" value="Checks for consistent naming for values of `mvc.command.name`." />
 			<message key="value.incorrect" value="Incorrect value ''{0}'' for ''mvc.command.name''" />
 		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.NestedFieldAnnotationCheck">
+			<property name="category" value="Bug Prevention" />
+			<property name="description" value="Verifies that `NestedFieldSupport.class` is used in `service` property of `Component` annotation" />
+			<property name="enabled" value="false" />
+			<message key="service.needed" value="''NestedFieldSupport.class'' is needed in ''service'' property of ''Component'' annotation, because at least one of methods has ''NestedField annotation" />
+			<message key="service.unneeded" value="No need to add ''NestedFieldSupport.class'' in ''service'' property of ''Component'' annotation, because no method has ''NestedField'' annotation" />
+		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.NestedIfStatementCheck">
 			<property name="category" value="Styling" />
 			<property name="description" value="Finds nested if statements that can be combined." />

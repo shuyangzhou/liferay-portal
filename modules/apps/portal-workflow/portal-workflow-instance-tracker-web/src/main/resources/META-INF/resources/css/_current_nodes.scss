@@ -1,4 +1,4 @@
-.current-step {
+.current-node {
 	align-items: center;
 	background: #fff;
 	border-radius: 4px;
@@ -18,13 +18,13 @@
 		width: 16px;
 	}
 
-	.current-step-link {
+	.current-node-link {
 		&:not(:first-child) {
 			margin-left: 0.5rem;
 		}
 	}
 
-	.current-step-text {
+	.current-node-text {
 		color: #6b6c7e;
 		margin-right: 0.5rem;
 	}

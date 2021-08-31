@@ -250,9 +250,9 @@ public class FileEntryInfoItemFormProvider
 			).infoFieldSetEntry(
 				_getFileInformationFieldSet()
 			).<NoSuchStructureException>infoFieldSetEntry(
-				consumer -> {
+				unsafeConsumer -> {
 					if (ddmStructureId != 0) {
-						consumer.accept(
+						unsafeConsumer.accept(
 							_getFileEntryTypeInfoFieldSet(
 								ddmStructureId, fileEntryTypeId));
 					}

@@ -17,12 +17,12 @@ import ClayIcon from '@clayui/icon';
 import React, {useState} from 'react';
 import {useStore, useZoomPanHelper} from 'react-flow-renderer';
 
-const MoreSteps = ({focusNode, steps}) => {
+const MoreNodes = ({focusNode, nodes}) => {
 	const [active, setActive] = useState(false);
 
-	const onClickFocus = (step) => () => {
+	const onClickFocus = (node) => () => {
 		setActive(false);
-		focusNode(step)();
+		focusNode(node)();
 	};
 
 	return (
@@ -31,15 +31,15 @@ const MoreSteps = ({focusNode, steps}) => {
 			alignmentPosition={7}
 			onActiveChange={setActive}
 			trigger={
-				<a className="current-step-link more-link">
+				<a className="current-node-link more-link">
 					{Liferay.Language.get('more').toLowerCase()}...
 				</a>
 			}
 		>
 			<ClayDropDown.ItemList>
-				{steps.map((step) => (
-					<ClayDropDown.Item key={step} onClick={onClickFocus(step)}>
-						{step}
+				{nodes.map((node) => (
+					<ClayDropDown.Item key={node} onClick={onClickFocus(node)}>
+						{node}
 					</ClayDropDown.Item>
 				))}
 			</ClayDropDown.ItemList>
@@ -47,17 +47,26 @@ const MoreSteps = ({focusNode, steps}) => {
 	);
 };
 
-export default function CurrentStep({steps = []}) {
+export default function CurrentNodes({nodesNames = []}) {
 	const store = useStore();
 	const {setCenter} = useZoomPanHelper();
 
-	if (!steps?.length) {
+	if (!nodesNames?.length) {
 		return null;
 	}
 
-	const focusNode = (step) => () => {
-		const {nodes} = store.getState();
-		const node = nodes.find(({id}) => id === step);
+	const {nodes} = store.getState();
+
+	const currentNodes = nodes.filter((node) => nodesNames.includes(node.id));
+
+	const nodesLabels = currentNodes.map(
+		(currentNode) => currentNode.data.label
+	);
+
+	const focusNode = (nodeLabel) => () => {
+		const node = currentNodes.find(
+			(currentNode) => currentNode.data.label === nodeLabel
+		);
 
 		if (node) {
 			const x = node.__rf.position.x + node.__rf.width / 2;
@@ -68,32 +77,32 @@ export default function CurrentStep({steps = []}) {
 		}
 	};
 
-	let firstSteps = steps;
-	let moreSteps = [];
+	let firstNodes = nodesLabels;
+	let moreNodes = [];
 
-	if (steps.length > 4) {
-		firstSteps = steps.slice(0, 3);
-		moreSteps = steps.slice(3);
+	if (nodesLabels.length > 4) {
+		firstNodes = nodesLabels.slice(0, 3);
+		moreNodes = nodesLabels.slice(3);
 	}
 
 	return (
-		<div className="current-step">
+		<div className="current-node">
 			<ClayIcon className="current-icon ml-2" symbol="live" />
-			<span className="current-step-text">
-				{Liferay.Language.get('current-step')}:
+			<span className="current-node-text">
+				{Liferay.Language.get('current-node')}:
 			</span>
-			{firstSteps.map((step, index) => (
+			{firstNodes.map((node, index) => (
 				<a
-					className="current-step-link"
-					key={step}
-					onClick={focusNode(step)}
+					className="current-node-link"
+					key={node}
+					onClick={focusNode(node)}
 				>
-					{step}
-					{index !== steps.length - 1 && ','}
+					{node}
+					{index !== nodes.length - 1 && ','}
 				</a>
 			))}
-			{!!moreSteps.length && (
-				<MoreSteps focusNode={focusNode} steps={moreSteps} />
+			{!!moreNodes.length && (
+				<MoreNodes focusNode={focusNode} nodes={moreNodes} />
 			)}
 		</div>
 	);

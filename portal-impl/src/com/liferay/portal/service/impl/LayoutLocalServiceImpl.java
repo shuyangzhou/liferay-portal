@@ -895,12 +895,12 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	 * Deletes the group's private or non-private layouts, also deleting the
 	 * layouts' child layouts, and associated resources.
 	 *
-	 * @param groupId the primary key of the group
-	 * @param privateLayout whether the layout is private to the group
-	 * @param serviceContext the service context to be applied. The parent
-	 *        layout set's page count will be updated by default, unless an
-	 *        attribute named <code>updatePageCount</code> is set to
-	 *        <code>false</code>.
+	 * @param  groupId the primary key of the group
+	 * @param  privateLayout whether the layout is private to the group
+	 * @param  serviceContext the service context to be applied. The parent
+	 *         layout set's page count will be updated by default, unless an
+	 *         attribute named <code>updatePageCount</code> is set to
+	 *         <code>false</code>.
 	 * @throws PortalException if a portal exception occurred
 	 */
 	@Override
@@ -910,8 +910,24 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		// Layouts
 
-		_deleteLayouts(groupId, privateLayout, false, serviceContext);
-		_deleteLayouts(groupId, privateLayout, true, serviceContext);
+		List<Layout> layouts = layoutPersistence.findByG_P_P(
+			groupId, privateLayout, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			new LayoutPriorityComparator(false));
+
+		for (Layout layout : layouts) {
+			try {
+				layoutLocalService.deleteLayout(layout, serviceContext);
+			}
+			catch (NoSuchLayoutException noSuchLayoutException) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(noSuchLayoutException, noSuchLayoutException);
+				}
+			}
+		}
 
 		// Counter
 
@@ -3529,31 +3545,6 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		queryConfig.setScoreEnabled(false);
 
 		return searchContext;
-	}
-
-	private void _deleteLayouts(
-			long groupId, boolean privateLayout, boolean system,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		List<Layout> layouts = layoutPersistence.findByG_P_P_S(
-			groupId, privateLayout, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
-			system, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new LayoutPriorityComparator(false));
-
-		for (Layout layout : layouts) {
-			try {
-				layoutLocalService.deleteLayout(layout, serviceContext);
-			}
-			catch (NoSuchLayoutException noSuchLayoutException) {
-
-				// LPS-52675
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(noSuchLayoutException, noSuchLayoutException);
-				}
-			}
-		}
 	}
 
 	private String _generateFriendlyURLUUID() {

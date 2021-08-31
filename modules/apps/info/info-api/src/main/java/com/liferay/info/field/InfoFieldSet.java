@@ -180,10 +180,10 @@ public class InfoFieldSet implements InfoFieldSetEntry {
 
 		public <T extends Throwable> Builder infoFieldSetEntry(
 				UnsafeConsumer<UnsafeConsumer<InfoFieldSetEntry, T>, T>
-					consumer)
+					unsafeConsumer)
 			throws T {
 
-			consumer.accept(this::infoFieldSetEntry);
+			unsafeConsumer.accept(this::infoFieldSetEntry);
 
 			return this;
 		}

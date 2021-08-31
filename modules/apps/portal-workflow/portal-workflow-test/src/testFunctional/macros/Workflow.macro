@@ -1029,10 +1029,6 @@ definition {
 			workflowAssetTitle = "${workflowAssetTitle}",
 			workflowAssetType = "${workflowAssetType}",
 			workflowTask = "${workflowTask}");
-
-		AssertTextEquals.assertPartialText(
-			locator1 = "MyWorkflowTasks#ASSIGNED_TO_MY_ROLES_TABLE_DUE_DATE",
-			value1 = "Within");
 	}
 
 	macro uploadDefinition {

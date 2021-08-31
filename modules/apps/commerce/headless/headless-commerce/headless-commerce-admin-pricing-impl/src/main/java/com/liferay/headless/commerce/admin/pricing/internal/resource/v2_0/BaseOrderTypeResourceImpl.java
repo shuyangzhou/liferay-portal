@@ -76,6 +76,29 @@ public abstract class BaseOrderTypeResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discount-order-types/{discountOrderTypeId}/order-type'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "discountOrderTypeId")
+		}
+	)
+	@Path("/discount-order-types/{discountOrderTypeId}/order-type")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "OrderType")})
+	public OrderType getDiscountOrderTypeOrderType(
+			@NotNull @Parameter(hidden = true) @PathParam("discountOrderTypeId")
+				Long discountOrderTypeId)
+		throws Exception {
+
+		return new OrderType();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-list-order-types/{priceListOrderTypeId}/order-type'  -u 'test@liferay.com:test'
 	 */
 	@GET

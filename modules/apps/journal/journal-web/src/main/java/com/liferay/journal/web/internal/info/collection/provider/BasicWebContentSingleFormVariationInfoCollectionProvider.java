@@ -83,11 +83,11 @@ public class BasicWebContentSingleFormVariationInfoCollectionProvider
 	public InfoPage<JournalArticle> getCollectionInfoPage(
 		CollectionQuery collectionQuery) {
 
-		Indexer<?> indexer = JournalSearcher.getInstance();
-
-		SearchContext searchContext = _buildSearchContext(collectionQuery);
-
 		try {
+			Indexer<?> indexer = JournalSearcher.getInstance();
+
+			SearchContext searchContext = _buildSearchContext(collectionQuery);
+
 			Hits hits = indexer.search(searchContext);
 
 			List<JournalArticle> articles = new ArrayList<>();
@@ -219,6 +219,12 @@ public class BasicWebContentSingleFormVariationInfoCollectionProvider
 					sort.getFieldName(),
 					com.liferay.portal.kernel.search.Sort.LONG_TYPE,
 					sort.isReverse()));
+		}
+		else {
+			searchContext.setSorts(
+				new com.liferay.portal.kernel.search.Sort(
+					Field.MODIFIED_DATE,
+					com.liferay.portal.kernel.search.Sort.LONG_TYPE, true));
 		}
 
 		searchContext.setStart(pagination.getStart());

@@ -24,10 +24,10 @@ import {
 	isVisited,
 	nodeTypes,
 } from '../util/util';
-import CurrentStep from './CurrentStep';
+import CurrentNodes from './CurrentNodes';
 
 export default function WorkflowInstanceTracker({workflowInstanceId}) {
-	const [currentSteps, setCurrentSteps] = useState([]);
+	const [currentNodes, setCurrentNodes] = useState([]);
 	const [nodes, setNodes] = useState([]);
 	const [transitions, setTransitions] = useState([]);
 	const [visitedNodes, setVisitedNodes] = useState([]);
@@ -60,7 +60,7 @@ export default function WorkflowInstanceTracker({workflowInstanceId}) {
 
 	useEffect(() => {
 		if (data.length) {
-			setCurrentSteps(data[0].state.toLowerCase());
+			setCurrentNodes(data[0].currentNodeNames);
 			const visitedNodes = data[1].items.map((item) => item.state);
 
 			setVisitedNodes(visitedNodes);
@@ -78,7 +78,7 @@ export default function WorkflowInstanceTracker({workflowInstanceId}) {
 			const nodes = nodeElements.map((node) => {
 				return {
 					data: {
-						current: isCurrent(currentSteps, node),
+						current: isCurrent(currentNodes, node),
 						done: isVisited(visitedNodes, node),
 						initial: node.type == 'INITIAL_STATE',
 						label: node.label,
@@ -128,7 +128,7 @@ export default function WorkflowInstanceTracker({workflowInstanceId}) {
 
 					<Controls showInteractive={false} />
 
-					<CurrentStep steps={[currentSteps]} />
+					<CurrentNodes nodesNames={currentNodes} />
 				</ReactFlowProvider>
 			)}
 		</div>

@@ -271,9 +271,9 @@ public class InfoDisplayContributorWrapper
 
 		InfoForm.Builder infoFormBuilder = InfoForm.builder(
 		).infoFieldSetEntry(
-			consumer -> {
+			unsafeConsumer -> {
 				for (InfoDisplayField infoDisplayField : infoDisplayFields) {
-					consumer.accept(
+					unsafeConsumer.accept(
 						InfoField.builder(
 						).infoFieldType(
 							_getInfoFieldTypeType(infoDisplayField.getType())
@@ -317,7 +317,7 @@ public class InfoDisplayContributorWrapper
 		InfoItemFieldValues.Builder infoItemFieldValuesBuilder =
 			InfoItemFieldValues.builder(
 			).infoFieldValue(
-				consumer -> {
+				unsafeConsumer -> {
 					for (Map.Entry<String, Object> entry :
 							infoDisplayFieldsValues.entrySet()) {
 
@@ -338,7 +338,7 @@ public class InfoDisplayContributorWrapper
 							fieldLabelLocalizedValue
 						).build();
 
-						consumer.accept(
+						unsafeConsumer.accept(
 							new InfoFieldValue<>(infoField, entry.getValue()));
 					}
 				}

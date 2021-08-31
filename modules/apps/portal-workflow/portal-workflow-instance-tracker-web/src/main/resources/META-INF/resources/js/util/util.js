@@ -161,8 +161,8 @@ const getNodeType = (type) => {
 	}
 };
 
-const isCurrent = (currentSteps = [], node) => {
-	return currentSteps.includes(node.name);
+const isCurrent = (currentNodes = [], node) => {
+	return currentNodes.includes(node.name);
 };
 
 const isVisited = (visitedNodes = [], node) => {

@@ -16,24 +16,32 @@ import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
-import CurrentStep from '../../src/main/resources/META-INF/resources/js/components/CurrentStep';
+import CurrentNodes from '../../src/main/resources/META-INF/resources/js/components/CurrentNodes';
 
 jest.mock('react-flow-renderer', () => ({
 	useStore: () => ({
-		getNodes: () => [],
+		getState: () => ({
+			nodes: [
+				{data: {label: 'Create'}, id: 'create'},
+				{data: {label: 'Review'}, id: 'review'},
+				{data: {label: 'Update'}, id: 'update'},
+				{data: {label: 'Forward'}, id: 'forward'},
+				{data: {label: 'Finish'}, id: 'finish'},
+			],
+		}),
 	}),
 	useZoomPanHelper: () => ({
 		setCenter: jest.fn(),
 	}),
 }));
 
-describe('The CurrentStep component should', () => {
+describe('The CurrentNodes component should', () => {
 	let container, getByText;
 
 	beforeAll(() => {
 		const result = render(
-			<CurrentStep
-				steps={['create', 'review', 'update', 'forward', 'finish']}
+			<CurrentNodes
+				nodesNames={['create', 'review', 'update', 'forward', 'finish']}
 			/>
 		);
 
@@ -41,21 +49,21 @@ describe('The CurrentStep component should', () => {
 		getByText = result.getByText;
 	});
 
-	it('Be rendered with steps and showing "more..." option', () => {
-		expect(container.querySelector('.current-step')).toBeTruthy();
+	it('Be rendered with nodes and showing "more..." option', () => {
+		expect(container.querySelector('.current-node')).toBeTruthy();
 		expect(
-			container.querySelector('.current-step-link.more-link')
+			container.querySelector('.current-node-link.more-link')
 		).toBeTruthy();
 	});
 
 	it('Be rendered dropdown options', () => {
 		const moreOption = container.querySelector(
-			'.current-step-link.more-link'
+			'.current-node-link.more-link'
 		);
 		const dropdownMenuShow = '.dropdown-menu.show';
 
-		expect(getByText('forward')).toBeTruthy();
-		expect(getByText('finish')).toBeTruthy();
+		expect(getByText('Forward')).toBeTruthy();
+		expect(getByText('Finish')).toBeTruthy();
 
 		expect(document.querySelector(dropdownMenuShow)).toBeNull();
 

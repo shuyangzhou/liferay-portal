@@ -15,6 +15,7 @@ import groovy.io.FileVisitResult
 
 import groovy.json.JsonSlurper
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 
 import java.util.jar.Attributes
@@ -42,10 +43,10 @@ import org.eclipse.jgit.treewalk.filter.PathFilter
 import org.gradle.StartParameter
 import org.gradle.api.Transformer
 import org.gradle.api.internal.BuildDefinition
+import org.gradle.composite.internal.RootOfNestedBuildTree
 import org.gradle.internal.build.BuildState
 import org.gradle.internal.build.BuildStateRegistry
 import org.gradle.internal.build.PublicBuildPath
-import org.gradle.internal.build.StandAloneNestedBuild
 import org.gradle.internal.invocation.BuildController
 import org.gradle.util.GUtil
 import org.gradle.util.VersionNumber
@@ -88,6 +89,7 @@ task prepareMajorIncrement
 task prepareMajorIncrementAppProperties
 task syncAppProperties
 task syncGitRepoReleases
+task syncPortalLanguageKeys
 task tagAppReleases
 
 buildFixPackChangeLog {
@@ -979,6 +981,127 @@ syncGitRepoReleases {
 	group = "releng"
 }
 
+syncPortalLanguageKeys {
+	doLast {
+		FileTree languagePropertiesFileTree = fileTree(dir: projectDir, excludes: ["apps/archived", "apps/portal-language"], includes: ["apps/**/src/main/resources/content/Language*.properties", "apps/**/src/WEB-INF/src/content/Language*.properties", "dxp/**/src/main/resources/content/Language*.properties", "dxp/**/src/WEB-INF/src/content/Language*.properties"])
+		FileTree portalLanguagePropertiesFileTree = fileTree(dir: projectDir, includes: ["apps/portal-language/portal-language-lang/src/main/resources/content/Language*.properties"])
+
+		Set<File> languagePropertiesFiles = languagePropertiesFileTree.getFiles().sort()
+		Set<File> portalLanguagePropertiesFiles = portalLanguagePropertiesFileTree.getFiles().sort()
+
+		Map<String, Set<String>> moduleMap = new TreeMap<String, Set<String>>()
+
+		Properties portalImplRootLanguageProperties = new Properties()
+
+		new InputStreamReader(new FileInputStream(new File(projectDir, "../portal-impl/src/content/Language.properties")), StandardCharsets.UTF_8).withReader {
+			portalImplRootLanguageProperties.load(it)
+		}
+
+		portalLanguagePropertiesFiles.each {
+			File portalLanguagePropertiesFile ->
+
+			Properties portalLanguageProperties = new Properties()
+
+			new InputStreamReader(new FileInputStream(portalLanguagePropertiesFile), StandardCharsets.UTF_8).withReader {
+				portalLanguageProperties.load(it)
+			}
+
+			boolean updatedPortalLanguageProperties = false
+
+			languagePropertiesFiles.each {
+				File languagePropertiesFile ->
+
+				if (languagePropertiesFile.name == portalLanguagePropertiesFile.name) {
+					Properties languageProperties = new Properties()
+
+					new InputStreamReader(new FileInputStream(languagePropertiesFile), StandardCharsets.UTF_8).withReader {
+						languageProperties.load(it)
+					}
+
+					Properties rootLanguageProperties = new Properties()
+
+					new InputStreamReader(new FileInputStream(new File(languagePropertiesFile.parentFile, "Language.properties")), StandardCharsets.UTF_8).withReader {
+						rootLanguageProperties.load(it)
+					}
+
+					List<String> languageKeys = []
+
+					languageProperties.each {
+						String key, String value ->
+
+						if (portalImplRootLanguageProperties.containsKey(key)) {
+							if (rootLanguageProperties.containsKey(key) && (portalImplRootLanguageProperties.getProperty(key) != rootLanguageProperties.getProperty(key))) {
+								String relativePath = FileUtil.relativize(languagePropertiesFile.parentFile.parentFile.parentFile.parentFile.parentFile, projectDir)
+
+								moduleMap.put(relativePath, moduleMap.containsKey(relativePath) ? moduleMap.get(relativePath).plus(key) : [key])
+
+								languageKeys.add(key + '=' + value.replace("\n", "\\n"))
+							}
+						}
+						else if (!portalLanguageProperties.containsKey(key)) {
+							updatedPortalLanguageProperties = true
+
+							portalLanguageProperties.setProperty key, value.replace("\n", "\\n")
+						}
+						else if (portalLanguageProperties.getProperty(key) != value) {
+							if (!rootLanguageProperties.containsKey(key)) {
+								String portalLanguageValue = portalLanguageProperties.getProperty(key)
+
+								if (portalLanguageValue.endsWith("(Automatic Copy)") || portalLanguageValue.endsWith("(Automatic Translation)")) {
+									if ((!value.endsWith("(Automatic Copy)") && !value.endsWith("(Automatic Translation)")) || (portalLanguageValue.endsWith("(Automatic Copy)") && value.endsWith("(Automatic Translation)"))) {
+										updatedPortalLanguageProperties = true
+
+										portalLanguageProperties.setProperty key, value.replace("\n", "\\n")
+									}
+								}
+							}
+							else {
+								String relativePath = FileUtil.relativize(languagePropertiesFile.parentFile.parentFile.parentFile.parentFile.parentFile, projectDir)
+
+								moduleMap.put(relativePath, moduleMap.containsKey(relativePath) ? moduleMap.get(relativePath).plus(key) : [key])
+
+								languageKeys.add(key + '=' + value.replace("\n", "\\n"))
+							}
+						}
+					}
+
+					languagePropertiesFile.setText languageKeys.sort().join("\n"), "UTF-8"
+				}
+			}
+
+			if (updatedPortalLanguageProperties) {
+				List<String> portalLanguageKeys = []
+
+				for (String key : portalLanguageProperties.stringPropertyNames()) {
+					portalLanguageKeys.add(key + '=' + portalLanguageProperties.getProperty(key).replace("\n", "\\n"))
+				}
+
+				portalLanguagePropertiesFile.setText portalLanguageKeys.sort().join("\n"), "UTF-8"
+
+				logger.lifecycle "Updated {}", FileUtil.relativize(portalLanguagePropertiesFile, projectDir)
+			}
+		}
+
+		moduleMap.each {
+			logger.lifecycle "Conflicting keys in {}: {}", it.key, it.value.unique().sort().join(", ")
+		}
+
+		StartParameter startParameter = gradle.startParameter.newBuild()
+
+		startParameter.currentDir = new File(projectDir, "apps/portal-language/portal-language-lang")
+		startParameter.projectProperties = ["formatLocalChanges": "true"]
+		startParameter.taskNames = ["formatSource"]
+
+		_executeGradle(startParameter, true)
+	}
+
+	group = "releng"
+
+	outputs.upToDateWhen {
+		false
+	}
+}
+
 tagAppReleases {
 	description = "Gathers the Git IDs from all app change logs and tags them as 'marketplace-appName-appVersion'."
 
@@ -1337,7 +1460,7 @@ private boolean _executeGradle(StartParameter startParameter, boolean rethrowExc
 	BuildDefinition buildDefinition = BuildDefinition.fromStartParameter(startParameter, gradle.services.get(PublicBuildPath))
 	BuildStateRegistry buildStateRegistry = gradle.services.get(BuildStateRegistry)
 
-	StandAloneNestedBuild standAloneNestedBuild = buildStateRegistry.addNestedBuildTree(buildDefinition, gradle.services.get(BuildState))
+	RootOfNestedBuildTree rootOfNestedBuildTree = buildStateRegistry.addNestedBuildTree(buildDefinition, gradle.services.get(BuildState), null)
 
 	Transformer<Void, BuildController> transformer = new Transformer<Void, BuildController>() {
 
@@ -1351,7 +1474,7 @@ private boolean _executeGradle(StartParameter startParameter, boolean rethrowExc
 	}
 
 	try {
-		standAloneNestedBuild.run(transformer)
+		rootOfNestedBuildTree.run(transformer)
 
 		return true
 	}

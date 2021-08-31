@@ -74,7 +74,8 @@ public class CommercePriceListsImporter {
 		String currencyCode = jsonObject.getString("currencyCode");
 
 		if (Validator.isNull(currencyCode)) {
-			//We should throw that they must have currencyCode
+
+			// TODO Throw an exception
 
 			return;
 		}
@@ -98,7 +99,8 @@ public class CommercePriceListsImporter {
 		String name = jsonObject.getString("name");
 
 		if (Validator.isBlank(name)) {
-			//We should throw that the must have name
+
+			// TODO Throw an exception
 
 			return;
 		}
@@ -202,6 +204,7 @@ public class CommercePriceListsImporter {
 					if (commercePriceListCommerceAccountGroupRel == null) {
 						_commercePriceListCommerceAccountGroupRelLocalService.
 							addCommercePriceListCommerceAccountGroupRel(
+								serviceContext.getUserId(),
 								commercePriceList.getCommercePriceListId(),
 								commerceAccountGroup.
 									getCommerceAccountGroupId(),

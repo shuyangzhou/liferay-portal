@@ -12,21 +12,22 @@
  * details.
  */
 
-package com.liferay.bookmarks.internal.util;
+package com.liferay.commerce.discount.model.impl;
 
-import com.liferay.portal.kernel.resource.bundle.ClassResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
+import com.liferay.commerce.discount.model.CommerceDiscount;
+import com.liferay.commerce.discount.service.CommerceDiscountLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Adolfo Pérez
+ * @author Marco Leo
  */
-public class BookmarksResourceBundleLoader extends ClassResourceBundleLoader {
+public class CommerceDiscountOrderTypeRelImpl
+	extends CommerceDiscountOrderTypeRelBaseImpl {
 
-	public static final ResourceBundleLoader INSTANCE =
-		new BookmarksResourceBundleLoader();
-
-	protected BookmarksResourceBundleLoader() {
-		super("content.Language", BookmarksResourceBundleLoader.class);
+	@Override
+	public CommerceDiscount getCommerceDiscount() throws PortalException {
+		return CommerceDiscountLocalServiceUtil.getCommerceDiscount(
+			getCommerceDiscountId());
 	}
 
 }

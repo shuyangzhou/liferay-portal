@@ -20,6 +20,7 @@ import com.liferay.headless.admin.list.type.internal.dto.v1_0.util.ListTypeEntry
 import com.liferay.headless.admin.list.type.resource.v1_0.ListTypeEntryResource;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.portal.vulcan.fields.NestedField;
+import com.liferay.portal.vulcan.fields.NestedFieldSupport;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
@@ -33,9 +34,11 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/list-type-entry.properties",
-	scope = ServiceScope.PROTOTYPE, service = ListTypeEntryResource.class
+	scope = ServiceScope.PROTOTYPE,
+	service = {ListTypeEntryResource.class, NestedFieldSupport.class}
 )
-public class ListTypeEntryResourceImpl extends BaseListTypeEntryResourceImpl {
+public class ListTypeEntryResourceImpl
+	extends BaseListTypeEntryResourceImpl implements NestedFieldSupport {
 
 	@NestedField(
 		parentClass = ListTypeDefinition.class, value = "listTypeEntries"

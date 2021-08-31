@@ -20,6 +20,7 @@ import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectFieldUtil;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectFieldResource;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.portal.vulcan.fields.NestedField;
+import com.liferay.portal.vulcan.fields.NestedFieldSupport;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
@@ -32,9 +33,11 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/object-field.properties",
-	scope = ServiceScope.PROTOTYPE, service = ObjectFieldResource.class
+	scope = ServiceScope.PROTOTYPE,
+	service = {NestedFieldSupport.class, ObjectFieldResource.class}
 )
-public class ObjectFieldResourceImpl extends BaseObjectFieldResourceImpl {
+public class ObjectFieldResourceImpl
+	extends BaseObjectFieldResourceImpl implements NestedFieldSupport {
 
 	@NestedField(parentClass = ObjectDefinition.class, value = "objectFields")
 	@Override

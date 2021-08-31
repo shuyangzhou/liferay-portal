@@ -141,9 +141,9 @@ public class ObjectEntryInfoItemFormProvider
 		).infoFieldSetEntry(
 			_getBasicInformationInfoFieldSet()
 		).<NoSuchFormVariationException>infoFieldSetEntry(
-			consumer -> {
+			unsafeConsumer -> {
 				if (objectDefinitionId != 0) {
-					consumer.accept(
+					unsafeConsumer.accept(
 						_getObjectDefinitionInfoFieldSet(objectDefinitionId));
 				}
 			}
@@ -183,12 +183,12 @@ public class ObjectEntryInfoItemFormProvider
 
 		return InfoFieldSet.builder(
 		).infoFieldSetEntry(
-			consumer -> {
+			unsafeConsumer -> {
 				for (ObjectField objectField :
 						_objectFieldLocalService.getObjectFields(
 							objectDefinitionId)) {
 
-					consumer.accept(
+					unsafeConsumer.accept(
 						InfoField.builder(
 						).infoFieldType(
 							TextInfoFieldType.INSTANCE

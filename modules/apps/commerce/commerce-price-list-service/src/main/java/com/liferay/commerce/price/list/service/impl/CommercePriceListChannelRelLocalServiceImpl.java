@@ -35,11 +35,11 @@ public class CommercePriceListChannelRelLocalServiceImpl
 
 	@Override
 	public CommercePriceListChannelRel addCommercePriceListChannelRel(
-			long commercePriceListId, long commerceChannelId, int order,
-			ServiceContext serviceContext)
+			long userId, long commercePriceListId, long commerceChannelId,
+			int order, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userLocalService.getUser(serviceContext.getUserId());
+		User user = userLocalService.getUser(userId);
 
 		CommercePriceListChannelRel commercePriceListChannelRel =
 			commercePriceListChannelRelPersistence.create(
@@ -53,17 +53,16 @@ public class CommercePriceListChannelRelLocalServiceImpl
 		commercePriceListChannelRel.setOrder(order);
 		commercePriceListChannelRel.setExpandoBridgeAttributes(serviceContext);
 
-		// Commerce price list
+		commercePriceListChannelRel =
+			commercePriceListChannelRelPersistence.update(
+				commercePriceListChannelRel);
 
 		reindexCommercePriceList(commercePriceListId);
-
-		// Cache
 
 		commercePriceListLocalService.cleanPriceListCache(
 			serviceContext.getCompanyId());
 
-		return commercePriceListChannelRelPersistence.update(
-			commercePriceListChannelRel);
+		return commercePriceListChannelRel;
 	}
 
 	@Override
@@ -74,12 +73,11 @@ public class CommercePriceListChannelRelLocalServiceImpl
 		commercePriceListChannelRelPersistence.remove(
 			commercePriceListChannelRel);
 
-		// Commerce price list
+		expandoRowLocalService.deleteRows(
+			commercePriceListChannelRel.getCommercePriceListChannelRelId());
 
 		reindexCommercePriceList(
 			commercePriceListChannelRel.getCommercePriceListId());
-
-		// Cache
 
 		commercePriceListLocalService.cleanPriceListCache(
 			commercePriceListChannelRel.getCompanyId());
@@ -120,7 +118,7 @@ public class CommercePriceListChannelRelLocalServiceImpl
 	public CommercePriceListChannelRel fetchCommercePriceListChannelRel(
 		long commerceChannelId, long commercePriceListId) {
 
-		return commercePriceListChannelRelPersistence.fetchByC_C(
+		return commercePriceListChannelRelPersistence.fetchByCCI_CPI(
 			commerceChannelId, commercePriceListId);
 	}
 

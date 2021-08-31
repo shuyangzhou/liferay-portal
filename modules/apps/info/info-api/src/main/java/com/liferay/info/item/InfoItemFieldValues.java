@@ -163,10 +163,10 @@ public class InfoItemFieldValues {
 
 		public <T extends Throwable> Builder infoFieldValue(
 				UnsafeConsumer<UnsafeConsumer<InfoFieldValue<Object>, T>, T>
-					consumer)
+					unsafeConsumer)
 			throws T {
 
-			consumer.accept(this::infoFieldValue);
+			unsafeConsumer.accept(this::infoFieldValue);
 
 			return this;
 		}

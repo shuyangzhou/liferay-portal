@@ -141,8 +141,9 @@ public class XLIFFInfoFormTranslationImporter
 
 		return InfoItemFieldValues.builder(
 		).<XLIFFFileException>infoFieldValue(
-			consumer -> _produceInfoFieldValuesXLIFFv12(
-				consumer, events, sourceLocale, targetLocale, includeSource)
+			unsafeConsumer -> _produceInfoFieldValuesXLIFFv12(
+				unsafeConsumer, events, sourceLocale, targetLocale,
+				includeSource)
 		).infoItemReference(
 			infoItemReference
 		).build();
@@ -168,8 +169,8 @@ public class XLIFFInfoFormTranslationImporter
 
 		return InfoItemFieldValues.builder(
 		).<XLIFFFileException>infoFieldValue(
-			consumer -> _produceInfoFieldValuesXLIFFv20(
-				consumer, xliffDocument, sourceLocale, targetLocale,
+			unsafeConsumer -> _produceInfoFieldValuesXLIFFv20(
+				unsafeConsumer, xliffDocument, sourceLocale, targetLocale,
 				includeSource)
 		).infoItemReference(
 			infoItemReference
@@ -301,7 +302,8 @@ public class XLIFFInfoFormTranslationImporter
 	}
 
 	private void _produceInfoFieldValuesXLIFFv12(
-			UnsafeConsumer<InfoFieldValue<Object>, XLIFFFileException> consumer,
+			UnsafeConsumer<InfoFieldValue<Object>, XLIFFFileException>
+				unsafeConsumer,
 			List<Event> events, Locale sourceLocale, Locale targetLocale,
 			boolean includeSource)
 		throws XLIFFFileException {
@@ -324,7 +326,7 @@ public class XLIFFInfoFormTranslationImporter
 				TextFragment targetTextFragment =
 					targetTextContainer.getFirstContent();
 
-				consumer.accept(
+				unsafeConsumer.accept(
 					new InfoFieldValue<>(
 						_createInfoField(targetLocale, iTextUnit.getId()),
 						InfoLocalizedValue.builder(
@@ -347,7 +349,8 @@ public class XLIFFInfoFormTranslationImporter
 	}
 
 	private void _produceInfoFieldValuesXLIFFv20(
-			UnsafeConsumer<InfoFieldValue<Object>, XLIFFFileException> consumer,
+			UnsafeConsumer<InfoFieldValue<Object>, XLIFFFileException>
+				unsafeConsumer,
 			XLIFFDocument xliffDocument, Locale sourceLocale,
 			Locale targetLocale, boolean includeSource)
 		throws XLIFFFileException {
@@ -367,7 +370,7 @@ public class XLIFFInfoFormTranslationImporter
 					"There is no translation target");
 			}
 
-			consumer.accept(
+			unsafeConsumer.accept(
 				new InfoFieldValue<>(
 					_createInfoField(targetLocale, unit.getId()),
 					InfoLocalizedValue.builder(

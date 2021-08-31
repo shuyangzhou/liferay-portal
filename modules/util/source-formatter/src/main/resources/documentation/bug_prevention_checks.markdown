@@ -131,6 +131,7 @@ LogParametersCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates th
 MissingDiamondOperatorCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks for missing diamond operator for types that require diamond operator. |
 MissingModifierCheck | .java | Verifies that a method or global variable has a modifier specified. |
 MissingOverrideCheck | .java | Verifies that a method that overrides a method in a superclass has the @Override annotation. |
+NestedFieldAnnotationCheck | .java | Verifies that `NestedFieldSupport.class` is used in `service` property of `Component` annotation |
 NewFileCheck | | Finds new files in directories that should not have added files. |
 PackageinfoBNDExportPackageCheck | packageinfo | Finds legacy `packageinfo` files. |
 PersistenceCallCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds illegal persistence calls across component boundaries. |

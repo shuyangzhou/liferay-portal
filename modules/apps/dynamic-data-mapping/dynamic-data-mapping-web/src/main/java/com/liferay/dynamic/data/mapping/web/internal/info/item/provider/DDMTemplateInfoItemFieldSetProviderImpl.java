@@ -52,7 +52,7 @@ public class DDMTemplateInfoItemFieldSetProviderImpl
 
 			return InfoFieldSet.builder(
 			).infoFieldSetEntry(
-				consumer -> {
+				unsafeConsumer -> {
 					List<DDMTemplate> ddmTemplates =
 						ddmStructure.getTemplates();
 
@@ -71,7 +71,7 @@ public class DDMTemplateInfoItemFieldSetProviderImpl
 								getClass(), ddmTemplate.getName(locale))
 						).build()
 					).forEach(
-						consumer::accept
+						unsafeConsumer::accept
 					);
 				}
 			).labelInfoLocalizedValue(

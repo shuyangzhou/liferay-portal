@@ -35,11 +35,11 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceImpl
 	@Override
 	public CommerceDiscountCommerceAccountGroupRel
 			addCommerceDiscountCommerceAccountGroupRel(
-				long commerceDiscountId, long commerceAccountGroupId,
-				ServiceContext serviceContext)
+				long userId, long commerceDiscountId,
+				long commerceAccountGroupId, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userLocalService.getUser(serviceContext.getUserId());
+		User user = userLocalService.getUser(userId);
 
 		long commerceDiscountCommerceAccountGroupRelId =
 			counterLocalService.increment();
@@ -62,8 +62,6 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceImpl
 			commerceDiscountCommerceAccountGroupRelPersistence.update(
 				commerceDiscountCommerceAccountGroupRel);
 
-		// Commerce discount
-
 		reindexCommerceDiscount(commerceDiscountId);
 
 		return commerceDiscountCommerceAccountGroupRel;
@@ -79,7 +77,9 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceImpl
 		commerceDiscountCommerceAccountGroupRelPersistence.remove(
 			commerceDiscountCommerceAccountGroupRel);
 
-		// Commerce discount
+		expandoRowLocalService.deleteRows(
+			commerceDiscountCommerceAccountGroupRel.
+				getCommerceDiscountCommerceAccountGroupRelId());
 
 		reindexCommerceDiscount(
 			commerceDiscountCommerceAccountGroupRel.getCommerceDiscountId());
@@ -142,8 +142,8 @@ public class CommerceDiscountCommerceAccountGroupRelLocalServiceImpl
 		fetchCommerceDiscountCommerceAccountGroupRel(
 			long commerceDiscountId, long commerceAccountGroupId) {
 
-		return commerceDiscountCommerceAccountGroupRelPersistence.fetchByC_C(
-			commerceDiscountId, commerceAccountGroupId);
+		return commerceDiscountCommerceAccountGroupRelPersistence.
+			fetchByCDI_CAGI(commerceDiscountId, commerceAccountGroupId);
 	}
 
 	@Override
