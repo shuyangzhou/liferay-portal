@@ -8,6 +8,26 @@ definition {
 				value1 = "${workspaceName}");
 		}
 
+		if (isSet(timezone)) {
+			Select(
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_FIELD",
+				value1 = "${timezone}");
+
+			Select(
+				locator1 = "Select#SELECT_ID",
+				selectFieldId = "timeZoneId",
+				value1 = "${timezoneId}");
+		}
+
+		Click(
+			key_text = "Add Incident Report Contacts",
+			locator1 = "TextInput#ANY");
+
+		KeyPress(
+			key_text = "Add Incident Report Contacts",
+			locator1 = "TextInput#ANY",
+			value1 = "\BACK_SPACE");
+
 		Type(
 			key_text = "Add Incident Report Contacts",
 			locator1 = "TextInput#ANY",
@@ -70,6 +90,17 @@ definition {
 				key_text = "Workspace Name",
 				locator1 = "TextInput#ANY",
 				value1 = "${workspaceName}");
+		}
+
+		if (isSet(timezone)) {
+			AssertSelectedLabel(
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_FIELD",
+				value1 = "${timezone}");
+
+			AssertSelectedLabel(
+				locator1 = "Select#SELECT_ID",
+				selectFieldId = "timeZoneId",
+				value1 = "${timezoneId}");
 		}
 	}
 

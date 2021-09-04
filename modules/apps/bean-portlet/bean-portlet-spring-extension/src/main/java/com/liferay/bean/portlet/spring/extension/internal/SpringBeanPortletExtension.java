@@ -334,11 +334,22 @@ public class SpringBeanPortletExtension {
 			if (beanPortletMethodType == BeanPortletMethodType.ACTION) {
 				ActionRequest actionRequest = (ActionRequest)portletRequest;
 
-				ActionParameters actionParameters =
-					actionRequest.getActionParameters();
+				String actionName = null;
 
-				String actionName = actionParameters.getValue(
-					ActionRequest.ACTION_NAME);
+				PortletContext portletContext =
+					portletConfig.getPortletContext();
+
+				if (portletContext.getEffectiveMajorVersion() >= 3) {
+					ActionParameters actionParameters =
+						actionRequest.getActionParameters();
+
+					actionName = actionParameters.getValue(
+						ActionRequest.ACTION_NAME);
+				}
+				else {
+					actionName = actionRequest.getParameter(
+						ActionRequest.ACTION_NAME);
+				}
 
 				String beanMethodActionName = beanPortletMethod.getActionName();
 

@@ -46,4 +46,264 @@ definition {
 		}
 	}
 
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9149 | Test Summary: Information banner should no longer be shown after being dismissed by a user"
+	@priority = "5"
+	test CannotViewInformationBannerAfterDismissedByUser {
+		task ("Navigate to Workspace Settings") {
+			ACNavigation.goToSettings();
+
+			ACSettings.goToWorkspace();
+		}
+
+		task ("Change the timezone to Log Angeles of United States") {
+			ACWorkspace.configureWorkspaceSettings(
+				timezone = "United States",
+				timezoneId = "UTC-07:00 Pacific Time (America/Los Angeles)");
+
+			ACUtils.waitForLoading();
+		}
+
+		task ("Refresh the page") {
+			Refresh();
+		}
+
+		task ("View the information banner") {
+			ACUtils.viewAlertInfo(infoMessage = "Workspace timezone has changed to UTC-07:00 Pacific Time");
+		}
+
+		task ("Dismiss the information banner") {
+			Click(locator1 = "Icon#TIMES");
+		}
+
+		task ("View the information banner disappear") {
+			AssertElementNotPresent(locator1 = "Message#ALERT_DISMISSIBLE");
+		}
+
+		task ("Refresh the page") {
+			Refresh();
+		}
+
+		task ("View the information banner still disappear") {
+			WaitForVisible(
+				key_title = "Workspace Settings",
+				locator1 = "Header#H3_TITLE");
+
+			AssertElementNotPresent(locator1 = "Message#ALERT_DISMISSIBLE");
+		}
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9147 | Test Summary: Set the timezone in workspace settings"
+	@priority = "5"
+	test SetTimeZoneInExistingWorkspace {
+		task ("Navigate to Workspace Settings") {
+			ACNavigation.goToSettings();
+
+			ACSettings.goToWorkspace();
+		}
+
+		task ("View the timezone is UTC") {
+			ACWorkspace.viewWorkspaceSettings(
+				timezone = "UTC",
+				timezoneId = "UTC Coordinated Universal Time (UTC)");
+		}
+
+		task ("Change the timezone to Log Angeles of United States") {
+			ACWorkspace.configureWorkspaceSettings(
+				timezone = "United States",
+				timezoneId = "UTC-07:00 Pacific Time (America/Los Angeles)");
+
+			ACUtils.waitForLoading();
+		}
+
+		task ("Refresh the page") {
+			Refresh();
+		}
+
+		task ("View the information banner") {
+			ACUtils.viewAlertInfo(infoMessage = "Workspace timezone has changed to UTC-07:00 Pacific Time");
+		}
+
+		task ("View the timezone in workspace settings") {
+			ACWorkspace.viewWorkspaceSettings(
+				timezone = "United States",
+				timezoneId = "UTC-07:00 Pacific Time (America/Los Angeles)");
+		}
+
+		task ("Navigate to the Sites dashboard") {
+			ACNavigation.exitSettings();
+
+			ACNavigation.goToSites();
+		}
+
+		task ("View the information banner") {
+			ACUtils.viewAlertInfo(infoMessage = "Workspace timezone has changed to UTC-07:00 Pacific Time");
+		}
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9146 | Test Summary: Timezones are sorted in an increasing fashion"
+	@priority = "1"
+	test ViewAvailableTimezonesSortedByAscendingAlphabetic {
+		task ("Navigate to Workspace Settings") {
+			ACNavigation.goToSettings();
+
+			ACSettings.goToWorkspace();
+		}
+
+		task ("View the available timezones are sorted by ascending alphabetic") {
+			AssertElementPresent(
+				index = "2",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Afghanistan");
+
+			AssertElementPresent(
+				index = "12",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Bahamas");
+
+			AssertElementPresent(
+				index = "22",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Cabo Verde");
+
+			AssertElementPresent(
+				index = "36",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Denmark");
+
+			AssertElementPresent(
+				index = "38",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Ecuador");
+
+			AssertElementPresent(
+				index = "43",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Fiji");
+
+			AssertElementPresent(
+				index = "49",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Georgia");
+
+			AssertElementPresent(
+				index = "58",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Haiti");
+
+			AssertElementPresent(
+				index = "61",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Iceland");
+
+			AssertElementPresent(
+				index = "68",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Jamaica");
+
+			AssertElementPresent(
+				index = "71",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Kazakhstan");
+
+			AssertElementPresent(
+				index = "75",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Latvia");
+
+			AssertElementPresent(
+				index = "81",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Malaysia");
+
+			AssertElementPresent(
+				index = "96",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Namibia");
+
+			AssertElementPresent(
+				index = "107",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Pakistan");
+
+			AssertElementPresent(
+				index = "117",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Qatar");
+
+			AssertElementPresent(
+				index = "118",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Romania");
+
+			AssertElementPresent(
+				index = "120",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Samoa");
+
+			AssertElementPresent(
+				index = "135",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Taiwan");
+
+			AssertElementPresent(
+				index = "148",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Ukraine");
+
+			AssertElementPresent(
+				index = "154",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Vanuatu");
+
+			AssertElementPresent(
+				index = "157",
+				locator1 = "ACWorkspace#TIMEZONE_COUNTRY_SELECT_OPTION",
+				option = "Wallis & Futuna");
+		}
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9150 | Test Summary: Information banners should not be stacked after changing a time zone"
+	@priority = "5"
+	test ViewOnlyOneInformationBannerShownAfterChangeTimezone {
+		task ("Navigate to Workspace Settings") {
+			ACNavigation.goToSettings();
+
+			ACSettings.goToWorkspace();
+		}
+
+		task ("Change the timezone to Log Angeles of United States") {
+			ACWorkspace.configureWorkspaceSettings(
+				timezone = "United States",
+				timezoneId = "UTC-07:00 Pacific Time (America/Los Angeles)");
+
+			ACUtils.waitForLoading();
+		}
+
+		task ("Refresh the page") {
+			Refresh();
+		}
+
+		task ("View the information banner") {
+			ACUtils.viewAlertInfo(infoMessage = "Workspace timezone has changed to UTC-07:00 Pacific Time");
+		}
+
+		task ("Change the timezone to Shanghai of China") {
+			ACWorkspace.configureWorkspaceSettings(
+				timezone = "China",
+				timezoneId = "UTC+08:00 China Time (Asia/Shanghai)");
+
+			ACUtils.waitForLoading();
+		}
+
+		task ("Refresh the page") {
+			Refresh();
+		}
+
+		task ("View only one information banner shown") {
+			ACUtils.viewAlertInfo(infoMessage = "Workspace timezone has changed to UTC+08:00 China Time");
+
+			AssertElementNotPresent(locator1 = "Message#INFO_2");
+		}
+	}
+
 }
