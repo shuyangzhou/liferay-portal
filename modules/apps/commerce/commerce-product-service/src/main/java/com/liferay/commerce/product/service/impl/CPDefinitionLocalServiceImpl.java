@@ -803,11 +803,6 @@ public class CPDefinitionLocalServiceImpl
 			cProductLocalService.deleteCProduct(cpDefinition.getCProductId());
 		}
 
-		// Commerce product definition localization
-
-		cpDefinitionLocalizationPersistence.removeByCPDefinitionId(
-			cpDefinition.getCPDefinitionId());
-
 		// Commerce product definition specification option values
 
 		cpDefinitionSpecificationOptionValueLocalService.
@@ -1187,7 +1182,8 @@ public class CPDefinitionLocalServiceImpl
 	}
 
 	@Override
-	public CPAttachmentFileEntry getDefaultImage(long cpDefinitionId)
+	public CPAttachmentFileEntry getDefaultImageCPAttachmentFileEntry(
+			long cpDefinitionId)
 		throws PortalException {
 
 		long classNameId = classNameLocalService.getClassNameId(

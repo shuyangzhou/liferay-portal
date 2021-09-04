@@ -10,22 +10,10 @@ definition {
 
 	setUp {
 		ACUtils.launchAC();
-
-		ACSettings.takeTokenFromAnalyticsCloud();
-
-		TestCase.setUpPortalInstance();
-
-		ACUtils.launchDXP();
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
-
-		ACUtils.tearDownDXP();
-
-		if ("${testPortalInstance}" == "true") {
-			PortalInstances.tearDownCP();
-		}
 
 		ACUtils.tearDownAC();
 	}
@@ -76,12 +64,31 @@ definition {
 	}
 
 	@description = "Automation ID: LRAC-9055 | Test Summary: View list of all users"
-	@ignore = "true"
 	@priority = "3"
 	test ViewAllUserList {
+		var emailAdress = "user1@liferay.com,user2@liferay.com,user3@liferay.com";
 
-		// TODO LRAC-9055 ViewAllUserList
+		task ("Go to settings and go to user management") {
+			ACNavigation.goToSettings();
 
+			ACSettings.goToUserManagement();
+		}
+
+		task ("Add multiples users, go to data sources and go back to user management") {
+			ACSettings.addMultiplesOptions(optionsList = "${emailAdress}");
+
+			ACSettings.goToDataSources();
+
+			ACSettings.goToUserManagement();
+		}
+
+		task ("Assert the users in the list") {
+			for (var user : list "${emailAdress}") {
+				ACUtils.searchBar(searchItem = "${user}");
+
+				ACSettings.assertUserListEmail(userEmail = "${user}");
+			}
+		}
 	}
 
 	@description = "Automation ID: LRAC-9049 | Test Summary: Owner cannot be edited or removed"

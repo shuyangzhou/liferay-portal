@@ -231,6 +231,13 @@ definition {
 		Click(locator1 = "ACUtils#CLEAR_SEARCH_BAR_BUTTON");
 	}
 
+	macro clickAnyButton {
+		var buttonName = "${button}";
+		Click(
+			key_buttonName = "${buttonName}",
+			locator1 = "ACUtils#GENERIC_BUTTON");
+	}
+
 	macro clickKebab {
 		Click(locator1 = "ACSegments#SEGMENT_ELLIPSIS");
 	}
@@ -569,8 +576,6 @@ definition {
 	}
 
 	macro waitForLoading {
-		WaitForVisible(locator1 = "ACUtils#LOADING_ANIMATION");
-
 		WaitForElementNotPresent(locator1 = "ACUtils#LOADING_ANIMATION");
 	}
 

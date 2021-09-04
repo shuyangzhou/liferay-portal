@@ -426,6 +426,38 @@ definition {
 			orgType = "Organization");
 	}
 
+	macro addStyleBook {
+		task ("Add a style book") {
+			StyleBooksAdmin.openStyleBooksAdmin(siteURLKey = "test-site-name");
+
+			StyleBooksAdmin.addStyleBooks(styleBookName = "Test Style Book Name 2");
+		}
+
+		task ("Define the Font Family") {
+			var fontFamily = '''"Courier New"''';
+
+			StyleBooks.selectForm(formName = "Typography");
+
+			StyleBooks.expandSection(sectionName = "Font Family");
+
+			PortletEntry.inputText(
+				fieldLabel = "Font Family Base",
+				text = "${fontFamily}");
+
+			StyleBooks.waitForAutoSave();
+		}
+
+		task ("Publish the style book") {
+			StyleBooks.clickPublish();
+		}
+
+		task ("Assert the Style Books") {
+			StyleBooksAdmin.viewStyleBooksPresent(styleBookName = "Test Style Book Name");
+
+			StyleBooksAdmin.viewStyleBooksPresent(styleBookName = "Test Style Book Name 2");
+		}
+	}
+
 	macro addUserAndSuborganization {
 		JSONOrganization.addOrganization(organizationName = "Organization2");
 
@@ -2884,6 +2916,25 @@ definition {
 		ProductMenuHelper.closeProductMenu();
 
 		CalendarEvent.view(eventTitle = "Post Upgrade Calendar Event");
+	}
+
+	macro viewCardWithThreeColumnsInMobileBreakpoint {
+		task ("Select Mobile Device in simulation menu") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Content Page Name",
+				siteName = "Test Site Name");
+
+			MobileDevice.previewPG(deviceType = "smartphone");
+		}
+		task ("View Card fragment width is same as column width at mobile mode") {
+			var columnWidth	= selenium.getElementWidth("//div[contains(@class,'flex-row')]");
+
+			var cardFragmentWidth = selenium.getElementWidth("xpath=(//div[contains(@class,'col-md')])[2]");
+
+			TestUtils.assertEquals(
+				actual = "${cardFragmentWidth}",
+				expected = "${columnWidth}");
+		}
 	}
 
 	macro viewClassicSearchPortletConfiguration {

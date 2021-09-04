@@ -64,6 +64,8 @@ definition {
 			}
 		}
 
+		WaitForElementNotPresent(locator1 = "ACSettings#LOADING_ANIMATION");
+
 		WaitForElementNotPresent(
 			key_text = "Done",
 			locator1 = "Button#ANY_DISABLED");
@@ -91,13 +93,13 @@ definition {
 		Click(locator1 = "ACSettings#KEYWORD_SEND_BUTTON");
 	}
 
-	macro addMultiplesKeywords {
+	macro addMultiplesOptions {
 		Click(locator1 = "ACSettings#KEYWORD_BUTTON");
 
-		for (var keyword : list "${keywordList}") {
+		for (var option : list "${optionsList}") {
 			Type(
 				locator1 = "ACSettings#KEYWORD_TEXTFIELD",
-				value1 = "${keyword}");
+				value1 = "${option}");
 
 			KeyPress(
 				locator1 = "ACSettings#KEYWORD_TEXTFIELD",
@@ -141,9 +143,15 @@ definition {
 	macro addUser {
 		Click(locator1 = "ACSettings#INVITE_USERS_BUTTON");
 
-		Type(
-			locator1 = "ACSettings#INVITE_USERS_INPUT",
-			value1 = "${userInvite}");
+		for (var keyword : list "${userInvite}") {
+			Type(
+				locator1 = "ACSettings#KEYWORD_TEXTFIELD",
+				value1 = "${userInvite}");
+
+			KeyPress(
+				locator1 = "ACSettings#KEYWORD_TEXTFIELD",
+				value1 = "\ENTER");
+		}
 
 		Click(locator1 = "ACSettings#KEYWORD_SEND_BUTTON");
 	}
@@ -294,6 +302,12 @@ definition {
 
 	macro assertUserListEmail {
 		AssertTextEquals(
+			locator1 = "ACSettings#USER_LIST_EMAIL",
+			value1 = "${userEmail}");
+	}
+
+	macro assertUserNotPresent {
+		AssertTextNotEquals(
 			locator1 = "ACSettings#USER_LIST_EMAIL",
 			value1 = "${userEmail}");
 	}
@@ -618,6 +632,10 @@ definition {
 		Click(locator1 = "ACSettings#DXP_DATA_SOURCE_OPTION");
 
 		Copy(locator1 = "ACSettings#TOKEN_INPUT_FIELD");
+	}
+
+	macro verifyCannotAddUser {
+		AssertElementNotPresent(locator1 = "ACSettings#INVITE_USERS_BUTTON");
 	}
 
 }

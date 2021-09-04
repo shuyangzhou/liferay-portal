@@ -16,6 +16,8 @@ package com.liferay.site.initializer.extender.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
+import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.dynamic.data.mapping.constants.DDMTemplateConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
@@ -24,10 +26,16 @@ import com.liferay.dynamic.data.mapping.util.DefaultDDMStructureHelper;
 import com.liferay.fragment.importer.FragmentsImporter;
 import com.liferay.headless.admin.taxonomy.dto.v1_0.TaxonomyVocabulary;
 import com.liferay.headless.admin.taxonomy.resource.v1_0.TaxonomyVocabularyResource;
+import com.liferay.headless.delivery.dto.v1_0.Document;
 import com.liferay.headless.delivery.dto.v1_0.DocumentFolder;
+import com.liferay.headless.delivery.dto.v1_0.StructuredContentFolder;
 import com.liferay.headless.delivery.resource.v1_0.DocumentFolderResource;
 import com.liferay.headless.delivery.resource.v1_0.DocumentResource;
+import com.liferay.headless.delivery.resource.v1_0.StructuredContentFolderResource;
+import com.liferay.journal.constants.JournalArticleConstants;
+import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.petra.string.StringPool;
@@ -39,11 +47,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -63,6 +73,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -85,12 +96,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 		Bundle bundle, DDMStructureLocalService ddmStructureLocalService,
 		DDMTemplateLocalService ddmTemplateLocalService,
 		DefaultDDMStructureHelper defaultDDMStructureHelper,
+		DLURLHelper dlURLHelper,
 		DocumentFolderResource.Factory documentFolderResourceFactory,
 		DocumentResource.Factory documentResourceFactory,
 		FragmentsImporter fragmentsImporter,
-		GroupLocalService groupLocalService, JSONFactory jsonFactory,
+		GroupLocalService groupLocalService,
+		JournalArticleLocalService journalArticleLocalService,
+		JSONFactory jsonFactory,
 		ObjectDefinitionResource.Factory objectDefinitionResourceFactory,
 		Portal portal, ServletContext servletContext,
+		StructuredContentFolderResource.Factory
+			structuredContentFolderResourceFactory,
 		StyleBookEntryZipProcessor styleBookEntryZipProcessor,
 		TaxonomyVocabularyResource.Factory taxonomyVocabularyResourceFactory,
 		UserLocalService userLocalService) {
@@ -99,14 +115,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_ddmStructureLocalService = ddmStructureLocalService;
 		_ddmTemplateLocalService = ddmTemplateLocalService;
 		_defaultDDMStructureHelper = defaultDDMStructureHelper;
+		_dlURLHelper = dlURLHelper;
 		_documentFolderResourceFactory = documentFolderResourceFactory;
 		_documentResourceFactory = documentResourceFactory;
 		_fragmentsImporter = fragmentsImporter;
 		_groupLocalService = groupLocalService;
+		_journalArticleLocalService = journalArticleLocalService;
 		_jsonFactory = jsonFactory;
 		_objectDefinitionResourceFactory = objectDefinitionResourceFactory;
 		_portal = portal;
 		_servletContext = servletContext;
+		_structuredContentFolderResourceFactory =
+			structuredContentFolderResourceFactory;
 		_styleBookEntryZipProcessor = styleBookEntryZipProcessor;
 		_taxonomyVocabularyResourceFactory = taxonomyVocabularyResourceFactory;
 		_userLocalService = userLocalService;
@@ -156,10 +176,14 @@ public class BundleSiteInitializer implements SiteInitializer {
 				}
 			};
 
+			Map<String, String> documentsStringUtilReplaceValues =
+				_addDocuments(serviceContext);
+
 			_addDDMStructures(serviceContext);
 			_addDDMTemplates(serviceContext);
-			_addDocuments(serviceContext);
 			_addFragmentEntries(serviceContext);
+			_addJournalArticles(
+				documentsStringUtilReplaceValues, serviceContext);
 			_addObjectDefinitions(serviceContext);
 			_addStyleBookEntries(serviceContext);
 			_addTaxonomyVocabularies(serviceContext);
@@ -202,27 +226,26 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return;
 		}
 
-		long resourceClassNameId = _portal.getClassNameId(JournalArticle.class);
-
 		while (enumeration.hasMoreElements()) {
 			URL url = enumeration.nextElement();
 
-			JSONObject ddmTemplateJSONObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 				StringUtil.read(url.openStream()));
 
 			DDMStructure ddmStructure =
 				_ddmStructureLocalService.fetchStructure(
-					serviceContext.getScopeGroupId(), resourceClassNameId,
-					ddmTemplateJSONObject.getString("ddmStructureKey"));
+					serviceContext.getScopeGroupId(),
+					_portal.getClassNameId(JournalArticle.class),
+					jsonObject.getString("ddmStructureKey"));
 
 			_ddmTemplateLocalService.addTemplate(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
 				_portal.getClassNameId(DDMStructure.class),
-				ddmStructure.getStructureId(), resourceClassNameId,
-				ddmTemplateJSONObject.getString("ddmTemplateKey"),
+				ddmStructure.getStructureId(),
+				_portal.getClassNameId(JournalArticle.class),
+				jsonObject.getString("ddmTemplateKey"),
 				HashMapBuilder.put(
-					LocaleUtil.getSiteDefault(),
-					ddmTemplateJSONObject.getString("name")
+					LocaleUtil.getSiteDefault(), jsonObject.getString("name")
 				).build(),
 				null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
 				TemplateConstants.LANG_TYPE_FTL, _read("ddm-template.ftl", url),
@@ -272,16 +295,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 		return documentFolder.getId();
 	}
 
-	private void _addDocuments(
+	private Map<String, String> _addDocuments(
 			Long documentFolderId, String parentResourcePath,
 			ServiceContext serviceContext)
 		throws Exception {
+
+		Map<String, String> documentsStringUtilReplaceValues = new HashMap<>();
 
 		Set<String> resourcePaths = _servletContext.getResourcePaths(
 			parentResourcePath);
 
 		if (SetUtil.isEmpty(resourcePaths)) {
-			return;
+			return documentsStringUtilReplaceValues;
 		}
 
 		DocumentResource.Builder documentResourceBuilder =
@@ -293,10 +318,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		for (String resourcePath : resourcePaths) {
 			if (resourcePath.endsWith("/")) {
-				_addDocuments(
-					_addDocumentFolder(
-						documentFolderId, resourcePath, serviceContext),
-					resourcePath, serviceContext);
+				documentsStringUtilReplaceValues.putAll(
+					_addDocuments(
+						_addDocumentFolder(
+							documentFolderId, resourcePath, serviceContext),
+						resourcePath, serviceContext));
 
 				continue;
 			}
@@ -332,7 +358,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 						__ -> _objectMapper, values));
 			}
 			else {
-				documentResource.postSiteDocument(
+				Document document = documentResource.postSiteDocument(
 					serviceContext.getScopeGroupId(),
 					MultipartBody.of(
 						Collections.singletonMap(
@@ -342,12 +368,39 @@ public class BundleSiteInitializer implements SiteInitializer {
 								fileName, urlConnection.getInputStream(),
 								urlConnection.getContentLength())),
 						__ -> _objectMapper, values));
+
+				// TODO File name must include its parent folder names. Use a
+				// shortened version of the resource path.
+
+				String key = fileName;
+
+				FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(
+					document.getId());
+
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+					JSONFactoryUtil.looseSerialize(fileEntry));
+
+				jsonObject.put("alt", StringPool.BLANK);
+
+				documentsStringUtilReplaceValues.put(
+					"DOCUMENT_JSON:" + key, jsonObject.toString());
+
+				documentsStringUtilReplaceValues.put(
+					"DOCUMENT_URL:" + key,
+					_dlURLHelper.getPreviewURL(
+						fileEntry, fileEntry.getFileVersion(), null,
+						StringPool.BLANK, false, false));
 			}
 		}
+
+		return documentsStringUtilReplaceValues;
 	}
 
-	private void _addDocuments(ServiceContext serviceContext) throws Exception {
-		_addDocuments(null, "/site-initializer/documents", serviceContext);
+	private Map<String, String> _addDocuments(ServiceContext serviceContext)
+		throws Exception {
+
+		return _addDocuments(
+			null, "/site-initializer/documents", serviceContext);
 	}
 
 	private void _addFragmentEntries(ServiceContext serviceContext)
@@ -362,6 +415,92 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_fragmentsImporter.importFragmentEntries(
 			serviceContext.getUserId(), serviceContext.getScopeGroupId(), 0,
 			FileUtil.createTempFile(url.openStream()), false);
+	}
+
+	private void _addJournalArticles(
+			Long documentFolderId,
+			Map<String, String> documentsStringUtilReplaceValues,
+			String parentResourcePath, ServiceContext serviceContext)
+		throws Exception {
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			parentResourcePath);
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return;
+		}
+
+		for (String resourcePath : resourcePaths) {
+			parentResourcePath = resourcePath.substring(
+				0, resourcePath.length() - 1);
+
+			if (resourcePath.endsWith("/") &&
+				resourcePaths.contains(parentResourcePath + "._si.json")) {
+
+				_addJournalArticles(
+					_addStructuredContentFolders(
+						documentFolderId, parentResourcePath, serviceContext),
+					documentsStringUtilReplaceValues, resourcePath,
+					serviceContext);
+
+				continue;
+			}
+
+			if (resourcePath.endsWith("._si.json") ||
+				resourcePath.endsWith(".xml") || resourcePath.endsWith("/")) {
+
+				continue;
+			}
+
+			long journalFolderId =
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+
+			if (documentFolderId != null) {
+				journalFolderId = documentFolderId;
+			}
+
+			String json = _read(resourcePath);
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+
+			Map<Locale, String> titleMap = Collections.singletonMap(
+				LocaleUtil.getSiteDefault(), jsonObject.getString("name"));
+
+			Calendar calendar = CalendarFactoryUtil.getCalendar(
+				serviceContext.getTimeZone());
+
+			serviceContext.setAssetTagNames(
+				JSONUtil.toStringArray(jsonObject.getJSONArray("tags")));
+
+			_journalArticleLocalService.addArticle(
+				null, serviceContext.getUserId(),
+				serviceContext.getScopeGroupId(), journalFolderId,
+				JournalArticleConstants.CLASS_NAME_ID_DEFAULT, 0,
+				jsonObject.getString("articleId"), false, 1, titleMap, null,
+				titleMap,
+				StringUtil.replace(
+					_read(StringUtil.replace(resourcePath, ".json", ".xml")),
+					"[$", "$]", documentsStringUtilReplaceValues),
+				jsonObject.getString("ddmStructureKey"),
+				jsonObject.getString("ddmTemplateKey"), null,
+				calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DAY_OF_MONTH),
+				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
+				calendar.get(Calendar.MINUTE), 0, 0, 0, 0, 0, true, 0, 0, 0, 0,
+				0, true, true, false, null, null, null, null, serviceContext);
+
+			serviceContext.setAssetTagNames(null);
+		}
+	}
+
+	private void _addJournalArticles(
+			Map<String, String> documentsStringUtilReplaceValues,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		_addJournalArticles(
+			null, documentsStringUtilReplaceValues,
+			"/site-initializer/journal-articles", serviceContext);
 	}
 
 	private void _addObjectDefinitions(ServiceContext serviceContext)
@@ -408,6 +547,40 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 			}
 		}
+	}
+
+	private Long _addStructuredContentFolders(
+			Long documentFolderId, String parentResourcePath,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		StructuredContentFolderResource.Builder
+			structuredContentFolderResourceBuilder =
+				_structuredContentFolderResourceFactory.create();
+
+		StructuredContentFolderResource structuredContentFolderResource =
+			structuredContentFolderResourceBuilder.user(
+				serviceContext.fetchUser()
+			).build();
+
+		String json = _read(parentResourcePath + "._si.json");
+
+		StructuredContentFolder structuredContentFolder =
+			StructuredContentFolder.toDTO(json);
+
+		if (documentFolderId != null) {
+			structuredContentFolder =
+				structuredContentFolderResource.
+					postStructuredContentFolderStructuredContentFolder(
+						documentFolderId, structuredContentFolder);
+		}
+		else {
+			structuredContentFolder =
+				structuredContentFolderResource.postSiteStructuredContentFolder(
+					serviceContext.getScopeGroupId(), structuredContentFolder);
+		}
+
+		return structuredContentFolder.getId();
 	}
 
 	private void _addStyleBookEntries(ServiceContext serviceContext)
@@ -508,15 +681,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final DDMStructureLocalService _ddmStructureLocalService;
 	private final DDMTemplateLocalService _ddmTemplateLocalService;
 	private final DefaultDDMStructureHelper _defaultDDMStructureHelper;
+	private final DLURLHelper _dlURLHelper;
 	private final DocumentFolderResource.Factory _documentFolderResourceFactory;
 	private final DocumentResource.Factory _documentResourceFactory;
 	private final FragmentsImporter _fragmentsImporter;
 	private final GroupLocalService _groupLocalService;
+	private final JournalArticleLocalService _journalArticleLocalService;
 	private final JSONFactory _jsonFactory;
 	private final ObjectDefinitionResource.Factory
 		_objectDefinitionResourceFactory;
 	private final Portal _portal;
 	private final ServletContext _servletContext;
+	private final StructuredContentFolderResource.Factory
+		_structuredContentFolderResourceFactory;
 	private final StyleBookEntryZipProcessor _styleBookEntryZipProcessor;
 	private final TaxonomyVocabularyResource.Factory
 		_taxonomyVocabularyResourceFactory;

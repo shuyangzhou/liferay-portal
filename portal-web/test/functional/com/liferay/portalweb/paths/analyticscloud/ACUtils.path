@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>LABEL</td>
+	<td>//label[normalize-space()='${label}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>LOADING_ANIMATION</td>
 	<td>//span[contains(@class,'loading-animation')]</td>
 	<td></td>
@@ -72,6 +77,11 @@
 <tr>
 	<td>CLEAR_SEARCH_BAR_BUTTON</td>
 	<td>//div[contains(@class, 'input-group-item')]//button[contains(@class, 'button-root')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENERIC_BUTTON</td>
+	<td>//button[contains(@class,'button-root')and text()='${key_buttonName}']</td>
 	<td></td>
 </tr>
 <tr>

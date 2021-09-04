@@ -552,8 +552,6 @@ public class JenkinsResultsParserUtil {
 		String jenkinsMasterName, String script) {
 
 		try {
-			Properties buildProperties = getBuildProperties(false);
-
 			String url = fixURL(
 				getLocalURL("http://" + jenkinsMasterName + "/script"));
 
@@ -567,18 +565,18 @@ public class JenkinsResultsParserUtil {
 
 			HTTPAuthorization httpAuthorization = null;
 
-			String jenkinsAdminUserName = buildProperties.getProperty(
+			String jenkinsAdminUserName = getBuildProperty(
 				"jenkins.admin.user.name");
 
 			if (jenkinsMasterName.contains("test-1-0")) {
-				String jenkinsAdminUserPassword = buildProperties.getProperty(
+				String jenkinsAdminUserPassword = getBuildProperty(
 					"jenkins.admin.user.password");
 
 				httpAuthorization = new BasicHTTPAuthorization(
 					jenkinsAdminUserPassword, jenkinsAdminUserName);
 			}
 			else {
-				String jenkinsAdminUserToken = buildProperties.getProperty(
+				String jenkinsAdminUserToken = getBuildProperty(
 					"jenkins.admin.user.token");
 
 				httpAuthorization = new BasicHTTPAuthorization(
@@ -3264,7 +3262,7 @@ public class JenkinsResultsParserUtil {
 							httpAuthorizationHeader =
 								new BasicHTTPAuthorization(
 									buildProperties.getProperty(
-										"jenkins.admin.user.token"),
+										"jenkins.admin.user.password"),
 									buildProperties.getProperty(
 										"jenkins.admin.user.name"));
 						}

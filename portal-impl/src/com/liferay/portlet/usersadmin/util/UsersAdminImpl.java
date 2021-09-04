@@ -639,7 +639,7 @@ public class UsersAdminImpl implements UsersAdmin {
 
 	@Override
 	public Long[] getOrganizationIds(List<Organization> organizations) {
-		if ((organizations == null) || organizations.isEmpty()) {
+		if (ListUtil.isEmpty(organizations)) {
 			return new Long[0];
 		}
 

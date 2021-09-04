@@ -435,7 +435,8 @@
 			<property name="category" value="Styling" />
 			<property name="description" value="Checks for utilization of class `ListUtil`." />
 			<message key="array.unneeded" value="Pass arguments directly to ''ListUtil.fromArray'' instead of passing new array" />
-			<message key="list.util.use" value="Use ''ListUtil.fromArray'' to simplify code" />
+			<message key="list.util.from.array.use" value="Use ''ListUtil.fromArray'' to simplify code" />
+			<message key="list.util.is.empty.use" value="Use ''ListUtil.isEmpty({0})'' to simplify code" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.LiteralStringEqualsCheck">
 			<property name="category" value="Styling" />

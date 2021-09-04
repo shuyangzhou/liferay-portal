@@ -19,8 +19,17 @@ import org.osgi.framework.Bundle;
 /**
  * @author Shuyang Zhou
  */
-public interface SystemBundleProvider {
+public interface SystemBundleProvider extends Comparable<SystemBundleProvider> {
+
+	@Override
+	public default int compareTo(SystemBundleProvider systemBundleProvider) {
+		return Integer.compare(order(), systemBundleProvider.order());
+	}
 
 	public Bundle getSystemBundle();
+
+	public default int order() {
+		return 0;
+	}
 
 }

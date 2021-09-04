@@ -14,14 +14,14 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RegionCodeException;
 import com.liferay.portal.kernel.exception.RegionNameException;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.OrganizationTable;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -68,7 +68,12 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 
 	@Override
 	public void deleteCountryRegions(long countryId) {
-		regionPersistence.removeByCountryId(countryId);
+		for (Region region :
+				getRegions(
+					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			deleteRegion(region);
+		}
 	}
 
 	@Override
@@ -79,7 +84,7 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 	}
 
 	@Override
-	public Region deleteRegion(Region region) throws PortalException {
+	public Region deleteRegion(Region region) {
 
 		// Region
 
@@ -91,7 +96,21 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 
 		// Organizations
 
-		_updateOrganizations(region.getRegionId());
+		for (Organization organization :
+				organizationPersistence.<List<Organization>>dslQuery(
+					DSLQueryFactoryUtil.select(
+						OrganizationTable.INSTANCE
+					).from(
+						OrganizationTable.INSTANCE
+					).where(
+						OrganizationTable.INSTANCE.regionId.eq(
+							region.getRegionId())
+					))) {
+
+			organization.setRegionId(0);
+
+			organizationLocalService.updateOrganization(organization);
+		}
 
 		return region;
 	}
@@ -191,27 +210,6 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 		if (Validator.isNull(name)) {
 			throw new RegionNameException();
 		}
-	}
-
-	private void _updateOrganizations(long regionId) throws PortalException {
-		ActionableDynamicQuery actionableDynamicQuery =
-			organizationLocalService.getActionableDynamicQuery();
-
-		actionableDynamicQuery.setAddCriteriaMethod(
-			dynamicQuery -> {
-				Property regionIdProperty = PropertyFactoryUtil.forName(
-					"regionId");
-
-				dynamicQuery.add(regionIdProperty.eq(regionId));
-			});
-		actionableDynamicQuery.setPerformActionMethod(
-			(Organization organization) -> {
-				organization.setRegionId(0);
-
-				organizationLocalService.updateOrganization(organization);
-			});
-
-		actionableDynamicQuery.performActions();
 	}
 
 }

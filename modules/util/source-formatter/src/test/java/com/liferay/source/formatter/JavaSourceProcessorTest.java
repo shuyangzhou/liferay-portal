@@ -282,6 +282,13 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testListUtilUsages() throws Exception {
+		test(
+				"ListUtilUsages.testjava",
+				"Use 'ListUtil.isEmpty(list)' to simplify code", 25);
+	}
+
+	@Test
 	public void testLogLevels() throws Exception {
 		test(
 			"Levels.testjava",

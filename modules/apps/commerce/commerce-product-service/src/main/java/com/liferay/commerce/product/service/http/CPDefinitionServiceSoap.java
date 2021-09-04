@@ -230,6 +230,26 @@ public class CPDefinitionServiceSoap {
 		}
 	}
 
+	public static com.liferay.commerce.product.model.CPAttachmentFileEntrySoap
+			getDefaultImageCPAttachmentFileEntry(long cpDefinitionId)
+		throws RemoteException {
+
+		try {
+			com.liferay.commerce.product.model.CPAttachmentFileEntry
+				returnValue =
+					CPDefinitionServiceUtil.
+						getDefaultImageCPAttachmentFileEntry(cpDefinitionId);
+
+			return com.liferay.commerce.product.model.CPAttachmentFileEntrySoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	/**
 	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
 	 */

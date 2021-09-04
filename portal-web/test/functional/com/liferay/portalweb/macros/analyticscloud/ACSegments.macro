@@ -6,6 +6,16 @@ definition {
 		Click(locator1 = "ACSegments#SELECT_SEGMENT");
 	}
 
+	macro addAllMembers {
+		Click(locator1 = "ACSegments#ADD_MEMBERS_BUTTON");
+
+		KeyPress(
+			locator1 = "ACSettings#SELECT_ALL_CHECKBOX",
+			value1 = "\SPACE");
+
+		Click(locator1 = "ACSegments#ADD_BUTTON");
+	}
+
 	macro addNestedSegmentField {
 		Type(
 			locator1 = "ACSegments#SEARCH_SEGMENT",
@@ -57,6 +67,18 @@ definition {
 		Click(locator1 = "ACSegments#ADD_BUTTON");
 	}
 
+	macro assertMember {
+		AssertElementPresent(
+			key_TableMember = "${memberName}",
+			locator1 = "ACSegments#TABLE_CHECKBOX");
+	}
+
+	macro assertMemberNotPresent {
+		AssertElementNotPresent(
+			key_TableMember = "${memberName}",
+			locator1 = "ACSegments#TABLE_CHECKBOX");
+	}
+
 	macro assertSegmentAttributeNotPresent {
 		var key_SegmentField = "${segmentField}";
 
@@ -77,6 +99,12 @@ definition {
 
 	macro cancelSegment {
 		Click(locator1 = "ACSegments#CANCEL_SEGMENT");
+	}
+
+	macro clickCheckboxMember {
+		var key_TableMember = "${tableMember}";
+
+		Click(locator1 = "ACSegments#TABLE_CHECKBOX");
 	}
 
 	macro clickMemberButton {
@@ -385,6 +413,18 @@ definition {
 			value1 = "\ENTER");
 	}
 
+	macro selectDistributionByAttribute {
+		Click(locator1 = "ACSegments#ATTRIBUTE_TEXT_INPUT");
+
+		Type(
+			locator1 = "ACSegments#ATTRIBUTE_TEXT_INPUT",
+			value1 = "${attribute}");
+
+		Click(
+			locator1 = "ACSegments#ATTRIBUTE_DROPDOWN_MENU_ITEM",
+			menuItem = "${attribute}");
+	}
+
 	macro selectDocument {
 		var key_indexField = "${indexField}";
 
@@ -426,6 +466,12 @@ definition {
 		AssertTextEquals(
 			locator1 = "ACSegments#ACTIVE_PAGE",
 			value1 = "${pageNumber}");
+	}
+
+	macro viewBreakdownChartsEntry {
+		AssertTextEquals.assertPartialText(
+			locator1 = "ACSegments#BREAKDOWN_CHART",
+			value1 = "${key_entry}");
 	}
 
 	macro viewConjunction {

@@ -42,6 +42,40 @@ definition {
 		ACUtils.tearDownAC();
 	}
 
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9034 | Test Summary: As a Business User, I should be able to create multiple properties with multiple sites"
+	@priority = "3"
+	test AddPropertyBasedOnMultiplePropertiesType {
+		task ("Connect the DXP to Analytics Cloud") {
+			ACDXPSettings.goToInstanceSettingsAC();
+
+			ACDXPSettings.connectAnalyticsCloud();
+
+			ACDXPSettings.assertSuccessfulConnection();
+		}
+
+		task ("Navigate to the Synced Sites Menu tab") {
+			ACDXPSettings.navToSyncedSitesMenu();
+		}
+
+		task ("Add a new property based on Multiple Properties type") {
+			ACDXPSettings.createMultipleProperties(siteNameList = "Liferay DXP,Site Name");
+		}
+
+		task ("Sign in AC") {
+			ACUtils.launchAC();
+		}
+
+		task ("View both properties are available") {
+			ACNavigation.goToSettings();
+
+			ACSettings.goToProperties();
+
+			for (var propertyName : list "Liferay DXP (1),Site Name") {
+				ACAssets.viewAssets(assetName = "${propertyName}");
+			}
+		}
+	}
+
 	@description = "Feature ID: Legacy | Automation ID: LRAC-9036 | Test Summary: Assign site to property when properties exist"
 	@priority = "3"
 	test AssignSiteToExistingProperty {
@@ -73,6 +107,40 @@ definition {
 			ACDXPSettings.assignSiteToExistingProperty(
 				assignedPropertyName = "AC Test Property",
 				siteName = "Site Name");
+		}
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9037 | Test Summary: As an Business User, a Property with a duplicate name should have an incrementing identifier appended to it's name"
+	@priority = "3"
+	test AutoRenamePropertyWhenDuplicateWithExistingOne {
+		task ("Add a new property on AC") {
+			ACUtils.launchAC();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToProperties();
+
+			ACProperties.addNewProperty(propertyName = "AC Test Property");
+
+			ACProperties.assertNewCreatedProperty(propertyName = "AC Test Property");
+		}
+
+		task ("Add the second property with same name") {
+			ACSettings.goToProperties();
+
+			ACProperties.addNewProperty(propertyName = "AC Test Property");
+		}
+
+		task ("View the property is autorenamed") {
+			ACProperties.assertNewCreatedProperty(propertyName = "AC Test Property (1)");
+		}
+
+		task ("View both properties are available") {
+			ACSettings.goToProperties();
+
+			for (var propertyName : list "AC Test Property,AC Test Property (1)") {
+				ACAssets.viewAssets(assetName = "${propertyName}");
+			}
 		}
 	}
 
@@ -131,6 +199,38 @@ definition {
 		ACSettings.goToProperties();
 
 		ACProperties.assertPropertyTitle(propertyName = "Properties");
+	}
+
+	@description = "Feature ID: Legacy | Automation ID: LRAC-9038 | Test Summary: As a Business User, I should not be able to create an invalid property name"
+	@priority = "3"
+	test CannotAddPropertyWhenNameExceedMaximumLength {
+		task ("Navigate to the Properties admin on AC") {
+			ACUtils.launchAC();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToProperties();
+		}
+
+		task ("View the alert shown in creation modal when the name exceeds maximum length") {
+			Click(locator1 = "ACSettings#NEW_PROPERTY_BUTTON");
+
+			Type(
+				locator1 = "ACSettings#PROPERTY_INPUT",
+				value1 = "uZcHpcFx3abyBF4MtqVQFsbt9lrF7lV5A9xC7tujzqicCSHoscXb0sJV6q2alW7cli");
+
+			Click(locator1 = "Modal#HEADER");
+
+			AssertTextPresent(
+				locator1 = "TextInput#ALERT",
+				value1 = "Exceeds maximum length.");
+		}
+
+		task ("View the Save button is disabled") {
+			AssertVisible(
+				key_text = "Save",
+				locator1 = "Button#ANY_DISABLED");
+		}
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-9035 | Test Summary: Assign sites to property is blocked if the site is already assigned to another property"

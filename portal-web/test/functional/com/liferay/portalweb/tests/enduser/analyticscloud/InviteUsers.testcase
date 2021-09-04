@@ -16,6 +16,10 @@ definition {
 		TestCase.setUpPortalInstance();
 
 		ACUtils.launchDXP();
+
+		var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Liferay DXP");
+
+		ACUtils.launchAC();
 	}
 
 	tearDown {
@@ -30,48 +34,157 @@ definition {
 	}
 
 	@description = "Automation ID: LRAC-9072 | Test Summary: Admin can invite users"
-	@ignore = "true"
 	@priority = "3"
 	test AdminCanInviteUsers {
+		task ("sign out and login as member") {
+			ACWorkspace.signOut();
 
-		// TODO LRAC-9072 AdminCanInviteUsers
+			ACLogin.loginAs(
+				emailAddress = "corbin.murakami@faro.io",
+				password = "test");
+		}
 
+		task ("go to user management and assert the add user button not present") {
+			ACWorkspace.openWorkspace();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUserManagement();
+
+			ACSettings.verifyCannotAddUser();
+		}
+
+		task ("login and logout as admin") {
+			ACNavigation.exitSettings();
+
+			ACWorkspace.signOut();
+
+			ACLogin.loginAs(
+				emailAddress = "michelle.hoshi@faro.io",
+				password = "test");
+		}
+
+		task ("go to user management and add user") {
+			ACWorkspace.openWorkspace();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUserManagement();
+
+			ACSettings.addUser(userInvite = "user@liferay.com");
+
+			ACUtils.searchBar(searchItem = "user@liferay.com");
+
+			ACSettings.assertUserListEmail(userEmail = "user@liferay.com");
+		}
 	}
 
 	@description = "Automation ID: LRAC-9070 | Test Summary: Invite multiple users at a time"
-	@ignore = "true"
 	@priority = "3"
 	test CanInviteMultipleUsers {
+		task ("go to user management and add multiple users") {
+			ACProperties.switchProperty(propertyName = "${propertyName}");
 
-		// TODO LRAC-9070 CanInviteMultipleUsers
+			ACNavigation.goToSettings();
 
+			ACSettings.goToUserManagement();
+
+			var emailList = "user1@liferay.com,user2@liferay.com,user3@liferay.com,user4@liferay.com";
+
+			ACSettings.addUser(userInvite = "${emailList}");
+
+			for (var n : list "${emailList}") {
+				ACUtils.searchBar(searchItem = "${n}");
+
+				ACSettings.assertUserListEmail(userEmail = "${n}");
+			}
+		}
 	}
 
 	@description = "Automation ID: LRAC-9069 | Test Summary: Invite a single user"
-	@ignore = "true"
 	@priority = "5"
 	test CanInviteSingleUser {
+		task ("go to user management and add user") {
+			ACProperties.switchProperty(propertyName = "${propertyName}");
 
-		// TODO LRAC-9069 CanInviteSingleUser
+			ACNavigation.goToSettings();
 
+			ACSettings.goToUserManagement();
+
+			ACSettings.addUser(userInvite = "user@liferay.com");
+
+			ACUtils.searchBar(searchItem = "user@liferay.com");
+
+			ACSettings.assertUserListEmail(userEmail = "user@liferay.com");
+		}
 	}
 
 	@description = "Automation ID: LRAC-9073 | Test Summary: Member cannot invite users"
-	@ignore = "true"
 	@priority = "3"
 	test MemberCannotInviteUsers {
+		task ("sign out and login as member") {
+			ACWorkspace.signOut();
 
-		// TODO LRAC-9073 MemberCannotInviteUsers
+			ACLogin.loginAs(
+				emailAddress = "corbin.murakami@faro.io",
+				password = "test");
+		}
 
+		task ("go to user management and assert the add user button not present") {
+			ACWorkspace.openWorkspace();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUserManagement();
+
+			ACSettings.verifyCannotAddUser();
+		}
 	}
 
 	@description = "Automation ID: LRAC-9071 | Test Summary: Owner can invite users"
-	@ignore = "true"
 	@priority = "5"
 	test OwnerCanInviteUsers {
+		task ("sign out and login as member") {
+			ACWorkspace.signOut();
 
-		// TODO LRAC-9071 OwnerCanInviteUsers
+			ACLogin.loginAs(
+				emailAddress = "corbin.murakami@faro.io",
+				password = "test");
+		}
 
+		task ("go to user management and assert the add user button not present") {
+			ACWorkspace.openWorkspace();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUserManagement();
+
+			ACSettings.verifyCannotAddUser();
+		}
+
+		task ("login and logout as owner") {
+			ACNavigation.exitSettings();
+
+			ACWorkspace.signOut();
+
+			ACLogin.loginAs(
+				emailAddress = "bryan.cheung@faro.io",
+				password = "test");
+		}
+
+		task ("go to user management and add user") {
+			ACWorkspace.openWorkspace();
+
+			ACNavigation.goToSettings();
+
+			ACSettings.goToUserManagement();
+
+			ACSettings.addUser(userInvite = "user@liferay.com");
+
+			ACUtils.searchBar(searchItem = "user@liferay.com");
+
+			ACSettings.assertUserListEmail(userEmail = "user@liferay.com");
+		}
 	}
 
 }

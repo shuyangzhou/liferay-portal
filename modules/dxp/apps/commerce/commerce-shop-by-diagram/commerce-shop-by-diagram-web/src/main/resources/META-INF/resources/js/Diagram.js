@@ -214,7 +214,7 @@ const Diagram = ({
 				id: updatedPin.id,
 				label: updatedPin.label || '',
 				linked_to_sku: updatedPin.linked_to_sku || '',
-				quantity: updatedPin.quantity || 0,
+				quantity: updatedPin.quantity || 1,
 				sku: updatedPin.sku,
 			},
 			tooltip: true,
@@ -253,6 +253,7 @@ const Diagram = ({
 					isAdmin={isAdmin}
 					namespace={namespace}
 					navigationController={navigationController}
+					newPinSettings={newPinSettings}
 					pinClickAction={pinClickAction}
 					pinClickHandler={pinClickHandler}
 					pinsEndpoint={pinsEndpoint}
@@ -329,7 +330,7 @@ Diagram.defaultProps = {
 	isAdmin: true,
 	navigationController: {
 		dragStep: 10,
-		enable: true,
+		enable: false,
 		enableDrag: false,
 		position: {
 			bottom: '15px',
@@ -357,7 +358,7 @@ Diagram.defaultProps = {
 			selectedColor: '0B5FFF',
 			useNative: true,
 		},
-		defaultRadius: 2,
+		defaultRadius: 10,
 	},
 	pins: [],
 	pinsEndpoint:
@@ -378,7 +379,7 @@ Diagram.defaultProps = {
 	spritemap: './assets/clay/icons.svg',
 	type: 'diagram.type.svg',
 	zoomController: {
-		enable: true,
+		enable: false,
 		position: {
 			bottom: '0px',
 			left: '',
@@ -393,7 +394,6 @@ Diagram.propTypes = {
 		PropTypes.shape({
 			cx: PropTypes.double,
 			cy: PropTypes.double,
-			draggable: PropTypes.bool,
 			fill: PropTypes.string,
 			id: PropTypes.number,
 			label: PropTypes.string,

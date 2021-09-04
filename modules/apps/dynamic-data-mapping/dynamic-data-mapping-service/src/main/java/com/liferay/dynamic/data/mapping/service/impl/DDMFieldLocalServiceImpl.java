@@ -507,6 +507,10 @@ public class DDMFieldLocalServiceImpl extends DDMFieldLocalServiceBaseImpl {
 			DDMFormField ddmFormField = ddmFormFieldMap.get(
 				ddmFormFieldValue.getName());
 
+			if (ddmFormField == null) {
+				continue;
+			}
+
 			String instanceId = ddmFormFieldValue.getInstanceId();
 
 			while (ddmFieldInfoMap.containsKey(instanceId)) {

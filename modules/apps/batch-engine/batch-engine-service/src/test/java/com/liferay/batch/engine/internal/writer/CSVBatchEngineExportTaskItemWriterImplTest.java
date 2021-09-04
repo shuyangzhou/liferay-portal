@@ -99,7 +99,10 @@ public class CSVBatchEngineExportTaskItemWriterImplTest
 		StringBundler sb = new StringBundler();
 
 		sb.append(StringUtil.merge(fieldNames, StringPool.COMMA));
-		sb.append(StringPool.NEW_LINE);
+
+		String lineSeparator = System.getProperty("line.separator");
+
+		sb.append(lineSeparator);
 
 		for (Item item : items) {
 			for (String fieldName : fieldNames) {
@@ -125,7 +128,7 @@ public class CSVBatchEngineExportTaskItemWriterImplTest
 
 			sb.setIndex(sb.index() - 1);
 
-			sb.append(StringPool.NEW_LINE);
+			sb.append(lineSeparator);
 		}
 
 		return sb.toString();

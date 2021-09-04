@@ -179,6 +179,21 @@ import org.osgi.service.component.annotations.Reference;
 	</#if>
 </#list>
 
+<#if entity.localizedEntity??>
+	<#assign localizedEntity = entity.localizedEntity />
+
+	import ${apiPackagePath}.service.persistence.${localizedEntity.name}Persistence;
+</#if>
+
+<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
+	<#assign
+		versionedEntity = entity.versionedEntity
+		localizedVersionEntity = versionedEntity.localizedEntity.versionEntity
+	/>
+
+	import ${apiPackagePath}.service.persistence.${localizedVersionEntity.name}Persistence;
+</#if>
+
 /**
  * The persistence implementation for the ${entity.humanName} service.
  *
@@ -688,6 +703,25 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				${entity.variableName}To${referenceEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(${entity.variableName}.getPrimaryKey());
 			</#if>
 		</#list>
+
+		<#if entity.localizedEntity??>
+			<#assign
+				localizedEntity = entity.localizedEntity
+				pkEntityColumn = entity.PKEntityColumns?first
+			/>
+
+			${localizedEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}(${entity.variableName}.get${pkEntityColumn.methodName}());
+		</#if>
+
+		<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
+			<#assign
+				versionedEntity = entity.versionedEntity
+				localizedVersionEntity = versionedEntity.localizedEntity.versionEntity
+				pkEntityColumn = versionedEntity.PKEntityColumns?first
+			/>
+
+			${localizedVersionEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}_Version(${entity.variableName}.getVersionedModelId(), ${entity.variableName}.getVersion());
+		</#if>
 
 		Session session = null;
 
@@ -2863,6 +2897,33 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			protected TableMapper<${entity.name}, ${referenceEntity.apiPackagePath}.model.${referenceEntity.name}> ${entity.variableName}To${referenceEntity.name}TableMapper;
 		</#if>
 	</#list>
+
+	<#if entity.localizedEntity??>
+		<#assign localizedEntity = entity.localizedEntity />
+
+		<#if dependencyInjectorDS>
+			@Reference
+		<#else>
+			@BeanReference(type = ${localizedEntity.name}Persistence.class)
+		</#if>
+
+		protected ${localizedEntity.name}Persistence ${localizedEntity.variableName}Persistence;
+	</#if>
+
+	<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
+		<#assign
+			versionedEntity = entity.versionedEntity
+			localizedVersionEntity = versionedEntity.localizedEntity.versionEntity
+		/>
+
+		<#if dependencyInjectorDS>
+			@Reference
+		<#else>
+			@BeanReference(type = ${localizedVersionEntity.name}Persistence.class)
+		</#if>
+
+		protected ${localizedVersionEntity.name}Persistence ${localizedVersionEntity.variableName}Persistence;
+	</#if>
 
 	<#if entity.isHierarchicalTree()>
 		protected NestedSetsTreeManager<${entity.name}> nestedSetsTreeManager = new PersistenceNestedSetsTreeManager<${entity.name}>(this, "${entity.table}", "${entity.name}", ${entity.name}Impl.class, "${pkEntityColumn.DBName}", "${scopeEntityColumn.DBName}", "left${pkEntityColumn.methodName}", "right${pkEntityColumn.methodName}");

@@ -1,5 +1,7 @@
 ## ListUtilCheck
 
+### ListUtil.fromArray
+
 Use `ListUtil.fromArray` to simplify code, when possible:
 
 ```java
@@ -36,4 +38,32 @@ addUsers(
             _getUser("Anthony"), _getUser("Belinda"), _getUser("Emily"),
             _getUser("Lucy")
         }));
+```
+
+### ListUtil.isEmpty
+
+Use `ListUtil.isEmpty` to simplify code, when possible:
+
+```java
+List<BundleCapability> bundleCapabilities =
+	bundleWiring.getCapabilities("liferay.resource.bundle");
+
+if (ListUtil.isEmpty(bundleCapabilities)) {
+
+...
+
+}
+```
+
+Instead of
+
+```java
+List<BundleCapability> bundleCapabilities =
+	bundleWiring.getCapabilities("liferay.resource.bundle");
+
+if ((bundleCapabilities == null) || bundleCapabilities.isEmpty()) {
+
+...
+
+}
 ```
