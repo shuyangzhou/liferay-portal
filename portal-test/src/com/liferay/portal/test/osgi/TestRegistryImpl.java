@@ -12,17 +12,17 @@
  * details.
  */
 
-package com.liferay.registry.dependency;
+package com.liferay.portal.test.osgi;
+
+import com.liferay.registry.internal.RegistryImpl;
 
 /**
- * @author Michael C. Han
- * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+ * @author Shuyang Zhou
  */
-@Deprecated
-public interface ServiceDependencyListener {
+public class TestRegistryImpl extends RegistryImpl {
 
-	public void dependenciesFulfilled();
-
-	public void destroy();
+	public TestRegistryImpl() {
+		super(TestSystemBundleProvider.getBundleContext());
+	}
 
 }
