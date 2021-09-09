@@ -19,15 +19,15 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -352,15 +352,16 @@ public class TalendArchiveParserUtil {
 		List<String> jvmOptionsList = new ArrayList<>();
 
 		for (String jobScriptPathString : jobScriptPathStrings) {
-			try (BufferedReader bufferedReader = new BufferedReader(
-					new FileReader(jobScriptPathString))) {
+			try (UnsyncBufferedReader unsyncBufferedReader =
+					new UnsyncBufferedReader(
+						new UnsyncStringReader(jobScriptPathString))) {
 
-				String line = bufferedReader.readLine();
+				String line = unsyncBufferedReader.readLine();
 
 				while (line != null) {
 					_addJVMOptionsList(jvmOptionsList, line);
 
-					line = bufferedReader.readLine();
+					line = unsyncBufferedReader.readLine();
 				}
 
 				if (!jvmOptionsList.isEmpty()) {
