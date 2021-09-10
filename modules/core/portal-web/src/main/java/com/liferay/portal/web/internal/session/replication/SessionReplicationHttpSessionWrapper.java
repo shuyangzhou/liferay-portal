@@ -24,12 +24,10 @@ import java.io.Serializable;
 
 import java.nio.ByteBuffer;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -45,11 +43,12 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 
 	@Override
 	public Object getAttribute(String name) {
-		Object value = super.getAttribute(
-			_SERIALIZED_ATTRIBUTE_PREFIX.concat(name));
+		Object value = super.getAttribute(name);
 
-		if (value == null) {
-			return super.getAttribute(name);
+		Set<String> scrubbedNames = _getScrubbedNames();
+
+		if (!scrubbedNames.contains(name)) {
+			return value;
 		}
 
 		Deserializer deserializer = new Deserializer(
@@ -66,31 +65,12 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 	}
 
 	@Override
-	public Enumeration<String> getAttributeNames() {
-		Enumeration<String> attributeNameEnumeration =
-			super.getAttributeNames();
-
-		List<String> attributeNames = new ArrayList<>();
-
-		while (attributeNameEnumeration.hasMoreElements()) {
-			String attributeName = attributeNameEnumeration.nextElement();
-
-			if (attributeName.startsWith(_SERIALIZED_ATTRIBUTE_PREFIX)) {
-				attributeName = attributeName.substring(
-					_SERIALIZED_ATTRIBUTE_PREFIX.length());
-			}
-
-			attributeNames.add(attributeName);
-		}
-
-		return Collections.enumeration(attributeNames);
-	}
-
-	@Override
 	public void removeAttribute(String name) {
 		super.removeAttribute(name);
 
-		super.removeAttribute(_SERIALIZED_ATTRIBUTE_PREFIX.concat(name));
+		Set<String> scrubbedNames = _getScrubbedNames();
+
+		scrubbedNames.remove(name);
 	}
 
 	@Override
@@ -105,9 +85,11 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 
 				ByteBuffer byteBuffer = serializer.toByteBuffer();
 
-				super.setAttribute(
-					_SERIALIZED_ATTRIBUTE_PREFIX.concat(name),
-					byteBuffer.array());
+				super.setAttribute(name, byteBuffer.array());
+
+				Set<String> scrubbedNames = _getScrubbedNames();
+
+				scrubbedNames.add(name);
 
 				return;
 			}
@@ -116,8 +98,23 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 		super.setAttribute(name, value);
 	}
 
-	private static final String _SERIALIZED_ATTRIBUTE_PREFIX =
-		"SERIALIZED_ATTRIBUTE_PREFIX_";
+	private Set<String> _getScrubbedNames() {
+		Set<String> scrubbedNames = (Set<String>)super.getAttribute(
+			_SCRUBBED_NAMES_NAME);
+
+		if (scrubbedNames == null) {
+			scrubbedNames = Collections.newSetFromMap(
+				new ConcurrentHashMap<>());
+
+			super.setAttribute(_SCRUBBED_NAMES_NAME, scrubbedNames);
+		}
+
+		return scrubbedNames;
+	}
+
+	private static final String _SCRUBBED_NAMES_NAME =
+		SessionReplicationHttpSessionWrapper.class.getName() +
+			"._SCRUBBED_NAMES_NAME";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SessionReplicationHttpSessionWrapper.class);
