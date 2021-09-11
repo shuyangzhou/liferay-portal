@@ -14,19 +14,15 @@
 
 package com.liferay.exportimport.kernel.lifecycle;
 
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
-import com.liferay.registry.ServiceRegistration;
-import com.liferay.registry.ServiceTracker;
-import com.liferay.registry.ServiceTrackerCustomizer;
-import com.liferay.registry.collections.ServiceRegistrationMap;
-import com.liferay.registry.collections.ServiceRegistrationMapImpl;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Daniel Kocsis
@@ -36,171 +32,52 @@ public class ExportImportLifecycleEventListenerRegistryUtil {
 	public static Set<ExportImportLifecycleListener>
 		getAsyncExportImportLifecycleListeners() {
 
-		return _exportImportLifecycleEventListenerRegistryUtil.
-			_getAsyncExportImportLifecycleListeners();
+		return new HashSet<>(
+			_exportImportLifecycleListeners.getService(Boolean.TRUE));
 	}
 
 	public static Set<ExportImportLifecycleListener>
 		getSyncExportImportLifecycleListeners() {
 
-		return _exportImportLifecycleEventListenerRegistryUtil.
-			_getSyncExportImportLifecycleListeners();
-	}
-
-	public static void register(
-		ExportImportLifecycleListener exportImportLifecycleListener) {
-
-		_exportImportLifecycleEventListenerRegistryUtil._register(
-			exportImportLifecycleListener);
-	}
-
-	public static void unregister(
-		ExportImportLifecycleListener exportImportLifecycleListener) {
-
-		_exportImportLifecycleEventListenerRegistryUtil._unregister(
-			exportImportLifecycleListener);
-	}
-
-	public static void unregister(
-		List<ExportImportLifecycleListener> exportImportLifecycleListeners) {
-
-		for (ExportImportLifecycleListener exportImportLifecycleListener :
-				exportImportLifecycleListeners) {
-
-			unregister(exportImportLifecycleListener);
-		}
+		return new HashSet<>(
+			_exportImportLifecycleListeners.getService(Boolean.FALSE));
 	}
 
 	private ExportImportLifecycleEventListenerRegistryUtil() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_serviceTracker = registry.trackServices(
-			ExportImportLifecycleListener.class,
-			new ExportImportLifecycleListenerServiceTrackerCustomizer());
-
-		_serviceTracker.open();
 	}
 
-	private Set<ExportImportLifecycleListener>
-		_getAsyncExportImportLifecycleListeners() {
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 
-		return _asyncExportImportLifecycleListeners;
-	}
+	private static final ServiceTrackerMap
+		<Boolean, List<ExportImportLifecycleListener>>
+			_exportImportLifecycleListeners =
+				ServiceTrackerMapFactory.openMultiValueMap(
+					_bundleContext, ExportImportLifecycleListener.class, null,
+					(serviceReference, emitter) -> {
+						ExportImportLifecycleListener
+							exportImportLifecycleListener =
+								_bundleContext.getService(serviceReference);
 
-	private Set<ExportImportLifecycleListener>
-		_getSyncExportImportLifecycleListeners() {
+						if (exportImportLifecycleListener instanceof
+								ProcessAwareExportImportLifecycleListener) {
 
-		return _syncExportImportLifecycleListeners;
-	}
+							exportImportLifecycleListener =
+								ExportImportLifecycleListenerFactoryUtil.create(
+									(ProcessAwareExportImportLifecycleListener)
+										exportImportLifecycleListener);
+						}
+						else if (exportImportLifecycleListener instanceof
+									EventAwareExportImportLifecycleListener) {
 
-	private void _register(
-		ExportImportLifecycleListener exportImportLifecycleListener) {
+							exportImportLifecycleListener =
+								ExportImportLifecycleListenerFactoryUtil.create(
+									(EventAwareExportImportLifecycleListener)
+										exportImportLifecycleListener);
+						}
 
-		Registry registry = RegistryUtil.getRegistry();
-
-		ServiceRegistration<ExportImportLifecycleListener> serviceRegistration =
-			registry.registerService(
-				ExportImportLifecycleListener.class,
-				exportImportLifecycleListener);
-
-		_serviceRegistrationMap.put(
-			exportImportLifecycleListener, serviceRegistration);
-	}
-
-	private void _unregister(
-		ExportImportLifecycleListener exportImportLifecycleListener) {
-
-		ServiceRegistration<ExportImportLifecycleListener> serviceRegistration =
-			_serviceRegistrationMap.remove(exportImportLifecycleListener);
-
-		if (serviceRegistration != null) {
-			serviceRegistration.unregister();
-		}
-	}
-
-	private static final ExportImportLifecycleEventListenerRegistryUtil
-		_exportImportLifecycleEventListenerRegistryUtil =
-			new ExportImportLifecycleEventListenerRegistryUtil();
-
-	private final Set<ExportImportLifecycleListener>
-		_asyncExportImportLifecycleListeners = Collections.newSetFromMap(
-			new ConcurrentHashMap<>());
-	private final ServiceRegistrationMap<ExportImportLifecycleListener>
-		_serviceRegistrationMap = new ServiceRegistrationMapImpl<>();
-	private final ServiceTracker
-		<ExportImportLifecycleListener, ExportImportLifecycleListener>
-			_serviceTracker;
-	private final Set<ExportImportLifecycleListener>
-		_syncExportImportLifecycleListeners = Collections.newSetFromMap(
-			new ConcurrentHashMap<>());
-
-	private class ExportImportLifecycleListenerServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<ExportImportLifecycleListener, ExportImportLifecycleListener> {
-
-		@Override
-		public ExportImportLifecycleListener addingService(
-			ServiceReference<ExportImportLifecycleListener> serviceReference) {
-
-			Registry registry = RegistryUtil.getRegistry();
-
-			ExportImportLifecycleListener exportImportLifecycleListener =
-				registry.getService(serviceReference);
-
-			if (exportImportLifecycleListener instanceof
-					ProcessAwareExportImportLifecycleListener) {
-
-				exportImportLifecycleListener =
-					ExportImportLifecycleListenerFactoryUtil.create(
-						(ProcessAwareExportImportLifecycleListener)
-							exportImportLifecycleListener);
-			}
-			else if (exportImportLifecycleListener instanceof
-						EventAwareExportImportLifecycleListener) {
-
-				exportImportLifecycleListener =
-					ExportImportLifecycleListenerFactoryUtil.create(
-						(EventAwareExportImportLifecycleListener)
-							exportImportLifecycleListener);
-			}
-
-			if (exportImportLifecycleListener.isParallel()) {
-				_asyncExportImportLifecycleListeners.add(
-					exportImportLifecycleListener);
-			}
-			else {
-				_syncExportImportLifecycleListeners.add(
-					exportImportLifecycleListener);
-			}
-
-			return exportImportLifecycleListener;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<ExportImportLifecycleListener> serviceReference,
-			ExportImportLifecycleListener exportImportLifecycleListener) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<ExportImportLifecycleListener> serviceReference,
-			ExportImportLifecycleListener exportImportLifecycleListener) {
-
-			Registry registry = RegistryUtil.getRegistry();
-
-			registry.ungetService(serviceReference);
-
-			if (exportImportLifecycleListener.isParallel()) {
-				_asyncExportImportLifecycleListeners.remove(
-					exportImportLifecycleListener);
-			}
-			else {
-				_syncExportImportLifecycleListeners.remove(
-					exportImportLifecycleListener);
-			}
-		}
-
-	}
+						emitter.emit(
+							exportImportLifecycleListener.isParallel());
+					});
 
 }
