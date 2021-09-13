@@ -90,37 +90,18 @@ public class SessionReplicationHttpSessionWrapperTest {
 	}
 
 	@Test
-	public void testGetAttributeNames() {
-		List<String> keys = Collections.list(
-			_sessionReplicationHttpSessionWrapper.getAttributeNames());
-
-		Assert.assertEquals(keys.toString(), 3, keys.size());
-		Assert.assertTrue(keys.contains(_TEST_KEY_1));
-		Assert.assertTrue(keys.contains(_TEST_KEY_2));
-		Assert.assertTrue(keys.contains(_TEST_KEY_3));
-
-		keys = Collections.list(_testHttpSession.getAttributeNames());
-
-		Assert.assertEquals(keys.toString(), 3, keys.size());
-		Assert.assertFalse(keys.contains(_TEST_KEY_1));
-		Assert.assertTrue(keys.contains(_TEST_KEY_2));
-		Assert.assertTrue(keys.contains(_TEST_KEY_3));
-	}
-
-	@Test
 	public void testGetAttributeWithException() {
 		SessionReplicationHttpSessionWrapper
 			sessionReplicationHttpSessionWrapper =
 				new SessionReplicationHttpSessionWrapper(_testHttpSession);
 
-		_testHttpSession.setAttribute(
-			"SERIALIZED_ATTRIBUTE_PREFIX_test.value", new byte[0]);
+		_testHttpSession.setAttribute(_TEST_KEY_1, new byte[0]);
 
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
 				SessionReplicationHttpSessionWrapper.class.getName(),
 				Level.SEVERE)) {
 
-			sessionReplicationHttpSessionWrapper.getAttribute("test.value");
+			sessionReplicationHttpSessionWrapper.getAttribute(_TEST_KEY_1);
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -145,8 +126,6 @@ public class SessionReplicationHttpSessionWrapperTest {
 			Assert.assertEquals(value, _testHttpSession.getAttribute(key));
 		}
 		else {
-			Assert.assertNull(_testHttpSession.getAttribute(key));
-
 			SessionReplicationHttpSessionWrapperTestValue
 				sessionReplicationHttpSessionWrapperTestValue =
 					(SessionReplicationHttpSessionWrapperTestValue)
