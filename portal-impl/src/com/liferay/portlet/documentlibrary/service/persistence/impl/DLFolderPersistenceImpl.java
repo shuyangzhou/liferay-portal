@@ -43,8 +43,11 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -14149,6 +14152,8 @@ public class DLFolderPersistenceImpl
 			dlFolder);
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the document library folders in the entity cache if it is enabled.
 	 *
@@ -14156,6 +14161,13 @@ public class DLFolderPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<DLFolder> dlFolders) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (dlFolders.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (DLFolder dlFolder : dlFolders) {
 			if (dlFolder.getCtCollectionId() != 0) {
 				continue;
@@ -15270,6 +15282,9 @@ public class DLFolderPersistenceImpl
 	 * Initializes the document library folder persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		dlFolderToDLFileEntryTypeTableMapper =
 			TableMapperFactory.getTableMapper(
 				"DLFileEntryTypes_DLFolders", "companyId", "folderId",
