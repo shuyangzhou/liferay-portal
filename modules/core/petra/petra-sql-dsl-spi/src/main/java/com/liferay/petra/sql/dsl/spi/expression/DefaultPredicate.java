@@ -14,11 +14,14 @@
 
 package com.liferay.petra.sql.dsl.spi.expression;
 
+import com.liferay.petra.sql.dsl.ast.ASTNode;
 import com.liferay.petra.sql.dsl.ast.ASTNodeListener;
 import com.liferay.petra.sql.dsl.expression.Expression;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.sql.dsl.spi.ast.BaseASTNode;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -83,18 +86,47 @@ public class DefaultPredicate
 	protected void doToSQL(
 		Consumer<String> consumer, ASTNodeListener astNodeListener) {
 
-		if (_wrapParentheses) {
-			consumer.accept("(");
-		}
+		Deque<ASTNode> deque = new LinkedList<>();
 
-		_leftExpression.toSQL(consumer, astNodeListener);
+		deque.push(this);
 
-		consumer.accept(_operand.getStringWithSpaces());
+		ASTNode astNode = null;
 
-		_rightExpression.toSQL(consumer, astNodeListener);
+		while ((astNode = deque.poll()) != null) {
+			if (astNode instanceof DefaultPredicate) {
+				DefaultPredicate defaultPredicate = (DefaultPredicate)astNode;
 
-		if (_wrapParentheses) {
-			consumer.accept(")");
+				if (defaultPredicate.isWrapParentheses()) {
+					consumer.accept("(");
+
+					Expression<?> leftExpression =
+						defaultPredicate.getLeftExpression();
+
+					leftExpression.toSQL(consumer, astNodeListener);
+
+					Operand operand = defaultPredicate.getOperand();
+
+					consumer.accept(operand.getStringWithSpaces());
+
+					Expression<?> rightExpression =
+						defaultPredicate.getRightExpression();
+
+					rightExpression.toSQL(consumer, astNodeListener);
+
+					consumer.accept(")");
+				}
+				else {
+					deque.push(defaultPredicate.getRightExpression());
+
+					deque.push(
+						new OperandASTNode(defaultPredicate.getOperand()));
+
+					deque.push(defaultPredicate.getLeftExpression());
+				}
+			}
+			else {
+				astNode.toSQL(consumer, astNodeListener);
+			}
 		}
 	}
 
@@ -112,5 +144,22 @@ public class DefaultPredicate
 	private final Operand _operand;
 	private final Expression<?> _rightExpression;
 	private final boolean _wrapParentheses;
+
+	private static class OperandASTNode implements ASTNode {
+
+		@Override
+		public void toSQL(
+			Consumer<String> consumer, ASTNodeListener astNodeListener) {
+
+			consumer.accept(_operand.getStringWithSpaces());
+		}
+
+		private OperandASTNode(Operand operand) {
+			_operand = operand;
+		}
+
+		private final Operand _operand;
+
+	}
 
 }
