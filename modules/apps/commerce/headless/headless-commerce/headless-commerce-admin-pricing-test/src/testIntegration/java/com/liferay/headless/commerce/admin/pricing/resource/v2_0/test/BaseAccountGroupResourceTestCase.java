@@ -332,6 +332,23 @@ public abstract class BaseAccountGroupResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		AccountGroup accountGroup, List<AccountGroup> accountGroups) {
+
+		boolean contains = false;
+
+		for (AccountGroup item : accountGroups) {
+			if (equals(accountGroup, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			accountGroups + " does not contain " + accountGroup, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

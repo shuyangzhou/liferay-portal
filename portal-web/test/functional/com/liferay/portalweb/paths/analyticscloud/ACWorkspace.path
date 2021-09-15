@@ -32,6 +32,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>WORKSPACE_ERROR_DESCRIPTION</td>
+	<td>//div[contains(@class,'sheet-section description')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FARO_DEMO_WORKSPACE</td>
 	<td>//*[contains(@class, 'workspace-link')]</td>
 	<td></td>

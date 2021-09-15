@@ -113,8 +113,8 @@ public class ObjectFieldCacheModel
 		sb.append(label);
 		sb.append(", name=");
 		sb.append(name);
-		sb.append(", relationship=");
-		sb.append(relationship);
+		sb.append(", relationshipType=");
+		sb.append(relationshipType);
 		sb.append(", required=");
 		sb.append(required);
 		sb.append(", type=");
@@ -203,7 +203,13 @@ public class ObjectFieldCacheModel
 			objectFieldImpl.setName(name);
 		}
 
-		objectFieldImpl.setRelationship(relationship);
+		if (relationshipType == null) {
+			objectFieldImpl.setRelationshipType("");
+		}
+		else {
+			objectFieldImpl.setRelationshipType(relationshipType);
+		}
+
 		objectFieldImpl.setRequired(required);
 
 		if (type == null) {
@@ -244,8 +250,7 @@ public class ObjectFieldCacheModel
 		indexedLanguageId = objectInput.readUTF();
 		label = objectInput.readUTF();
 		name = objectInput.readUTF();
-
-		relationship = objectInput.readBoolean();
+		relationshipType = objectInput.readUTF();
 
 		required = objectInput.readBoolean();
 		type = objectInput.readUTF();
@@ -321,7 +326,12 @@ public class ObjectFieldCacheModel
 			objectOutput.writeUTF(name);
 		}
 
-		objectOutput.writeBoolean(relationship);
+		if (relationshipType == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(relationshipType);
+		}
 
 		objectOutput.writeBoolean(required);
 
@@ -350,7 +360,7 @@ public class ObjectFieldCacheModel
 	public String indexedLanguageId;
 	public String label;
 	public String name;
-	public boolean relationship;
+	public String relationshipType;
 	public boolean required;
 	public String type;
 

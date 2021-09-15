@@ -17,8 +17,11 @@ package com.liferay.source.formatter.checks;
 import com.liferay.source.formatter.checks.comparator.ElementComparator;
 import com.liferay.source.formatter.checks.util.SourceUtil;
 
+import java.util.List;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.Element;
 
 /**
  * @author Hugo Huijser
@@ -44,9 +47,19 @@ public class XMLLog4jFileCheck extends BaseFileCheck {
 
 		Document document = SourceUtil.readXML(content);
 
+		Element rootElement = document.getRootElement();
+
 		checkElementOrder(
-			fileName, document.getRootElement(), "category", null,
+			fileName, rootElement, "category", null,
 			new ElementComparator(true));
+
+		for (Element loggerElement :
+				(List<Element>)rootElement.elements("Loggers")) {
+
+			checkElementOrder(
+				fileName, loggerElement, "Logger", null,
+				new ElementComparator(true));
+		}
 	}
 
 }

@@ -163,10 +163,10 @@ public abstract class BaseObjectEntryResourceImpl
 			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
 		}
 	)
-	@Path("/object-entries/by-external-reference-code/{externalReferenceCode}")
+	@Path("/by-external-reference-code/{externalReferenceCode}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ObjectEntry")})
-	public void deleteObjectEntryByExternalReferenceCode(
+	public void deleteByExternalReferenceCode(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode")
 			String externalReferenceCode)
@@ -180,10 +180,10 @@ public abstract class BaseObjectEntryResourceImpl
 			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
 		}
 	)
-	@Path("/object-entries/by-external-reference-code/{externalReferenceCode}")
+	@Path("/by-external-reference-code/{externalReferenceCode}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ObjectEntry")})
-	public ObjectEntry getObjectEntryByExternalReferenceCode(
+	public ObjectEntry getByExternalReferenceCode(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode")
 			String externalReferenceCode)
@@ -199,11 +199,11 @@ public abstract class BaseObjectEntryResourceImpl
 			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
 		}
 	)
-	@Path("/object-entries/by-external-reference-code/{externalReferenceCode}")
+	@Path("/by-external-reference-code/{externalReferenceCode}")
 	@Produces({"application/json", "application/xml"})
 	@PUT
 	@Tags(value = {@Tag(name = "ObjectEntry")})
-	public ObjectEntry putObjectEntryByExternalReferenceCode(
+	public ObjectEntry putByExternalReferenceCode(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode")
 			String externalReferenceCode,
@@ -217,17 +217,18 @@ public abstract class BaseObjectEntryResourceImpl
 	@Override
 	@Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "siteId"),
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
 			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
 		}
 	)
 	@Path(
-		"/sites/{siteId}/object-entries/by-external-reference-code/{externalReferenceCode}"
+		"/scopes/{scopeKey}/by-external-reference-code/{externalReferenceCode}"
 	)
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ObjectEntry")})
-	public void deleteSiteObjectEntryByExternalReferenceCode(
-			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
+	public void deleteScopeScopeKeyByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true) @PathParam("scopeKey") String
+				scopeKey,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode")
 			String externalReferenceCode)
@@ -238,17 +239,18 @@ public abstract class BaseObjectEntryResourceImpl
 	@Override
 	@Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "siteId"),
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
 			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
 		}
 	)
 	@Path(
-		"/sites/{siteId}/object-entries/by-external-reference-code/{externalReferenceCode}"
+		"/scopes/{scopeKey}/by-external-reference-code/{externalReferenceCode}"
 	)
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ObjectEntry")})
-	public ObjectEntry getSiteObjectEntryByExternalReferenceCode(
-			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
+	public ObjectEntry getScopeScopeKeyByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true) @PathParam("scopeKey") String
+				scopeKey,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode")
 			String externalReferenceCode)
@@ -261,18 +263,19 @@ public abstract class BaseObjectEntryResourceImpl
 	@Override
 	@Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "siteId"),
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
 			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
 		}
 	)
 	@Path(
-		"/sites/{siteId}/object-entries/by-external-reference-code/{externalReferenceCode}"
+		"/scopes/{scopeKey}/by-external-reference-code/{externalReferenceCode}"
 	)
 	@Produces({"application/json", "application/xml"})
 	@PUT
 	@Tags(value = {@Tag(name = "ObjectEntry")})
-	public ObjectEntry putSiteObjectEntryByExternalReferenceCode(
-			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
+	public ObjectEntry putScopeScopeKeyByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true) @PathParam("scopeKey") String
+				scopeKey,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode")
 			String externalReferenceCode,
@@ -433,6 +436,50 @@ public abstract class BaseObjectEntryResourceImpl
 			vulcanBatchEngineImportTaskResource.putImportTask(
 				ObjectEntry.class.getName(), callbackURL, object)
 		).build();
+	}
+
+	@GET
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
+			@Parameter(in = ParameterIn.QUERY, name = "flatten"),
+			@Parameter(in = ParameterIn.QUERY, name = "search"),
+			@Parameter(in = ParameterIn.QUERY, name = "filter"),
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
+			@Parameter(in = ParameterIn.QUERY, name = "sort")
+		}
+	)
+	@Path("/scopes/{scopeKey}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public Page<ObjectEntry> getScopeScopeKeyPage(
+			@Parameter(hidden = true) @PathParam("scopeKey") String scopeKey,
+			@Parameter(hidden = true) @QueryParam("flatten") Boolean flatten,
+			@Parameter(hidden = true) @QueryParam("search") String search,
+			@Context com.liferay.portal.vulcan.aggregation.Aggregation
+				aggregation,
+			@Context Filter filter, @Context Pagination pagination,
+			@Context Sort[] sorts)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Consumes({"application/json", "application/xml"})
+	@Override
+	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "scopeKey")})
+	@Path("/scopes/{scopeKey}")
+	@POST
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry postScopeScopeKey(
+			@Parameter(hidden = true) @PathParam("scopeKey") String scopeKey,
+			ObjectEntry objectEntry)
+		throws Exception {
+
+		return new ObjectEntry();
 	}
 
 	@Override

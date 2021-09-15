@@ -310,6 +310,20 @@ public abstract class BaseSkuResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Sku sku, List<Sku> skus) {
+		boolean contains = false;
+
+		for (Sku item : skus) {
+			if (equals(sku, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(skus + " does not contain " + sku, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

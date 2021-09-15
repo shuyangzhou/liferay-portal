@@ -65,16 +65,6 @@ public class ObjectFieldLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.object.model.ObjectField addRelationshipObjectField(
-			long userId, long objectDefinitionId,
-			java.util.Map<java.util.Locale, String> labelMap, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _objectFieldLocalService.addRelationshipObjectField(
-			userId, objectDefinitionId, labelMap, name);
-	}
-
-	@Override
 	public com.liferay.object.model.ObjectField addSystemObjectField(
 			long userId, long objectDefinitionId, String dbColumnName,
 			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
@@ -139,10 +129,12 @@ public class ObjectFieldLocalServiceWrapper
 	 *
 	 * @param objectField the object field
 	 * @return the object field that was removed
+	 * @throws PortalException
 	 */
 	@Override
 	public com.liferay.object.model.ObjectField deleteObjectField(
-		com.liferay.object.model.ObjectField objectField) {
+			com.liferay.object.model.ObjectField objectField)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectFieldLocalService.deleteObjectField(objectField);
 	}
@@ -378,6 +370,14 @@ public class ObjectFieldLocalServiceWrapper
 		long objectDefinitionId) {
 
 		return _objectFieldLocalService.getObjectFields(objectDefinitionId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectField> getObjectFields(
+		long objectDefinitionId, String dbTableName) {
+
+		return _objectFieldLocalService.getObjectFields(
+			objectDefinitionId, dbTableName);
 	}
 
 	/**

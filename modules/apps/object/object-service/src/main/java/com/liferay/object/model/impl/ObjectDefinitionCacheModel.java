@@ -78,7 +78,7 @@ public class ObjectDefinitionCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -96,10 +96,14 @@ public class ObjectDefinitionCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", active=");
+		sb.append(active);
 		sb.append(", dbTableName=");
 		sb.append(dbTableName);
 		sb.append(", label=");
 		sb.append(label);
+		sb.append(", className=");
+		sb.append(className);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", panelAppOrder=");
@@ -163,6 +167,8 @@ public class ObjectDefinitionCacheModel
 			objectDefinitionImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		objectDefinitionImpl.setActive(active);
+
 		if (dbTableName == null) {
 			objectDefinitionImpl.setDBTableName("");
 		}
@@ -175,6 +181,13 @@ public class ObjectDefinitionCacheModel
 		}
 		else {
 			objectDefinitionImpl.setLabel(label);
+		}
+
+		if (className == null) {
+			objectDefinitionImpl.setClassName("");
+		}
+		else {
+			objectDefinitionImpl.setClassName(className);
 		}
 
 		if (name == null) {
@@ -249,8 +262,11 @@ public class ObjectDefinitionCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
+		active = objectInput.readBoolean();
 		dbTableName = objectInput.readUTF();
 		label = objectInput.readUTF();
+		className = objectInput.readUTF();
 		name = objectInput.readUTF();
 		panelAppOrder = objectInput.readUTF();
 		panelCategoryKey = objectInput.readUTF();
@@ -293,6 +309,8 @@ public class ObjectDefinitionCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		objectOutput.writeBoolean(active);
+
 		if (dbTableName == null) {
 			objectOutput.writeUTF("");
 		}
@@ -305,6 +323,13 @@ public class ObjectDefinitionCacheModel
 		}
 		else {
 			objectOutput.writeUTF(label);
+		}
+
+		if (className == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(className);
 		}
 
 		if (name == null) {
@@ -371,8 +396,10 @@ public class ObjectDefinitionCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public boolean active;
 	public String dbTableName;
 	public String label;
+	public String className;
 	public String name;
 	public String panelAppOrder;
 	public String panelCategoryKey;

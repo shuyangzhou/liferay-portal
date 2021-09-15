@@ -194,6 +194,20 @@ public abstract class BaseKeywordResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(Keyword keyword, List<Keyword> keywords) {
+		boolean contains = false;
+
+		for (Keyword item : keywords) {
+			if (equals(keyword, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(keywords + " does not contain " + keyword, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

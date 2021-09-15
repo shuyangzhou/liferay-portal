@@ -30,6 +30,7 @@ import com.liferay.object.admin.rest.client.resource.v1_0.ObjectFieldResource;
 import com.liferay.object.admin.rest.client.serdes.v1_0.ObjectFieldSerDes;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -194,17 +195,17 @@ public abstract class BaseObjectFieldResourceTestCase {
 
 	@Test
 	public void testGetObjectDefinitionObjectFieldsPage() throws Exception {
-		Page<ObjectField> page =
-			objectFieldResource.getObjectDefinitionObjectFieldsPage(
-				testGetObjectDefinitionObjectFieldsPage_getObjectDefinitionId(),
-				RandomTestUtil.randomString(), Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long objectDefinitionId =
 			testGetObjectDefinitionObjectFieldsPage_getObjectDefinitionId();
 		Long irrelevantObjectDefinitionId =
 			testGetObjectDefinitionObjectFieldsPage_getIrrelevantObjectDefinitionId();
+
+		Page<ObjectField> page =
+			objectFieldResource.getObjectDefinitionObjectFieldsPage(
+				objectDefinitionId, RandomTestUtil.randomString(),
+				Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantObjectDefinitionId != null) {
 			ObjectField irrelevantObjectField =
@@ -232,7 +233,7 @@ public abstract class BaseObjectFieldResourceTestCase {
 				objectDefinitionId, randomObjectField());
 
 		page = objectFieldResource.getObjectDefinitionObjectFieldsPage(
-			objectDefinitionId, null, Pagination.of(1, 2));
+			objectDefinitionId, null, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -240,6 +241,10 @@ public abstract class BaseObjectFieldResourceTestCase {
 			Arrays.asList(objectField1, objectField2),
 			(List<ObjectField>)page.getItems());
 		assertValid(page);
+
+		objectFieldResource.deleteObjectField(objectField1.getId());
+
+		objectFieldResource.deleteObjectField(objectField2.getId());
 	}
 
 	@Test
@@ -331,6 +336,63 @@ public abstract class BaseObjectFieldResourceTestCase {
 		return objectFieldResource.postObjectDefinitionObjectField(
 			testGetObjectDefinitionObjectFieldsPage_getObjectDefinitionId(),
 			objectField);
+	}
+
+	@Test
+	public void testDeleteObjectField() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		ObjectField objectField = testDeleteObjectField_addObjectField();
+
+		assertHttpResponseStatusCode(
+			204,
+			objectFieldResource.deleteObjectFieldHttpResponse(
+				objectField.getId()));
+
+		assertHttpResponseStatusCode(
+			404,
+			objectFieldResource.getObjectFieldHttpResponse(
+				objectField.getId()));
+
+		assertHttpResponseStatusCode(
+			404, objectFieldResource.getObjectFieldHttpResponse(0L));
+	}
+
+	protected ObjectField testDeleteObjectField_addObjectField()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testGraphQLDeleteObjectField() throws Exception {
+		ObjectField objectField = testGraphQLObjectField_addObjectField();
+
+		Assert.assertTrue(
+			JSONUtil.getValueAsBoolean(
+				invokeGraphQLMutation(
+					new GraphQLField(
+						"deleteObjectField",
+						new HashMap<String, Object>() {
+							{
+								put("objectFieldId", objectField.getId());
+							}
+						})),
+				"JSONObject/data", "Object/deleteObjectField"));
+
+		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
+			invokeGraphQLQuery(
+				new GraphQLField(
+					"objectField",
+					new HashMap<String, Object>() {
+						{
+							put("objectFieldId", objectField.getId());
+						}
+					},
+					new GraphQLField("id"))),
+			"JSONArray/errors");
+
+		Assert.assertTrue(errorsJSONArray.length() > 0);
 	}
 
 	@Test
@@ -450,6 +512,23 @@ public abstract class BaseObjectFieldResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ObjectField objectField, List<ObjectField> objectFields) {
+
+		boolean contains = false;
+
+		for (ObjectField item : objectFields) {
+			if (equals(objectField, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			objectFields + " does not contain " + objectField, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

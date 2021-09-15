@@ -248,6 +248,28 @@ public abstract class BaseProductShippingConfigurationResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(
+		ProductShippingConfiguration productShippingConfiguration,
+		List<ProductShippingConfiguration> productShippingConfigurations) {
+
+		boolean contains = false;
+
+		for (ProductShippingConfiguration item :
+				productShippingConfigurations) {
+
+			if (equals(productShippingConfiguration, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productShippingConfigurations + " does not contain " +
+				productShippingConfiguration,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

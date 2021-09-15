@@ -315,6 +315,25 @@ public abstract class BaseShippingAddressResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		ShippingAddress shippingAddress,
+		List<ShippingAddress> shippingAddresses) {
+
+		boolean contains = false;
+
+		for (ShippingAddress item : shippingAddresses) {
+			if (equals(shippingAddress, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			shippingAddresses + " does not contain " + shippingAddress,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

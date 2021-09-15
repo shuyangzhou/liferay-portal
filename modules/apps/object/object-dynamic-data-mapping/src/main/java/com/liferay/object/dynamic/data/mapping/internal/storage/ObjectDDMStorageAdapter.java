@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.exception.StorageException;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
@@ -35,13 +36,14 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
-import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -137,19 +139,23 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			long objectDefinitionId = _getObjectDefinitionId(
 				ddmStorageAdapterSaveRequest);
 
+			ObjectDefinition objectDefinition =
+				_objectDefinitionLocalService.getObjectDefinition(
+					objectDefinitionId);
+
 			ObjectEntry addObjectEntry = _objectEntryManager.addObjectEntry(
 				_getDTOConverterContext(null, user, ddmForm.getDefaultLocale()),
-				user.getUserId(),
-				_getGroupId(ddmStorageAdapterSaveRequest, objectDefinitionId),
-				objectDefinitionId,
+				user.getUserId(), objectDefinition,
 				new ObjectEntry() {
 					{
 						properties = _getObjectEntryProperties(
+							ddmForm.getDDMFormFieldsReferencesMap(true),
 							ddmFormValues.getDDMFormFieldValues(),
 							_objectFieldLocalService.getObjectFields(
 								objectDefinitionId));
 					}
-				});
+				},
+				String.valueOf(ddmStorageAdapterSaveRequest.getScopeGroupId()));
 
 			return DDMStorageAdapterSaveResponse.Builder.newBuilder(
 				addObjectEntry.getId()
@@ -242,26 +248,6 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			null, null, objectEntryId, locale, null, user);
 	}
 
-	private long _getGroupId(
-			DDMStorageAdapterSaveRequest ddmStorageAdapterSaveRequest,
-			long objectDefinitionId)
-		throws Exception {
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId);
-
-		ObjectScopeProvider objectScopeProvider =
-			_objectScopeProviderRegistry.getObjectScopeProvider(
-				objectDefinition.getScope());
-
-		if (objectScopeProvider.isGroupAware()) {
-			return ddmStorageAdapterSaveRequest.getScopeGroupId();
-		}
-
-		return 0;
-	}
-
 	private long _getObjectDefinitionId(
 			DDMStorageAdapterSaveRequest ddmStorageAdapterSaveRequest)
 		throws Exception {
@@ -276,9 +262,10 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 	}
 
 	private Map<String, Object> _getObjectEntryProperties(
+			Map<String, DDMFormField> ddmFormFieldsMap,
 			List<DDMFormFieldValue> ddmFormFieldValues,
 			List<ObjectField> objectFields)
-		throws ParseException {
+		throws JSONException, ParseException {
 
 		Map<String, Object> properties = new HashMap<>();
 
@@ -294,6 +281,7 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 
 				properties.putAll(
 					_getObjectEntryProperties(
+						ddmFormFieldsMap,
 						ddmFormFieldValue.getNestedDDMFormFieldValues(),
 						objectFields));
 			}
@@ -303,14 +291,11 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 
 				Value value = ddmFormFieldValue.getValue();
 
-				Map<Locale, String> values = value.getValues();
-
 				properties.put(
 					objectFieldName,
-					_getValue(
-						value.getDefaultLocale(),
-						objectFieldTypes.get(objectFieldName),
-						values.get(value.getDefaultLocale())));
+					_getOptionReferenceValue(
+						ddmFormFieldValue, ddmFormFieldsMap, objectFieldName,
+						objectFieldTypes, value));
 			}
 		}
 
@@ -333,6 +318,74 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 		}
 	}
 
+	private String _getOptionReferenceValue(
+			DDMFormFieldValue ddmFormFieldValue,
+			Map<String, DDMFormField> ddmFormFieldsMap, String objectFieldName,
+			Map<String, String> objectFieldTypes, Value value)
+		throws JSONException, ParseException {
+
+		DDMFormField ddmFormField = ddmFormFieldsMap.get(
+			ddmFormFieldValue.getName());
+
+		DDMFormFieldOptions ddmFormFieldOptions =
+			(DDMFormFieldOptions)ddmFormField.getProperty("options");
+
+		if (StringUtil.equals(
+				ddmFormFieldValue.getType(),
+				DDMFormFieldTypeConstants.CHECKBOX_MULTIPLE) ||
+			StringUtil.equals(
+				ddmFormFieldValue.getType(),
+				DDMFormFieldTypeConstants.SELECT)) {
+
+			JSONArray optionValueJSONArray = _jsonFactory.createJSONArray(
+				value.getString(value.getDefaultLocale()));
+
+			if (StringUtil.equals(
+					ddmFormFieldValue.getType(),
+					DDMFormFieldTypeConstants.SELECT)) {
+
+				return ddmFormFieldOptions.getOptionReference(
+					(String)optionValueJSONArray.get(0));
+			}
+
+			JSONArray optionReferencesValuesJSONArray =
+				JSONFactoryUtil.createJSONArray();
+
+			Map<String, String> optionsReferences =
+				ddmFormFieldOptions.getOptionsReferences();
+
+			for (Map.Entry<String, String> entry :
+					optionsReferences.entrySet()) {
+
+				for (Object optionValue : optionValueJSONArray) {
+					if (StringUtil.equals(
+							entry.getKey(), optionValue.toString())) {
+
+						optionReferencesValuesJSONArray.put(entry.getValue());
+					}
+				}
+			}
+
+			return optionReferencesValuesJSONArray.toString();
+		}
+		else if (StringUtil.equals(
+					ddmFormFieldValue.getType(),
+					DDMFormFieldTypeConstants.RADIO)) {
+
+			return ddmFormFieldOptions.getOptionReference(
+				value.getString(value.getDefaultLocale()));
+		}
+		else {
+			Map<Locale, String> values = value.getValues();
+
+			return String.valueOf(
+				_getValue(
+					value.getDefaultLocale(),
+					objectFieldTypes.get(objectFieldName),
+					values.get(value.getDefaultLocale())));
+		}
+	}
+
 	private Object _getValue(
 			Locale locale, String objectFieldType, String value)
 		throws ParseException {
@@ -347,6 +400,10 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			return GetterUtil.getBoolean(value);
 		}
 		else if (Objects.equals(objectFieldType, "Double")) {
+			if (value.isEmpty()) {
+				return GetterUtil.DEFAULT_DOUBLE;
+			}
+
 			NumberFormat numberFormat = NumberFormat.getInstance(locale);
 
 			return GetterUtil.getDouble(numberFormat.parse(value));

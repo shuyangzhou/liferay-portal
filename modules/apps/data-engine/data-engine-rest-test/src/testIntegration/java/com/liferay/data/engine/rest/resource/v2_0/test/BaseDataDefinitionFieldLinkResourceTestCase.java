@@ -196,18 +196,17 @@ public abstract class BaseDataDefinitionFieldLinkResourceTestCase {
 	public void testGetDataDefinitionDataDefinitionFieldLinkPage()
 		throws Exception {
 
-		Page<DataDefinitionFieldLink> page =
-			dataDefinitionFieldLinkResource.
-				getDataDefinitionDataDefinitionFieldLinkPage(
-					testGetDataDefinitionDataDefinitionFieldLinkPage_getDataDefinitionId(),
-					RandomTestUtil.randomString());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long dataDefinitionId =
 			testGetDataDefinitionDataDefinitionFieldLinkPage_getDataDefinitionId();
 		Long irrelevantDataDefinitionId =
 			testGetDataDefinitionDataDefinitionFieldLinkPage_getIrrelevantDataDefinitionId();
+
+		Page<DataDefinitionFieldLink> page =
+			dataDefinitionFieldLinkResource.
+				getDataDefinitionDataDefinitionFieldLinkPage(
+					dataDefinitionId, RandomTestUtil.randomString());
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantDataDefinitionId != null) {
 			DataDefinitionFieldLink irrelevantDataDefinitionFieldLink =
@@ -272,6 +271,26 @@ public abstract class BaseDataDefinitionFieldLinkResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	protected void assertContains(
+		DataDefinitionFieldLink dataDefinitionFieldLink,
+		List<DataDefinitionFieldLink> dataDefinitionFieldLinks) {
+
+		boolean contains = false;
+
+		for (DataDefinitionFieldLink item : dataDefinitionFieldLinks) {
+			if (equals(dataDefinitionFieldLink, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataDefinitionFieldLinks + " does not contain " +
+				dataDefinitionFieldLink,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

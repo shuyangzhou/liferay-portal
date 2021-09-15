@@ -20,6 +20,7 @@ import com.liferay.object.exception.DuplicateObjectFieldException;
 import com.liferay.object.exception.ObjectFieldLabelException;
 import com.liferay.object.exception.ObjectFieldNameException;
 import com.liferay.object.exception.ObjectFieldTypeException;
+import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.exception.ReservedObjectFieldException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -27,6 +28,8 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
+import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -34,7 +37,10 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.sql.Connection;
+
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -268,6 +274,149 @@ public class ObjectFieldLocalServiceTest {
 	}
 
 	@Test
+	public void testDeleteObjectField1() throws Exception {
+		ObjectField ableObjectField = ObjectFieldUtil.createObjectField(
+			"able", "String");
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.addCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				LocalizedMapUtil.getLocalizedMap("Test"), "Test", null, null,
+				LocalizedMapUtil.getLocalizedMap("Tests"),
+				ObjectDefinitionConstants.SCOPE_COMPANY,
+				Collections.singletonList(ableObjectField));
+
+		ableObjectField = _objectFieldLocalService.fetchObjectField(
+			objectDefinition.getObjectDefinitionId(), "able");
+
+		Assert.assertNotNull(ableObjectField);
+
+		Assert.assertFalse(
+			_hasColumn(objectDefinition.getDBTableName(), "able_"));
+
+		_objectFieldLocalService.deleteObjectField(
+			ableObjectField.getObjectFieldId());
+
+		ableObjectField = _objectFieldLocalService.fetchObjectField(
+			objectDefinition.getObjectDefinitionId(), "able");
+
+		Assert.assertNull(ableObjectField);
+
+		Assert.assertFalse(
+			_hasColumn(objectDefinition.getDBTableName(), "able_"));
+
+		ableObjectField = _objectFieldLocalService.addCustomObjectField(
+			TestPropsValues.getUserId(), 0,
+			objectDefinition.getObjectDefinitionId(), false, true, "",
+			LocalizedMapUtil.getLocalizedMap("able"), "able", false, "String");
+
+		Assert.assertNotNull(ableObjectField);
+
+		Assert.assertFalse(
+			_hasColumn(objectDefinition.getDBTableName(), "able_"));
+
+		_objectDefinitionLocalService.publishCustomObjectDefinition(
+			TestPropsValues.getUserId(),
+			objectDefinition.getObjectDefinitionId());
+
+		Assert.assertTrue(
+			_hasColumn(objectDefinition.getDBTableName(), "able_"));
+
+		_objectFieldLocalService.addCustomObjectField(
+			TestPropsValues.getUserId(), 0,
+			objectDefinition.getObjectDefinitionId(), false, true, "",
+			LocalizedMapUtil.getLocalizedMap("baker"), "baker", false,
+			"String");
+
+		ObjectField bakerObjectField =
+			_objectFieldLocalService.fetchObjectField(
+				objectDefinition.getObjectDefinitionId(), "baker");
+
+		Assert.assertNotNull(bakerObjectField);
+
+		Assert.assertTrue(
+			_hasColumn(objectDefinition.getExtensionDBTableName(), "baker_"));
+
+		try {
+			_objectFieldLocalService.deleteObjectField(
+				ableObjectField.getObjectFieldId());
+
+			Assert.fail();
+		}
+		catch (RequiredObjectFieldException requiredObjectFieldException) {
+			Assert.assertNotNull(requiredObjectFieldException);
+		}
+
+		Assert.assertTrue(
+			_hasColumn(objectDefinition.getDBTableName(), "able_"));
+
+		_objectFieldLocalService.deleteObjectField(
+			bakerObjectField.getObjectFieldId());
+
+		Assert.assertFalse(
+			_hasColumn(objectDefinition.getExtensionDBTableName(), "baker_"));
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition.getObjectDefinitionId());
+	}
+
+	@Test
+	public void testDeleteObjectField2() throws Exception {
+		ObjectField ableObjectField = ObjectFieldUtil.createObjectField(
+			"able", "String");
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.addSystemObjectDefinition(
+				TestPropsValues.getUserId(), "Test", null,
+				LocalizedMapUtil.getLocalizedMap("Test"), "Test", null, null,
+				LocalizedMapUtil.getLocalizedMap("Tests"),
+				ObjectDefinitionConstants.SCOPE_COMPANY, 1,
+				Collections.singletonList(ableObjectField));
+
+		ableObjectField = _objectFieldLocalService.fetchObjectField(
+			objectDefinition.getObjectDefinitionId(), "able");
+
+		Assert.assertNotNull(ableObjectField);
+
+		Assert.assertFalse(
+			_hasColumn(objectDefinition.getDBTableName(), "able_"));
+
+		try {
+			_objectFieldLocalService.deleteObjectField(
+				ableObjectField.getObjectFieldId());
+
+			Assert.fail();
+		}
+		catch (RequiredObjectFieldException requiredObjectFieldException) {
+			Assert.assertNotNull(requiredObjectFieldException);
+		}
+
+		_objectFieldLocalService.addCustomObjectField(
+			TestPropsValues.getUserId(), 0,
+			objectDefinition.getObjectDefinitionId(), false, true, "",
+			LocalizedMapUtil.getLocalizedMap("baker"), "baker", false,
+			"String");
+
+		ObjectField bakerObjectField =
+			_objectFieldLocalService.fetchObjectField(
+				objectDefinition.getObjectDefinitionId(), "baker");
+
+		Assert.assertNotNull(bakerObjectField);
+
+		Assert.assertTrue(
+			_hasColumn(objectDefinition.getExtensionDBTableName(), "baker_"));
+
+		_objectFieldLocalService.deleteObjectField(
+			bakerObjectField.getObjectFieldId());
+
+		Assert.assertFalse(
+			_hasColumn(objectDefinition.getExtensionDBTableName(), "baker_"));
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition.getObjectDefinitionId());
+	}
+
+	@Test
 	public void testUpdateCustomObjectField() throws Exception {
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
@@ -347,6 +496,16 @@ public class ObjectFieldLocalServiceTest {
 			objectDefinition.getObjectDefinitionId());
 	}
 
+	private boolean _hasColumn(String tableName, String columnName)
+		throws Exception {
+
+		try (Connection connection = DataAccess.getConnection()) {
+			DBInspector dbInspector = new DBInspector(connection);
+
+			return dbInspector.hasColumn(tableName, columnName);
+		}
+	}
+
 	private void _testAddSystemObjectField(ObjectField... objectFields)
 		throws Exception {
 
@@ -355,7 +514,7 @@ public class ObjectFieldLocalServiceTest {
 		try {
 			objectDefinition =
 				_objectDefinitionLocalService.addSystemObjectDefinition(
-					TestPropsValues.getUserId(), null,
+					TestPropsValues.getUserId(), "Test", null,
 					LocalizedMapUtil.getLocalizedMap("Test"), "Test", null,
 					null, LocalizedMapUtil.getLocalizedMap("Tests"),
 					ObjectDefinitionConstants.SCOPE_COMPANY, 1,

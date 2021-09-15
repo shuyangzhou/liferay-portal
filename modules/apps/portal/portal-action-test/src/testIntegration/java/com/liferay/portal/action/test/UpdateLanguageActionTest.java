@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.model.VirtualLayoutConstants;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -201,6 +202,22 @@ public class UpdateLanguageActionTest {
 				_getFriendlyURLSeparatorPart(_targetLocale), "?queryString"),
 			updateLanguageAction.getRedirect(
 				mockHttpServletRequest, themeDisplay, _targetLocale));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetRedirectWithInvalidRedirectParameter() throws Exception {
+		UpdateLanguageAction updateLanguageAction = new UpdateLanguageAction();
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		mockHttpServletRequest.setParameter(
+			"redirect",
+			RandomTestUtil.randomString() + " " +
+				RandomTestUtil.randomString());
+
+		updateLanguageAction.getRedirect(
+			mockHttpServletRequest, new ThemeDisplay(), _targetLocale);
 	}
 
 	private void _assertRedirect(

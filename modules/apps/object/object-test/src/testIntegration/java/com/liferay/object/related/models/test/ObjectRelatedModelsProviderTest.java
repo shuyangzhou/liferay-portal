@@ -17,6 +17,7 @@ package com.liferay.object.related.models.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.exception.ObjectEntryValuesException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
@@ -122,7 +123,7 @@ public class ObjectRelatedModelsProviderTest {
 		ObjectField objectField = _objectFieldLocalService.getObjectField(
 			objectRelationship.getObjectFieldId2());
 
-		_objectEntryLocalService.addObjectEntry(
+		ObjectEntry objectEntryA = _objectEntryLocalService.addObjectEntry(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition2.getObjectDefinitionId(),
 			Collections.<String, Serializable>emptyMap(),
@@ -136,7 +137,7 @@ public class ObjectRelatedModelsProviderTest {
 
 		Assert.assertEquals(objectEntries.toString(), 0, objectEntries.size());
 
-		_objectEntryLocalService.addObjectEntry(
+		ObjectEntry objectEntryB = _objectEntryLocalService.addObjectEntry(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition2.getObjectDefinitionId(),
 			HashMapBuilder.<String, Serializable>put(
@@ -151,11 +152,43 @@ public class ObjectRelatedModelsProviderTest {
 
 		Assert.assertEquals(objectEntries.toString(), 1, objectEntries.size());
 
-		// TODO Should this throw a constraint violation?
+		try {
+			_objectEntryLocalService.addObjectEntry(
+				TestPropsValues.getUserId(), 0,
+				_objectDefinition2.getObjectDefinitionId(),
+				HashMapBuilder.<String, Serializable>put(
+					objectField.getName(), objectEntry1.getObjectEntryId()
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
 
-		_objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition2.getObjectDefinitionId(),
+			Assert.fail();
+		}
+		catch (ObjectEntryValuesException objectEntryValuesException) {
+			Assert.assertTrue(
+				StringUtil.startsWith(
+					objectEntryValuesException.getMessage(),
+					"One to one constraint violation for "));
+		}
+
+		try {
+			_objectEntryLocalService.updateObjectEntry(
+				TestPropsValues.getUserId(), objectEntryA.getObjectEntryId(),
+				HashMapBuilder.<String, Serializable>put(
+					objectField.getName(), objectEntry1.getObjectEntryId()
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			Assert.fail();
+		}
+		catch (ObjectEntryValuesException objectEntryValuesException) {
+			Assert.assertTrue(
+				StringUtil.startsWith(
+					objectEntryValuesException.getMessage(),
+					"One to one constraint violation for "));
+		}
+
+		_objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntryB.getObjectEntryId(),
 			HashMapBuilder.<String, Serializable>put(
 				objectField.getName(), objectEntry1.getObjectEntryId()
 			).build(),
@@ -167,6 +200,26 @@ public class ObjectRelatedModelsProviderTest {
 			QueryUtil.ALL_POS);
 
 		Assert.assertEquals(objectEntries.toString(), 1, objectEntries.size());
+		Assert.assertEquals(
+			objectEntries,
+			_objectEntryLocalService.getOneToManyRelatedObjectEntries(
+				0, objectRelationship.getObjectRelationshipId(),
+				objectEntry1.getObjectEntryId(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS));
+
+		_objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntryB.getObjectEntryId(),
+			HashMapBuilder.<String, Serializable>put(
+				objectField.getName(), 0
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		objectEntries = objectRelatedModelsProvider.getRelatedModels(
+			0, objectRelationship.getObjectRelationshipId(),
+			objectEntry1.getObjectEntryId(), QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
+
+		Assert.assertEquals(objectEntries.toString(), 0, objectEntries.size());
 
 		_objectRelationshipLocalService.deleteObjectRelationship(
 			objectRelationship);
@@ -201,7 +254,7 @@ public class ObjectRelatedModelsProviderTest {
 		ObjectField objectField = _objectFieldLocalService.getObjectField(
 			objectRelationship.getObjectFieldId2());
 
-		_objectEntryLocalService.addObjectEntry(
+		ObjectEntry objectEntryA = _objectEntryLocalService.addObjectEntry(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition2.getObjectDefinitionId(),
 			Collections.<String, Serializable>emptyMap(),
@@ -215,7 +268,7 @@ public class ObjectRelatedModelsProviderTest {
 
 		Assert.assertEquals(objectEntries.toString(), 0, objectEntries.size());
 
-		_objectEntryLocalService.addObjectEntry(
+		ObjectEntry objectEntryB = _objectEntryLocalService.addObjectEntry(
 			TestPropsValues.getUserId(), 0,
 			_objectDefinition2.getObjectDefinitionId(),
 			HashMapBuilder.<String, Serializable>put(
@@ -235,6 +288,34 @@ public class ObjectRelatedModelsProviderTest {
 			_objectDefinition2.getObjectDefinitionId(),
 			HashMapBuilder.<String, Serializable>put(
 				objectField.getName(), objectEntry1.getObjectEntryId()
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		objectEntries = objectRelatedModelsProvider.getRelatedModels(
+			0, objectRelationship.getObjectRelationshipId(),
+			objectEntry1.getObjectEntryId(), QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
+
+		Assert.assertEquals(objectEntries.toString(), 2, objectEntries.size());
+
+		_objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntryA.getObjectEntryId(),
+			HashMapBuilder.<String, Serializable>put(
+				objectField.getName(), objectEntry1.getObjectEntryId()
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		objectEntries = objectRelatedModelsProvider.getRelatedModels(
+			0, objectRelationship.getObjectRelationshipId(),
+			objectEntry1.getObjectEntryId(), QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
+
+		Assert.assertEquals(objectEntries.toString(), 3, objectEntries.size());
+
+		_objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntryB.getObjectEntryId(),
+			HashMapBuilder.<String, Serializable>put(
+				objectField.getName(), 0
 			).build(),
 			ServiceContextTestUtil.getServiceContext());
 
@@ -315,6 +396,8 @@ public class ObjectRelatedModelsProviderTest {
 			QueryUtil.ALL_POS);
 
 		Assert.assertEquals(objectEntries.toString(), 2, objectEntries.size());
+
+		// TODO deleteObjectRelationshipMappingTableValues
 
 		_objectRelationshipLocalService.deleteObjectRelationship(
 			objectRelationship);

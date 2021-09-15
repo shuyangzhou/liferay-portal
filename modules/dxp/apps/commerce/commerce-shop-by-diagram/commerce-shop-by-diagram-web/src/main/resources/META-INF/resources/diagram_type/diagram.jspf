@@ -16,36 +16,38 @@
 
 <%@ include file="/init.jsp" %>
 
-<div id="shop-by-diagram" />
-
-<react:component
-	module="js/Diagram"
-	props='<%=
-		HashMapBuilder.<String, Object>put(
-			"datasetDisplayId", CSDiagramDataSetConstants.CS_DIAGRAM_MAPPED_PRODUCTS_DATA_SET_KEY
-		).put(
-			"enablePanZoom", true
-		).put(
-			"enableResetZoom", true
-		).put(
-			"imageSettings",
-			JSONUtil.put(
-				"height", "500px"
+<div id="shop-by-diagram">
+	<react:component
+		module="js/Diagram"
+		props='<%=
+			HashMapBuilder.<String, Object>put(
+				"datasetDisplayId", CSDiagramDataSetConstants.CS_DIAGRAM_MAPPED_PRODUCTS_DATA_SET_KEY
 			).put(
-				"width", "100%"
-			)
-		).put(
-			"imageURL", cpDefinitionDiagramSettingDisplayContext.getImageURL()
-		).put(
-			"isAdmin", true
-		).put(
-			"pinsEndpoint", "/o/headless-commerce-admin-catalog/v1.0/"
-		).put(
-			"productId", cpDefinition.getCProductId()
-		).put(
-			"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
-		).put(
-			"type", type
-		).build()
-	%>'
-/>
+				"diagramId", (cpDefinitionDiagramSetting != null) ? cpDefinitionDiagramSetting.getCPDefinitionDiagramSettingId() : 0
+			).put(
+				"enablePanZoom", true
+			).put(
+				"enableResetZoom", true
+			).put(
+				"imageSettings",
+				JSONUtil.put(
+					"height", "500px"
+				).put(
+					"width", "100%"
+				)
+			).put(
+				"imageURL", cpDefinitionDiagramSettingDisplayContext.getImageURL()
+			).put(
+				"isAdmin", true
+			).put(
+				"pinsEndpoint", "/o/headless-commerce-admin-catalog/v1.0/"
+			).put(
+				"productId", cpDefinition.getCProductId()
+			).put(
+				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
+			).put(
+				"type", type
+			).build()
+		%>'
+	/>
+</div>

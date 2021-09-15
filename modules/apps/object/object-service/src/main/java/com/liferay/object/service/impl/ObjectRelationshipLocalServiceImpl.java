@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -82,7 +81,7 @@ public class ObjectRelationshipLocalServiceImpl
 				type, ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
 			ObjectField objectField = _addObjectField(
-				user, name, objectDefinitionId1, objectDefinitionId2);
+				user, name, objectDefinitionId1, objectDefinitionId2, type);
 
 			objectRelationship.setObjectFieldId2(
 				objectField.getObjectFieldId());
@@ -99,9 +98,8 @@ public class ObjectRelationshipLocalServiceImpl
 
 			objectRelationship.setDBTableName(
 				StringBundler.concat(
-					"R_", user.getCompanyId(),
-					objectDefinition1.getShortName(), "_",
-					objectDefinition2.getShortName(), "_", name));
+					"R_", user.getCompanyId(), objectDefinition1.getShortName(),
+					"_", objectDefinition2.getShortName(), "_", name));
 
 			runSQL(
 				StringBundler.concat(
@@ -189,6 +187,14 @@ public class ObjectRelationshipLocalServiceImpl
 	}
 
 	@Override
+	public ObjectRelationship fetchObjectRelationshipByObjectFieldId2(
+		long objectFieldId2) {
+
+		return objectRelationshipPersistence.fetchByObjectFieldId2(
+			objectFieldId2);
+	}
+
+	@Override
 	public List<ObjectRelationship> getObjectRelationships(
 		long objectDefinitionId1, int start, int end) {
 
@@ -198,7 +204,7 @@ public class ObjectRelationshipLocalServiceImpl
 
 	private ObjectField _addObjectField(
 			User user, String name, long objectDefinitionId1,
-			long objectDefinitionId2)
+			long objectDefinitionId2, String type)
 		throws PortalException {
 
 		ObjectField objectField = _objectFieldPersistence.create(
@@ -235,7 +241,7 @@ public class ObjectRelationshipLocalServiceImpl
 		objectField.setLabelMap(
 			objectDefinition1.getLabelMap(), LocaleUtil.getSiteDefault());
 		objectField.setName(dbColumnName);
-		objectField.setRelationship(true);
+		objectField.setRelationshipType(type);
 		objectField.setRequired(false);
 		objectField.setType("Long");
 

@@ -14,7 +14,15 @@
 
 package com.liferay.object.internal.instance.lifecycle;
 
+import com.liferay.object.internal.related.models.SystemObject1toMObjectRelatedModelsProviderImpl;
+import com.liferay.object.internal.rest.context.path.RESTContextPathResolverImpl;
+import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.related.models.ObjectRelatedModelsProvider;
+import com.liferay.object.rest.context.path.RESTContextPathResolver;
+import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
@@ -27,6 +35,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -62,6 +72,8 @@ public class SystemObjectDefinitionMetadataPortalInstanceLifecycleListener
 		if (_log.isDebugEnabled()) {
 			_log.debug("Activate " + bundleContext);
 		}
+
+		_bundleContext = bundleContext;
 
 		_serviceTrackerList = ServiceTrackerListFactory.open(
 			bundleContext, SystemObjectDefinitionMetadata.class, null,
@@ -135,8 +147,28 @@ public class SystemObjectDefinitionMetadataPortalInstanceLifecycleListener
 		}
 
 		try {
-			_objectDefinitionLocalService.addOrUpdateSystemObjectDefinition(
-				companyId, systemObjectDefinitionMetadata);
+			ObjectDefinition objectDefinition =
+				_objectDefinitionLocalService.addOrUpdateSystemObjectDefinition(
+					companyId, systemObjectDefinitionMetadata);
+
+			_bundleContext.registerService(
+				ObjectRelatedModelsProvider.class,
+				new SystemObject1toMObjectRelatedModelsProviderImpl(
+					objectDefinition, _objectFieldLocalService,
+					_objectRelationshipLocalService,
+					_persistedModelLocalServiceRegistry,
+					systemObjectDefinitionMetadata),
+				null);
+			_bundleContext.registerService(
+				RESTContextPathResolver.class,
+				new RESTContextPathResolverImpl(
+					"/o/" + systemObjectDefinitionMetadata.getRESTContextPath(),
+					_objectScopeProviderRegistry.getObjectScopeProvider(
+						objectDefinition.getScope()),
+					true),
+				HashMapDictionaryBuilder.<String, Object>put(
+					"model.class.name", objectDefinition.getClassName()
+				).build());
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException, portalException);
@@ -146,11 +178,26 @@ public class SystemObjectDefinitionMetadataPortalInstanceLifecycleListener
 	private static final Log _log = LogFactoryUtil.getLog(
 		SystemObjectDefinitionMetadataPortalInstanceLifecycleListener.class);
 
+	private BundleContext _bundleContext;
+
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+
+	@Reference
+	private ObjectFieldLocalService _objectFieldLocalService;
+
+	@Reference
+	private ObjectRelationshipLocalService _objectRelationshipLocalService;
+
+	@Reference
+	private ObjectScopeProviderRegistry _objectScopeProviderRegistry;
+
+	@Reference
+	private PersistedModelLocalServiceRegistry
+		_persistedModelLocalServiceRegistry;
 
 	private ServiceTrackerList
 		<SystemObjectDefinitionMetadata, SystemObjectDefinitionMetadata>

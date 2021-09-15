@@ -14,6 +14,7 @@
 
 import ClayButton from '@clayui/button';
 import ClayLayout from '@clayui/layout';
+import classNames from 'classnames';
 import {FieldArray, withFormik} from 'formik';
 import {debounce, fetch, openModal} from 'frontend-js-web';
 import PropTypes from 'prop-types';
@@ -97,6 +98,7 @@ class SegmentEdit extends Component {
 			editing: showInEditMode,
 			hasChanged: false,
 			membersCount: initialMembersCount,
+			queryHasEmptyValues: false,
 			validTitle: !!values.name[props.defaultLanguageId],
 		};
 
@@ -163,6 +165,7 @@ class SegmentEdit extends Component {
 				disabledSave: this._isQueryEmpty(contributors),
 				hasChanged: true,
 				membersCountLoading: true,
+				queryHasEmptyValues: false,
 			};
 		}, this._debouncedFetchMembersCount);
 	};
@@ -195,6 +198,48 @@ class SegmentEdit extends Component {
 	_isQueryEmpty = (contributors) =>
 		contributors.every((contributor) => !contributor.query);
 
+	/**
+	 * Checks if every item inside criteriaMap > items array has empry/falsy value in its value property.
+	 * @return {boolean} True if a non trythy values is found.
+	 */
+	_queryHasEmptyValues = (contributors) => {
+		const _checkForEmptyValuesInItems = (items) => {
+			return items.some((item) => {
+				const {items, value} = item;
+
+				if (Object.prototype.hasOwnProperty.call(item, 'items')) {
+					return _checkForEmptyValuesInItems(items);
+				}
+
+				if (Object.prototype.hasOwnProperty.call(item, 'value')) {
+					return !value.trim();
+				}
+
+				return false;
+			});
+		};
+
+		/* get all items form each contributor object, generating a plain array */
+		const items = contributors.reduce(
+			(acc, contributor) => [
+				...acc,
+				...(contributor.criteriaMap?.items || []),
+			],
+			[]
+		);
+
+		return _checkForEmptyValuesInItems(items);
+	};
+
+	_handleAlertClose = () => {
+		this.setState((prevState) => {
+			return {
+				...prevState,
+				queryHasEmptyValues: false,
+			};
+		});
+	};
+
 	_renderContributors = () => {
 		const {
 			locale,
@@ -208,6 +253,7 @@ class SegmentEdit extends Component {
 			editing,
 			membersCount,
 			membersCountLoading,
+			queryHasEmptyValues,
 		} = this.state;
 
 		const emptyContributors = this._isQueryEmpty(contributors);
@@ -221,10 +267,12 @@ class SegmentEdit extends Component {
 				emptyContributors={emptyContributors}
 				membersCount={membersCount}
 				membersCountLoading={membersCountLoading}
+				onAlertClose={this._handleAlertClose}
 				onConjunctionChange={this._handleConjunctionChange}
 				onPreviewMembers={this._handlePreviewMembers}
 				onQueryChange={this._handleQueryChange}
 				propertyGroups={propertyGroups}
+				renderEmptyValuesErrors={queryHasEmptyValues}
 				requestMembersCountURL={requestMembersCountURL}
 				segmentName={segmentName}
 				supportedConjunctions={SUPPORTED_CONJUNCTIONS}
@@ -297,6 +345,22 @@ class SegmentEdit extends Component {
 	 * @param {Class} event Event to prevent a form submission from occurring.
 	 */
 	_handleValidate = (event) => {
+		const {contributors} = this.state;
+		const queryHasEmptyValues = this._queryHasEmptyValues(contributors);
+
+		this.setState((prevState) => {
+			return {
+				...prevState,
+				queryHasEmptyValues,
+			};
+		});
+
+		if (queryHasEmptyValues) {
+			event.preventDefault();
+
+			return;
+		}
+
 		const {validateForm} = this.props;
 
 		event.persist();
@@ -376,14 +440,24 @@ class SegmentEdit extends Component {
 			values,
 		} = this.props;
 
-		const {contributors, disabledSave, editing, validTitle} = this.state;
+		const {
+			contributors,
+			disabledSave,
+			editing,
+			queryHasEmptyValues,
+			validTitle,
+		} = this.state;
 
 		const disabledSaveButton = disabledSave || !validTitle;
 
 		const placeholder = Liferay.Language.get('untitled-segment');
 
 		return (
-			<div className="segment-edit-page-root">
+			<div
+				className={classNames('segment-edit-page-root', {
+					'segment-edit-page-root--has-alert': queryHasEmptyValues,
+				})}
+			>
 				<input
 					name={`${portletNamespace}active`}
 					type="hidden"
@@ -442,7 +516,9 @@ class SegmentEdit extends Component {
 											className="text-capitalize"
 											disabled={disabledSaveButton}
 											displayType="primary"
-											onClick={this._handleValidate}
+											onClick={(event) =>
+												this._handleValidate(event)
+											}
 											small={true}
 											type="submit"
 										>

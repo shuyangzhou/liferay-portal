@@ -21,6 +21,21 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td>DETAILS_NAME_CUSTOM_OBJECT</td>
+		<td>//input[@id='_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_shortName']</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>DETAILS_LABEL_CUSTOM_OBJECT</td>
+		<td>>//input[@id='_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_label']</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>DETAILS_PLURAL_LABEL_CUSTOM_OBJECT</td>
+		<td>//input[@id='_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_pluralLabel']</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td>NAME_CUSTOM_OBJECT</td>
 		<td>//input[@id='objectDefinitionName']</td>
 		<td></td>
@@ -40,9 +55,14 @@
 		<td>//div[(@class='table-list-title') and contains (.,'${key_name}')]/../../div[contains(text(),'${key_system}')]</td>
 		<td></td>
 	</tr>
-		<tr>
+	<tr>
 		<td>VIEW_CUSTOM_OBJECT</td>
 		<td>//div[contains(text(),'No')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>VIEW_SEARCHABLE_SECTION_DISABLED</td>
+		<td>//label[contains(@class,'simple-toggle-switch toggle-switch disabled')]//span[contains(text(),'Searchable')]</td>
 		<td></td>
 	</tr>
 	<tr>
@@ -51,8 +71,93 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td>SEARCHABLE_SECTION_TITLE</td>
+		<td>//h2[contains (text(), 'Searchable')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_FIELDS_TAB</td>
+		<td>//a[contains(text(),'Fields')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_FIELDS_LABEL_INPUT</td>
+		<td>//input[contains(@id,'objectFieldLabel')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_FIELDS_NAME_INPUT</td>
+		<td>//input[contains(@id,'objectFieldName')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_FIELDS_MANDATORY_TOGGLE_SWITCH</td>
+		<td>//input[contains(@class,'toggle-switch-check')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_FIELDS_TYPE</td>
+		<td>//select[contains(@id,'objectFieldType')]</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td>DELETE_CUSTOM_OBJECT</td>
 		<td>//button[(@class='dropdown-item') and contains(text(),'Delete')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>SELECT_OBJECT_FIELD</td>
+		<td>//a[contains(text(),'${key_fieldName}')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>SELECT_OBJECT_SCOPE</td>
+		<td>//select[@id = '_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_scope']</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>FIELDS_DETAILS_IFRAME</td>
+		<td>//div[contains(@class, 'side-panel-iframe')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>FIELDS_DETAILS_TITLE</td>
+		<td>//div[contains(@class, 'side-panel-iframe')]//h3[contains(@class, 'mb-0')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>FIELDS_RADIO_OPTION</td>
+		<td>//label[contains(.,'${key_radioOption}')]/input[@type='radio']</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>FIELD_SEARCHABLE_LANGUAGE_LABEL</td>
+		<td>//div[contains(@class,'form-group input-select-wrapper')]//label[contains (., 'Language')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>FIELD_SEARCHABLE_LANGUAGE_OPTION</td>
+		<td>//div[contains(@class,'form-group input-select-wrapper')]//option[contains(@value, 'en_US')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>VIEW_OBJECT_FIELD_NAME</td>
+		<td>//div[(@class = 'dnd-td') and contains (.,'${key_fieldName}')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>VIEW_OBJECT_FIELD_TYPE</td>
+		<td>//div[(@class = 'dnd-td') and contains (.,'${key_fieldType}')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>KEBAB_MENU</td>
+		<td>//*[contains(@class,'lexicon-icon-ellipsis')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>KEBAB_MENU_OPTION</td>
+		<td>//button[contains(text(), '${key_kebabOption}')]</td>
 		<td></td>
 	</tr>
 </tbody>

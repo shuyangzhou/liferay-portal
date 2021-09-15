@@ -201,18 +201,17 @@ public abstract class BaseTierPriceResourceTestCase {
 	public void testGetPriceEntryByExternalReferenceCodeTierPricesPage()
 		throws Exception {
 
-		Page<TierPrice> page =
-			tierPriceResource.
-				getPriceEntryByExternalReferenceCodeTierPricesPage(
-					testGetPriceEntryByExternalReferenceCodeTierPricesPage_getExternalReferenceCode(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String externalReferenceCode =
 			testGetPriceEntryByExternalReferenceCodeTierPricesPage_getExternalReferenceCode();
 		String irrelevantExternalReferenceCode =
 			testGetPriceEntryByExternalReferenceCodeTierPricesPage_getIrrelevantExternalReferenceCode();
+
+		Page<TierPrice> page =
+			tierPriceResource.
+				getPriceEntryByExternalReferenceCodeTierPricesPage(
+					externalReferenceCode, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantExternalReferenceCode != null) {
 			TierPrice irrelevantTierPrice =
@@ -244,7 +243,7 @@ public abstract class BaseTierPriceResourceTestCase {
 		page =
 			tierPriceResource.
 				getPriceEntryByExternalReferenceCodeTierPricesPage(
-					externalReferenceCode, Pagination.of(1, 2));
+					externalReferenceCode, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -356,15 +355,14 @@ public abstract class BaseTierPriceResourceTestCase {
 
 	@Test
 	public void testGetPriceEntryIdTierPricesPage() throws Exception {
-		Page<TierPrice> page = tierPriceResource.getPriceEntryIdTierPricesPage(
-			testGetPriceEntryIdTierPricesPage_getPriceEntryId(),
-			Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long priceEntryId = testGetPriceEntryIdTierPricesPage_getPriceEntryId();
 		Long irrelevantPriceEntryId =
 			testGetPriceEntryIdTierPricesPage_getIrrelevantPriceEntryId();
+
+		Page<TierPrice> page = tierPriceResource.getPriceEntryIdTierPricesPage(
+			priceEntryId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantPriceEntryId != null) {
 			TierPrice irrelevantTierPrice =
@@ -389,7 +387,7 @@ public abstract class BaseTierPriceResourceTestCase {
 			priceEntryId, randomTierPrice());
 
 		page = tierPriceResource.getPriceEntryIdTierPricesPage(
-			priceEntryId, Pagination.of(1, 2));
+			priceEntryId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -709,6 +707,23 @@ public abstract class BaseTierPriceResourceTestCase {
 	protected TierPrice testGraphQLTierPrice_addTierPrice() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		TierPrice tierPrice, List<TierPrice> tierPrices) {
+
+		boolean contains = false;
+
+		for (TierPrice item : tierPrices) {
+			if (equals(tierPrice, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			tierPrices + " does not contain " + tierPrice, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

@@ -322,6 +322,23 @@ public abstract class BaseExperimentResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		Experiment experiment, List<Experiment> experiments) {
+
+		boolean contains = false;
+
+		for (Experiment item : experiments) {
+			if (equals(experiment, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			experiments + " does not contain " + experiment, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

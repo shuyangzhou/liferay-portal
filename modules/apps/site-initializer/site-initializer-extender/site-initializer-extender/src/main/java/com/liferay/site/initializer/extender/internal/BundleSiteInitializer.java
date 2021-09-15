@@ -29,6 +29,10 @@ import com.liferay.headless.admin.taxonomy.dto.v1_0.TaxonomyCategory;
 import com.liferay.headless.admin.taxonomy.dto.v1_0.TaxonomyVocabulary;
 import com.liferay.headless.admin.taxonomy.resource.v1_0.TaxonomyCategoryResource;
 import com.liferay.headless.admin.taxonomy.resource.v1_0.TaxonomyVocabularyResource;
+import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Catalog;
+import com.liferay.headless.commerce.admin.catalog.resource.v1_0.CatalogResource;
+import com.liferay.headless.commerce.admin.channel.dto.v1_0.Channel;
+import com.liferay.headless.commerce.admin.channel.resource.v1_0.ChannelResource;
 import com.liferay.headless.delivery.dto.v1_0.Document;
 import com.liferay.headless.delivery.dto.v1_0.DocumentFolder;
 import com.liferay.headless.delivery.dto.v1_0.StructuredContentFolder;
@@ -101,6 +105,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 	public BundleSiteInitializer(
 		AssetListEntryLocalService assetListEntryLocalService, Bundle bundle,
+		CatalogResource.Factory catalogResourceFactory,
+		ChannelResource.Factory channelResourceFactory,
 		DDMStructureLocalService ddmStructureLocalService,
 		DDMTemplateLocalService ddmTemplateLocalService,
 		DefaultDDMStructureHelper defaultDDMStructureHelper,
@@ -122,6 +128,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		_assetListEntryLocalService = assetListEntryLocalService;
 		_bundle = bundle;
+		_catalogResourceFactory = catalogResourceFactory;
+		_channelResourceFactory = channelResourceFactory;
 		_ddmStructureLocalService = ddmStructureLocalService;
 		_ddmTemplateLocalService = ddmTemplateLocalService;
 		_defaultDDMStructureHelper = defaultDDMStructureHelper;
@@ -193,6 +201,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 				_addDocuments(serviceContext);
 
 			_addAssetListEntries(serviceContext);
+			_addCommerceCatalogs(serviceContext);
+			_addCommerceChannels(serviceContext);
 			_addDDMTemplates(serviceContext);
 			_addFragmentEntries(serviceContext);
 			_addJournalArticles(
@@ -294,6 +304,88 @@ public class BundleSiteInitializer implements SiteInitializer {
 			serviceContext.getUserId(), serviceContext.getScopeGroupId(),
 			assetListJSONObject.getString("title"),
 			String.valueOf(new UnicodeProperties(map, true)), serviceContext);
+	}
+
+	private void _addCommerceCatalogs(ServiceContext serviceContext)
+		throws Exception {
+
+		_addCommerceCatalogs(
+			"/site-initializer/commerce-catalogs", serviceContext);
+	}
+
+	private void _addCommerceCatalogs(
+			String parentResourcePath, ServiceContext serviceContext)
+		throws Exception {
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			parentResourcePath);
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return;
+		}
+
+		CatalogResource.Builder catalogResourceBuilder =
+			_catalogResourceFactory.create();
+
+		CatalogResource catalogResource = catalogResourceBuilder.user(
+			serviceContext.fetchUser()
+		).build();
+
+		for (String resourcePath : resourcePaths) {
+			String json = _read(resourcePath);
+
+			Catalog catalog = Catalog.toDTO(json);
+
+			if (catalog == null) {
+				_log.error(
+					"Unable to transform commerce catalog from JSON: " + json);
+
+				continue;
+			}
+
+			catalogResource.postCatalog(catalog);
+		}
+	}
+
+	private void _addCommerceChannels(ServiceContext serviceContext)
+		throws Exception {
+
+		_addCommerceChannels(
+			"/site-initializer/commerce-channels", serviceContext);
+	}
+
+	private void _addCommerceChannels(
+			String parentResourcePath, ServiceContext serviceContext)
+		throws Exception {
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			parentResourcePath);
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return;
+		}
+
+		ChannelResource.Builder channelResourceBuilder =
+			_channelResourceFactory.create();
+
+		ChannelResource channelResource = channelResourceBuilder.user(
+			serviceContext.fetchUser()
+		).build();
+
+		for (String resourcePath : resourcePaths) {
+			String json = _read(resourcePath);
+
+			Channel channel = Channel.toDTO(json);
+
+			if (channel == null) {
+				_log.error(
+					"Unable to transform commerce channel from JSON: " + json);
+
+				continue;
+			}
+
+			channelResource.postChannel(channel);
+		}
 	}
 
 	private void _addDDMStructures(ServiceContext serviceContext)
@@ -921,6 +1013,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 	private final AssetListEntryLocalService _assetListEntryLocalService;
 	private final Bundle _bundle;
+	private final CatalogResource.Factory _catalogResourceFactory;
+	private final ChannelResource.Factory _channelResourceFactory;
 	private final ClassLoader _classLoader;
 	private final DDMStructureLocalService _ddmStructureLocalService;
 	private final DDMTemplateLocalService _ddmTemplateLocalService;

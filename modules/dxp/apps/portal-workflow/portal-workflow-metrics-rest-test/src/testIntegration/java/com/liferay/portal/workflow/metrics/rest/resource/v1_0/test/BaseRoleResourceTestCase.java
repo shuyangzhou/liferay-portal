@@ -191,14 +191,13 @@ public abstract class BaseRoleResourceTestCase {
 
 	@Test
 	public void testGetProcessRolesPage() throws Exception {
-		Page<Role> page = roleResource.getProcessRolesPage(
-			testGetProcessRolesPage_getProcessId(), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessRolesPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessRolesPage_getIrrelevantProcessId();
+
+		Page<Role> page = roleResource.getProcessRolesPage(processId, null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			Role irrelevantRole = testGetProcessRolesPage_addRole(
@@ -247,6 +246,20 @@ public abstract class BaseRoleResourceTestCase {
 	protected Role testGraphQLRole_addRole() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Role role, List<Role> roles) {
+		boolean contains = false;
+
+		for (Role item : roles) {
+			if (equals(role, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(roles + " does not contain " + role, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

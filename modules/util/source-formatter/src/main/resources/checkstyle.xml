@@ -549,6 +549,11 @@
 			<property name="description" value="Finds cases of unnecessary use of `this.`." />
 			<message key="variable.not.require.this" value="Reference to variable ''{0}'' does not need ''.this''" />
 		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.NullAssertionInIfStatementCheck">
+			<property name="category" value="Bug Prevention" />
+			<property name="description" value="Verifies that null check should always be first in if-statement." />
+			<message key="null.check.move" value="Null check for variable ''{0}'' should always be first in if-statement" />
+		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.NumberSuffixCheck">
 			<property name="category" value="Styling" />
 			<property name="description" value="Verifies that uppercase `D`, `F`, or `L` is used when denoting Double/Float/Long." />

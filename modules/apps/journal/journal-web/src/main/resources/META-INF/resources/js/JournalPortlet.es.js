@@ -279,7 +279,7 @@ class JournalPortlet extends PortletBase {
 		this._cleanInputIfNeeded('titleMapAsXML');
 		this._cleanInputIfNeeded('descriptionMapAsXML');
 
-		submitForm(form, form.getAttribute('action'), true);
+		submitForm(form);
 	}
 
 	/**

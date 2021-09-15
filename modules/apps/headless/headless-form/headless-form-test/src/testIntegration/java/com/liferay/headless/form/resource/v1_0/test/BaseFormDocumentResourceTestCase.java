@@ -323,6 +323,23 @@ public abstract class BaseFormDocumentResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		FormDocument formDocument, List<FormDocument> formDocuments) {
+
+		boolean contains = false;
+
+		for (FormDocument item : formDocuments) {
+			if (equals(formDocument, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			formDocuments + " does not contain " + formDocument, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

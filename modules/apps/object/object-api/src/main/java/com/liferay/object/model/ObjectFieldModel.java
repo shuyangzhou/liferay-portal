@@ -438,25 +438,19 @@ public interface ObjectFieldModel
 	public void setName(String name);
 
 	/**
-	 * Returns the relationship of this object field.
+	 * Returns the relationship type of this object field.
 	 *
-	 * @return the relationship of this object field
+	 * @return the relationship type of this object field
 	 */
-	public boolean getRelationship();
+	@AutoEscape
+	public String getRelationshipType();
 
 	/**
-	 * Returns <code>true</code> if this object field is relationship.
+	 * Sets the relationship type of this object field.
 	 *
-	 * @return <code>true</code> if this object field is relationship; <code>false</code> otherwise
+	 * @param relationshipType the relationship type of this object field
 	 */
-	public boolean isRelationship();
-
-	/**
-	 * Sets whether this object field is relationship.
-	 *
-	 * @param relationship the relationship of this object field
-	 */
-	public void setRelationship(boolean relationship);
+	public void setRelationshipType(String relationshipType);
 
 	/**
 	 * Returns the required of this object field.

@@ -332,6 +332,20 @@ public abstract class BaseAddressResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Address address, List<Address> addresses) {
+		boolean contains = false;
+
+		for (Address item : addresses) {
+			if (equals(address, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(addresses + " does not contain " + address, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

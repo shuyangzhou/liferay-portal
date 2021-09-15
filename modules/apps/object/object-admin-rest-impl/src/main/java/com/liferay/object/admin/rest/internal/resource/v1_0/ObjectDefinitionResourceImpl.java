@@ -122,6 +122,7 @@ public class ObjectDefinitionResourceImpl
 		return _toObjectDefinition(
 			_objectDefinitionService.updateCustomObjectDefinition(
 				objectDefinitionId,
+				GetterUtil.getBoolean(objectDefinition.getActive(), true),
 				LocalizedMapUtil.getLocalizedMap(objectDefinition.getLabel()),
 				objectDefinition.getName(), objectDefinition.getPanelAppOrder(),
 				objectDefinition.getPanelCategoryKey(),
@@ -133,31 +134,35 @@ public class ObjectDefinitionResourceImpl
 	private ObjectDefinition _toObjectDefinition(
 		com.liferay.object.model.ObjectDefinition objectDefinition) {
 
+		String permissionName =
+			com.liferay.object.model.ObjectDefinition.class.getName();
+
 		return new ObjectDefinition() {
 			{
 				actions = HashMapBuilder.put(
 					"delete",
 					() -> {
-						if (objectDefinition.isSystem()) {
+						if (objectDefinition.isApproved() ||
+							objectDefinition.isSystem()) {
+
 							return null;
 						}
 
 						return addAction(
 							ActionKeys.DELETE, "deleteObjectDefinition",
-							ObjectDefinition.class.getName(),
+							permissionName,
 							objectDefinition.getObjectDefinitionId());
 					}
 				).put(
 					"get",
 					addAction(
-						ActionKeys.VIEW, "getObjectDefinition",
-						ObjectDefinition.class.getName(),
+						ActionKeys.VIEW, "getObjectDefinition", permissionName,
 						objectDefinition.getObjectDefinitionId())
 				).put(
 					"update",
 					addAction(
 						ActionKeys.UPDATE, "postObjectDefinition",
-						ObjectDefinition.class.getName(),
+						permissionName,
 						objectDefinition.getObjectDefinitionId())
 				).build();
 				dateCreated = objectDefinition.getCreateDate();
@@ -167,7 +172,10 @@ public class ObjectDefinitionResourceImpl
 				objectFields = transformToArray(
 					_objectFieldLocalService.getObjectFields(
 						objectDefinition.getObjectDefinitionId()),
-					ObjectFieldUtil::toObjectField, ObjectField.class);
+					objectField -> ObjectFieldUtil.toObjectField(
+						null, objectField),
+					ObjectField.class);
+				scope = objectDefinition.getScope();
 				status = new Status() {
 					{
 						code = objectDefinition.getStatus();

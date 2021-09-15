@@ -199,17 +199,16 @@ public abstract class BaseListTypeEntryResourceTestCase {
 	public void testGetListTypeDefinitionListTypeEntriesPage()
 		throws Exception {
 
-		Page<ListTypeEntry> page =
-			listTypeEntryResource.getListTypeDefinitionListTypeEntriesPage(
-				testGetListTypeDefinitionListTypeEntriesPage_getListTypeDefinitionId(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long listTypeDefinitionId =
 			testGetListTypeDefinitionListTypeEntriesPage_getListTypeDefinitionId();
 		Long irrelevantListTypeDefinitionId =
 			testGetListTypeDefinitionListTypeEntriesPage_getIrrelevantListTypeDefinitionId();
+
+		Page<ListTypeEntry> page =
+			listTypeEntryResource.getListTypeDefinitionListTypeEntriesPage(
+				listTypeDefinitionId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantListTypeDefinitionId != null) {
 			ListTypeEntry irrelevantListTypeEntry =
@@ -238,7 +237,7 @@ public abstract class BaseListTypeEntryResourceTestCase {
 				listTypeDefinitionId, randomListTypeEntry());
 
 		page = listTypeEntryResource.getListTypeDefinitionListTypeEntriesPage(
-			listTypeDefinitionId, Pagination.of(1, 2));
+			listTypeDefinitionId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -246,6 +245,10 @@ public abstract class BaseListTypeEntryResourceTestCase {
 			Arrays.asList(listTypeEntry1, listTypeEntry2),
 			(List<ListTypeEntry>)page.getItems());
 		assertValid(page);
+
+		listTypeEntryResource.deleteListTypeEntry(listTypeEntry1.getId());
+
+		listTypeEntryResource.deleteListTypeEntry(listTypeEntry2.getId());
 	}
 
 	@Test
@@ -344,11 +347,65 @@ public abstract class BaseListTypeEntryResourceTestCase {
 			listTypeEntry);
 	}
 
+	@Test
+	public void testDeleteListTypeEntry() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		ListTypeEntry listTypeEntry =
+			testDeleteListTypeEntry_addListTypeEntry();
+
+		assertHttpResponseStatusCode(
+			204,
+			listTypeEntryResource.deleteListTypeEntryHttpResponse(
+				listTypeEntry.getId()));
+	}
+
+	protected ListTypeEntry testDeleteListTypeEntry_addListTypeEntry()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testGraphQLDeleteListTypeEntry() throws Exception {
+		ListTypeEntry listTypeEntry =
+			testGraphQLListTypeEntry_addListTypeEntry();
+
+		Assert.assertTrue(
+			JSONUtil.getValueAsBoolean(
+				invokeGraphQLMutation(
+					new GraphQLField(
+						"deleteListTypeEntry",
+						new HashMap<String, Object>() {
+							{
+								put("listTypeEntryId", listTypeEntry.getId());
+							}
+						})),
+				"JSONObject/data", "Object/deleteListTypeEntry"));
+	}
+
 	protected ListTypeEntry testGraphQLListTypeEntry_addListTypeEntry()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ListTypeEntry listTypeEntry, List<ListTypeEntry> listTypeEntries) {
+
+		boolean contains = false;
+
+		for (ListTypeEntry item : listTypeEntries) {
+			if (equals(listTypeEntry, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			listTypeEntries + " does not contain " + listTypeEntry, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -421,6 +478,14 @@ public abstract class BaseListTypeEntryResourceTestCase {
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
+
+			if (Objects.equals("actions", additionalAssertFieldName)) {
+				if (listTypeEntry.getActions() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
 
 			if (Objects.equals("key", additionalAssertFieldName)) {
 				if (listTypeEntry.getKey() == null) {
@@ -545,6 +610,17 @@ public abstract class BaseListTypeEntryResourceTestCase {
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
+
+			if (Objects.equals("actions", additionalAssertFieldName)) {
+				if (!equals(
+						(Map)listTypeEntry1.getActions(),
+						(Map)listTypeEntry2.getActions())) {
+
+					return false;
+				}
+
+				continue;
+			}
 
 			if (Objects.equals("dateCreated", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
@@ -713,6 +789,11 @@ public abstract class BaseListTypeEntryResourceTestCase {
 		sb.append(" ");
 		sb.append(operator);
 		sb.append(" ");
+
+		if (entityFieldName.equals("actions")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
 
 		if (entityFieldName.equals("dateCreated")) {
 			if (operator.equals("between")) {

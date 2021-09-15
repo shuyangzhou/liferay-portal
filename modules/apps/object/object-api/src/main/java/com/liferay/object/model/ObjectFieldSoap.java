@@ -50,7 +50,7 @@ public class ObjectFieldSoap implements Serializable {
 		soapModel.setIndexedLanguageId(model.getIndexedLanguageId());
 		soapModel.setLabel(model.getLabel());
 		soapModel.setName(model.getName());
-		soapModel.setRelationship(model.isRelationship());
+		soapModel.setRelationshipType(model.getRelationshipType());
 		soapModel.setRequired(model.isRequired());
 		soapModel.setType(model.getType());
 
@@ -250,16 +250,12 @@ public class ObjectFieldSoap implements Serializable {
 		_name = name;
 	}
 
-	public boolean getRelationship() {
-		return _relationship;
+	public String getRelationshipType() {
+		return _relationshipType;
 	}
 
-	public boolean isRelationship() {
-		return _relationship;
-	}
-
-	public void setRelationship(boolean relationship) {
-		_relationship = relationship;
+	public void setRelationshipType(String relationshipType) {
+		_relationshipType = relationshipType;
 	}
 
 	public boolean getRequired() {
@@ -299,7 +295,7 @@ public class ObjectFieldSoap implements Serializable {
 	private String _indexedLanguageId;
 	private String _label;
 	private String _name;
-	private boolean _relationship;
+	private String _relationshipType;
 	private boolean _required;
 	private String _type;
 

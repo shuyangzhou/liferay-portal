@@ -199,6 +199,20 @@ public abstract class BaseStatusResourceTestCase {
 		Assert.assertTrue(true);
 	}
 
+	protected void assertContains(Status status, List<Status> statuses) {
+		boolean contains = false;
+
+		for (Status item : statuses) {
+			if (equals(status, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(statuses + " does not contain " + status, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

@@ -227,6 +227,20 @@ public abstract class BaseUserResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(User user, List<User> users) {
+		boolean contains = false;
+
+		for (User item : users) {
+			if (equals(user, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(users + " does not contain " + user, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

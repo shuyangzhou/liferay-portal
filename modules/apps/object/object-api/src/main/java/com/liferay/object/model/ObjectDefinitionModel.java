@@ -209,6 +209,27 @@ public interface ObjectDefinitionModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the active of this object definition.
+	 *
+	 * @return the active of this object definition
+	 */
+	public boolean getActive();
+
+	/**
+	 * Returns <code>true</code> if this object definition is active.
+	 *
+	 * @return <code>true</code> if this object definition is active; <code>false</code> otherwise
+	 */
+	public boolean isActive();
+
+	/**
+	 * Sets whether this object definition is active.
+	 *
+	 * @param active the active of this object definition
+	 */
+	public void setActive(boolean active);
+
+	/**
 	 * Returns the db table name of this object definition.
 	 *
 	 * @return the db table name of this object definition
@@ -321,6 +342,21 @@ public interface ObjectDefinitionModel
 	 * @param defaultLocale the default locale
 	 */
 	public void setLabelMap(Map<Locale, String> labelMap, Locale defaultLocale);
+
+	/**
+	 * Returns the class name of this object definition.
+	 *
+	 * @return the class name of this object definition
+	 */
+	@AutoEscape
+	public String getClassName();
+
+	/**
+	 * Sets the class name of this object definition.
+	 *
+	 * @param className the class name of this object definition
+	 */
+	public void setClassName(String className);
 
 	/**
 	 * Returns the name of this object definition.

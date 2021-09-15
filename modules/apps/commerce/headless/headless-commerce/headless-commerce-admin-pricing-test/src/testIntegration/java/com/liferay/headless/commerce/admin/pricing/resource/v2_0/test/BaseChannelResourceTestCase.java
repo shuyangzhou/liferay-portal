@@ -324,6 +324,20 @@ public abstract class BaseChannelResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Channel channel, List<Channel> channels) {
+		boolean contains = false;
+
+		for (Channel item : channels) {
+			if (equals(channel, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(channels + " does not contain " + channel, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

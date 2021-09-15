@@ -269,10 +269,11 @@ public class JournalTransformer {
 				}
 
 				template.put("articleGroupId", articleGroupId);
+				template.put("articleLocale", locale);
 				template.put("company", getCompany(themeDisplay, companyId));
 				template.put("companyId", companyId);
 				template.put("device", getDevice(themeDisplay));
-				template.put("locale", locale);
+				template.put("locale", getLocale(themeDisplay, locale));
 				template.put(
 					"permissionChecker",
 					PermissionThreadLocal.getPermissionChecker());
@@ -419,6 +420,16 @@ public class JournalTransformer {
 		}
 
 		return null;
+	}
+
+	protected Locale getLocale(ThemeDisplay themeDisplay, Locale locale)
+		throws Exception {
+
+		if (themeDisplay != null) {
+			return themeDisplay.getLocale();
+		}
+
+		return locale;
 	}
 
 	protected Template getTemplate(

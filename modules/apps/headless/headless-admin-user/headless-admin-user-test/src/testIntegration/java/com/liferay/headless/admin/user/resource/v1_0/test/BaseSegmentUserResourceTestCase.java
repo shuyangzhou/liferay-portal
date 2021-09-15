@@ -194,14 +194,14 @@ public abstract class BaseSegmentUserResourceTestCase {
 
 	@Test
 	public void testGetSegmentUserAccountsPage() throws Exception {
-		Page<SegmentUser> page = segmentUserResource.getSegmentUserAccountsPage(
-			testGetSegmentUserAccountsPage_getSegmentId(), Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long segmentId = testGetSegmentUserAccountsPage_getSegmentId();
 		Long irrelevantSegmentId =
 			testGetSegmentUserAccountsPage_getIrrelevantSegmentId();
+
+		Page<SegmentUser> page = segmentUserResource.getSegmentUserAccountsPage(
+			segmentId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSegmentId != null) {
 			SegmentUser irrelevantSegmentUser =
@@ -228,7 +228,7 @@ public abstract class BaseSegmentUserResourceTestCase {
 				segmentId, randomSegmentUser());
 
 		page = segmentUserResource.getSegmentUserAccountsPage(
-			segmentId, Pagination.of(1, 2));
+			segmentId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -309,6 +309,23 @@ public abstract class BaseSegmentUserResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		SegmentUser segmentUser, List<SegmentUser> segmentUsers) {
+
+		boolean contains = false;
+
+		for (SegmentUser item : segmentUsers) {
+			if (equals(segmentUser, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			segmentUsers + " does not contain " + segmentUser, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

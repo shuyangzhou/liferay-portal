@@ -19,15 +19,18 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
+import java.util.Map;
+
 /**
  * @author Gabriel Albuquerque
  */
 public class ObjectFieldUtil {
 
 	public static ObjectField toObjectField(
+		Map<String, Map<String, String>> actions,
 		com.liferay.object.model.ObjectField serviceBuilderObjectField) {
 
-		return new ObjectField() {
+		ObjectField objectField = new ObjectField() {
 			{
 				id = serviceBuilderObjectField.getObjectFieldId();
 				indexed = serviceBuilderObjectField.getIndexed();
@@ -45,6 +48,10 @@ public class ObjectFieldUtil {
 					serviceBuilderObjectField.getType());
 			}
 		};
+
+		objectField.setActions(actions);
+
+		return objectField;
 	}
 
 	public static com.liferay.object.model.ObjectField toObjectField(

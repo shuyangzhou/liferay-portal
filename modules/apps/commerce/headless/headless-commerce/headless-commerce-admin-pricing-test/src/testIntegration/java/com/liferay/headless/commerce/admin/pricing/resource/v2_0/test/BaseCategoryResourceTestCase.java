@@ -327,6 +327,23 @@ public abstract class BaseCategoryResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		Category category, List<Category> categories) {
+
+		boolean contains = false;
+
+		for (Category item : categories) {
+			if (equals(category, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			categories + " does not contain " + category, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

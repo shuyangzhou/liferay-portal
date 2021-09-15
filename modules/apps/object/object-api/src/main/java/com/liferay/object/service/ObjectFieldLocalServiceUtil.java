@@ -72,15 +72,6 @@ public class ObjectFieldLocalServiceUtil {
 		return getService().addObjectField(objectField);
 	}
 
-	public static ObjectField addRelationshipObjectField(
-			long userId, long objectDefinitionId,
-			Map<java.util.Locale, String> labelMap, String name)
-		throws PortalException {
-
-		return getService().addRelationshipObjectField(
-			userId, objectDefinitionId, labelMap, name);
-	}
-
 	public static ObjectField addSystemObjectField(
 			long userId, long objectDefinitionId, String dbColumnName,
 			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
@@ -139,8 +130,11 @@ public class ObjectFieldLocalServiceUtil {
 	 *
 	 * @param objectField the object field
 	 * @return the object field that was removed
+	 * @throws PortalException
 	 */
-	public static ObjectField deleteObjectField(ObjectField objectField) {
+	public static ObjectField deleteObjectField(ObjectField objectField)
+		throws PortalException {
+
 		return getService().deleteObjectField(objectField);
 	}
 
@@ -335,6 +329,12 @@ public class ObjectFieldLocalServiceUtil {
 
 	public static List<ObjectField> getObjectFields(long objectDefinitionId) {
 		return getService().getObjectFields(objectDefinitionId);
+	}
+
+	public static List<ObjectField> getObjectFields(
+		long objectDefinitionId, String dbTableName) {
+
+		return getService().getObjectFields(objectDefinitionId, dbTableName);
 	}
 
 	/**

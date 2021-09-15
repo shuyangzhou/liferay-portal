@@ -139,10 +139,13 @@ public abstract class ObjectFieldLocalServiceBaseImpl
 	 *
 	 * @param objectField the object field
 	 * @return the object field that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public ObjectField deleteObjectField(ObjectField objectField) {
+	public ObjectField deleteObjectField(ObjectField objectField)
+		throws PortalException {
+
 		return objectFieldPersistence.remove(objectField);
 	}
 

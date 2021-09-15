@@ -192,15 +192,14 @@ public abstract class BaseProcessVersionResourceTestCase {
 
 	@Test
 	public void testGetProcessProcessVersionsPage() throws Exception {
-		Page<ProcessVersion> page =
-			processVersionResource.getProcessProcessVersionsPage(
-				testGetProcessProcessVersionsPage_getProcessId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessProcessVersionsPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessProcessVersionsPage_getIrrelevantProcessId();
+
+		Page<ProcessVersion> page =
+			processVersionResource.getProcessProcessVersionsPage(processId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			ProcessVersion irrelevantProcessVersion =
@@ -256,6 +255,23 @@ public abstract class BaseProcessVersionResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	protected void assertContains(
+		ProcessVersion processVersion, List<ProcessVersion> processVersions) {
+
+		boolean contains = false;
+
+		for (ProcessVersion item : processVersions) {
+			if (equals(processVersion, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			processVersions + " does not contain " + processVersion, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

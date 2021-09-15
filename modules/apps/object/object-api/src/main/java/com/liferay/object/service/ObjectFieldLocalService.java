@@ -87,12 +87,6 @@ public interface ObjectFieldLocalService
 	public ObjectField addObjectField(ObjectField objectField);
 
 	@Indexable(type = IndexableType.REINDEX)
-	public ObjectField addRelationshipObjectField(
-			long userId, long objectDefinitionId, Map<Locale, String> labelMap,
-			String name)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
 	public ObjectField addSystemObjectField(
 			long userId, long objectDefinitionId, String dbColumnName,
 			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
@@ -139,9 +133,11 @@ public interface ObjectFieldLocalService
 	 *
 	 * @param objectField the object field
 	 * @return the object field that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public ObjectField deleteObjectField(ObjectField objectField);
+	public ObjectField deleteObjectField(ObjectField objectField)
+		throws PortalException;
 
 	/**
 	 * @throws PortalException
@@ -293,6 +289,10 @@ public interface ObjectFieldLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ObjectField> getObjectFields(long objectDefinitionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ObjectField> getObjectFields(
+		long objectDefinitionId, String dbTableName);
 
 	/**
 	 * Returns the number of object fields.

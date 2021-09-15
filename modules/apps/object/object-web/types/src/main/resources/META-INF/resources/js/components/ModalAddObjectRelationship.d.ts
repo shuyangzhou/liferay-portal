@@ -15,7 +15,12 @@
 import React from 'react';
 interface IProps extends React.HTMLAttributes<HTMLElement> {
 	apiURL: string;
+	objectDefinitions: TObjectDefinition[];
 	spritemap: string;
 }
+declare type TObjectDefinition = {
+	id: string;
+	name: string;
+};
 declare const ModalWithProvider: React.FC<IProps>;
 export default ModalWithProvider;

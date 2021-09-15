@@ -60,7 +60,7 @@ public class ObjectFieldWrapper
 		attributes.put("indexedLanguageId", getIndexedLanguageId());
 		attributes.put("label", getLabel());
 		attributes.put("name", getName());
-		attributes.put("relationship", isRelationship());
+		attributes.put("relationshipType", getRelationshipType());
 		attributes.put("required", isRequired());
 		attributes.put("type", getType());
 
@@ -172,10 +172,10 @@ public class ObjectFieldWrapper
 			setName(name);
 		}
 
-		Boolean relationship = (Boolean)attributes.get("relationship");
+		String relationshipType = (String)attributes.get("relationshipType");
 
-		if (relationship != null) {
-			setRelationship(relationship);
+		if (relationshipType != null) {
+			setRelationshipType(relationshipType);
 		}
 
 		Boolean required = (Boolean)attributes.get("required");
@@ -423,13 +423,13 @@ public class ObjectFieldWrapper
 	}
 
 	/**
-	 * Returns the relationship of this object field.
+	 * Returns the relationship type of this object field.
 	 *
-	 * @return the relationship of this object field
+	 * @return the relationship type of this object field
 	 */
 	@Override
-	public boolean getRelationship() {
-		return model.getRelationship();
+	public String getRelationshipType() {
+		return model.getRelationshipType();
 	}
 
 	/**
@@ -510,16 +510,6 @@ public class ObjectFieldWrapper
 	@Override
 	public boolean isIndexedAsKeyword() {
 		return model.isIndexedAsKeyword();
-	}
-
-	/**
-	 * Returns <code>true</code> if this object field is relationship.
-	 *
-	 * @return <code>true</code> if this object field is relationship; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isRelationship() {
-		return model.isRelationship();
 	}
 
 	/**
@@ -757,13 +747,13 @@ public class ObjectFieldWrapper
 	}
 
 	/**
-	 * Sets whether this object field is relationship.
+	 * Sets the relationship type of this object field.
 	 *
-	 * @param relationship the relationship of this object field
+	 * @param relationshipType the relationship type of this object field
 	 */
 	@Override
-	public void setRelationship(boolean relationship) {
-		model.setRelationship(relationship);
+	public void setRelationshipType(String relationshipType) {
+		model.setRelationshipType(relationshipType);
 	}
 
 	/**

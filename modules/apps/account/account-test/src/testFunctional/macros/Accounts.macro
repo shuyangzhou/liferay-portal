@@ -701,7 +701,14 @@ definition {
 	}
 
 	macro deactivateAccount {
-		Search.searchCP(searchTerm = "${accountName}");
+		if (IsElementPresent(locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING")) {
+			Search.searchPG(
+				portletName = "Account Management",
+				searchTerm = "${accountName}");
+		}
+		else {
+			Search.searchCP(searchTerm = "${accountName}");
+		}
 
 		if ("${deactivateType}" == "Hide Icon") {
 			LexiconEntry.selectEntry(key_rowEntry = "${accountName}");
@@ -737,7 +744,14 @@ definition {
 	}
 
 	macro deleteAccount {
-		Search.searchCP(searchTerm = "${accountName}");
+		if (IsElementPresent(locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING")) {
+			Search.searchPG(
+				portletName = "Account Management",
+				searchTerm = "${accountName}");
+		}
+		else {
+			Search.searchCP(searchTerm = "${accountName}");
+		}
 
 		if ("${deleteType}" == "Delete Icon") {
 			LexiconEntry.selectEntry(key_rowEntry = "${accountName}");
@@ -1241,7 +1255,14 @@ definition {
 	macro viewInactiveAccount {
 		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
 
-		Search.searchCP(searchTerm = "${accountName}");
+		if (IsElementPresent(locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING")) {
+			Search.searchPG(
+				portletName = "Account Management",
+				searchTerm = "${accountName}");
+		}
+		else {
+			Search.searchCP(searchTerm = "${accountName}");
+		}
 
 		LexiconEntry.viewEntryStatus(
 			rowEntry = "${accountName}",

@@ -202,6 +202,23 @@ public abstract class BaseSelectionResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		Selection selection, List<Selection> selections) {
+
+		boolean contains = false;
+
+		for (Selection item : selections) {
+			if (equals(selection, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			selections + " does not contain " + selection, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

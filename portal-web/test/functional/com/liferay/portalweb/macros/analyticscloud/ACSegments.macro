@@ -16,6 +16,36 @@ definition {
 		Click(locator1 = "ACSegments#ADD_BUTTON");
 	}
 
+	macro addBreakdownByAttribute {
+		Click(locator1 = "ACSegments#ADD_BREAKDOWN_BUTTON");
+
+		Click(locator1 = "ACSegments#SEGMENT_OVERVIEW_ATTRIBUTE");
+
+		Type(
+			locator1 = "ACSegments#SEGMENT_OVERVIEW_ATTRIBUTE",
+			value1 = "${attribute}");
+
+		Click(
+			locator1 = "ACSegments#ATTRIBUTE_DROPDOWN_MENU_ITEM",
+			menuItem = "${attribute}");
+
+		if (isSet(binsAmount)) {
+			Click(locator1 = "ACSegments#BINS_INPUT");
+
+			Type(
+				locator1 = "ACSegments#BINS_INPUT",
+				value1 = "${binsAmount}");
+		}
+
+		Click(locator1 = "ACSegments#BREAKDOWN_NAME_INPUT");
+
+		Type(
+			locator1 = "ACSegments#BREAKDOWN_NAME_INPUT",
+			value1 = "${breakdownName}");
+
+		Click(locator1 = "Button#SAVE");
+	}
+
 	macro addNestedSegmentField {
 		Type(
 			locator1 = "ACSegments#SEARCH_SEGMENT",
@@ -31,6 +61,12 @@ definition {
 			index = "${index}",
 			locator1 = "ACSegments#SEGMENT_CRITERION_ITEM",
 			locator2 = "ACSegments#CRITERIA_STATEMENT_BODY");
+	}
+
+	macro addOrganizationName {
+		Type(
+			locator1 = "ACSegments#ORGANIZATION_NAME_INPUT",
+			value1 = "${organizationName}");
 	}
 
 	macro addSegmentField {
@@ -85,6 +121,13 @@ definition {
 			locator1 = "ACSegments#TABLE_CHECKBOX");
 	}
 
+	macro assertMembershipValue {
+		AssertElementPresent(
+			locator1 = "ACSegments#SEGMENT_TABLE_MEMBERSHIP_NAME_AND_VALUE",
+			membershipName = "${membership}",
+			segmentName = "${segmentName}");
+	}
+
 	macro assertSegmentAttributeNotPresent {
 		var key_SegmentField = "${segmentField}";
 
@@ -101,6 +144,13 @@ definition {
 		var key_segmentName = "${segmentName}";
 
 		AssertElementPresent(locator1 = "ACSegments#SELECT_SEGMENT");
+	}
+
+	macro assertTotalActivitiesValue {
+		AssertElementPresent(
+			locator1 = "ACSegments#SEGMENT_TABLE_TOTAL_ACTIVITIES_NAME_AND_VALUE",
+			segmentName = "${segmentName}",
+			totalActivitiesNumber = "${totalActivities}");
 	}
 
 	macro cancelSegment {
@@ -359,6 +409,42 @@ definition {
 		Click(locator1 = "ACSegments#KNOWN_SEGMENT_MEMBERS_FILTER_BY_NAME");
 	}
 
+	macro generateDayMonthAndYearValues {
+		if (!(isSet(dateDifferenceFromCurrentDate))) {
+			var dateDifferenceFromCurrentDate = "0";
+		}
+
+		var day = DateUtil.getDate("${dateDifferenceFromCurrentDate}");
+		var month = DateUtil.getMonthName("${dateDifferenceFromCurrentDate}");
+		var year = DateUtil.getYear("${dateDifferenceFromCurrentDate}");
+
+		static var staticDay = "${day}";
+		static var staticMonth = "${month}";
+		static var staticYear = "${year}";
+
+		return "${staticDay}";
+		return "${staticMonth}";
+		return "${staticYear}";
+	}
+
+	macro generateSecondDayMonthAndYearValues {
+		if (!(isSet(dateDifferenceFromCurrentDate))) {
+			var dateDifferenceFromCurrentDate = "0";
+		}
+
+		var day2 = DateUtil.getDate("${dateDifferenceFromCurrentDate}");
+		var month2 = DateUtil.getMonthName("${dateDifferenceFromCurrentDate}");
+		var year2 = DateUtil.getYear("${dateDifferenceFromCurrentDate}");
+
+		static var staticDay2 = "${day2}";
+		static var staticMonth2 = "${month2}";
+		static var staticYear2 = "${year2}";
+
+		return "${staticDay2}";
+		return "${staticMonth2}";
+		return "${staticYear2}";
+	}
+
 	macro goToSidebarAttributes {
 		var key_Criterion = "${criterion}";
 
@@ -418,6 +504,18 @@ definition {
 
 		KeyPress(
 			locator1 = "ACSettings#SEARCH_BAR",
+			value1 = "\ENTER");
+	}
+
+	macro searchTheSegmentProfile {
+		var key_segmentName = "${searchTerm}";
+
+		Type(
+			locator1 = "ACSegments#SEARCH_MEMBER",
+			value1 = "${key_segmentName}");
+
+		KeyPress(
+			locator1 = "ACSegments#SEARCH_MEMBER",
 			value1 = "\ENTER");
 	}
 
@@ -597,6 +695,57 @@ definition {
 			index = "${index}",
 			locator1 = "ACSegments#SEGMENT_CRITERIA_ATTRIBUTE_VALUE",
 			value1 = "${attributeValue}");
+
+		if (isSet(conjunction)) {
+			AssertTextEquals(
+				index = "${index}",
+				locator1 = "ACSegments#SEGMENT_CRITERIA_CONJUNCTION",
+				value1 = "${conjunction}");
+		}
+	}
+
+	macro viewSegmentCriteriaSessionAttributes {
+		if (!(isSet(index))) {
+			var index = "1";
+		}
+
+		if (!(isSet(key_indexNested))) {
+			var key_indexNested = "1";
+		}
+
+		AssertVisible(
+			index = "${index}",
+			locator1 = "ACSegments#SEGMENT_CRITERIA_TYPE",
+			type = "Session");
+
+		AssertTextEquals(
+			index = "${index}",
+			locator1 = "ACSegments#SEGMENT_CRITERIA_ATTRIBUTE_NAME",
+			value1 = "${attributeName}");
+
+		AssertTextEquals(
+			index = "${index}",
+			locator1 = "ACSegments#SEGMENT_CRITERIA_CONDITION",
+			value1 = "${condition}");
+
+		AssertTextEquals(
+			index = "${index}",
+			locator1 = "ACSegments#SEGMENT_CRITERIA_ATTRIBUTE_VALUE",
+			value1 = "${attributeValue}");
+
+		AssertTextEquals(
+			index = "${index}",
+			index_2 = "2",
+			locator1 = "ACSegments#SEGMENT_CRITERIA_PREPOSITION_AND_TIME",
+			value1 = "${preposition}");
+
+		if (isSet(time)) {
+			AssertTextEquals(
+				index = "${index}",
+				index_2 = "3",
+				locator1 = "ACSegments#SEGMENT_CRITERIA_PREPOSITION_AND_TIME",
+				value1 = "${time}");
+		}
 
 		if (isSet(conjunction)) {
 			AssertTextEquals(

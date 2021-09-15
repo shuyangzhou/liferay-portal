@@ -93,7 +93,7 @@ public class ObjectFieldModelImpl
 		{"dbTableName", Types.VARCHAR}, {"indexed", Types.BOOLEAN},
 		{"indexedAsKeyword", Types.BOOLEAN},
 		{"indexedLanguageId", Types.VARCHAR}, {"label", Types.VARCHAR},
-		{"name", Types.VARCHAR}, {"relationship", Types.BOOLEAN},
+		{"name", Types.VARCHAR}, {"relationshipType", Types.VARCHAR},
 		{"required", Types.BOOLEAN}, {"type_", Types.VARCHAR}
 	};
 
@@ -118,13 +118,13 @@ public class ObjectFieldModelImpl
 		TABLE_COLUMNS_MAP.put("indexedLanguageId", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("label", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("relationship", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("relationshipType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("required", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ObjectField (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,objectFieldId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,objectDefinitionId LONG,dbColumnName VARCHAR(75) null,dbTableName VARCHAR(75) null,indexed BOOLEAN,indexedAsKeyword BOOLEAN,indexedLanguageId VARCHAR(75) null,label STRING null,name VARCHAR(75) null,relationship BOOLEAN,required BOOLEAN,type_ VARCHAR(75) null)";
+		"create table ObjectField (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,objectFieldId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,objectDefinitionId LONG,dbColumnName VARCHAR(75) null,dbTableName VARCHAR(75) null,indexed BOOLEAN,indexedAsKeyword BOOLEAN,indexedLanguageId VARCHAR(75) null,label STRING null,name VARCHAR(75) null,relationshipType VARCHAR(75) null,required BOOLEAN,type_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table ObjectField";
 
@@ -214,7 +214,7 @@ public class ObjectFieldModelImpl
 		model.setIndexedLanguageId(soapModel.getIndexedLanguageId());
 		model.setLabel(soapModel.getLabel());
 		model.setName(soapModel.getName());
-		model.setRelationship(soapModel.isRelationship());
+		model.setRelationshipType(soapModel.getRelationshipType());
 		model.setRequired(soapModel.isRequired());
 		model.setType(soapModel.getType());
 
@@ -443,10 +443,10 @@ public class ObjectFieldModelImpl
 		attributeSetterBiConsumers.put(
 			"name", (BiConsumer<ObjectField, String>)ObjectField::setName);
 		attributeGetterFunctions.put(
-			"relationship", ObjectField::getRelationship);
+			"relationshipType", ObjectField::getRelationshipType);
 		attributeSetterBiConsumers.put(
-			"relationship",
-			(BiConsumer<ObjectField, Boolean>)ObjectField::setRelationship);
+			"relationshipType",
+			(BiConsumer<ObjectField, String>)ObjectField::setRelationshipType);
 		attributeGetterFunctions.put("required", ObjectField::getRequired);
 		attributeSetterBiConsumers.put(
 			"required",
@@ -923,23 +923,22 @@ public class ObjectFieldModelImpl
 
 	@JSON
 	@Override
-	public boolean getRelationship() {
-		return _relationship;
+	public String getRelationshipType() {
+		if (_relationshipType == null) {
+			return "";
+		}
+		else {
+			return _relationshipType;
+		}
 	}
 
-	@JSON
 	@Override
-	public boolean isRelationship() {
-		return _relationship;
-	}
-
-	@Override
-	public void setRelationship(boolean relationship) {
+	public void setRelationshipType(String relationshipType) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
 
-		_relationship = relationship;
+		_relationshipType = relationshipType;
 	}
 
 	@JSON
@@ -1128,7 +1127,7 @@ public class ObjectFieldModelImpl
 		objectFieldImpl.setIndexedLanguageId(getIndexedLanguageId());
 		objectFieldImpl.setLabel(getLabel());
 		objectFieldImpl.setName(getName());
-		objectFieldImpl.setRelationship(isRelationship());
+		objectFieldImpl.setRelationshipType(getRelationshipType());
 		objectFieldImpl.setRequired(isRequired());
 		objectFieldImpl.setType(getType());
 
@@ -1171,8 +1170,8 @@ public class ObjectFieldModelImpl
 			this.<String>getColumnOriginalValue("indexedLanguageId"));
 		objectFieldImpl.setLabel(this.<String>getColumnOriginalValue("label"));
 		objectFieldImpl.setName(this.<String>getColumnOriginalValue("name"));
-		objectFieldImpl.setRelationship(
-			this.<Boolean>getColumnOriginalValue("relationship"));
+		objectFieldImpl.setRelationshipType(
+			this.<String>getColumnOriginalValue("relationshipType"));
 		objectFieldImpl.setRequired(
 			this.<Boolean>getColumnOriginalValue("required"));
 		objectFieldImpl.setType(this.<String>getColumnOriginalValue("type_"));
@@ -1342,7 +1341,13 @@ public class ObjectFieldModelImpl
 			objectFieldCacheModel.name = null;
 		}
 
-		objectFieldCacheModel.relationship = isRelationship();
+		objectFieldCacheModel.relationshipType = getRelationshipType();
+
+		String relationshipType = objectFieldCacheModel.relationshipType;
+
+		if ((relationshipType != null) && (relationshipType.length() == 0)) {
+			objectFieldCacheModel.relationshipType = null;
+		}
 
 		objectFieldCacheModel.required = isRequired();
 
@@ -1463,7 +1468,7 @@ public class ObjectFieldModelImpl
 	private String _label;
 	private String _labelCurrentLanguageId;
 	private String _name;
-	private boolean _relationship;
+	private String _relationshipType;
 	private boolean _required;
 	private String _type;
 
@@ -1514,7 +1519,7 @@ public class ObjectFieldModelImpl
 		_columnOriginalValues.put("indexedLanguageId", _indexedLanguageId);
 		_columnOriginalValues.put("label", _label);
 		_columnOriginalValues.put("name", _name);
-		_columnOriginalValues.put("relationship", _relationship);
+		_columnOriginalValues.put("relationshipType", _relationshipType);
 		_columnOriginalValues.put("required", _required);
 		_columnOriginalValues.put("type_", _type);
 	}
@@ -1575,7 +1580,7 @@ public class ObjectFieldModelImpl
 
 		columnBitmasks.put("name", 65536L);
 
-		columnBitmasks.put("relationship", 131072L);
+		columnBitmasks.put("relationshipType", 131072L);
 
 		columnBitmasks.put("required", 262144L);
 

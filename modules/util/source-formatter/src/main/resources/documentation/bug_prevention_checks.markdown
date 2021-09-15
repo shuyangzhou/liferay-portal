@@ -133,6 +133,7 @@ MissingModifierCheck | .java | Verifies that a method or global variable has a m
 MissingOverrideCheck | .java | Verifies that a method that overrides a method in a superclass has the @Override annotation. |
 NestedFieldAnnotationCheck | .java | Verifies that `NestedFieldSupport.class` is used in `service` property of `Component` annotation |
 NewFileCheck | | Finds new files in directories that should not have added files. |
+NullAssertionInIfStatementCheck | .java | Verifies that null check should always be first in if-statement. |
 PackageinfoBNDExportPackageCheck | packageinfo | Finds legacy `packageinfo` files. |
 PersistenceCallCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds illegal persistence calls across component boundaries. |
 [PersistenceUpdateCheck](checks/persistence_update_check.markdown#persistenceupdatecheck) | .java | Checks that there are no stale references in service code from persistence updates. |

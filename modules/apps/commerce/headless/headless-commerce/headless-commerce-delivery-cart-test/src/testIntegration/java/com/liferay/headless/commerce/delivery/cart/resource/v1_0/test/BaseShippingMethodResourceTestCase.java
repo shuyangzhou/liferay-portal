@@ -194,15 +194,14 @@ public abstract class BaseShippingMethodResourceTestCase {
 
 	@Test
 	public void testGetCartShippingMethodsPage() throws Exception {
-		Page<ShippingMethod> page =
-			shippingMethodResource.getCartShippingMethodsPage(
-				testGetCartShippingMethodsPage_getCartId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long cartId = testGetCartShippingMethodsPage_getCartId();
 		Long irrelevantCartId =
 			testGetCartShippingMethodsPage_getIrrelevantCartId();
+
+		Page<ShippingMethod> page =
+			shippingMethodResource.getCartShippingMethodsPage(cartId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantCartId != null) {
 			ShippingMethod irrelevantShippingMethod =
@@ -262,6 +261,23 @@ public abstract class BaseShippingMethodResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ShippingMethod shippingMethod, List<ShippingMethod> shippingMethods) {
+
+		boolean contains = false;
+
+		for (ShippingMethod item : shippingMethods) {
+			if (equals(shippingMethod, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			shippingMethods + " does not contain " + shippingMethod, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

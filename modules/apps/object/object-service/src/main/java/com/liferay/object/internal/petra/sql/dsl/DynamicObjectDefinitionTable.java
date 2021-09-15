@@ -147,6 +147,10 @@ public class DynamicObjectDefinitionTable
 			_primaryKeyColumnName);
 	}
 
+	public String getPrimaryKeyColumnName() {
+		return _primaryKeyColumnName;
+	}
+
 	public Expression<?>[] getSelectExpressions() {
 		return _selectExpressions;
 	}
@@ -162,9 +166,15 @@ public class DynamicObjectDefinitionTable
 	}
 
 	private static String _getSQLColumnNull(String type) {
-		if (type.equals("BigDecimal") || type.equals("Date") ||
-			type.equals("Map") || type.equals("String")) {
+		if (type.equals("BigDecimal") || type.equals("Double") ||
+			type.equals("Integer") || type.equals("Long")) {
 
+			return " default 0";
+		}
+		else if (type.equals("Boolean")) {
+			return " default FALSE";
+		}
+		else if (type.equals("Date")) {
 			return " null";
 		}
 

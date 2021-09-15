@@ -84,7 +84,7 @@ public class ObjectDefinitionLocalServiceUtil {
 	}
 
 	public static ObjectDefinition addSystemObjectDefinition(
-			long userId, String dbTableName,
+			long userId, String className, String dbTableName,
 			Map<java.util.Locale, String> labelMap, String name,
 			String pkObjectFieldDBColumnName, String pkObjectFieldName,
 			Map<java.util.Locale, String> pluralLabelMap, String scope,
@@ -93,8 +93,9 @@ public class ObjectDefinitionLocalServiceUtil {
 		throws PortalException {
 
 		return getService().addSystemObjectDefinition(
-			userId, dbTableName, labelMap, name, pkObjectFieldDBColumnName,
-			pkObjectFieldName, pluralLabelMap, scope, version, objectFields);
+			userId, className, dbTableName, labelMap, name,
+			pkObjectFieldDBColumnName, pkObjectFieldName, pluralLabelMap, scope,
+			version, objectFields);
 	}
 
 	/**
@@ -361,6 +362,12 @@ public class ObjectDefinitionLocalServiceUtil {
 		return getService().getObjectDefinitions(start, end);
 	}
 
+	public static List<ObjectDefinition> getObjectDefinitions(
+		long companyId, boolean active, int status) {
+
+		return getService().getObjectDefinitions(companyId, active, status);
+	}
+
 	/**
 	 * Returns the number of object definitions.
 	 *
@@ -413,14 +420,15 @@ public class ObjectDefinitionLocalServiceUtil {
 	}
 
 	public static ObjectDefinition updateCustomObjectDefinition(
-			Long objectDefinitionId, Map<java.util.Locale, String> labelMap,
-			String name, String panelAppOrder, String panelCategoryKey,
+			Long objectDefinitionId, boolean active,
+			Map<java.util.Locale, String> labelMap, String name,
+			String panelAppOrder, String panelCategoryKey,
 			Map<java.util.Locale, String> pluralLabelMap, String scope)
 		throws PortalException {
 
 		return getService().updateCustomObjectDefinition(
-			objectDefinitionId, labelMap, name, panelAppOrder, panelCategoryKey,
-			pluralLabelMap, scope);
+			objectDefinitionId, active, labelMap, name, panelAppOrder,
+			panelCategoryKey, pluralLabelMap, scope);
 	}
 
 	/**

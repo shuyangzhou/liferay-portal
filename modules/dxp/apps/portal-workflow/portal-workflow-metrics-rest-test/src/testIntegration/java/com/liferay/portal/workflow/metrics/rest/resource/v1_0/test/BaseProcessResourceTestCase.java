@@ -349,6 +349,20 @@ public abstract class BaseProcessResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Process process, List<Process> processes) {
+		boolean contains = false;
+
+		for (Process item : processes) {
+			if (equals(process, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(processes + " does not contain " + process, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

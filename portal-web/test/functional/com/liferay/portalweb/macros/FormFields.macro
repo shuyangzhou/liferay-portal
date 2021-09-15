@@ -154,7 +154,7 @@ definition {
 	}
 
 	macro disableSwitch {
-		Click(
+		Uncheck.uncheckToggleSwitch(
 			key_fieldName = "${fieldName}",
 			locator1 = "FormFields#SWITCH");
 
@@ -496,6 +496,13 @@ definition {
 				fieldName = "confirmationErrorMessage",
 				fieldValue = "${confirmationErrorMessage}");
 		}
+	}
+
+	macro editRequiredErrorMessage {
+		Type(
+			key_fieldName = "requiredErrorMessage",
+			locator1 = "FormFields#TEXT_FIELD",
+			value1 = "${errorMessage}");
 	}
 
 	macro editText {
@@ -992,6 +999,12 @@ definition {
 			locator1 = "Form#SIDEBAR_ADVANCED_PREDEFINED_VALUE");
 	}
 
+	macro setInputMaskFormat {
+		Type(
+			locator1 = "FormFields#INPUT_MASK_FORMAT_VALUE",
+			value1 = "${inputMaskFormat}");
+	}
+
 	macro toggleCKEditorContentStyle {
 		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
@@ -1450,6 +1463,18 @@ definition {
 			locator1 = "FormFields#NUMBER_FIELD_VALUE_ROW");
 	}
 
+	macro viewNumericInputMask {
+		AssertElementPresent(
+			key_inputMaskValue = "${inputMaskValue}",
+			locator1 = "FormFields#INPUT_MASK_VALUE");
+	}
+
+	macro viewNumericType {
+		AssertElementPresent(
+			key_numericType = "${numericType}",
+			locator1 = "FormFields#NUMERIC_TYPE");
+	}
+
 	macro viewOptionColumnsName {
 		AssertElementPresent(
 			key_fieldName = "${fieldTitle}",
@@ -1756,6 +1781,12 @@ definition {
 
 	macro viewRequiredAsteriskNotPresent {
 		AssertElementNotPresent(locator1 = "Icon#ASTERISK");
+	}
+
+	macro viewRequiredErrorMessage {
+		AssertElementPresent(
+			key_errorMessage = "${errorMessage}",
+			locator1 = "FormFields#SIDEBAR_BASIC_ERROR_MESSAGE");
 	}
 
 	macro viewRichTextPredefinedValue {

@@ -190,6 +190,23 @@ public abstract class BaseAssigneeMetricResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(
+		AssigneeMetric assigneeMetric, List<AssigneeMetric> assigneeMetrics) {
+
+		boolean contains = false;
+
+		for (AssigneeMetric item : assigneeMetrics) {
+			if (equals(assigneeMetric, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			assigneeMetrics + " does not contain " + assigneeMetric, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

@@ -14,6 +14,12 @@ definition {
 		Click(locator1 = "ObjectPortlet#DELETE_ENTRY_BUTTON");
 	}
 
+	macro selectCustomObject {
+		Click(
+			key_name = "${name}",
+			locator1 = "ObjectPortlet#SELECT_CUSTOM_OBJECT");
+	}
+
 	macro viewEntry {
 		AssertElementPresent(
 			key_entry = "${entry}",

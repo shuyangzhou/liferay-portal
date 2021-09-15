@@ -1,6 +1,5 @@
 definition {
 
-	@summary = "Adds new property"
 	macro addNewProperty {
 		Click(locator1 = "ACSettings#NEW_PROPERTY_BUTTON");
 
@@ -41,6 +40,10 @@ definition {
 			locator1 = "ACSettings#PROPERTIES_ASSET_LIST");
 	}
 
+	macro assertCannotAddProperty {
+		AssertElementPresent(locator1 = "AppBuilder#SAVE_BUTTON_DISABLED");
+	}
+
 	@summary = "Asserts that the workspace is scoped by a specific Property"
 	macro assertCurrentActiveProperty {
 		AssertTextEquals(
@@ -53,6 +56,10 @@ definition {
 		AssertTextEquals(
 			locator1 = "ACSettings#PROPERTY_NAME",
 			value1 = "${propertyName}");
+	}
+
+	macro assertNoProperties {
+		AssertElementPresent(locator1 = "ACSettings#NO_PROPERTIES_FOUND");
 	}
 
 	macro assertPropertyHeader {

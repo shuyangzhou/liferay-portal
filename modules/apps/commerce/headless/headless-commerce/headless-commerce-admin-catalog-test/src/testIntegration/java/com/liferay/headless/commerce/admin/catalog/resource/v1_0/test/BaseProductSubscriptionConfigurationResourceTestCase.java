@@ -250,6 +250,29 @@ public abstract class BaseProductSubscriptionConfigurationResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(
+		ProductSubscriptionConfiguration productSubscriptionConfiguration,
+		List<ProductSubscriptionConfiguration>
+			productSubscriptionConfigurations) {
+
+		boolean contains = false;
+
+		for (ProductSubscriptionConfiguration item :
+				productSubscriptionConfigurations) {
+
+			if (equals(productSubscriptionConfiguration, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productSubscriptionConfigurations + " does not contain " +
+				productSubscriptionConfiguration,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

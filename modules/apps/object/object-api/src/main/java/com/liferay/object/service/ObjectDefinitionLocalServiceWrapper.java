@@ -79,7 +79,7 @@ public class ObjectDefinitionLocalServiceWrapper
 
 	@Override
 	public com.liferay.object.model.ObjectDefinition addSystemObjectDefinition(
-			long userId, String dbTableName,
+			long userId, String className, String dbTableName,
 			java.util.Map<java.util.Locale, String> labelMap, String name,
 			String pkObjectFieldDBColumnName, String pkObjectFieldName,
 			java.util.Map<java.util.Locale, String> pluralLabelMap,
@@ -88,8 +88,9 @@ public class ObjectDefinitionLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectDefinitionLocalService.addSystemObjectDefinition(
-			userId, dbTableName, labelMap, name, pkObjectFieldDBColumnName,
-			pkObjectFieldName, pluralLabelMap, scope, version, objectFields);
+			userId, className, dbTableName, labelMap, name,
+			pkObjectFieldDBColumnName, pkObjectFieldName, pluralLabelMap, scope,
+			version, objectFields);
 	}
 
 	/**
@@ -401,6 +402,14 @@ public class ObjectDefinitionLocalServiceWrapper
 		return _objectDefinitionLocalService.getObjectDefinitions(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectDefinition>
+		getObjectDefinitions(long companyId, boolean active, int status) {
+
+		return _objectDefinitionLocalService.getObjectDefinitions(
+			companyId, active, status);
+	}
+
 	/**
 	 * Returns the number of object definitions.
 	 *
@@ -467,7 +476,7 @@ public class ObjectDefinitionLocalServiceWrapper
 	@Override
 	public com.liferay.object.model.ObjectDefinition
 			updateCustomObjectDefinition(
-				Long objectDefinitionId,
+				Long objectDefinitionId, boolean active,
 				java.util.Map<java.util.Locale, String> labelMap, String name,
 				String panelAppOrder, String panelCategoryKey,
 				java.util.Map<java.util.Locale, String> pluralLabelMap,
@@ -475,8 +484,8 @@ public class ObjectDefinitionLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectDefinitionLocalService.updateCustomObjectDefinition(
-			objectDefinitionId, labelMap, name, panelAppOrder, panelCategoryKey,
-			pluralLabelMap, scope);
+			objectDefinitionId, active, labelMap, name, panelAppOrder,
+			panelCategoryKey, pluralLabelMap, scope);
 	}
 
 	/**

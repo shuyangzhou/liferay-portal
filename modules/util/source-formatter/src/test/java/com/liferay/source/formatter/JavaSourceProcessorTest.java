@@ -361,6 +361,18 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testNullAssertionInIfStatement() throws Exception {
+		test(
+			"NullAssertionInIfStatement.testjava",
+			new String[] {
+					"Null check for variable 'list' should always be first in if-statement",
+					"Null check for variable 'list' should always be first in if-statement",
+					"Null check for variable 'nameList1' should always be first in if-statement"
+				},
+				new Integer[] {25, 33, 46});
+	}
+
+	@Test
 	public void testNullVariable() throws Exception {
 		test("NullVariable.testjava");
 	}

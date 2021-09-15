@@ -190,6 +190,25 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		Assert.assertEquals(regex, taxonomyCategory.getTaxonomyCategoryName());
 	}
 
+	protected void assertContains(
+		TaxonomyCategory taxonomyCategory,
+		List<TaxonomyCategory> taxonomyCategories) {
+
+		boolean contains = false;
+
+		for (TaxonomyCategory item : taxonomyCategories) {
+			if (equals(taxonomyCategory, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			taxonomyCategories + " does not contain " + taxonomyCategory,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

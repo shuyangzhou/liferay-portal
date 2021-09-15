@@ -217,6 +217,26 @@ public abstract class BaseWorkflowTaskAssignableUsersResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		WorkflowTaskAssignableUsers workflowTaskAssignableUsers,
+		List<WorkflowTaskAssignableUsers> workflowTaskAssignableUserses) {
+
+		boolean contains = false;
+
+		for (WorkflowTaskAssignableUsers item : workflowTaskAssignableUserses) {
+			if (equals(workflowTaskAssignableUsers, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			workflowTaskAssignableUserses + " does not contain " +
+				workflowTaskAssignableUsers,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

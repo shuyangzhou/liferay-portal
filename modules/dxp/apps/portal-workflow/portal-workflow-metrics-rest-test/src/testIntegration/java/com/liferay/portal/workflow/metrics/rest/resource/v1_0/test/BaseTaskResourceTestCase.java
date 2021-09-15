@@ -202,14 +202,13 @@ public abstract class BaseTaskResourceTestCase {
 
 	@Test
 	public void testGetProcessTasksPage() throws Exception {
-		Page<Task> page = taskResource.getProcessTasksPage(
-			testGetProcessTasksPage_getProcessId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessTasksPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessTasksPage_getIrrelevantProcessId();
+
+		Page<Task> page = taskResource.getProcessTasksPage(processId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			Task irrelevantTask = testGetProcessTasksPage_addTask(
@@ -404,6 +403,20 @@ public abstract class BaseTaskResourceTestCase {
 	protected Task testGraphQLTask_addTask() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Task task, List<Task> tasks) {
+		boolean contains = false;
+
+		for (Task item : tasks) {
+			if (equals(task, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(tasks + " does not contain " + task, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

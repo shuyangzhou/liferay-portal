@@ -156,7 +156,7 @@ public class ObjectFieldPersistenceTest {
 
 		newObjectField.setName(RandomTestUtil.randomString());
 
-		newObjectField.setRelationship(RandomTestUtil.randomBoolean());
+		newObjectField.setRelationshipType(RandomTestUtil.randomString());
 
 		newObjectField.setRequired(RandomTestUtil.randomBoolean());
 
@@ -212,8 +212,8 @@ public class ObjectFieldPersistenceTest {
 		Assert.assertEquals(
 			existingObjectField.getName(), newObjectField.getName());
 		Assert.assertEquals(
-			existingObjectField.isRelationship(),
-			newObjectField.isRelationship());
+			existingObjectField.getRelationshipType(),
+			newObjectField.getRelationshipType());
 		Assert.assertEquals(
 			existingObjectField.isRequired(), newObjectField.isRequired());
 		Assert.assertEquals(
@@ -294,7 +294,7 @@ public class ObjectFieldPersistenceTest {
 			true, "objectDefinitionId", true, "dbColumnName", true,
 			"dbTableName", true, "indexed", true, "indexedAsKeyword", true,
 			"indexedLanguageId", true, "label", true, "name", true,
-			"relationship", true, "required", true, "type", true);
+			"relationshipType", true, "required", true, "type", true);
 	}
 
 	@Test
@@ -606,7 +606,7 @@ public class ObjectFieldPersistenceTest {
 
 		objectField.setName(RandomTestUtil.randomString());
 
-		objectField.setRelationship(RandomTestUtil.randomBoolean());
+		objectField.setRelationshipType(RandomTestUtil.randomString());
 
 		objectField.setRequired(RandomTestUtil.randomBoolean());
 

@@ -25,14 +25,6 @@ definition {
 	}
 
 	tearDown {
-		task ("Go back to Desktop viewport") {
-			SelectFrame(value1 = "relative=top");
-
-			Click(
-				key_deviceType = "Desktop",
-				locator1 = "PageEditor#DEVICE_TYPE");
-		}
-
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
 		if ("${testPortalInstance}" == "true") {
@@ -70,11 +62,7 @@ definition {
 		}
 
 		task ("Select the 3 Modules per Row as Layout in Tablet viewport") {
-			Click(
-				key_deviceType = "Tablet",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Tablet");
 
 			Select(
 				key_fieldLabel = "Layout",
@@ -85,11 +73,7 @@ definition {
 		}
 
 		task ("Select the 6 Modules per Row as Layout in Landscape Phone viewport") {
-			Click(
-				key_deviceType = "Landscape Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Landscape Phone");
 
 			Select(
 				key_fieldLabel = "Layout",
@@ -100,11 +84,7 @@ definition {
 		}
 
 		task ("Select the 1 Module per Row as Layout in Portrait Phone viewport") {
-			Click(
-				key_deviceType = "Portrait Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Portrait Phone");
 
 			Select(
 				key_fieldLabel = "Layout",
@@ -115,11 +95,7 @@ definition {
 		}
 
 		task ("Assert the Layout of Grid is 2 Modules per Row and the height of module is greater than 20px in Desktop viewport") {
-			Click(
-				key_deviceType = "Desktop",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Desktop");
 
 			PageEditor.viewGridStyle(
 				columnCount = "6",
@@ -135,11 +111,7 @@ definition {
 		}
 
 		task ("Assert the Layout of Grid is 3 Modules per Row and the height of module is greater than 20px in Tablet viewport") {
-			Click(
-				key_deviceType = "Tablet",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Tablet");
 
 			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#PAGE_EDITOR_GLOBAL_CONTEXT_IFRAME");
 
@@ -159,11 +131,7 @@ definition {
 		}
 
 		task ("Assert the Layout of Grid is 6 Modules per Row and the height of module is greater than 20px in Landscape Phone viewport") {
-			Click(
-				key_deviceType = "Landscape Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Landscape Phone");
 
 			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#PAGE_EDITOR_GLOBAL_CONTEXT_IFRAME");
 
@@ -183,11 +151,7 @@ definition {
 		}
 
 		task ("Assert the Layout of Grid is 1 Module per Row and the height of module is greater than 20px in Portrait Phone viewport") {
-			Click(
-				key_deviceType = "Portrait Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
+			PageEditor.switchViewport(deviceType = "Portrait Phone");
 
 			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#PAGE_EDITOR_GLOBAL_CONTEXT_IFRAME");
 
@@ -244,27 +208,28 @@ definition {
 		}
 
 		task ("Change to landscape phone viewport, hide 1 and 2, unhide 3") {
-			Click(
-				key_deviceType = "Landscape Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Landscape Phone");
+
 			PageEditor.clickHideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "1");
+
 			PageEditor.clickHideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "2");
+
 			PageEditor.clickUnhideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "3");
 		}
 
 		task ("Change to Portrait phone viewport, hide 3, unhide 2") {
-			Click(
-				key_deviceType = "Portrait Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Portrait Phone");
+
 			PageEditor.clickHideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "3");
+
 			PageEditor.clickUnhideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "2");
@@ -355,25 +320,24 @@ definition {
 		}
 
 		task ("Hide Heading Example 4 for tablet viewport") {
-			Click(
-				key_deviceType = "Tablet",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Tablet");
+
 			PageEditor.clickHideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "4");
 		}
+
 		task ("Hide Heading Example 3 for landscape phone viewport") {
-			Click(
-				key_deviceType = "Landscape Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Landscape Phone");
+
 			PageEditor.clickHideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "3");
 		}
+
 		task ("Hide Heading Example 2 for portrait phone viewport") {
-			Click(
-				key_deviceType = "Portrait Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Portrait Phone");
+
 			PageEditor.clickHideFragmentViaPageStructure(
 				fragmentName = "Heading",
 				index = "2");
@@ -381,18 +345,14 @@ definition {
 
 		task ("Open the Preview modal") {
 			PageEditor.openPreviewMode();
-
-			SelectFrame(locator1 = "IFrame#MODAL_BODY");
 		}
 
 		task ("Assert that Heading from 1 to 4 are shown for desktop view on preview") {
-			SelectFrameTop();
+			PageEditor.switchViewport(
+				deviceType = "Desktop",
+				modal = "true");
 
-			Click(
-				key_deviceType = "Desktop",
-				locator1 = "Modal#DEVICE_TYPE");
-
-			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 			for (var n : list "1,2,3,4") {
 				AssertTextEquals(
@@ -411,11 +371,11 @@ definition {
 		task ("Assert that Heading from 1 to 3 are shown for tablet view on preview") {
 			SelectFrameTop();
 
-			Click(
-				key_deviceType = "Tablet",
-				locator1 = "Modal#DEVICE_TYPE");
+			PageEditor.switchViewport(
+				deviceType = "Tablet",
+				modal = "true");
 
-			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 			for (var n : list "1,2,3") {
 				AssertTextEquals(
@@ -436,11 +396,11 @@ definition {
 		task ("Assert that Heading from 1 to 2 are shown for landscape phone view on preview") {
 			SelectFrameTop();
 
-			Click(
-				key_deviceType = "Landscape Phone",
-				locator1 = "Modal#DEVICE_TYPE");
+			PageEditor.switchViewport(
+				deviceType = "Landscape Phone",
+				modal = "true");
 
-			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 			for (var n : list "1,2") {
 				AssertTextEquals(
@@ -461,11 +421,11 @@ definition {
 		task ("Assert that only Heading 1 is shown for portail phone view on preview") {
 			SelectFrameTop();
 
-			Click(
-				key_deviceType = "Portrait Phone",
-				locator1 = "Modal#DEVICE_TYPE");
+			PageEditor.switchViewport(
+				deviceType = "Portrait Phone",
+				modal = "true");
 
-			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 			AssertTextEquals(
 				key_fragmentName = "heading",
@@ -524,11 +484,7 @@ definition {
 
 		task ("Assert the common styles are propagated to other viewports") {
 			for (var deviceType : list "Tablet,Landscape Phone,Portrait Phone") {
-				Click(
-					key_deviceType = "${deviceType}",
-					locator1 = "PageEditor#DEVICE_TYPE");
-
-				Pause(locator1 = "3000");
+				PageEditor.switchViewport(deviceType = "${deviceType}");
 
 				SelectFrame.selectFrameNoLoading(locator1 = "IFrame#PAGE_EDITOR_GLOBAL_CONTEXT_IFRAME");
 
@@ -542,6 +498,8 @@ definition {
 					paddingLeft = "2",
 					paddingRight = "2",
 					paddingTop = "2");
+
+				SelectFrame(value1 = "relative=top");
 			}
 		}
 	}
@@ -561,9 +519,7 @@ definition {
 		}
 
 		task ("Resize the width of Tablet viewport") {
-			Click(
-				key_deviceType = "Tablet",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Tablet");
 
 			AssertVisible(locator1 = "PageEditor#VIEWPORT_HANDLE");
 
@@ -579,9 +535,7 @@ definition {
 		}
 
 		task ("Resize the width of Portrait Phone viewport") {
-			Click(
-				key_deviceType = "Portrait Phone",
-				locator1 = "PageEditor#DEVICE_TYPE");
+			PageEditor.switchViewport(deviceType = "Portrait Phone");
 
 			AssertVisible(locator1 = "PageEditor#VIEWPORT_HANDLE");
 
@@ -632,11 +586,7 @@ definition {
 
 		task ("Assert only Margin and Padding are available on other viewports") {
 			for (var deviceType : list "Tablet,Landscape Phone,Portrait Phone") {
-				Click(
-					key_deviceType = "${deviceType}",
-					locator1 = "PageEditor#DEVICE_TYPE");
-
-				Pause(locator1 = "3000");
+				PageEditor.switchViewport(deviceType = "${deviceType}");
 
 				for (var fieldSetLabel : list "Margin,Padding") {
 					AssertElementPresent(

@@ -37,16 +37,6 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 	}
 
 	@Override
-	public String getClassName() {
-		if (isSystem()) {
-			throw new UnsupportedOperationException();
-		}
-
-		return "com.liferay.object.model.ObjectDefinition#" +
-			getObjectDefinitionId();
-	}
-
-	@Override
 	public String getDestinationName() {
 		return StringBundler.concat(
 			"liferay/object/", getCompanyId(), StringPool.SLASH,
@@ -88,7 +78,8 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 			throw new UnsupportedOperationException();
 		}
 
-		return TextFormatter.formatPlural(StringUtil.toLowerCase(getName()));
+		return "/c/" +
+			TextFormatter.formatPlural(StringUtil.toLowerCase(getShortName()));
 	}
 
 	@Override

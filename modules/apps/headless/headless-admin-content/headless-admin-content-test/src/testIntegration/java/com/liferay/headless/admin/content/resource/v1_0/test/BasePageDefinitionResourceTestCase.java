@@ -190,6 +190,23 @@ public abstract class BasePageDefinitionResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(
+		PageDefinition pageDefinition, List<PageDefinition> pageDefinitions) {
+
+		boolean contains = false;
+
+		for (PageDefinition item : pageDefinitions) {
+			if (equals(pageDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			pageDefinitions + " does not contain " + pageDefinition, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

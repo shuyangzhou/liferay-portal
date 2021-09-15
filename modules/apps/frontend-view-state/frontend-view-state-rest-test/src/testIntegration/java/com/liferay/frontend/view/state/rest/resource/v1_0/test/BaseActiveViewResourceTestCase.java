@@ -117,6 +117,21 @@ public abstract class BaseActiveViewResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(Object activeView, List<Object> activeViews) {
+		boolean contains = false;
+
+		for (Object item : activeViews) {
+			if (equals(activeView, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			activeViews + " does not contain " + activeView, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

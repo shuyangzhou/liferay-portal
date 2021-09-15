@@ -363,6 +363,11 @@ public class StringUtil_IW {
 		return StringUtil.removeChars(s, oldSubs);
 	}
 
+	public java.lang.String removeFirst(java.lang.String s,
+		java.lang.String oldSub) {
+		return StringUtil.removeFirst(s, oldSub);
+	}
+
 	public java.lang.String removeFromList(java.lang.String s,
 		java.lang.String element) {
 		return StringUtil.removeFromList(s, element);
@@ -371,6 +376,11 @@ public class StringUtil_IW {
 	public java.lang.String removeFromList(java.lang.String s,
 		java.lang.String element, java.lang.String delimiter) {
 		return StringUtil.removeFromList(s, element, delimiter);
+	}
+
+	public java.lang.String removeLast(java.lang.String s,
+		java.lang.String oldSub) {
+		return StringUtil.removeLast(s, oldSub);
 	}
 
 	public java.lang.String removeSubstring(java.lang.String s,

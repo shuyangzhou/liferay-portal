@@ -193,12 +193,48 @@ public abstract class BaseCalendarResourceTestCase {
 
 	@Test
 	public void testGetCalendarsPage() throws Exception {
-		Assert.assertTrue(false);
+		Page<Calendar> page = calendarResource.getCalendarsPage();
+
+		long totalCount = page.getTotalCount();
+
+		Calendar calendar1 = testGetCalendarsPage_addCalendar(randomCalendar());
+
+		Calendar calendar2 = testGetCalendarsPage_addCalendar(randomCalendar());
+
+		page = calendarResource.getCalendarsPage();
+
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
+
+		assertContains(calendar1, (List<Calendar>)page.getItems());
+		assertContains(calendar2, (List<Calendar>)page.getItems());
+		assertValid(page);
+	}
+
+	protected Calendar testGetCalendarsPage_addCalendar(Calendar calendar)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
 	public void testGraphQLGetCalendarsPage() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(Calendar calendar, List<Calendar> calendars) {
+		boolean contains = false;
+
+		for (Calendar item : calendars) {
+			if (equals(calendar, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			calendars + " does not contain " + calendar, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

@@ -358,6 +358,26 @@ public abstract class BaseProductTaxConfigurationResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		ProductTaxConfiguration productTaxConfiguration,
+		List<ProductTaxConfiguration> productTaxConfigurations) {
+
+		boolean contains = false;
+
+		for (ProductTaxConfiguration item : productTaxConfigurations) {
+			if (equals(productTaxConfiguration, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productTaxConfigurations + " does not contain " +
+				productTaxConfiguration,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

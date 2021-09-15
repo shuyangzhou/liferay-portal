@@ -31,12 +31,16 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.system.BaseSystemObjectDefinitionMetadata;
 import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.UserNotificationEvent;
+import com.liferay.portal.kernel.model.UserNotificationEventTable;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -418,14 +422,14 @@ public class ObjectDefinitionLocalServiceTest {
 				new BaseSystemObjectDefinitionMetadata() {
 
 					@Override
-					public Map<Locale, String> getLabelMap() {
-						return LocalizedMapUtil.getLocalizedMap(
-							"User Notification Event");
+					public String getClassName() {
+						return UserNotificationEvent.class.getName();
 					}
 
 					@Override
-					public String getName() {
-						return "UserNotificationEvent";
+					public Map<Locale, String> getLabelMap() {
+						return LocalizedMapUtil.getLocalizedMap(
+							"User Notification Event");
 					}
 
 					@Override
@@ -447,8 +451,24 @@ public class ObjectDefinitionLocalServiceTest {
 					}
 
 					@Override
+					public Column<?, Long> getPrimaryKeyColumn() {
+						return UserNotificationEventTable.INSTANCE.
+							userNotificationEventId;
+					}
+
+					@Override
+					public String getRESTContextPath() {
+						return "/";
+					}
+
+					@Override
 					public String getScope() {
 						return ObjectDefinitionConstants.SCOPE_COMPANY;
+					}
+
+					@Override
+					public Table getTable() {
+						return UserNotificationEventTable.INSTANCE;
 					}
 
 					@Override
@@ -492,14 +512,14 @@ public class ObjectDefinitionLocalServiceTest {
 				new BaseSystemObjectDefinitionMetadata() {
 
 					@Override
-					public Map<Locale, String> getLabelMap() {
-						return LocalizedMapUtil.getLocalizedMap(
-							"User Notification Event");
+					public String getClassName() {
+						return UserNotificationEvent.class.getName();
 					}
 
 					@Override
-					public String getName() {
-						return "UserNotificationEvent";
+					public Map<Locale, String> getLabelMap() {
+						return LocalizedMapUtil.getLocalizedMap(
+							"User Notification Event");
 					}
 
 					@Override
@@ -520,8 +540,24 @@ public class ObjectDefinitionLocalServiceTest {
 					}
 
 					@Override
+					public Column<?, Long> getPrimaryKeyColumn() {
+						return UserNotificationEventTable.INSTANCE.
+							userNotificationEventId;
+					}
+
+					@Override
+					public String getRESTContextPath() {
+						return "/";
+					}
+
+					@Override
 					public String getScope() {
 						return ObjectDefinitionConstants.SCOPE_COMPANY;
+					}
+
+					@Override
+					public Table getTable() {
+						return UserNotificationEventTable.INSTANCE;
 					}
 
 					@Override
@@ -664,9 +700,10 @@ public class ObjectDefinitionLocalServiceTest {
 
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), null, _labelMap, "Test", null,
-				null, _pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY,
-				1, Collections.<ObjectField>emptyList());
+				TestPropsValues.getUserId(), "Test", null, _labelMap, "Test",
+				null, null, _pluralLabelMap,
+				ObjectDefinitionConstants.SCOPE_COMPANY, 1,
+				Collections.<ObjectField>emptyList());
 
 		try {
 			_testAddSystemObjectDefinition("Test");
@@ -686,8 +723,8 @@ public class ObjectDefinitionLocalServiceTest {
 
 		try {
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), null, _labelMap, "Test", null,
-				null, _pluralLabelMap, "", 1,
+				TestPropsValues.getUserId(), "Test", null, _labelMap, "Test",
+				null, null, _pluralLabelMap, "", 1,
 				Collections.<ObjectField>emptyList());
 
 			Assert.fail();
@@ -703,8 +740,8 @@ public class ObjectDefinitionLocalServiceTest {
 
 		try {
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), null, _labelMap, "Test", null,
-				null, _pluralLabelMap, scope, 1,
+				TestPropsValues.getUserId(), "Test", null, _labelMap, "Test",
+				null, null, _pluralLabelMap, scope, 1,
 				Collections.<ObjectField>emptyList());
 
 			Assert.fail();
@@ -719,9 +756,10 @@ public class ObjectDefinitionLocalServiceTest {
 
 		try {
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), null, _labelMap, "Test", null,
-				null, _pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY,
-				-1, Collections.<ObjectField>emptyList());
+				TestPropsValues.getUserId(), "Test", null, _labelMap, "Test",
+				null, null, _pluralLabelMap,
+				ObjectDefinitionConstants.SCOPE_COMPANY, -1,
+				Collections.<ObjectField>emptyList());
 		}
 		catch (ObjectDefinitionVersionException
 					objectDefinitionVersionException) {
@@ -733,9 +771,10 @@ public class ObjectDefinitionLocalServiceTest {
 
 		try {
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), null, _labelMap, "Test", null,
-				null, _pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY,
-				0, Collections.<ObjectField>emptyList());
+				TestPropsValues.getUserId(), "Test", null, _labelMap, "Test",
+				null, null, _pluralLabelMap,
+				ObjectDefinitionConstants.SCOPE_COMPANY, 0,
+				Collections.<ObjectField>emptyList());
 		}
 		catch (ObjectDefinitionVersionException
 					objectDefinitionVersionException) {
@@ -749,9 +788,10 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), null, _labelMap, "Test", null,
-				null, _pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY,
-				1, Collections.<ObjectField>emptyList());
+				TestPropsValues.getUserId(), "Test", null, _labelMap, "Test",
+				null, null, _pluralLabelMap,
+				ObjectDefinitionConstants.SCOPE_COMPANY, 1,
+				Collections.<ObjectField>emptyList());
 
 		_objectFieldLocalService.addCustomObjectField(
 			TestPropsValues.getUserId(), 0,
@@ -897,6 +937,7 @@ public class ObjectDefinitionLocalServiceTest {
 				ObjectDefinitionConstants.SCOPE_COMPANY,
 				Collections.emptyList());
 
+		Assert.assertEquals(true, objectDefinition.isActive());
 		Assert.assertEquals(
 			LocalizedMapUtil.getLocalizedMap("Able"),
 			objectDefinition.getLabelMap());
@@ -908,10 +949,12 @@ public class ObjectDefinitionLocalServiceTest {
 		objectDefinition =
 			_objectDefinitionLocalService.updateCustomObjectDefinition(
 				objectDefinition.getObjectDefinitionId(),
+				objectDefinition.isActive(),
 				LocalizedMapUtil.getLocalizedMap("Able"), "Able", null, null,
 				LocalizedMapUtil.getLocalizedMap("Ables"),
 				objectDefinition.getScope());
 
+		Assert.assertEquals(true, objectDefinition.isActive());
 		Assert.assertEquals(
 			LocalizedMapUtil.getLocalizedMap("Able"),
 			objectDefinition.getLabelMap());
@@ -922,11 +965,12 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.updateCustomObjectDefinition(
-				objectDefinition.getObjectDefinitionId(),
+				objectDefinition.getObjectDefinitionId(), false,
 				LocalizedMapUtil.getLocalizedMap("Baker"), "Baker", null, null,
 				LocalizedMapUtil.getLocalizedMap("Bakers"),
 				objectDefinition.getScope());
 
+		Assert.assertEquals(false, objectDefinition.isActive());
 		Assert.assertEquals(
 			LocalizedMapUtil.getLocalizedMap("Baker"),
 			objectDefinition.getLabelMap());
@@ -941,11 +985,12 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.updateCustomObjectDefinition(
-				objectDefinition.getObjectDefinitionId(),
+				objectDefinition.getObjectDefinitionId(), true,
 				LocalizedMapUtil.getLocalizedMap("Charlie"), "Charlie", null,
 				null, LocalizedMapUtil.getLocalizedMap("Charlies"),
 				objectDefinition.getScope());
 
+		Assert.assertEquals(true, objectDefinition.isActive());
 		Assert.assertEquals(
 			LocalizedMapUtil.getLocalizedMap("Charlie"),
 			objectDefinition.getLabelMap());
@@ -1033,7 +1078,7 @@ public class ObjectDefinitionLocalServiceTest {
 		try {
 			objectDefinition =
 				_objectDefinitionLocalService.addSystemObjectDefinition(
-					TestPropsValues.getUserId(), null,
+					TestPropsValues.getUserId(), name, null,
 					LocalizedMapUtil.getLocalizedMap(label), name, null, null,
 					_pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY, 1,
 					Collections.<ObjectField>emptyList());

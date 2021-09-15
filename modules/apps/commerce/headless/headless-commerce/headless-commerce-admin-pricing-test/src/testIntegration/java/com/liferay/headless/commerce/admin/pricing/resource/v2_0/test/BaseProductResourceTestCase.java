@@ -378,6 +378,20 @@ public abstract class BaseProductResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Product product, List<Product> products) {
+		boolean contains = false;
+
+		for (Product item : products) {
+			if (equals(product, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(products + " does not contain " + product, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

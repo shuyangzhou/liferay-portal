@@ -10,12 +10,14 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
+		<field name="active" type="boolean" />
 		<field name="DBTableName" type="String">
 			<validator name="required" />
 		</field>
 		<field localized="true" name="label" type="String">
 			<validator name="required" />
 		</field>
+		<field name="className" type="String" />
 		<field name="name" type="String" />
 		<field name="panelAppOrder" type="String" />
 		<field name="panelCategoryKey" type="String" />
@@ -65,7 +67,7 @@
 		<field name="indexedLanguageId" type="String" />
 		<field localized="true" name="label" type="String" />
 		<field name="name" type="String" />
-		<field name="relationship" type="boolean" />
+		<field name="relationshipType" type="String" />
 		<field name="required" type="boolean" />
 		<field name="type" type="String" />
 	</model>

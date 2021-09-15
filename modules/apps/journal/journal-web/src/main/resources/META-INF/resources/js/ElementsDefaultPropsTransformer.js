@@ -113,6 +113,7 @@ const ACTIONS = {
 
 	preview({itemData}) {
 		openModal({
+			iframeBodyCssClass: '',
 			title: itemData.title,
 			url: itemData.previewURL,
 		});
@@ -156,6 +157,7 @@ const ACTIONS = {
 };
 
 export default function propsTransformer({
+	actions,
 	additionalProps: {trashEnabled},
 	items,
 	portletNamespace,
@@ -187,6 +189,7 @@ export default function propsTransformer({
 
 	return {
 		...props,
-		items: items.map(bindAction),
+		actions: actions?.map(bindAction),
+		items: items?.map(bindAction),
 	};
 }

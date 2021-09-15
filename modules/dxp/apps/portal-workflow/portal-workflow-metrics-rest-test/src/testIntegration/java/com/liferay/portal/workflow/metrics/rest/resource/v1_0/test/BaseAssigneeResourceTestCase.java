@@ -201,6 +201,21 @@ public abstract class BaseAssigneeResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Assignee assignee, List<Assignee> assignees) {
+		boolean contains = false;
+
+		for (Assignee item : assignees) {
+			if (equals(assignee, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			assignees + " does not contain " + assignee, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

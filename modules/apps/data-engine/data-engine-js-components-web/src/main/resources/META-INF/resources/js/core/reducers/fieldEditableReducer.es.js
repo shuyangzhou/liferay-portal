@@ -302,7 +302,7 @@ export default (state, action, config) => {
 
 						return field;
 					},
-					true,
+					false,
 					true
 				),
 				rules: updateRulesReferences(

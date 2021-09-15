@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>2B_ACCOUNT_MANAGEMENT_HEADING</td>
+	<td>//div[contains(@class, 'portlet-content')]//h2[contains(text(), 'Account Management')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ACCOUNT_MANAGEMENT</td>
 	<td>//div[contains(@class, 'dnd-tbody')]</td>
 	<td></td>

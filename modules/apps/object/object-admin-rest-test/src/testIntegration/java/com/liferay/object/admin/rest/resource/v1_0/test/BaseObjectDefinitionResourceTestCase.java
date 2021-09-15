@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -203,9 +204,9 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 	public void testGetObjectDefinitionsPage() throws Exception {
 		Page<ObjectDefinition> page =
 			objectDefinitionResource.getObjectDefinitionsPage(
-				RandomTestUtil.randomString(), Pagination.of(1, 2));
+				RandomTestUtil.randomString(), Pagination.of(1, 10));
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		ObjectDefinition objectDefinition1 =
 			testGetObjectDefinitionsPage_addObjectDefinition(
@@ -216,13 +217,14 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				randomObjectDefinition());
 
 		page = objectDefinitionResource.getObjectDefinitionsPage(
-			null, Pagination.of(1, 2));
+			null, Pagination.of(1, 10));
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(objectDefinition1, objectDefinition2),
-			(List<ObjectDefinition>)page.getItems());
+		assertContains(
+			objectDefinition1, (List<ObjectDefinition>)page.getItems());
+		assertContains(
+			objectDefinition2, (List<ObjectDefinition>)page.getItems());
 		assertValid(page);
 
 		objectDefinitionResource.deleteObjectDefinition(
@@ -234,6 +236,11 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 
 	@Test
 	public void testGetObjectDefinitionsPageWithPagination() throws Exception {
+		Page<ObjectDefinition> totalPage =
+			objectDefinitionResource.getObjectDefinitionsPage(null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		ObjectDefinition objectDefinition1 =
 			testGetObjectDefinitionsPage_addObjectDefinition(
 				randomObjectDefinition());
@@ -248,19 +255,20 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 
 		Page<ObjectDefinition> page1 =
 			objectDefinitionResource.getObjectDefinitionsPage(
-				null, Pagination.of(1, 2));
+				null, Pagination.of(1, totalCount + 2));
 
 		List<ObjectDefinition> objectDefinitions1 =
 			(List<ObjectDefinition>)page1.getItems();
 
 		Assert.assertEquals(
-			objectDefinitions1.toString(), 2, objectDefinitions1.size());
+			objectDefinitions1.toString(), totalCount + 2,
+			objectDefinitions1.size());
 
 		Page<ObjectDefinition> page2 =
 			objectDefinitionResource.getObjectDefinitionsPage(
-				null, Pagination.of(2, 2));
+				null, Pagination.of(2, totalCount + 2));
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<ObjectDefinition> objectDefinitions2 =
 			(List<ObjectDefinition>)page2.getItems();
@@ -270,12 +278,14 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 
 		Page<ObjectDefinition> page3 =
 			objectDefinitionResource.getObjectDefinitionsPage(
-				null, Pagination.of(1, 3));
+				null, Pagination.of(1, totalCount + 3));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(
-				objectDefinition1, objectDefinition2, objectDefinition3),
-			(List<ObjectDefinition>)page3.getItems());
+		assertContains(
+			objectDefinition1, (List<ObjectDefinition>)page3.getItems());
+		assertContains(
+			objectDefinition2, (List<ObjectDefinition>)page3.getItems());
+		assertContains(
+			objectDefinition3, (List<ObjectDefinition>)page3.getItems());
 	}
 
 	protected ObjectDefinition testGetObjectDefinitionsPage_addObjectDefinition(
@@ -293,7 +303,7 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 				}
 			},
 			new GraphQLField("items", getGraphQLFields()),
@@ -303,7 +313,7 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/objectDefinitions");
 
-		Assert.assertEquals(0, objectDefinitionsJSONObject.get("totalCount"));
+		long totalCount = objectDefinitionsJSONObject.getLong("totalCount");
 
 		ObjectDefinition objectDefinition1 =
 			testGraphQLObjectDefinition_addObjectDefinition();
@@ -314,10 +324,16 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/objectDefinitions");
 
-		Assert.assertEquals(2, objectDefinitionsJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			totalCount + 2, objectDefinitionsJSONObject.getLong("totalCount"));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(objectDefinition1, objectDefinition2),
+		assertContains(
+			objectDefinition1,
+			Arrays.asList(
+				ObjectDefinitionSerDes.toDTOs(
+					objectDefinitionsJSONObject.getString("items"))));
+		assertContains(
+			objectDefinition2,
 			Arrays.asList(
 				ObjectDefinitionSerDes.toDTOs(
 					objectDefinitionsJSONObject.getString("items"))));
@@ -565,6 +581,25 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(
+		ObjectDefinition objectDefinition,
+		List<ObjectDefinition> objectDefinitions) {
+
+		boolean contains = false;
+
+		for (ObjectDefinition item : objectDefinitions) {
+			if (equals(objectDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			objectDefinitions + " does not contain " + objectDefinition,
+			contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {
@@ -643,6 +678,14 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 
 			if (Objects.equals("actions", additionalAssertFieldName)) {
 				if (objectDefinition.getActions() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("active", additionalAssertFieldName)) {
+				if (objectDefinition.getActive() == null) {
 					valid = false;
 				}
 
@@ -829,6 +872,17 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				if (!equals(
 						(Map)objectDefinition1.getActions(),
 						(Map)objectDefinition2.getActions())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("active", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectDefinition1.getActive(),
+						objectDefinition2.getActive())) {
 
 					return false;
 				}
@@ -1081,6 +1135,11 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("active")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("dateCreated")) {
 			if (operator.equals("between")) {
 				sb = new StringBundler();
@@ -1260,6 +1319,7 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 	protected ObjectDefinition randomObjectDefinition() throws Exception {
 		return new ObjectDefinition() {
 			{
+				active = RandomTestUtil.randomBoolean();
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();

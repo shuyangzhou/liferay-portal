@@ -66,28 +66,27 @@ public interface ObjectEntryResource {
 	public Response postObjectEntryBatch(String callbackURL, Object object)
 		throws Exception;
 
-	public void deleteObjectEntryByExternalReferenceCode(
-			String externalReferenceCode)
+	public void deleteByExternalReferenceCode(String externalReferenceCode)
 		throws Exception;
 
-	public ObjectEntry getObjectEntryByExternalReferenceCode(
-			String externalReferenceCode)
+	public ObjectEntry getByExternalReferenceCode(String externalReferenceCode)
 		throws Exception;
 
-	public ObjectEntry putObjectEntryByExternalReferenceCode(
+	public ObjectEntry putByExternalReferenceCode(
 			String externalReferenceCode, ObjectEntry objectEntry)
 		throws Exception;
 
-	public void deleteSiteObjectEntryByExternalReferenceCode(
-			Long siteId, String externalReferenceCode)
+	public void deleteScopeScopeKeyByExternalReferenceCode(
+			String scopeKey, String externalReferenceCode)
 		throws Exception;
 
-	public ObjectEntry getSiteObjectEntryByExternalReferenceCode(
-			Long siteId, String externalReferenceCode)
+	public ObjectEntry getScopeScopeKeyByExternalReferenceCode(
+			String scopeKey, String externalReferenceCode)
 		throws Exception;
 
-	public ObjectEntry putSiteObjectEntryByExternalReferenceCode(
-			Long siteId, String externalReferenceCode, ObjectEntry objectEntry)
+	public ObjectEntry putScopeScopeKeyByExternalReferenceCode(
+			String scopeKey, String externalReferenceCode,
+			ObjectEntry objectEntry)
 		throws Exception;
 
 	public void deleteObjectEntry(Long objectEntryId) throws Exception;
@@ -106,6 +105,16 @@ public interface ObjectEntryResource {
 		throws Exception;
 
 	public Response putObjectEntryBatch(String callbackURL, Object object)
+		throws Exception;
+
+	public Page<ObjectEntry> getScopeScopeKeyPage(
+			String scopeKey, Boolean flatten, String search,
+			com.liferay.portal.vulcan.aggregation.Aggregation aggregation,
+			Filter filter, Pagination pagination, Sort[] sorts)
+		throws Exception;
+
+	public ObjectEntry postScopeScopeKey(
+			String scopeKey, ObjectEntry objectEntry)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(
