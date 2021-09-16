@@ -39,14 +39,11 @@ public class PersistenceTestRule extends AbstractTestRule<Object, Object> {
 	public void afterMethod(
 		Description description, Object modelListeners, Object target) {
 
-		Object instance = ReflectionTestUtil.getFieldValue(
-			ModelListenerRegistrationUtil.class,
-			"_modelListenerRegistrationUtil");
-
 		CacheRegistryUtil.setActive(true);
 
 		ReflectionTestUtil.setFieldValue(
-			instance, "_modelListeners", modelListeners);
+			ModelListenerRegistrationUtil.class, "_modelListeners",
+			modelListeners);
 	}
 
 	@Override
@@ -58,15 +55,11 @@ public class PersistenceTestRule extends AbstractTestRule<Object, Object> {
 	public Object beforeMethod(Description description, Object target)
 		throws Exception {
 
-		Object instance = ReflectionTestUtil.getFieldValue(
-			ModelListenerRegistrationUtil.class,
-			"_modelListenerRegistrationUtil");
-
 		Object modelListeners = ReflectionTestUtil.getFieldValue(
-			instance, "_modelListeners");
+			ModelListenerRegistrationUtil.class, "_modelListeners");
 
 		ReflectionTestUtil.setFieldValue(
-			instance, "_modelListeners",
+			ModelListenerRegistrationUtil.class, "_modelListeners",
 			new ConcurrentHashMap<Class<?>, List<ModelListener<?>>>());
 
 		CacheRegistryUtil.setActive(false);
