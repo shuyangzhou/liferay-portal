@@ -4,7 +4,7 @@
 <service-builder auto-namespace-tables="false" mvcc-enabled="true" package-path="com.liferay.commerce.product">
 	<author>Marco Leo</author>
 	<namespace>Commerce</namespace>
-	<entity external-reference-code="true" local-service="true" name="CommerceCatalog" remote-service="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CommerceCatalog" remote-service="true">
 
 		<!-- PK fields -->
 
@@ -41,7 +41,7 @@
 			<finder-column name="system" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CommerceChannel" remote-service="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CommerceChannel" remote-service="true">
 
 		<!-- PK fields -->
 
@@ -80,7 +80,7 @@
 			<finder-column name="siteGroupId" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CommerceChannelRel" remote-service="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CommerceChannelRel" remote-service="true">
 
 		<!-- PK fields -->
 
@@ -121,7 +121,7 @@
 			<finder-column name="commerceChannelId" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CPAttachmentFileEntry" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CPAttachmentFileEntry" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -203,7 +203,7 @@
 			<finder-column comparator="!=" name="status" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPDefinition" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPDefinition" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -311,7 +311,7 @@
 			<finder-column name="status" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPDefinitionLink" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPDefinitionLink" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -364,7 +364,7 @@
 			<finder-column name="type" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPDefinitionOptionRel" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPDefinitionOptionRel" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -430,7 +430,7 @@
 			<finder-column name="key" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPDefinitionOptionValueRel" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPDefinitionOptionValueRel" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -492,7 +492,7 @@
 			<finder-column name="preselected" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPDefinitionSpecificationOptionValue" remote-service="true" table="CPDSpecificationOptionValue" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPDefinitionSpecificationOptionValue" remote-service="true" table="CPDSpecificationOptionValue" uuid="true">
 
 		<!-- PK fields -->
 
@@ -552,7 +552,7 @@
 			<finder-column name="CPOptionCategoryId" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPDisplayLayout" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPDisplayLayout" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -599,7 +599,7 @@
 			<finder-column name="classPK" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CPInstance" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CPInstance" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -708,7 +708,7 @@
 			<finder-column name="status" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPInstanceOptionValueRel" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPInstanceOptionValueRel" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -754,7 +754,7 @@
 			<finder-column name="CPInstanceId" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPMeasurementUnit" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPMeasurementUnit" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -807,7 +807,7 @@
 			<finder-column name="type" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CPOption" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CPOption" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -848,7 +848,7 @@
 			<finder-column name="key" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPOptionCategory" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPOptionCategory" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -887,7 +887,7 @@
 			<finder-column name="key" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CPOptionValue" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CPOptionValue" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -929,7 +929,7 @@
 			<finder-column name="key" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CProduct" remote-service="false" uuid="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CProduct" remote-service="false" uuid="true">
 
 		<!-- PK fields -->
 
@@ -964,7 +964,7 @@
 			<finder-column name="groupId" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="CPSpecificationOption" remote-service="true" uuid="true">
+	<entity change-tracking-enabled="true" local-service="true" name="CPSpecificationOption" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -1006,7 +1006,7 @@
 			<finder-column name="key" />
 		</finder>
 	</entity>
-	<entity external-reference-code="true" local-service="true" name="CPTaxCategory" remote-service="true">
+	<entity change-tracking-enabled="true" external-reference-code="true" local-service="true" name="CPTaxCategory" remote-service="true">
 
 		<!-- PK fields -->
 
