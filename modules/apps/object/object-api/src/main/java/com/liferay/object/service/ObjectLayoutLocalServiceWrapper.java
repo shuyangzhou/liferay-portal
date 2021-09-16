@@ -115,10 +115,12 @@ public class ObjectLayoutLocalServiceWrapper
 	 *
 	 * @param objectLayout the object layout
 	 * @return the object layout that was removed
+	 * @throws PortalException
 	 */
 	@Override
 	public com.liferay.object.model.ObjectLayout deleteObjectLayout(
-		com.liferay.object.model.ObjectLayout objectLayout) {
+			com.liferay.object.model.ObjectLayout objectLayout)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectLayoutLocalService.deleteObjectLayout(objectLayout);
 	}
@@ -263,6 +265,15 @@ public class ObjectLayoutLocalServiceWrapper
 		getActionableDynamicQuery() {
 
 		return _objectLayoutLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectLayout getDefaultObjectLayout(
+			long objectDefinitionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectLayoutLocalService.getDefaultObjectLayout(
+			objectDefinitionId);
 	}
 
 	@Override

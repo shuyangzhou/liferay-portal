@@ -120,6 +120,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -419,11 +420,11 @@ public class DDMFormAdminDisplayContext {
 				formInstanceId);
 		}
 		else {
-			DDMFormInstanceRecord formInstanceRecord =
+			DDMFormInstanceRecord ddmFormInstanceRecord =
 				getDDMFormInstanceRecord();
 
-			if (formInstanceRecord != null) {
-				_ddmFormInstance = formInstanceRecord.getFormInstance();
+			if (ddmFormInstanceRecord != null) {
+				_ddmFormInstance = ddmFormInstanceRecord.getFormInstance();
 			}
 		}
 
@@ -433,9 +434,10 @@ public class DDMFormAdminDisplayContext {
 	public DDMFormInstanceRecordVersion getDDMFormInstanceRecordVersion()
 		throws PortalException {
 
-		DDMFormInstanceRecord formInstanceRecord = getDDMFormInstanceRecord();
+		DDMFormInstanceRecord ddmFormInstanceRecord =
+			getDDMFormInstanceRecord();
 
-		return formInstanceRecord.getLatestFormInstanceRecordVersion();
+		return ddmFormInstanceRecord.getLatestFormInstanceRecordVersion();
 	}
 
 	public JSONArray getDDMFormRulesJSONArray() throws PortalException {
@@ -495,14 +497,14 @@ public class DDMFormAdminDisplayContext {
 			return _ddmStructure;
 		}
 
-		DDMFormInstance formInstance = getDDMFormInstance();
+		DDMFormInstance ddmFormInstance = getDDMFormInstance();
 
-		if (formInstance == null) {
+		if (ddmFormInstance == null) {
 			return null;
 		}
 
 		_ddmStructure = _ddmStructureLocalService.getStructure(
-			formInstance.getStructureId());
+			ddmFormInstance.getStructureId());
 
 		return _ddmStructure;
 	}
@@ -674,7 +676,11 @@ public class DDMFormAdminDisplayContext {
 				ddmFormBuilderContextResponse.getContext()));
 	}
 
-	public List<NavigationItem> getFormBuilderNavigationItems() {
+	public List<NavigationItem> getFormBuilderNavigationItems()
+		throws PortalException {
+
+		DDMFormInstance ddmFormInstance = getDDMFormInstance();
+
 		HttpServletRequest httpServletRequest =
 			ddmFormAdminRequestHelper.getRequest();
 
@@ -693,6 +699,8 @@ public class DDMFormAdminDisplayContext {
 					LanguageUtil.get(httpServletRequest, "rules"));
 			}
 		).add(
+			() -> !((ddmFormInstance != null) &&
+			  Objects.equals(ddmFormInstance.getStorageType(), "object")),
 			navigationItem -> {
 				navigationItem.putData("action", "showReport");
 
@@ -703,11 +711,11 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public String getFormDescription() throws PortalException {
-		DDMFormInstance formInstance = getDDMFormInstance();
+		DDMFormInstance ddmFormInstance = getDDMFormInstance();
 
-		if (formInstance != null) {
+		if (ddmFormInstance != null) {
 			return LocalizationUtil.getLocalization(
-				formInstance.getDescription(), getFormDefaultLanguageId());
+				ddmFormInstance.getDescription(), getFormDefaultLanguageId());
 		}
 
 		return getJSONObjectLocalizedPropertyFromRequest("description");
@@ -718,14 +726,14 @@ public class DDMFormAdminDisplayContext {
 
 		JSONObject jsonObject = jsonFactory.createJSONObject();
 
-		DDMFormInstance formInstance = getDDMFormInstance();
+		DDMFormInstance ddmFormInstance = getDDMFormInstance();
 
-		if (formInstance == null) {
+		if (ddmFormInstance == null) {
 			jsonObject.put(getDefaultLanguageId(), getFormDescription());
 		}
 		else {
 			Map<Locale, String> descriptionMap =
-				formInstance.getDescriptionMap();
+				ddmFormInstance.getDescriptionMap();
 
 			for (Map.Entry<Locale, String> entry : descriptionMap.entrySet()) {
 				jsonObject.put(
@@ -739,15 +747,15 @@ public class DDMFormAdminDisplayContext {
 	public <T> JSONObject getFormLocalizedNameJSONObject(T object)
 		throws PortalException {
 
-		DDMFormInstance formInstance = (DDMFormInstance)object;
+		DDMFormInstance ddmFormInstance = (DDMFormInstance)object;
 
 		JSONObject jsonObject = jsonFactory.createJSONObject();
 
-		if (formInstance == null) {
+		if (ddmFormInstance == null) {
 			jsonObject.put(getDefaultLanguageId(), getFormName());
 		}
 		else {
-			Map<Locale, String> nameMap = formInstance.getNameMap();
+			Map<Locale, String> nameMap = ddmFormInstance.getNameMap();
 
 			for (Map.Entry<Locale, String> entry : nameMap.entrySet()) {
 				jsonObject.put(
@@ -759,11 +767,11 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public String getFormName() throws PortalException {
-		DDMFormInstance formInstance = getDDMFormInstance();
+		DDMFormInstance ddmFormInstance = getDDMFormInstance();
 
-		if (formInstance != null) {
+		if (ddmFormInstance != null) {
 			return LocalizationUtil.getLocalization(
-				formInstance.getName(), getFormDefaultLanguageId());
+				ddmFormInstance.getName(), getFormDefaultLanguageId());
 		}
 
 		return getJSONObjectLocalizedPropertyFromRequest("name");
@@ -1051,8 +1059,8 @@ public class DDMFormAdminDisplayContext {
 			getFormLayoutURL(ddmFormAdminRequestHelper.getThemeDisplay());
 	}
 
-	public String getShareFormInstanceURL(DDMFormInstance formInstance) {
-		if (formInstance == null) {
+	public String getShareFormInstanceURL(DDMFormInstance ddmFormInstance) {
+		if (ddmFormInstance == null) {
 			return StringPool.BLANK;
 		}
 
@@ -1063,8 +1071,8 @@ public class DDMFormAdminDisplayContext {
 		).setParameter(
 			"formInstanceId",
 			() -> {
-				if (formInstance != null) {
-					return formInstance.getFormInstanceId();
+				if (ddmFormInstance != null) {
+					return ddmFormInstance.getFormInstanceId();
 				}
 
 				return null;
@@ -1167,17 +1175,17 @@ public class DDMFormAdminDisplayContext {
 		return isFormPublished(getDDMFormInstance());
 	}
 
-	public boolean isFormPublished(DDMFormInstance formInstance)
+	public boolean isFormPublished(DDMFormInstance ddmFormInstance)
 		throws PortalException {
 
-		if (formInstance == null) {
+		if (ddmFormInstance == null) {
 			return false;
 		}
 
-		DDMFormInstanceSettings formInstanceSettings =
-			formInstance.getSettingsModel();
+		DDMFormInstanceSettings ddmFormInstanceSettings =
+			ddmFormInstance.getSettingsModel();
 
-		return formInstanceSettings.published();
+		return ddmFormInstanceSettings.published();
 	}
 
 	public boolean isShowPublishAlert() {

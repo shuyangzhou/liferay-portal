@@ -251,11 +251,11 @@ export default (state, action, config) => {
 			return {
 				activePage,
 				focusedField,
-				previousFocusedField: focusedField,
 			};
 		}
 		case EVENT_TYPES.FIELD.CHANGE: {
-			const {fieldName, propertyName, propertyValue} = action.payload;
+			const {fieldInstance, propertyName, propertyValue} = action.payload;
+			let {fieldName} = action.payload;
 			const {
 				defaultLanguageId,
 				editingLanguageId,
@@ -275,6 +275,10 @@ export default (state, action, config) => {
 
 			if (propertyName === 'name' && propertyValue === '') {
 				return state;
+			}
+
+			if (!fieldName && fieldInstance) {
+				fieldName = fieldInstance.fieldName;
 			}
 
 			const newFocusedField = updateFieldProperty({

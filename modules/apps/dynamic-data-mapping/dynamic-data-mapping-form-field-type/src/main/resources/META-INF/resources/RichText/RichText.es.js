@@ -13,7 +13,7 @@
  */
 
 import {ClassicEditor} from 'frontend-editor-ckeditor-web';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
 
@@ -29,20 +29,21 @@ const RichText = ({
 	visible,
 	...otherProps
 }) => {
-	const [dirty, setDirty] = useState(false);
-
 	const editorRef = useRef();
 
 	useEffect(() => {
 		const editor = editorRef.current?.editor;
 
 		if (editor) {
-			editor.config.contentsLangDirection =
+			const data = {...editor.getData()};
+			const config = {...data.config};
+
+			config.contentsLangDirection =
 				Liferay.Language.direction[editingLanguageId];
 
-			editor.config.contentsLanguage = editingLanguageId;
+			config.contentsLanguage = editingLanguageId;
 
-			editor.setData(editor.getData());
+			editor.setData({...data, config});
 		}
 	}, [editingLanguageId, editorRef]);
 
@@ -61,13 +62,9 @@ const RichText = ({
 				contents={currentValue}
 				editorConfig={editorConfig}
 				name={name}
-				onChange={(data) => {
-					if (currentValue?.trim() !== data?.trim()) {
-						setDirty(true);
-						onChange({target: {value: data}});
-					}
-					else if (!dirty) {
-						CKEDITOR.instances[name]?.resetUndo();
+				onChange={(content) => {
+					if (currentValue !== content) {
+						onChange({target: {value: content}});
 					}
 				}}
 				onSetData={({data: {dataValue: value}, editor: {mode}}) => {
@@ -79,12 +76,7 @@ const RichText = ({
 				ref={editorRef}
 			/>
 
-			<input
-				defaultValue={currentValue}
-				id={id || name}
-				name={name}
-				type="hidden"
-			/>
+			<input name={name} type="hidden" value={currentValue} />
 		</FieldBase>
 	);
 };

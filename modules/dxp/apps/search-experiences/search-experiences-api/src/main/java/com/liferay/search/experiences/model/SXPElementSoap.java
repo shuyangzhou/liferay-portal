@@ -36,13 +36,18 @@ public class SXPElementSoap implements Serializable {
 		soapModel.setMvccVersion(model.getMvccVersion());
 		soapModel.setUuid(model.getUuid());
 		soapModel.setSXPElementId(model.getSXPElementId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setDescription(model.getDescription());
+		soapModel.setElementDefinitionJSON(model.getElementDefinitionJSON());
+		soapModel.setHidden(model.isHidden());
+		soapModel.setReadOnly(model.isReadOnly());
 		soapModel.setTitle(model.getTitle());
+		soapModel.setType(model.getType());
 		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
@@ -121,6 +126,14 @@ public class SXPElementSoap implements Serializable {
 		_sxpElementId = sxpElementId;
 	}
 
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
 	public long getCompanyId() {
 		return _companyId;
 	}
@@ -169,12 +182,52 @@ public class SXPElementSoap implements Serializable {
 		_description = description;
 	}
 
+	public String getElementDefinitionJSON() {
+		return _elementDefinitionJSON;
+	}
+
+	public void setElementDefinitionJSON(String elementDefinitionJSON) {
+		_elementDefinitionJSON = elementDefinitionJSON;
+	}
+
+	public boolean getHidden() {
+		return _hidden;
+	}
+
+	public boolean isHidden() {
+		return _hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		_hidden = hidden;
+	}
+
+	public boolean getReadOnly() {
+		return _readOnly;
+	}
+
+	public boolean isReadOnly() {
+		return _readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		_readOnly = readOnly;
+	}
+
 	public String getTitle() {
 		return _title;
 	}
 
 	public void setTitle(String title) {
 		_title = title;
+	}
+
+	public int getType() {
+		return _type;
+	}
+
+	public void setType(int type) {
+		_type = type;
 	}
 
 	public int getStatus() {
@@ -188,13 +241,18 @@ public class SXPElementSoap implements Serializable {
 	private long _mvccVersion;
 	private String _uuid;
 	private long _sxpElementId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private String _description;
+	private String _elementDefinitionJSON;
+	private boolean _hidden;
+	private boolean _readOnly;
 	private String _title;
+	private int _type;
 	private int _status;
 
 }

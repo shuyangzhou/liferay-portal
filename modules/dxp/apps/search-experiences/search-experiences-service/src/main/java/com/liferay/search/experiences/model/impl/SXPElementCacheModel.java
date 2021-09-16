@@ -77,7 +77,7 @@ public class SXPElementCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -85,6 +85,8 @@ public class SXPElementCacheModel
 		sb.append(uuid);
 		sb.append(", sxpElementId=");
 		sb.append(sxpElementId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -97,8 +99,16 @@ public class SXPElementCacheModel
 		sb.append(modifiedDate);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", elementDefinitionJSON=");
+		sb.append(elementDefinitionJSON);
+		sb.append(", hidden=");
+		sb.append(hidden);
+		sb.append(", readOnly=");
+		sb.append(readOnly);
 		sb.append(", title=");
 		sb.append(title);
+		sb.append(", type=");
+		sb.append(type);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append("}");
@@ -120,6 +130,7 @@ public class SXPElementCacheModel
 		}
 
 		sxpElementImpl.setSXPElementId(sxpElementId);
+		sxpElementImpl.setGroupId(groupId);
 		sxpElementImpl.setCompanyId(companyId);
 		sxpElementImpl.setUserId(userId);
 
@@ -151,6 +162,16 @@ public class SXPElementCacheModel
 			sxpElementImpl.setDescription(description);
 		}
 
+		if (elementDefinitionJSON == null) {
+			sxpElementImpl.setElementDefinitionJSON("");
+		}
+		else {
+			sxpElementImpl.setElementDefinitionJSON(elementDefinitionJSON);
+		}
+
+		sxpElementImpl.setHidden(hidden);
+		sxpElementImpl.setReadOnly(readOnly);
+
 		if (title == null) {
 			sxpElementImpl.setTitle("");
 		}
@@ -158,6 +179,7 @@ public class SXPElementCacheModel
 			sxpElementImpl.setTitle(title);
 		}
 
+		sxpElementImpl.setType(type);
 		sxpElementImpl.setStatus(status);
 
 		sxpElementImpl.resetOriginalValues();
@@ -172,6 +194,8 @@ public class SXPElementCacheModel
 
 		sxpElementId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -179,7 +203,14 @@ public class SXPElementCacheModel
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		description = objectInput.readUTF();
+		elementDefinitionJSON = objectInput.readUTF();
+
+		hidden = objectInput.readBoolean();
+
+		readOnly = objectInput.readBoolean();
 		title = objectInput.readUTF();
+
+		type = objectInput.readInt();
 
 		status = objectInput.readInt();
 	}
@@ -196,6 +227,8 @@ public class SXPElementCacheModel
 		}
 
 		objectOutput.writeLong(sxpElementId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -218,6 +251,17 @@ public class SXPElementCacheModel
 			objectOutput.writeUTF(description);
 		}
 
+		if (elementDefinitionJSON == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(elementDefinitionJSON);
+		}
+
+		objectOutput.writeBoolean(hidden);
+
+		objectOutput.writeBoolean(readOnly);
+
 		if (title == null) {
 			objectOutput.writeUTF("");
 		}
@@ -225,19 +269,26 @@ public class SXPElementCacheModel
 			objectOutput.writeUTF(title);
 		}
 
+		objectOutput.writeInt(type);
+
 		objectOutput.writeInt(status);
 	}
 
 	public long mvccVersion;
 	public String uuid;
 	public long sxpElementId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
 	public String description;
+	public String elementDefinitionJSON;
+	public boolean hidden;
+	public boolean readOnly;
 	public String title;
+	public int type;
 	public int status;
 
 }

@@ -589,9 +589,7 @@ definition {
 	test MapDMWithOpenGraph {
 		var portalURL = PropsUtil.get("portal.url");
 
-		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
-
-		DMNavigator.gotoDocumentType();
+		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "DM Document Type Description",
@@ -708,9 +706,7 @@ definition {
 	@priority = "5"
 	@refactorneeded
 	test MapDMWithSEO {
-		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
-
-		DMNavigator.gotoDocumentType();
+		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "DM Document Type Description",
@@ -773,9 +769,7 @@ definition {
 	test MapWCWithOpenGraph {
 		var portalURL = PropsUtil.get("portal.url");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -788,9 +782,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -922,9 +914,7 @@ definition {
 	@priority = "5"
 	@refactorneeded
 	test MapWCWithSEO {
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -937,9 +927,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -1013,9 +1001,7 @@ definition {
 
 		var portalURL = PropsUtil.get("portal.url");
 
-		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
-
-		DMNavigator.gotoDocumentType();
+		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "DM Document Type Description",
@@ -1081,9 +1067,7 @@ definition {
 
 		var portalURL = PropsUtil.get("portal.url");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -1095,9 +1079,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",

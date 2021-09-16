@@ -70,6 +70,15 @@ public class ListTypeEntryResourceImpl
 	}
 
 	@Override
+	public ListTypeEntry getListTypeEntry(Long listTypeEntryId)
+		throws Exception {
+
+		return ListTypeEntryUtil.toListTypeEntry(
+			null, contextAcceptLanguage.getPreferredLocale(),
+			_listTypeEntryLocalService.getListTypeEntry(listTypeEntryId));
+	}
+
+	@Override
 	public ListTypeEntry postListTypeDefinitionListTypeEntry(
 			Long listTypeDefinitionId, ListTypeEntry listTypeEntry)
 		throws Exception {
@@ -79,6 +88,19 @@ public class ListTypeEntryResourceImpl
 			_listTypeEntryLocalService.addListTypeEntry(
 				contextUser.getUserId(), listTypeDefinitionId,
 				listTypeEntry.getKey(),
+				LocalizedMapUtil.getLocalizedMap(
+					listTypeEntry.getName_i18n())));
+	}
+
+	@Override
+	public ListTypeEntry putListTypeEntry(
+			Long listTypeEntryId, ListTypeEntry listTypeEntry)
+		throws Exception {
+
+		return ListTypeEntryUtil.toListTypeEntry(
+			null, contextAcceptLanguage.getPreferredLocale(),
+			_listTypeEntryLocalService.updateListTypeEntry(
+				listTypeEntryId,
 				LocalizedMapUtil.getLocalizedMap(
 					listTypeEntry.getName_i18n())));
 	}

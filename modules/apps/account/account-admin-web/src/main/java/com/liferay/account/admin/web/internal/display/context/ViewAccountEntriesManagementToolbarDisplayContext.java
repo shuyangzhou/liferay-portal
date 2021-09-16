@@ -24,6 +24,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownGroupItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemListBuilder;
@@ -77,11 +78,9 @@ public class ViewAccountEntriesManagementToolbarDisplayContext
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "deactivateAccountEntries");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "deactivateAccountEntries"
+				).putData(
 					"deactivateAccountEntriesURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -91,25 +90,23 @@ public class ViewAccountEntriesManagementToolbarDisplayContext
 						Constants.DEACTIVATE
 					).setNavigation(
 						getNavigation()
-					).buildString());
-
-				dropdownItem.setIcon("hidden");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "deactivate"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"hidden"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "deactivate")
+				).setQuickAction(
+					true
+				).build();
 			},
 			() -> {
 				if (Objects.equals(getNavigation(), "active")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "activateAccountEntries");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "activateAccountEntries"
+				).putData(
 					"activateAccountEntriesURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -119,37 +116,33 @@ public class ViewAccountEntriesManagementToolbarDisplayContext
 						Constants.RESTORE
 					).setNavigation(
 						getNavigation()
-					).buildString());
-
-				dropdownItem.setIcon("undo");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "activate"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"undo"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "activate")
+				).setQuickAction(
+					true
+				).build();
 			},
-			() -> {
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "deleteAccountEntries");
-
-				dropdownItem.putData(
-					"deleteAccountEntriesURL",
-					PortletURLBuilder.createActionURL(
-						liferayPortletResponse
-					).setActionName(
-						"/account_admin/delete_account_entry"
-					).setNavigation(
-						getNavigation()
-					).buildString());
-
-				dropdownItem.setIcon("times-circle");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "delete"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
-			});
+			() -> DropdownItemBuilder.putData(
+				"action", "deleteAccountEntries"
+			).putData(
+				"deleteAccountEntriesURL",
+				PortletURLBuilder.createActionURL(
+					liferayPortletResponse
+				).setActionName(
+					"/account_admin/delete_account_entry"
+				).setNavigation(
+					getNavigation()
+				).buildString()
+			).setIcon(
+				"times-circle"
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "delete")
+			).setQuickAction(
+				true
+			).build());
 	}
 
 	public List<String> getAvailableActions(

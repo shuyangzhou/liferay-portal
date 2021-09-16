@@ -17,6 +17,7 @@ package com.liferay.content.dashboard.web.internal.servlet.taglib.util;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.portal.kernel.language.Language;
@@ -78,8 +79,6 @@ public class ContentDashboardDropdownItemsProvider {
 		dropdownItemList.addAll(
 			DropdownItemList.of(
 				() -> {
-					DropdownItem dropdownItem = new DropdownItem();
-
 					ResourceURL resourceURL =
 						_liferayPortletResponse.createResourceURL();
 
@@ -99,7 +98,7 @@ public class ContentDashboardDropdownItemsProvider {
 					resourceURL.setResourceID(
 						"/content_dashboard/get_content_dashboard_item_info");
 
-					dropdownItem.setData(
+					return DropdownItemBuilder.setData(
 						HashMapBuilder.<String, Object>put(
 							"action", "showInfo"
 						).put(
@@ -108,13 +107,14 @@ public class ContentDashboardDropdownItemsProvider {
 							"classPK", infoItemReference.getClassPK()
 						).put(
 							"fetchURL", String.valueOf(resourceURL)
-						).build());
-
-					dropdownItem.setIcon("info-circle-open");
-					dropdownItem.setLabel(_language.get(locale, "info"));
-					dropdownItem.setQuickAction(true);
-
-					return dropdownItem;
+						).build()
+					).setIcon(
+						"info-circle-open"
+					).setLabel(
+						_language.get(locale, "info")
+					).setQuickAction(
+						true
+					).build();
 				}));
 
 		dropdownItemList.addAll(
@@ -136,26 +136,25 @@ public class ContentDashboardDropdownItemsProvider {
 			return null;
 		}
 
-		DropdownItem dropdownItem = new DropdownItem();
-
-		dropdownItem.setHref(contentDashboardItemAction.getURL(locale));
-		dropdownItem.setIcon(contentDashboardItemAction.getIcon());
-		dropdownItem.setLabel(contentDashboardItemAction.getLabel(locale));
-		dropdownItem.setQuickAction(true);
-
-		return dropdownItem;
+		return DropdownItemBuilder.setHref(
+			contentDashboardItemAction.getURL(locale)
+		).setIcon(
+			contentDashboardItemAction.getIcon()
+		).setLabel(
+			contentDashboardItemAction.getLabel(locale)
+		).setQuickAction(
+			true
+		).build();
 	}
 
 	private DropdownItem _toViewInPanelDropdownItem(
 		ContentDashboardItem contentDashboardItem,
 		ContentDashboardItemAction contentDashboardItemAction, Locale locale) {
 
-		DropdownItem dropdownItem = new DropdownItem();
-
 		InfoItemReference infoItemReference =
 			contentDashboardItem.getInfoItemReference();
 
-		dropdownItem.setData(
+		return DropdownItemBuilder.setData(
 			HashMapBuilder.<String, Object>put(
 				"action", "showMetrics"
 			).put(
@@ -164,13 +163,14 @@ public class ContentDashboardDropdownItemsProvider {
 				"classPK", infoItemReference.getClassPK()
 			).put(
 				"fetchURL", contentDashboardItemAction.getURL(locale)
-			).build());
-
-		dropdownItem.setIcon(contentDashboardItemAction.getIcon());
-		dropdownItem.setLabel(contentDashboardItemAction.getLabel(locale));
-		dropdownItem.setQuickAction(true);
-
-		return dropdownItem;
+			).build()
+		).setIcon(
+			contentDashboardItemAction.getIcon()
+		).setLabel(
+			contentDashboardItemAction.getLabel(locale)
+		).setQuickAction(
+			true
+		).build();
 	}
 
 	private final String _currentURL;

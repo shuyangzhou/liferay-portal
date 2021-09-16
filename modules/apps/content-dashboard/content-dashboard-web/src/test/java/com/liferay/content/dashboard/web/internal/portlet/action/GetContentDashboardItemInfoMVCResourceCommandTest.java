@@ -314,7 +314,7 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 				String backURL, LiferayPortletResponse liferayPortletResponse,
 				Locale locale, ThemeDisplay themeDisplay) {
 
-				final JSONObject jsonObject = new JSONObjectImpl();
+				JSONObject jsonObject = new JSONObjectImpl();
 
 				jsonObject.put(
 					"description", "My very important description"

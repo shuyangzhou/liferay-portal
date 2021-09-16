@@ -215,10 +215,12 @@ public class ObjectDefinitionLocalServiceImpl
 			objectDefinitionPersistence.findByCompanyId(companyId);
 
 		for (ObjectDefinition objectDefinition : objectDefinitions) {
-			deleteObjectDefinition(objectDefinition);
+			objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition);
 		}
 	}
 
+	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ObjectDefinition deleteObjectDefinition(long objectDefinitionId)
 		throws PortalException {
@@ -229,6 +231,7 @@ public class ObjectDefinitionLocalServiceImpl
 		return deleteObjectDefinition(objectDefinition);
 	}
 
+	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ObjectDefinition deleteObjectDefinition(
 			ObjectDefinition objectDefinition)

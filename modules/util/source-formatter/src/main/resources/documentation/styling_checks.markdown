@@ -72,6 +72,7 @@ JavaAssertEqualsCheck | .java | Validates `Assert.assertEquals` calls. |
 [JavaConstructorParametersCheck](checks/java_constructor_parameters_check.markdown#javaconstructorparameterscheck) | .java | Checks that the order of variable assignments matches the order of the parameters in the constructor signature. |
 JavaConstructorSuperCallCheck | .java | Finds unnecessary call to no-argument constructor of the superclass. |
 JavaEmptyLinesCheck | .java | Finds missing and unnecessary empty lines. |
+JavaFinalVariableCheck | .java | Finds cases of unneeded `final` modifiers for variables and parameters. |
 [JavaForLoopCheck](checks/java_for_loop_check.markdown#javaforloopcheck) | .java | Checks if a Enhanced For Loop can be used instead of a Simple For Loop. |
 JavaIOExceptionCheck | .java | Validates use of `IOException`. |
 JavaImportsCheck | .java | Sorts and groups imports in `.java` files. |

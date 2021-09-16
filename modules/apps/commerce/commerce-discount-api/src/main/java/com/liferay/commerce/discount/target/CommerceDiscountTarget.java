@@ -44,7 +44,7 @@ public interface CommerceDiscountTarget {
 			return getValue();
 		}
 
-		private Type(final String value) {
+		private Type(String value) {
 			_value = value;
 		}
 

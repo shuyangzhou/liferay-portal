@@ -9,11 +9,12 @@ create index IX_139200BA on ObjectEntry (objectDefinitionId);
 create index IX_49B9450D on ObjectEntry (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_5AF9AACF on ObjectEntry (uuid_[$COLUMN_LENGTH:75$], groupId);
 
+create index IX_736807B on ObjectField (listTypeDefinitionId);
 create index IX_5DDCF209 on ObjectField (objectDefinitionId, dbTableName[$COLUMN_LENGTH:75$]);
 create index IX_A59C5981 on ObjectField (objectDefinitionId, name[$COLUMN_LENGTH:75$]);
 create index IX_594B4995 on ObjectField (uuid_[$COLUMN_LENGTH:75$], companyId);
 
-create index IX_81F3D350 on ObjectLayout (objectDefinitionId);
+create index IX_FD0CCE8A on ObjectLayout (objectDefinitionId, defaultObjectLayout);
 create index IX_E27AC523 on ObjectLayout (uuid_[$COLUMN_LENGTH:75$], companyId);
 
 create index IX_5F97F7CF on ObjectLayoutBox (objectLayoutTabId);

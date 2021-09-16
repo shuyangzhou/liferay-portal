@@ -34,9 +34,7 @@ definition {
 	@priority = "5"
 	@refactorneeded
 	test ImportDepotLARToDepot {
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -48,9 +46,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -181,9 +177,7 @@ definition {
 
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
 
-		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Import Depot Name");
-
-		DMNavigator.gotoDocumentType();
+		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Import Depot Name");
 
 		DMDocumentType.viewCP(dmDocumentTypeName = "DM Document Type Name");
 

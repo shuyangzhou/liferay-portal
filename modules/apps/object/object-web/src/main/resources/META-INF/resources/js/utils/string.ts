@@ -12,31 +12,32 @@
  * details.
  */
 
-type TRemoveAllSpecialCharacters = (str: string) => string;
-
-type TFirstLetterLowercase = (str: string) => string;
-
-type TFirstLetterUppercase = (str: string) => string;
+type TStringFn = (str: string) => string;
 
 /**
  * Format string removing spaces and special characters
  */
-export const removeAllSpecialCharacters: TRemoveAllSpecialCharacters = (
-	str
-) => {
+export const removeAllSpecialCharacters: TStringFn = (str) => {
 	return str.replace(/[^A-Z0-9]/gi, '');
 };
 
 /**
  * Transform first letter in lowercase
  */
-export const firstLetterLowercase: TFirstLetterLowercase = (str) => {
+export const firstLetterLowercase: TStringFn = (str) => {
 	return str.charAt(0).toLowerCase() + str.slice(1);
 };
 
 /**
  * Transform first letter in uppercase
  */
-export const firstLetterUppercase: TFirstLetterUppercase = (str) => {
+export const firstLetterUppercase: TStringFn = (str) => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+/**
+ * Normalize languageId to be used in the
+ * frontend with themeDisplay.getDefaultLanguageId()
+ */
+export const normalizeLanguageId: TStringFn = (languageId) =>
+	languageId.replace('_', '-');

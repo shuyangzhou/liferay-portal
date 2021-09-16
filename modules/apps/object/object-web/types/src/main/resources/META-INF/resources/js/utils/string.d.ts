@@ -12,22 +12,26 @@
  * details.
  */
 
-declare type TRemoveAllSpecialCharacters = (str: string) => string;
-declare type TFirstLetterLowercase = (str: string) => string;
-declare type TFirstLetterUppercase = (str: string) => string;
+declare type TStringFn = (str: string) => string;
 
 /**
  * Format string removing spaces and special characters
  */
-export declare const removeAllSpecialCharacters: TRemoveAllSpecialCharacters;
+export declare const removeAllSpecialCharacters: TStringFn;
 
 /**
  * Transform first letter in lowercase
  */
-export declare const firstLetterLowercase: TFirstLetterLowercase;
+export declare const firstLetterLowercase: TStringFn;
 
 /**
  * Transform first letter in uppercase
  */
-export declare const firstLetterUppercase: TFirstLetterUppercase;
+export declare const firstLetterUppercase: TStringFn;
+
+/**
+ * Normalize languageId to be used in the
+ * frontend with themeDisplay.getDefaultLanguageId()
+ */
+export declare const normalizeLanguageId: TStringFn;
 export {};

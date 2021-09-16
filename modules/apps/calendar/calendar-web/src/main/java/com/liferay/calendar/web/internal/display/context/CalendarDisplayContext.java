@@ -35,6 +35,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
@@ -259,29 +260,21 @@ public class CalendarDisplayContext {
 			_renderRequest, "active", Boolean.TRUE.toString());
 
 		return NavigationItemList.of(
-			() -> {
-				NavigationItem navigationItem = new NavigationItem();
-
-				navigationItem.setActive(tabs1.equals("calendar"));
-				navigationItem.setHref(
-					_renderResponse.createRenderURL(), "tabs1", "calendar");
-				navigationItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "calendar"));
-
-				return navigationItem;
-			},
-			() -> {
-				NavigationItem navigationItem = new NavigationItem();
-
-				navigationItem.setActive(tabs1.equals("resources"));
-				navigationItem.setHref(
-					_renderResponse.createRenderURL(), "tabs1", "resources",
-					"scope", scope, "active", active);
-				navigationItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "resources"));
-
-				return navigationItem;
-			});
+			NavigationItemBuilder.setActive(
+				tabs1.equals("calendar")
+			).setHref(
+				_renderResponse.createRenderURL(), "tabs1", "calendar"
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "calendar")
+			).build(),
+			NavigationItemBuilder.setActive(
+				tabs1.equals("resources")
+			).setHref(
+				_renderResponse.createRenderURL(), "tabs1", "resources",
+				"scope", scope, "active", active
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "resources")
+			).build());
 	}
 
 	public List<Calendar> getOtherCalendars(User user, long[] calendarIds)

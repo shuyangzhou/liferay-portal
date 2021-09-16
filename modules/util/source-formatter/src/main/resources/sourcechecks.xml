@@ -439,6 +439,11 @@
 			<description name="Checks that variable names of exceptions in `catch` statements follow naming conventions." />
 			<property name="enabled" value="false" />
 		</check>
+		<check name="JavaFinalVariableCheck">
+			<category name="Styling" />
+			<description name="Finds cases of unneeded `final` modifiers for variables and parameters." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaForLoopCheck">
 			<category name="Styling" />
 			<description name="Checks if a Enhanced For Loop can be used instead of a Simple For Loop." />

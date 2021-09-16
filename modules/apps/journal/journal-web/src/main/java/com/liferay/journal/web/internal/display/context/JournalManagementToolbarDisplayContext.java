@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
@@ -465,14 +466,14 @@ public class JournalManagementToolbarDisplayContext
 			).buildPortletURL(),
 			getNavigationParam(), getNavigation());
 
-		DropdownItem dropdownItem = new DropdownItem();
-
-		dropdownItem.putData("action", "openDDMStructuresSelector");
-		dropdownItem.setActive(_journalDisplayContext.isNavigationStructure());
-		dropdownItem.setLabel(
-			LanguageUtil.get(httpServletRequest, "structures"));
-
-		filterNavigationDropdownItems.add(dropdownItem);
+		filterNavigationDropdownItems.add(
+			DropdownItemBuilder.putData(
+				"action", "openDDMStructuresSelector"
+			).setActive(
+				_journalDisplayContext.isNavigationStructure()
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "structures")
+			).build());
 
 		return filterNavigationDropdownItems;
 	}

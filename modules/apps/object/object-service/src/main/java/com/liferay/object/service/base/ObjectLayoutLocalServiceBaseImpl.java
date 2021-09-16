@@ -139,10 +139,13 @@ public abstract class ObjectLayoutLocalServiceBaseImpl
 	 *
 	 * @param objectLayout the object layout
 	 * @return the object layout that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public ObjectLayout deleteObjectLayout(ObjectLayout objectLayout) {
+	public ObjectLayout deleteObjectLayout(ObjectLayout objectLayout)
+		throws PortalException {
+
 		return objectLayoutPersistence.remove(objectLayout);
 	}
 

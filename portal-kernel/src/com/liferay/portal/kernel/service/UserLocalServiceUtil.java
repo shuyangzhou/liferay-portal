@@ -722,7 +722,9 @@ public class UserLocalServiceUtil {
 	 * @param encPassword the encrypted password
 	 * @return <code>true</code> if authentication is successful;
 	 <code>false</code> otherwise
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
 	 */
+	@Deprecated
 	public static boolean authenticateForJAAS(long userId, String encPassword) {
 		return getService().authenticateForJAAS(userId, encPassword);
 	}

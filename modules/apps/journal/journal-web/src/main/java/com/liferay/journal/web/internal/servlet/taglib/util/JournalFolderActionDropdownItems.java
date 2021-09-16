@@ -15,6 +15,7 @@
 package com.liferay.journal.web.internal.servlet.taglib.util;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.constants.JournalPortletKeys;
@@ -115,17 +116,16 @@ public class JournalFolderActionDropdownItems {
 					_themeDisplay.getPermissionChecker(), _folder,
 					ActionKeys.ADD_FOLDER)) {
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.setHref(
-					_liferayPortletResponse.createRenderURL(), "mvcPath",
-					"/edit_folder.jsp", "redirect", _getRedirect(), "groupId",
-					_folder.getGroupId(), "parentFolderId",
-					_folder.getFolderId());
-				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, "add-subfolder"));
-
-				actionDropdownItems.add(0, dropdownItem);
+				actionDropdownItems.add(
+					0,
+					DropdownItemBuilder.setHref(
+						_liferayPortletResponse.createRenderURL(), "mvcPath",
+						"/edit_folder.jsp", "redirect", _getRedirect(),
+						"groupId", _folder.getGroupId(), "parentFolderId",
+						_folder.getFolderId()
+					).setLabel(
+						LanguageUtil.get(_httpServletRequest, "add-subfolder")
+					).build());
 			}
 
 			return actionDropdownItems;

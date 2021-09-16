@@ -526,7 +526,7 @@ public class DefaultWorkflowEngineImpl
 
 	@Override
 	public WorkflowInstance signalWorkflowInstance(
-			long workflowInstanceId, final String transitionName,
+			long workflowInstanceId, String transitionName,
 			Map<String, Serializable> workflowContext,
 			ServiceContext serviceContext)
 		throws WorkflowException {
@@ -600,8 +600,7 @@ public class DefaultWorkflowEngineImpl
 	@Override
 	public WorkflowInstance startWorkflowInstance(
 			String workflowDefinitionName, Integer workflowDefinitionVersion,
-			final String transitionName,
-			Map<String, Serializable> workflowContext,
+			String transitionName, Map<String, Serializable> workflowContext,
 			ServiceContext serviceContext)
 		throws WorkflowException {
 

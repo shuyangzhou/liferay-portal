@@ -1,0 +1,42 @@
+$bgColor: #f7f8f9;
+
+.layout-tab {
+	&__add-tab-btn {
+		background-color: $bgColor;
+		border: 2px dashed #a7a9bc;
+		border-radius: 4px;
+		display: grid;
+		margin-bottom: 1.5rem;
+		padding: 1.5em;
+		place-items: center;
+	}
+
+	&__rows {
+		display: flex;
+		margin-bottom: 1.5rem;
+
+		&:last-child {
+			margin-bottom: 0 !important;
+		}
+	}
+
+	&__columns {
+		margin: 0 0.75rem;
+
+		&:first-child {
+			margin-left: 0 !important;
+		}
+
+		&:last-child {
+			margin-right: 0 !important;
+		}
+	}
+
+	&__field {
+		border: 1px solid #e7e7ed;
+	}
+
+	&__tab {
+		background-color: $bgColor;
+	}
+}

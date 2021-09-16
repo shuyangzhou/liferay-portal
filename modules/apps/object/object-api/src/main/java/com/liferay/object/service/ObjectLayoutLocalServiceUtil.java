@@ -116,8 +116,11 @@ public class ObjectLayoutLocalServiceUtil {
 	 *
 	 * @param objectLayout the object layout
 	 * @return the object layout that was removed
+	 * @throws PortalException
 	 */
-	public static ObjectLayout deleteObjectLayout(ObjectLayout objectLayout) {
+	public static ObjectLayout deleteObjectLayout(ObjectLayout objectLayout)
+		throws PortalException {
+
 		return getService().deleteObjectLayout(objectLayout);
 	}
 
@@ -238,6 +241,12 @@ public class ObjectLayoutLocalServiceUtil {
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static ObjectLayout getDefaultObjectLayout(long objectDefinitionId)
+		throws PortalException {
+
+		return getService().getDefaultObjectLayout(objectDefinitionId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery

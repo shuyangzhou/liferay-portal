@@ -117,6 +117,12 @@ public class LocalizedValueUtil {
 					String.valueOf(
 						JSONFactoryUtil.createJSONObject((Map)value)));
 			}
+			else if (value instanceof Object[]) {
+				localizedValue.addString(
+					LocaleUtil.fromLanguageId(entry.getKey()),
+					String.valueOf(
+						JSONFactoryUtil.createJSONArray((Object[])value)));
+			}
 			else if (value != null) {
 				localizedValue.addString(
 					LocaleUtil.fromLanguageId(entry.getKey()),

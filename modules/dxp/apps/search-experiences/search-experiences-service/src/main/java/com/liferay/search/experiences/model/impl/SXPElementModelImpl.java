@@ -85,11 +85,13 @@ public class SXPElementModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
-		{"sxpElementId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
-		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"description", Types.VARCHAR}, {"title", Types.VARCHAR},
-		{"status", Types.INTEGER}
+		{"sxpElementId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"description", Types.VARCHAR},
+		{"elementDefinitionJSON", Types.VARCHAR}, {"hidden_", Types.BOOLEAN},
+		{"readOnly", Types.BOOLEAN}, {"title", Types.VARCHAR},
+		{"type_", Types.INTEGER}, {"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -99,18 +101,23 @@ public class SXPElementModelImpl
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("sxpElementId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("elementDefinitionJSON", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("hidden_", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("readOnly", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("title", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SXPElement (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,sxpElementId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,description STRING null,title STRING null,status INTEGER)";
+		"create table SXPElement (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,sxpElementId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,description STRING null,elementDefinitionJSON VARCHAR(75) null,hidden_ BOOLEAN,readOnly BOOLEAN,title STRING null,type_ INTEGER,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table SXPElement";
 
@@ -136,14 +143,32 @@ public class SXPElementModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long STATUS_COLUMN_BITMASK = 4L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long TYPE_COLUMN_BITMASK = 8L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long SXPELEMENTID_COLUMN_BITMASK = 4L;
+	public static final long SXPELEMENTID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -177,13 +202,18 @@ public class SXPElementModelImpl
 		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setUuid(soapModel.getUuid());
 		model.setSXPElementId(soapModel.getSXPElementId());
+		model.setGroupId(soapModel.getGroupId());
 		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setDescription(soapModel.getDescription());
+		model.setElementDefinitionJSON(soapModel.getElementDefinitionJSON());
+		model.setHidden(soapModel.isHidden());
+		model.setReadOnly(soapModel.isReadOnly());
 		model.setTitle(soapModel.getTitle());
+		model.setType(soapModel.getType());
 		model.setStatus(soapModel.getStatus());
 
 		return model;
@@ -346,6 +376,9 @@ public class SXPElementModelImpl
 		attributeSetterBiConsumers.put(
 			"sxpElementId",
 			(BiConsumer<SXPElement, Long>)SXPElement::setSXPElementId);
+		attributeGetterFunctions.put("groupId", SXPElement::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<SXPElement, Long>)SXPElement::setGroupId);
 		attributeGetterFunctions.put("companyId", SXPElement::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
@@ -370,9 +403,25 @@ public class SXPElementModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<SXPElement, String>)SXPElement::setDescription);
+		attributeGetterFunctions.put(
+			"elementDefinitionJSON", SXPElement::getElementDefinitionJSON);
+		attributeSetterBiConsumers.put(
+			"elementDefinitionJSON",
+			(BiConsumer<SXPElement, String>)
+				SXPElement::setElementDefinitionJSON);
+		attributeGetterFunctions.put("hidden", SXPElement::getHidden);
+		attributeSetterBiConsumers.put(
+			"hidden", (BiConsumer<SXPElement, Boolean>)SXPElement::setHidden);
+		attributeGetterFunctions.put("readOnly", SXPElement::getReadOnly);
+		attributeSetterBiConsumers.put(
+			"readOnly",
+			(BiConsumer<SXPElement, Boolean>)SXPElement::setReadOnly);
 		attributeGetterFunctions.put("title", SXPElement::getTitle);
 		attributeSetterBiConsumers.put(
 			"title", (BiConsumer<SXPElement, String>)SXPElement::setTitle);
+		attributeGetterFunctions.put("type", SXPElement::getType);
+		attributeSetterBiConsumers.put(
+			"type", (BiConsumer<SXPElement, Integer>)SXPElement::setType);
 		attributeGetterFunctions.put("status", SXPElement::getStatus);
 		attributeSetterBiConsumers.put(
 			"status", (BiConsumer<SXPElement, Integer>)SXPElement::setStatus);
@@ -440,6 +489,30 @@ public class SXPElementModelImpl
 		}
 
 		_sxpElementId = sxpElementId;
+	}
+
+	@JSON
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_groupId = groupId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalGroupId() {
+		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -619,7 +692,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -649,7 +722,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -664,6 +737,68 @@ public class SXPElementModelImpl
 			LocalizationUtil.updateLocalization(
 				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@JSON
+	@Override
+	public String getElementDefinitionJSON() {
+		if (_elementDefinitionJSON == null) {
+			return "";
+		}
+		else {
+			return _elementDefinitionJSON;
+		}
+	}
+
+	@Override
+	public void setElementDefinitionJSON(String elementDefinitionJSON) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_elementDefinitionJSON = elementDefinitionJSON;
+	}
+
+	@JSON
+	@Override
+	public boolean getHidden() {
+		return _hidden;
+	}
+
+	@JSON
+	@Override
+	public boolean isHidden() {
+		return _hidden;
+	}
+
+	@Override
+	public void setHidden(boolean hidden) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_hidden = hidden;
+	}
+
+	@JSON
+	@Override
+	public boolean getReadOnly() {
+		return _readOnly;
+	}
+
+	@JSON
+	@Override
+	public boolean isReadOnly() {
+		return _readOnly;
+	}
+
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_readOnly = readOnly;
 	}
 
 	@JSON
@@ -731,7 +866,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setTitle(String title, Locale locale) {
-		setTitle(title, locale, LocaleUtil.getDefault());
+		setTitle(title, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -758,7 +893,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setTitleMap(Map<Locale, String> titleMap) {
-		setTitleMap(titleMap, LocaleUtil.getDefault());
+		setTitleMap(titleMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -777,6 +912,31 @@ public class SXPElementModelImpl
 
 	@JSON
 	@Override
+	public int getType() {
+		return _type;
+	}
+
+	@Override
+	public void setType(int type) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_type = type;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public int getOriginalType() {
+		return GetterUtil.getInteger(
+			this.<Integer>getColumnOriginalValue("type_"));
+	}
+
+	@JSON
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -788,6 +948,16 @@ public class SXPElementModelImpl
 		}
 
 		_status = status;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public int getOriginalStatus() {
+		return GetterUtil.getInteger(
+			this.<Integer>getColumnOriginalValue("status"));
 	}
 
 	@Override
@@ -871,7 +1041,7 @@ public class SXPElementModelImpl
 			return "";
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -896,7 +1066,7 @@ public class SXPElementModelImpl
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -943,13 +1113,18 @@ public class SXPElementModelImpl
 		sxpElementImpl.setMvccVersion(getMvccVersion());
 		sxpElementImpl.setUuid(getUuid());
 		sxpElementImpl.setSXPElementId(getSXPElementId());
+		sxpElementImpl.setGroupId(getGroupId());
 		sxpElementImpl.setCompanyId(getCompanyId());
 		sxpElementImpl.setUserId(getUserId());
 		sxpElementImpl.setUserName(getUserName());
 		sxpElementImpl.setCreateDate(getCreateDate());
 		sxpElementImpl.setModifiedDate(getModifiedDate());
 		sxpElementImpl.setDescription(getDescription());
+		sxpElementImpl.setElementDefinitionJSON(getElementDefinitionJSON());
+		sxpElementImpl.setHidden(isHidden());
+		sxpElementImpl.setReadOnly(isReadOnly());
 		sxpElementImpl.setTitle(getTitle());
+		sxpElementImpl.setType(getType());
 		sxpElementImpl.setStatus(getStatus());
 
 		sxpElementImpl.resetOriginalValues();
@@ -966,6 +1141,7 @@ public class SXPElementModelImpl
 		sxpElementImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		sxpElementImpl.setSXPElementId(
 			this.<Long>getColumnOriginalValue("sxpElementId"));
+		sxpElementImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
 		sxpElementImpl.setCompanyId(
 			this.<Long>getColumnOriginalValue("companyId"));
 		sxpElementImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
@@ -977,7 +1153,14 @@ public class SXPElementModelImpl
 			this.<Date>getColumnOriginalValue("modifiedDate"));
 		sxpElementImpl.setDescription(
 			this.<String>getColumnOriginalValue("description"));
+		sxpElementImpl.setElementDefinitionJSON(
+			this.<String>getColumnOriginalValue("elementDefinitionJSON"));
+		sxpElementImpl.setHidden(
+			this.<Boolean>getColumnOriginalValue("hidden_"));
+		sxpElementImpl.setReadOnly(
+			this.<Boolean>getColumnOriginalValue("readOnly"));
 		sxpElementImpl.setTitle(this.<String>getColumnOriginalValue("title"));
+		sxpElementImpl.setType(this.<Integer>getColumnOriginalValue("type_"));
 		sxpElementImpl.setStatus(
 			this.<Integer>getColumnOriginalValue("status"));
 
@@ -1069,6 +1252,8 @@ public class SXPElementModelImpl
 
 		sxpElementCacheModel.sxpElementId = getSXPElementId();
 
+		sxpElementCacheModel.groupId = getGroupId();
+
 		sxpElementCacheModel.companyId = getCompanyId();
 
 		sxpElementCacheModel.userId = getUserId();
@@ -1107,6 +1292,21 @@ public class SXPElementModelImpl
 			sxpElementCacheModel.description = null;
 		}
 
+		sxpElementCacheModel.elementDefinitionJSON = getElementDefinitionJSON();
+
+		String elementDefinitionJSON =
+			sxpElementCacheModel.elementDefinitionJSON;
+
+		if ((elementDefinitionJSON != null) &&
+			(elementDefinitionJSON.length() == 0)) {
+
+			sxpElementCacheModel.elementDefinitionJSON = null;
+		}
+
+		sxpElementCacheModel.hidden = isHidden();
+
+		sxpElementCacheModel.readOnly = isReadOnly();
+
 		sxpElementCacheModel.title = getTitle();
 
 		String title = sxpElementCacheModel.title;
@@ -1114,6 +1314,8 @@ public class SXPElementModelImpl
 		if ((title != null) && (title.length() == 0)) {
 			sxpElementCacheModel.title = null;
 		}
+
+		sxpElementCacheModel.type = getType();
 
 		sxpElementCacheModel.status = getStatus();
 
@@ -1210,6 +1412,7 @@ public class SXPElementModelImpl
 	private long _mvccVersion;
 	private String _uuid;
 	private long _sxpElementId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -1218,8 +1421,12 @@ public class SXPElementModelImpl
 	private boolean _setModifiedDate;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _elementDefinitionJSON;
+	private boolean _hidden;
+	private boolean _readOnly;
 	private String _title;
 	private String _titleCurrentLanguageId;
+	private int _type;
 	private int _status;
 
 	public <T> T getColumnValue(String columnName) {
@@ -1254,13 +1461,19 @@ public class SXPElementModelImpl
 		_columnOriginalValues.put("mvccVersion", _mvccVersion);
 		_columnOriginalValues.put("uuid_", _uuid);
 		_columnOriginalValues.put("sxpElementId", _sxpElementId);
+		_columnOriginalValues.put("groupId", _groupId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("userId", _userId);
 		_columnOriginalValues.put("userName", _userName);
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("description", _description);
+		_columnOriginalValues.put(
+			"elementDefinitionJSON", _elementDefinitionJSON);
+		_columnOriginalValues.put("hidden_", _hidden);
+		_columnOriginalValues.put("readOnly", _readOnly);
 		_columnOriginalValues.put("title", _title);
+		_columnOriginalValues.put("type_", _type);
 		_columnOriginalValues.put("status", _status);
 	}
 
@@ -1270,6 +1483,8 @@ public class SXPElementModelImpl
 		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("uuid_", "uuid");
+		attributeNames.put("hidden_", "hidden");
+		attributeNames.put("type_", "type");
 
 		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
@@ -1291,21 +1506,31 @@ public class SXPElementModelImpl
 
 		columnBitmasks.put("sxpElementId", 4L);
 
-		columnBitmasks.put("companyId", 8L);
+		columnBitmasks.put("groupId", 8L);
 
-		columnBitmasks.put("userId", 16L);
+		columnBitmasks.put("companyId", 16L);
 
-		columnBitmasks.put("userName", 32L);
+		columnBitmasks.put("userId", 32L);
 
-		columnBitmasks.put("createDate", 64L);
+		columnBitmasks.put("userName", 64L);
 
-		columnBitmasks.put("modifiedDate", 128L);
+		columnBitmasks.put("createDate", 128L);
 
-		columnBitmasks.put("description", 256L);
+		columnBitmasks.put("modifiedDate", 256L);
 
-		columnBitmasks.put("title", 512L);
+		columnBitmasks.put("description", 512L);
 
-		columnBitmasks.put("status", 1024L);
+		columnBitmasks.put("elementDefinitionJSON", 1024L);
+
+		columnBitmasks.put("hidden_", 2048L);
+
+		columnBitmasks.put("readOnly", 4096L);
+
+		columnBitmasks.put("title", 8192L);
+
+		columnBitmasks.put("type_", 16384L);
+
+		columnBitmasks.put("status", 32768L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

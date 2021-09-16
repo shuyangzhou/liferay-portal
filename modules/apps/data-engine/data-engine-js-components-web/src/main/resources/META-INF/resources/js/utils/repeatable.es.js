@@ -17,20 +17,17 @@ const FIELD_NAME_REGEX = /(_\w+_)ddm\$\$(.+)\$(\w+)\$(\d+)\$\$(\w+)/;
 const NESTED_FIELD_NAME_REGEX = /(_\w+_)ddm\$\$(.+)\$(\w+)\$(\d+)#(.+)\$(\w+)\$(\d+)\$\$(\w+)/;
 
 export const parseName = (name) => {
-	let parsed = {};
 	const result = FIELD_NAME_REGEX.exec(name);
 
-	if (result) {
-		parsed = {
-			editingLanguageId: result[5],
-			fieldName: result[2],
-			instanceId: result[3],
-			portletNamespace: result[1],
-			repeatedIndex: Number(result[4]),
-		};
-	}
-
-	return parsed;
+	return result
+		? {
+				editingLanguageId: result[5],
+				fieldName: result[2],
+				instanceId: result[3],
+				portletNamespace: result[1],
+				repeatedIndex: Number(result[4]),
+		  }
+		: {};
 };
 
 export const generateName = (name, props = {}) => {

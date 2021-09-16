@@ -20,6 +20,7 @@ import com.liferay.commerce.order.content.web.internal.frontend.util.CommerceOrd
 import com.liferay.commerce.order.content.web.internal.model.Order;
 import com.liferay.frontend.taglib.clay.data.set.ClayDataSetActionProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -63,14 +64,13 @@ public class PendingCommerceOrderDataSetActionProvider
 				themeDisplay.getPermissionChecker(), order.getOrderId(),
 				ActionKeys.VIEW)) {
 
-			DropdownItem dropdownItem = new DropdownItem();
-
-			dropdownItem.setHref(
-				CommerceOrderClayTableUtil.getEditOrderURL(
-					order.getOrderId(), httpServletRequest));
-			dropdownItem.setLabel(LanguageUtil.get(httpServletRequest, "view"));
-
-			dropdownItems.add(dropdownItem);
+			dropdownItems.add(
+				DropdownItemBuilder.setHref(
+					CommerceOrderClayTableUtil.getEditOrderURL(
+						order.getOrderId(), httpServletRequest)
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "view")
+				).build());
 		}
 
 		return dropdownItems;

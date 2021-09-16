@@ -17,6 +17,7 @@ package com.liferay.search.experiences.model;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -41,8 +42,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface SXPElementModel
-	extends BaseModel<SXPElement>, LocalizedModel, MVCCModel, ShardedModel,
-			StagedAuditedModel {
+	extends BaseModel<SXPElement>, GroupedModel, LocalizedModel, MVCCModel,
+			ShardedModel, StagedAuditedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -110,6 +111,22 @@ public interface SXPElementModel
 	 * @param sxpElementId the sxp element ID of this sxp element
 	 */
 	public void setSXPElementId(long sxpElementId);
+
+	/**
+	 * Returns the group ID of this sxp element.
+	 *
+	 * @return the group ID of this sxp element
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this sxp element.
+	 *
+	 * @param groupId the group ID of this sxp element
+	 */
+	@Override
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the company ID of this sxp element.
@@ -310,6 +327,63 @@ public interface SXPElementModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
+	 * Returns the element definition json of this sxp element.
+	 *
+	 * @return the element definition json of this sxp element
+	 */
+	@AutoEscape
+	public String getElementDefinitionJSON();
+
+	/**
+	 * Sets the element definition json of this sxp element.
+	 *
+	 * @param elementDefinitionJSON the element definition json of this sxp element
+	 */
+	public void setElementDefinitionJSON(String elementDefinitionJSON);
+
+	/**
+	 * Returns the hidden of this sxp element.
+	 *
+	 * @return the hidden of this sxp element
+	 */
+	public boolean getHidden();
+
+	/**
+	 * Returns <code>true</code> if this sxp element is hidden.
+	 *
+	 * @return <code>true</code> if this sxp element is hidden; <code>false</code> otherwise
+	 */
+	public boolean isHidden();
+
+	/**
+	 * Sets whether this sxp element is hidden.
+	 *
+	 * @param hidden the hidden of this sxp element
+	 */
+	public void setHidden(boolean hidden);
+
+	/**
+	 * Returns the read only of this sxp element.
+	 *
+	 * @return the read only of this sxp element
+	 */
+	public boolean getReadOnly();
+
+	/**
+	 * Returns <code>true</code> if this sxp element is read only.
+	 *
+	 * @return <code>true</code> if this sxp element is read only; <code>false</code> otherwise
+	 */
+	public boolean isReadOnly();
+
+	/**
+	 * Sets whether this sxp element is read only.
+	 *
+	 * @param readOnly the read only of this sxp element
+	 */
+	public void setReadOnly(boolean readOnly);
+
+	/**
 	 * Returns the title of this sxp element.
 	 *
 	 * @return the title of this sxp element
@@ -407,6 +481,20 @@ public interface SXPElementModel
 	 * @param defaultLocale the default locale
 	 */
 	public void setTitleMap(Map<Locale, String> titleMap, Locale defaultLocale);
+
+	/**
+	 * Returns the type of this sxp element.
+	 *
+	 * @return the type of this sxp element
+	 */
+	public int getType();
+
+	/**
+	 * Sets the type of this sxp element.
+	 *
+	 * @param type the type of this sxp element
+	 */
+	public void setType(int type);
 
 	/**
 	 * Returns the status of this sxp element.

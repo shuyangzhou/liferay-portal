@@ -84,11 +84,9 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "deactivateAccountUsers");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "deactivateAccountUsers"
+				).putData(
 					"deactivateAccountUsersURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -105,25 +103,23 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 						"accountEntryIds",
 						ParamUtil.getString(
 							httpServletRequest, "accountEntryIds")
-					).buildString());
-
-				dropdownItem.setIcon("hidden");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "deactivate"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"hidden"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "deactivate")
+				).setQuickAction(
+					true
+				).build();
 			},
 			() -> {
 				if (Objects.equals(getNavigation(), "active")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "activateAccountUsers");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "activateAccountUsers"
+				).putData(
 					"activateAccountUsersURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -140,25 +136,23 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 						"accountEntryIds",
 						ParamUtil.getString(
 							httpServletRequest, "accountEntryIds")
-					).buildString());
-
-				dropdownItem.setIcon("undo");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "activate"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"undo"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "activate")
+				).setQuickAction(
+					true
+				).build();
 			},
 			() -> {
 				if (Objects.equals(getNavigation(), "active")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "deleteAccountUsers");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "deleteAccountUsers"
+				).putData(
 					"deleteAccountUsersURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -175,14 +169,14 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 						"accountEntryIds",
 						ParamUtil.getString(
 							httpServletRequest, "accountEntryIds")
-					).buildString());
-
-				dropdownItem.setIcon("times-circle");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "delete"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"times-circle"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "delete")
+				).setQuickAction(
+					true
+				).build();
 			});
 	}
 

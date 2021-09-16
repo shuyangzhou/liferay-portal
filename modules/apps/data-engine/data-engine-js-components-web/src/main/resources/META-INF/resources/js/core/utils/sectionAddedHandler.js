@@ -120,7 +120,6 @@ const handleSectionAdded = (props, state, event) => {
 			...newField,
 		},
 		pages: newPages,
-		previousFocusedField: fieldSetField,
 	};
 };
 

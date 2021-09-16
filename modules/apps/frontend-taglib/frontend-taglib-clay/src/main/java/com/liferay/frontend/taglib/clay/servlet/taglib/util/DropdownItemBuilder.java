@@ -14,6 +14,8 @@
 
 package com.liferay.frontend.taglib.clay.servlet.taglib.util;
 
+import com.liferay.petra.function.UnsafeSupplier;
+
 import java.util.Map;
 
 import javax.portlet.PortletURL;
@@ -23,117 +25,265 @@ import javax.portlet.PortletURL;
  */
 public class DropdownItemBuilder {
 
-	public static DropdownItemWrapper putData(String key, String value) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterPutDataStep putData(String key, String value) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.putData(key, value);
+		return dropdownItemStep.putData(key, value);
 	}
 
-	public static DropdownItemWrapper setActive(boolean active) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterPutDataStep putData(
+		String key, UnsafeSupplier<String, Exception> valueUnsafeSupplier) {
 
-		return dropdownItemWrapper.setActive(active);
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.putData(key, valueUnsafeSupplier);
 	}
 
-	public static DropdownItemWrapper setData(Map<String, Object> data) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterActiveStep setActive(boolean active) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.setData(data);
+		return dropdownItemStep.setActive(active);
 	}
 
-	public static DropdownItemWrapper setDisabled(boolean disabled) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterActiveStep setActive(
+		UnsafeSupplier<Boolean, Exception> activeUnsafeSupplier) {
 
-		return dropdownItemWrapper.setDisabled(disabled);
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setActive(activeUnsafeSupplier);
 	}
 
-	public static DropdownItemWrapper setHref(Object href) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterSetDataStep setData(Map<String, Object> data) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.setHref(href);
+		return dropdownItemStep.setData(data);
 	}
 
-	public static DropdownItemWrapper setHref(
+	public static AfterDisabledStep setDisabled(boolean disabled) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setDisabled(disabled);
+	}
+
+	public static AfterDisabledStep setDisabled(
+		UnsafeSupplier<Boolean, Exception> disabledUnsafeSupplier) {
+
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setDisabled(disabledUnsafeSupplier);
+	}
+
+	public static AfterHrefStep setHref(Object href) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setHref(href);
+	}
+
+	public static AfterHrefStep setHref(
 		PortletURL portletURL, Object... parameters) {
 
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.setHref(portletURL, parameters);
+		return dropdownItemStep.setHref(parameters);
 	}
 
-	public static DropdownItemWrapper setIcon(String icon) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterHrefStep setHref(
+		UnsafeSupplier<Object, Exception> hrefUnsafeSupplier) {
 
-		return dropdownItemWrapper.setIcon(icon);
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setHref(hrefUnsafeSupplier);
 	}
 
-	public static DropdownItemWrapper setLabel(String label) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterIconStep setIcon(String icon) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.setLabel(label);
+		return dropdownItemStep.setIcon(icon);
 	}
 
-	public static DropdownItemWrapper setQuickAction(boolean quickAction) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterIconStep setIcon(
+		UnsafeSupplier<String, Exception> iconUnsafeSupplier) {
 
-		return dropdownItemWrapper.setQuickAction(quickAction);
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setIcon(iconUnsafeSupplier);
 	}
 
-	public static DropdownItemWrapper setSeparator(boolean separator) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterLabelStep setLabel(String label) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.setSeparator(separator);
+		return dropdownItemStep.setLabel(label);
 	}
 
-	public static DropdownItemWrapper setTarget(String target) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterLabelStep setLabel(
+		UnsafeSupplier<String, Exception> labelUnsafeSupplier) {
 
-		return dropdownItemWrapper.setTarget(target);
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setLabel(labelUnsafeSupplier);
 	}
 
-	public static DropdownItemWrapper setType(String type) {
-		DropdownItemWrapper dropdownItemWrapper = new DropdownItemWrapper();
+	public static AfterQuickActionStep setQuickAction(boolean quickAction) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemWrapper.setType(type);
+		return dropdownItemStep.setQuickAction(quickAction);
 	}
 
-	public static final class DropdownItemWrapper {
+	public static AfterQuickActionStep setQuickAction(
+		UnsafeSupplier<Boolean, Exception> quickActionUnsafeSupplier) {
 
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setQuickAction(quickActionUnsafeSupplier);
+	}
+
+	public static AfterSeparatorStep setSeparator(boolean separator) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setSeparator(separator);
+	}
+
+	public static AfterSeparatorStep setSeparator(
+		UnsafeSupplier<Boolean, Exception> separatorUnsafeSupplier) {
+
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setSeparator(separatorUnsafeSupplier);
+	}
+
+	public static AfterTargetStep setTarget(String target) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setTarget(target);
+	}
+
+	public static AfterTargetStep setTarget(
+		UnsafeSupplier<String, Exception> targetUnsafeSupplier) {
+
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setTarget(targetUnsafeSupplier);
+	}
+
+	public static AfterTypeStep setType(String type) {
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setType(type);
+	}
+
+	public static AfterTypeStep setType(
+		UnsafeSupplier<String, Exception> typeUnsafeSupplier) {
+
+		DropdownItemStep dropdownItemStep = new DropdownItemStep();
+
+		return dropdownItemStep.setType(typeUnsafeSupplier);
+	}
+
+	public static class DropdownItemStep
+		implements ActiveStep, AfterActiveStep, AfterDisabledStep,
+				   AfterHrefStep, AfterIconStep, AfterLabelStep,
+				   AfterPutDataStep, AfterQuickActionStep, AfterSeparatorStep,
+				   AfterSetDataStep, AfterTargetStep, AfterTypeStep, BuildStep,
+				   DisabledStep, HrefStep, IconStep, LabelStep, PutDataStep,
+				   QuickActionStep, SeparatorStep, SetDataStep, TargetStep,
+				   TypeStep {
+
+		@Override
 		public DropdownItem build() {
 			return _dropdownItem;
 		}
 
-		public DropdownItemWrapper putData(String key, String value) {
+		@Override
+		public AfterPutDataStep putData(String key, String value) {
 			_dropdownItem.putData(key, value);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setActive(boolean active) {
+		@Override
+		public AfterPutDataStep putData(
+			String key, UnsafeSupplier<String, Exception> valueUnsafeSupplier) {
+
+			try {
+				String value = valueUnsafeSupplier.get();
+
+				if (value != null) {
+					_dropdownItem.putData(key, value);
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterActiveStep setActive(boolean active) {
 			_dropdownItem.setActive(active);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setData(Map<String, Object> data) {
+		@Override
+		public AfterActiveStep setActive(
+			UnsafeSupplier<Boolean, Exception> activeUnsafeSupplier) {
+
+			try {
+				Boolean active = activeUnsafeSupplier.get();
+
+				if (active != null) {
+					_dropdownItem.setActive(active.booleanValue());
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterSetDataStep setData(Map<String, Object> data) {
 			_dropdownItem.setData(data);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setDisabled(boolean disabled) {
+		@Override
+		public AfterDisabledStep setDisabled(boolean disabled) {
 			_dropdownItem.setDisabled(disabled);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setHref(Object href) {
+		@Override
+		public AfterDisabledStep setDisabled(
+			UnsafeSupplier<Boolean, Exception> disabledUnsafeSupplier) {
+
+			try {
+				Boolean disabled = disabledUnsafeSupplier.get();
+
+				if (disabled != null) {
+					_dropdownItem.setDisabled(disabled.booleanValue());
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterHrefStep setHref(Object href) {
 			_dropdownItem.setHref(href);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setHref(
+		@Override
+		public AfterHrefStep setHref(
 			PortletURL portletURL, Object... parameters) {
 
 			_dropdownItem.setHref(portletURL, parameters);
@@ -141,43 +291,331 @@ public class DropdownItemBuilder {
 			return this;
 		}
 
-		public DropdownItemWrapper setIcon(String icon) {
+		@Override
+		public AfterHrefStep setHref(
+			UnsafeSupplier<Object, Exception> hrefUnsafeSupplier) {
+
+			try {
+				Object href = hrefUnsafeSupplier.get();
+
+				if (href != null) {
+					_dropdownItem.setHref(href);
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterIconStep setIcon(String icon) {
 			_dropdownItem.setIcon(icon);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setLabel(String label) {
+		@Override
+		public AfterIconStep setIcon(
+			UnsafeSupplier<String, Exception> iconUnsafeSupplier) {
+
+			try {
+				String icon = iconUnsafeSupplier.get();
+
+				if (icon != null) {
+					_dropdownItem.setIcon(icon);
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterLabelStep setLabel(String label) {
 			_dropdownItem.setLabel(label);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setQuickAction(boolean quickAction) {
+		@Override
+		public AfterLabelStep setLabel(
+			UnsafeSupplier<String, Exception> labelUnsafeSupplier) {
+
+			try {
+				String label = labelUnsafeSupplier.get();
+
+				if (label != null) {
+					_dropdownItem.setLabel(label);
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterQuickActionStep setQuickAction(boolean quickAction) {
 			_dropdownItem.setQuickAction(quickAction);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setSeparator(boolean separator) {
+		@Override
+		public AfterQuickActionStep setQuickAction(
+			UnsafeSupplier<Boolean, Exception> quickActionUnsafeSupplier) {
+
+			try {
+				Boolean quickAction = quickActionUnsafeSupplier.get();
+
+				if (quickAction != null) {
+					_dropdownItem.setQuickAction(quickAction.booleanValue());
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterSeparatorStep setSeparator(boolean separator) {
 			_dropdownItem.setSeparator(separator);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setTarget(String target) {
+		@Override
+		public AfterSeparatorStep setSeparator(
+			UnsafeSupplier<Boolean, Exception> separatorUnsafeSupplier) {
+
+			try {
+				Boolean separator = separatorUnsafeSupplier.get();
+
+				if (separator != null) {
+					_dropdownItem.setSeparator(separator.booleanValue());
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterTargetStep setTarget(String target) {
 			_dropdownItem.setTarget(target);
 
 			return this;
 		}
 
-		public DropdownItemWrapper setType(String type) {
+		@Override
+		public AfterTargetStep setTarget(
+			UnsafeSupplier<String, Exception> targetUnsafeSupplier) {
+
+			try {
+				String target = targetUnsafeSupplier.get();
+
+				if (target != null) {
+					_dropdownItem.setTarget(target);
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		@Override
+		public AfterTypeStep setType(String type) {
 			_dropdownItem.setType(type);
 
 			return this;
 		}
 
+		@Override
+		public AfterTypeStep setType(
+			UnsafeSupplier<String, Exception> typeUnsafeSupplier) {
+
+			try {
+				String type = typeUnsafeSupplier.get();
+
+				if (type != null) {
+					_dropdownItem.setType(type);
+				}
+
+				return this;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
 		private final DropdownItem _dropdownItem = new DropdownItem();
+
+	}
+
+	public interface ActiveStep {
+
+		public AfterActiveStep setActive(boolean active);
+
+		public AfterActiveStep setActive(
+			UnsafeSupplier<Boolean, Exception> activeUnsafeSupplier);
+
+	}
+
+	public interface AfterActiveStep
+		extends BuildStep, DisabledStep, HrefStep, IconStep, LabelStep,
+				QuickActionStep, SeparatorStep, SetDataStep, TargetStep,
+				TypeStep {
+	}
+
+	public interface AfterDisabledStep
+		extends BuildStep, HrefStep, IconStep, LabelStep, QuickActionStep,
+				SeparatorStep, TargetStep, TypeStep {
+	}
+
+	public interface AfterHrefStep
+		extends BuildStep, IconStep, LabelStep, QuickActionStep, SeparatorStep,
+				TargetStep, TypeStep {
+	}
+
+	public interface AfterIconStep
+		extends BuildStep, LabelStep, QuickActionStep, SeparatorStep,
+				TargetStep, TypeStep {
+	}
+
+	public interface AfterLabelStep
+		extends BuildStep, QuickActionStep, SeparatorStep, TargetStep,
+				TypeStep {
+	}
+
+	public interface AfterPutDataStep
+		extends ActiveStep, BuildStep, DisabledStep, HrefStep, IconStep,
+				LabelStep, PutDataStep, QuickActionStep, SeparatorStep,
+				SetDataStep, TargetStep, TypeStep {
+	}
+
+	public interface AfterQuickActionStep
+		extends BuildStep, SeparatorStep, TargetStep, TypeStep {
+	}
+
+	public interface AfterSeparatorStep
+		extends BuildStep, TargetStep, TypeStep {
+	}
+
+	public interface AfterSetDataStep
+		extends BuildStep, DisabledStep, HrefStep, IconStep, LabelStep,
+				QuickActionStep, SeparatorStep, TargetStep, TypeStep {
+	}
+
+	public interface AfterTargetStep extends BuildStep, TypeStep {
+	}
+
+	public interface AfterTypeStep extends BuildStep {
+	}
+
+	public interface BuildStep {
+
+		public DropdownItem build();
+
+	}
+
+	public interface DisabledStep {
+
+		public AfterDisabledStep setDisabled(boolean disabled);
+
+		public AfterDisabledStep setDisabled(
+			UnsafeSupplier<Boolean, Exception> disabledUnsafeSupplier);
+
+	}
+
+	public interface HrefStep {
+
+		public AfterHrefStep setHref(Object href);
+
+		public AfterHrefStep setHref(
+			PortletURL portletURL, Object... parameters);
+
+		public AfterHrefStep setHref(
+			UnsafeSupplier<Object, Exception> hrefUnsafeSupplier);
+
+	}
+
+	public interface IconStep {
+
+		public AfterIconStep setIcon(String icon);
+
+		public AfterIconStep setIcon(
+			UnsafeSupplier<String, Exception> iconUnsafeSupplier);
+
+	}
+
+	public interface LabelStep {
+
+		public AfterLabelStep setLabel(String label);
+
+		public AfterLabelStep setLabel(
+			UnsafeSupplier<String, Exception> labelUnsafeSupplier);
+
+	}
+
+	public interface PutDataStep {
+
+		public AfterPutDataStep putData(String key, String value);
+
+		public AfterPutDataStep putData(
+			String key, UnsafeSupplier<String, Exception> valueUnsafeSupplier);
+
+	}
+
+	public interface QuickActionStep {
+
+		public AfterQuickActionStep setQuickAction(boolean quickAction);
+
+		public AfterQuickActionStep setQuickAction(
+			UnsafeSupplier<Boolean, Exception> quickActionUnsafeSupplier);
+
+	}
+
+	public interface SeparatorStep {
+
+		public AfterSeparatorStep setSeparator(boolean separator);
+
+		public AfterSeparatorStep setSeparator(
+			UnsafeSupplier<Boolean, Exception> separatorUnsafeSupplier);
+
+	}
+
+	public interface SetDataStep {
+
+		public AfterSetDataStep setData(Map<String, Object> data);
+
+	}
+
+	public interface TargetStep {
+
+		public AfterTargetStep setTarget(String target);
+
+		public AfterTargetStep setTarget(
+			UnsafeSupplier<String, Exception> targetUnsafeSupplier);
+
+	}
+
+	public interface TypeStep {
+
+		public AfterTypeStep setType(String type);
+
+		public AfterTypeStep setType(
+			UnsafeSupplier<String, Exception> typeUnsafeSupplier);
 
 	}
 

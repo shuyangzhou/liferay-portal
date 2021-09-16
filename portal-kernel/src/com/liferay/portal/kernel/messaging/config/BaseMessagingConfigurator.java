@@ -273,7 +273,7 @@ public abstract class BaseMessagingConfigurator
 		for (final Map.Entry<String, List<DestinationEventListener>> entry :
 				_destinationEventListeners.entrySet()) {
 
-			final String destinationName = entry.getKey();
+			String destinationName = entry.getKey();
 
 			ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
 

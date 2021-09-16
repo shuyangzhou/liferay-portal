@@ -176,7 +176,7 @@ function evaluateFieldLeft(fieldLeft, value) {
 			if (editorConfig) {
 				const instanceId = FieldSupport.generateInstanceId();
 
-				props.editorConfig = FieldSupport.formatEditorConfig(
+				props.editorConfig = FieldSupport.updateEditorConfigInstanceId(
 					editorConfig,
 					instanceId
 				);

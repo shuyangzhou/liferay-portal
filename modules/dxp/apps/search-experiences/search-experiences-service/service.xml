@@ -9,6 +9,10 @@
 
 		<column method-name="SXPBlueprintId" name="sxpBlueprintId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -19,12 +23,20 @@
 
 		<!-- Other fields -->
 
+		<column name="configurationsJSON" type="String" />
 		<column localized="true" name="description" type="String" />
+		<column name="elementInstancesJSON" type="String" />
 		<column localized="true" name="title" type="String" />
 		<column name="status" type="int" />
 		<column name="statusByUserId" type="long" />
 		<column name="statusByUserName" type="String" />
 		<column name="statusDate" type="Date" />
+
+		<!-- Finder methods -->
+
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId" />
+		</finder>
 	</entity>
 	<entity local-service="true" name="SXPElement" remote-service="true" uuid="true">
 
@@ -32,6 +44,10 @@
 
 		<column method-name="SXPElementId" name="sxpElementId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -43,7 +59,29 @@
 		<!-- Other fields -->
 
 		<column localized="true" name="description" type="String" />
+		<column name="elementDefinitionJSON" type="String" />
+		<column name="hidden" type="boolean" />
+		<column name="readOnly" type="boolean" />
 		<column localized="true" name="title" type="String" />
+		<column name="type" type="int" />
 		<column name="status" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="G_T" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="G_T_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="type" />
+			<finder-column name="status" />
+		</finder>
 	</entity>
+	<exceptions>
+		<exception>SXPBlueprintConfigurationsJSON</exception>
+		<exception>SXPBlueprintTitle</exception>
+		<exception>SXPElementElementDefinitionJSON</exception>
+		<exception>SXPElementTitle</exception>
+	</exceptions>
 </service-builder>

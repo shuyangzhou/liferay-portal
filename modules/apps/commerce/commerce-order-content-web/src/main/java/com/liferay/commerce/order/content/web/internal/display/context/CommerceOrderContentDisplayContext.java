@@ -48,6 +48,7 @@ import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.commerce.service.CommerceOrderTypeService;
 import com.liferay.commerce.service.CommerceShipmentItemService;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -68,6 +69,7 @@ import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -76,7 +78,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.Format;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -444,26 +445,23 @@ public class CommerceOrderContentDisplayContext {
 	}
 
 	public List<DropdownItem> getDropdownItems() {
-		List<DropdownItem> headerDropdownItems = new ArrayList<>();
-
-		DropdownItem headerDropdownItem1 = new DropdownItem();
-
-		headerDropdownItem1.setHref("/first-link");
-		headerDropdownItem1.setIcon("home");
-		headerDropdownItem1.setLabel("First link");
-
-		headerDropdownItems.add(headerDropdownItem1);
-
-		DropdownItem headerDropdownItem2 = new DropdownItem();
-
-		headerDropdownItem2.setActive(true);
-		headerDropdownItem2.setIcon("blogs");
-		headerDropdownItem2.setHref("/second-link");
-		headerDropdownItem2.setLabel("Second link");
-
-		headerDropdownItems.add(headerDropdownItem2);
-
-		return headerDropdownItems;
+		return ListUtil.fromArray(
+			DropdownItemBuilder.setHref(
+				"/first-link"
+			).setIcon(
+				"home"
+			).setLabel(
+				"First link"
+			).build(),
+			DropdownItemBuilder.setActive(
+				true
+			).setHref(
+				"/second-link"
+			).setIcon(
+				"blogs"
+			).setLabel(
+				"Second link"
+			).build());
 	}
 
 	public List<HeaderActionModel> getHeaderActionModels()

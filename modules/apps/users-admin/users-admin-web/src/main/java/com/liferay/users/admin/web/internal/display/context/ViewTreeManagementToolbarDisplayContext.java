@@ -16,6 +16,7 @@ package com.liferay.users.admin.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
@@ -90,75 +91,69 @@ public class ViewTreeManagementToolbarDisplayContext {
 
 	public List<DropdownItem> getActionDropdownItems() {
 		return DropdownItemList.of(
-			() -> {
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", Constants.DELETE);
-				dropdownItem.setHref(
-					StringBundler.concat(
-						"javascript:", _renderResponse.getNamespace(),
-						"delete();"));
-				dropdownItem.setIcon("times-circle");
-				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, Constants.DELETE));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
-			},
+			() -> DropdownItemBuilder.putData(
+				"action", Constants.DELETE
+			).setHref(
+				StringBundler.concat(
+					"javascript:", _renderResponse.getNamespace(), "delete();")
+			).setIcon(
+				"times-circle"
+			).setLabel(
+				LanguageUtil.get(_httpServletRequest, Constants.DELETE)
+			).setQuickAction(
+				true
+			).build(),
 			() -> {
 				if (Objects.equals(getNavigation(), "active")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", Constants.RESTORE);
-				dropdownItem.setHref(
+				return DropdownItemBuilder.putData(
+					"action", Constants.RESTORE
+				).setHref(
 					StringBundler.concat(
 						"javascript:", _renderResponse.getNamespace(),
-						"deleteUsers('", Constants.RESTORE, "');"));
-				dropdownItem.setIcon("undo");
-				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, Constants.RESTORE));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+						"deleteUsers('", Constants.RESTORE, "');")
+				).setIcon(
+					"undo"
+				).setLabel(
+					LanguageUtil.get(_httpServletRequest, Constants.RESTORE)
+				).setQuickAction(
+					true
+				).build();
 			},
 			() -> {
 				if (Objects.equals(getNavigation(), "inactive")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", Constants.DEACTIVATE);
-				dropdownItem.setHref(
+				return DropdownItemBuilder.putData(
+					"action", Constants.DEACTIVATE
+				).setHref(
 					StringBundler.concat(
 						"javascript:", _renderResponse.getNamespace(),
-						"deleteUsers('", Constants.DEACTIVATE, "');"));
-				dropdownItem.setIcon("hidden");
-				dropdownItem.setLabel(
-					LanguageUtil.get(
-						_httpServletRequest, Constants.DEACTIVATE));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+						"deleteUsers('", Constants.DEACTIVATE, "');")
+				).setIcon(
+					"hidden"
+				).setLabel(
+					LanguageUtil.get(_httpServletRequest, Constants.DEACTIVATE)
+				).setQuickAction(
+					true
+				).build();
 			},
-			() -> {
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", Constants.REMOVE);
-				dropdownItem.setHref(
-					StringBundler.concat(
-						"javascript:", _renderResponse.getNamespace(),
-						"removeOrganizationsAndUsers();"));
-				dropdownItem.setIcon("minus-circle");
-				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, Constants.REMOVE));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
-			});
+			() -> DropdownItemBuilder.putData(
+				"action", Constants.REMOVE
+			).setHref(
+				StringBundler.concat(
+					"javascript:", _renderResponse.getNamespace(),
+					"removeOrganizationsAndUsers();")
+			).setIcon(
+				"minus-circle"
+			).setLabel(
+				LanguageUtil.get(_httpServletRequest, Constants.REMOVE)
+			).setQuickAction(
+				true
+			).build());
 	}
 
 	public List<String> getAvailableActions(Organization organization) {

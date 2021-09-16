@@ -622,6 +622,254 @@ public class SXPElementPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_UUID_3 =
 		"(sxpElement.uuid IS NULL OR sxpElement.uuid = '')";
 
+	private FinderPath _finderPathFetchByUUID_G;
+	private FinderPath _finderPathCountByUUID_G;
+
+	/**
+	 * Returns the sxp element where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchSXPElementException</code> if it could not be found.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the matching sxp element
+	 * @throws NoSuchSXPElementException if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement findByUUID_G(String uuid, long groupId)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = fetchByUUID_G(uuid, groupId);
+
+		if (sxpElement == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("uuid=");
+			sb.append(uuid);
+
+			sb.append(", groupId=");
+			sb.append(groupId);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchSXPElementException(sb.toString());
+		}
+
+		return sxpElement;
+	}
+
+	/**
+	 * Returns the sxp element where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the matching sxp element, or <code>null</code> if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement fetchByUUID_G(String uuid, long groupId) {
+		return fetchByUUID_G(uuid, groupId, true);
+	}
+
+	/**
+	 * Returns the sxp element where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching sxp element, or <code>null</code> if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache) {
+
+		uuid = Objects.toString(uuid, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {uuid, groupId};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByUUID_G, finderArgs);
+		}
+
+		if (result instanceof SXPElement) {
+			SXPElement sxpElement = (SXPElement)result;
+
+			if (!Objects.equals(uuid, sxpElement.getUuid()) ||
+				(groupId != sxpElement.getGroupId())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_SXPELEMENT_WHERE);
+
+			boolean bindUuid = false;
+
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
+			else {
+				bindUuid = true;
+
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
+			}
+
+			sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindUuid) {
+					queryPos.add(uuid);
+				}
+
+				queryPos.add(groupId);
+
+				List<SXPElement> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByUUID_G, finderArgs, list);
+					}
+				}
+				else {
+					SXPElement sxpElement = list.get(0);
+
+					result = sxpElement;
+
+					cacheResult(sxpElement);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (SXPElement)result;
+		}
+	}
+
+	/**
+	 * Removes the sxp element where uuid = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the sxp element that was removed
+	 */
+	@Override
+	public SXPElement removeByUUID_G(String uuid, long groupId)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = findByUUID_G(uuid, groupId);
+
+		return remove(sxpElement);
+	}
+
+	/**
+	 * Returns the number of sxp elements where uuid = &#63; and groupId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the number of matching sxp elements
+	 */
+	@Override
+	public int countByUUID_G(String uuid, long groupId) {
+		uuid = Objects.toString(uuid, "");
+
+		FinderPath finderPath = _finderPathCountByUUID_G;
+
+		Object[] finderArgs = new Object[] {uuid, groupId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_SXPELEMENT_WHERE);
+
+			boolean bindUuid = false;
+
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			}
+			else {
+				bindUuid = true;
+
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
+			}
+
+			sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindUuid) {
+					queryPos.add(uuid);
+				}
+
+				queryPos.add(groupId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_UUID_G_UUID_2 =
+		"sxpElement.uuid = ? AND ";
+
+	private static final String _FINDER_COLUMN_UUID_G_UUID_3 =
+		"(sxpElement.uuid IS NULL OR sxpElement.uuid = '') AND ";
+
+	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 =
+		"sxpElement.groupId = ?";
+
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
 	private FinderPath _finderPathCountByUuid_C;
@@ -1200,10 +1448,1119 @@ public class SXPElementPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"sxpElement.companyId = ?";
 
+	private FinderPath _finderPathWithPaginationFindByG_T;
+	private FinderPath _finderPathWithoutPaginationFindByG_T;
+	private FinderPath _finderPathCountByG_T;
+
+	/**
+	 * Returns all the sxp elements where groupId = &#63; and type = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @return the matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T(long groupId, int type) {
+		return findByG_T(
+			groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the sxp elements where groupId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SXPElementModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param start the lower bound of the range of sxp elements
+	 * @param end the upper bound of the range of sxp elements (not inclusive)
+	 * @return the range of matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T(
+		long groupId, int type, int start, int end) {
+
+		return findByG_T(groupId, type, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the sxp elements where groupId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SXPElementModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param start the lower bound of the range of sxp elements
+	 * @param end the upper bound of the range of sxp elements (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T(
+		long groupId, int type, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator) {
+
+		return findByG_T(groupId, type, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the sxp elements where groupId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SXPElementModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param start the lower bound of the range of sxp elements
+	 * @param end the upper bound of the range of sxp elements (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T(
+		long groupId, int type, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByG_T;
+				finderArgs = new Object[] {groupId, type};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByG_T;
+			finderArgs = new Object[] {
+				groupId, type, start, end, orderByComparator
+			};
+		}
+
+		List<SXPElement> list = null;
+
+		if (useFinderCache) {
+			list = (List<SXPElement>)finderCache.getResult(
+				finderPath, finderArgs);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (SXPElement sxpElement : list) {
+					if ((groupId != sxpElement.getGroupId()) ||
+						(type != sxpElement.getType())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(4);
+			}
+
+			sb.append(_SQL_SELECT_SXPELEMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
+
+			sb.append(_FINDER_COLUMN_G_T_TYPE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				queryPos.add(type);
+
+				list = (List<SXPElement>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first sxp element in the ordered set where groupId = &#63; and type = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching sxp element
+	 * @throws NoSuchSXPElementException if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement findByG_T_First(
+			long groupId, int type,
+			OrderByComparator<SXPElement> orderByComparator)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = fetchByG_T_First(
+			groupId, type, orderByComparator);
+
+		if (sxpElement != null) {
+			return sxpElement;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append(", type=");
+		sb.append(type);
+
+		sb.append("}");
+
+		throw new NoSuchSXPElementException(sb.toString());
+	}
+
+	/**
+	 * Returns the first sxp element in the ordered set where groupId = &#63; and type = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching sxp element, or <code>null</code> if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement fetchByG_T_First(
+		long groupId, int type,
+		OrderByComparator<SXPElement> orderByComparator) {
+
+		List<SXPElement> list = findByG_T(
+			groupId, type, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last sxp element in the ordered set where groupId = &#63; and type = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching sxp element
+	 * @throws NoSuchSXPElementException if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement findByG_T_Last(
+			long groupId, int type,
+			OrderByComparator<SXPElement> orderByComparator)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = fetchByG_T_Last(
+			groupId, type, orderByComparator);
+
+		if (sxpElement != null) {
+			return sxpElement;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append(", type=");
+		sb.append(type);
+
+		sb.append("}");
+
+		throw new NoSuchSXPElementException(sb.toString());
+	}
+
+	/**
+	 * Returns the last sxp element in the ordered set where groupId = &#63; and type = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching sxp element, or <code>null</code> if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement fetchByG_T_Last(
+		long groupId, int type,
+		OrderByComparator<SXPElement> orderByComparator) {
+
+		int count = countByG_T(groupId, type);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<SXPElement> list = findByG_T(
+			groupId, type, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the sxp elements before and after the current sxp element in the ordered set where groupId = &#63; and type = &#63;.
+	 *
+	 * @param sxpElementId the primary key of the current sxp element
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next sxp element
+	 * @throws NoSuchSXPElementException if a sxp element with the primary key could not be found
+	 */
+	@Override
+	public SXPElement[] findByG_T_PrevAndNext(
+			long sxpElementId, long groupId, int type,
+			OrderByComparator<SXPElement> orderByComparator)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = findByPrimaryKey(sxpElementId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SXPElement[] array = new SXPElementImpl[3];
+
+			array[0] = getByG_T_PrevAndNext(
+				session, sxpElement, groupId, type, orderByComparator, true);
+
+			array[1] = sxpElement;
+
+			array[2] = getByG_T_PrevAndNext(
+				session, sxpElement, groupId, type, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected SXPElement getByG_T_PrevAndNext(
+		Session session, SXPElement sxpElement, long groupId, int type,
+		OrderByComparator<SXPElement> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_SXPELEMENT_WHERE);
+
+		sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
+
+		sb.append(_FINDER_COLUMN_G_T_TYPE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(groupId);
+
+		queryPos.add(type);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(sxpElement)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<SXPElement> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the sxp elements where groupId = &#63; and type = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 */
+	@Override
+	public void removeByG_T(long groupId, int type) {
+		for (SXPElement sxpElement :
+				findByG_T(
+					groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(sxpElement);
+		}
+	}
+
+	/**
+	 * Returns the number of sxp elements where groupId = &#63; and type = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @return the number of matching sxp elements
+	 */
+	@Override
+	public int countByG_T(long groupId, int type) {
+		FinderPath finderPath = _finderPathCountByG_T;
+
+		Object[] finderArgs = new Object[] {groupId, type};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_SXPELEMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
+
+			sb.append(_FINDER_COLUMN_G_T_TYPE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				queryPos.add(type);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_G_T_GROUPID_2 =
+		"sxpElement.groupId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_T_TYPE_2 =
+		"sxpElement.type = ?";
+
+	private FinderPath _finderPathWithPaginationFindByG_T_S;
+	private FinderPath _finderPathWithoutPaginationFindByG_T_S;
+	private FinderPath _finderPathCountByG_T_S;
+
+	/**
+	 * Returns all the sxp elements where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @return the matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T_S(long groupId, int type, int status) {
+		return findByG_T_S(
+			groupId, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the sxp elements where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SXPElementModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param start the lower bound of the range of sxp elements
+	 * @param end the upper bound of the range of sxp elements (not inclusive)
+	 * @return the range of matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T_S(
+		long groupId, int type, int status, int start, int end) {
+
+		return findByG_T_S(groupId, type, status, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the sxp elements where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SXPElementModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param start the lower bound of the range of sxp elements
+	 * @param end the upper bound of the range of sxp elements (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T_S(
+		long groupId, int type, int status, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator) {
+
+		return findByG_T_S(
+			groupId, type, status, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the sxp elements where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SXPElementModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param start the lower bound of the range of sxp elements
+	 * @param end the upper bound of the range of sxp elements (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching sxp elements
+	 */
+	@Override
+	public List<SXPElement> findByG_T_S(
+		long groupId, int type, int status, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByG_T_S;
+				finderArgs = new Object[] {groupId, type, status};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByG_T_S;
+			finderArgs = new Object[] {
+				groupId, type, status, start, end, orderByComparator
+			};
+		}
+
+		List<SXPElement> list = null;
+
+		if (useFinderCache) {
+			list = (List<SXPElement>)finderCache.getResult(
+				finderPath, finderArgs);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (SXPElement sxpElement : list) {
+					if ((groupId != sxpElement.getGroupId()) ||
+						(type != sxpElement.getType()) ||
+						(status != sxpElement.getStatus())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					5 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(5);
+			}
+
+			sb.append(_SQL_SELECT_SXPELEMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
+
+			sb.append(_FINDER_COLUMN_G_T_S_TYPE_2);
+
+			sb.append(_FINDER_COLUMN_G_T_S_STATUS_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				queryPos.add(type);
+
+				queryPos.add(status);
+
+				list = (List<SXPElement>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first sxp element in the ordered set where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching sxp element
+	 * @throws NoSuchSXPElementException if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement findByG_T_S_First(
+			long groupId, int type, int status,
+			OrderByComparator<SXPElement> orderByComparator)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = fetchByG_T_S_First(
+			groupId, type, status, orderByComparator);
+
+		if (sxpElement != null) {
+			return sxpElement;
+		}
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append(", type=");
+		sb.append(type);
+
+		sb.append(", status=");
+		sb.append(status);
+
+		sb.append("}");
+
+		throw new NoSuchSXPElementException(sb.toString());
+	}
+
+	/**
+	 * Returns the first sxp element in the ordered set where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching sxp element, or <code>null</code> if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement fetchByG_T_S_First(
+		long groupId, int type, int status,
+		OrderByComparator<SXPElement> orderByComparator) {
+
+		List<SXPElement> list = findByG_T_S(
+			groupId, type, status, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last sxp element in the ordered set where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching sxp element
+	 * @throws NoSuchSXPElementException if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement findByG_T_S_Last(
+			long groupId, int type, int status,
+			OrderByComparator<SXPElement> orderByComparator)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = fetchByG_T_S_Last(
+			groupId, type, status, orderByComparator);
+
+		if (sxpElement != null) {
+			return sxpElement;
+		}
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append(", type=");
+		sb.append(type);
+
+		sb.append(", status=");
+		sb.append(status);
+
+		sb.append("}");
+
+		throw new NoSuchSXPElementException(sb.toString());
+	}
+
+	/**
+	 * Returns the last sxp element in the ordered set where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching sxp element, or <code>null</code> if a matching sxp element could not be found
+	 */
+	@Override
+	public SXPElement fetchByG_T_S_Last(
+		long groupId, int type, int status,
+		OrderByComparator<SXPElement> orderByComparator) {
+
+		int count = countByG_T_S(groupId, type, status);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<SXPElement> list = findByG_T_S(
+			groupId, type, status, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the sxp elements before and after the current sxp element in the ordered set where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param sxpElementId the primary key of the current sxp element
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next sxp element
+	 * @throws NoSuchSXPElementException if a sxp element with the primary key could not be found
+	 */
+	@Override
+	public SXPElement[] findByG_T_S_PrevAndNext(
+			long sxpElementId, long groupId, int type, int status,
+			OrderByComparator<SXPElement> orderByComparator)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = findByPrimaryKey(sxpElementId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SXPElement[] array = new SXPElementImpl[3];
+
+			array[0] = getByG_T_S_PrevAndNext(
+				session, sxpElement, groupId, type, status, orderByComparator,
+				true);
+
+			array[1] = sxpElement;
+
+			array[2] = getByG_T_S_PrevAndNext(
+				session, sxpElement, groupId, type, status, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected SXPElement getByG_T_S_PrevAndNext(
+		Session session, SXPElement sxpElement, long groupId, int type,
+		int status, OrderByComparator<SXPElement> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(5);
+		}
+
+		sb.append(_SQL_SELECT_SXPELEMENT_WHERE);
+
+		sb.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
+
+		sb.append(_FINDER_COLUMN_G_T_S_TYPE_2);
+
+		sb.append(_FINDER_COLUMN_G_T_S_STATUS_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(SXPElementModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(groupId);
+
+		queryPos.add(type);
+
+		queryPos.add(status);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(sxpElement)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<SXPElement> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the sxp elements where groupId = &#63; and type = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 */
+	@Override
+	public void removeByG_T_S(long groupId, int type, int status) {
+		for (SXPElement sxpElement :
+				findByG_T_S(
+					groupId, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(sxpElement);
+		}
+	}
+
+	/**
+	 * Returns the number of sxp elements where groupId = &#63; and type = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param type the type
+	 * @param status the status
+	 * @return the number of matching sxp elements
+	 */
+	@Override
+	public int countByG_T_S(long groupId, int type, int status) {
+		FinderPath finderPath = _finderPathCountByG_T_S;
+
+		Object[] finderArgs = new Object[] {groupId, type, status};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_COUNT_SXPELEMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
+
+			sb.append(_FINDER_COLUMN_G_T_S_TYPE_2);
+
+			sb.append(_FINDER_COLUMN_G_T_S_STATUS_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				queryPos.add(type);
+
+				queryPos.add(status);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_G_T_S_GROUPID_2 =
+		"sxpElement.groupId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_T_S_TYPE_2 =
+		"sxpElement.type = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_T_S_STATUS_2 =
+		"sxpElement.status = ?";
+
 	public SXPElementPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
+		dbColumnNames.put("hidden", "hidden_");
+		dbColumnNames.put("type", "type_");
 
 		setDBColumnNames(dbColumnNames);
 
@@ -1224,6 +2581,11 @@ public class SXPElementPersistenceImpl
 	public void cacheResult(SXPElement sxpElement) {
 		entityCache.putResult(
 			SXPElementImpl.class, sxpElement.getPrimaryKey(), sxpElement);
+
+		finderCache.putResult(
+			_finderPathFetchByUUID_G,
+			new Object[] {sxpElement.getUuid(), sxpElement.getGroupId()},
+			sxpElement);
 	}
 
 	/**
@@ -1282,6 +2644,18 @@ public class SXPElementPersistenceImpl
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SXPElementImpl.class, primaryKey);
 		}
+	}
+
+	protected void cacheUniqueFindersCache(
+		SXPElementModelImpl sxpElementModelImpl) {
+
+		Object[] args = new Object[] {
+			sxpElementModelImpl.getUuid(), sxpElementModelImpl.getGroupId()
+		};
+
+		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByUUID_G, args, sxpElementModelImpl);
 	}
 
 	/**
@@ -1465,6 +2839,8 @@ public class SXPElementPersistenceImpl
 
 		entityCache.putResult(
 			SXPElementImpl.class, sxpElementModelImpl, false, true);
+
+		cacheUniqueFindersCache(sxpElementModelImpl);
 
 		if (isNew) {
 			sxpElement.setNew(false);
@@ -1764,6 +3140,16 @@ public class SXPElementPersistenceImpl
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
 			false);
 
+		_finderPathFetchByUUID_G = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()},
+			new String[] {"uuid_", "groupId"}, true);
+
+		_finderPathCountByUUID_G = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()},
+			new String[] {"uuid_", "groupId"}, false);
+
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
 			new String[] {
@@ -1782,6 +3168,50 @@ public class SXPElementPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
+
+		_finderPathWithPaginationFindByG_T = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			},
+			new String[] {"groupId", "type_"}, true);
+
+		_finderPathWithoutPaginationFindByG_T = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T",
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			new String[] {"groupId", "type_"}, true);
+
+		_finderPathCountByG_T = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T",
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			new String[] {"groupId", "type_"}, false);
+
+		_finderPathWithPaginationFindByG_T_S = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"groupId", "type_", "status"}, true);
+
+		_finderPathWithoutPaginationFindByG_T_S = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName()
+			},
+			new String[] {"groupId", "type_", "status"}, true);
+
+		_finderPathCountByG_T_S = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName()
+			},
+			new String[] {"groupId", "type_", "status"}, false);
 	}
 
 	@Deactivate
@@ -1845,7 +3275,7 @@ public class SXPElementPersistenceImpl
 		SXPElementPersistenceImpl.class);
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"uuid"});
+		new String[] {"uuid", "hidden", "type"});
 
 	@Override
 	protected FinderCache getFinderCache() {

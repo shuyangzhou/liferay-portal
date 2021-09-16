@@ -35,6 +35,7 @@ import com.liferay.frontend.taglib.clay.data.set.servlet.taglib.util.ClayDataSet
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
@@ -318,9 +319,7 @@ public class CPDefinitionsDisplayContext
 	public List<DropdownItem> getDropdownItems() throws Exception {
 		List<DropdownItem> dropdownItems = new ArrayList<>();
 
-		DropdownItem dropdownItem = new DropdownItem();
-
-		dropdownItem.setHref(
+		DropdownItem dropdownItem = DropdownItemBuilder.setHref(
 			PortletURLBuilder.create(
 				PortletURLFactoryUtil.create(
 					cpRequestHelper.getRenderRequest(),
@@ -332,10 +331,12 @@ public class CPDefinitionsDisplayContext
 				ParamUtil.getString(httpServletRequest, "cpDefinitionId")
 			).setWindowState(
 				LiferayWindowState.POP_UP
-			).buildString());
-		dropdownItem.setLabel(
-			LanguageUtil.get(httpServletRequest, "duplicate"));
-		dropdownItem.setTarget("modal");
+			).buildString()
+		).setLabel(
+			LanguageUtil.get(httpServletRequest, "duplicate")
+		).setTarget(
+			"modal"
+		).build();
 
 		dropdownItems.add(dropdownItem);
 

@@ -133,9 +133,9 @@ public class DataDefinitionDDMFormUtilTest extends PowerMockito {
 					setPredefinedValue(
 						LocalizedValueUtil.toLocalizedValue(
 							HashMapBuilder.<String, Object>put(
-								"en_US", "select an option"
+								"en_US", new Object[] {"select an option"}
 							).put(
-								"pt_BR", "selecione uma opção"
+								"pt_BR", new Object[] {"selecione uma opção"}
 							).build(),
 							defaultLocale));
 					setReadOnly(false);
@@ -246,9 +246,9 @@ public class DataDefinitionDDMFormUtilTest extends PowerMockito {
 						).build());
 					setDefaultValue(
 						HashMapBuilder.<String, Object>put(
-							"en_US", "select an option"
+							"en_US", new Object[] {"select an option"}
 						).put(
-							"pt_BR", "selecione uma opção"
+							"pt_BR", new Object[] {"selecione uma opção"}
 						).build());
 					setFieldType("select");
 					setIndexType(IndexType.KEYWORD);

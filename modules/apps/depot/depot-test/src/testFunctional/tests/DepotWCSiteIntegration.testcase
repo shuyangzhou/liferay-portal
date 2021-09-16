@@ -34,8 +34,8 @@ definition {
 
 	@description = "This ensures that a user can select depot web content from different repositories through WCD on a connected site."
 	@priority = "4"
-	@refactorneeded
-	test ChangeWCDSelection {
+	@refactordone
+	test CanChangeWCDSelection {
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Test New Page Name");
@@ -92,11 +92,9 @@ definition {
 
 	@description = "This ensures that web content using a structure stored in AL can be removed on a connected site."
 	@priority = "4"
-	@refactorneeded
-	test RemoveCustomizedWC {
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+	@refactordone
+	test CanRemoveCustomizedWC {
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -108,9 +106,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -157,8 +153,8 @@ definition {
 
 	@description = "This test covers LPS-117063 and LPS-117068. It ensures that web content using a structure stored in AL can be selected without NPE throwing and removed from the disconnected site."
 	@priority = "4"
-	@refactorneeded
-	test RemoveCustomizedWCFromDisconnectedSite {
+	@refactordone
+	test CanRemoveCustomizedWCFromDisconnectedSite {
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
 			depotName = "Test Remove Customized WC Depot Name");
@@ -167,9 +163,7 @@ definition {
 			groupName = "Site Name",
 			layoutName = "Page Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Remove Customized WC Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Remove Customized WC Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -181,9 +175,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Remove Customized WC Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Remove Customized WC Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -246,8 +238,8 @@ definition {
 
 	@description = "This test covers LPS-118395. It ensures that a web content in a depot can be selected through the page template."
 	@priority = "4"
-	@refactorneeded
-	test SelectDepotContentViaPageTemplate {
+	@refactordone
+	test CanSelectDepotContentViaPageTemplate {
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			groupName = "Test Depot Name",
@@ -297,8 +289,8 @@ definition {
 
 	@description = "This test covers LPS-105119. It ensures that a web content in a depot can be selected through the field."
 	@priority = "4"
-	@refactorneeded
-	test SelectDepotContentViaWebContentField {
+	@refactordone
+	test CanSelectDepotContentViaWebContentField {
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Page Name");
@@ -313,9 +305,7 @@ definition {
 			depotName = "Test Depot Name",
 			groupName = "Site Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoStructures();
+		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -327,9 +317,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoTemplates();
+		WebContentNavigator.openWebContentTemplatesAdmin(siteURLKey = "site-name");
 
 		LexiconEntry.gotoAdd();
 
@@ -355,11 +343,14 @@ definition {
 
 		PortletEntry.publish();
 
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Page Name",
+			widgetName = "Web Content Display");
+
 		Navigator.openSitePage(
 			pageName = "Page Name",
 			siteName = "Site Name");
-
-		Portlet.addPG(portletName = "Web Content Display");
 
 		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
 
@@ -372,8 +363,8 @@ definition {
 
 	@description = "This ensures that a depot web content can be selected through the fragment in a content page on a connected site."
 	@priority = "5"
-	@refactorneeded
-	test SelectFromFragmentInContentPage {
+	@refactordone
+	test CanSelectFromFragmentInContentPage {
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
 			depotName = "Test Fragment Depot Name");
@@ -414,8 +405,8 @@ definition {
 
 	@description = "This ensures that a depot web content can be selected through the fragment in a display page template on a connected site."
 	@priority = "5"
-	@refactorneeded
-	test SelectFromFragmentInDisplayPageTemplate {
+	@refactordone
+	test CanSelectFromFragmentInDisplayPageTemplate {
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Depot",
 			groupName = "Test Depot Name",
@@ -469,8 +460,8 @@ definition {
 
 	@description = "This ensures that a depot web content can be selected through WCD on a connected site."
 	@priority = "5"
-	@refactorneeded
-	test SelectFromWCD {
+	@refactordone
+	test CanSelectFromWCD {
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Depot",
 			groupName = "Test Depot Name",
@@ -485,11 +476,14 @@ definition {
 			groupName = "Site Name",
 			layoutName = "Test Page");
 
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Test Page",
+			widgetName = "Web Content Display");
+
 		Navigator.openSitePage(
 			pageName = "Test Page",
 			siteName = "Site Name");
-
-		Portlet.addPG(portletName = "Web Content Display");
 
 		WebContentDisplayPortlet.selectWebContent(
 			depotName = "Test Depot Name",
@@ -504,8 +498,8 @@ definition {
 
 	@description = "This ensures that a depot web content can be selected through WCD in a content page on a connected site."
 	@priority = "4"
-	@refactorneeded
-	test SelectFromWidgetInContentPage {
+	@refactordone
+	test CanSelectFromWidgetInContentPage {
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Depot",
 			groupName = "Test Depot Name",
@@ -536,8 +530,8 @@ definition {
 
 	@description = "This ensures that a depot web content can be selected through WCD in a display page template on a connected site."
 	@priority = "4"
-	@refactorneeded
-	test SelectFromWidgetInDisplayPageTemplate {
+	@refactordone
+	test CanSelectFromWidgetInDisplayPageTemplate {
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Depot",
 			groupName = "Test Depot Name",
@@ -569,8 +563,8 @@ definition {
 
 	@description = "This ensures that a user can use a structure stored in AL to create a template on a connected site."
 	@priority = "5"
-	@refactorneeded
-	test SelectStructureInDepotViaTemplateOnSite {
+	@refactordone
+	test CanSelectStructureInDepotViaTemplateOnSite {
 		JSONDepot.connectSite(
 			depotName = "Test Depot Name",
 			groupName = "Site Name");
@@ -582,9 +576,7 @@ definition {
 			siteName = "Site Name",
 			tableEntryText = "Yes");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -596,9 +588,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoTemplates();
+		WebContentNavigator.openWebContentTemplatesAdmin(siteURLKey = "site-name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -608,8 +598,8 @@ definition {
 
 	@description = "This ensures that a user can use structures stored in AL to create articles and display them in AP on a connected site."
 	@priority = "5"
-	@refactorneeded
-	test ViewCustomizedWCInAP {
+	@refactordone
+	test CanViewCustomizedWCInAP {
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Page Name");
@@ -621,9 +611,7 @@ definition {
 		}
 
 		for (var count : list "1,2") {
-			DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name${count}");
-
-			NavItem.gotoStructures();
+			DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name${count}");
 
 			WebContentStructures.addCP(
 				structureDescription = "WC Structure Description",
@@ -635,9 +623,7 @@ definition {
 
 			WebContentStructures.saveCP(structureName = "WC Structure Name${count}");
 
-			DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name${count}");
-
-			NavItem.gotoTemplates();
+			DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name${count}");
 
 			WebContentTemplates.addCP(
 				structureName = "WC Structure Name${count}",
@@ -694,15 +680,13 @@ definition {
 
 	@description = "This ensures that a user can use a structure stored in AL to create an article and display it in WCD on a connected site."
 	@priority = "5"
-	@refactorneeded
-	test ViewCustomizedWCInWCD {
+	@refactordone
+	test CanViewCustomizedWCInWCD {
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Page Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoStructures();
+		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -714,9 +698,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
-
-		NavItem.gotoTemplates();
+		DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -735,9 +717,7 @@ definition {
 			siteName = "Site Name",
 			tableEntryText = "Yes");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoStructures();
+		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 		AssertElementNotPresent(
 			key_tableEntry = "WC Structure Name",
@@ -775,8 +755,8 @@ definition {
 
 	@description = "This ensures that a user can see information of WC structure from more iframe about which AL owns it."
 	@priority = "4"
-	@refactorneeded
-	test ViewStructuresScopeList {
+	@refactordone
+	test CanViewStructuresScopeList {
 		for (var i : list "1,2,3") {
 			JSONDepot.addDepot(
 				depotDescription = "This is the description of a depot",
@@ -784,9 +764,7 @@ definition {
 		}
 
 		for (var i : list "1,2,3") {
-			DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name${i}");
-
-			NavItem.gotoStructures();
+			DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name${i}");
 
 			WebContentStructures.addCP(
 				structureDescription = "WC Structure Description",
@@ -798,9 +776,7 @@ definition {
 
 			WebContentStructures.saveCP(structureName = "WC Structure Name${i}");
 
-			DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name${i}");
-
-			NavItem.gotoTemplates();
+			DepotNavigator.openDepotWebContentTemplatesAdmin(depotName = "Test Depot Name${i}");
 
 			WebContentTemplates.addCP(
 				structureName = "WC Structure Name${i}",
@@ -825,9 +801,7 @@ definition {
 		}
 
 		for (var i : list "4,5,6,7,8") {
-			WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-			NavItem.gotoStructures();
+			WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 			WebContentStructures.addCP(
 				structureDescription = "WC Structure Description",

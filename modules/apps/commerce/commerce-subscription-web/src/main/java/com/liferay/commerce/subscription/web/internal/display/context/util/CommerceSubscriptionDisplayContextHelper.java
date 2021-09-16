@@ -18,6 +18,7 @@ import com.liferay.commerce.configuration.CommerceSubscriptionConfiguration;
 import com.liferay.commerce.constants.CommerceSubscriptionEntryConstants;
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -119,14 +120,12 @@ public class CommerceSubscriptionDisplayContextHelper {
 	}
 
 	private DropdownItem _getDropdownItem(String cmd) {
-		DropdownItem dropdownItem = new DropdownItem();
-
-		dropdownItem.setHref(_getActionURL(cmd));
-		dropdownItem.setLabel(
+		return DropdownItemBuilder.setHref(
+			_getActionURL(cmd)
+		).setLabel(
 			LanguageUtil.get(
-				PortalUtil.getHttpServletRequest(_portletRequest), cmd));
-
-		return dropdownItem;
+				PortalUtil.getHttpServletRequest(_portletRequest), cmd)
+		).build();
 	}
 
 	private boolean _isSubscriptionOver(int subscriptionStatus) {

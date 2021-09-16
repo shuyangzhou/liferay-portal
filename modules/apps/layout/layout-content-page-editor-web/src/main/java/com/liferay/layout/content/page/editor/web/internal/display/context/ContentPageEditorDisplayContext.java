@@ -16,6 +16,7 @@ package com.liferay.layout.content.page.editor.web.internal.display.context;
 
 import com.liferay.asset.categories.item.selector.AssetCategoryTreeNodeItemSelectorReturnType;
 import com.liferay.asset.categories.item.selector.criterion.AssetCategoryTreeNodeItemSelectorCriterion;
+import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
@@ -108,8 +109,7 @@ import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
@@ -133,6 +133,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.model.SegmentsExperience;
@@ -208,11 +209,6 @@ public class ContentPageEditorDisplayContext {
 		_pageEditorConfiguration = pageEditorConfiguration;
 		_renderResponse = renderResponse;
 
-		_resourceBundleLoader =
-			ResourceBundleLoaderUtil.
-				getResourceBundleLoaderByBundleSymbolicName(
-					"com.liferay.layout.content.page.editor.web");
-
 		this.httpServletRequest = httpServletRequest;
 		this.infoItemServiceTracker = infoItemServiceTracker;
 		this.portletRequest = portletRequest;
@@ -274,7 +270,7 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"commonStyles",
 				CommonStylesUtil.getCommonStylesJSONArray(
-					_resourceBundleLoader.loadResourceBundle(
+					LanguageResources.getResourceBundle(
 						themeDisplay.getLocale()))
 			).put(
 				"defaultEditorConfigurations", _getDefaultConfigurations()
@@ -1686,8 +1682,15 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	private List<String> _getInfoItemFormProviderClassNames() {
-		return infoItemServiceTracker.getInfoItemClassNames(
-			InfoItemFormProvider.class);
+		List<String> infoItemClassNames =
+			infoItemServiceTracker.getInfoItemClassNames(
+				InfoItemFormProvider.class);
+
+		if (infoItemClassNames.contains(FileEntry.class.getName())) {
+			infoItemClassNames.add(DLFileEntryConstants.getClassName());
+		}
+
+		return infoItemClassNames;
 	}
 
 	private String _getInfoItemSelectorURL() {
@@ -2248,7 +2251,6 @@ public class ContentPageEditorDisplayContext {
 	private Layout _publishedLayout;
 	private String _redirect;
 	private final RenderResponse _renderResponse;
-	private final ResourceBundleLoader _resourceBundleLoader;
 	private Long _segmentsExperienceId;
 	private List<Map<String, Object>> _sidebarPanels;
 	private ItemSelectorCriterion _urlItemSelectorCriterion;

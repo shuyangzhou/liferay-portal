@@ -46,13 +46,18 @@ public class SXPElementWrapper
 		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("uuid", getUuid());
 		attributes.put("sxpElementId", getSXPElementId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("description", getDescription());
+		attributes.put("elementDefinitionJSON", getElementDefinitionJSON());
+		attributes.put("hidden", isHidden());
+		attributes.put("readOnly", isReadOnly());
 		attributes.put("title", getTitle());
+		attributes.put("type", getType());
 		attributes.put("status", getStatus());
 
 		return attributes;
@@ -76,6 +81,12 @@ public class SXPElementWrapper
 
 		if (sxpElementId != null) {
 			setSXPElementId(sxpElementId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -114,10 +125,35 @@ public class SXPElementWrapper
 			setDescription(description);
 		}
 
+		String elementDefinitionJSON = (String)attributes.get(
+			"elementDefinitionJSON");
+
+		if (elementDefinitionJSON != null) {
+			setElementDefinitionJSON(elementDefinitionJSON);
+		}
+
+		Boolean hidden = (Boolean)attributes.get("hidden");
+
+		if (hidden != null) {
+			setHidden(hidden);
+		}
+
+		Boolean readOnly = (Boolean)attributes.get("readOnly");
+
+		if (readOnly != null) {
+			setReadOnly(readOnly);
+		}
+
 		String title = (String)attributes.get("title");
 
 		if (title != null) {
 			setTitle(title);
+		}
+
+		Integer type = (Integer)attributes.get("type");
+
+		if (type != null) {
+			setType(type);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -239,6 +275,36 @@ public class SXPElementWrapper
 	}
 
 	/**
+	 * Returns the element definition json of this sxp element.
+	 *
+	 * @return the element definition json of this sxp element
+	 */
+	@Override
+	public String getElementDefinitionJSON() {
+		return model.getElementDefinitionJSON();
+	}
+
+	/**
+	 * Returns the group ID of this sxp element.
+	 *
+	 * @return the group ID of this sxp element
+	 */
+	@Override
+	public long getGroupId() {
+		return model.getGroupId();
+	}
+
+	/**
+	 * Returns the hidden of this sxp element.
+	 *
+	 * @return the hidden of this sxp element
+	 */
+	@Override
+	public boolean getHidden() {
+		return model.getHidden();
+	}
+
+	/**
 	 * Returns the modified date of this sxp element.
 	 *
 	 * @return the modified date of this sxp element
@@ -266,6 +332,16 @@ public class SXPElementWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the read only of this sxp element.
+	 *
+	 * @return the read only of this sxp element
+	 */
+	@Override
+	public boolean getReadOnly() {
+		return model.getReadOnly();
 	}
 
 	/**
@@ -365,6 +441,16 @@ public class SXPElementWrapper
 	}
 
 	/**
+	 * Returns the type of this sxp element.
+	 *
+	 * @return the type of this sxp element
+	 */
+	@Override
+	public int getType() {
+		return model.getType();
+	}
+
+	/**
 	 * Returns the user ID of this sxp element.
 	 *
 	 * @return the user ID of this sxp element
@@ -402,6 +488,26 @@ public class SXPElementWrapper
 	@Override
 	public String getUuid() {
 		return model.getUuid();
+	}
+
+	/**
+	 * Returns <code>true</code> if this sxp element is hidden.
+	 *
+	 * @return <code>true</code> if this sxp element is hidden; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isHidden() {
+		return model.isHidden();
+	}
+
+	/**
+	 * Returns <code>true</code> if this sxp element is read only.
+	 *
+	 * @return <code>true</code> if this sxp element is read only; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isReadOnly() {
+		return model.isReadOnly();
 	}
 
 	@Override
@@ -512,6 +618,36 @@ public class SXPElementWrapper
 	}
 
 	/**
+	 * Sets the element definition json of this sxp element.
+	 *
+	 * @param elementDefinitionJSON the element definition json of this sxp element
+	 */
+	@Override
+	public void setElementDefinitionJSON(String elementDefinitionJSON) {
+		model.setElementDefinitionJSON(elementDefinitionJSON);
+	}
+
+	/**
+	 * Sets the group ID of this sxp element.
+	 *
+	 * @param groupId the group ID of this sxp element
+	 */
+	@Override
+	public void setGroupId(long groupId) {
+		model.setGroupId(groupId);
+	}
+
+	/**
+	 * Sets whether this sxp element is hidden.
+	 *
+	 * @param hidden the hidden of this sxp element
+	 */
+	@Override
+	public void setHidden(boolean hidden) {
+		model.setHidden(hidden);
+	}
+
+	/**
 	 * Sets the modified date of this sxp element.
 	 *
 	 * @param modifiedDate the modified date of this sxp element
@@ -539,6 +675,16 @@ public class SXPElementWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets whether this sxp element is read only.
+	 *
+	 * @param readOnly the read only of this sxp element
+	 */
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		model.setReadOnly(readOnly);
 	}
 
 	/**
@@ -623,6 +769,16 @@ public class SXPElementWrapper
 		java.util.Locale defaultLocale) {
 
 		model.setTitleMap(titleMap, defaultLocale);
+	}
+
+	/**
+	 * Sets the type of this sxp element.
+	 *
+	 * @param type the type of this sxp element
+	 */
+	@Override
+	public void setType(int type) {
+		model.setType(type);
 	}
 
 	/**

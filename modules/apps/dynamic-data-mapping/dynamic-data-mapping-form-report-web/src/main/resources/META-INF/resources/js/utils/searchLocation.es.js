@@ -14,14 +14,6 @@
 
 import {toArray} from './data.es';
 
-const hasSearchLocationValue = (fields) => {
-	const searchLocationField = fields.find(
-		(field) => field.type === 'search_location'
-	);
-
-	return !!searchLocationField;
-};
-
 const parse = (value, defaultValue) => {
 	try {
 		return JSON.parse(value);
@@ -34,84 +26,78 @@ const parse = (value, defaultValue) => {
 };
 
 const transformSearchLocationValues = (fields, data) => {
-	if (hasSearchLocationValue(fields)) {
-		const labels = {
-			...{place: 'Search Location'},
-			address: 'Address',
-			city: 'City',
-			country: 'Country',
-			['postal-code']: 'Postal Code',
-			state: 'State',
-		};
-		const searchLocationFieldName = Object.keys(data).find((key) => {
-			if (typeof data[key] === 'object') {
-				return data[key]?.type === 'search_location';
-			}
+	let newData = {};
+	let newFields = [...fields];
+	let searchFields = [];
 
-			return false;
-		});
-		const visibleFields = Object.keys(labels);
-		const searchLocationFieldValues = {};
-		const dataSearchLocationFields = {};
-		const {values} = data[searchLocationFieldName];
-
-		const searchLocationFields = visibleFields.map((visibleField) => {
-			toArray(values).forEach((value) => {
-				const existentValues =
-					searchLocationFieldValues[visibleField] || [];
-				const searchLocationValue = parse(value, {});
-
-				searchLocationFieldValues[visibleField] = [
-					...existentValues,
-					{value: searchLocationValue[visibleField]},
-				];
+	Object.values(fields).forEach(({label, name, type}) => {
+		if (type === 'search_location') {
+			const labels = parse(label, {
+				address: 'Address',
+				city: 'City',
+				country: 'Country',
+				place: 'Search Location',
+				'postal-code': 'Postal Code',
+				state: 'State',
 			});
 
-			dataSearchLocationFields[visibleField] = {
-				totalEntries: Object.keys(
-					searchLocationFieldValues[visibleField]
-				).length,
-				type: visibleField,
-				values: searchLocationFieldValues[visibleField],
-			};
+			const visibleFields = Object.keys(labels);
 
-			return {
-				columns: {},
-				label: labels[visibleField],
-				name: visibleField,
-				options: {},
-				rows: {},
-				type: visibleField,
-			};
-		});
+			const searchLocationFieldValues = {};
+			const dataSearchLocationFields = {};
+			const {values} = data[name];
 
-		const newFields = [...fields];
-		const searchLocationFieldIndex = newFields.findIndex(
-			(field) => field.type === 'search_location'
-		);
+			const searchLocationFields = visibleFields.map((visibleField) => {
+				if (Array.isArray(values)) {
+					toArray(values).forEach((value) => {
+						const existentValues =
+							searchLocationFieldValues[visibleField] || [];
+						const searchLocationValue = parse(value, {});
 
-		newFields.splice(searchLocationFieldIndex, 1, ...searchLocationFields);
+						searchLocationFieldValues[visibleField] = [
+							...existentValues,
+							{value: searchLocationValue[visibleField]},
+						];
+					});
 
-		delete data[searchLocationFieldName];
+					dataSearchLocationFields[visibleField] = {
+						totalEntries: Object.keys(
+							searchLocationFieldValues[visibleField]
+						).length,
+						type: visibleField,
+						values: searchLocationFieldValues[visibleField],
+					};
+				}
 
-		const newData = {
-			...data,
-			...dataSearchLocationFields,
-		};
+				return {
+					columns: {},
+					label: labels[visibleField],
+					name: visibleField,
+					options: {},
+					parentFieldName: name,
+					rows: {},
+					type: visibleField,
+				};
+			});
 
-		newData.totalItems = Object.keys(newData).length - 1;
+			newData[name] = dataSearchLocationFields;
 
-		return {
-			data: newData,
-			fields: newFields,
-		};
-	}
-	else {
-		return {
-			data,
-			fields,
-		};
-	}
+			searchFields = searchFields.concat([...searchLocationFields]);
+		}
+		else {
+			newData = data;
+			newFields = fields;
+		}
+	});
+
+	return {
+		data: newData,
+		fields: searchFields.length
+			? newFields
+					.filter((field) => field.type !== 'search_location')
+					.concat(searchFields)
+			: newFields,
+	};
 };
 
 export {transformSearchLocationValues};

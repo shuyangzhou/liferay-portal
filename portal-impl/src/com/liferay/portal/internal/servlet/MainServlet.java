@@ -758,7 +758,7 @@ public class MainServlet extends HttpServlet {
 		}
 	}
 
-	private void _initLayoutTemplates(final PluginPackage pluginPackage) {
+	private void _initLayoutTemplates(PluginPackage pluginPackage) {
 		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
 
 		for (String langType :

@@ -15,6 +15,7 @@
 package com.liferay.sharing.web.internal.display.context.util;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.servlet.taglib.ui.JavaScriptMenuItem;
@@ -55,17 +56,15 @@ public class SharingMenuItemFactoryImpl
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		DropdownItem dropdownItem = new DropdownItem();
-
 		String manageCollaboratorsOnClickMethod =
 			_sharingJavaScriptFactory.createManageCollaboratorsOnClickMethod(
 				className, classPK, httpServletRequest);
 
-		dropdownItem.setHref("javascript:" + manageCollaboratorsOnClickMethod);
-
-		dropdownItem.setLabel(_getManageCollaboratorsLabel(httpServletRequest));
-
-		return dropdownItem;
+		return DropdownItemBuilder.setHref(
+			"javascript:" + manageCollaboratorsOnClickMethod
+		).setLabel(
+			_getManageCollaboratorsLabel(httpServletRequest)
+		).build();
 	}
 
 	@Override
@@ -111,17 +110,15 @@ public class SharingMenuItemFactoryImpl
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		DropdownItem dropdownItem = new DropdownItem();
-
 		String sharingOnClickMethod =
 			_sharingJavaScriptFactory.createSharingOnClickMethod(
 				className, classPK, httpServletRequest);
 
-		dropdownItem.setHref("javascript:" + sharingOnClickMethod);
-
-		dropdownItem.setLabel(_getSharingLabel(httpServletRequest));
-
-		return dropdownItem;
+		return DropdownItemBuilder.setHref(
+			"javascript:" + sharingOnClickMethod
+		).setLabel(
+			_getSharingLabel(httpServletRequest)
+		).build();
 	}
 
 	@Override

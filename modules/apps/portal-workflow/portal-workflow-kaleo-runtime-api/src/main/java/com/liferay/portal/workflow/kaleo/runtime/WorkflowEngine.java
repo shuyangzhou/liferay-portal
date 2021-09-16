@@ -155,8 +155,7 @@ public interface WorkflowEngine {
 
 	public WorkflowInstance startWorkflowInstance(
 			String workflowDefinitionName, Integer workflowDefinitionVersion,
-			final String transitionName,
-			Map<String, Serializable> workflowContext,
+			String transitionName, Map<String, Serializable> workflowContext,
 			ServiceContext serviceContext, boolean waitForCompletion)
 		throws WorkflowException;
 

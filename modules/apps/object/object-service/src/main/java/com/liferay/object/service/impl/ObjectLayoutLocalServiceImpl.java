@@ -14,6 +14,8 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.exception.DefaultObjectLayoutException;
+import com.liferay.object.exception.NoSuchObjectDefinitionException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectLayout;
@@ -31,6 +33,8 @@ import com.liferay.object.service.persistence.ObjectLayoutTabPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -53,6 +57,7 @@ import org.osgi.service.component.annotations.Reference;
 public class ObjectLayoutLocalServiceImpl
 	extends ObjectLayoutLocalServiceBaseImpl {
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ObjectLayout addObjectLayout(
 			long userId, long objectDefinitionId, boolean defaultObjectLayout,
@@ -61,6 +66,16 @@ public class ObjectLayoutLocalServiceImpl
 
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
+
+		if (objectDefinition.isSystem()) {
+
+			// TODO Add test
+
+			throw new NoSuchObjectDefinitionException(
+				"Object layouts require a custom object definition");
+		}
+
+		_validate(0, objectDefinitionId, defaultObjectLayout);
 
 		ObjectLayout objectLayout = objectLayoutPersistence.create(
 			counterLocalService.increment());
@@ -86,16 +101,35 @@ public class ObjectLayoutLocalServiceImpl
 		return objectLayout;
 	}
 
+	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ObjectLayout deleteObjectLayout(long objectLayoutId)
 		throws PortalException {
 
-		ObjectLayout objectLayout = objectLayoutPersistence.remove(
+		ObjectLayout objectLayout = objectLayoutPersistence.findByPrimaryKey(
 			objectLayoutId);
 
-		_deleteObjectLayoutTabs(objectLayoutId);
+		return deleteObjectLayout(objectLayout);
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public ObjectLayout deleteObjectLayout(ObjectLayout objectLayout)
+		throws PortalException {
+
+		objectLayout = objectLayoutPersistence.remove(objectLayout);
+
+		_deleteObjectLayoutTabs(objectLayout.getObjectLayoutId());
 
 		return objectLayout;
+	}
+
+	@Override
+	public ObjectLayout getDefaultObjectLayout(long objectDefinitionId)
+		throws PortalException {
+
+		return objectLayoutPersistence.findByODI_DOL_First(
+			objectDefinitionId, true, null);
 	}
 
 	@Override
@@ -132,6 +166,7 @@ public class ObjectLayoutLocalServiceImpl
 			objectDefinitionId);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ObjectLayout updateObjectLayout(
 			long objectLayoutId, boolean defaultObjectLayout,
@@ -140,6 +175,10 @@ public class ObjectLayoutLocalServiceImpl
 
 		ObjectLayout objectLayout = objectLayoutPersistence.findByPrimaryKey(
 			objectLayoutId);
+
+		_validate(
+			objectLayoutId, objectLayout.getObjectDefinitionId(),
+			defaultObjectLayout);
 
 		_deleteObjectLayoutTabs(objectLayoutId);
 
@@ -395,6 +434,28 @@ public class ObjectLayoutLocalServiceImpl
 		}
 
 		return objectLayoutRows;
+	}
+
+	private void _validate(
+			long objectLayoutId, long objectDefinitionId,
+			boolean defaultObjectLayout)
+		throws PortalException {
+
+		// TODO Add test
+
+		if (!defaultObjectLayout) {
+			return;
+		}
+
+		ObjectLayout objectLayout =
+			objectLayoutPersistence.fetchByODI_DOL_First(
+				objectDefinitionId, defaultObjectLayout, null);
+
+		if ((objectLayout != null) &&
+			(objectLayout.getObjectLayoutId() != objectLayoutId)) {
+
+			throw new DefaultObjectLayoutException();
+		}
 	}
 
 	@Reference

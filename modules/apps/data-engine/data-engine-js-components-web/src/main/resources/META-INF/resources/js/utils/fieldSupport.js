@@ -106,11 +106,8 @@ export const addField = ({
 
 	return {
 		activePage: pageIndex,
-		focusedField: {
-			...newField,
-		},
+		focusedField: newField,
 		pages: newPages,
-		previousFocusedField: newField,
 	};
 };
 
@@ -340,14 +337,14 @@ export const normalizeSettingsContextPages = (
 				});
 			}
 
-			const newInstanceId = generateInstanceId();
+			const instanceId = generateInstanceId();
 
 			if (field.type === 'rich_text' && field.editorConfig) {
 				field = {
 					...field,
-					editorConfig: formatEditorConfig(
+					editorConfig: updateEditorConfigInstanceId(
 						field.editorConfig,
-						newInstanceId
+						instanceId
 					),
 				};
 			}
@@ -355,10 +352,10 @@ export const normalizeSettingsContextPages = (
 			return {
 				...field,
 				defaultLanguageId,
-				instanceId: newInstanceId,
+				instanceId,
 				locale: defaultLanguageId,
 				name: generateName(field.name, {
-					instanceId: newInstanceId,
+					instanceId,
 					repeatedIndex: getRepeatedIndex(field.name),
 				}),
 			};
@@ -455,21 +452,22 @@ export const createField = (props, event) => {
 	};
 };
 
-export const formatEditorConfig = (editorConfig, instanceId) => {
-	Object.keys(editorConfig).map((key) => {
-		if (typeof editorConfig[key] === 'string') {
-			const parsedName = parseName(decodeURIComponent(editorConfig[key]));
+export const updateEditorConfigInstanceId = (editorConfig, instanceId) => {
+	const updatedEditorConfig = {...editorConfig};
+	for (const [key, value] of Object.entries(updatedEditorConfig)) {
+		if (typeof value === 'string') {
+			const parsedName = parseName(decodeURIComponent(value));
 
 			if (parsedName.instanceId) {
-				editorConfig[key] = editorConfig[key].replace(
+				updatedEditorConfig[key] = value.replace(
 					parsedName.instanceId,
 					instanceId
 				);
 			}
 		}
-	});
+	}
 
-	return editorConfig;
+	return updatedEditorConfig;
 };
 
 export const formatFieldName = (instanceId, languageId, value) => {

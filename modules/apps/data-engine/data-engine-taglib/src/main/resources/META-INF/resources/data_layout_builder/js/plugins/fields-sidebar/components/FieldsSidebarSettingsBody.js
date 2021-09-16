@@ -109,8 +109,6 @@ export default function FieldsSidebarSettingsBody() {
 						case CORE_EVENT_TYPES.FIELD.CHANGE: {
 							dispatch({
 								payload: {
-									editingLanguageId:
-										settingsContext.editingLanguageId,
 									propertyName:
 										payload.fieldInstance.fieldName,
 									propertyValue: payload.value,

@@ -39,14 +39,13 @@ ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT
 					<aui:input disabled="<%= objectDefinition.isApproved() %>" name="name" required="<%= true %>" value="<%= objectField.getName() %>" />
 
 					<aui:select disabled="<%= objectDefinition.isApproved() %>" name="type" onChange='<%= liferayPortletResponse.getNamespace() + "onChangeFieldType(event);" %>' required="<%= true %>">
-						<aui:option label="BigDecimal" selected='<%= objectField.getType().equals("BigDecimal") %>' value="BigDecimal" />
-						<aui:option label="Blob" selected='<%= objectField.getType().equals("Blob") %>' value="Blob" />
-						<aui:option label="Boolean" selected='<%= objectField.getType().equals("Boolean") %>' value="Boolean" />
-						<aui:option label="Date" selected='<%= objectField.getType().equals("Date") %>' value="Date" />
-						<aui:option label="Double" selected='<%= objectField.getType().equals("Double") %>' value="Double" />
-						<aui:option label="Integer" selected='<%= objectField.getType().equals("Integer") %>' value="Integer" />
-						<aui:option label="Long" selected='<%= objectField.getType().equals("Long") %>' value="Long" />
-						<aui:option label="String" selected='<%= objectField.getType().equals("String") %>' value="String" />
+						<aui:option label="BigDecimal" selected='<%= Objects.equals(objectField.getType(), "BigDecimal") %>' value="BigDecimal" />
+						<aui:option label="Boolean" selected='<%= Objects.equals(objectField.getType(), "Boolean") %>' value="Boolean" />
+						<aui:option label="Date" selected='<%= Objects.equals(objectField.getType(), "Date") %>' value="Date" />
+						<aui:option label="Double" selected='<%= Objects.equals(objectField.getType(), "Double") %>' value="Double" />
+						<aui:option label="Integer" selected='<%= Objects.equals(objectField.getType(), "Integer") %>' value="Integer" />
+						<aui:option label="Long" selected='<%= Objects.equals(objectField.getType(), "Long") %>' value="Long" />
+						<aui:option label="String" selected='<%= Objects.equals(objectField.getType(), "String") %>' value="String" />
 					</aui:select>
 
 					<aui:field-wrapper cssClass="form-group lfr-input-text-container">
@@ -54,7 +53,7 @@ ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT
 					</aui:field-wrapper>
 				</div>
 
-				<div class="mt-4 sheet" id="<portlet:namespace />searchableContainer" style="display: <%= objectField.getType().equals("Blob") ? "none;" : "block;" %>">
+				<div class="mt-4 sheet" id="<portlet:namespace />searchableContainer" style="display: <%= Objects.equals(objectField.getType(), "Blob") ? "none;" : "block;" %>">
 					<h2 class="sheet-title">
 						<liferay-ui:message key="searchable" />
 					</h2>
@@ -63,7 +62,7 @@ ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT
 						<aui:input disabled="<%= objectDefinition.isApproved() %>" inlineLabel="right" label='<%= LanguageUtil.get(request, "searchable") %>' labelCssClass="simple-toggle-switch" name="indexed" onChange='<%= liferayPortletResponse.getNamespace() + "onChangeSeachableSwitch(event);" %>' type="toggle-switch" value="<%= objectField.getIndexed() %>" />
 					</aui:field-wrapper>
 
-					<div id="<portlet:namespace />indexedGroup" style="display: <%= (objectField.getType().equals("String") && objectField.getIndexed()) ? "block;" : "none;" %>">
+					<div id="<portlet:namespace />indexedGroup" style="display: <%= (Objects.equals(objectField.getType(), "String") && objectField.getIndexed()) ? "block;" : "none;" %>">
 						<div class="form-group">
 							<clay:radio
 								checked="<%= objectField.getIndexed() && objectField.getIndexedAsKeyword() %>"

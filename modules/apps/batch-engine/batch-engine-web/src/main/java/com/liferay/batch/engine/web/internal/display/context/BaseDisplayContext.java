@@ -15,6 +15,7 @@
 package com.liferay.batch.engine.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -49,30 +50,22 @@ public class BaseDisplayContext {
 			httpServletRequest, "tabs1", "import");
 
 		return NavigationItemList.of(
-			() -> {
-				NavigationItem navigationItem = new NavigationItem();
-
-				navigationItem.setActive(tabs1.equals("import"));
-				navigationItem.setHref(
-					renderResponse.createRenderURL(), "tabs1", "import");
-				navigationItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "import"));
-
-				return navigationItem;
-			},
-			() -> {
-				NavigationItem navigationItem = new NavigationItem();
-
-				navigationItem.setActive(tabs1.equals("export"));
-				navigationItem.setHref(
-					renderResponse.createRenderURL(), "tabs1", "export",
-					"mvcRenderCommandName",
-					"/batch_engine/view_batch_engine_export_tasks");
-				navigationItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "export"));
-
-				return navigationItem;
-			});
+			NavigationItemBuilder.setActive(
+				tabs1.equals("import")
+			).setHref(
+				renderResponse.createRenderURL(), "tabs1", "import"
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "import")
+			).build(),
+			NavigationItemBuilder.setActive(
+				tabs1.equals("export")
+			).setHref(
+				renderResponse.createRenderURL(), "tabs1", "export",
+				"mvcRenderCommandName",
+				"/batch_engine/view_batch_engine_export_tasks"
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "export")
+			).build());
 	}
 
 	public String getOrderByCol() {

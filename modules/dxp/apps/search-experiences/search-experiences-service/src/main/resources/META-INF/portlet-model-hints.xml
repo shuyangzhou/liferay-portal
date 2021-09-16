@@ -5,12 +5,15 @@
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
 		<field name="SXPBlueprintId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
+		<field name="configurationsJSON" type="String" />
 		<field localized="true" name="description" type="String" />
+		<field name="elementInstancesJSON" type="String" />
 		<field localized="true" name="title" type="String" />
 		<field name="status" type="int" />
 		<field name="statusByUserId" type="long" />
@@ -21,13 +24,18 @@
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
 		<field name="SXPElementId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field localized="true" name="description" type="String" />
+		<field name="elementDefinitionJSON" type="String" />
+		<field name="hidden" type="boolean" />
+		<field name="readOnly" type="boolean" />
 		<field localized="true" name="title" type="String" />
+		<field name="type" type="int" />
 		<field name="status" type="int" />
 	</model>
 </model-hints>
