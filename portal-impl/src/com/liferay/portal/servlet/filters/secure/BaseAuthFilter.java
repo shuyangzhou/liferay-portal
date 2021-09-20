@@ -101,9 +101,9 @@ public abstract class BaseAuthFilter extends BasePortalFilter {
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		User user = (User)session.getAttribute(WebKeys.USER);
+		User user = (User)httpSession.getAttribute(WebKeys.USER);
 
 		if (user == null) {
 			long userId = 0;
@@ -117,7 +117,7 @@ public abstract class BaseAuthFilter extends BasePortalFilter {
 
 			if (userId > 0) {
 				httpServletRequest = setCredentials(
-					httpServletRequest, session,
+					httpServletRequest, httpSession,
 					UserLocalServiceUtil.getUser(userId),
 					HttpServletRequest.BASIC_AUTH);
 			}
@@ -150,9 +150,9 @@ public abstract class BaseAuthFilter extends BasePortalFilter {
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		User user = (User)session.getAttribute(WebKeys.USER);
+		User user = (User)httpSession.getAttribute(WebKeys.USER);
 
 		if (user == null) {
 			long userId = 0;
@@ -167,7 +167,7 @@ public abstract class BaseAuthFilter extends BasePortalFilter {
 
 			if (userId > 0) {
 				httpServletRequest = setCredentials(
-					httpServletRequest, session,
+					httpServletRequest, httpSession,
 					UserLocalServiceUtil.getUser(userId),
 					HttpServletRequest.DIGEST_AUTH);
 			}
@@ -344,14 +344,14 @@ public abstract class BaseAuthFilter extends BasePortalFilter {
 	}
 
 	protected HttpServletRequest setCredentials(
-			HttpServletRequest httpServletRequest, HttpSession session,
+			HttpServletRequest httpServletRequest, HttpSession httpSession,
 			User user, String authType)
 		throws Exception {
 
 		httpServletRequest = new ProtectedServletRequest(
 			httpServletRequest, String.valueOf(user.getUserId()), authType);
 
-		session.setAttribute(WebKeys.USER, user);
+		httpSession.setAttribute(WebKeys.USER, user);
 
 		PrincipalThreadLocal.setPassword(
 			PortalUtil.getUserPassword(httpServletRequest));

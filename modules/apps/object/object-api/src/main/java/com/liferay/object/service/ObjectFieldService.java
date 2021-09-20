@@ -14,13 +14,18 @@
 
 package com.liferay.object.service;
 
+import com.liferay.object.model.ObjectField;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -47,7 +52,18 @@ public interface ObjectFieldService extends BaseService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.object.service.impl.ObjectFieldServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the object field remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ObjectFieldServiceUtil} if injection and service tracking are not available.
 	 */
-	public void deleteObjectField(long objectFieldId) throws Exception;
+	public ObjectField addCustomObjectField(
+			long listTypeDefinitionId, long objectDefinitionId, boolean indexed,
+			boolean indexedAsKeyword, String indexedLanguageId,
+			Map<Locale, String> labelMap, String name, boolean required,
+			String type)
+		throws PortalException;
+
+	public ObjectField deleteObjectField(long objectFieldId) throws Exception;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ObjectField getObjectField(long objectFieldId)
+		throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -55,5 +71,12 @@ public interface ObjectFieldService extends BaseService {
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
+
+	public ObjectField updateCustomObjectField(
+			long objectFieldId, long listTypeDefinitionId, boolean indexed,
+			boolean indexedAsKeyword, String indexedLanguageId,
+			Map<Locale, String> labelMap, String name, boolean required,
+			String type)
+		throws PortalException;
 
 }

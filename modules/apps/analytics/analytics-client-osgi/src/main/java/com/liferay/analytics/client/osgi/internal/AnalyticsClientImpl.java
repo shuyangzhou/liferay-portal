@@ -110,14 +110,15 @@ public class AnalyticsClientImpl implements AnalyticsClient {
 	}
 
 	protected String getUserId(String dataSourceId) throws Exception {
-		HttpSession session = PortalSessionThreadLocal.getHttpSession();
+		HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
 
-		if ((session != null) &&
-			(session.getAttribute(_REQUEST_ATTRIBUTE_NAME_ANALYTICS_USER_ID) !=
-				null)) {
-
-			return (String)session.getAttribute(
+		if (httpSession != null) {
+			Object userIdObject = httpSession.getAttribute(
 				_REQUEST_ATTRIBUTE_NAME_ANALYTICS_USER_ID);
+
+			if (userIdObject != null) {
+				return (String)userIdObject;
+			}
 		}
 
 		IdentityContextMessage.Builder identityContextMessageBuilder =
@@ -157,8 +158,8 @@ public class AnalyticsClientImpl implements AnalyticsClient {
 		String userId = _identityClient.getUserId(
 			identityContextMessageBuilder.build());
 
-		if (session != null) {
-			session.setAttribute(
+		if (httpSession != null) {
+			httpSession.setAttribute(
 				_REQUEST_ATTRIBUTE_NAME_ANALYTICS_USER_ID, userId);
 		}
 

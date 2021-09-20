@@ -78,11 +78,11 @@ public class CASAutoLogin extends BaseAutoLogin {
 		HttpServletResponse httpServletResponse, Exception exception) {
 
 		if (exception instanceof NoSuchUserException) {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			session.removeAttribute(CASWebKeys.CAS_LOGIN);
+			httpSession.removeAttribute(CASWebKeys.CAS_LOGIN);
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				CASWebKeys.CAS_NO_SUCH_USER_EXCEPTION, Boolean.TRUE);
 		}
 
@@ -109,21 +109,21 @@ public class CASAutoLogin extends BaseAutoLogin {
 			return null;
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String login = (String)session.getAttribute(CASWebKeys.CAS_LOGIN);
+		String login = (String)httpSession.getAttribute(CASWebKeys.CAS_LOGIN);
 
 		if (Validator.isNull(login)) {
-			Object noSuchUserException = session.getAttribute(
+			Object noSuchUserException = httpSession.getAttribute(
 				CASWebKeys.CAS_NO_SUCH_USER_EXCEPTION);
 
 			if (noSuchUserException == null) {
 				return null;
 			}
 
-			session.removeAttribute(CASWebKeys.CAS_NO_SUCH_USER_EXCEPTION);
+			httpSession.removeAttribute(CASWebKeys.CAS_NO_SUCH_USER_EXCEPTION);
 
-			session.setAttribute(CASWebKeys.CAS_FORCE_LOGOUT, Boolean.TRUE);
+			httpSession.setAttribute(CASWebKeys.CAS_FORCE_LOGOUT, Boolean.TRUE);
 
 			String redirect = casConfiguration.noSuchUserRedirectURL();
 

@@ -146,18 +146,19 @@ public class CTDocumentServlet extends HttpServlet {
 		throws IOException, ServletException {
 
 		try {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
 			if (PortalSessionThreadLocal.getHttpSession() == null) {
-				PortalSessionThreadLocal.setHttpSession(session);
+				PortalSessionThreadLocal.setHttpSession(httpSession);
 			}
 
 			User user = _portal.getUser(httpServletRequest);
 
 			if (user == null) {
-				String userIdString = (String)session.getAttribute(
+				String userIdString = (String)httpSession.getAttribute(
 					"j_username");
-				String password = (String)session.getAttribute("j_password");
+				String password = (String)httpSession.getAttribute(
+					"j_password");
 
 				if ((userIdString != null) && (password != null)) {
 					long userId = GetterUtil.getLong(userIdString);

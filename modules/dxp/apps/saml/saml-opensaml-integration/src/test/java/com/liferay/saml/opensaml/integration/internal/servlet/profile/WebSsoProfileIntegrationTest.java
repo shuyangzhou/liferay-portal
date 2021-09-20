@@ -320,12 +320,12 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		MockHttpServletRequest mockHttpServletRequest =
 			getMockHttpServletRequest(SSO_URL + "?entityId=" + SP_ENTITY_ID);
 
-		HttpSession mockSession = mockHttpServletRequest.getSession();
+		HttpSession mockHttpSession = mockHttpServletRequest.getSession();
 
 		SamlSsoRequestContext samlSsoRequestContext = new SamlSsoRequestContext(
 			SP_ENTITY_ID, RELAY_STATE, null, userLocalService);
 
-		mockSession.setAttribute(
+		mockHttpSession.setAttribute(
 			SamlWebKeys.SAML_SSO_REQUEST_CONTEXT, samlSsoRequestContext);
 
 		samlSsoRequestContext = _webSsoProfileImpl.decodeAuthnRequest(
@@ -437,11 +437,11 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		mockHttpServletRequest = getMockHttpServletRequest(
 			SSO_URL + "?saml_message_id=" + inboundSamlMessageId);
 
-		HttpSession mockSession = mockHttpServletRequest.getSession();
+		HttpSession mockHttpSession = mockHttpServletRequest.getSession();
 
 		samlSsoRequestContext.setSAMLMessageContext(null);
 
-		mockSession.setAttribute(
+		mockHttpSession.setAttribute(
 			SamlWebKeys.SAML_SSO_REQUEST_CONTEXT, samlSsoRequestContext);
 
 		when(
@@ -477,7 +477,7 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		Assert.assertEquals(RELAY_STATE, samlBindingContext.getRelayState());
 
 		Assert.assertNull(
-			mockSession.getAttribute(SamlWebKeys.SAML_SSO_REQUEST_CONTEXT));
+			mockHttpSession.getAttribute(SamlWebKeys.SAML_SSO_REQUEST_CONTEXT));
 		Assert.assertEquals(
 			SamlSsoRequestContext.STAGE_AUTHENTICATED,
 			samlSsoRequestContext.getStage());

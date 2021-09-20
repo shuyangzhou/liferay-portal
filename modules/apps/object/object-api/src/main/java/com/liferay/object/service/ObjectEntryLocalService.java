@@ -251,6 +251,11 @@ public interface ObjectEntryLocalService
 			int end)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getManyToManyRelatedObjectEntriesCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws PortalException;
+
 	/**
 	 * Returns a range of all the object entries.
 	 *
@@ -341,6 +346,11 @@ public interface ObjectEntryLocalService
 			int end)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOneToManyRelatedObjectEntriesCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws PortalException;
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -367,6 +377,11 @@ public interface ObjectEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Map<String, Serializable>> getValuesList(
 			long objectDefinitionId, int[] statuses, int start, int end)
+		throws PortalException;
+
+	public void insertIntoOrUpdateExtensionTable(
+			long objectDefinitionId, long primaryKey,
+			Map<String, Serializable> values)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

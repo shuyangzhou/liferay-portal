@@ -20,7 +20,7 @@ import com.liferay.frontend.taglib.clay.data.set.view.table.ClayTableSchema;
 import com.liferay.frontend.taglib.clay.data.set.view.table.ClayTableSchemaBuilder;
 import com.liferay.frontend.taglib.clay.data.set.view.table.ClayTableSchemaBuilderFactory;
 import com.liferay.frontend.taglib.clay.data.set.view.table.ClayTableSchemaField;
-import com.liferay.object.web.internal.list.type.constants.ListTypeDefinitionsClayDataSetDisplayNames;
+import com.liferay.object.web.internal.list.type.constants.ListTypeClayDataSetDisplayNames;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Gabriel Albuquerque
  */
 @Component(
-	property = "clay.data.set.display.name=" + ListTypeDefinitionsClayDataSetDisplayNames.LIST_TYPE_DEFINITION_ITEMS,
+	property = "clay.data.set.display.name=" + ListTypeClayDataSetDisplayNames.LIST_TYPE_DEFINITION_ITEMS,
 	service = ClayDataSetDisplayView.class
 )
 public class ListTypeEntriesTableClayDataSetDisplayView
@@ -40,10 +40,10 @@ public class ListTypeEntriesTableClayDataSetDisplayView
 		ClayTableSchemaBuilder clayTableSchemaBuilder =
 			_clayTableSchemaBuilderFactory.create();
 
-		ClayTableSchemaField nameClayTableSchemaField =
+		ClayTableSchemaField clayTableSchemaField =
 			clayTableSchemaBuilder.addClayTableSchemaField("name", "name");
 
-		nameClayTableSchemaField.setContentRenderer("actionLink");
+		clayTableSchemaField.setContentRenderer("actionLink");
 
 		clayTableSchemaBuilder.addClayTableSchemaField("key", "key");
 

@@ -70,7 +70,7 @@ public interface SXPBlueprintLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public SXPBlueprint addSXPBlueprint(
-			long userId, long groupId, String configurationsJSON,
+			long userId, String configurationsJSON,
 			Map<Locale, String> descriptionMap, String elementInstancesJSON,
 			Map<Locale, String> titleMap, ServiceContext serviceContext)
 		throws PortalException;
@@ -218,21 +218,18 @@ public interface SXPBlueprintLocalService
 	public SXPBlueprint fetchSXPBlueprint(long sxpBlueprintId);
 
 	/**
-	 * Returns the sxp blueprint matching the UUID and group.
+	 * Returns the sxp blueprint with the matching UUID and company.
 	 *
 	 * @param uuid the sxp blueprint's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp blueprint, or <code>null</code> if a matching sxp blueprint could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SXPBlueprint fetchSXPBlueprintByUuidAndGroupId(
-		String uuid, long groupId);
+	public SXPBlueprint fetchSXPBlueprintByUuidAndCompanyId(
+		String uuid, long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCompanySXPBlueprintsCount(long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
@@ -268,16 +265,16 @@ public interface SXPBlueprintLocalService
 		throws PortalException;
 
 	/**
-	 * Returns the sxp blueprint matching the UUID and group.
+	 * Returns the sxp blueprint with the matching UUID and company.
 	 *
 	 * @param uuid the sxp blueprint's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp blueprint
 	 * @throws PortalException if a matching sxp blueprint could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SXPBlueprint getSXPBlueprintByUuidAndGroupId(
-			String uuid, long groupId)
+	public SXPBlueprint getSXPBlueprintByUuidAndCompanyId(
+			String uuid, long companyId)
 		throws PortalException;
 
 	/**
@@ -295,38 +292,15 @@ public interface SXPBlueprintLocalService
 	public List<SXPBlueprint> getSXPBlueprints(int start, int end);
 
 	/**
-	 * Returns all the sxp blueprints matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp blueprints
-	 * @param companyId the primary key of the company
-	 * @return the matching sxp blueprints, or an empty list if no matches were found
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SXPBlueprint> getSXPBlueprintsByUuidAndCompanyId(
-		String uuid, long companyId);
-
-	/**
-	 * Returns a range of sxp blueprints matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp blueprints
-	 * @param companyId the primary key of the company
-	 * @param start the lower bound of the range of sxp blueprints
-	 * @param end the upper bound of the range of sxp blueprints (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the range of matching sxp blueprints, or an empty list if no matches were found
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SXPBlueprint> getSXPBlueprintsByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<SXPBlueprint> orderByComparator);
-
-	/**
 	 * Returns the number of sxp blueprints.
 	 *
 	 * @return the number of sxp blueprints
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSXPBlueprintsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSXPBlueprintsCount(long companyId);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public SXPBlueprint updateStatus(

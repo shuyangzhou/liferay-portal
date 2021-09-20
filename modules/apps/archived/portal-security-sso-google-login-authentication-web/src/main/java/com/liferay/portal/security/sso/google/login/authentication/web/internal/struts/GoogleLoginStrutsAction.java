@@ -87,14 +87,14 @@ public class GoogleLoginStrutsAction implements StrutsAction {
 				httpServletRequest, "code");
 
 			if (Validator.isNotNull(authorizationCode)) {
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 				String returnRequestUri = getReturnRequestUri(
 					httpServletRequest);
 
 				try {
 					User user = _googleAuthorization.addOrUpdateUser(
-						session, themeDisplay.getCompanyId(), authorizationCode,
-						returnRequestUri, _scopesLogin);
+						httpSession, themeDisplay.getCompanyId(),
+						authorizationCode, returnRequestUri, _scopesLogin);
 
 					if ((user != null) &&
 						(user.getStatus() ==

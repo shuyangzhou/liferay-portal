@@ -3,7 +3,7 @@ definition {
 	macro addAndEditExternalApplication {
 		var portalURL = PropsUtil.get("portal.url");
 
-		if (isSet(customPortalURL)) {
+		if (isSet(baseURL)) {
 			portalURL = "${baseURL}";
 		}
 
@@ -54,6 +54,27 @@ definition {
 		AssertTextEquals(
 			locator1 = "Portlet#HEADER",
 			value1 = "${applicationName}");
+	}
+
+	macro addApplicationPermissionToRole {
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Permissions",
+			rowEntry = "${applicationName}");
+
+		IFrame.selectPermissionsFrame();
+
+		Check.checkToggleSwitch(
+			key_roleTitle = "${userRole}",
+			locator1 = "Permissions#INLINE_PERMISSIONS_VIEW_CHECKBOX");
+
+		Check.checkToggleSwitch(
+			key_actionName = "CREATE_TOKEN",
+			key_roleTitle = "${userRole}",
+			locator1 = "Permissions#PERMISSIONS_MODAL_CHECKBOX");
+
+		AssertClick(
+			locator1 = "Permissions#SAVE_BUTTON",
+			value1 = "Save");
 	}
 
 	macro addPrefixHandlerInSystemSettings {
@@ -455,6 +476,12 @@ definition {
 	}
 
 	macro launchRequest {
+		if (isSet(requestURL)) {
+			Type(
+				locator1 = "OAuth2#OAUTH2_TESTER_REQUEST_URL",
+				value1 = "${requestURL}");
+		}
+
 		Button.click(button = "Launch Request");
 
 		AssertTextEquals.assertPartialText(

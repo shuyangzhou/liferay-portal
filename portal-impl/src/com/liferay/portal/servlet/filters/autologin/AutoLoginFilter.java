@@ -53,7 +53,7 @@ public class AutoLoginFilter extends BasePortalFilter {
 
 	protected String getLoginRemoteUser(
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, HttpSession session,
+			HttpServletResponse httpServletResponse, HttpSession httpSession,
 			String[] credentials)
 		throws Exception {
 
@@ -85,29 +85,29 @@ public class AutoLoginFilter extends BasePortalFilter {
 		}
 
 		if (PropsValues.SESSION_ENABLE_PHISHING_PROTECTION) {
-			session = AuthenticatedSessionManagerUtil.renewSession(
-				httpServletRequest, session);
+			httpSession = AuthenticatedSessionManagerUtil.renewSession(
+				httpServletRequest, httpSession);
 		}
 
-		session.setAttribute("j_username", jUserName);
+		httpSession.setAttribute("j_username", jUserName);
 
 		// Not having access to the unencrypted password will not allow you to
 		// connect to external resources that require it (mail server)
 
 		if (GetterUtil.getBoolean(credentials[2])) {
-			session.setAttribute("j_password", jPassword);
+			httpSession.setAttribute("j_password", jPassword);
 		}
 		else {
-			session.setAttribute(
+			httpSession.setAttribute(
 				"j_password",
 				PasswordEncryptorUtil.encrypt(jPassword, user.getPassword()));
 
 			if (PropsValues.SESSION_STORE_PASSWORD) {
-				session.setAttribute(WebKeys.USER_PASSWORD, jPassword);
+				httpSession.setAttribute(WebKeys.USER_PASSWORD, jPassword);
 			}
 		}
 
-		session.setAttribute("j_remoteuser", jUserName);
+		httpSession.setAttribute("j_remoteuser", jUserName);
 
 		if (PropsValues.PORTAL_JAAS_ENABLE) {
 			String mainPath = PortalUtil.getPathMain();
@@ -181,9 +181,9 @@ public class AutoLoginFilter extends BasePortalFilter {
 
 		String remoteUser = httpServletRequest.getRemoteUser();
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String jUserName = (String)session.getAttribute("j_username");
+		String jUserName = (String)httpSession.getAttribute("j_username");
 
 		if (!PropsValues.AUTH_LOGIN_DISABLED && (remoteUser == null) &&
 			(jUserName == null)) {
@@ -203,7 +203,7 @@ public class AutoLoginFilter extends BasePortalFilter {
 					}
 
 					String loginRemoteUser = getLoginRemoteUser(
-						httpServletRequest, httpServletResponse, session,
+						httpServletRequest, httpServletResponse, httpSession,
 						credentials);
 
 					if (loginRemoteUser != null) {

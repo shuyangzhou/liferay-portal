@@ -69,8 +69,7 @@ public class ListTypeDefinitionServiceSoap {
 
 	public static com.liferay.list.type.model.ListTypeDefinitionSoap
 			addListTypeDefinition(
-				long userId, String[] nameMapLanguageIds,
-				String[] nameMapValues)
+				String[] nameMapLanguageIds, String[] nameMapValues)
 		throws RemoteException {
 
 		try {
@@ -78,8 +77,7 @@ public class ListTypeDefinitionServiceSoap {
 				nameMapLanguageIds, nameMapValues);
 
 			com.liferay.list.type.model.ListTypeDefinition returnValue =
-				ListTypeDefinitionServiceUtil.addListTypeDefinition(
-					userId, nameMap);
+				ListTypeDefinitionServiceUtil.addListTypeDefinition(nameMap);
 
 			return com.liferay.list.type.model.ListTypeDefinitionSoap.
 				toSoapModel(returnValue);

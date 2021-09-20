@@ -16,7 +16,7 @@ package com.liferay.remote.app.deployer;
 
 import com.liferay.remote.app.model.RemoteAppEntry;
 
-import javax.portlet.Portlet;
+import java.util.List;
 
 import org.osgi.framework.ServiceRegistration;
 
@@ -25,6 +25,6 @@ import org.osgi.framework.ServiceRegistration;
  */
 public interface RemoteAppEntryDeployer {
 
-	public ServiceRegistration<Portlet> deploy(RemoteAppEntry remoteAppEntry);
+	public List<ServiceRegistration<?>> deploy(RemoteAppEntry remoteAppEntry);
 
 }

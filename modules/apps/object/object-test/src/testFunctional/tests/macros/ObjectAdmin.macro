@@ -70,6 +70,12 @@ definition {
 			userPassword = "${userPassword}");
 	}
 
+	macro assertFieldsTableColumnsAreDisplayed {
+		AssertElementPresent(locator1 = "ObjectAdmin#FIELDS_NAME_COLUMN");
+
+		AssertElementPresent(locator1 = "ObjectAdmin#FIELDS_TYPE_COLUMN");
+	}
+
 	macro assertKeywordAndText {
 		AssertElementPresent(locator1 = "ObjectAdmin#SEARCHABLE_SECTION_TITLE");
 
@@ -90,6 +96,20 @@ definition {
 		AssertElementPresent(locator1 = "ObjectAdmin#OBJECT_SYSTEM_COLUMN");
 
 		AssertElementPresent(locator1 = "ObjectAdmin#OBJECT_STATUS_COLUMN");
+	}
+
+	macro assertObjectColumnValue {
+		AssertTextEquals(
+			locator1 = "ObjectAdmin#OBJECT_NAME",
+			value1 = "${name}");
+
+		AssertTextEquals(
+			locator1 = "ObjectAdmin#OBJECT_SYSTEM",
+			value1 = "${system}");
+
+		AssertTextEquals(
+			locator1 = "ObjectAdmin#OBJECT_STATUS",
+			value1 = "${status}");
 	}
 
 	macro assertObjectDetailsPage {
@@ -117,6 +137,12 @@ definition {
 		AssertElementNotPresent(
 			locator1 = "ObjectAdmin#VIEW_OBJECT_FIELD_NAME",
 			value1 = "${fieldName}");
+	}
+
+	macro assertObjectStatus {
+		AssertElementPresent(
+			key_status = "${status}",
+			locator1 = "ObjectAdmin#OBJECT_STATUS");
 	}
 
 	macro clickFieldsSearchableSectionRadioOption {
@@ -211,11 +237,15 @@ definition {
 			userPassword = "${userPassword}");
 	}
 
+	macro publishObjectViaUI {
+		Button.clickPublish();
+	}
+
 	macro saveCustomObject {
 		Click(locator1 = "ObjectAdmin#SAVE_CUSTOM_OBJECT");
 	}
 
-	macro selectCustomObjectFieldKebabMenuOption {
+	macro selectKebabMenuOption {
 		Click(locator1 = "ObjectAdmin#KEBAB_MENU");
 
 		Click(

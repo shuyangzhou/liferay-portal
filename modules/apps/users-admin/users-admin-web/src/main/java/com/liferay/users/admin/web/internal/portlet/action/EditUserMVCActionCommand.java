@@ -511,9 +511,9 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			HttpServletResponse httpServletResponse =
 				portal.getHttpServletResponse(actionResponse);
 
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			session.removeAttribute(WebKeys.LOCALE);
+			httpSession.removeAttribute(WebKeys.LOCALE);
 
 			Locale locale = LocaleUtil.fromLanguageId(languageId);
 

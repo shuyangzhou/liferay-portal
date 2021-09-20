@@ -77,7 +77,7 @@ public class SXPElementCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -85,8 +85,6 @@ public class SXPElementCacheModel
 		sb.append(uuid);
 		sb.append(", sxpElementId=");
 		sb.append(sxpElementId);
-		sb.append(", groupId=");
-		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -130,7 +128,6 @@ public class SXPElementCacheModel
 		}
 
 		sxpElementImpl.setSXPElementId(sxpElementId);
-		sxpElementImpl.setGroupId(groupId);
 		sxpElementImpl.setCompanyId(companyId);
 		sxpElementImpl.setUserId(userId);
 
@@ -196,8 +193,6 @@ public class SXPElementCacheModel
 
 		sxpElementId = objectInput.readLong();
 
-		groupId = objectInput.readLong();
-
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -229,8 +224,6 @@ public class SXPElementCacheModel
 		}
 
 		objectOutput.writeLong(sxpElementId);
-
-		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -279,7 +272,6 @@ public class SXPElementCacheModel
 	public long mvccVersion;
 	public String uuid;
 	public long sxpElementId;
-	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

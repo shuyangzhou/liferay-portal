@@ -36,7 +36,6 @@ public class SXPBlueprintSoap implements Serializable {
 		soapModel.setMvccVersion(model.getMvccVersion());
 		soapModel.setUuid(model.getUuid());
 		soapModel.setSXPBlueprintId(model.getSXPBlueprintId());
-		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -125,14 +124,6 @@ public class SXPBlueprintSoap implements Serializable {
 
 	public void setSXPBlueprintId(long sxpBlueprintId) {
 		_sxpBlueprintId = sxpBlueprintId;
-	}
-
-	public long getGroupId() {
-		return _groupId;
-	}
-
-	public void setGroupId(long groupId) {
-		_groupId = groupId;
 	}
 
 	public long getCompanyId() {
@@ -242,7 +233,6 @@ public class SXPBlueprintSoap implements Serializable {
 	private long _mvccVersion;
 	private String _uuid;
 	private long _sxpBlueprintId;
-	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

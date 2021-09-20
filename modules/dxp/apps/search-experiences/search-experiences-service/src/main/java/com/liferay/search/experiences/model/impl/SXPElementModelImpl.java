@@ -85,13 +85,13 @@ public class SXPElementModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
-		{"sxpElementId", Types.BIGINT}, {"groupId", Types.BIGINT},
-		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
-		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"description", Types.VARCHAR},
-		{"elementDefinitionJSON", Types.CLOB}, {"hidden_", Types.BOOLEAN},
-		{"readOnly", Types.BOOLEAN}, {"title", Types.VARCHAR},
-		{"type_", Types.INTEGER}, {"status", Types.INTEGER}
+		{"sxpElementId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"description", Types.VARCHAR}, {"elementDefinitionJSON", Types.CLOB},
+		{"hidden_", Types.BOOLEAN}, {"readOnly", Types.BOOLEAN},
+		{"title", Types.VARCHAR}, {"type_", Types.INTEGER},
+		{"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -101,7 +101,6 @@ public class SXPElementModelImpl
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("sxpElementId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -117,7 +116,7 @@ public class SXPElementModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SXPElement (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,sxpElementId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,description STRING null,elementDefinitionJSON TEXT null,hidden_ BOOLEAN,readOnly BOOLEAN,title STRING null,type_ INTEGER,status INTEGER)";
+		"create table SXPElement (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,sxpElementId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,description STRING null,elementDefinitionJSON TEXT null,hidden_ BOOLEAN,readOnly BOOLEAN,title STRING null,type_ INTEGER,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table SXPElement";
 
@@ -143,32 +142,26 @@ public class SXPElementModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long STATUS_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long STATUS_COLUMN_BITMASK = 4L;
+	public static final long TYPE_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long TYPE_COLUMN_BITMASK = 8L;
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
-	 */
-	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long UUID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long SXPELEMENTID_COLUMN_BITMASK = 32L;
+	public static final long SXPELEMENTID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -202,7 +195,6 @@ public class SXPElementModelImpl
 		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setUuid(soapModel.getUuid());
 		model.setSXPElementId(soapModel.getSXPElementId());
-		model.setGroupId(soapModel.getGroupId());
 		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
@@ -376,9 +368,6 @@ public class SXPElementModelImpl
 		attributeSetterBiConsumers.put(
 			"sxpElementId",
 			(BiConsumer<SXPElement, Long>)SXPElement::setSXPElementId);
-		attributeGetterFunctions.put("groupId", SXPElement::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<SXPElement, Long>)SXPElement::setGroupId);
 		attributeGetterFunctions.put("companyId", SXPElement::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
@@ -489,30 +478,6 @@ public class SXPElementModelImpl
 		}
 
 		_sxpElementId = sxpElementId;
-	}
-
-	@JSON
-	@Override
-	public long getGroupId() {
-		return _groupId;
-	}
-
-	@Override
-	public void setGroupId(long groupId) {
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		_groupId = groupId;
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *             #getColumnOriginalValue(String)}
-	 */
-	@Deprecated
-	public long getOriginalGroupId() {
-		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
 	}
 
 	@JSON
@@ -692,7 +657,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getSiteDefault());
+		setDescription(description, locale, LocaleUtil.getDefault());
 	}
 
 	@Override
@@ -722,7 +687,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
 	}
 
 	@Override
@@ -866,7 +831,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setTitle(String title, Locale locale) {
-		setTitle(title, locale, LocaleUtil.getSiteDefault());
+		setTitle(title, locale, LocaleUtil.getDefault());
 	}
 
 	@Override
@@ -893,7 +858,7 @@ public class SXPElementModelImpl
 
 	@Override
 	public void setTitleMap(Map<Locale, String> titleMap) {
-		setTitleMap(titleMap, LocaleUtil.getSiteDefault());
+		setTitleMap(titleMap, LocaleUtil.getDefault());
 	}
 
 	@Override
@@ -1041,7 +1006,7 @@ public class SXPElementModelImpl
 			return "";
 		}
 
-		Locale defaultLocale = LocaleUtil.getSiteDefault();
+		Locale defaultLocale = LocaleUtil.getDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -1066,7 +1031,7 @@ public class SXPElementModelImpl
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
 
-		Locale defaultLocale = LocaleUtil.getSiteDefault();
+		Locale defaultLocale = LocaleUtil.getDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -1113,7 +1078,6 @@ public class SXPElementModelImpl
 		sxpElementImpl.setMvccVersion(getMvccVersion());
 		sxpElementImpl.setUuid(getUuid());
 		sxpElementImpl.setSXPElementId(getSXPElementId());
-		sxpElementImpl.setGroupId(getGroupId());
 		sxpElementImpl.setCompanyId(getCompanyId());
 		sxpElementImpl.setUserId(getUserId());
 		sxpElementImpl.setUserName(getUserName());
@@ -1141,7 +1105,6 @@ public class SXPElementModelImpl
 		sxpElementImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		sxpElementImpl.setSXPElementId(
 			this.<Long>getColumnOriginalValue("sxpElementId"));
-		sxpElementImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
 		sxpElementImpl.setCompanyId(
 			this.<Long>getColumnOriginalValue("companyId"));
 		sxpElementImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
@@ -1251,8 +1214,6 @@ public class SXPElementModelImpl
 		}
 
 		sxpElementCacheModel.sxpElementId = getSXPElementId();
-
-		sxpElementCacheModel.groupId = getGroupId();
 
 		sxpElementCacheModel.companyId = getCompanyId();
 
@@ -1412,7 +1373,6 @@ public class SXPElementModelImpl
 	private long _mvccVersion;
 	private String _uuid;
 	private long _sxpElementId;
-	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
@@ -1461,7 +1421,6 @@ public class SXPElementModelImpl
 		_columnOriginalValues.put("mvccVersion", _mvccVersion);
 		_columnOriginalValues.put("uuid_", _uuid);
 		_columnOriginalValues.put("sxpElementId", _sxpElementId);
-		_columnOriginalValues.put("groupId", _groupId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("userId", _userId);
 		_columnOriginalValues.put("userName", _userName);
@@ -1506,31 +1465,29 @@ public class SXPElementModelImpl
 
 		columnBitmasks.put("sxpElementId", 4L);
 
-		columnBitmasks.put("groupId", 8L);
+		columnBitmasks.put("companyId", 8L);
 
-		columnBitmasks.put("companyId", 16L);
+		columnBitmasks.put("userId", 16L);
 
-		columnBitmasks.put("userId", 32L);
+		columnBitmasks.put("userName", 32L);
 
-		columnBitmasks.put("userName", 64L);
+		columnBitmasks.put("createDate", 64L);
 
-		columnBitmasks.put("createDate", 128L);
+		columnBitmasks.put("modifiedDate", 128L);
 
-		columnBitmasks.put("modifiedDate", 256L);
+		columnBitmasks.put("description", 256L);
 
-		columnBitmasks.put("description", 512L);
+		columnBitmasks.put("elementDefinitionJSON", 512L);
 
-		columnBitmasks.put("elementDefinitionJSON", 1024L);
+		columnBitmasks.put("hidden_", 1024L);
 
-		columnBitmasks.put("hidden_", 2048L);
+		columnBitmasks.put("readOnly", 2048L);
 
-		columnBitmasks.put("readOnly", 4096L);
+		columnBitmasks.put("title", 4096L);
 
-		columnBitmasks.put("title", 8192L);
+		columnBitmasks.put("type_", 8192L);
 
-		columnBitmasks.put("type_", 16384L);
-
-		columnBitmasks.put("status", 32768L);
+		columnBitmasks.put("status", 16384L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

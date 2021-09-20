@@ -22,6 +22,7 @@ import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.base.ObjectRelationshipLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
@@ -30,9 +31,13 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.io.Serializable;
 
 import java.util.List;
 import java.util.Locale;
@@ -118,26 +123,54 @@ public class ObjectRelationshipLocalServiceImpl
 
 	@Override
 	public void addObjectRelationshipMappingTableValues(
-			long objectRelationshipId, long primaryKey1, long primaryKey2)
+			long userId, long objectRelationshipId, long primaryKey1,
+			long primaryKey2, ServiceContext serviceContext)
 		throws PortalException {
 
 		ObjectRelationship objectRelationship =
-			objectRelationshipPersistence.findByPrimaryKey(
+			objectRelationshipLocalService.getObjectRelationship(
 				objectRelationshipId);
 
-		ObjectDefinition objectDefinition1 =
-			_objectDefinitionPersistence.findByPrimaryKey(
-				objectRelationship.getObjectDefinitionId1());
 		ObjectDefinition objectDefinition2 =
 			_objectDefinitionPersistence.findByPrimaryKey(
 				objectRelationship.getObjectDefinitionId2());
 
-		runSQL(
-			StringBundler.concat(
-				"insert into ", objectRelationship.getDBTableName(), " (",
-				objectDefinition1.getPKObjectFieldDBColumnName(), " , ",
-				objectDefinition2.getPKObjectFieldDBColumnName(), ") values (",
-				primaryKey1, ", ", primaryKey2, ")"));
+		if (Objects.equals(
+				objectRelationship.getType(),
+				ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
+
+			ObjectDefinition objectDefinition1 =
+				_objectDefinitionPersistence.findByPrimaryKey(
+					objectRelationship.getObjectDefinitionId1());
+
+			runSQL(
+				StringBundler.concat(
+					"insert into ", objectRelationship.getDBTableName(), " (",
+					objectDefinition1.getPKObjectFieldDBColumnName(), " , ",
+					objectDefinition2.getPKObjectFieldDBColumnName(),
+					") values (", primaryKey1, ", ", primaryKey2, ")"));
+
+			return;
+		}
+
+		ObjectField objectField2 = _objectFieldLocalService.getObjectField(
+			objectRelationship.getObjectFieldId2());
+
+		if (objectDefinition2.isSystem()) {
+			_objectEntryLocalService.insertIntoOrUpdateExtensionTable(
+				objectRelationship.getObjectDefinitionId2(), primaryKey2,
+				HashMapBuilder.<String, Serializable>put(
+					objectField2.getName(), primaryKey1
+				).build());
+		}
+		else {
+			_objectEntryLocalService.updateObjectEntry(
+				userId, primaryKey2,
+				HashMapBuilder.<String, Serializable>put(
+					objectField2.getName(), primaryKey1
+				).build(),
+				serviceContext);
+		}
 	}
 
 	@Override
@@ -320,6 +353,9 @@ public class ObjectRelationshipLocalServiceImpl
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;
+
+	@Reference
+	private ObjectEntryLocalService _objectEntryLocalService;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

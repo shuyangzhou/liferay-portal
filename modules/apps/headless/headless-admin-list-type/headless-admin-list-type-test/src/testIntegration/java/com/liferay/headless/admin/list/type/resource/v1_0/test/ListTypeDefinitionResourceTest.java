@@ -17,14 +17,10 @@ package com.liferay.headless.admin.list.type.resource.v1_0.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.headless.admin.list.type.client.dto.v1_0.ListTypeDefinition;
 import com.liferay.headless.admin.list.type.client.dto.v1_0.ListTypeEntry;
-import com.liferay.headless.admin.list.type.client.pagination.Page;
-import com.liferay.headless.admin.list.type.client.pagination.Pagination;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.Collections;
-import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

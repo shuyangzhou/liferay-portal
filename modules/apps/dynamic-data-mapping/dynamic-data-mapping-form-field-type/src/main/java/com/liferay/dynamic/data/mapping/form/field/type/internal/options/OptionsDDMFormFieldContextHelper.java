@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -58,19 +59,25 @@ public class OptionsDDMFormFieldContextHelper {
 	}
 
 	public Map<String, Object> getValue() {
-		Map<String, Object> localizedValue = new HashMap<>();
+		Map<String, Object> changedProperties =
+			(Map<String, Object>)_ddmFormFieldRenderingContext.getProperty(
+				"changedProperties");
+
+		if (MapUtil.isNotEmpty(changedProperties)) {
+			Map<String, Object> changedLocalizedValues =
+				(Map<String, Object>)changedProperties.get("value");
+
+			if (MapUtil.isNotEmpty(changedLocalizedValues)) {
+				return changedLocalizedValues;
+			}
+		}
+
+		Map<String, Object> localizedValues = new HashMap<>();
 
 		if (Validator.isNull(_value)) {
-			Locale locale = _ddmFormFieldRenderingContext.getLocale();
+			localizedValues.put(_getLanguageId(), createDefaultOptions());
 
-			if (locale == null) {
-				locale = LocaleUtil.getSiteDefault();
-			}
-
-			localizedValue.put(
-				LocaleUtil.toLanguageId(locale), createDefaultOptions());
-
-			return localizedValue;
+			return localizedValues;
 		}
 
 		try {
@@ -84,15 +91,15 @@ public class OptionsDDMFormFieldContextHelper {
 				List<Object> options = createOptions(
 					jsonObject.getJSONArray(languageId));
 
-				localizedValue.put(languageId, options);
+				localizedValues.put(languageId, options);
 			}
 
-			return localizedValue;
+			return localizedValues;
 		}
 		catch (JSONException jsonException) {
 			_log.error("Unable to parse JSON array", jsonException);
 
-			return localizedValue;
+			return localizedValues;
 		}
 	}
 
@@ -148,6 +155,16 @@ public class OptionsDDMFormFieldContextHelper {
 
 		return ResourceBundleUtil.getBundle(
 			"content.Language", locale, clazz.getClassLoader());
+	}
+
+	private String _getLanguageId() {
+		Locale locale = _ddmFormFieldRenderingContext.getLocale();
+
+		if (locale == null) {
+			locale = LocaleUtil.getSiteDefault();
+		}
+
+		return LocaleUtil.toLanguageId(locale);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

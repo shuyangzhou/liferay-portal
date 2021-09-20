@@ -173,18 +173,18 @@ public class KeepAliveSPPortalDynamicInclude extends BaseDynamicInclude {
 			}
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		return samlSpSessionLocalService.fetchSamlSpSessionByJSessionId(
-			session.getId());
+			httpSession.getId());
 	}
 
 	protected String getSamlSpSessionKey(
 		HttpServletRequest httpServletRequest) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String samlSpSessionKey = (String)session.getAttribute(
+		String samlSpSessionKey = (String)httpSession.getAttribute(
 			SamlWebKeys.SAML_SP_SESSION_KEY);
 
 		if (Validator.isNull(samlSpSessionKey)) {

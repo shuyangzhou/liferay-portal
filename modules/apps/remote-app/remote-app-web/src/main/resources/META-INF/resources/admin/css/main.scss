@@ -5,4 +5,24 @@
 	&:hover {
 		border: none;
 	}
+
+	.lfr-autorow-controls {
+		position: absolute;
+		right: 0;
+		top: 0;
+
+		button {
+			border-radius: 10px;
+			height: 20px;
+			margin-left: 4px;
+			padding: 0;
+			width: 20px;
+
+			.lexicon-icon {
+				height: 12px;
+				margin-top: -3px;
+				width: 12px;
+			}
+		}
+	}
 }

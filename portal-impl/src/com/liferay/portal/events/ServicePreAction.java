@@ -894,11 +894,11 @@ public class ServicePreAction extends Action {
 				HttpHeaders.PRAGMA, HttpHeaders.PRAGMA_NO_CACHE_VALUE);
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		User realUser = user;
 
-		Long realUserId = (Long)session.getAttribute(WebKeys.USER_ID);
+		Long realUserId = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if ((realUserId != null) &&
 			(user.getUserId() != realUserId.longValue())) {
@@ -1561,7 +1561,7 @@ public class ServicePreAction extends Action {
 			!CookieKeys.hasSessionId(httpServletRequest)) {
 
 			themeDisplay.setAddSessionIdToURL(true);
-			themeDisplay.setSessionId(session.getId());
+			themeDisplay.setSessionId(httpSession.getId());
 		}
 
 		// URLs
@@ -1602,7 +1602,7 @@ public class ServicePreAction extends Action {
 
 		if (themeDisplay.isAddSessionIdToURL()) {
 			urlControlPanel = PortalUtil.getURLWithSessionId(
-				urlControlPanel, session.getId());
+				urlControlPanel, httpSession.getId());
 		}
 
 		themeDisplay.setURLControlPanel(urlControlPanel);
@@ -1824,9 +1824,9 @@ public class ServicePreAction extends Action {
 			layouts.addAll(0, guestLayouts);
 		}
 		else {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			Long previousGroupId = (Long)session.getAttribute(
+			Long previousGroupId = (Long)httpSession.getAttribute(
 				WebKeys.VISITED_GROUP_ID_PREVIOUS);
 
 			if ((previousGroupId != null) &&
@@ -1888,18 +1888,18 @@ public class ServicePreAction extends Action {
 			return;
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		Long recentGroupId = (Long)session.getAttribute(
+		Long recentGroupId = (Long)httpSession.getAttribute(
 			WebKeys.VISITED_GROUP_ID_RECENT);
 
-		Long previousGroupId = (Long)session.getAttribute(
+		Long previousGroupId = (Long)httpSession.getAttribute(
 			WebKeys.VISITED_GROUP_ID_PREVIOUS);
 
 		if (recentGroupId == null) {
 			recentGroupId = Long.valueOf(currentGroupId);
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				WebKeys.VISITED_GROUP_ID_RECENT, recentGroupId);
 		}
 		else if (recentGroupId.longValue() != currentGroupId) {
@@ -1907,10 +1907,10 @@ public class ServicePreAction extends Action {
 
 			recentGroupId = Long.valueOf(currentGroupId);
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				WebKeys.VISITED_GROUP_ID_RECENT, recentGroupId);
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				WebKeys.VISITED_GROUP_ID_PREVIOUS, previousGroupId);
 		}
 

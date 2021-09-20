@@ -16,6 +16,7 @@ package com.liferay.source.formatter.checkstyle.checks;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -38,11 +39,21 @@ public class MethodNamingCheck extends BaseCheck {
 
 	@Override
 	protected void doVisitToken(DetailAST detailAST) {
-		if (AnnotationUtil.containsAnnotation(detailAST, "Override")) {
+		if (AnnotationUtil.containsAnnotation(detailAST, "Deprecated")) {
 			return;
 		}
 
 		String methodName = _getMethodName(detailAST);
+
+		if (isAttributeValue(_CHECK_SEARCH_METHOD_NAMES) &&
+			methodName.startsWith("search")) {
+
+			_checkSearchMethodName(detailAST, methodName);
+		}
+
+		if (AnnotationUtil.containsAnnotation(detailAST, "Override")) {
+			return;
+		}
 
 		_checkMethodNamePrefix(detailAST, methodName);
 		_checkTypeName(detailAST, methodName);
@@ -114,6 +125,76 @@ public class MethodNamingCheck extends BaseCheck {
 		}
 	}
 
+	private void _checkSearchMethodName(
+		DetailAST detailAST, String methodName) {
+
+		DetailAST parentDetailAST = getParentWithTokenType(
+			detailAST, TokenTypes.CLASS_DEF);
+
+		if (parentDetailAST == null) {
+			return;
+		}
+
+		DetailAST identDetailAST = parentDetailAST.findFirstToken(
+			TokenTypes.IDENT);
+
+		if (identDetailAST == null) {
+			return;
+		}
+
+		DetailAST typeDetailAST = detailAST.findFirstToken(TokenTypes.TYPE);
+
+		if (typeDetailAST == null) {
+			return;
+		}
+
+		String className = identDetailAST.getText();
+
+		String objectName = null;
+
+		if (className.endsWith("LocalServiceImpl")) {
+			objectName = className.substring(0, className.length() - 16);
+		}
+		else if (className.endsWith("ServiceImpl")) {
+			objectName = className.substring(0, className.length() - 11);
+		}
+		else {
+			return;
+		}
+
+		String returnTypeName = getTypeName(typeDetailAST, true);
+
+		String pluralObjectName = TextFormatter.formatPlural(objectName);
+
+		if (returnTypeName.equals("List<" + objectName + ">")) {
+			if (methodName.equals("search" + pluralObjectName) ||
+				methodName.startsWith("search" + pluralObjectName + "By")) {
+
+				String expectedMethodName = StringUtil.replaceFirst(
+					methodName, "search" + pluralObjectName, "search");
+
+				log(
+					detailAST, _MSG_RENAME_METHOD, methodName,
+					expectedMethodName);
+
+				return;
+			}
+
+			if (!methodName.matches("search(By.*)?")) {
+				log(detailAST, _MSG_INCORRECT_SEARCH_METHOD, methodName);
+			}
+		}
+		else if (returnTypeName.equals(
+					"BaseModelSearchResult<" + objectName + ">") &&
+				 methodName.matches("search(By.*)?")) {
+
+			String expectedMethodName = StringUtil.replaceFirst(
+				methodName, "search", "search" + pluralObjectName);
+
+			log(detailAST, _MSG_RENAME_METHOD, methodName, expectedMethodName);
+		}
+	}
+
 	private void _checkTypeName(DetailAST detailAST, String methodName) {
 		String absolutePath = getAbsolutePath();
 
@@ -151,6 +232,9 @@ public class MethodNamingCheck extends BaseCheck {
 		return nameDetailAST.getText();
 	}
 
+	private static final String _CHECK_SEARCH_METHOD_NAMES =
+		"checkSearchMethodNames";
+
 	private static final String _ENFORCE_TYPE_NAMES_KEY = "enforceTypeNames";
 
 	private static final String[][] _METHOD_NAME_PREFIXS = {
@@ -159,6 +243,9 @@ public class MethodNamingCheck extends BaseCheck {
 
 	private static final String _MSG_INCORRECT_ENDING_METHOD =
 		"method.incorrect.ending";
+
+	private static final String _MSG_INCORRECT_SEARCH_METHOD =
+		"search.method.incorrect";
 
 	private static final String _MSG_RENAME_METHOD = "method.rename";
 

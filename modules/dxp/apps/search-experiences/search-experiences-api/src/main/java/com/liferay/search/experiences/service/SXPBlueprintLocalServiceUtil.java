@@ -46,15 +46,15 @@ public class SXPBlueprintLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.search.experiences.service.impl.SXPBlueprintLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static SXPBlueprint addSXPBlueprint(
-			long userId, long groupId, String configurationsJSON,
+			long userId, String configurationsJSON,
 			Map<java.util.Locale, String> descriptionMap,
 			String elementInstancesJSON, Map<java.util.Locale, String> titleMap,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().addSXPBlueprint(
-			userId, groupId, configurationsJSON, descriptionMap,
-			elementInstancesJSON, titleMap, serviceContext);
+			userId, configurationsJSON, descriptionMap, elementInstancesJSON,
+			titleMap, serviceContext);
 	}
 
 	/**
@@ -225,26 +225,23 @@ public class SXPBlueprintLocalServiceUtil {
 	}
 
 	/**
-	 * Returns the sxp blueprint matching the UUID and group.
+	 * Returns the sxp blueprint with the matching UUID and company.
 	 *
 	 * @param uuid the sxp blueprint's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp blueprint, or <code>null</code> if a matching sxp blueprint could not be found
 	 */
-	public static SXPBlueprint fetchSXPBlueprintByUuidAndGroupId(
-		String uuid, long groupId) {
+	public static SXPBlueprint fetchSXPBlueprintByUuidAndCompanyId(
+		String uuid, long companyId) {
 
-		return getService().fetchSXPBlueprintByUuidAndGroupId(uuid, groupId);
+		return getService().fetchSXPBlueprintByUuidAndCompanyId(
+			uuid, companyId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
-	}
-
-	public static int getCompanySXPBlueprintsCount(long companyId) {
-		return getService().getCompanySXPBlueprintsCount(companyId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
@@ -294,18 +291,18 @@ public class SXPBlueprintLocalServiceUtil {
 	}
 
 	/**
-	 * Returns the sxp blueprint matching the UUID and group.
+	 * Returns the sxp blueprint with the matching UUID and company.
 	 *
 	 * @param uuid the sxp blueprint's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp blueprint
 	 * @throws PortalException if a matching sxp blueprint could not be found
 	 */
-	public static SXPBlueprint getSXPBlueprintByUuidAndGroupId(
-			String uuid, long groupId)
+	public static SXPBlueprint getSXPBlueprintByUuidAndCompanyId(
+			String uuid, long companyId)
 		throws PortalException {
 
-		return getService().getSXPBlueprintByUuidAndGroupId(uuid, groupId);
+		return getService().getSXPBlueprintByUuidAndCompanyId(uuid, companyId);
 	}
 
 	/**
@@ -324,43 +321,16 @@ public class SXPBlueprintLocalServiceUtil {
 	}
 
 	/**
-	 * Returns all the sxp blueprints matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp blueprints
-	 * @param companyId the primary key of the company
-	 * @return the matching sxp blueprints, or an empty list if no matches were found
-	 */
-	public static List<SXPBlueprint> getSXPBlueprintsByUuidAndCompanyId(
-		String uuid, long companyId) {
-
-		return getService().getSXPBlueprintsByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
-	 * Returns a range of sxp blueprints matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp blueprints
-	 * @param companyId the primary key of the company
-	 * @param start the lower bound of the range of sxp blueprints
-	 * @param end the upper bound of the range of sxp blueprints (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the range of matching sxp blueprints, or an empty list if no matches were found
-	 */
-	public static List<SXPBlueprint> getSXPBlueprintsByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<SXPBlueprint> orderByComparator) {
-
-		return getService().getSXPBlueprintsByUuidAndCompanyId(
-			uuid, companyId, start, end, orderByComparator);
-	}
-
-	/**
 	 * Returns the number of sxp blueprints.
 	 *
 	 * @return the number of sxp blueprints
 	 */
 	public static int getSXPBlueprintsCount() {
 		return getService().getSXPBlueprintsCount();
+	}
+
+	public static int getSXPBlueprintsCount(long companyId) {
+		return getService().getSXPBlueprintsCount(companyId);
 	}
 
 	public static SXPBlueprint updateStatus(

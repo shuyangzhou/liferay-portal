@@ -315,6 +315,15 @@ public class ObjectEntryLocalServiceWrapper
 			groupId, objectRelationshipId, primaryKey, start, end);
 	}
 
+	@Override
+	public int getManyToManyRelatedObjectEntriesCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectEntryLocalService.getManyToManyRelatedObjectEntriesCount(
+			groupId, objectRelationshipId, primaryKey);
+	}
+
 	/**
 	 * Returns a range of all the object entries.
 	 *
@@ -447,6 +456,15 @@ public class ObjectEntryLocalServiceWrapper
 			groupId, objectRelationshipId, primaryKey, start, end);
 	}
 
+	@Override
+	public int getOneToManyRelatedObjectEntriesCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectEntryLocalService.getOneToManyRelatedObjectEntriesCount(
+			groupId, objectRelationshipId, primaryKey);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -492,6 +510,16 @@ public class ObjectEntryLocalServiceWrapper
 
 		return _objectEntryLocalService.getValuesList(
 			objectDefinitionId, statuses, start, end);
+	}
+
+	@Override
+	public void insertIntoOrUpdateExtensionTable(
+			long objectDefinitionId, long primaryKey,
+			java.util.Map<String, java.io.Serializable> values)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_objectEntryLocalService.insertIntoOrUpdateExtensionTable(
+			objectDefinitionId, primaryKey, values);
 	}
 
 	@Override

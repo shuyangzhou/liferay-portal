@@ -46,8 +46,7 @@ public class ListTypeDefinitionServiceImpl
 	extends ListTypeDefinitionServiceBaseImpl {
 
 	@Override
-	public ListTypeDefinition addListTypeDefinition(
-			long userId, Map<Locale, String> nameMap)
+	public ListTypeDefinition addListTypeDefinition(Map<Locale, String> nameMap)
 		throws PortalException {
 
 		_portletResourcePermission.check(
@@ -55,7 +54,7 @@ public class ListTypeDefinitionServiceImpl
 			ListTypeActionKeys.ADD_LIST_TYPE_DEFINITION);
 
 		return _listTypeDefinitionLocalService.addListTypeDefinition(
-			userId, nameMap);
+			getUserId(), nameMap);
 	}
 
 	@Override

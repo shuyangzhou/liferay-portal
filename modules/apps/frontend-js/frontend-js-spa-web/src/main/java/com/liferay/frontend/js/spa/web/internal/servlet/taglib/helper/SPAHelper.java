@@ -136,7 +136,7 @@ public class SPAHelper {
 	}
 
 	public boolean isClearScreensCache(
-		HttpServletRequest httpServletRequest, HttpSession session) {
+		HttpServletRequest httpServletRequest, HttpSession httpSession) {
 
 		boolean singlePageApplicationClearCache = GetterUtil.getBoolean(
 			httpServletRequest.getAttribute(
@@ -153,7 +153,7 @@ public class SPAHelper {
 		}
 
 		String singlePageApplicationLastPortletId =
-			(String)session.getAttribute(
+			(String)httpSession.getAttribute(
 				WebKeys.SINGLE_PAGE_APPLICATION_LAST_PORTLET_ID);
 
 		if (Validator.isNotNull(singlePageApplicationLastPortletId) &&

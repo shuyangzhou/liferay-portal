@@ -278,7 +278,7 @@ public class LayoutAction implements Action {
 			HttpServletResponse httpServletResponse, long plid)
 		throws Exception {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
@@ -295,13 +295,13 @@ public class LayoutAction implements Action {
 				return null;
 			}
 
-			Long previousLayoutPlid = (Long)session.getAttribute(
+			Long previousLayoutPlid = (Long)httpSession.getAttribute(
 				WebKeys.PREVIOUS_LAYOUT_PLID);
 
 			if ((previousLayoutPlid == null) ||
 				(layout.getPlid() != previousLayoutPlid.longValue())) {
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					WebKeys.PREVIOUS_LAYOUT_PLID, layout.getPlid());
 
 				if (themeDisplay.isSignedIn() &&

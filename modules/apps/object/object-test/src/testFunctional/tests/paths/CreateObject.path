@@ -10,6 +10,11 @@
 </thead>
 
 <tbody>
+		<tr>
+		<td>OBJECT_DEFINITION_NAME</td>
+		<td>//input[@id='objectDefinitionName']</td>
+		<td></td>
+	</tr>
 	<tr>
 		<td>VIEW_OBJECT</td>
 		<td>//a[contains(.,'${key_labelName}')]/../../..//a[@class='btn btn-secondary btn-sm link-monospaced']</td>
@@ -63,6 +68,26 @@
 	<tr>
 		<td>VIEW_OBJECT_SCOPE_DISABLED</td>
 		<td>//label[contains(text(),'Scope')]/..//select[@class = 'form-control disabled']</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>DISABLED_OBJECT_NAME</td>
+		<td>//input[(@id='_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_shortName') and (@disabled)]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>DISABLED_FIELD_TYPE</td>
+		<td>//select[(@id='_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_type') and (@class='form-control disabled')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>DISABLED_FIELD_NAME</td>
+		<td>//input[@class='field disabled form-control lfr-input-text']</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_NAME</td>
+		<td>//div[(@class='table-list-title') and contains(.,'${key_labelName}')]</td>
 		<td></td>
 	</tr>
 </tbody>

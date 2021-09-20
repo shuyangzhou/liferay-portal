@@ -59,22 +59,22 @@ public class OptionsDDMFormFieldTemplateContextContributor
 				return LocaleUtil.toLanguageId(ddmForm.getDefaultLocale());
 			}
 		).put(
-			"value", getValue(ddmFormField, ddmFormFieldRenderingContext)
+			"value", _getValue(ddmFormField, ddmFormFieldRenderingContext)
 		).build();
 	}
 
-	protected Map<String, Object> getValue(
+	private Map<String, Object> _getValue(
 		DDMFormField ddmFormField,
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
 		OptionsDDMFormFieldContextHelper optionsDDMFormFieldContextHelper =
 			new OptionsDDMFormFieldContextHelper(
-				jsonFactory, ddmFormField, ddmFormFieldRenderingContext);
+				_jsonFactory, ddmFormField, ddmFormFieldRenderingContext);
 
 		return optionsDDMFormFieldContextHelper.getValue();
 	}
 
 	@Reference
-	protected JSONFactory jsonFactory;
+	private JSONFactory _jsonFactory;
 
 }

@@ -32,8 +32,10 @@ import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -220,17 +222,21 @@ public class ObjectFieldLocalServiceTest {
 			}
 		}
 
-		// Reserved name is the primary key
+		String objectDefinitionName = "A" + RandomTestUtil.randomString();
+
+		String pkObjectFieldName = TextFormatter.format(
+			objectDefinitionName + "Id", TextFormatter.I);
 
 		try {
 			_testAddSystemObjectField(
-				ObjectFieldUtil.createObjectField("testId", "String"));
+				objectDefinitionName,
+				ObjectFieldUtil.createObjectField(pkObjectFieldName, "String"));
 
 			Assert.fail();
 		}
 		catch (ReservedObjectFieldException reservedObjectFieldException) {
 			Assert.assertEquals(
-				"Reserved name testId",
+				"Reserved name " + pkObjectFieldName,
 				reservedObjectFieldException.getMessage());
 		}
 
@@ -281,8 +287,9 @@ public class ObjectFieldLocalServiceTest {
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap("Test"), "Test", null, null,
-				LocalizedMapUtil.getLocalizedMap("Tests"),
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"A" + RandomTestUtil.randomString(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectDefinitionConstants.SCOPE_COMPANY,
 				Collections.singletonList(ableObjectField));
 
@@ -367,9 +374,11 @@ public class ObjectFieldLocalServiceTest {
 
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addSystemObjectDefinition(
-				TestPropsValues.getUserId(), "Test", null,
-				LocalizedMapUtil.getLocalizedMap("Test"), "Test", null, null,
-				LocalizedMapUtil.getLocalizedMap("Tests"),
+				TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+				null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"A" + RandomTestUtil.randomString(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectDefinitionConstants.SCOPE_COMPANY, 1,
 				Collections.singletonList(ableObjectField));
 
@@ -421,8 +430,9 @@ public class ObjectFieldLocalServiceTest {
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap("Test"), "Test", null, null,
-				LocalizedMapUtil.getLocalizedMap("Tests"),
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"A" + RandomTestUtil.randomString(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectDefinitionConstants.SCOPE_COMPANY, null);
 
 		ObjectField objectField = _objectFieldLocalService.addCustomObjectField(
@@ -506,7 +516,15 @@ public class ObjectFieldLocalServiceTest {
 		}
 	}
 
-	private void _testAddSystemObjectField(ObjectField... objectFields)
+	private String _testAddSystemObjectField(ObjectField... objectFields)
+		throws Exception {
+
+		return _testAddSystemObjectField(
+			"A" + RandomTestUtil.randomString(), objectFields);
+	}
+
+	private String _testAddSystemObjectField(
+			String objectDefinitionName, ObjectField... objectFields)
 		throws Exception {
 
 		ObjectDefinition objectDefinition = null;
@@ -514,9 +532,13 @@ public class ObjectFieldLocalServiceTest {
 		try {
 			objectDefinition =
 				_objectDefinitionLocalService.addSystemObjectDefinition(
-					TestPropsValues.getUserId(), "Test", null,
-					LocalizedMapUtil.getLocalizedMap("Test"), "Test", null,
-					null, LocalizedMapUtil.getLocalizedMap("Tests"),
+					TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+					null,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
+					objectDefinitionName, null, null,
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString()),
 					ObjectDefinitionConstants.SCOPE_COMPANY, 1,
 					Arrays.asList(objectFields));
 		}
@@ -526,6 +548,8 @@ public class ObjectFieldLocalServiceTest {
 					objectDefinition);
 			}
 		}
+
+		return objectDefinitionName;
 	}
 
 	@Inject

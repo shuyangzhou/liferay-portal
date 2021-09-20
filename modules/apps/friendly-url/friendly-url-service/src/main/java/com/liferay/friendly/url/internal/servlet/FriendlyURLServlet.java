@@ -761,9 +761,9 @@ public class FriendlyURLServlet extends HttpServlet {
 	private boolean _isImpersonated(
 		HttpServletRequest httpServletRequest, long userId) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		Long realUserId = (Long)session.getAttribute(WebKeys.USER_ID);
+		Long realUserId = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if ((realUserId == null) || (userId == realUserId)) {
 			return false;

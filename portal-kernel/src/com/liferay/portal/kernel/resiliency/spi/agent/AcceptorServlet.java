@@ -82,9 +82,9 @@ public class AcceptorServlet extends HttpServlet {
 			spiAgentHttpServletRequest, spiAgentHttpServletResponse,
 			exception1);
 
-		HttpSession session = spiAgentHttpServletRequest.getSession();
+		HttpSession httpSession = spiAgentHttpServletRequest.getSession();
 
-		session.invalidate();
+		httpSession.invalidate();
 	}
 
 	@Override

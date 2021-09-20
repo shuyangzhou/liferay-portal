@@ -82,9 +82,9 @@ public class SearchHttpUtil {
 		String completeURL = sb.toString();
 
 		if (httpServletRequest.isRequestedSessionIdFromURL()) {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			String sessionId = session.getId();
+			String sessionId = httpSession.getId();
 
 			completeURL = _portal.getURLWithSessionId(completeURL, sessionId);
 		}

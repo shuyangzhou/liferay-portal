@@ -46,8 +46,18 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 	@Override
 	public String getExtensionDBTableName() {
 		if (isSystem()) {
-			return StringBundler.concat(
-				getDBTableName(), "_x_", getCompanyId());
+			String extensionDBTableName = getDBTableName();
+
+			if (extensionDBTableName.endsWith("_")) {
+				extensionDBTableName += "x_";
+			}
+			else {
+				extensionDBTableName += "_x_";
+			}
+
+			extensionDBTableName += getCompanyId();
+
+			return extensionDBTableName;
 		}
 
 		return getDBTableName() + "_x";

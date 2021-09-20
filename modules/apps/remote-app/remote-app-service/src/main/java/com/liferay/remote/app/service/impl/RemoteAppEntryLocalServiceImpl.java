@@ -15,6 +15,7 @@
 package com.liferay.remote.app.service.impl;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -52,8 +53,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.portlet.Portlet;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -167,7 +166,7 @@ public class RemoteAppEntryLocalServiceImpl
 	public void deployRemoteAppEntry(RemoteAppEntry remoteAppEntry) {
 		undeployRemoteAppEntry(remoteAppEntry);
 
-		_serviceRegistrations.put(
+		_serviceRegistrationsMaps.put(
 			remoteAppEntry.getRemoteAppEntryId(),
 			_remoteAppEntryDeployer.deploy(remoteAppEntry));
 	}
@@ -226,10 +225,13 @@ public class RemoteAppEntryLocalServiceImpl
 	@Clusterable
 	@Override
 	public void undeployRemoteAppEntry(RemoteAppEntry remoteAppEntry) {
-		ServiceRegistration<Portlet> serviceRegistration =
-			_serviceRegistrations.remove(remoteAppEntry.getRemoteAppEntryId());
+		List<ServiceRegistration<?>> serviceRegistrations =
+			_serviceRegistrationsMaps.remove(
+				remoteAppEntry.getRemoteAppEntryId());
 
-		if (serviceRegistration != null) {
+		for (ServiceRegistration<?> serviceRegistration :
+				serviceRegistrations) {
+
 			serviceRegistration.unregister();
 		}
 	}
@@ -364,12 +366,14 @@ public class RemoteAppEntryLocalServiceImpl
 			String customElementURLs)
 		throws PortalException {
 
-		if (Validator.isNull(customElementCSSURLs)) {
+		if (Validator.isNotNull(customElementCSSURLs)) {
+			for (String customElementCSSURL :
+					customElementCSSURLs.split(StringPool.NEW_LINE)) {
 
-			// TODO Allow this to be empty. But if it is not empty, make sure
-			// each line is a valid URL.
-
-			throw new RemoteAppEntryCustomElementCSSURLsException();
+				if (!Validator.isUrl(customElementCSSURL)) {
+					throw new RemoteAppEntryCustomElementCSSURLsException();
+				}
+			}
 		}
 
 		if (Validator.isNull(customElementHTMLElementName)) {
@@ -412,11 +416,15 @@ public class RemoteAppEntryLocalServiceImpl
 		}
 
 		if (Validator.isNull(customElementURLs)) {
-
-			// TODO Make sure each line is a valid URL and that there is at
-			// least one URL
-
 			throw new RemoteAppEntryCustomElementURLsException();
+		}
+
+		for (String customElementURL :
+				customElementURLs.split(StringPool.NEW_LINE)) {
+
+			if (!Validator.isUrl(customElementURL)) {
+				throw new RemoteAppEntryCustomElementURLsException();
+			}
 		}
 	}
 
@@ -432,8 +440,8 @@ public class RemoteAppEntryLocalServiceImpl
 	@Reference
 	private RemoteAppEntryDeployer _remoteAppEntryDeployer;
 
-	private final Map<Long, ServiceRegistration<Portlet>>
-		_serviceRegistrations = new ConcurrentHashMap<>();
+	private final Map<Long, List<ServiceRegistration<?>>>
+		_serviceRegistrationsMaps = new ConcurrentHashMap<>();
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -705,9 +705,10 @@ public class MainServlet extends HttpServlet {
 		String remoteUser = httpServletRequest.getRemoteUser();
 
 		if (!PropsValues.PORTAL_JAAS_ENABLE) {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			String jRemoteUser = (String)session.getAttribute("j_remoteuser");
+			String jRemoteUser = (String)httpSession.getAttribute(
+				"j_remoteuser");
 
 			if (jRemoteUser != null) {
 				remoteUser = jRemoteUser;
@@ -984,13 +985,13 @@ public class MainServlet extends HttpServlet {
 				WebKeys.USER_ID, Long.valueOf(userId));
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		session.setAttribute(WebKeys.LOCALE, user.getLocale());
-		session.setAttribute(WebKeys.USER, user);
-		session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
+		httpSession.setAttribute(WebKeys.LOCALE, user.getLocale());
+		httpSession.setAttribute(WebKeys.USER, user);
+		httpSession.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
 
-		session.removeAttribute("j_remoteuser");
+		httpSession.removeAttribute("j_remoteuser");
 
 		if (!user.isDefaultUser()) {
 			EventsProcessorUtil.process(

@@ -43,12 +43,19 @@ ViewListTypeEntriesDisplayContext viewListTypeEntriesDisplayContext = (ViewListT
 						<liferay-ui:message key="items" />
 					</h2>
 
+					<clay:container-fluid>
+						<clay:alert
+							displayType="info"
+							message="updating-or-deleting-a-picklist-item-will-automatically-update-every-entry-that-is-using-the-specific-item-value"
+						/>
+					</clay:container-fluid>
+
 					<clay:headless-data-set-display
 						apiURL="<%= viewListTypeEntriesDisplayContext.getAPIURL() %>"
 						clayDataSetActionDropdownItems="<%= viewListTypeEntriesDisplayContext.getClayDataSetActionDropdownItems() %>"
 						creationMenu="<%= viewListTypeEntriesDisplayContext.getCreationMenu() %>"
 						formId="fm"
-						id="<%= ListTypeDefinitionsClayDataSetDisplayNames.LIST_TYPE_DEFINITION_ITEMS %>"
+						id="<%= ListTypeClayDataSetDisplayNames.LIST_TYPE_DEFINITION_ITEMS %>"
 						itemsPerPage="<%= 20 %>"
 						namespace="<%= liferayPortletResponse.getNamespace() %>"
 						pageNumber="<%= 1 %>"
@@ -73,8 +80,6 @@ ViewListTypeEntriesDisplayContext viewListTypeEntriesDisplayContext = (ViewListT
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"apiURL", viewListTypeEntriesDisplayContext.getAPIURL()
-			).put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
 			).build()
 		%>'
 	/>
@@ -82,11 +87,10 @@ ViewListTypeEntriesDisplayContext viewListTypeEntriesDisplayContext = (ViewListT
 
 <script>
 	function <portlet:namespace />saveListTypeDefinition() {
-		const inputName = document.querySelector('#<portlet:namespace />name');
-
 		const localizedInputs = document.querySelectorAll(
 			"input[id^='<portlet:namespace />'][type='hidden']"
 		);
+
 		const localizedNames = Array(...localizedInputs).reduce(
 			(prev, cur, index) => {
 				if (cur.value) {
@@ -146,10 +150,4 @@ ViewListTypeEntriesDisplayContext viewListTypeEntriesDisplayContext = (ViewListT
 				}
 			});
 	}
-
-	function handleDestroyPortlet() {
-		Liferay.detach('destroyPortlet', handleDestroyPortlet);
-	}
-
-	Liferay.on('destroyPortlet', handleDestroyPortlet);
 </script>

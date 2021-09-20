@@ -18,7 +18,7 @@ import com.liferay.headless.admin.list.type.dto.v1_0.ListTypeDefinition;
 import com.liferay.headless.admin.list.type.dto.v1_0.ListTypeEntry;
 import com.liferay.headless.admin.list.type.internal.dto.v1_0.util.ListTypeEntryUtil;
 import com.liferay.headless.admin.list.type.resource.v1_0.ListTypeEntryResource;
-import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.list.type.service.ListTypeEntryService;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -50,7 +50,7 @@ public class ListTypeEntryResourceImpl
 
 	@Override
 	public void deleteListTypeEntry(Long listTypeEntryId) throws Exception {
-		_listTypeEntryLocalService.deleteListTypeEntry(listTypeEntryId);
+		_listTypeEntryService.deleteListTypeEntry(listTypeEntryId);
 	}
 
 	@NestedField(
@@ -79,7 +79,7 @@ public class ListTypeEntryResourceImpl
 			null,
 			document -> {
 				com.liferay.list.type.model.ListTypeEntry listTypeEntry =
-					_listTypeEntryLocalService.getListTypeEntry(
+					_listTypeEntryService.getListTypeEntry(
 						GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)));
 
 				return ListTypeEntryUtil.toListTypeEntry(
@@ -94,7 +94,7 @@ public class ListTypeEntryResourceImpl
 
 		return ListTypeEntryUtil.toListTypeEntry(
 			null, contextAcceptLanguage.getPreferredLocale(),
-			_listTypeEntryLocalService.getListTypeEntry(listTypeEntryId));
+			_listTypeEntryService.getListTypeEntry(listTypeEntryId));
 	}
 
 	@Override
@@ -104,9 +104,8 @@ public class ListTypeEntryResourceImpl
 
 		return ListTypeEntryUtil.toListTypeEntry(
 			null, contextAcceptLanguage.getPreferredLocale(),
-			_listTypeEntryLocalService.addListTypeEntry(
-				contextUser.getUserId(), listTypeDefinitionId,
-				listTypeEntry.getKey(),
+			_listTypeEntryService.addListTypeEntry(
+				listTypeDefinitionId, listTypeEntry.getKey(),
 				LocalizedMapUtil.getLocalizedMap(
 					listTypeEntry.getName_i18n())));
 	}
@@ -118,7 +117,7 @@ public class ListTypeEntryResourceImpl
 
 		return ListTypeEntryUtil.toListTypeEntry(
 			null, contextAcceptLanguage.getPreferredLocale(),
-			_listTypeEntryLocalService.updateListTypeEntry(
+			_listTypeEntryService.updateListTypeEntry(
 				listTypeEntryId,
 				LocalizedMapUtil.getLocalizedMap(
 					listTypeEntry.getName_i18n())));
@@ -137,6 +136,6 @@ public class ListTypeEntryResourceImpl
 	}
 
 	@Reference
-	private ListTypeEntryLocalService _listTypeEntryLocalService;
+	private ListTypeEntryService _listTypeEntryService;
 
 }

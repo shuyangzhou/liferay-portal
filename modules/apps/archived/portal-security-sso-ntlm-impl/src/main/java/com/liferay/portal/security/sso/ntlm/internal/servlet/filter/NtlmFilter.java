@@ -219,13 +219,13 @@ public class NtlmFilter extends BaseFilter {
 	}
 
 	protected String getPortalCacheKey(HttpServletRequest httpServletRequest) {
-		HttpSession session = httpServletRequest.getSession(false);
+		HttpSession httpSession = httpServletRequest.getSession(false);
 
-		if (session == null) {
+		if (httpSession == null) {
 			return httpServletRequest.getRemoteAddr();
 		}
 
-		return session.getId();
+		return httpSession.getId();
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class NtlmFilter extends BaseFilter {
 		// be replied to with an Type 2 NTLM response, no matter whether we're
 		// yet logging in or whether it is much later in the session.
 
-		HttpSession session = httpServletRequest.getSession(false);
+		HttpSession httpSession = httpServletRequest.getSession(false);
 
 		String authorization = GetterUtil.getString(
 			httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION));
@@ -324,8 +324,8 @@ public class NtlmFilter extends BaseFilter {
 			httpServletRequest.setAttribute(
 				NtlmWebKeys.NTLM_REMOTE_USER, ntlmUserAccount.getUserName());
 
-			if (session != null) {
-				session.setAttribute(
+			if (httpSession != null) {
+				httpSession.setAttribute(
 					NtlmWebKeys.NTLM_USER_ACCOUNT, ntlmUserAccount);
 			}
 		}
@@ -335,8 +335,8 @@ public class NtlmFilter extends BaseFilter {
 		if ((path != null) && path.endsWith("/login")) {
 			NtlmUserAccount ntlmUserAccount = null;
 
-			if (session != null) {
-				ntlmUserAccount = (NtlmUserAccount)session.getAttribute(
+			if (httpSession != null) {
+				ntlmUserAccount = (NtlmUserAccount)httpSession.getAttribute(
 					NtlmWebKeys.NTLM_USER_ACCOUNT);
 			}
 

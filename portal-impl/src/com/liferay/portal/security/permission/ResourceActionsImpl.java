@@ -1041,10 +1041,10 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		Locale locale = null;
 
-		HttpSession session = httpServletRequest.getSession(false);
+		HttpSession httpSession = httpServletRequest.getSession(false);
 
-		if (session != null) {
-			locale = (Locale)session.getAttribute(WebKeys.LOCALE);
+		if (httpSession != null) {
+			locale = (Locale)httpSession.getAttribute(WebKeys.LOCALE);
 		}
 
 		if (locale == null) {

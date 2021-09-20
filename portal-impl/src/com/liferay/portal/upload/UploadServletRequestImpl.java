@@ -84,9 +84,9 @@ public class UploadServletRequestImpl
 		LiferayServletRequest liferayServletRequest = null;
 
 		try {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			session.removeAttribute(ProgressTracker.PERCENT);
+			httpSession.removeAttribute(ProgressTracker.PERCENT);
 
 			ServletFileUpload servletFileUpload;
 

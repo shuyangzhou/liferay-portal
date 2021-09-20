@@ -78,7 +78,7 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 
 	@Override
 	public User addOrUpdateUser(
-			HttpSession session, long companyId, String authorizationCode,
+			HttpSession httpSession, long companyId, String authorizationCode,
 			String returnRequestUri, List<String> scopes)
 		throws Exception {
 
@@ -107,7 +107,7 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 		try {
 			return TransactionInvokerUtil.invoke(
 				_transactionConfig,
-				() -> doAddOrUpdateUser(session, companyId, userinfoplus));
+				() -> doAddOrUpdateUser(httpSession, companyId, userinfoplus));
 		}
 		catch (Throwable throwable) {
 			if (throwable instanceof PortalException) {
@@ -199,7 +199,7 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 	}
 
 	protected User doAddOrUpdateUser(
-			HttpSession session, long companyId, Userinfoplus userinfoplus)
+			HttpSession httpSession, long companyId, Userinfoplus userinfoplus)
 		throws Exception {
 
 		User user = null;
@@ -213,7 +213,7 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 			if ((user != null) &&
 				(user.getStatus() != WorkflowConstants.STATUS_INCOMPLETE)) {
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					GoogleWebKeys.GOOGLE_USER_ID, String.valueOf(googleUserId));
 			}
 		}
@@ -227,14 +227,14 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 			if ((user != null) &&
 				(user.getStatus() != WorkflowConstants.STATUS_INCOMPLETE)) {
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					GoogleWebKeys.GOOGLE_USER_EMAIL_ADDRESS, emailAddress);
 			}
 		}
 
 		if (user != null) {
 			if (user.getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
-				session.setAttribute(
+				httpSession.setAttribute(
 					WebKeys.GOOGLE_INCOMPLETE_USER_ID, userinfoplus.getId());
 
 				user.setEmailAddress(userinfoplus.getEmail());
@@ -251,7 +251,7 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 
 			user = addUser(companyId, userinfoplus);
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				GoogleWebKeys.GOOGLE_USER_EMAIL_ADDRESS, emailAddress);
 		}
 

@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TreeMapBuilder;
-import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.io.Serializable;
 
@@ -236,32 +236,39 @@ public class GroupTestUtil {
 			Locale defaultLocale)
 		throws Exception {
 
-		UnicodeProperties typeSettingsUnicodeProperties =
-			new UnicodeProperties();
-
-		boolean inheritLocales = false;
-
-		if ((availableLocales == null) && (defaultLocale == null)) {
-			inheritLocales = true;
-		}
-
-		typeSettingsUnicodeProperties.put(
-			GroupConstants.TYPE_SETTINGS_KEY_INHERIT_LOCALES,
-			String.valueOf(inheritLocales));
-
-		if (availableLocales != null) {
-			typeSettingsUnicodeProperties.put(
-				PropsKeys.LOCALES,
-				StringUtil.merge(LocaleUtil.toLanguageIds(availableLocales)));
-		}
-
-		if (defaultLocale != null) {
-			typeSettingsUnicodeProperties.put(
-				"languageId", LocaleUtil.toLanguageId(defaultLocale));
-		}
-
 		Group group = GroupLocalServiceUtil.updateGroup(
-			groupId, typeSettingsUnicodeProperties.toString());
+			groupId,
+			UnicodePropertiesBuilder.put(
+				GroupConstants.TYPE_SETTINGS_KEY_INHERIT_LOCALES,
+				() -> {
+					boolean inheritLocales = false;
+
+					if ((availableLocales == null) && (defaultLocale == null)) {
+						inheritLocales = true;
+					}
+
+					return String.valueOf(inheritLocales);
+				}
+			).put(
+				PropsKeys.LOCALES,
+				() -> {
+					if (availableLocales != null) {
+						return StringUtil.merge(
+							LocaleUtil.toLanguageIds(availableLocales));
+					}
+
+					return null;
+				}
+			).put(
+				"languageId",
+				() -> {
+					if (defaultLocale != null) {
+						return LocaleUtil.toLanguageId(defaultLocale);
+					}
+
+					return null;
+				}
+			).buildString());
 
 		ThreadLocalCacheManager.clearAll(Lifecycle.REQUEST);
 

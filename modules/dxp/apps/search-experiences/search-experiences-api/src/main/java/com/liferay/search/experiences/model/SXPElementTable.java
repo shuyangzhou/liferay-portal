@@ -39,8 +39,6 @@ public class SXPElementTable extends BaseTable<SXPElementTable> {
 		"uuid_", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<SXPElementTable, Long> sxpElementId = createColumn(
 		"sxpElementId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
-	public final Column<SXPElementTable, Long> groupId = createColumn(
-		"groupId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<SXPElementTable, Long> companyId = createColumn(
 		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<SXPElementTable, Long> userId = createColumn(

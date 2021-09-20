@@ -1783,8 +1783,8 @@ public class PortalUtil {
 		return _portal.getUserPassword(httpServletRequest);
 	}
 
-	public static String getUserPassword(HttpSession session) {
-		return _portal.getUserPassword(session);
+	public static String getUserPassword(HttpSession httpSession) {
+		return _portal.getUserPassword(httpSession);
 	}
 
 	public static String getUserPassword(PortletRequest portletRequest) {

@@ -131,7 +131,7 @@ public class OpenIdConnectLoginRequestMVCActionCommand
 			HttpServletResponse httpServletResponse =
 				_portal.getHttpServletResponse(actionResponse);
 
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
 			LiferayPortletResponse liferayPortletResponse =
 				_portal.getLiferayPortletResponse(actionResponse);
@@ -149,7 +149,7 @@ public class OpenIdConnectLoginRequestMVCActionCommand
 				actionURL.setParameter("redirect", redirect);
 			}
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				OpenIdConnectWebKeys.OPEN_ID_CONNECT_ACTION_URL,
 				actionURL.toString());
 

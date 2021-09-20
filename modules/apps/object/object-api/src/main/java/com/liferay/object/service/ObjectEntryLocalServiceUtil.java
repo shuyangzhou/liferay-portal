@@ -284,6 +284,14 @@ public class ObjectEntryLocalServiceUtil {
 			groupId, objectRelationshipId, primaryKey, start, end);
 	}
 
+	public static int getManyToManyRelatedObjectEntriesCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws PortalException {
+
+		return getService().getManyToManyRelatedObjectEntriesCount(
+			groupId, objectRelationshipId, primaryKey);
+	}
+
 	/**
 	 * Returns a range of all the object entries.
 	 *
@@ -398,6 +406,14 @@ public class ObjectEntryLocalServiceUtil {
 			groupId, objectRelationshipId, primaryKey, start, end);
 	}
 
+	public static int getOneToManyRelatedObjectEntriesCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws PortalException {
+
+		return getService().getOneToManyRelatedObjectEntriesCount(
+			groupId, objectRelationshipId, primaryKey);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -434,6 +450,15 @@ public class ObjectEntryLocalServiceUtil {
 
 		return getService().getValuesList(
 			objectDefinitionId, statuses, start, end);
+	}
+
+	public static void insertIntoOrUpdateExtensionTable(
+			long objectDefinitionId, long primaryKey,
+			Map<String, Serializable> values)
+		throws PortalException {
+
+		getService().insertIntoOrUpdateExtensionTable(
+			objectDefinitionId, primaryKey, values);
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult

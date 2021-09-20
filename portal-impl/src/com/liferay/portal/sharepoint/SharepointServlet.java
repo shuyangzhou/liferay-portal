@@ -72,9 +72,9 @@ public class SharepointServlet extends HttpServlet {
 			if (uri.equals("/_vti_bin/shtml.dll/_vti_rpc") ||
 				uri.equals("/sharepoint/_vti_bin/_vti_aut/author.dll")) {
 
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
-				User user = (User)session.getAttribute(WebKeys.USER);
+				User user = (User)httpSession.getAttribute(WebKeys.USER);
 
 				SharepointRequest sharepointRequest = new SharepointRequest(
 					httpServletRequest, httpServletResponse, user);

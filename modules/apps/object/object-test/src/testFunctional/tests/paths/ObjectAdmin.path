@@ -111,6 +111,21 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td>OBJECT_NAME</td>
+		<td>//a[contains(text(),'${name}')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_STATUS</td>
+		<td>//strong[contains(@class, 'workflow-value') and contains(text(),'${status}')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>OBJECT_SYSTEM</td>
+		<td>//div[contains(text(),'${system}')]</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td>OBJECT_NAME_COLUMN</td>
 		<td>//div[contains(@class,'dnd-th') and contains(text(),'Name')]</td>
 		<td></td>
@@ -151,6 +166,11 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td>FIELDS_NAME_COLUMN</td>
+		<td>//div[contains(@class,'dnd-th') and contains(text(),'Name')]</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td>FIELDS_RADIO_OPTION</td>
 		<td>//label[contains(.,'${key_radioOption}')]/input[@type='radio']</td>
 		<td></td>
@@ -163,6 +183,11 @@
 	<tr>
 		<td>FIELD_SEARCHABLE_LANGUAGE_OPTION</td>
 		<td>//div[contains(@class,'form-group input-select-wrapper')]//option[contains(@value, 'en_US')]</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>FIELDS_TYPE_COLUMN</td>
+		<td>//div[contains(@class,'dnd-th') and contains(text(),'Type')]</td>
 		<td></td>
 	</tr>
 	<tr>
@@ -182,7 +207,7 @@
 	</tr>
 	<tr>
 		<td>KEBAB_MENU_OPTION</td>
-		<td>//button[contains(text(), '${key_kebabOption}')]</td>
+		<td>//*[@class = 'dropdown-item' and contains(text(), '${key_kebabOption}')]</td>
 		<td></td>
 	</tr>
 </tbody>

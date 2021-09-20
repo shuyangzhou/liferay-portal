@@ -106,10 +106,10 @@ public class PortletPreferencesFactoryUtil {
 	}
 
 	public static PortalPreferences getPortalPreferences(
-		HttpSession session, long userId, boolean signedIn) {
+		HttpSession httpSession, long userId, boolean signedIn) {
 
 		return _portletPreferencesFactory.getPortalPreferences(
-			session, userId, signedIn);
+			httpSession, userId, signedIn);
 	}
 
 	public static PortalPreferences getPortalPreferences(

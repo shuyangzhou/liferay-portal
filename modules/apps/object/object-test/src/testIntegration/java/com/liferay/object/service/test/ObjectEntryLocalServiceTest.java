@@ -111,8 +111,9 @@ public class ObjectEntryLocalServiceTest {
 		_irrelevantObjectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap("Irrelevant"), "Irrelevant",
-				null, null, LocalizedMapUtil.getLocalizedMap("Irrelevants"),
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"A" + RandomTestUtil.randomString(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectDefinitionConstants.SCOPE_COMPANY,
 				Collections.<ObjectField>emptyList());
 
@@ -124,8 +125,9 @@ public class ObjectEntryLocalServiceTest {
 		_objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap("Test"), "Test", null, null,
-				LocalizedMapUtil.getLocalizedMap("Tests"),
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"A" + RandomTestUtil.randomString(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectDefinitionConstants.SCOPE_COMPANY,
 				Arrays.asList(
 					ObjectFieldUtil.createObjectField(
@@ -564,7 +566,8 @@ public class ObjectEntryLocalServiceTest {
 		Assert.assertEquals(_getBigDecimal(0L), values.get("speed"));
 		Assert.assertEquals(0D, values.get("weight"));
 		Assert.assertEquals(
-			objectEntry.getObjectEntryId(), values.get("c_testId"));
+			objectEntry.getObjectEntryId(),
+			values.get(_objectDefinition.getPKObjectFieldName()));
 		Assert.assertEquals(values.toString(), 14, values.size());
 
 		try {
@@ -820,7 +823,7 @@ public class ObjectEntryLocalServiceTest {
 
 		// With keywords
 
-		_assertKeywords("@ liferay.com", 0);
+		_assertKeywords("@ liferay.com", 3);
 		_assertKeywords("@-liferay.com", 0);
 		_assertKeywords("@life", 3);
 		_assertKeywords("@liferay", 3);
@@ -960,7 +963,8 @@ public class ObjectEntryLocalServiceTest {
 		Assert.assertEquals(_getBigDecimal(0L), values.get("speed"));
 		Assert.assertEquals(0D, values.get("weight"));
 		Assert.assertEquals(
-			objectEntry.getObjectEntryId(), values.get("c_testId"));
+			objectEntry.getObjectEntryId(),
+			values.get(_objectDefinition.getPKObjectFieldName()));
 		Assert.assertEquals(values.toString(), 14, values.size());
 
 		Calendar calendar = new GregorianCalendar();
@@ -1011,7 +1015,8 @@ public class ObjectEntryLocalServiceTest {
 		Assert.assertEquals(_getBigDecimal(45L), values.get("speed"));
 		Assert.assertEquals(60D, values.get("weight"));
 		Assert.assertEquals(
-			objectEntry.getObjectEntryId(), values.get("c_testId"));
+			objectEntry.getObjectEntryId(),
+			values.get(_objectDefinition.getPKObjectFieldName()));
 		Assert.assertEquals(values.toString(), 14, values.size());
 
 		_objectEntryLocalService.updateObjectEntry(
@@ -1040,7 +1045,8 @@ public class ObjectEntryLocalServiceTest {
 		Assert.assertEquals(_getBigDecimal(45L), values.get("speed"));
 		Assert.assertEquals(65D, values.get("weight"));
 		Assert.assertEquals(
-			objectEntry.getObjectEntryId(), values.get("c_testId"));
+			objectEntry.getObjectEntryId(),
+			values.get(_objectDefinition.getPKObjectFieldName()));
 		Assert.assertEquals(values.toString(), 14, values.size());
 
 		_objectEntryLocalService.updateObjectEntry(
@@ -1051,7 +1057,7 @@ public class ObjectEntryLocalServiceTest {
 		_objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
 			HashMapBuilder.<String, Serializable>put(
-				"c_testId", ""
+				_objectDefinition.getPKObjectFieldName(), ""
 			).put(
 				"invalidName", ""
 			).build(),
@@ -1197,10 +1203,10 @@ public class ObjectEntryLocalServiceTest {
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
 				TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap("Test"),
-				"T" + RandomTestUtil.randomString(), null, null,
-				LocalizedMapUtil.getLocalizedMap("Tests"), scope,
-				Collections.<ObjectField>emptyList());
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				"A" + RandomTestUtil.randomString(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				scope, Collections.<ObjectField>emptyList());
 
 		objectDefinition =
 			_objectDefinitionLocalService.publishCustomObjectDefinition(

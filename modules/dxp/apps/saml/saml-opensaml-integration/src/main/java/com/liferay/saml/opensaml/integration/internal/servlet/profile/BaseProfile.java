@@ -356,16 +356,16 @@ public abstract class BaseProfile {
 			}
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		return samlSpSessionLocalService.fetchSamlSpSessionByJSessionId(
-			session.getId());
+			httpSession.getId());
 	}
 
 	public String getSamlSpSessionKey(HttpServletRequest httpServletRequest) {
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String samlSpSessionKey = (String)session.getAttribute(
+		String samlSpSessionKey = (String)httpSession.getAttribute(
 			SamlWebKeys.SAML_SP_SESSION_KEY);
 
 		if (Validator.isNull(samlSpSessionKey)) {
@@ -451,10 +451,10 @@ public abstract class BaseProfile {
 		CookieKeys.addCookie(
 			httpServletRequest, httpServletResponse, rememberMeCookie);
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		try {
-			session.invalidate();
+			httpSession.invalidate();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

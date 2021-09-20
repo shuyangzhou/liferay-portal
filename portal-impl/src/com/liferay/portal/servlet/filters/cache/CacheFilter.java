@@ -482,9 +482,9 @@ public class CacheFilter extends BasePortalFilter {
 				WebKeys.LAST_PATH);
 
 			if (lastPath != null) {
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
-				session.setAttribute(WebKeys.LAST_PATH, lastPath);
+				httpSession.setAttribute(WebKeys.LAST_PATH, lastPath);
 			}
 		}
 

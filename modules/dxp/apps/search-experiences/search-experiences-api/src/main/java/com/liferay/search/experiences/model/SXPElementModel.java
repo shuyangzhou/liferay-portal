@@ -17,7 +17,6 @@ package com.liferay.search.experiences.model;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,8 +41,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface SXPElementModel
-	extends BaseModel<SXPElement>, GroupedModel, LocalizedModel, MVCCModel,
-			ShardedModel, StagedAuditedModel {
+	extends BaseModel<SXPElement>, LocalizedModel, MVCCModel, ShardedModel,
+			StagedAuditedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -111,22 +110,6 @@ public interface SXPElementModel
 	 * @param sxpElementId the sxp element ID of this sxp element
 	 */
 	public void setSXPElementId(long sxpElementId);
-
-	/**
-	 * Returns the group ID of this sxp element.
-	 *
-	 * @return the group ID of this sxp element
-	 */
-	@Override
-	public long getGroupId();
-
-	/**
-	 * Sets the group ID of this sxp element.
-	 *
-	 * @param groupId the group ID of this sxp element
-	 */
-	@Override
-	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the company ID of this sxp element.

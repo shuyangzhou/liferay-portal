@@ -1,5 +1,0 @@
-dependencies {
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile project(":dxp:apps:commerce:commerce-shop-by-diagram:commerce-shop-by-diagram-api")
-	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
-}

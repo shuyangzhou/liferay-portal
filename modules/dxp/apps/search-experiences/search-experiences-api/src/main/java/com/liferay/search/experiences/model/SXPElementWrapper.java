@@ -46,7 +46,6 @@ public class SXPElementWrapper
 		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("uuid", getUuid());
 		attributes.put("sxpElementId", getSXPElementId());
-		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -81,12 +80,6 @@ public class SXPElementWrapper
 
 		if (sxpElementId != null) {
 			setSXPElementId(sxpElementId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -282,16 +275,6 @@ public class SXPElementWrapper
 	@Override
 	public String getElementDefinitionJSON() {
 		return model.getElementDefinitionJSON();
-	}
-
-	/**
-	 * Returns the group ID of this sxp element.
-	 *
-	 * @return the group ID of this sxp element
-	 */
-	@Override
-	public long getGroupId() {
-		return model.getGroupId();
 	}
 
 	/**
@@ -625,16 +608,6 @@ public class SXPElementWrapper
 	@Override
 	public void setElementDefinitionJSON(String elementDefinitionJSON) {
 		model.setElementDefinitionJSON(elementDefinitionJSON);
-	}
-
-	/**
-	 * Sets the group ID of this sxp element.
-	 *
-	 * @param groupId the group ID of this sxp element
-	 */
-	@Override
-	public void setGroupId(long groupId) {
-		model.setGroupId(groupId);
 	}
 
 	/**

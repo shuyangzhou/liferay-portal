@@ -169,7 +169,7 @@ public class CASFilter extends BaseFilter {
 			HttpServletResponse httpServletResponse, FilterChain filterChain)
 		throws Exception {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		long companyId = _portal.getCompanyId(httpServletRequest);
 
@@ -179,10 +179,11 @@ public class CASFilter extends BaseFilter {
 				new CompanyServiceSettingsLocator(
 					companyId, CASConstants.SERVICE_NAME));
 
-		Object forceLogout = session.getAttribute(CASWebKeys.CAS_FORCE_LOGOUT);
+		Object forceLogout = httpSession.getAttribute(
+			CASWebKeys.CAS_FORCE_LOGOUT);
 
 		if (forceLogout != null) {
-			session.removeAttribute(CASWebKeys.CAS_FORCE_LOGOUT);
+			httpSession.removeAttribute(CASWebKeys.CAS_FORCE_LOGOUT);
 
 			String logoutUrl = casConfiguration.logoutURL();
 
@@ -196,7 +197,7 @@ public class CASFilter extends BaseFilter {
 		if (Validator.isNotNull(pathInfo) &&
 			pathInfo.contains("/portal/logout")) {
 
-			session.invalidate();
+			httpSession.invalidate();
 
 			String logoutUrl = casConfiguration.logoutURL();
 
@@ -205,7 +206,7 @@ public class CASFilter extends BaseFilter {
 			return;
 		}
 
-		String login = (String)session.getAttribute(CASWebKeys.CAS_LOGIN);
+		String login = (String)httpSession.getAttribute(CASWebKeys.CAS_LOGIN);
 
 		if (Validator.isNotNull(login)) {
 			processFilter(
@@ -268,7 +269,7 @@ public class CASFilter extends BaseFilter {
 
 			login = attributePrincipal.getName();
 
-			session.setAttribute(CASWebKeys.CAS_LOGIN, login);
+			httpSession.setAttribute(CASWebKeys.CAS_LOGIN, login);
 		}
 
 		processFilter(

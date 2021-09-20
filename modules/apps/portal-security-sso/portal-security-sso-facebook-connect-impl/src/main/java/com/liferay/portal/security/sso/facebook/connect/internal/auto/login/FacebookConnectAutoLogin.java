@@ -80,20 +80,20 @@ public class FacebookConnectAutoLogin extends BaseAutoLogin {
 			HttpServletRequest httpServletRequest, long companyId)
 		throws PortalException {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String emailAddress = (String)session.getAttribute(
+		String emailAddress = (String)httpSession.getAttribute(
 			WebKeys.FACEBOOK_USER_EMAIL_ADDRESS);
 
 		if (Validator.isNotNull(emailAddress)) {
-			session.removeAttribute(WebKeys.FACEBOOK_USER_EMAIL_ADDRESS);
+			httpSession.removeAttribute(WebKeys.FACEBOOK_USER_EMAIL_ADDRESS);
 
 			return _userLocalService.getUserByEmailAddress(
 				companyId, emailAddress);
 		}
 
 		long facebookId = GetterUtil.getLong(
-			(String)session.getAttribute(
+			(String)httpSession.getAttribute(
 				FacebookConnectWebKeys.FACEBOOK_USER_ID));
 
 		if (facebookId > 0) {

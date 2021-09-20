@@ -526,7 +526,35 @@ public class DBPartitionUtil {
 					return 0;
 				}
 
-				return super.executeUpdate(sql);
+				int returnValue = super.executeUpdate(sql);
+
+				if (!StringUtil.startsWith(lowerCaseSQL, "alter table")) {
+					return returnValue;
+				}
+
+				try (Connection connection = DataAccess.getConnection()) {
+					DBInspector dbInspector = new DBInspector(connection);
+					String tableName = query[2];
+
+					if (!_isControlTable(dbInspector, tableName)) {
+						return returnValue;
+					}
+
+					long[] companyIds = PortalInstances.getCompanyIdsBySQL();
+
+					for (long companyId : companyIds) {
+						if (companyId == _defaultCompanyId) {
+							continue;
+						}
+
+						super.execute(_getCreateViewSQL(companyId, tableName));
+					}
+
+					return returnValue;
+				}
+				catch (Exception exception) {
+					throw new SQLException(exception);
+				}
 			}
 
 		};

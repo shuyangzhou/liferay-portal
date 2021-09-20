@@ -99,9 +99,9 @@ public class SharedSessionPortletContainerTest
 				HttpServletRequest httpServletRequest =
 					lifecycleEvent.getRequest();
 
-				HttpSession session = httpServletRequest.getSession(true);
+				HttpSession httpSession = httpServletRequest.getSession(true);
 
-				session.setAttribute(attributeKey, attributeValue);
+				httpSession.setAttribute(attributeKey, attributeValue);
 			}
 
 		};
@@ -166,9 +166,9 @@ public class SharedSessionPortletContainerTest
 				HttpServletRequest httpServletRequest =
 					lifecycleEvent.getRequest();
 
-				HttpSession session = httpServletRequest.getSession(true);
+				HttpSession httpSession = httpServletRequest.getSession(true);
 
-				Object value = session.getAttribute(attributeKey);
+				Object value = httpSession.getAttribute(attributeKey);
 
 				sessionValue.set(value);
 			}
@@ -233,9 +233,9 @@ public class SharedSessionPortletContainerTest
 				HttpServletRequest httpServletRequest =
 					lifecycleEvent.getRequest();
 
-				HttpSession session = httpServletRequest.getSession(true);
+				HttpSession httpSession = httpServletRequest.getSession(true);
 
-				session.setAttribute(attributeKey, attributeValue);
+				httpSession.setAttribute(attributeKey, attributeValue);
 			}
 
 		};
@@ -300,9 +300,9 @@ public class SharedSessionPortletContainerTest
 				HttpServletRequest httpServletRequest =
 					lifecycleEvent.getRequest();
 
-				HttpSession session = httpServletRequest.getSession(true);
+				HttpSession httpSession = httpServletRequest.getSession(true);
 
-				session.setAttribute(attributeKey, attributeValue);
+				httpSession.setAttribute(attributeKey, attributeValue);
 			}
 
 		};
@@ -364,9 +364,9 @@ public class SharedSessionPortletContainerTest
 				HttpServletRequest httpServletRequest =
 					lifecycleEvent.getRequest();
 
-				HttpSession session = httpServletRequest.getSession(true);
+				HttpSession httpSession = httpServletRequest.getSession(true);
 
-				Object value = session.getAttribute(attributeKey);
+				Object value = httpSession.getAttribute(attributeKey);
 
 				sessionValue.set(value);
 			}

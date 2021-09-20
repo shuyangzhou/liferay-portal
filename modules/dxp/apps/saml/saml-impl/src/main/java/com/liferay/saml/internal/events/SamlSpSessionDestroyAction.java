@@ -43,8 +43,8 @@ import org.osgi.service.component.annotations.Reference;
 public class SamlSpSessionDestroyAction extends SessionAction {
 
 	@Override
-	public void run(HttpSession session) throws ActionException {
-		Long userId = (Long)session.getAttribute(WebKeys.USER_ID);
+	public void run(HttpSession httpSession) throws ActionException {
+		Long userId = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if (userId == null) {
 			return;
@@ -70,14 +70,14 @@ public class SamlSpSessionDestroyAction extends SessionAction {
 		CompanyThreadLocal.setCompanyId(userCompanyId);
 
 		try {
-			doRun(session);
+			doRun(httpSession);
 		}
 		finally {
 			CompanyThreadLocal.setCompanyId(companyId);
 		}
 	}
 
-	protected void doRun(HttpSession session) throws ActionException {
+	protected void doRun(HttpSession httpSession) throws ActionException {
 		if (!_samlProviderConfigurationHelper.isEnabled() ||
 			!_samlProviderConfigurationHelper.isRoleSp()) {
 
@@ -86,7 +86,7 @@ public class SamlSpSessionDestroyAction extends SessionAction {
 
 		SamlSpSession samlSpSession =
 			_samlSpSessionLocalService.fetchSamlSpSessionByJSessionId(
-				session.getId());
+				httpSession.getId());
 
 		if (samlSpSession == null) {
 			return;

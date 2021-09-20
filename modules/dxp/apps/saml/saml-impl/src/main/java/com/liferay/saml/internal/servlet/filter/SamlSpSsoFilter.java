@@ -216,9 +216,10 @@ public class SamlSpSsoFilter extends BaseSamlPortalFilter {
 			relayState = _portal.escapeRedirect(relayState);
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		LastPath lastPath = (LastPath)session.getAttribute(WebKeys.LAST_PATH);
+		LastPath lastPath = (LastPath)httpSession.getAttribute(
+			WebKeys.LAST_PATH);
 
 		if (GetterUtil.getBoolean(
 				_props.get(PropsKeys.AUTH_FORWARD_BY_LAST_PATH)) &&

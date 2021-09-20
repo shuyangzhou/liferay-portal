@@ -181,9 +181,9 @@ public class UpdatePasswordAction implements Action {
 	protected boolean isValidatePassword(
 		HttpServletRequest httpServletRequest) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		Boolean setupWizardPasswordUpdated = (Boolean)session.getAttribute(
+		Boolean setupWizardPasswordUpdated = (Boolean)httpSession.getAttribute(
 			WebKeys.SETUP_WIZARD_PASSWORD_UPDATED);
 
 		if ((setupWizardPasswordUpdated != null) &&

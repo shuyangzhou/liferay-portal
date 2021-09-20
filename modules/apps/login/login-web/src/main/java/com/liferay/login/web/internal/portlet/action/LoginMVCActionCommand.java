@@ -160,9 +160,9 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 	protected String getCompleteRedirectURL(
 		HttpServletRequest httpServletRequest, String redirect) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		Boolean httpsInitial = (Boolean)session.getAttribute(
+		Boolean httpsInitial = (Boolean)httpSession.getAttribute(
 			WebKeys.HTTPS_INITIAL);
 
 		String portalURL = null;

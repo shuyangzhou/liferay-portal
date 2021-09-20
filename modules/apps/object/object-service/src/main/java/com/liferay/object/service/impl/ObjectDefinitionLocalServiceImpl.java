@@ -23,6 +23,7 @@ import com.liferay.object.exception.ObjectDefinitionPluralLabelException;
 import com.liferay.object.exception.ObjectDefinitionScopeException;
 import com.liferay.object.exception.ObjectDefinitionStatusException;
 import com.liferay.object.exception.ObjectDefinitionVersionException;
+import com.liferay.object.exception.RequiredObjectDefinitionException;
 import com.liferay.object.internal.deployer.ObjectDefinitionDeployerImpl;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
@@ -58,6 +59,7 @@ import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
@@ -237,19 +239,22 @@ public class ObjectDefinitionLocalServiceImpl
 			ObjectDefinition objectDefinition)
 		throws PortalException {
 
-		long objectDefinitionId = objectDefinition.getObjectDefinitionId();
+		if (!PortalRunMode.isTestMode() && objectDefinition.isApproved()) {
+			throw new RequiredObjectDefinitionException();
+		}
 
 		if (!objectDefinition.isSystem()) {
 			List<ObjectEntry> objectEntries =
 				_objectEntryPersistence.findByObjectDefinitionId(
-					objectDefinitionId);
+					objectDefinition.getObjectDefinitionId());
 
 			for (ObjectEntry objectEntry : objectEntries) {
 				_objectEntryLocalService.deleteObjectEntry(objectEntry);
 			}
 		}
 
-		_objectFieldPersistence.removeByObjectDefinitionId(objectDefinitionId);
+		_objectFieldPersistence.removeByObjectDefinitionId(
+			objectDefinition.getObjectDefinitionId());
 
 		// TODO Deleting an object definition should delete related object
 		// relationships
@@ -408,7 +413,7 @@ public class ObjectDefinitionLocalServiceImpl
 				_bundleContext, _destinationFactory,
 				_dynamicQueryBatchIndexingActionableFactory,
 				_listTypeEntryLocalService, _messageBus,
-				_modelSearchRegistrarHelper, _objectEntryLocalService,
+				_modelSearchRegistrarHelper, this, _objectEntryLocalService,
 				_objectFieldLocalService, _objectScopeProviderRegistry,
 				_persistedModelLocalServiceRegistry, _resourceActions,
 				_workflowStatusModelPreFilterContributor));

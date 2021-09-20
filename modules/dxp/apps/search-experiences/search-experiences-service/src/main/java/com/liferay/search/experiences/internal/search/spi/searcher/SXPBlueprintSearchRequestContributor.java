@@ -23,6 +23,7 @@ import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.spi.searcher.SearchRequestContributor;
 import com.liferay.search.experiences.internal.enhancer.SXPBlueprintSearchRequestEnhancer;
 import com.liferay.search.experiences.model.SXPBlueprint;
+import com.liferay.search.experiences.rest.dto.v1_0.util.SXPBlueprintUtil;
 import com.liferay.search.experiences.service.SXPBlueprintLocalService;
 
 import org.osgi.service.component.annotations.Component;
@@ -67,7 +68,9 @@ public class SXPBlueprintSearchRequestContributor
 			return searchRequest;
 		}
 
-		_sxpBlueprintSearchRequestEnhancer.enhance(searchRequest, sxpBlueprint);
+		_sxpBlueprintSearchRequestEnhancer.enhance(
+			searchRequestBuilder,
+			SXPBlueprintUtil.toSXPBlueprint(sxpBlueprint));
 
 		return searchRequestBuilder.build();
 	}

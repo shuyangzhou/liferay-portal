@@ -39,7 +39,10 @@ public class ObjectEntriesTableClayDataSetDisplayView
 		ClayTableSchemaBuilder clayTableSchemaBuilder =
 			clayTableSchemaBuilderFactory.create();
 
-		clayTableSchemaBuilder.addClayTableSchemaField("id", "id");
+		ClayTableSchemaField idClayTableSchemaField =
+			clayTableSchemaBuilder.addClayTableSchemaField("id", "id");
+
+		idClayTableSchemaField.setContentRenderer("actionLink");
 
 		for (ObjectField objectField : objectFields) {
 			ClayTableSchemaField clayTableSchemaField =

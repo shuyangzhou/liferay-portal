@@ -35,11 +35,10 @@ public class ListTypeDefinitionServiceWrapper
 
 	@Override
 	public com.liferay.list.type.model.ListTypeDefinition addListTypeDefinition(
-			long userId, java.util.Map<java.util.Locale, String> nameMap)
+			java.util.Map<java.util.Locale, String> nameMap)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _listTypeDefinitionService.addListTypeDefinition(
-			userId, nameMap);
+		return _listTypeDefinitionService.addListTypeDefinition(nameMap);
 	}
 
 	@Override

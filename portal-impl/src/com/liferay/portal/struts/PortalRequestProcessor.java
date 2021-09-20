@@ -263,13 +263,13 @@ public class PortalRequestProcessor {
 	}
 
 	private String _getLastPath(HttpServletRequest httpServletRequest) {
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Boolean httpsInitial = (Boolean)session.getAttribute(
+		Boolean httpsInitial = (Boolean)httpSession.getAttribute(
 			WebKeys.HTTPS_INITIAL);
 
 		String portalURL = null;
@@ -306,7 +306,8 @@ public class PortalRequestProcessor {
 			return sb.toString();
 		}
 
-		LastPath lastPath = (LastPath)session.getAttribute(WebKeys.LAST_PATH);
+		LastPath lastPath = (LastPath)httpSession.getAttribute(
+			WebKeys.LAST_PATH);
 
 		if (lastPath == null) {
 			return sb.toString();
@@ -429,23 +430,23 @@ public class PortalRequestProcessor {
 	}
 
 	private void _processLocale(HttpServletRequest httpServletRequest) {
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		if (session.getAttribute(WebKeys.LOCALE) != null) {
+		if (httpSession.getAttribute(WebKeys.LOCALE) != null) {
 			return;
 		}
 
 		Locale locale = httpServletRequest.getLocale();
 
 		if (locale != null) {
-			session.setAttribute(WebKeys.LOCALE, locale);
+			httpSession.setAttribute(WebKeys.LOCALE, locale);
 		}
 	}
 
 	private String _processPath(HttpServletRequest httpServletRequest) {
 		String path = _findPath(httpServletRequest);
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
@@ -454,7 +455,7 @@ public class PortalRequestProcessor {
 		// Current users
 
 		UserTracker userTracker = LiveUsers.getUserTracker(
-			themeDisplay.getCompanyId(), session.getId());
+			themeDisplay.getCompanyId(), httpSession.getId());
 
 		if ((userTracker != null) && !path.equals(_PATH_C) &&
 			!path.contains(_PATH_J_SECURITY_CHECK) &&
@@ -551,7 +552,7 @@ public class PortalRequestProcessor {
 							httpServletRequest.getParameterMap()));
 				}
 
-				session.setAttribute(WebKeys.LAST_PATH, lastPath);
+				httpSession.setAttribute(WebKeys.LAST_PATH, lastPath);
 			}
 		}
 
@@ -609,7 +610,8 @@ public class PortalRequestProcessor {
 
 		if (user != null) {
 			if (!user.isActive()) {
-				SessionErrors.add(session, UserActiveException.class.getName());
+				SessionErrors.add(
+					httpSession, UserActiveException.class.getName());
 
 				return _PATH_PORTAL_ERROR;
 			}
@@ -681,7 +683,7 @@ public class PortalRequestProcessor {
 
 			// Users must sign in
 
-			SessionErrors.add(session, PrincipalException.class.getName());
+			SessionErrors.add(httpSession, PrincipalException.class.getName());
 
 			return _PATH_PORTAL_LOGIN;
 		}
@@ -689,7 +691,7 @@ public class PortalRequestProcessor {
 		// Authenticated users must have access to at least one layout
 
 		if (SessionErrors.contains(
-				session, LayoutPermissionException.class.getName())) {
+				httpSession, LayoutPermissionException.class.getName())) {
 
 			return _PATH_PORTAL_ERROR;
 		}

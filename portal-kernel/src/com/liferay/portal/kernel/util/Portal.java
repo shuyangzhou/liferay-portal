@@ -1103,7 +1103,7 @@ public interface Portal {
 
 	public String getUserPassword(HttpServletRequest httpServletRequest);
 
-	public String getUserPassword(HttpSession session);
+	public String getUserPassword(HttpSession httpSession);
 
 	public String getUserPassword(PortletRequest portletRequest);
 

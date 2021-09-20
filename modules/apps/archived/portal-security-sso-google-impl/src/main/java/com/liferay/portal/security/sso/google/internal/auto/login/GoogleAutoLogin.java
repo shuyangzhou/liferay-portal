@@ -68,20 +68,21 @@ public class GoogleAutoLogin extends BaseAutoLogin {
 			HttpServletRequest httpServletRequest, long companyId)
 		throws Exception {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		String emailAddress = GetterUtil.getString(
-			session.getAttribute(GoogleWebKeys.GOOGLE_USER_EMAIL_ADDRESS));
+			httpSession.getAttribute(GoogleWebKeys.GOOGLE_USER_EMAIL_ADDRESS));
 
 		if (Validator.isNotNull(emailAddress)) {
-			session.removeAttribute(GoogleWebKeys.GOOGLE_USER_EMAIL_ADDRESS);
+			httpSession.removeAttribute(
+				GoogleWebKeys.GOOGLE_USER_EMAIL_ADDRESS);
 
 			return _userLocalService.getUserByEmailAddress(
 				companyId, emailAddress);
 		}
 
 		String googleUserId = GetterUtil.getString(
-			(String)session.getAttribute(GoogleWebKeys.GOOGLE_USER_ID));
+			(String)httpSession.getAttribute(GoogleWebKeys.GOOGLE_USER_ID));
 
 		if (Validator.isNotNull(googleUserId)) {
 			return _userLocalService.getUserByGoogleUserId(

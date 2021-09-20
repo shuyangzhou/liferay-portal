@@ -95,7 +95,6 @@ public class ListTypeDefinitionResourceImpl
 
 		return _toListTypeDefinition(
 			_listTypeDefinitionService.addListTypeDefinition(
-				contextUser.getUserId(),
 				LocalizedMapUtil.getLocalizedMap(
 					listTypeDefinition.getName_i18n())));
 	}

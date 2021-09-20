@@ -259,10 +259,10 @@ public class LiveUsers {
 		}
 
 		try {
-			HttpSession session = PortalSessionContext.get(sessionId);
+			HttpSession httpSession = PortalSessionContext.get(sessionId);
 
-			if (session != null) {
-				session.invalidate();
+			if (httpSession != null) {
+				httpSession.invalidate();
 			}
 		}
 		catch (Exception exception) {

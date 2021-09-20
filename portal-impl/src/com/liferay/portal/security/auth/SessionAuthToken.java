@@ -225,13 +225,14 @@ public class SessionAuthToken implements AuthToken {
 		String sessionAuthenticationToken = null;
 
 		HttpServletRequest currentHttpServletRequest = httpServletRequest;
-		HttpSession session = null;
+		HttpSession httpSession = null;
 		String tokenKey = WebKeys.AUTHENTICATION_TOKEN.concat(key);
 
 		while (currentHttpServletRequest instanceof HttpServletRequestWrapper) {
-			session = currentHttpServletRequest.getSession();
+			httpSession = currentHttpServletRequest.getSession();
 
-			sessionAuthenticationToken = (String)session.getAttribute(tokenKey);
+			sessionAuthenticationToken = (String)httpSession.getAttribute(
+				tokenKey);
 
 			if (Validator.isNotNull(sessionAuthenticationToken)) {
 				break;
@@ -245,16 +246,17 @@ public class SessionAuthToken implements AuthToken {
 		}
 
 		if (Validator.isNull(sessionAuthenticationToken)) {
-			session = currentHttpServletRequest.getSession();
+			httpSession = currentHttpServletRequest.getSession();
 
-			sessionAuthenticationToken = (String)session.getAttribute(tokenKey);
+			sessionAuthenticationToken = (String)httpSession.getAttribute(
+				tokenKey);
 		}
 
 		if (createToken && Validator.isNull(sessionAuthenticationToken)) {
 			sessionAuthenticationToken = PwdGenerator.getPassword(
 				PropsValues.AUTH_TOKEN_LENGTH);
 
-			session.setAttribute(tokenKey, sessionAuthenticationToken);
+			httpSession.setAttribute(tokenKey, sessionAuthenticationToken);
 		}
 
 		return sessionAuthenticationToken;

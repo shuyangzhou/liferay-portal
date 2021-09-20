@@ -27,6 +27,7 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.list.type.model.ListTypeDefinition" %><%@
+page import="com.liferay.list.type.model.ListTypeEntry" %><%@
 page import="com.liferay.object.exception.DuplicateObjectDefinitionException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionLabelException" %><%@
 page import="com.liferay.object.exception.ObjectDefinitionNameException" %><%@
@@ -40,7 +41,7 @@ page import="com.liferay.object.model.ObjectLayout" %><%@
 page import="com.liferay.object.model.ObjectLayoutTab" %><%@
 page import="com.liferay.object.scope.ObjectScopeProvider" %><%@
 page import="com.liferay.object.web.internal.constants.ObjectWebKeys" %><%@
-page import="com.liferay.object.web.internal.list.type.constants.ListTypeDefinitionsClayDataSetDisplayNames" %><%@
+page import="com.liferay.object.web.internal.list.type.constants.ListTypeClayDataSetDisplayNames" %><%@
 page import="com.liferay.object.web.internal.list.type.display.context.ViewListTypeDefinitionsDisplayContext" %><%@
 page import="com.liferay.object.web.internal.list.type.display.context.ViewListTypeEntriesDisplayContext" %><%@
 page import="com.liferay.object.web.internal.object.definitions.constants.ObjectDefinitionsClayDataSetDisplayNames" %><%@
@@ -50,6 +51,7 @@ page import="com.liferay.object.web.internal.object.definitions.display.context.
 page import="com.liferay.object.web.internal.object.definitions.display.context.ObjectDefinitionsLayoutsDisplayContext" %><%@
 page import="com.liferay.object.web.internal.object.definitions.display.context.ObjectDefinitionsRelationshipsDisplayContext" %><%@
 page import="com.liferay.object.web.internal.object.definitions.display.context.ViewObjectDefinitionsDisplayContext" %><%@
+page import="com.liferay.object.web.internal.object.entries.constants.ObjectEntriesClayDataSetDisplayNames" %><%@
 page import="com.liferay.object.web.internal.object.entries.display.context.ObjectEntryDisplayContext" %><%@
 page import="com.liferay.object.web.internal.object.entries.display.context.ViewObjectEntriesDisplayContext" %><%@
 page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@

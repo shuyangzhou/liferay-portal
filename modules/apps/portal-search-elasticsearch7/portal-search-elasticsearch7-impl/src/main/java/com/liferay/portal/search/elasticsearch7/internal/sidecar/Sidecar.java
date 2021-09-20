@@ -133,42 +133,40 @@ public class Sidecar {
 			_log.info("Stopping sidecar Elasticsearch");
 		}
 
-		PathUtil.deleteDir(_sidecarTempDirPath);
+		if (_processChannel != null) {
+			NoticeableFuture<Serializable> noticeableFuture =
+				_processChannel.getProcessNoticeableFuture();
 
-		if (_processChannel == null) {
-			return;
-		}
+			noticeableFuture.removeFutureListener(_restartFutureListener);
 
-		NoticeableFuture<Serializable> noticeableFuture =
-			_processChannel.getProcessNoticeableFuture();
+			_processChannel.write(new StopSidecarProcessCallable());
 
-		noticeableFuture.removeFutureListener(_restartFutureListener);
-
-		_processChannel.write(new StopSidecarProcessCallable());
-
-		try {
-			noticeableFuture.get(
-				_elasticsearchConfigurationWrapper.sidecarShutdownTimeout(),
-				TimeUnit.MILLISECONDS);
-		}
-		catch (Exception exception) {
-			if (!noticeableFuture.isDone()) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Forcibly shutdown sidecar Elasticsearch process ",
-							"because it did not shut down in ",
-							_elasticsearchConfigurationWrapper.
-								sidecarShutdownTimeout(),
-							" ms"),
-						exception);
-				}
-
-				noticeableFuture.cancel(true);
+			try {
+				noticeableFuture.get(
+					_elasticsearchConfigurationWrapper.sidecarShutdownTimeout(),
+					TimeUnit.MILLISECONDS);
 			}
+			catch (Exception exception) {
+				if (!noticeableFuture.isDone()) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Forcibly shutdown sidecar Elasticsearch ",
+								"process because it did not shut down in ",
+								_elasticsearchConfigurationWrapper.
+									sidecarShutdownTimeout(),
+								" ms"),
+							exception);
+					}
+
+					noticeableFuture.cancel(true);
+				}
+			}
+
+			_processChannel = null;
 		}
 
-		_processChannel = null;
+		PathUtil.deleteDir(_sidecarTempDirPath);
 	}
 
 	protected static void addFutureListener(
@@ -608,7 +606,7 @@ public class Sidecar {
 	}
 
 	private static final String[] _SUPPORTED_ELASTICSEARCH_SIDECAR_VERSIONS = {
-		"7.14.0", "7.14.1"
+		"7.10.2"
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);

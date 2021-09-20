@@ -127,12 +127,11 @@ definition {
 		AssertConsoleTextPresent(value1 = "TestSiteRole");
 	}
 
-	@description = "This is a use case for LRQA-57574 TC-1: Combines SAML.CreateAndSyncUserAfterSAMLSetupWithMatchingScreenNameAttribute and Oauth2.AuthorizeExternalApplication to verify that the portal works when OAuth 2 and SAML are both enabled with a synced user on SP. The test is under quarantine cause of LPS-137257"
+	@description = "This is a use case for LRQA-57574 TC-1: Combines SAML.CreateAndSyncUserAfterSAMLSetupWithMatchingScreenNameAttribute and OAuth2.AuthorizeExternalApplication to verify that the portal works when OAuth 2 and SAML are both enabled with a synced user on SP."
 	@priority = "4"
 	test AssertAuthorizationOnOAuth2WithSAMLConnectionWithExistingUser {
 		property app.server.bundles.size = "1";
 		property minimum.slave.ram = "24";
-		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "SAML#AssertAuthorizationOnOAuth2WithSAMLConnectionWithExistingUser";
 
 		// Enable SAML debug logs
@@ -207,6 +206,10 @@ definition {
 			clientProfile = "Web Application",
 			clientSecret = "abc123");
 
+		OAuth2.addApplicationPermissionToRole(
+			applicationName = "Third-party Application",
+			userRole = "user");
+
 		User.logoutPG(specificURL = "http://www.able.com:9080");
 
 		User.viewLoggedOutPG();
@@ -214,9 +217,9 @@ definition {
 		OAuth2.authorizeMyApplication(
 			clientId = "abc123",
 			clientSecret = "abc123",
-			portalURL = "http://localhost:9080");
+			portalURL = "http://www.able.com:9080");
 
-		OAuth2.launchRequest();
+		OAuth2.launchRequest(requestURL = "http://www.able.com:9080/api/jsonws/user/get-current-user");
 
 		// Assert the user information for verification
 
@@ -228,12 +231,11 @@ definition {
 			value4 = '''"screenName":"test"''');
 	}
 
-	@description = "This is a use case for LRQA-57574 TC-2: Combines SAML.CreateAndSyncUserAfterSAMLSetupWithMatchingScreenNameAttribute and Oauth2.AuthorizeExternalApplication to verify that the portal works when OAuth 2 and SAML are both enabled and authenticating with a user who is not synced to SP. The test is under quarantine cause of LPS-137257"
+	@description = "This is a use case for LRQA-57574 TC-2: Combines SAML.CreateAndSyncUserAfterSAMLSetupWithMatchingScreenNameAttribute and OAuth2.AuthorizeExternalApplication to verify that the portal works when OAuth 2 and SAML are both enabled and authenticating with a user who is not synced to SP."
 	@priority = "4"
 	test AssertAuthorizationOnOAuth2WithSAMLConnectionWithoutExistingUser {
 		property app.server.bundles.size = "1";
 		property minimum.slave.ram = "24";
-		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "SAML#AssertAuthorizationOnOAuth2WithSAMLConnectionWithoutExistingUser";
 
 		// Enable SAML debug logs
@@ -302,6 +304,10 @@ definition {
 			clientProfile = "Web Application",
 			clientSecret = "abc123");
 
+		OAuth2.addApplicationPermissionToRole(
+			applicationName = "Third-party Application",
+			userRole = "user");
+
 		User.logoutPG(specificURL = "http://www.able.com:9080");
 
 		User.viewLoggedOutPG();
@@ -311,9 +317,9 @@ definition {
 		OAuth2.authorizeMyApplication(
 			clientId = "abc123",
 			clientSecret = "abc123",
-			portalURL = "http://localhost:9080");
+			portalURL = "http://www.able.com:9080");
 
-		OAuth2.launchRequest();
+		OAuth2.launchRequest(requestURL = "http://www.able.com:9080/api/jsonws/user/get-current-user");
 
 		// Assert the user information for verification
 

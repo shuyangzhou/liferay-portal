@@ -86,9 +86,9 @@ public class UpdateLanguageAction implements Action {
 					contact.getSkypeSn(), contact.getTwitterSn());
 			}
 
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			session.setAttribute(WebKeys.LOCALE, locale);
+			httpSession.setAttribute(WebKeys.LOCALE, locale);
 
 			LanguageUtil.updateCookie(
 				httpServletRequest, httpServletResponse, locale);

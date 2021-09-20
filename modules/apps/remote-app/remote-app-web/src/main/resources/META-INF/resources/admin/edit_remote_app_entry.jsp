@@ -39,6 +39,9 @@ renderResponse.setTitle((remoteAppEntry == null) ? LanguageUtil.get(request, "ne
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="remoteAppEntryId" type="hidden" value="<%= remoteAppEntryId %>" />
 
+	<liferay-ui:error exception="<%= RemoteAppEntryCustomElementCSSURLsException.class %>" message="please-enter-valid-css-urls" />
+	<liferay-ui:error exception="<%= RemoteAppEntryCustomElementHTMLElementNameException.class %>" message="please-enter-a-valid-html-element-name" />
+	<liferay-ui:error exception="<%= RemoteAppEntryCustomElementURLsException.class %>" message="please-enter-valid-remote-app-urls" />
 	<liferay-ui:error exception="<%= RemoteAppEntryIFrameURLException.class %>" message="please-enter-a-unique-remote-app-url" />
 
 	<aui:model-context bean="<%= remoteAppEntry %>" model="<%= RemoteAppEntry.class %>" />
@@ -67,7 +70,7 @@ renderResponse.setTitle((remoteAppEntry == null) ? LanguageUtil.get(request, "ne
 				cssClass='<%= ((remoteAppEntry == null) || RemoteAppConstants.TYPE_IFRAME.equals(remoteAppEntry.getType())) ? StringPool.BLANK : "d-none" %>'
 				id='<%= liferayPortletResponse.getNamespace() + "_type_iframe" %>'
 			>
-				<aui:input label="url" name="iFrameURL">
+				<aui:input fieldParam="iFrameURL" label="url" name="IFrameURL">
 					<aui:validator name="url" />
 				</aui:input>
 			</liferay-frontend:fieldset>
@@ -79,7 +82,7 @@ renderResponse.setTitle((remoteAppEntry == null) ? LanguageUtil.get(request, "ne
 				<aui:input label="html-element-name" name="customElementHTMLElementName" />
 
 				<%
-				String[] customElementURLsArray = new String[0];
+				String[] customElementURLsArray = new String[1];
 
 				if (remoteAppEntry != null) {
 					String customElementURLs = remoteAppEntry.getCustomElementURLs();
@@ -99,7 +102,7 @@ renderResponse.setTitle((remoteAppEntry == null) ? LanguageUtil.get(request, "ne
 				<%
 				}
 
-				String[] customElementCSSURLsArray = new String[0];
+				String[] customElementCSSURLsArray = new String[1];
 
 				if (remoteAppEntry != null) {
 					String customElementCSSURLs = remoteAppEntry.getCustomElementCSSURLs();

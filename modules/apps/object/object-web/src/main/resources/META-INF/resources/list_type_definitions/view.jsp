@@ -25,7 +25,7 @@ ViewListTypeDefinitionsDisplayContext viewListTypeDefinitionsDisplayContext = (V
 	clayDataSetActionDropdownItems="<%= viewListTypeDefinitionsDisplayContext.getClayDataSetActionDropdownItems() %>"
 	creationMenu="<%= viewListTypeDefinitionsDisplayContext.getCreationMenu() %>"
 	formId="fm"
-	id="<%= ListTypeDefinitionsClayDataSetDisplayNames.LIST_TYPE_DEFINITIONS %>"
+	id="<%= ListTypeClayDataSetDisplayNames.LIST_TYPE_DEFINITIONS %>"
 	itemsPerPage="<%= 20 %>"
 	namespace="<%= liferayPortletResponse.getNamespace() %>"
 	pageNumber="<%= 1 %>"
@@ -39,17 +39,7 @@ ViewListTypeDefinitionsDisplayContext viewListTypeDefinitionsDisplayContext = (V
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"apiURL", viewListTypeDefinitionsDisplayContext.getAPIURL()
-			).put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
 			).build()
 		%>'
 	/>
 </div>
-
-<script>
-	function handleDestroyPortlet() {
-		Liferay.detach('destroyPortlet', handleDestroyPortlet);
-	}
-
-	Liferay.on('destroyPortlet', handleDestroyPortlet);
-</script>

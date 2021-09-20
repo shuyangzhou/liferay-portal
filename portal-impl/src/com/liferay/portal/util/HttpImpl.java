@@ -445,9 +445,9 @@ public class HttpImpl implements Http {
 		String completeURL = sb.toString();
 
 		if (httpServletRequest.isRequestedSessionIdFromURL()) {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			String sessionId = session.getId();
+			String sessionId = httpSession.getId();
 
 			completeURL = PortalUtil.getURLWithSessionId(
 				completeURL, sessionId);

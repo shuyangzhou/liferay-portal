@@ -57,6 +57,15 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 			groupId, objectRelationshipId, primaryKey, start, end);
 	}
 
+	@Override
+	public int getRelatedModelsCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws PortalException {
+
+		return _objectEntryLocalService.getManyToManyRelatedObjectEntriesCount(
+			groupId, objectRelationshipId, primaryKey);
+	}
+
 	private final String _className;
 	private final long _objectDefinitionId;
 	private final ObjectEntryLocalService _objectEntryLocalService;

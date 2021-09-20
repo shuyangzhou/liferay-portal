@@ -1392,10 +1392,10 @@ public class WebServerServlet extends HttpServlet {
 	private static User _getUser(HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		if (PortalSessionThreadLocal.getHttpSession() == null) {
-			PortalSessionThreadLocal.setHttpSession(session);
+			PortalSessionThreadLocal.setHttpSession(httpSession);
 		}
 
 		User user = PortalUtil.getUser(httpServletRequest);
@@ -1404,8 +1404,8 @@ public class WebServerServlet extends HttpServlet {
 			return user;
 		}
 
-		String userIdString = (String)session.getAttribute("j_username");
-		String password = (String)session.getAttribute("j_password");
+		String userIdString = (String)httpSession.getAttribute("j_username");
+		String password = (String)httpSession.getAttribute("j_password");
 
 		if ((userIdString != null) && (password != null)) {
 			long userId = GetterUtil.getLong(userIdString);

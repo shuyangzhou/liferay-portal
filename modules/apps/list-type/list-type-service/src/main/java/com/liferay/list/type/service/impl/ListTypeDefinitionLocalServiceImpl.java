@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.Locale;
@@ -64,7 +65,7 @@ public class ListTypeDefinitionLocalServiceImpl
 		listTypeDefinition = listTypeDefinitionPersistence.update(
 			listTypeDefinition);
 
-		resourceLocalService.addResources(
+		_resourceLocalService.addResources(
 			listTypeDefinition.getCompanyId(), 0,
 			listTypeDefinition.getUserId(), ListTypeDefinition.class.getName(),
 			listTypeDefinition.getListTypeDefinitionId(), false, true, true);
@@ -107,11 +108,8 @@ public class ListTypeDefinitionLocalServiceImpl
 
 		listTypeDefinition = deleteListTypeDefinition(listTypeDefinition);
 
-		resourceLocalService.deleteResource(
-			listTypeDefinition.getCompanyId(),
-			ListTypeDefinition.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL,
-			listTypeDefinition.getListTypeDefinitionId());
+		_resourceLocalService.deleteResource(
+			listTypeDefinition, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		return listTypeDefinition;
 	}
@@ -136,6 +134,9 @@ public class ListTypeDefinitionLocalServiceImpl
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
+
+	@Reference
+	private ResourceLocalService _resourceLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

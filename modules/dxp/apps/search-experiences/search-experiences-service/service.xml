@@ -9,10 +9,6 @@
 
 		<column method-name="SXPBlueprintId" name="sxpBlueprintId" primary="true" type="long" />
 
-		<!-- Group instance -->
-
-		<column name="groupId" type="long" />
-
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -44,10 +40,6 @@
 
 		<column method-name="SXPElementId" name="sxpElementId" primary="true" type="long" />
 
-		<!-- Group instance -->
-
-		<column name="groupId" type="long" />
-
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -68,12 +60,12 @@
 
 		<!-- Finder methods -->
 
-		<finder name="G_T" return-type="Collection">
-			<finder-column name="groupId" />
+		<finder name="C_T" return-type="Collection">
+			<finder-column name="companyId" />
 			<finder-column name="type" />
 		</finder>
-		<finder name="G_T_S" return-type="Collection">
-			<finder-column name="groupId" />
+		<finder name="C_T_S" return-type="Collection">
+			<finder-column name="companyId" />
 			<finder-column name="type" />
 			<finder-column name="status" />
 		</finder>

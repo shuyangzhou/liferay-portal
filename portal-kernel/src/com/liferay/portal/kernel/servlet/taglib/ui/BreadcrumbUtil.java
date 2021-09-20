@@ -226,10 +226,10 @@ public class BreadcrumbUtil {
 			if (Validator.isNotNull(url) &&
 				!CookieKeys.hasSessionId(httpServletRequest)) {
 
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
 				portletBreadcrumbEntry.setURL(
-					PortalUtil.getURLWithSessionId(url, session.getId()));
+					PortalUtil.getURLWithSessionId(url, httpSession.getId()));
 			}
 		}
 

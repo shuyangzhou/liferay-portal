@@ -94,7 +94,7 @@ public class PortletSessionImplTest {
 
 		PortletSessionImpl portletSessionImpl = _getPortletSessionImpl();
 
-		Assert.assertSame(_mockHttpSession, portletSessionImpl.session);
+		Assert.assertSame(_mockHttpSession, portletSessionImpl.httpSession);
 		Assert.assertSame(_portletContext, portletSessionImpl.portletContext);
 
 		Assert.assertEquals(
@@ -140,11 +140,11 @@ public class PortletSessionImplTest {
 		Assert.assertEquals(
 			Integer.MAX_VALUE, _mockHttpSession.getMaxInactiveInterval());
 
-		HttpSession session = new MockHttpSession();
+		HttpSession httpSession = new MockHttpSession();
 
-		portletSessionImpl.setHttpSession(session);
+		portletSessionImpl.setHttpSession(httpSession);
 
-		Assert.assertSame(session, portletSessionImpl.session);
+		Assert.assertSame(httpSession, portletSessionImpl.httpSession);
 	}
 
 	@Test
@@ -440,10 +440,10 @@ public class PortletSessionImplTest {
 		String scopePrefix = portletSessionImpl.scopePrefix;
 
 		Assert.assertTrue(
-			portletSessionImpl.session instanceof HttpSessionWrapper);
+			portletSessionImpl.httpSession instanceof HttpSessionWrapper);
 
 		HttpSessionWrapper httpSessionWrapper =
-			(HttpSessionWrapper)portletSessionImpl.session;
+			(HttpSessionWrapper)portletSessionImpl.httpSession;
 
 		Assert.assertSame(
 			_mockHttpSession, httpSessionWrapper.getWrappedSession());
@@ -452,15 +452,15 @@ public class PortletSessionImplTest {
 
 		portletSessionImpl.setHttpSession(_mockHttpSession);
 
-		Assert.assertNotSame(_mockHttpSession, portletSessionImpl.session);
+		Assert.assertNotSame(_mockHttpSession, portletSessionImpl.httpSession);
 		Assert.assertTrue(
-			portletSessionImpl.session instanceof HttpSessionWrapper);
+			portletSessionImpl.httpSession instanceof HttpSessionWrapper);
 
 		// Set http session when session is SerializableHttpSessionWrapper
 
 		portletSessionImpl.setHttpSession(httpSessionWrapper);
 
-		Assert.assertSame(httpSessionWrapper, portletSessionImpl.session);
+		Assert.assertSame(httpSessionWrapper, portletSessionImpl.httpSession);
 
 		// Set/get attribute when value class is loaded by the bootstrap class
 		// loader

@@ -447,10 +447,11 @@ public class SingleLogoutProfileImpl
 		HttpServletRequest httpServletRequest,
 		MessageContext<?> messageContext) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		SamlSloContext samlSloContext = (SamlSloContext)session.getAttribute(
-			SamlWebKeys.SAML_SLO_CONTEXT);
+		SamlSloContext samlSloContext =
+			(SamlSloContext)httpSession.getAttribute(
+				SamlWebKeys.SAML_SLO_CONTEXT);
 
 		String samlSsoSessionId = getSamlSsoSessionId(httpServletRequest);
 
@@ -488,7 +489,7 @@ public class SingleLogoutProfileImpl
 				samlSloContext.setSamlSsoSessionId(samlSsoSessionId);
 				samlSloContext.setUserId(portal.getUserId(httpServletRequest));
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					SamlWebKeys.SAML_SLO_CONTEXT, samlSloContext);
 			}
 		}

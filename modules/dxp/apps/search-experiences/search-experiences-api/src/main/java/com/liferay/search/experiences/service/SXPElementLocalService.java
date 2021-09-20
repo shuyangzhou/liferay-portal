@@ -70,7 +70,7 @@ public interface SXPElementLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public SXPElement addSXPElement(
-			long userId, long groupId, Map<Locale, String> descriptionMap,
+			long userId, Map<Locale, String> descriptionMap,
 			String elementDefinitionJSON, boolean readOnly,
 			Map<Locale, String> titleMap, int type,
 			ServiceContext serviceContext)
@@ -218,15 +218,15 @@ public interface SXPElementLocalService
 	public SXPElement fetchSXPElement(long sxpElementId);
 
 	/**
-	 * Returns the sxp element matching the UUID and group.
+	 * Returns the sxp element with the matching UUID and company.
 	 *
 	 * @param uuid the sxp element's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp element, or <code>null</code> if a matching sxp element could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SXPElement fetchSXPElementByUuidAndGroupId(
-		String uuid, long groupId);
+	public SXPElement fetchSXPElementByUuidAndCompanyId(
+		String uuid, long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -264,15 +264,16 @@ public interface SXPElementLocalService
 	public SXPElement getSXPElement(long sxpElementId) throws PortalException;
 
 	/**
-	 * Returns the sxp element matching the UUID and group.
+	 * Returns the sxp element with the matching UUID and company.
 	 *
 	 * @param uuid the sxp element's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp element
 	 * @throws PortalException if a matching sxp element could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SXPElement getSXPElementByUuidAndGroupId(String uuid, long groupId)
+	public SXPElement getSXPElementByUuidAndCompanyId(
+			String uuid, long companyId)
 		throws PortalException;
 
 	/**
@@ -288,32 +289,6 @@ public interface SXPElementLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SXPElement> getSXPElements(int start, int end);
-
-	/**
-	 * Returns all the sxp elements matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp elements
-	 * @param companyId the primary key of the company
-	 * @return the matching sxp elements, or an empty list if no matches were found
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SXPElement> getSXPElementsByUuidAndCompanyId(
-		String uuid, long companyId);
-
-	/**
-	 * Returns a range of sxp elements matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp elements
-	 * @param companyId the primary key of the company
-	 * @param start the lower bound of the range of sxp elements
-	 * @param end the upper bound of the range of sxp elements (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the range of matching sxp elements, or an empty list if no matches were found
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SXPElement> getSXPElementsByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<SXPElement> orderByComparator);
 
 	/**
 	 * Returns the number of sxp elements.

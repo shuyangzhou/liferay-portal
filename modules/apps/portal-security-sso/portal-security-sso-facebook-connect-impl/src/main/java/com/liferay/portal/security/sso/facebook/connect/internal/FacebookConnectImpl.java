@@ -193,9 +193,9 @@ public class FacebookConnectImpl implements FacebookConnect {
 		httpServletRequest = _portal.getOriginalServletRequest(
 			httpServletRequest);
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String facebookId = (String)session.getAttribute(
+		String facebookId = (String)httpSession.getAttribute(
 			FacebookConnectWebKeys.FACEBOOK_USER_ID);
 
 		if (Validator.isNull(facebookId)) {
@@ -204,7 +204,7 @@ public class FacebookConnectImpl implements FacebookConnect {
 
 		long companyId = _portal.getCompanyId(httpServletRequest);
 
-		String token = (String)session.getAttribute(
+		String token = (String)httpSession.getAttribute(
 			FacebookConnectWebKeys.FACEBOOK_ACCESS_TOKEN);
 
 		JSONObject jsonObject = getGraphResources(

@@ -131,9 +131,9 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 				themeDisplay.getCompanyId(), FacebookConnect.class.getName());
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		String nonce = (String)session.getAttribute(WebKeys.FACEBOOK_NONCE);
+		String nonce = (String)httpSession.getAttribute(WebKeys.FACEBOOK_NONCE);
 
 		String state = ParamUtil.getString(httpServletRequest, "state");
 
@@ -174,7 +174,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 
 			try {
 				User user = setFacebookCredentials(
-					session, themeDisplay.getCompanyId(), token,
+					httpSession, themeDisplay.getCompanyId(), token,
 					serviceContext);
 
 				if ((user != null) &&
@@ -215,7 +215,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 	}
 
 	protected User addUser(
-			HttpSession session, long companyId, JSONObject jsonObject,
+			HttpSession httpSession, long companyId, JSONObject jsonObject,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -260,7 +260,8 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 		user = _userLocalService.updateEmailAddressVerified(
 			user.getUserId(), true);
 
-		session.setAttribute(WebKeys.FACEBOOK_USER_EMAIL_ADDRESS, emailAddress);
+		httpSession.setAttribute(
+			WebKeys.FACEBOOK_USER_EMAIL_ADDRESS, emailAddress);
 
 		return user;
 	}
@@ -320,7 +321,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 	}
 
 	protected User setFacebookCredentials(
-			HttpSession session, long companyId, String token,
+			HttpSession httpSession, long companyId, String token,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -345,7 +346,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 		long facebookId = jsonObject.getLong("id");
 
 		if (facebookId > 0) {
-			session.setAttribute(
+			httpSession.setAttribute(
 				FacebookConnectWebKeys.FACEBOOK_ACCESS_TOKEN, token);
 
 			user = _userLocalService.fetchUserByFacebookId(
@@ -358,7 +359,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 					 (user.getStatus() !=
 						 WorkflowConstants.STATUS_INCOMPLETE)) {
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					FacebookConnectWebKeys.FACEBOOK_USER_ID,
 					String.valueOf(facebookId));
 			}
@@ -377,14 +378,14 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 					 (user.getStatus() !=
 						 WorkflowConstants.STATUS_INCOMPLETE)) {
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					WebKeys.FACEBOOK_USER_EMAIL_ADDRESS, emailAddress);
 			}
 		}
 
 		if (user != null) {
 			if (user.getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
-				session.setAttribute(
+				httpSession.setAttribute(
 					WebKeys.FACEBOOK_INCOMPLETE_USER_ID, facebookId);
 
 				user.setEmailAddress(jsonObject.getString("email"));
@@ -399,7 +400,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 		else {
 			_checkAllowUserCreation(companyId, jsonObject);
 
-			user = addUser(session, companyId, jsonObject, serviceContext);
+			user = addUser(httpSession, companyId, jsonObject, serviceContext);
 		}
 
 		return user;

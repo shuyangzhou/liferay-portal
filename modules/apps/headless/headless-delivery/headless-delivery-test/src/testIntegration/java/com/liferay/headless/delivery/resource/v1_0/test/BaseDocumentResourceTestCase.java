@@ -1692,6 +1692,7 @@ public abstract class BaseDocumentResourceTestCase {
 		assertValid(getDocument);
 
 		assertValid(getDocument, multipartFiles);
+
 		Document newDocument =
 			testPutSiteDocumentByExternalReferenceCode_createDocument();
 

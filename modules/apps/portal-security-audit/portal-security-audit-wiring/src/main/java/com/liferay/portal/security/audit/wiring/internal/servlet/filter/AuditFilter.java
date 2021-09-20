@@ -87,9 +87,9 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 		auditRequestThreadLocal.setQueryString(
 			httpServletRequest.getQueryString());
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		Long userId = (Long)session.getAttribute(WebKeys.USER_ID);
+		Long userId = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if (userId != null) {
 			auditRequestThreadLocal.setRealUserId(userId.longValue());
@@ -103,7 +103,7 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 			httpServletRequest.getServerName());
 		auditRequestThreadLocal.setServerPort(
 			httpServletRequest.getServerPort());
-		auditRequestThreadLocal.setSessionID(session.getId());
+		auditRequestThreadLocal.setSessionID(httpSession.getId());
 
 		if (!_auditLogContextConfiguration.enabled()) {
 			return null;
@@ -123,7 +123,7 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 
 		_auditLogContext.setContext(
 			remoteAddr, _portal.getCompanyId(httpServletRequest),
-			session.getId(), httpServletRequest.getServerName(), userId,
+			httpSession.getId(), httpServletRequest.getServerName(), userId,
 			xRequestId);
 
 		return null;

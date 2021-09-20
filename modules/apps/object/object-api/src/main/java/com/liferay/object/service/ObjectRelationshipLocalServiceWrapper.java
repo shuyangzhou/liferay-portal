@@ -65,11 +65,14 @@ public class ObjectRelationshipLocalServiceWrapper
 
 	@Override
 	public void addObjectRelationshipMappingTableValues(
-			long objectRelationshipId, long primaryKey1, long primaryKey2)
+			long userId, long objectRelationshipId, long primaryKey1,
+			long primaryKey2,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_objectRelationshipLocalService.addObjectRelationshipMappingTableValues(
-			objectRelationshipId, primaryKey1, primaryKey2);
+			userId, objectRelationshipId, primaryKey1, primaryKey2,
+			serviceContext);
 	}
 
 	/**

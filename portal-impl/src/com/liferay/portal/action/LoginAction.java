@@ -97,10 +97,10 @@ public class LoginAction implements Action {
 				rememberMe, authType);
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		if ((session.getAttribute("j_username") != null) &&
-			(session.getAttribute("j_password") != null)) {
+		if ((httpSession.getAttribute("j_username") != null) &&
+			(httpSession.getAttribute("j_password") != null)) {
 
 			if (PropsValues.PORTAL_JAAS_ENABLE) {
 				return actionMapping.getActionForward(

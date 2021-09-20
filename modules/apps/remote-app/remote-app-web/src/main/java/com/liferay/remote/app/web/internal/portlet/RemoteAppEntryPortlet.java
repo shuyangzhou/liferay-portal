@@ -14,19 +14,29 @@
 
 package com.liferay.remote.app.web.internal.portlet;
 
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
 import com.liferay.portal.kernel.servlet.taglib.util.OutputData;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.remote.app.constants.RemoteAppConstants;
 import com.liferay.remote.app.model.RemoteAppEntry;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import java.nio.charset.StandardCharsets;
+
+import java.util.Map;
+import java.util.Properties;
+
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -36,10 +46,10 @@ import javax.portlet.RenderResponse;
 public class RemoteAppEntryPortlet extends MVCPortlet {
 
 	public RemoteAppEntryPortlet(
-		RemoteAppEntry remoteAppEntry, String remoteProtocolBridgeModuleName) {
+		NPMResolver npmResolver, RemoteAppEntry remoteAppEntry) {
 
+		_npmResolver = npmResolver;
 		_remoteAppEntry = remoteAppEntry;
-		_remoteProtocolBridgeModuleName = remoteProtocolBridgeModuleName;
 	}
 
 	@Override
@@ -50,7 +60,7 @@ public class RemoteAppEntryPortlet extends MVCPortlet {
 		String type = _remoteAppEntry.getType();
 
 		if (type.equals(RemoteAppConstants.TYPE_CUSTOM_ELEMENT)) {
-			_renderCustomElement(renderResponse);
+			_renderCustomElement(renderRequest, renderResponse);
 		}
 		else if (type.equals(RemoteAppConstants.TYPE_IFRAME)) {
 			_renderIFrame(renderRequest, renderResponse);
@@ -73,17 +83,47 @@ public class RemoteAppEntryPortlet extends MVCPortlet {
 		return outputData;
 	}
 
-	private void _renderCustomElement(RenderResponse renderResponse)
+	private Properties _getProperties(RenderRequest renderRequest)
+		throws IOException {
+
+		Properties properties = new Properties();
+
+		PortletPreferences portletPreferences = renderRequest.getPreferences();
+
+		String propertiesString = portletPreferences.getValue(
+			"properties", StringPool.BLANK);
+
+		properties.load(
+			new ByteArrayInputStream(
+				propertiesString.getBytes(StandardCharsets.UTF_8)));
+
+		return properties;
+	}
+
+	private void _renderCustomElement(
+			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException {
 
 		PrintWriter printWriter = renderResponse.getWriter();
 
-		printWriter.print(
-			StringBundler.concat(
-				StringPool.LESS_THAN,
-				_remoteAppEntry.getCustomElementHTMLElementName(), "></",
-				_remoteAppEntry.getCustomElementHTMLElementName(),
-				StringPool.GREATER_THAN));
+		printWriter.print(StringPool.LESS_THAN);
+		printWriter.print(_remoteAppEntry.getCustomElementHTMLElementName());
+
+		Properties properties = _getProperties(renderRequest);
+
+		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+			printWriter.print(StringPool.SPACE);
+			printWriter.print(entry.getKey());
+			printWriter.print("=\"");
+			printWriter.print(
+				StringUtil.replace(
+					(String)entry.getValue(), CharPool.QUOTE, "&quot;"));
+			printWriter.print(StringPool.QUOTE);
+		}
+
+		printWriter.print("></");
+		printWriter.print(_remoteAppEntry.getCustomElementHTMLElementName());
+		printWriter.print(StringPool.GREATER_THAN);
 
 		printWriter.flush();
 	}
@@ -96,9 +136,12 @@ public class RemoteAppEntryPortlet extends MVCPortlet {
 
 		ScriptData scriptData = new ScriptData();
 
+		String moduleName = _npmResolver.resolveModuleName(
+			"@liferay/remote-app-web/remote_protocol/bridge");
+
 		scriptData.append(
 			null, "RemoteProtocolBridge.default()",
-			_remoteProtocolBridgeModuleName + " as RemoteProtocolBridge",
+			moduleName + " as RemoteProtocolBridge",
 			ScriptData.ModulesType.ES6);
 
 		StringWriter stringWriter = new StringWriter();
@@ -121,7 +164,7 @@ public class RemoteAppEntryPortlet extends MVCPortlet {
 		printWriter.flush();
 	}
 
+	private final NPMResolver _npmResolver;
 	private final RemoteAppEntry _remoteAppEntry;
-	private final String _remoteProtocolBridgeModuleName;
 
 }

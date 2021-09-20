@@ -135,9 +135,9 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 			HttpServletRequest originalHttpServletRequest =
 				_portal.getOriginalServletRequest(httpServletRequest);
 
-			HttpSession session = originalHttpServletRequest.getSession();
+			HttpSession httpSession = originalHttpServletRequest.getSession();
 
-			session.setAttribute(
+			httpSession.setAttribute(
 				MFATimeBasedOTPWebKeys.MFA_TIME_BASED_OTP_SHARED_SECRET,
 				mfaTimeBasedOTPSharedSecret);
 		}

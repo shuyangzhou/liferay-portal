@@ -48,17 +48,7 @@ renderResponse.setTitle(objectDefinition.getShortName());
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"apiURL", objectDefinitionsFieldsDisplayContext.getAPIURL()
-			).put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
 			).build()
 		%>'
 	/>
 </div>
-
-<script>
-	function handleDestroyPortlet() {
-		Liferay.detach('destroyPortlet', handleDestroyPortlet);
-	}
-
-	Liferay.on('destroyPortlet', handleDestroyPortlet);
-</script>

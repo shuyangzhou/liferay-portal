@@ -50,6 +50,10 @@ definition {
 				index = "2",
 				keywordName = "${word}");
 		}
+
+		task ("Select all keywords and delete them") {
+			ACSettings.deleteAllKeywords();
+		}
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8786 | Test Summary: Add keyword when there are none"
@@ -72,6 +76,10 @@ definition {
 
 			ACSettings.assertKeywords(keyword = "test");
 		}
+
+		task ("Select all keywords and delete them") {
+			ACSettings.deleteAllKeywords();
+		}
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8787 | Test Summary: Add multiple keywords"
@@ -91,6 +99,10 @@ definition {
 			ACSettings.addMultiplesOptions(optionsList = "${keywords}");
 
 			ACSettings.assertKeywords(keyword = "${keywords}");
+		}
+
+		task ("Select all keywords and delete them") {
+			ACSettings.deleteAllKeywords();
 		}
 	}
 
@@ -117,6 +129,10 @@ definition {
 			ACInterests.assertKeywordNotPresentByIndex(
 				index = "2",
 				keywordName = "ac keyword");
+		}
+
+		task ("Select all keywords and delete them") {
+			ACSettings.deleteAllKeywords();
 		}
 	}
 
@@ -161,6 +177,12 @@ definition {
 			for (var listUnchecked : list "${list2}") {
 				ACSettings.assertKeywordNotPresent(keyword = "${listUnchecked}");
 			}
+		}
+
+		task ("Select all keywords and delete them") {
+			Refresh();
+
+			ACSettings.deleteAllKeywords();
 		}
 	}
 
@@ -333,6 +355,10 @@ definition {
 
 			ACUtils.viewResultsMessage(results = "Showing 1 to 5 of 6 entries.");
 		}
+
+		task ("Select all keywords and delete them") {
+			ACSettings.deleteAllKeywords();
+		}
 	}
 
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8793 | Test Summary: Search for a blocked keyword"
@@ -374,6 +400,10 @@ definition {
 			ACUtils.searchBar(searchItem = "Shoud not be here");
 
 			ACUtils.viewNoResultsMessage(noResultMessage = "There are no Keywords found.");
+		}
+
+		task ("Select all keywords and delete them") {
+			ACSettings.deleteAllKeywords();
 		}
 	}
 

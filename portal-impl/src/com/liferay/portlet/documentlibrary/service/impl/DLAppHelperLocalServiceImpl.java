@@ -67,7 +67,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
@@ -1350,19 +1350,16 @@ public class DLAppHelperLocalServiceImpl
 
 		int oldDLFileVersionStatus = oldDLFileVersion.getStatus();
 
-		UnicodeProperties typeSettingsUnicodeProperties =
-			new UnicodeProperties();
-
-		typeSettingsUnicodeProperties.put(
-			"fileName", dlFileEntry.getFileName());
-		typeSettingsUnicodeProperties.put("title", dlFileEntry.getTitle());
-
 		TrashEntry trashEntry = trashEntryLocalService.addTrashEntry(
 			userId, dlFileEntry.getGroupId(),
 			DLFileEntryConstants.getClassName(), dlFileEntry.getFileEntryId(),
 			dlFileEntry.getUuid(), dlFileEntry.getClassName(),
 			oldDLFileVersionStatus, dlFileVersionStatusOVPs,
-			typeSettingsUnicodeProperties);
+			UnicodePropertiesBuilder.put(
+				"fileName", dlFileEntry.getFileName()
+			).put(
+				"title", dlFileEntry.getTitle()
+			).build());
 
 		String trashTitle = TrashUtil.getTrashTitle(trashEntry.getEntryId());
 
@@ -1481,16 +1478,13 @@ public class DLAppHelperLocalServiceImpl
 
 		// Trash
 
-		UnicodeProperties typeSettingsUnicodeProperties =
-			new UnicodeProperties();
-
-		typeSettingsUnicodeProperties.put("title", dlFolder.getName());
-
 		TrashEntry trashEntry = trashEntryLocalService.addTrashEntry(
 			userId, dlFolder.getGroupId(), DLFolderConstants.getClassName(),
 			dlFolder.getFolderId(), dlFolder.getUuid(), null,
 			WorkflowConstants.STATUS_APPROVED, null,
-			typeSettingsUnicodeProperties);
+			UnicodePropertiesBuilder.put(
+				"title", dlFolder.getName()
+			).build());
 
 		dlFolder.setName(TrashUtil.getTrashTitle(trashEntry.getEntryId()));
 

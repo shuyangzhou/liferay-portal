@@ -532,13 +532,13 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 			return _portletSessionImpl.getId();
 		}
 
-		HttpSession session = _httpServletRequest.getSession(false);
+		HttpSession httpSession = _httpServletRequest.getSession(false);
 
-		if (session == null) {
+		if (httpSession == null) {
 			return StringPool.BLANK;
 		}
 
-		return session.getId();
+		return httpSession.getId();
 	}
 
 	@Override

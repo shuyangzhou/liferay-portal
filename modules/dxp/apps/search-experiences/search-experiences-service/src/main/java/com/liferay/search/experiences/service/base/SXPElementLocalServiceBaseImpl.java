@@ -254,17 +254,17 @@ public abstract class SXPElementLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the sxp element matching the UUID and group.
+	 * Returns the sxp element with the matching UUID and company.
 	 *
 	 * @param uuid the sxp element's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp element, or <code>null</code> if a matching sxp element could not be found
 	 */
 	@Override
-	public SXPElement fetchSXPElementByUuidAndGroupId(
-		String uuid, long groupId) {
+	public SXPElement fetchSXPElementByUuidAndCompanyId(
+		String uuid, long companyId) {
 
-		return sxpElementPersistence.fetchByUUID_G(uuid, groupId);
+		return sxpElementPersistence.fetchByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**
@@ -424,51 +424,19 @@ public abstract class SXPElementLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns all the sxp elements matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp elements
-	 * @param companyId the primary key of the company
-	 * @return the matching sxp elements, or an empty list if no matches were found
-	 */
-	@Override
-	public List<SXPElement> getSXPElementsByUuidAndCompanyId(
-		String uuid, long companyId) {
-
-		return sxpElementPersistence.findByUuid_C(uuid, companyId);
-	}
-
-	/**
-	 * Returns a range of sxp elements matching the UUID and company.
-	 *
-	 * @param uuid the UUID of the sxp elements
-	 * @param companyId the primary key of the company
-	 * @param start the lower bound of the range of sxp elements
-	 * @param end the upper bound of the range of sxp elements (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the range of matching sxp elements, or an empty list if no matches were found
-	 */
-	@Override
-	public List<SXPElement> getSXPElementsByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<SXPElement> orderByComparator) {
-
-		return sxpElementPersistence.findByUuid_C(
-			uuid, companyId, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the sxp element matching the UUID and group.
+	 * Returns the sxp element with the matching UUID and company.
 	 *
 	 * @param uuid the sxp element's UUID
-	 * @param groupId the primary key of the group
+	 * @param companyId the primary key of the company
 	 * @return the matching sxp element
 	 * @throws PortalException if a matching sxp element could not be found
 	 */
 	@Override
-	public SXPElement getSXPElementByUuidAndGroupId(String uuid, long groupId)
+	public SXPElement getSXPElementByUuidAndCompanyId(
+			String uuid, long companyId)
 		throws PortalException {
 
-		return sxpElementPersistence.findByUUID_G(uuid, groupId);
+		return sxpElementPersistence.findByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**

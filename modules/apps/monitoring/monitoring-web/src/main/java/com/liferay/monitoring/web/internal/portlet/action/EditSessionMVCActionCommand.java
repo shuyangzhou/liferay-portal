@@ -91,10 +91,11 @@ public class EditSessionMVCActionCommand extends BaseMVCActionCommand {
 			String portletSessionId = portletSession.getId();
 
 			if (!portletSessionId.equals(sessionId)) {
-				HttpSession userSession = PortalSessionContext.get(sessionId);
+				HttpSession userHttpSession = PortalSessionContext.get(
+					sessionId);
 
-				if (userSession != null) {
-					userSession.invalidate();
+				if (userHttpSession != null) {
+					userHttpSession.invalidate();
 
 					return;
 				}
@@ -126,15 +127,15 @@ public class EditSessionMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private static void _invalidateSession(String sessionId) {
-		HttpSession userSession = PortalSessionContext.get(sessionId);
+		HttpSession userHttpSession = PortalSessionContext.get(sessionId);
 
-		if (userSession != null) {
+		if (userHttpSession != null) {
 			boolean eanbled = ClusterInvokeThreadLocal.isEnabled();
 
 			ClusterInvokeThreadLocal.setEnabled(true);
 
 			try {
-				userSession.invalidate();
+				userHttpSession.invalidate();
 			}
 			finally {
 				ClusterInvokeThreadLocal.setEnabled(eanbled);

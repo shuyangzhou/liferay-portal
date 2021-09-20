@@ -34,4 +34,8 @@ public interface ObjectRelatedModelsProvider<T extends BaseModel<T>> {
 			int end)
 		throws PortalException;
 
+	public int getRelatedModelsCount(
+			long groupId, long objectRelationshipId, long primaryKey)
+		throws PortalException;
+
 }

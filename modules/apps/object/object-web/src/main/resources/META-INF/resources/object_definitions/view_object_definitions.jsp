@@ -39,17 +39,7 @@ ViewObjectDefinitionsDisplayContext viewObjectDefinitionsDisplayContext = (ViewO
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"apiURL", viewObjectDefinitionsDisplayContext.getAPIURL()
-			).put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
 			).build()
 		%>'
 	/>
 </div>
-
-<script>
-	function handleDestroyPortlet() {
-		Liferay.detach('destroyPortlet', handleDestroyPortlet);
-	}
-
-	Liferay.on('destroyPortlet', handleDestroyPortlet);
-</script>

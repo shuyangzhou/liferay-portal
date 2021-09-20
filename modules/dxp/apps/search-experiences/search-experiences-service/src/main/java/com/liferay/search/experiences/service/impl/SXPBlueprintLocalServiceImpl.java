@@ -55,7 +55,7 @@ public class SXPBlueprintLocalServiceImpl
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public SXPBlueprint addSXPBlueprint(
-			long userId, long groupId, String configurationsJSON,
+			long userId, String configurationsJSON,
 			Map<Locale, String> descriptionMap, String elementInstancesJSON,
 			Map<Locale, String> titleMap, ServiceContext serviceContext)
 		throws PortalException {
@@ -64,8 +64,6 @@ public class SXPBlueprintLocalServiceImpl
 
 		SXPBlueprint sxpBlueprint = sxpBlueprintPersistence.create(
 			counterLocalService.increment());
-
-		sxpBlueprint.setGroupId(groupId);
 
 		User user = _userLocalService.getUser(userId);
 
@@ -114,13 +112,13 @@ public class SXPBlueprintLocalServiceImpl
 			sxpBlueprint, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		_workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
-			sxpBlueprint.getCompanyId(), sxpBlueprint.getGroupId(),
-			SXPBlueprint.class.getName(), sxpBlueprint.getSXPBlueprintId());
+			sxpBlueprint.getCompanyId(), 0, SXPBlueprint.class.getName(),
+			sxpBlueprint.getSXPBlueprintId());
 
 		return sxpBlueprint;
 	}
 
-	public int getCompanySXPBlueprintsCount(long companyId) {
+	public int getSXPBlueprintsCount(long companyId) {
 		return sxpBlueprintPersistence.countByCompanyId(companyId);
 	}
 
@@ -176,7 +174,7 @@ public class SXPBlueprintLocalServiceImpl
 		throws PortalException {
 
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			sxpBlueprint.getCompanyId(), sxpBlueprint.getGroupId(), userId,
+			sxpBlueprint.getCompanyId(), 0, userId,
 			SXPBlueprint.class.getName(), sxpBlueprint.getSXPBlueprintId(),
 			sxpBlueprint, serviceContext);
 	}

@@ -3,7 +3,7 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Layout Page Templates";
+	property testray.main.component.name = "Content Page Templates";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -162,17 +162,12 @@ definition {
 
 	@description = "This is a use case for LPS-106212. Can export a content page template based on custom master and import."
 	@priority = "4"
+	@uitest
 	test ExportImportContentPageTemplateBasedOnCustomMaster {
 		task ("Add a custom master with Heading then Publish") {
-			JSONLayoutpagetemplate.addMasterPageTemplateEntry(
-				groupName = "Test Site Name",
-				masterPageTemplateEntryName = "Custom Masters Page Template");
-
 			MastersPageTemplatesAdmin.openMastersAdmin(siteURLKey = "test-site-name");
 
-			MastersPageTemplatesAdmin.gotoMastersEllipsisItem(
-				item = "Edit",
-				masterLayoutName = "Custom Masters Page Template");
+			MastersPageTemplatesAdmin.addMasters(masterLayoutName = "Custom Masters Page Template");
 
 			PageEditor.addFragment(
 				collectionName = "Basic Components",
@@ -440,23 +435,13 @@ definition {
 
 			Theme.configureLookAndFeelShowFooter(showFooter = "false");
 
-			Pause(locator1 = "3000");
-
 			Theme.configureLookAndFeelShowHeader(showHeader = "false");
-
-			Pause(locator1 = "3000");
 
 			Theme.configureLookAndFeelShowHeaderSearch(showHeaderSearch = "false");
 
-			Pause(locator1 = "3000");
-
 			Theme.configureLookAndFeelShowMaxMinAppLinks(showMaxMinAppLinks = "true");
 
-			Pause(locator1 = "3000");
-
 			Theme.configureLookAndFeelWrapWidgetPageContent(wrapWidgetPageContent = "false");
-
-			Pause(locator1 = "3000");
 
 			PortletEntry.save();
 

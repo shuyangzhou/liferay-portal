@@ -84,7 +84,7 @@ public class DropdownItemBuilder {
 
 		DropdownItemStep dropdownItemStep = new DropdownItemStep();
 
-		return dropdownItemStep.setHref(parameters);
+		return dropdownItemStep.setHref(portletURL, parameters);
 	}
 
 	public static AfterHrefStep setHref(

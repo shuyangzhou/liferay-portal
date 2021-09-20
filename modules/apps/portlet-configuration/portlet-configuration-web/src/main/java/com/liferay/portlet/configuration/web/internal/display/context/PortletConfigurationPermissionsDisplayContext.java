@@ -620,10 +620,10 @@ public class PortletConfigurationPermissionsDisplayContext {
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(
 			themeDisplay.getCompanyId(), _getPortletResource());
 
-		HttpSession session = _httpServletRequest.getSession();
+		HttpSession httpSession = _httpServletRequest.getSession();
 
 		_selResourceDescription = PortalUtil.getPortletTitle(
-			portlet, session.getServletContext(), themeDisplay.getLocale());
+			portlet, httpSession.getServletContext(), themeDisplay.getLocale());
 
 		return _selResourceDescription;
 	}

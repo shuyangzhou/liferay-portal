@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.servlet.filters.secure.NonceUtil;
 import com.liferay.portal.util.PortalInstances;
@@ -377,9 +378,9 @@ public class HttpAuthManagerImpl implements HttpAuthManager {
 			authorization, CharPool.COMMA, CharPool.NEW_LINE);
 
 		UnicodeProperties authorizationUnicodeProperties =
-			new UnicodeProperties();
-
-		authorizationUnicodeProperties.fastLoad(authorization);
+			UnicodePropertiesBuilder.fastLoad(
+				authorization
+			).build();
 
 		for (Map.Entry<String, String> authorizationProperty :
 				authorizationUnicodeProperties.entrySet()) {

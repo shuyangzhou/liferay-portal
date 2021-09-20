@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 public interface GoogleAuthorization {
 
 	public User addOrUpdateUser(
-			HttpSession session, long companyId, String authorizationCode,
+			HttpSession httpSession, long companyId, String authorizationCode,
 			String returnRequestUri, List<String> scopes)
 		throws Exception;
 

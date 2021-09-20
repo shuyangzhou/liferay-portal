@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,7 +81,7 @@ public class ObjectEntryItemSelectorView
 
 	@Override
 	public String getClassName() {
-		return ObjectEntry.class.getName();
+		return _objectDefinition.getClassName();
 	}
 
 	@Override
@@ -117,8 +117,9 @@ public class ObjectEntryItemSelectorView
 	}
 
 	private static final List<ItemSelectorReturnType>
-		_supportedItemSelectorReturnTypes = Collections.singletonList(
-			new InfoItemItemSelectorReturnType());
+		_supportedItemSelectorReturnTypes = Arrays.asList(
+			new InfoItemItemSelectorReturnType(),
+			new ObjectEntryItemSelectorReturnType());
 
 	private final ItemSelectorViewDescriptorRenderer
 		<InfoItemItemSelectorCriterion> _itemSelectorViewDescriptorRenderer;

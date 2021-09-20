@@ -52,7 +52,7 @@ import com.liferay.search.experiences.service.SXPElementServiceUtil;
 public class SXPElementServiceHttp {
 
 	public static com.liferay.search.experiences.model.SXPElement addSXPElement(
-			HttpPrincipal httpPrincipal, long groupId,
+			HttpPrincipal httpPrincipal,
 			java.util.Map<java.util.Locale, String> descriptionMap,
 			String elementDefinitionJSON, boolean readOnly,
 			java.util.Map<java.util.Locale, String> titleMap, int type,
@@ -65,8 +65,8 @@ public class SXPElementServiceHttp {
 				_addSXPElementParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, descriptionMap, elementDefinitionJSON,
-				readOnly, titleMap, type, serviceContext);
+				methodKey, descriptionMap, elementDefinitionJSON, readOnly,
+				titleMap, type, serviceContext);
 
 			Object returnObj = null;
 
@@ -227,7 +227,7 @@ public class SXPElementServiceHttp {
 
 	private static final Class<?>[] _addSXPElementParameterTypes0 =
 		new Class[] {
-			long.class, java.util.Map.class, String.class, boolean.class,
+			java.util.Map.class, String.class, boolean.class,
 			java.util.Map.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};

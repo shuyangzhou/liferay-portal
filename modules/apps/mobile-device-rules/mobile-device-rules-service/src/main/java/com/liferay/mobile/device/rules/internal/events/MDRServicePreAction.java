@@ -61,10 +61,11 @@ public class MDRServicePreAction extends Action {
 		Device device = null;
 
 		if (PropsValues.MOBILE_DEVICE_SESSION_CACHE_ENABLED) {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
 			TransientValue<Device> transientValue =
-				(TransientValue<Device>)session.getAttribute(WebKeys.DEVICE);
+				(TransientValue<Device>)httpSession.getAttribute(
+					WebKeys.DEVICE);
 
 			if (transientValue != null) {
 				device = transientValue.getValue();
@@ -73,7 +74,7 @@ public class MDRServicePreAction extends Action {
 			if (device == null) {
 				device = DeviceDetectionUtil.detectDevice(httpServletRequest);
 
-				session.setAttribute(
+				httpSession.setAttribute(
 					WebKeys.DEVICE, new TransientValue<>(device));
 			}
 		}

@@ -1284,6 +1284,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 						assertValid(get${schemaName}, multipartFiles);
 					</#if>
 				</#if>
+
 				<#if javaMethodSignature.methodName?ends_with("ByExternalReferenceCode")>
 					${schemaName} new${schemaName} = test${javaMethodSignature.methodName?cap_first}_create${schemaName}();
 

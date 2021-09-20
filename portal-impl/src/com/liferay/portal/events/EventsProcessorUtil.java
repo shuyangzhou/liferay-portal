@@ -55,10 +55,10 @@ public class EventsProcessorUtil {
 	}
 
 	public static void process(
-			String key, String[] classes, HttpSession session)
+			String key, String[] classes, HttpSession httpSession)
 		throws ActionException {
 
-		process(key, classes, new LifecycleEvent(session));
+		process(key, classes, new LifecycleEvent(httpSession));
 	}
 
 	public static void process(

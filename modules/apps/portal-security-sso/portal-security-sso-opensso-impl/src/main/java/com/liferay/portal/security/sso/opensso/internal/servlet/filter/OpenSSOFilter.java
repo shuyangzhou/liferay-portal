@@ -131,9 +131,9 @@ public class OpenSSOFilter extends BaseFilter {
 			httpServletRequest.getRequestURI());
 
 		if (requestURI.endsWith("/portal/logout")) {
-			HttpSession session = httpServletRequest.getSession();
+			HttpSession httpSession = httpServletRequest.getSession();
 
-			session.invalidate();
+			httpSession.invalidate();
 
 			httpServletResponse.sendRedirect(openSSOConfiguration.logoutURL());
 
@@ -159,7 +159,7 @@ public class OpenSSOFilter extends BaseFilter {
 			return;
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		if (authenticated) {
 
@@ -168,17 +168,18 @@ public class OpenSSOFilter extends BaseFilter {
 			String newSubjectId = _openSSO.getSubjectId(
 				httpServletRequest, openSSOConfiguration.serviceURL());
 
-			String oldSubjectId = (String)session.getAttribute(_SUBJECT_ID_KEY);
+			String oldSubjectId = (String)httpSession.getAttribute(
+				_SUBJECT_ID_KEY);
 
 			if (oldSubjectId == null) {
-				session.setAttribute(_SUBJECT_ID_KEY, newSubjectId);
+				httpSession.setAttribute(_SUBJECT_ID_KEY, newSubjectId);
 			}
 			else if (!newSubjectId.equals(oldSubjectId)) {
-				session.invalidate();
+				httpSession.invalidate();
 
-				session = httpServletRequest.getSession();
+				httpSession = httpServletRequest.getSession();
 
-				session.setAttribute(_SUBJECT_ID_KEY, newSubjectId);
+				httpSession.setAttribute(_SUBJECT_ID_KEY, newSubjectId);
 			}
 
 			processFilter(
@@ -188,7 +189,7 @@ public class OpenSSOFilter extends BaseFilter {
 			return;
 		}
 		else if (_portal.getUserId(httpServletRequest) > 0) {
-			session.invalidate();
+			httpSession.invalidate();
 		}
 
 		String loginURL = openSSOConfiguration.loginURL();

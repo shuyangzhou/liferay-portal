@@ -40,10 +40,10 @@ public class ListTypeDefinitionServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.list.type.service.impl.ListTypeDefinitionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static ListTypeDefinition addListTypeDefinition(
-			long userId, Map<java.util.Locale, String> nameMap)
+			Map<java.util.Locale, String> nameMap)
 		throws PortalException {
 
-		return getService().addListTypeDefinition(userId, nameMap);
+		return getService().addListTypeDefinition(nameMap);
 	}
 
 	public static ListTypeDefinition deleteListTypeDefinition(

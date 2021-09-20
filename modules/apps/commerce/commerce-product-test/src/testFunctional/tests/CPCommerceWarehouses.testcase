@@ -49,9 +49,11 @@ definition {
 			key_toggleSwitchLabel = "Active",
 			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
 
-		Click(
-			key_contentType = "Geolocation",
-			locator1 = "Notifications#NOTIFICATION_DELIVERY_PANEL");
+		if (IsElementPresent(locator1 = "CommerceEntry#ACCORDION_COLLAPSED", key_accordionTitle = "geolocation")) {
+			Click(
+				key_accordionTitle = "geolocation",
+				locator1 = "CommerceEntry#ACCORDION_COLLAPSED");
+		}
 
 		WaitForElementPresent(
 			key_specifiedCollapse = "Geolocation",
@@ -990,23 +992,6 @@ definition {
 			value1 = "TestWH");
 
 		Button.clickSave();
-
-		CommerceNavigator.gotoPortlet(
-			category = "Product Management",
-			portlet = "Catalogs");
-
-		Click(locator1 = "Button#PLUS");
-
-		CommerceEntry.addNewCatalogsEntry(
-			catalogCurrency = "US Dollar",
-			catalogLanguage = "English (United States)",
-			catalogName = "Master");
-
-		AssertClickNoError(
-			locator1 = "Button#SUBMIT",
-			value1 = "Submit");
-
-		Refresh();
 
 		CommerceNavigator.gotoPortlet(
 			category = "Product Management",

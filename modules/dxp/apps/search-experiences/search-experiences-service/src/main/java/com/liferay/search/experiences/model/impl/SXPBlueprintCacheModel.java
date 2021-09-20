@@ -77,7 +77,7 @@ public class SXPBlueprintCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -85,8 +85,6 @@ public class SXPBlueprintCacheModel
 		sb.append(uuid);
 		sb.append(", sxpBlueprintId=");
 		sb.append(sxpBlueprintId);
-		sb.append(", groupId=");
-		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -132,7 +130,6 @@ public class SXPBlueprintCacheModel
 		}
 
 		sxpBlueprintImpl.setSXPBlueprintId(sxpBlueprintId);
-		sxpBlueprintImpl.setGroupId(groupId);
 		sxpBlueprintImpl.setCompanyId(companyId);
 		sxpBlueprintImpl.setUserId(userId);
 
@@ -216,8 +213,6 @@ public class SXPBlueprintCacheModel
 
 		sxpBlueprintId = objectInput.readLong();
 
-		groupId = objectInput.readLong();
-
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -248,8 +243,6 @@ public class SXPBlueprintCacheModel
 		}
 
 		objectOutput.writeLong(sxpBlueprintId);
-
-		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -310,7 +303,6 @@ public class SXPBlueprintCacheModel
 	public long mvccVersion;
 	public String uuid;
 	public long sxpBlueprintId;
-	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

@@ -20,9 +20,12 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
 import com.liferay.object.web.internal.display.context.util.ObjectRequestHelper;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +41,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ObjectDefinitionsLayoutsDisplayContext {
 
 	public ObjectDefinitionsLayoutsDisplayContext(
-		HttpServletRequest httpServletRequest) {
+		HttpServletRequest httpServletRequest,
+		ModelResourcePermission<ObjectDefinition>
+			objectDefinitionModelResourcePermission) {
+
+		_objectDefinitionModelResourcePermission =
+			objectDefinitionModelResourcePermission;
 
 		_objectRequestHelper = new ObjectRequestHelper(httpServletRequest);
 	}
@@ -68,10 +76,12 @@ public class ObjectDefinitionsLayoutsDisplayContext {
 				"get", null, "sidePanel"));
 	}
 
-	public CreationMenu getCreationMenu() throws Exception {
+	public CreationMenu getCreationMenu() throws PortalException {
 		CreationMenu creationMenu = new CreationMenu();
 
-		// TODO Check permissions
+		if (!_hasAddObjectLayoutPermission()) {
+			return creationMenu;
+		}
 
 		creationMenu.addDropdownItem(
 			dropdownItem -> {
@@ -105,6 +115,14 @@ public class ObjectDefinitionsLayoutsDisplayContext {
 			_objectRequestHelper.getLiferayPortletResponse());
 	}
 
+	private boolean _hasAddObjectLayoutPermission() throws PortalException {
+		return _objectDefinitionModelResourcePermission.contains(
+			_objectRequestHelper.getPermissionChecker(),
+			getObjectDefinitionId(), ActionKeys.UPDATE);
+	}
+
+	private final ModelResourcePermission<ObjectDefinition>
+		_objectDefinitionModelResourcePermission;
 	private final ObjectRequestHelper _objectRequestHelper;
 
 }

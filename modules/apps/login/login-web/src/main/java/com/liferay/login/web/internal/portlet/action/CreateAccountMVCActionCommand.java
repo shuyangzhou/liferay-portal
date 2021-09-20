@@ -433,13 +433,13 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 		String emailAddress = ParamUtil.getString(
 			actionRequest, "emailAddress");
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
 		long facebookId = GetterUtil.getLong(
-			session.getAttribute(WebKeys.FACEBOOK_INCOMPLETE_USER_ID));
+			httpSession.getAttribute(WebKeys.FACEBOOK_INCOMPLETE_USER_ID));
 
 		String googleUserId = GetterUtil.getString(
-			session.getAttribute(WebKeys.GOOGLE_INCOMPLETE_USER_ID));
+			httpSession.getAttribute(WebKeys.GOOGLE_INCOMPLETE_USER_ID));
 
 		if (Validator.isNotNull(googleUserId)) {
 			autoPassword = false;
@@ -482,7 +482,7 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 			updateUserInformation, sendEmail, serviceContext);
 
 		if (facebookId > 0) {
-			session.removeAttribute(WebKeys.FACEBOOK_INCOMPLETE_USER_ID);
+			httpSession.removeAttribute(WebKeys.FACEBOOK_INCOMPLETE_USER_ID);
 
 			updateUserAndSendRedirect(
 				actionRequest, actionResponse, themeDisplay, user, password1);
@@ -494,7 +494,7 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 			_userLocalService.updateGoogleUserId(
 				user.getUserId(), googleUserId);
 
-			session.removeAttribute(WebKeys.GOOGLE_INCOMPLETE_USER_ID);
+			httpSession.removeAttribute(WebKeys.GOOGLE_INCOMPLETE_USER_ID);
 
 			updateUserAndSendRedirect(
 				actionRequest, actionResponse, themeDisplay, user, password1);

@@ -3,7 +3,7 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Layout Page Templates";
+	property testray.main.component.name = "Master Page Templates";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -282,23 +282,13 @@ definition {
 
 			Theme.configureLookAndFeelShowFooter(showFooter = "true");
 
-			Pause(locator1 = "3000");
-
 			Theme.configureLookAndFeelShowHeader(showHeader = "true");
-
-			Pause(locator1 = "3000");
 
 			Theme.configureLookAndFeelShowHeaderSearch(showHeaderSearch = "true");
 
-			Pause(locator1 = "3000");
-
 			Theme.configureLookAndFeelShowMaxMinAppLinks(showMaxMinAppLinks = "true");
 
-			Pause(locator1 = "3000");
-
 			Theme.configureLookAndFeelWrapWidgetPageContent(wrapWidgetPageContent = "true");
-
-			Pause(locator1 = "3000");
 
 			PortletEntry.save();
 

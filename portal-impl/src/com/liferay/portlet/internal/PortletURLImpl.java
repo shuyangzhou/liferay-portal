@@ -1195,9 +1195,10 @@ public class PortletURLImpl
 		String result = sb.toString();
 
 		if (!CookieKeys.hasSessionId(_httpServletRequest)) {
-			HttpSession session = _httpServletRequest.getSession();
+			HttpSession httpSession = _httpServletRequest.getSession();
 
-			result = PortalUtil.getURLWithSessionId(result, session.getId());
+			result = PortalUtil.getURLWithSessionId(
+				result, httpSession.getId());
 		}
 
 		if (!_escapeXml) {

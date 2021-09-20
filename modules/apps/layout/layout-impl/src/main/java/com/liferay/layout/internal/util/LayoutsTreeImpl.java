@@ -16,8 +16,10 @@ package com.liferay.layout.internal.util;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.Staging;
+import com.liferay.layout.internal.configuration.FFLayoutPreviewDraftConfiguration;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -46,6 +48,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.layoutsadmin.util.LayoutsTree;
 import com.liferay.sites.kernel.util.SitesUtil;
@@ -54,12 +57,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -70,7 +76,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Zsolt Szabó
  * @author Tibor Lipusz
  */
-@Component(immediate = true, service = LayoutsTree.class)
+@Component(
+	configurationPid = "com.liferay.layout.internal.configuration.FFLayoutPreviewDraftConfiguration",
+	immediate = true, service = LayoutsTree.class
+)
 public class LayoutsTreeImpl implements LayoutsTree {
 
 	@Override
@@ -245,6 +254,32 @@ public class LayoutsTreeImpl implements LayoutsTree {
 			httpServletRequest, groupId, layoutTreeNodes, layoutSetBranch);
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_ffLayoutPreviewDraftConfiguration =
+			ConfigurableUtil.createConfigurable(
+				FFLayoutPreviewDraftConfiguration.class, properties);
+	}
+
+	private Layout _getDraftLayout(Layout layout) {
+		if (!_ffLayoutPreviewDraftConfiguration.enabled() ||
+			!layout.isTypeContent()) {
+
+			return null;
+		}
+
+		Layout draftLayout = layout.fetchDraftLayout();
+
+		if ((draftLayout != null) &&
+			(draftLayout.getStatus() == WorkflowConstants.STATUS_DRAFT)) {
+
+			return draftLayout;
+		}
+
+		return null;
+	}
+
 	private LayoutTreeNodes _getLayoutTreeNodes(
 			HttpServletRequest httpServletRequest, long groupId,
 			boolean privateLayout, long parentLayoutId, boolean incomplete,
@@ -303,7 +338,7 @@ public class LayoutsTreeImpl implements LayoutsTree {
 	}
 
 	private int _getLoadedLayoutsCount(
-			HttpSession session, long groupId, boolean privateLayout,
+			HttpSession httpSession, long groupId, boolean privateLayout,
 			long layoutId, String treeId)
 		throws Exception {
 
@@ -312,7 +347,7 @@ public class LayoutsTreeImpl implements LayoutsTree {
 			":Pagination");
 
 		String paginationJSON = SessionClicks.get(
-			session, key, JSONFactoryUtil.getNullJSON());
+			httpSession, key, JSONFactoryUtil.getNullJSON());
 
 		JSONObject paginationJSONObject = JSONFactoryUtil.createJSONObject(
 			paginationJSON);
@@ -491,9 +526,20 @@ public class LayoutsTreeImpl implements LayoutsTree {
 			).put(
 				"deleteable",
 				_isDeleteable(layout, themeDisplay, layoutSetBranch)
-			).put(
-				"friendlyURL", layout.getFriendlyURL()
 			);
+
+			Layout draftLayout = _getDraftLayout(layout);
+
+			if (draftLayout != null) {
+				jsonObject.put("draftStatus", "draft");
+
+				String draftLayoutURL = _portal.getLayoutFriendlyURL(
+					draftLayout, themeDisplay);
+
+				jsonObject.put("draftURL", draftLayoutURL);
+			}
+
+			jsonObject.put("friendlyURL", layout.getFriendlyURL());
 
 			if (layout instanceof VirtualLayout) {
 				VirtualLayout virtualLayout = (VirtualLayout)layout;
@@ -508,8 +554,16 @@ public class LayoutsTreeImpl implements LayoutsTree {
 				"hasChildren", layout.hasChildren()
 			).put(
 				"layoutId", layout.getLayoutId()
-			).put(
-				"name", layout.getName(themeDisplay.getLocale())
+			);
+
+			String layoutName = layout.getName(themeDisplay.getLocale());
+
+			if (draftLayout != null) {
+				layoutName = layoutName + StringPool.STAR;
+			}
+
+			jsonObject.put(
+				"name", layoutName
 			).put(
 				"parentable",
 				LayoutPermissionUtil.contains(
@@ -621,6 +675,9 @@ public class LayoutsTreeImpl implements LayoutsTree {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutsTreeImpl.class);
+
+	private volatile FFLayoutPreviewDraftConfiguration
+		_ffLayoutPreviewDraftConfiguration;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

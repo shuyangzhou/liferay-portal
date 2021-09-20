@@ -1,5 +1,23 @@
 definition {
 
+	macro assertCustomObject {
+		AssertElementPresent(
+			key_labelName = "${labelName}",
+			locator1 = "CreateObject#OBJECT_NAME");
+	}
+
+	macro assertDisabledFieldName {
+		AssertElementPresent(locator1 = "CreateObject#DISABLED_FIELD_NAME");
+	}
+
+	macro assertDisabledFieldType {
+		AssertElementPresent(locator1 = "CreateObject#DISABLED_FIELD_TYPE");
+	}
+
+	macro assertDisabledObjectName {
+		AssertElementPresent(locator1 = "CreateObject#DISABLED_OBJECT_NAME");
+	}
+
 	macro assertFieldName {
 		AssertTextEquals(
 			locator1 = "CreateObject#FIELD_NAME",
@@ -10,6 +28,12 @@ definition {
 		AssertSelectedLabel(
 			locator1 = "CreateObject#FIELD_TYPE",
 			value1 = "${fieldType}");
+	}
+
+	macro assertObjectDefinitionName {
+		AssertTextEquals(
+			locator1 = "CreateObject#OBJECT_DEFINITION_NAME",
+			value1 = "${objectName}");
 	}
 
 	macro assertObjectFieldNameIsAutofilled {
@@ -40,6 +64,10 @@ definition {
 		AssertElementPresent(
 			key_panelCategoryKey = "${panelCategoryKey}",
 			locator1 = "CreateObject#PANEL_CATEGORY_KEY_SELECTED");
+	}
+
+	macro assertToggleMandatory {
+		AssertChecked.assertCheckedNotVisible(locator1 = "ObjectAdmin#OBJECT_FIELDS_MANDATORY_TOGGLE_SWITCH");
 	}
 
 	macro checkToggleMandatory {

@@ -52,7 +52,7 @@ public class SXPElementLocalServiceImpl extends SXPElementLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public SXPElement addSXPElement(
-			long userId, long groupId, Map<Locale, String> descriptionMap,
+			long userId, Map<Locale, String> descriptionMap,
 			String elementDefinitionJSON, boolean readOnly,
 			Map<Locale, String> titleMap, int type,
 			ServiceContext serviceContext)
@@ -62,8 +62,6 @@ public class SXPElementLocalServiceImpl extends SXPElementLocalServiceBaseImpl {
 
 		SXPElement sxpElement = createSXPElement(
 			counterLocalService.increment(SXPElement.class.getName()));
-
-		sxpElement.setGroupId(groupId);
 
 		User user = _userLocalService.getUser(userId);
 

@@ -155,6 +155,11 @@
 </tr>
 <!--INDIVIDUALS_ACTIVITIES_CHART-->
 <tr>
+	<td>BASE_RESULTS_TIMELINE</td>
+	<td>//div[contains(@class,'base-results')]//li[contains(@class,'timeline-item')]//span[contains(@class,'title')]//span</td>
+	<td></td>
+</tr>
+<tr>
 	<td>BASE_RESULTS_TIMELINE_ITEM</td>
 	<td>xpath=(//div[contains(@class,'base-results')]//li[contains(@class,'timeline-item')]//span[contains(@class,'title')][normalize-space(text())='${itemName}'])[${index}]</td>
 	<td></td>
@@ -175,13 +180,24 @@
 	<td></td>
 </tr>
 <tr>
+	<td>BASE_RESULTS_TIMELINE_ATTRIBUTES_TITLE</td>
+	<td>//div[contains(@class,'attributes-title')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CHART_POPOVER</td>
 	<td>//div[contains(@class,'recharts-tooltip-wrapper')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>CHART_POPOVER_ACTIVITIES_DATE</td>
-	<td>xpath=(//tr[contains(@class,'analytics-tooltip-chart-row')])[1]//td[2]//div[contains(@class,'analytics-tooltip-chart-content')]</td>
+	<td>xpath=(//tr[contains(@class,'analytics-tooltip-chart-row')])[1]//td[1]//div[contains(@class,'analytics-tooltip-chart-content')]</td>
+	<td></td>
+</tr>
+<!-- OVERVIEW -->
+<tr>
+	<td>NO_EVENTS_FOUND</td>
+	<td>//span[contains(text(),'No Events Found')]</td>
 	<td></td>
 </tr>
 </tbody>

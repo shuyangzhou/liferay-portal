@@ -168,7 +168,6 @@ public class ListTypeDefinitionServiceTest {
 
 			listTypeDefinition =
 				_listTypeDefinitionService.addListTypeDefinition(
-					user.getUserId(),
 					Collections.singletonMap(
 						LocaleUtil.getDefault(),
 						RandomTestUtil.randomString()));

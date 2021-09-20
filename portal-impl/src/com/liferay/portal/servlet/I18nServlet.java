@@ -376,9 +376,9 @@ public class I18nServlet extends HttpServlet {
 		Locale locale = LocaleUtil.fromLanguageId(
 			i18nData.getLanguageId(), false, false);
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		session.setAttribute(WebKeys.LOCALE, locale);
+		httpSession.setAttribute(WebKeys.LOCALE, locale);
 
 		LanguageUtil.updateCookie(
 			httpServletRequest, httpServletResponse, locale);

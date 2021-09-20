@@ -421,13 +421,13 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 
 	@Override
 	public HttpSession getSession(boolean create) {
-		HttpSession session = _httpServletRequest.getSession(create);
+		HttpSession httpSession = _httpServletRequest.getSession(create);
 
-		if (session == null) {
+		if (httpSession == null) {
 			return null;
 		}
 
-		return new PortletServletSession(session, _liferayPortletRequest);
+		return new PortletServletSession(httpSession, _liferayPortletRequest);
 	}
 
 	@Override

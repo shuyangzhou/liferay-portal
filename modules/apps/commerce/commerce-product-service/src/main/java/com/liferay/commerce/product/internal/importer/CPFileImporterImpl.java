@@ -207,7 +207,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 		return fetchOrAddDDMTemplate(
 			classNameId, classPK, resourceClassNameId, name, type, mode,
-			language, script, serviceContext);
+			language, script, true, serviceContext);
 	}
 
 	@Override
@@ -324,7 +324,8 @@ public class CPFileImporterImpl implements CPFileImporter {
 				ddmStructure.getStructureId(),
 				_portal.getClassNameId(JournalArticle.class), ddmTemplateKey,
 				DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null, "ftl",
-				StringUtil.read(inputStream), serviceContext);
+				StringUtil.read(inputStream),
+				jsonObject.getBoolean("cacheable", true), serviceContext);
 		}
 
 		Locale locale = serviceContext.getLocale();
@@ -557,7 +558,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 	protected DDMTemplate fetchOrAddDDMTemplate(
 			long classNameId, long classPK, long resourceClassNameId,
 			String name, String type, String mode, String language,
-			String script, ServiceContext serviceContext)
+			String script, boolean cacheable, ServiceContext serviceContext)
 		throws PortalException {
 
 		Map<Locale, String> nameMap = HashMapBuilder.put(
@@ -571,13 +572,13 @@ public class CPFileImporterImpl implements CPFileImporter {
 			ddmTemplate = _ddmTemplateLocalService.addTemplate(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
 				classNameId, classPK, resourceClassNameId, getKey(name),
-				nameMap, null, type, mode, language, script, true, false,
+				nameMap, null, type, mode, language, script, cacheable, false,
 				StringPool.BLANK, null, serviceContext);
 		}
 		else {
 			ddmTemplate = _ddmTemplateLocalService.updateTemplate(
 				serviceContext.getUserId(), ddmTemplate.getTemplateId(),
-				classPK, nameMap, null, type, mode, language, script, true,
+				classPK, nameMap, null, type, mode, language, script, cacheable,
 				serviceContext);
 		}
 

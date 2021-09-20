@@ -370,8 +370,10 @@ public class ObjectRelatedModelsProviderTest {
 		Assert.assertEquals(objectEntries.toString(), 0, objectEntries.size());
 
 		_objectRelationshipLocalService.addObjectRelationshipMappingTableValues(
+			TestPropsValues.getUserId(),
 			objectRelationship.getObjectRelationshipId(),
-			objectEntry1.getObjectEntryId(), objectEntry2.getObjectEntryId());
+			objectEntry1.getObjectEntryId(), objectEntry2.getObjectEntryId(),
+			ServiceContextTestUtil.getServiceContext());
 
 		objectEntries = objectRelatedModelsProvider.getRelatedModels(
 			0, objectRelationship.getObjectRelationshipId(),
@@ -387,8 +389,10 @@ public class ObjectRelatedModelsProviderTest {
 			ServiceContextTestUtil.getServiceContext());
 
 		_objectRelationshipLocalService.addObjectRelationshipMappingTableValues(
+			TestPropsValues.getUserId(),
 			objectRelationship.getObjectRelationshipId(),
-			objectEntry1.getObjectEntryId(), objectEntry2.getObjectEntryId());
+			objectEntry1.getObjectEntryId(), objectEntry2.getObjectEntryId(),
+			ServiceContextTestUtil.getServiceContext());
 
 		objectEntries = objectRelatedModelsProvider.getRelatedModels(
 			0, objectRelationship.getObjectRelationshipId(),

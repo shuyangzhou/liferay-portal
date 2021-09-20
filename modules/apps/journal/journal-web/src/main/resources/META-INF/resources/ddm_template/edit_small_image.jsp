@@ -60,11 +60,7 @@ String smallImageSource = journalEditDDMTemplateDisplayContext.getSmallImageSour
 	<div>
 
 		<%
-		String previewURL = StringPool.BLANK;
-
-		if (journalEditDDMTemplateDisplayContext.isSmallImage() && (ddmTemplate != null) && (ddmTemplate.getSmallImageId() > 0)) {
-			previewURL = ddmTemplate.getTemplateImageURL(themeDisplay);
-		}
+		ThemeDisplay finalThemeDisplay = themeDisplay;
 		%>
 
 		<react:component
@@ -73,7 +69,14 @@ String smallImageSource = journalEditDDMTemplateDisplayContext.getSmallImageSour
 				HashMapBuilder.<String, Object>put(
 					"name", "smallImageFile"
 				).put(
-					"previewURL", previewURL
+					"previewURL",
+					() -> {
+						if (journalEditDDMTemplateDisplayContext.isSmallImage() && (ddmTemplate != null) && (ddmTemplate.getSmallImageId() > 0)) {
+							return ddmTemplate.getTemplateImageURL(finalThemeDisplay);
+						}
+
+						return StringPool.BLANK;
+					}
 				).build()
 			%>'
 		/>
