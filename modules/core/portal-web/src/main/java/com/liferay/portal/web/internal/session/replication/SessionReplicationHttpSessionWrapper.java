@@ -79,19 +79,17 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 			Class<?> clazz = value.getClass();
 
 			if (!_safeClassLoaders.contains(clazz.getClassLoader())) {
+				Set<String> scrubbedNames = _getScrubbedNames();
+
+				scrubbedNames.add(name);
+
 				Serializer serializer = new Serializer();
 
 				serializer.writeObject((Serializable)value);
 
 				ByteBuffer byteBuffer = serializer.toByteBuffer();
 
-				super.setAttribute(name, byteBuffer.array());
-
-				Set<String> scrubbedNames = _getScrubbedNames();
-
-				scrubbedNames.add(name);
-
-				return;
+				value = byteBuffer.array();
 			}
 		}
 
