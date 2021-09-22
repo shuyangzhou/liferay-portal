@@ -4,6 +4,7 @@
 	<checkstyle>
 		<suppress checks="MapBuilderCheck" files="portal-bootstrap/src/main/java/com/liferay/portal/bootstrap/ModuleFrameworkImpl\.java" />
 		<suppress checks="MapBuilderCheck" files="registry-test/.*" />
+		<suppress checks="MethodNamingCheck" files="portal-web/src/main/java/com/liferay/portal/web/internal/session/replication/SessionReplicationHttpServletRequestDelegate\.java" />
 	</checkstyle>
 	<source-check>
 		<suppress checks="BNDDefinitionKeysCheck" files="portal-bootstrap/system.packages.extra.bnd" />
