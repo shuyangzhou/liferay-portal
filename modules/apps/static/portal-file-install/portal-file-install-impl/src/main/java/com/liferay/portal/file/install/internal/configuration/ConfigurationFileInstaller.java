@@ -252,6 +252,16 @@ public class ConfigurationFileInstaller implements FileInstaller {
 			return new String[] {pid, name};
 		}
 
+		index = pid.indexOf(CharPool.DASH);
+
+		if (index > 0) {
+			String name = pid.substring(index + 1);
+
+			pid = pid.substring(0, index);
+
+			return new String[] {pid, name};
+		}
+
 		return new String[] {pid, null};
 	}
 
