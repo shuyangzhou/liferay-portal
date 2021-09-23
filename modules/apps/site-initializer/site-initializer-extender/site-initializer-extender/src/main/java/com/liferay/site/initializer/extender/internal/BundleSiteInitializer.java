@@ -129,7 +129,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Dictionary;
@@ -985,8 +984,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return;
 		}
 
-		List<String> layoutPageTemplateEntryKeys = new ArrayList<>();
-
 		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
 
 		while (enumeration.hasMoreElements()) {
@@ -997,34 +994,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 			if (StringUtil.endsWith(urlPath, ".json")) {
 				String json = StringUtil.read(url.openStream());
 
-				StringUtil.replace(
-					json, "[$SCOPE_GROUP_ID$]",
-					String.valueOf(serviceContext.getScopeGroupId()));
-
 				Group scopeGroup = serviceContext.getScopeGroup();
-
-				StringUtil.replace(
-					json, "[$GROUP_FRIENDLY_URL$]",
-					scopeGroup.getFriendlyURL());
-
-				if (urlPath.endsWith("display-page-template.json")) {
-					JSONObject jsonObject = _jsonFactory.createJSONObject(json);
-
-					if (jsonObject.getBoolean("defaultTemplate")) {
-						layoutPageTemplateEntryKeys.add(
-							StringUtil.toLowerCase(
-								jsonObject.getString("name")));
-
-						jsonObject.remove("defaultTemplate");
-
-						json = jsonObject.toString();
-					}
-				}
 
 				zipWriter.addEntry(
 					StringUtil.removeFirst(
 						urlPath, "/site-initializer/layout-page-templates/"),
-					json);
+					StringUtil.replace(
+						json,
+						new String[] {"[$GROUP_FRIENDLY_URL$]", "[$GROUP_ID$]"},
+						new String[] {
+							scopeGroup.getFriendlyURL(),
+							String.valueOf(serviceContext.getScopeGroupId())
+						}));
 			}
 			else {
 				zipWriter.addEntry(
@@ -1037,21 +1018,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_layoutPageTemplatesImporter.importFile(
 			serviceContext.getUserId(), serviceContext.getScopeGroupId(),
 			zipWriter.getFile(), false);
-
-		for (String layoutPageTemplateEntryKey : layoutPageTemplateEntryKeys) {
-			LayoutPageTemplateEntry layoutPageTemplateEntry =
-				_layoutPageTemplateEntryLocalService.
-					fetchLayoutPageTemplateEntry(
-						serviceContext.getScopeGroupId(),
-						layoutPageTemplateEntryKey);
-
-			if (layoutPageTemplateEntry == null) {
-				continue;
-			}
-
-			_layoutPageTemplateEntryLocalService.updateLayoutPageTemplateEntry(
-				layoutPageTemplateEntry.getLayoutPageTemplateEntryId(), true);
-		}
 	}
 
 	private void _addLayouts(
@@ -1177,13 +1143,30 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+			StringBundler sb = new StringBundler();
+
+			JSONObject propertiesJSONObject = jsonObject.getJSONObject(
+				"properties");
+
+			for (String key : propertiesJSONObject.keySet()) {
+				sb.append(key);
+				sb.append(StringPool.EQUAL);
+				sb.append(propertiesJSONObject.getString(key));
+				sb.append(StringPool.NEW_LINE);
+			}
+
 			_remoteAppEntryLocalService.addCustomElementRemoteAppEntry(
-				serviceContext.getUserId(), jsonObject.getString("cssURLs"),
+				serviceContext.getUserId(),
+				StringUtil.merge(
+					JSONUtil.toStringArray(jsonObject.getJSONArray("cssURLs")),
+					StringPool.NEW_LINE),
 				jsonObject.getString("htmlElementName"),
-				jsonObject.getString("elementURLs"),
+				StringUtil.merge(
+					JSONUtil.toStringArray(
+						jsonObject.getJSONArray("elementURLs")),
+					StringPool.NEW_LINE),
 				_toMap(jsonObject.getString("name_i18n")),
-				jsonObject.getString("portletCategoryName"),
-				jsonObject.getString("properties"));
+				jsonObject.getString("portletCategoryName"), sb.toString());
 		}
 	}
 

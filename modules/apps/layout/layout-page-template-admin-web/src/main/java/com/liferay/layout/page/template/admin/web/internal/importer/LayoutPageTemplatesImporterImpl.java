@@ -902,7 +902,7 @@ public class LayoutPageTemplatesImporterImpl
 		}
 	}
 
-	private void _processLayoutPageTemplateEntry(
+	private LayoutPageTemplateEntry _processLayoutPageTemplateEntry(
 			long classNameId, long classTypeId, long groupId,
 			long layoutPageTemplateCollectionId,
 			LayoutPageTemplateEntry layoutPageTemplateEntry, String name,
@@ -961,9 +961,12 @@ public class LayoutPageTemplatesImporterImpl
 					layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
 					thumbnailZipEntry, zipFile);
 
-				_layoutPageTemplateEntryService.updateLayoutPageTemplateEntry(
-					layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
-					previewFileEntryId);
+				layoutPageTemplateEntry =
+					_layoutPageTemplateEntryService.
+						updateLayoutPageTemplateEntry(
+							layoutPageTemplateEntry.
+								getLayoutPageTemplateEntryId(),
+							previewFileEntryId);
 
 				_layoutPageTemplatesImporterResultEntries.add(
 					new LayoutPageTemplatesImporterResultEntry(
@@ -1009,7 +1012,11 @@ public class LayoutPageTemplatesImporterImpl
 						new String[] {
 							zipPath, _toTypeName(layoutPageTemplateEntryType)
 						})));
+
+			return null;
 		}
+
+		return layoutPageTemplateEntry;
 	}
 
 	private void _processMasterLayoutPageTemplateEntries(
@@ -1563,13 +1570,23 @@ public class LayoutPageTemplatesImporterImpl
 					fetchLayoutPageTemplateEntry(
 						_groupId, _displayPageTemplateEntry.getKey());
 
-			_processLayoutPageTemplateEntry(
+			layoutPageTemplateEntry = _processLayoutPageTemplateEntry(
 				classNameId, classTypeId, _groupId, 0, layoutPageTemplateEntry,
 				displayPageTemplate.getName(),
 				_displayPageTemplateEntry.getPageDefinition(),
 				LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE,
 				_overwrite, _displayPageTemplateEntry.getThumbnailZipEntry(),
 				_displayPageTemplateEntry.getZipPath(), _zipFile);
+
+			boolean defaultTemplate = GetterUtil.getBoolean(
+				displayPageTemplate.getDefaultTemplate());
+
+			if ((layoutPageTemplateEntry != null) && defaultTemplate) {
+				_layoutPageTemplateEntryLocalService.
+					updateLayoutPageTemplateEntry(
+						layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+						true);
+			}
 
 			return null;
 		}
