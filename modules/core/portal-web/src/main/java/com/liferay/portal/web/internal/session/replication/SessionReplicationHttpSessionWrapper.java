@@ -19,6 +19,7 @@ import com.liferay.petra.io.Serializer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
+import com.liferay.portal.kernel.util.TransientValue;
 
 import java.io.Serializable;
 
@@ -78,7 +79,9 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 		if (value instanceof Serializable) {
 			Class<?> clazz = value.getClass();
 
-			if (!_safeClassLoaders.contains(clazz.getClassLoader())) {
+			if (!(value instanceof TransientValue) &&
+				!_safeClassLoaders.contains(clazz.getClassLoader())) {
+
 				Set<String> scrubbedNames = _getScrubbedNames();
 
 				scrubbedNames.add(name);
