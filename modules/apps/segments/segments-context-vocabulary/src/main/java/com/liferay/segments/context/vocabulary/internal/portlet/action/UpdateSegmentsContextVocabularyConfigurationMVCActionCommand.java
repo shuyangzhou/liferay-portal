@@ -15,7 +15,6 @@
 package com.liferay.segments.context.vocabulary.internal.portlet.action;
 
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.kernel.log.Log;
@@ -26,22 +25,13 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration;
 import com.liferay.segments.context.vocabulary.internal.configuration.persistence.listener.DuplicatedSegmentsContextVocabularyConfigurationModelListenerException;
 
-import java.io.File;
 import java.io.IOException;
-
-import java.net.URI;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.portlet.ActionRequest;
@@ -129,26 +119,6 @@ public class UpdateSegmentsContextVocabularyConfigurationMVCActionCommand
 		return _configurationAdmin.getConfiguration(pid, StringPool.QUESTION);
 	}
 
-	private String _getFileName(Configuration configuration) {
-		String pid = configuration.getPid();
-
-		int index = pid.lastIndexOf('.');
-
-		String factoryPid = pid.substring(index + 1);
-
-		File file = new File(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			StringBundler.concat(
-				configuration.getFactoryPid(), StringPool.DASH, factoryPid,
-				".config"));
-
-		file = file.getAbsoluteFile();
-
-		URI uri = file.toURI();
-
-		return uri.toString();
-	}
-
 	private void _updateConfiguration(
 			Configuration configuration, String entityField,
 			String assetVocabulary)
@@ -172,35 +142,6 @@ public class UpdateSegmentsContextVocabularyConfigurationMVCActionCommand
 			}
 
 			configuredProperties.put("configuration.cleaner.ignore", "true");
-
-			String fileName = _getFileName(configuration);
-
-			String oldFileName = (String)configuredProperties.put(
-				"felix.fileinstall.filename", fileName);
-
-			if ((oldFileName != null) &&
-				!Objects.equals(fileName, oldFileName)) {
-
-				try {
-					Path oldFilePath = Paths.get(new URI(oldFileName));
-
-					Files.deleteIfExists(oldFilePath);
-
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Delete inconsistent factory configuration " +
-								oldFileName);
-					}
-				}
-				catch (Exception exception) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Unable to delete inconsistent factory " +
-								"configuration " + oldFileName,
-							exception);
-					}
-				}
-			}
 
 			configuration.update(configuredProperties);
 		}
