@@ -1,0 +1,9 @@
+Bundle-Name: Liferay Antivirus Async
+Bundle-SymbolicName: com.liferay.antivirus.async
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.antivirus.async.configuration,\
+	com.liferay.antivirus.async.constants,\
+	com.liferay.antivirus.async.events,\
+	com.liferay.antivirus.async.jmx,\
+	com.liferay.antivirus.async.retry
