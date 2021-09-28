@@ -40,13 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -59,12 +52,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -74,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseEmailAddressResourceImpl
 	implements EmailAddressResource, EntityModelResource,
 			   VulcanBatchEngineTaskItemDelegate<EmailAddress> {
@@ -84,18 +71,29 @@ public abstract class BaseEmailAddressResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/email-addresses/{emailAddressId}'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the email address.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "emailAddressId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the email address."
 	)
-	@Path("/email-addresses/{emailAddressId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "EmailAddress")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "emailAddressId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "EmailAddress")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/email-addresses/{emailAddressId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public EmailAddress getEmailAddress(
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddressId") Long
-				emailAddressId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("emailAddressId")
+			Long emailAddressId)
 		throws Exception {
 
 		return new EmailAddress();
@@ -106,18 +104,29 @@ public abstract class BaseEmailAddressResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/email-addresses'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the organization's email addresses.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "organizationId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the organization's email addresses."
 	)
-	@Path("/organizations/{organizationId}/email-addresses")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "EmailAddress")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "organizationId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "EmailAddress")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/organizations/{organizationId}/email-addresses")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<EmailAddress> getOrganizationEmailAddressesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("organizationId")
-				String organizationId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("organizationId")
+			String organizationId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -128,18 +137,29 @@ public abstract class BaseEmailAddressResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/user-accounts/{userAccountId}/email-addresses'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the user's email addresses.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "userAccountId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the user's email addresses."
 	)
-	@Path("/user-accounts/{userAccountId}/email-addresses")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "EmailAddress")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "userAccountId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "EmailAddress")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/user-accounts/{userAccountId}/email-addresses")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<EmailAddress> getUserAccountEmailAddressesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("userAccountId") Long
-				userAccountId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("userAccountId")
+			Long userAccountId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

@@ -40,9 +40,6 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.Index;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.IndexResource;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -55,11 +52,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -69,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseIndexResourceImpl
 	implements EntityModelResource, IndexResource,
 			   VulcanBatchEngineTaskItemDelegate<Index> {
@@ -79,11 +71,13 @@ public abstract class BaseIndexResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/indexes'  -u 'test@liferay.com:test'
 	 */
-	@GET
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Index")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/indexes")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Path("/indexes")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Index")})
 	public Page<Index> getIndexesPage() throws Exception {
 		return Page.of(Collections.emptyList());
 	}
@@ -93,12 +87,14 @@ public abstract class BaseIndexResourceImpl
 	 *
 	 * curl -X 'PATCH' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/indexes/refresh' -d $'{"key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Index")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.PATCH
+	@javax.ws.rs.Path("/indexes/refresh")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@PATCH
-	@Path("/indexes/refresh")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Index")})
 	public void patchIndexRefresh(Index index) throws Exception {
 	}
 
@@ -107,12 +103,14 @@ public abstract class BaseIndexResourceImpl
 	 *
 	 * curl -X 'PATCH' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/indexes/reindex' -d $'{"key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Index")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.PATCH
+	@javax.ws.rs.Path("/indexes/reindex")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@PATCH
-	@Path("/indexes/reindex")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Index")})
 	public void patchIndexReindex(Index index) throws Exception {
 	}
 

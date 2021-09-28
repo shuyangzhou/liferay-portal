@@ -1156,13 +1156,13 @@ definition {
 		if (isSet(accountType)) {
 			AssertTextEquals(
 				key_typeName = "${accountType}",
-				locator1 = "Select#TYPE_SELECTED",
+				locator1 = "TextInput#TYPE",
 				value1 = "${accountType}");
 		}
 
 		AssertElementPresent(
 			key_selectFieldLabel = "Type",
-			locator1 = "Select#ANY_DISABLED");
+			locator1 = "TextInput#ANY_DISABLED");
 
 		if (isSet(accountTaxID)) {
 			AssertTextEquals(

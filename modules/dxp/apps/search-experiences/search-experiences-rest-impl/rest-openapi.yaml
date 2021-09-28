@@ -24,6 +24,69 @@ components:
                     required:
                         - field
                     type: object
+        HighlightField:
+            properties:
+                fragment_offset:
+                    type: integer
+                fragment_size:
+                    type: integer
+                number_of_fragments:
+                    type: integer
+        Parameter:
+            properties:
+                dateFormat:
+                    type: string
+                defaultValueDouble:
+                    format: double
+                    type: number
+                defaultValueFloat:
+                    format: float
+                    type: number
+                defaultValueInteger:
+                    type: integer
+                defaultValueLong:
+                    format: int64
+                    type: integer
+                defaultValueString:
+                    type: string
+                defaultValuesIntegerArray:
+                    items:
+                        type: integer
+                    type: array
+                defaultValuesLongArray:
+                    items:
+                        format: int64
+                        type: integer
+                    type: array
+                defaultValuesStringArray:
+                    items:
+                        type: string
+                    type: array
+                maxValueDouble:
+                    format: double
+                    type: number
+                maxValueFloat:
+                    format: float
+                    type: number
+                maxValueInteger:
+                    type: integer
+                maxValueLong:
+                    format: int64
+                    type: integer
+                minValueDouble:
+                    format: double
+                    type: number
+                minValueFloat:
+                    format: float
+                    type: number
+                minValueInteger:
+                    type: integer
+                minValueLong:
+                    format: int64
+                    type: integer
+                parameterType:
+                    enum: [Date, Double, Float, Integer, IntegerArray, Long, LongArray, String, StringArray, TimeRange]
+                    type: string
         SXPBlueprint:
             properties:
                 configuration:
@@ -67,8 +130,30 @@ components:
                             type: object
                         highlight:
                             properties:
-                                fragmentOffset:
+                                fields:
+                                    additionalProperties:
+                                        $ref: "#/components/schemas/HighlightField"
+                                    type: object
+                                fragment_size:
                                     type: integer
+                                number_of_fragments:
+                                    type: integer
+                                post_tags:
+                                    items:
+                                        type: string
+                                    type: array
+                                pre_tags:
+                                    items:
+                                        type: string
+                                    type: array
+                                require_field_match:
+                                    type: boolean
+                                type:
+                                    type: string
+                            type: object
+                        parameters:
+                            additionalProperties:
+                                $ref: "#/components/schemas/Parameter"
                             type: object
                         queries:
                             items:
@@ -88,6 +173,11 @@ components:
                                         type: boolean
                                 type: object
                             type: array
+                        sortConfiguration:
+                            properties:
+                                sorts:
+                                    type: object
+                            type: object
                     type: object
                 description:
                     type: string

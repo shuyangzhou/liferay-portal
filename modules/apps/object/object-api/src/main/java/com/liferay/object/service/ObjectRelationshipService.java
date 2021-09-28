@@ -63,6 +63,10 @@ public interface ObjectRelationshipService extends BaseService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ObjectRelationship getObjectRelationship(long objectRelationshipId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ObjectRelationship> getObjectRelationships(
 			long objectDefinitionId1, int start, int end)
 		throws PortalException;
@@ -73,5 +77,9 @@ public interface ObjectRelationshipService extends BaseService {
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
+
+	public ObjectRelationship updateObjectRelationship(
+			long objectRelationshipId, Map<Locale, String> labelMap)
+		throws PortalException;
 
 }

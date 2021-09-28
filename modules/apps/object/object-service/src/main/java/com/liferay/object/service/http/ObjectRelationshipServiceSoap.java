@@ -112,6 +112,25 @@ public class ObjectRelationshipServiceSoap {
 		}
 	}
 
+	public static com.liferay.object.model.ObjectRelationshipSoap
+			getObjectRelationship(long objectRelationshipId)
+		throws RemoteException {
+
+		try {
+			com.liferay.object.model.ObjectRelationship returnValue =
+				ObjectRelationshipServiceUtil.getObjectRelationship(
+					objectRelationshipId);
+
+			return com.liferay.object.model.ObjectRelationshipSoap.toSoapModel(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static com.liferay.object.model.ObjectRelationshipSoap[]
 			getObjectRelationships(long objectDefinitionId1, int start, int end)
 		throws RemoteException {
@@ -123,6 +142,30 @@ public class ObjectRelationshipServiceSoap {
 						objectDefinitionId1, start, end);
 
 			return com.liferay.object.model.ObjectRelationshipSoap.toSoapModels(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.object.model.ObjectRelationshipSoap
+			updateObjectRelationship(
+				long objectRelationshipId, String[] labelMapLanguageIds,
+				String[] labelMapValues)
+		throws RemoteException {
+
+		try {
+			Map<Locale, String> labelMap = LocalizationUtil.getLocalizationMap(
+				labelMapLanguageIds, labelMapValues);
+
+			com.liferay.object.model.ObjectRelationship returnValue =
+				ObjectRelationshipServiceUtil.updateObjectRelationship(
+					objectRelationshipId, labelMap);
+
+			return com.liferay.object.model.ObjectRelationshipSoap.toSoapModel(
 				returnValue);
 		}
 		catch (Exception exception) {

@@ -4,6 +4,36 @@
 <service-builder auto-import-default-references="false" auto-namespace-tables="false" dependency-injector="ds" mvcc-enabled="true" package-path="com.liferay.object" short-no-such-exception-enabled="false">
 	<author>Marco Leo</author>
 	<namespace>Object</namespace>
+	<entity local-service="true" name="ObjectAction" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="objectActionId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="objectDefinitionId" type="long" />
+		<column name="active" type="boolean" />
+		<column name="objectActionTriggerKey" type="String" />
+		<column name="parameters" type="String" />
+		<column name="type" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="O_A_OATK" return-type="Collection">
+			<finder-column name="objectDefinitionId" />
+			<finder-column name="active" />
+			<finder-column name="objectActionTriggerKey" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="ObjectDefinition" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
@@ -48,6 +78,10 @@
 		</finder>
 		<finder name="System" return-type="Collection">
 			<finder-column name="system" />
+		</finder>
+		<finder name="C_C" return-type="ObjectDefinition">
+			<finder-column name="companyId" />
+			<finder-column name="className" />
 		</finder>
 		<finder name="C_N" return-type="ObjectDefinition">
 			<finder-column name="companyId" />

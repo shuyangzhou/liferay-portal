@@ -40,12 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.List;
@@ -57,12 +51,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -72,7 +60,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v2.0")
+@javax.ws.rs.Path("/v2.0")
 public abstract class BaseOrderTypeResourceImpl
 	implements EntityModelResource, OrderTypeResource,
 			   VulcanBatchEngineTaskItemDelegate<OrderType> {
@@ -82,19 +70,26 @@ public abstract class BaseOrderTypeResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discount-order-types/{discountOrderTypeId}/order-type'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "discountOrderTypeId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "discountOrderTypeId"
+			)
 		}
 	)
-	@Path("/discount-order-types/{discountOrderTypeId}/order-type")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "OrderType")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "OrderType")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/discount-order-types/{discountOrderTypeId}/order-type")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public OrderType getDiscountOrderTypeOrderType(
-			@NotNull @Parameter(hidden = true) @PathParam("discountOrderTypeId")
-				Long discountOrderTypeId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("discountOrderTypeId")
+			Long discountOrderTypeId)
 		throws Exception {
 
 		return new OrderType();
@@ -105,19 +100,27 @@ public abstract class BaseOrderTypeResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-list-order-types/{priceListOrderTypeId}/order-type'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "priceListOrderTypeId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "priceListOrderTypeId"
+			)
 		}
 	)
-	@Path("/price-list-order-types/{priceListOrderTypeId}/order-type")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "OrderType")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "OrderType")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
+		"/price-list-order-types/{priceListOrderTypeId}/order-type"
+	)
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public OrderType getPriceListOrderTypeOrderType(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("priceListOrderTypeId")
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("priceListOrderTypeId")
 			Long priceListOrderTypeId)
 		throws Exception {
 

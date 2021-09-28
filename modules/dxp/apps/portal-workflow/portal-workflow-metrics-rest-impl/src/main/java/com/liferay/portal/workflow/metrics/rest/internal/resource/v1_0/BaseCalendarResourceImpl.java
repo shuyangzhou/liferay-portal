@@ -40,9 +40,6 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.portal.workflow.metrics.rest.dto.v1_0.Calendar;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.CalendarResource;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -55,9 +52,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -67,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseCalendarResourceImpl
 	implements CalendarResource, EntityModelResource,
 			   VulcanBatchEngineTaskItemDelegate<Calendar> {
@@ -77,11 +71,13 @@ public abstract class BaseCalendarResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/calendars'  -u 'test@liferay.com:test'
 	 */
-	@GET
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Calendar")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/calendars")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Path("/calendars")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Calendar")})
 	public Page<Calendar> getCalendarsPage() throws Exception {
 		return Page.of(Collections.emptyList());
 	}

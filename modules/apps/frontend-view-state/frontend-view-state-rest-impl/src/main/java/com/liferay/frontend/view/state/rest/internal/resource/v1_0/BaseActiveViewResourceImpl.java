@@ -30,12 +30,6 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.util.List;
 import java.util.Map;
 
@@ -44,14 +38,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -60,7 +46,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseActiveViewResourceImpl implements ActiveViewResource {
 
 	/**
@@ -68,26 +54,42 @@ public abstract class BaseActiveViewResourceImpl implements ActiveViewResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/frontend-view-state/v1.0/active-view/{activeViewId}/page-layout/{pageLayoutId}/portlet/{portletId}'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "activeViewId"),
-			@Parameter(in = ParameterIn.PATH, name = "pageLayoutId"),
-			@Parameter(in = ParameterIn.PATH, name = "portletId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "activeViewId"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "pageLayoutId"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "portletId"
+			)
 		}
 	)
-	@Path(
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "ActiveView")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
 		"/active-view/{activeViewId}/page-layout/{pageLayoutId}/portlet/{portletId}"
 	)
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "ActiveView")})
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Object getActiveViewPageLayoutPortlet(
-			@NotNull @Parameter(hidden = true) @PathParam("activeViewId") String
-				activeViewId,
-			@Parameter(hidden = true) @PathParam("pageLayoutId") Long
-				pageLayoutId,
-			@Parameter(hidden = true) @PathParam("portletId") String portletId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("activeViewId")
+			String activeViewId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.PathParam("pageLayoutId")
+			Long pageLayoutId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.PathParam("portletId")
+			String portletId)
 		throws Exception {
 
 		return null;
@@ -98,27 +100,43 @@ public abstract class BaseActiveViewResourceImpl implements ActiveViewResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/frontend-view-state/v1.0/active-view/{activeViewId}/page-layout/{pageLayoutId}/portlet/{portletId}'  -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "activeViewId"),
-			@Parameter(in = ParameterIn.PATH, name = "pageLayoutId"),
-			@Parameter(in = ParameterIn.PATH, name = "portletId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "activeViewId"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "pageLayoutId"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "portletId"
+			)
 		}
 	)
-	@Path(
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "ActiveView")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.Path(
 		"/active-view/{activeViewId}/page-layout/{pageLayoutId}/portlet/{portletId}"
 	)
-	@Produces({"application/json", "application/xml"})
-	@PUT
-	@Tags(value = {@Tag(name = "ActiveView")})
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@javax.ws.rs.PUT
+	@Override
 	public Response putActiveViewPageLayoutPortlet(
-			@NotNull @Parameter(hidden = true) @PathParam("activeViewId") String
-				activeViewId,
-			@Parameter(hidden = true) @PathParam("pageLayoutId") Long
-				pageLayoutId,
-			@Parameter(hidden = true) @PathParam("portletId") String portletId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("activeViewId")
+			String activeViewId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.PathParam("pageLayoutId")
+			Long pageLayoutId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.PathParam("portletId")
+			String portletId,
 			String string)
 		throws Exception {
 

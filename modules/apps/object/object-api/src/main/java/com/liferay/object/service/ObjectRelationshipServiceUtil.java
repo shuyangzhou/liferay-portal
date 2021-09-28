@@ -55,6 +55,13 @@ public class ObjectRelationshipServiceUtil {
 		return getService().deleteObjectRelationship(objectRelationshipId);
 	}
 
+	public static ObjectRelationship getObjectRelationship(
+			long objectRelationshipId)
+		throws PortalException {
+
+		return getService().getObjectRelationship(objectRelationshipId);
+	}
+
 	public static List<ObjectRelationship> getObjectRelationships(
 			long objectDefinitionId1, int start, int end)
 		throws PortalException {
@@ -70,6 +77,14 @@ public class ObjectRelationshipServiceUtil {
 	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static ObjectRelationship updateObjectRelationship(
+			long objectRelationshipId, Map<java.util.Locale, String> labelMap)
+		throws PortalException {
+
+		return getService().updateObjectRelationship(
+			objectRelationshipId, labelMap);
 	}
 
 	public static ObjectRelationshipService getService() {

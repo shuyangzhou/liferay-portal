@@ -35,6 +35,8 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
+import javax.validation.Valid;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -52,20 +54,22 @@ public class Highlight implements Serializable {
 	}
 
 	@Schema
-	public Integer getFragmentOffset() {
-		return fragmentOffset;
+	@Valid
+	public Map<String, HighlightField> getFields() {
+		return fields;
 	}
 
-	public void setFragmentOffset(Integer fragmentOffset) {
-		this.fragmentOffset = fragmentOffset;
+	public void setFields(Map<String, HighlightField> fields) {
+		this.fields = fields;
 	}
 
 	@JsonIgnore
-	public void setFragmentOffset(
-		UnsafeSupplier<Integer, Exception> fragmentOffsetUnsafeSupplier) {
+	public void setFields(
+		UnsafeSupplier<Map<String, HighlightField>, Exception>
+			fieldsUnsafeSupplier) {
 
 		try {
-			fragmentOffset = fragmentOffsetUnsafeSupplier.get();
+			fields = fieldsUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -77,7 +81,173 @@ public class Highlight implements Serializable {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Integer fragmentOffset;
+	protected Map<String, HighlightField> fields;
+
+	@Schema
+	public Integer getFragment_size() {
+		return fragment_size;
+	}
+
+	public void setFragment_size(Integer fragment_size) {
+		this.fragment_size = fragment_size;
+	}
+
+	@JsonIgnore
+	public void setFragment_size(
+		UnsafeSupplier<Integer, Exception> fragment_sizeUnsafeSupplier) {
+
+		try {
+			fragment_size = fragment_sizeUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Integer fragment_size;
+
+	@Schema
+	public Integer getNumber_of_fragments() {
+		return number_of_fragments;
+	}
+
+	public void setNumber_of_fragments(Integer number_of_fragments) {
+		this.number_of_fragments = number_of_fragments;
+	}
+
+	@JsonIgnore
+	public void setNumber_of_fragments(
+		UnsafeSupplier<Integer, Exception> number_of_fragmentsUnsafeSupplier) {
+
+		try {
+			number_of_fragments = number_of_fragmentsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Integer number_of_fragments;
+
+	@Schema
+	public String[] getPost_tags() {
+		return post_tags;
+	}
+
+	public void setPost_tags(String[] post_tags) {
+		this.post_tags = post_tags;
+	}
+
+	@JsonIgnore
+	public void setPost_tags(
+		UnsafeSupplier<String[], Exception> post_tagsUnsafeSupplier) {
+
+		try {
+			post_tags = post_tagsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String[] post_tags;
+
+	@Schema
+	public String[] getPre_tags() {
+		return pre_tags;
+	}
+
+	public void setPre_tags(String[] pre_tags) {
+		this.pre_tags = pre_tags;
+	}
+
+	@JsonIgnore
+	public void setPre_tags(
+		UnsafeSupplier<String[], Exception> pre_tagsUnsafeSupplier) {
+
+		try {
+			pre_tags = pre_tagsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String[] pre_tags;
+
+	@Schema
+	public Boolean getRequire_field_match() {
+		return require_field_match;
+	}
+
+	public void setRequire_field_match(Boolean require_field_match) {
+		this.require_field_match = require_field_match;
+	}
+
+	@JsonIgnore
+	public void setRequire_field_match(
+		UnsafeSupplier<Boolean, Exception> require_field_matchUnsafeSupplier) {
+
+		try {
+			require_field_match = require_field_matchUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Boolean require_field_match;
+
+	@Schema
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@JsonIgnore
+	public void setType(UnsafeSupplier<String, Exception> typeUnsafeSupplier) {
+		try {
+			type = typeUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String type;
 
 	@Override
 	public boolean equals(Object object) {
@@ -106,14 +276,106 @@ public class Highlight implements Serializable {
 
 		sb.append("{");
 
-		if (fragmentOffset != null) {
+		if (fields != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"fragmentOffset\": ");
+			sb.append("\"fields\": ");
 
-			sb.append(fragmentOffset);
+			sb.append(_toJSON(fields));
+		}
+
+		if (fragment_size != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"fragment_size\": ");
+
+			sb.append(fragment_size);
+		}
+
+		if (number_of_fragments != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"number_of_fragments\": ");
+
+			sb.append(number_of_fragments);
+		}
+
+		if (post_tags != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"post_tags\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < post_tags.length; i++) {
+				sb.append("\"");
+
+				sb.append(_escape(post_tags[i]));
+
+				sb.append("\"");
+
+				if ((i + 1) < post_tags.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
+		if (pre_tags != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"pre_tags\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < pre_tags.length; i++) {
+				sb.append("\"");
+
+				sb.append(_escape(pre_tags[i]));
+
+				sb.append("\"");
+
+				if ((i + 1) < pre_tags.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
+		if (require_field_match != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"require_field_match\": ");
+
+			sb.append(require_field_match);
+		}
+
+		if (type != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"type\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(type));
+
+			sb.append("\"");
 		}
 
 		sb.append("}");

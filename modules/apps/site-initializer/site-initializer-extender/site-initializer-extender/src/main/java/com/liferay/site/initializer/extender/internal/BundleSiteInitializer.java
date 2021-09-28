@@ -16,6 +16,7 @@ package com.liferay.site.initializer.extender.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryLocalService;
 import com.liferay.commerce.account.constants.CommerceAccountConstants;
 import com.liferay.commerce.account.util.CommerceAccountRoleHelper;
@@ -303,7 +304,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				_ddmStructureLocalService, _ddmTemplateLocalService,
 				documentsStringUtilReplaceValues, serviceContext);
 
-			_addLayouts(_journalArticleLocalService, serviceContext);
+			_addLayouts(_assetListEntryLocalService, serviceContext);
 			_addRemoteAppEntries(
 				documentsStringUtilReplaceValues, serviceContext);
 		}
@@ -806,7 +807,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 			ddmTemplateLocalService.getTemplate(
 				serviceContext.getScopeGroupId(),
-				_portal.getClassNameId(JournalArticle.class), ddmTemplateKey);
+				_portal.getClassNameId(DDMStructure.class), ddmTemplateKey);
 
 			Calendar calendar = CalendarFactoryUtil.getCalendar(
 				serviceContext.getTimeZone());
@@ -848,13 +849,12 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addLayout(
-			JournalArticleLocalService journalArticleLocalService,
+			Map<String, String> assetListEntryIdsStringUtilReplaceValues,
 			String resourcePath, ServiceContext serviceContext)
 		throws Exception {
 
-		String json = _read(resourcePath + "page.json");
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			_read(resourcePath + "page.json"));
 
 		String type = StringUtil.toLowerCase(jsonObject.getString("type"));
 
@@ -874,14 +874,21 @@ public class BundleSiteInitializer implements SiteInitializer {
 			jsonObject.getBoolean("hidden"), jsonObject.getBoolean("system"),
 			_toMap(jsonObject.getString("friendlyURL_i18n")), serviceContext);
 
+		String json = _read(resourcePath + "page-definition.json");
+
+		if (json == null) {
+			return;
+		}
+
+		JSONObject pageDefinitionJSONObject = JSONFactoryUtil.createJSONObject(
+			StringUtil.replace(
+				json, "\"[$", "$]\"",
+				assetListEntryIdsStringUtilReplaceValues));
+
 		Layout draftLayout = layout.fetchDraftLayout();
 
 		if (Objects.equals(type, LayoutConstants.TYPE_COLLECTION) ||
 			Objects.equals(type, LayoutConstants.TYPE_CONTENT)) {
-
-			JSONObject pageDefinitionJSONObject =
-				JSONFactoryUtil.createJSONObject(
-					resourcePath + "page-definition.json");
 
 			JSONObject pageElementJSONObject =
 				pageDefinitionJSONObject.getJSONObject("pageElement");
@@ -925,23 +932,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 				String key = typeSettingJSONObject.getString("key");
 				String value = typeSettingJSONObject.getString("value");
 
-				if (StringUtil.equals(key, "collectionPK") &&
-					value.startsWith("[$JOURNAL_ARTICLE_ID=")) {
-
-					int x = value.indexOf("=");
-
-					int y = value.indexOf("$", x);
-
-					String journalArticleId = value.substring(x, y);
-
-					JournalArticle journalArticle =
-						journalArticleLocalService.fetchArticle(
-							serviceContext.getScopeGroupId(), journalArticleId);
-
-					value = String.valueOf(journalArticle.getResourcePrimKey());
-				}
-
-				unicodeProperties.put(key, value);
+				unicodeProperties.put(
+					key,
+					StringUtil.replace(
+						value, "[$", "$]",
+						assetListEntryIdsStringUtilReplaceValues));
 			}
 
 			draftLayout = _layoutLocalService.updateLayout(
@@ -951,10 +946,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		if (Objects.equals(type, LayoutConstants.TYPE_COLLECTION) ||
 			Objects.equals(type, LayoutConstants.TYPE_CONTENT)) {
-
-			JSONObject pageDefinitionJSONObject =
-				JSONFactoryUtil.createJSONObject(
-					resourcePath + "page-definition.json");
 
 			JSONObject settingsJSONObject =
 				pageDefinitionJSONObject.getJSONObject("settings");
@@ -1022,7 +1013,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addLayouts(
-			JournalArticleLocalService journalArticleLocalService,
+			AssetListEntryLocalService assetListEntryLocalService,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -1036,10 +1027,27 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return;
 		}
 
+		Map<String, String> assetListEntryIdsStringUtilReplaceValues =
+			new HashMap<>();
+
+		List<AssetListEntry> assetListEntries =
+			assetListEntryLocalService.getAssetListEntries(
+				serviceContext.getScopeGroupId());
+
+		for (AssetListEntry assetListEntry : assetListEntries) {
+			String assetListEntryKeyUppercase = StringUtil.toUpperCase(
+				assetListEntry.getAssetListEntryKey());
+
+			assetListEntryIdsStringUtilReplaceValues.put(
+				"ASSET_LIST_ENTRY_ID:" + assetListEntryKeyUppercase,
+				String.valueOf(assetListEntry.getAssetListEntryId()));
+		}
+
 		for (String resourcePath : resourcePaths) {
 			if (resourcePath.endsWith("/")) {
 				_addLayout(
-					journalArticleLocalService, resourcePath, serviceContext);
+					assetListEntryIdsStringUtilReplaceValues, resourcePath,
+					serviceContext);
 			}
 		}
 
@@ -1244,6 +1252,10 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 			Layout layout = _layoutLocalService.fetchLayoutByFriendlyURL(
 				serviceContext.getScopeGroupId(), privateLayout, friendlyURL);
+
+			if (layout == null) {
+				continue;
+			}
 
 			_siteNavigationMenuItemLocalService.addSiteNavigationMenuItem(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),

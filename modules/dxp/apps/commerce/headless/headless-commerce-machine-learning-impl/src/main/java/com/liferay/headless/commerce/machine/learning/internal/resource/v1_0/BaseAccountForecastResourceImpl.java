@@ -40,13 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -59,11 +52,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -73,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseAccountForecastResourceImpl
 	implements AccountForecastResource, EntityModelResource,
 			   VulcanBatchEngineTaskItemDelegate<AccountForecast> {
@@ -83,32 +71,60 @@ public abstract class BaseAccountForecastResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-machine-learning/v1.0/accountForecasts/by-monthlyRevenue'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Get the forecast points")
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Get the forecast points"
+	)
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.QUERY, name = "accountIds"),
-			@Parameter(in = ParameterIn.QUERY, name = "forecastLength"),
-			@Parameter(in = ParameterIn.QUERY, name = "forecastStartDate"),
-			@Parameter(in = ParameterIn.QUERY, name = "historyLength"),
-			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "accountIds"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "forecastLength"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "forecastStartDate"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "historyLength"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "page"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "pageSize"
+			)
 		}
 	)
-	@Path("/accountForecasts/by-monthlyRevenue")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountForecast")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {
+			@io.swagger.v3.oas.annotations.tags.Tag(name = "AccountForecast")
+		}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/accountForecasts/by-monthlyRevenue")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<AccountForecast> getAccountForecastsByMonthlyRevenuePage(
-			@Parameter(hidden = true) @QueryParam("accountIds") Long[]
-				accountIds,
-			@Parameter(hidden = true) @QueryParam("forecastLength") Integer
-				forecastLength,
-			@Parameter(hidden = true) @QueryParam("forecastStartDate")
-				java.util.Date forecastStartDate,
-			@Parameter(hidden = true) @QueryParam("historyLength") Integer
-				historyLength,
-			@Context Pagination pagination)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("accountIds")
+			Long[] accountIds,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("forecastLength")
+			Integer forecastLength,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("forecastStartDate")
+			java.util.Date forecastStartDate,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("historyLength")
+			Integer historyLength,
+			@javax.ws.rs.core.Context Pagination pagination)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

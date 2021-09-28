@@ -14,8 +14,10 @@
 
 package com.liferay.search.experiences.internal.blueprint.search.request.enhancer;
 
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.aggregation.Aggregations;
 import com.liferay.portal.search.aggregation.metrics.CardinalityAggregation;
@@ -95,7 +97,8 @@ public class SXPBlueprintSearchRequestEnhancer {
 		_sxpSearchRequestBodyContributors = Arrays.asList(
 			new AggsSXPSearchRequestBodyContributor(),
 			new HighlightSXPSearchRequestBodyContributor(
-				_fieldConfigBuilderFactory, _highlightBuilderFactory),
+				_fieldConfigBuilderFactory, _highlightBuilderFactory,
+				_jsonFactory),
 			new QuerySXPSearchRequestBodyContributor(),
 			new SuggestSXPSearchRequestBodyContributor(),
 			new SortSXPSearchRequestBodyContributor(
@@ -113,6 +116,10 @@ public class SXPBlueprintSearchRequestEnhancer {
 
 		if (sxpParameter != null) {
 			names = (String[])sxpParameter.getValue();
+		}
+
+		if (ListUtil.isEmpty(_sxpSearchRequestBodyContributors)) {
+			return;
 		}
 
 		for (SXPSearchRequestBodyContributor sxpSearchRequestBodyContributor :
@@ -155,6 +162,10 @@ public class SXPBlueprintSearchRequestEnhancer {
 		Map<String, Aggregation> aggregations,
 		SearchRequestBuilder searchRequestBuilder) {
 
+		if (MapUtil.isEmpty(aggregations)) {
+			return;
+		}
+
 		for (Map.Entry<String, Aggregation> entry : aggregations.entrySet()) {
 			searchRequestBuilder.addAggregation(
 				_toPortalSearchAggregation(entry.getValue(), entry.getKey()));
@@ -180,6 +191,10 @@ public class SXPBlueprintSearchRequestEnhancer {
 
 	private void _processGeneral(
 		General general, SearchRequestBuilder searchRequestBuilder) {
+
+		if (general == null) {
+			return;
+		}
 
 		if (general.getApplyIndexerClauses() != null) {
 			searchRequestBuilder.withSearchContext(
@@ -267,6 +282,9 @@ public class SXPBlueprintSearchRequestEnhancer {
 
 	@Reference
 	private HighlightBuilderFactory _highlightBuilderFactory;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Queries _queries;

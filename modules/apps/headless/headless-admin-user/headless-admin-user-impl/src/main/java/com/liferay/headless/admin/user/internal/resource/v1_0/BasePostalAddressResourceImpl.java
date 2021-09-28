@@ -40,13 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -59,12 +52,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -74,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BasePostalAddressResourceImpl
 	implements EntityModelResource, PostalAddressResource,
 			   VulcanBatchEngineTaskItemDelegate<PostalAddress> {
@@ -84,18 +71,31 @@ public abstract class BasePostalAddressResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/postal-addresses'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the organization's postal addresses.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "organizationId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the organization's postal addresses."
 	)
-	@Path("/organizations/{organizationId}/postal-addresses")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "PostalAddress")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "organizationId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {
+			@io.swagger.v3.oas.annotations.tags.Tag(name = "PostalAddress")
+		}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/organizations/{organizationId}/postal-addresses")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<PostalAddress> getOrganizationPostalAddressesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("organizationId")
-				String organizationId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("organizationId")
+			String organizationId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -106,18 +106,31 @@ public abstract class BasePostalAddressResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/postal-addresses/{postalAddressId}'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the postal address.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "postalAddressId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the postal address."
 	)
-	@Path("/postal-addresses/{postalAddressId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "PostalAddress")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "postalAddressId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {
+			@io.swagger.v3.oas.annotations.tags.Tag(name = "PostalAddress")
+		}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/postal-addresses/{postalAddressId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public PostalAddress getPostalAddress(
-			@NotNull @Parameter(hidden = true) @PathParam("postalAddressId")
-				Long postalAddressId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("postalAddressId")
+			Long postalAddressId)
 		throws Exception {
 
 		return new PostalAddress();
@@ -128,18 +141,31 @@ public abstract class BasePostalAddressResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/user-accounts/{userAccountId}/postal-addresses'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the user's postal addresses.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "userAccountId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the user's postal addresses."
 	)
-	@Path("/user-accounts/{userAccountId}/postal-addresses")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "PostalAddress")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "userAccountId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {
+			@io.swagger.v3.oas.annotations.tags.Tag(name = "PostalAddress")
+		}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/user-accounts/{userAccountId}/postal-addresses")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<PostalAddress> getUserAccountPostalAddressesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("userAccountId") Long
-				userAccountId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("userAccountId")
+			Long userAccountId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

@@ -36,6 +36,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ANY_DISABLED</td>
+	<td>//div[contains(@class,'input-text-wrapper')][2]/label[contains(.,'${key_selectFieldLabel}')]//following-sibling::input[contains(@class,'disabled')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ASSET_PRIORITY</td>
 	<td>//input[contains(@id,'assetPriority')]</td>
 	<td></td>
@@ -678,6 +683,11 @@
 <tr>
 	<td>TWITTER</td>
 	<td>//div[label[contains(.,'Twitter')]]//input[@type='text']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TYPE</td>
+	<td>//div[label[contains(.,'Type')]]//input[@value='${key_typeName}']</td>
 	<td></td>
 </tr>
 <tr>

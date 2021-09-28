@@ -40,13 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -59,12 +52,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -74,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BasePhoneResourceImpl
 	implements EntityModelResource, PhoneResource,
 			   VulcanBatchEngineTaskItemDelegate<Phone> {
@@ -84,18 +71,29 @@ public abstract class BasePhoneResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/phones'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the organization's phone numbers.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "organizationId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the organization's phone numbers."
 	)
-	@Path("/organizations/{organizationId}/phones")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Phone")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "organizationId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Phone")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/organizations/{organizationId}/phones")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<Phone> getOrganizationPhonesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("organizationId")
-				String organizationId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("organizationId")
+			String organizationId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -106,16 +104,29 @@ public abstract class BasePhoneResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/phones/{phoneId}'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the phone number.")
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the phone number."
+	)
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "phoneId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Phone")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/phones/{phoneId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "phoneId")})
-	@Path("/phones/{phoneId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Phone")})
 	public Phone getPhone(
-			@NotNull @Parameter(hidden = true) @PathParam("phoneId") Long
-				phoneId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("phoneId")
+			Long phoneId)
 		throws Exception {
 
 		return new Phone();
@@ -126,18 +137,29 @@ public abstract class BasePhoneResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/user-accounts/{userAccountId}/phones'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Retrieves the user's phone numbers.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "userAccountId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Retrieves the user's phone numbers."
 	)
-	@Path("/user-accounts/{userAccountId}/phones")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Phone")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "userAccountId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Phone")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/user-accounts/{userAccountId}/phones")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<Phone> getUserAccountPhonesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("userAccountId") Long
-				userAccountId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("userAccountId")
+			Long userAccountId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

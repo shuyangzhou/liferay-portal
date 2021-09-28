@@ -45,26 +45,18 @@ definition {
 			ACSettings.goToDataSources();
 
 			ACSettings.takeTokenFromAnalyticsCloud();
-
-			ACUtils.launchDXP();
 		}
 
 		task ("Connect DXP to AC") {
+			ACUtils.launchDXP();
+
 			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud();
 
 			var dataSource = StringUtil.replace("${propertyName}", " Combined Property", "");
-
-			ACUtils.launchAC();
 		}
 
 		task ("Login in AC, go to settings then go to data sources") {
-			ACWorkspace.signOut();
-
-			ACLogin.loginAs(
-				emailAddress = "michelle.hoshi@faro.io",
-				password = "test");
-
-			ACWorkspace.openWorkspace();
+			ACUtils.launchAC(emailAddress = "michelle.hoshi@faro.io");
 
 			ACNavigation.goToSettings();
 
@@ -131,40 +123,26 @@ definition {
 			ACLogin.loginAs(
 				emailAddress = "michelle.hoshi@faro.io",
 				password = "test");
-
-			ACWorkspace.openWorkspace();
 		}
 
 		task ("Go to settings, data source, take token and launch dxp") {
+			ACWorkspace.openWorkspace();
+
 			ACNavigation.goToSettings();
 
 			ACSettings.goToDataSources();
 
 			ACSettings.takeTokenFromAnalyticsCloud();
-
-			ACUtils.launchDXP();
 		}
 
 		task ("Connect DXP to AC") {
+			ACUtils.launchDXP();
+
 			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud();
 
 			var dataSource = StringUtil.replace("${propertyName}", " Combined Property", "");
 
 			ACUtils.launchAC();
-		}
-
-		task ("Login in AC, go to settings then go to data sources") {
-			ACWorkspace.signOut();
-
-			ACLogin.loginAs(
-				emailAddress = "michelle.hoshi@faro.io",
-				password = "test");
-
-			ACWorkspace.openWorkspace();
-
-			ACNavigation.goToSettings();
-
-			ACSettings.goToDataSources();
 		}
 
 		task ("Assert that a data source is searchable and found") {
@@ -531,7 +509,7 @@ definition {
 	@description = "Automation ID: LRAC-9090 | Test Summary: Owner can add data sources"
 	@priority = "5"
 	test OwnerCanAddDataSources {
-		task ("Logout and login as an owner user") {
+		task ("Logout AC and login as an owner user") {
 			ACWorkspace.signOut();
 
 			ACLogin.loginAs(
@@ -547,26 +525,18 @@ definition {
 			ACSettings.goToDataSources();
 
 			ACSettings.takeTokenFromAnalyticsCloud();
-
-			ACUtils.launchDXP();
 		}
 
 		task ("Connect DXP to AC") {
+			ACUtils.launchDXP();
+
 			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud();
 
 			var dataSource = StringUtil.replace("${propertyName}", " Combined Property", "");
-
-			ACUtils.launchAC();
 		}
 
 		task ("Login in AC, go to settings then go to data sources") {
-			ACWorkspace.signOut();
-
-			ACLogin.loginAs(
-				emailAddress = "bryan.cheung@faro.io",
-				password = "test");
-
-			ACWorkspace.openWorkspace();
+			ACUtils.launchAC(emailAddress = "bryan.cheung@faro.io");
 
 			ACNavigation.goToSettings();
 

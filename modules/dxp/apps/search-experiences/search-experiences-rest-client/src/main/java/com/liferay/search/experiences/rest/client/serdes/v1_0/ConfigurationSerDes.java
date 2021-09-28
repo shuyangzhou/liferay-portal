@@ -107,6 +107,16 @@ public class ConfigurationSerDes {
 			sb.append(String.valueOf(configuration.getHighlight()));
 		}
 
+		if (configuration.getParameters() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"parameters\": ");
+
+			sb.append(_toJSON(configuration.getParameters()));
+		}
+
 		if (configuration.getQueries() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -125,6 +135,16 @@ public class ConfigurationSerDes {
 			}
 
 			sb.append("]");
+		}
+
+		if (configuration.getSortConfiguration() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"sortConfiguration\": ");
+
+			sb.append(String.valueOf(configuration.getSortConfiguration()));
 		}
 
 		sb.append("}");
@@ -183,11 +203,28 @@ public class ConfigurationSerDes {
 			map.put("highlight", String.valueOf(configuration.getHighlight()));
 		}
 
+		if (configuration.getParameters() == null) {
+			map.put("parameters", null);
+		}
+		else {
+			map.put(
+				"parameters", String.valueOf(configuration.getParameters()));
+		}
+
 		if (configuration.getQueries() == null) {
 			map.put("queries", null);
 		}
 		else {
 			map.put("queries", String.valueOf(configuration.getQueries()));
+		}
+
+		if (configuration.getSortConfiguration() == null) {
+			map.put("sortConfiguration", null);
+		}
+		else {
+			map.put(
+				"sortConfiguration",
+				String.valueOf(configuration.getSortConfiguration()));
 		}
 
 		return map;
@@ -242,6 +279,13 @@ public class ConfigurationSerDes {
 						HighlightSerDes.toDTO((String)jsonParserFieldValue));
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "parameters")) {
+				if (jsonParserFieldValue != null) {
+					configuration.setParameters(
+						(Map)ConfigurationSerDes.toMap(
+							(String)jsonParserFieldValue));
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "queries")) {
 				if (jsonParserFieldValue != null) {
 					configuration.setQueries(
@@ -252,6 +296,13 @@ public class ConfigurationSerDes {
 						).toArray(
 							size -> new Query[size]
 						));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "sortConfiguration")) {
+				if (jsonParserFieldValue != null) {
+					configuration.setSortConfiguration(
+						SortConfigurationSerDes.toDTO(
+							(String)jsonParserFieldValue));
 				}
 			}
 		}

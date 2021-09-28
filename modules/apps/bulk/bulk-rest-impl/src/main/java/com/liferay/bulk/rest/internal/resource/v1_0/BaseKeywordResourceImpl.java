@@ -34,9 +34,6 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +43,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -59,7 +50,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseKeywordResourceImpl implements KeywordResource {
 
 	/**
@@ -67,12 +58,14 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	 *
 	 * curl -X 'PATCH' 'http://localhost:8080/o/bulk/v1.0/keywords/batch'  -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Keyword")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.PATCH
+	@javax.ws.rs.Path("/keywords/batch")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@PATCH
-	@Path("/keywords/batch")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Keyword")})
 	public void patchKeywordBatch(KeywordBulkSelection keywordBulkSelection)
 		throws Exception {
 	}
@@ -82,12 +75,14 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/bulk/v1.0/keywords/batch'  -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Keyword")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.Path("/keywords/batch")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@javax.ws.rs.PUT
 	@Override
-	@Path("/keywords/batch")
-	@Produces({"application/json", "application/xml"})
-	@PUT
-	@Tags(value = {@Tag(name = "Keyword")})
 	public void putKeywordBatch(KeywordBulkSelection keywordBulkSelection)
 		throws Exception {
 	}
@@ -97,12 +92,14 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/bulk/v1.0/keywords/common' -d $'{"documentIds": ___, "selectionScope": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Keyword")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.Path("/keywords/common")
+	@javax.ws.rs.POST
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Path("/keywords/common")
-	@POST
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Keyword")})
 	public Page<Keyword> postKeywordsCommonPage(
 			DocumentBulkSelection documentBulkSelection)
 		throws Exception {

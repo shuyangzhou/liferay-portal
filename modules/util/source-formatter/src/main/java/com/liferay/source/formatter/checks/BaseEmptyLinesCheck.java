@@ -15,6 +15,7 @@
 package com.liferay.source.formatter.checks;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -107,11 +108,46 @@ public abstract class BaseEmptyLinesCheck extends BaseFileCheck {
 			}
 		}
 
-		matcher = _emptyLineBetweenTagsPattern3.matcher(content);
+		matcher = _emptyLineBetweenSameSelfClosingTagsPattern.matcher(content);
 
-		if (matcher.find()) {
-			return StringUtil.replaceFirst(
-				content, matcher.group(), matcher.group(1), matcher.start());
+		while (matcher.find()) {
+			String match = matcher.group();
+
+			String replacement = match.replaceAll("\n\n", "\n");
+
+			StringBundler sb = new StringBundler();
+
+			if (ArrayUtil.contains(
+					_ENFORCE_EMPTY_LINE_SELF_CLOSING_TAG_NAMES,
+					matcher.group(2))) {
+
+				String previousLine = null;
+
+				for (String line : replacement.split("\n")) {
+					if ((previousLine != null) &&
+						(!previousLine.contains("\"hidden\"") ||
+						 !line.contains("\"hidden\""))) {
+
+						sb.append("\n");
+					}
+
+					sb.append(line);
+					sb.append("\n");
+
+					previousLine = line;
+				}
+			}
+
+			if (sb.index() > 0) {
+				sb.setIndex(sb.index() - 1);
+
+				replacement = sb.toString();
+			}
+
+			if (!replacement.equals(match)) {
+				return StringUtil.replaceFirst(
+					content, matcher.group(), replacement, matcher.start());
+			}
 		}
 
 		matcher = _missingEmptyLineBetweenTagsPattern1.matcher(content);
@@ -649,16 +685,20 @@ public abstract class BaseEmptyLinesCheck extends BaseFileCheck {
 		}
 	}
 
+	private static final String[] _ENFORCE_EMPTY_LINE_SELF_CLOSING_TAG_NAMES = {
+		"img", "input"
+	};
+
 	private static final String[] _STYLING_TAG_NAMES = {
 		"dd", "dt", "li", "span", "td", "th", "tr"
 	};
 
+	private static final Pattern _emptyLineBetweenSameSelfClosingTagsPattern =
+		Pattern.compile("(?<=\n)(\t*<(\\w+) ).+?/>(\n+\\1.+?/>(?=\n))+");
 	private static final Pattern _emptyLineBetweenTagsPattern1 =
 		Pattern.compile("\n(\t*)</([-\\w:]+)>(\n*)(\t*)<([-\\w:]+)[> \n]");
 	private static final Pattern _emptyLineBetweenTagsPattern2 =
 		Pattern.compile("(\\S</(\\w+)>| />)\n(\t+)<([-\\w:]+)[> \n]");
-	private static final Pattern _emptyLineBetweenTagsPattern3 =
-		Pattern.compile("((\n\t*<(?!input)\\w+ ).+?/>)(\n+)(?=\\2.+?/>)");
 	private static final Pattern _emptyLineInMultiLineTagsPattern1 =
 		Pattern.compile("\n\t*<[-\\w:#]+\n\n\t*\\w");
 	private static final Pattern _emptyLineInMultiLineTagsPattern2 =

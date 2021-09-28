@@ -40,12 +40,12 @@ import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -88,16 +88,15 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 		throws StorageException {
 
 		try {
-			long objectDefinitionId =
-				ddmStorageAdapterDeleteRequest.getPrimaryKey();
+			long objectEntryId = ddmStorageAdapterDeleteRequest.getPrimaryKey();
 
-			ObjectDefinition objectDefinition = _getObjectDefinition(
-				objectDefinitionId);
+			ObjectDefinition objectDefinition = _fetchObjectDefinition(
+				objectEntryId);
 
 			ObjectEntry objectEntry = _objectEntryManager.fetchObjectEntry(
 				_getDTOConverterContext(
 					null, null, LocaleUtil.getSiteDefault()),
-				objectDefinition, objectDefinitionId);
+				objectDefinition, objectEntryId);
 
 			if (objectEntry != null) {
 				_objectEntryManager.deleteObjectEntry(objectEntry.getId());
@@ -119,20 +118,18 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 		try {
 			DDMForm ddmForm = ddmStorageAdapterGetRequest.getDDMForm();
 
-			long objectDefinitionId =
-				ddmStorageAdapterGetRequest.getPrimaryKey();
+			long objectEntryId = ddmStorageAdapterGetRequest.getPrimaryKey();
 
-			ObjectDefinition objectDefinition = _getObjectDefinition(
-				objectDefinitionId);
+			ObjectDefinition objectDefinition = _fetchObjectDefinition(
+				objectEntryId);
 
 			return DDMStorageAdapterGetResponse.Builder.newBuilder(
 				_getDDMFormValues(
 					ddmForm,
 					_objectEntryManager.getObjectEntry(
 						_getDTOConverterContext(
-							objectDefinitionId, null,
-							ddmForm.getDefaultLocale()),
-						objectDefinition, objectDefinitionId))
+							objectEntryId, null, ddmForm.getDefaultLocale()),
+						objectDefinition, objectEntryId))
 			).build();
 		}
 		catch (Exception exception) {
@@ -182,6 +179,20 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 		catch (Exception exception) {
 			throw new StorageException(exception);
 		}
+	}
+
+	private ObjectDefinition _fetchObjectDefinition(long objectEntryId)
+		throws PortalException {
+
+		com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry =
+			_objectEntryService.fetchObjectEntry(objectEntryId);
+
+		if (serviceBuilderObjectEntry != null) {
+			return _objectDefinitionLocalService.getObjectDefinition(
+				serviceBuilderObjectEntry.getObjectDefinitionId());
+		}
+
+		return null;
 	}
 
 	private Value _getDDMFormFieldValue(
@@ -264,16 +275,6 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			Collections.singletonMap(
 				"delete", Collections.singletonMap("delete", "")),
 			null, null, objectEntryId, locale, null, user);
-	}
-
-	private ObjectDefinition _getObjectDefinition(long objectDefinitionId)
-		throws PortalException {
-
-		com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry =
-			_objectEntryService.getObjectEntry(objectDefinitionId);
-
-		return _objectDefinitionLocalService.getObjectDefinition(
-			serviceBuilderObjectEntry.getObjectDefinitionId());
 	}
 
 	private long _getObjectDefinitionId(
@@ -368,33 +369,22 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			JSONArray optionValueJSONArray = _jsonFactory.createJSONArray(
 				value.getString(value.getDefaultLocale()));
 
-			if (StringUtil.equals(
-					ddmFormFieldValue.getType(),
-					DDMFormFieldTypeConstants.SELECT)) {
-
-				return ddmFormFieldOptions.getOptionReference(
-					(String)optionValueJSONArray.get(0));
-			}
-
-			JSONArray optionReferencesValuesJSONArray =
-				JSONFactoryUtil.createJSONArray();
-
 			Map<String, String> optionsReferences =
 				ddmFormFieldOptions.getOptionsReferences();
 
-			for (Map.Entry<String, String> entry :
-					optionsReferences.entrySet()) {
+			StringBundler sb = new StringBundler(
+				(optionValueJSONArray.length() * 2) - 1);
 
-				for (Object optionValue : optionValueJSONArray) {
-					if (StringUtil.equals(
-							entry.getKey(), optionValue.toString())) {
-
-						optionReferencesValuesJSONArray.put(entry.getValue());
-					}
-				}
+			for (Object optionValue : optionValueJSONArray) {
+				sb.append(optionsReferences.get(optionValue.toString()));
+				sb.append(StringPool.COMMA_AND_SPACE);
 			}
 
-			return optionReferencesValuesJSONArray.toString();
+			if (sb.index() > 0) {
+				sb.setIndex(sb.index() - 1);
+			}
+
+			return sb.toString();
 		}
 		else if (StringUtil.equals(
 					ddmFormFieldValue.getType(),

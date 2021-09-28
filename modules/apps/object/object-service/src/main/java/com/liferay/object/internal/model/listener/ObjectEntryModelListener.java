@@ -14,24 +14,27 @@
 
 package com.liferay.object.internal.model.listener;
 
-import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.action.engine.ObjectActionEngine;
+import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.model.ObjectEntry;
-import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+
+import java.io.Serializable;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * @author Marco Leo
  * @author Brian Wing Shun Chan
  */
 @Component(immediate = true, service = ModelListener.class)
@@ -41,14 +44,18 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 	public void onAfterCreate(ObjectEntry objectEntry)
 		throws ModelListenerException {
 
-		_sendMessage("onAfterCreate", null, objectEntry);
+		_executeObjectActions(
+			ObjectActionTriggerConstants.KEY_ON_AFTER_CREATE, null,
+			objectEntry);
 	}
 
 	@Override
 	public void onAfterRemove(ObjectEntry objectEntry)
 		throws ModelListenerException {
 
-		_sendMessage("onAfterRemove", null, objectEntry);
+		_executeObjectActions(
+			ObjectActionTriggerConstants.KEY_ON_AFTER_REMOVE, null,
+			objectEntry);
 	}
 
 	@Override
@@ -56,92 +63,70 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 			ObjectEntry originalObjectEntry, ObjectEntry objectEntry)
 		throws ModelListenerException {
 
-		_sendMessage("onAfterUpdate", originalObjectEntry, objectEntry);
+		_executeObjectActions(
+			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
+			originalObjectEntry, objectEntry);
 	}
 
-	@Override
-	public void onBeforeCreate(ObjectEntry objectEntry)
-		throws ModelListenerException {
-
-		_sendMessage("onBeforeCreate", null, objectEntry);
-	}
-
-	@Override
-	public void onBeforeRemove(ObjectEntry objectEntry)
-		throws ModelListenerException {
-
-		_sendMessage("onBeforeRemove", null, objectEntry);
-	}
-
-	@Override
-	public void onBeforeUpdate(
-			ObjectEntry originalObjectEntry, ObjectEntry objectEntry)
-		throws ModelListenerException {
-
-		_sendMessage("onBeforeUpdate", originalObjectEntry, objectEntry);
-	}
-
-	private void _sendMessage(
-			String webhookEventKey, ObjectEntry originalObjectEntry,
+	private void _executeObjectActions(
+			String objectActionTriggerKey, ObjectEntry originalObjectEntry,
 			ObjectEntry objectEntry)
 		throws ModelListenerException {
 
 		try {
-			ObjectDefinition objectDefinition =
-				_objectDefinitionLocalService.fetchObjectDefinition(
-					objectEntry.getObjectDefinitionId());
+			long userId = PrincipalThreadLocal.getUserId();
 
-			if (objectDefinition == null) {
-				return;
+			if (userId == 0) {
+				userId = objectEntry.getUserId();
 			}
 
-			JSONObject payloadJSONObject = JSONUtil.put(
-				"webhookEventKey", webhookEventKey);
-
-			JSONObject objectEntryJSONObject = _jsonFactory.createJSONObject(
-				objectEntry.toString());
-
-			objectEntryJSONObject.put("values", objectEntry.getValues());
-
-			payloadJSONObject.put("objectEntry", objectEntryJSONObject);
-
-			if (originalObjectEntry != null) {
-				JSONObject originalObjectEntryJSONObject =
-					_jsonFactory.createJSONObject(
-						originalObjectEntry.toString());
-
-				originalObjectEntryJSONObject.put(
-					"values", originalObjectEntry.getValues());
-
-				payloadJSONObject.put(
-					"originalObjectEntry", originalObjectEntryJSONObject);
-			}
-
-			_messageBus.sendMessage(
-				objectDefinition.getDestinationName(),
-				new Message() {
-					{
-						setPayload(payloadJSONObject.toString());
-					}
-				});
+			_objectActionEngine.executeObjectActions(
+				userId, objectEntry.getModelClassName(), objectActionTriggerKey,
+				HashMapBuilder.<String, Serializable>put(
+					"payload",
+					_getPayload(
+						objectActionTriggerKey, originalObjectEntry,
+						objectEntry)
+				).build());
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new ModelListenerException(exception);
+		catch (PortalException portalException) {
+			throw new ModelListenerException(portalException);
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectEntryModelListener.class);
+	private Serializable _getPayload(
+			String objectActionTriggerKey, ObjectEntry originalObjectEntry,
+			ObjectEntry objectEntry)
+		throws JSONException {
+
+		JSONObject payloadJSONObject = JSONUtil.put(
+			"trigger", objectActionTriggerKey);
+
+		JSONObject objectEntryJSONObject = _jsonFactory.createJSONObject(
+			objectEntry.toString());
+
+		objectEntryJSONObject.put("values", objectEntry.getValues());
+
+		payloadJSONObject.put("objectEntry", objectEntryJSONObject);
+
+		if (originalObjectEntry != null) {
+			JSONObject originalObjectEntryJSONObject =
+				_jsonFactory.createJSONObject(originalObjectEntry.toString());
+
+			originalObjectEntryJSONObject.put(
+				"values", originalObjectEntry.getValues());
+
+			payloadJSONObject.put(
+				"originalObjectEntry", originalObjectEntryJSONObject);
+		}
+
+		return payloadJSONObject.toString();
+	}
 
 	@Reference
 	private JSONFactory _jsonFactory;
 
 	@Reference
-	private MessageBus _messageBus;
-
-	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+	private ObjectActionEngine _objectActionEngine;
 
 }

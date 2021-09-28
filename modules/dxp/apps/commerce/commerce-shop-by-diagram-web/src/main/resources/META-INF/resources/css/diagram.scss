@@ -1,126 +1,112 @@
 @import 'atlas-variables';
 
-.admin-tooltip {
-	background-color: #fff;
-	height: 300px;
-	position: absolute;
-	width: 400px;
-	z-index: 1; //$zindex-tooltip;
-}
+.shop-by-diagram {
+	svg .pin {
+		cursor: pointer;
+		fill: $gray-600;
 
-.diagram {
-	.diagram-header {
-		height: 58px;
-
-		.auto-mapping {
-			height: 40px;
+		&.mapped {
+			fill: $primary;
 		}
 	}
 
-	.diagram-pins-container {
-		position: relative;
+	.svg-wrapper {
+		height: 100%;
+		width: 100%;
 	}
-}
 
-.diagram-header-picker {
-	.clay-color-picker {
-		margin: 0 1rem;
+	.view-wrapper {
+		height: 600px;
 	}
-}
 
-.move-controller {
-	display: grid;
-	grid-auto-flow: row;
-	grid-gap: 0;
-	grid-template-columns: repeat(2, auto);
-	grid-template-rows: auto;
-	height: 100px;
-	position: absolute;
-	transform: rotate(45deg);
-	width: 100px;
-
-	.box {
-		background-color: #444;
-		border: none;
-		color: #fff;
-		color: #000;
-		justify-content: space-between;
-		margin: 0;
-		padding: 0;
-
-		.icon {
-			fill: cyan;
-			height: 50px;
-			margin: 0 15px;
-			stroke: black;
-			text-align: center;
-			transform: rotate(-45deg);
-			vertical-align: middle;
-		}
-
-		&.right {
-			clip-path: circle(100% at 100% 100%);
-			transform: translate(10px, 10px);
-			transform: rotate(90deg);
-		}
-
-		&.top {
-			clip-path: circle(100% at 100% 0);
-			transform: translate(10px, 10px);
-			transform: rotate(90deg);
-		}
-
-		&.bottom {
-			clip-path: circle(100% at 0 0);
-		}
-
-		&.left {
-			clip-path: circle(100% at 0 0);
-			transform: rotate(90deg);
-		}
-	}
-}
-
-.zoom-controller {
-	display: grid;
-	grid-auto-flow: row;
-	grid-gap: 0;
-	grid-template-columns: repeat(1, auto);
-	grid-template-rows: auto;
-	height: 130px;
-	position: absolute;
-	width: 50px;
-
-	.box {
-		align-items: flex-end;
-		background-color: #444;
-		color: #fff;
-		color: #000;
+	&.expanded {
+		bottom: 0;
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
 
-		.icon {
-			fill: cyan;
-			height: 50px;
-			stroke: black;
-			vertical-align: middle;
+		.view-wrapper {
+			flex-grow: 1;
+			height: auto;
 		}
+	}
+}
 
-		:focus,
-		:active {
-			border: none !important;
-			box-shadow: none;
-			outline: 0 !important;
-			outline-color: transparent;
-		}
+.diagram-tooltip {
+	background: $white;
+	border-radius: 3px;
+	box-shadow: 1px 6px 11px rgba(0, 0, 0, 0.1);
+	left: 0;
+	padding: $spacer;
+	position: fixed;
+	top: 0;
+	width: 400px;
+}
 
-		&.plus {
-			clip-path: ellipse(50% 75% at 50% 100%);
-		}
+.pin-foreground {
+	align-items: center;
+	color: $gray-600;
+	display: flex;
+	font-weight: 600;
+	justify-content: center;
+	left: 0;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	z-index: 1;
 
-		&.hr {
-			clip-path: ellipse(50% 75% at 50% 100%);
-			transform: rotate(180deg);
+	&.highlighted {
+		z-index: 2;
+	}
+
+	&::before {
+		animation: 0.1s ease-out 0s 1 zoomIn forwards;
+		background-color: $white;
+		border-color: $warning;
+		border-radius: 50%;
+		border-style: solid;
+		border-width: var(--border-width);
+		bottom: -15%;
+		content: '';
+		left: -15%;
+		position: absolute;
+		right: -15%;
+		top: -15%;
+		z-index: -1;
+	}
+
+	&.mapped {
+		color: $primary;
+
+		&::before {
+			border-color: $primary;
 		}
+	}
+
+	&.hide::before {
+		animation: 0.1s ease-in 0s 1 zoomOut forwards;
+	}
+}
+
+@keyframes zoomIn {
+	from {
+		opacity: 0.4;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes zoomOut {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
 	}
 }

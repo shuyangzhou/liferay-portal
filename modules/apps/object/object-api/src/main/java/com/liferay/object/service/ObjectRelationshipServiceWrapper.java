@@ -54,6 +54,15 @@ public class ObjectRelationshipServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectRelationship getObjectRelationship(
+			long objectRelationshipId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectRelationshipService.getObjectRelationship(
+			objectRelationshipId);
+	}
+
+	@Override
 	public java.util.List<com.liferay.object.model.ObjectRelationship>
 			getObjectRelationships(long objectDefinitionId1, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -70,6 +79,16 @@ public class ObjectRelationshipServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _objectRelationshipService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectRelationship updateObjectRelationship(
+			long objectRelationshipId,
+			java.util.Map<java.util.Locale, String> labelMap)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectRelationshipService.updateObjectRelationship(
+			objectRelationshipId, labelMap);
 	}
 
 	@Override

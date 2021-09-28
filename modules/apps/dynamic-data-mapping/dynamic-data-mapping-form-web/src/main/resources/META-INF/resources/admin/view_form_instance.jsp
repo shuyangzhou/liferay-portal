@@ -79,11 +79,12 @@ FormInstancePermissionCheckerHelper formInstancePermissionCheckerHelper = ddmFor
 
 								<%
 								boolean hasValidDDMFormFields = ddmFormAdminDisplayContext.hasValidDDMFormFields(formInstance);
+								boolean hasValidMappedObject = ddmFormAdminDisplayContext.hasValidMappedObject(formInstance);
 								boolean hasValidStorageType = ddmFormAdminDisplayContext.hasValidStorageType(formInstance);
 								%>
 
 								<c:choose>
-									<c:when test="<%= hasValidDDMFormFields && hasValidStorageType %>">
+									<c:when test="<%= hasValidDDMFormFields && hasValidMappedObject && hasValidStorageType %>">
 										<liferay-ui:search-container-column-text
 											cssClass="table-cell-expand table-title"
 											href="<%= rowURL %>"
@@ -102,6 +103,9 @@ FormInstancePermissionCheckerHelper formInstancePermissionCheckerHelper = ddmFor
 
 											if (!hasValidDDMFormFields) {
 												errorMessage = LanguageUtil.format(request, "this-form-was-created-using-a-custom-field-type-x-that-is-not-available-for-this-liferay-dxp-installation.-instal-x-to-make-it-available-for-editing", ddmFormAdminDisplayContext.getInvalidDDMFormFieldType(formInstance));
+											}
+											else if (!hasValidMappedObject) {
+												errorMessage = LanguageUtil.format(request, "this-form-was-created-using-an-inactive-object-as-storage-type.-activate-x-object-to-make-it-available-for-editing", ddmFormAdminDisplayContext.getObjectDefinitionLabel(formInstance, locale));
 											}
 											else if (!hasValidStorageType) {
 												errorMessage = LanguageUtil.format(request, "this-form-was-created-using-a-storage-type-x-that-is-not-available-for-this-liferay-dxp-installation.-install-x-to-make-it-available-for-editing", formInstance.getStorageType());

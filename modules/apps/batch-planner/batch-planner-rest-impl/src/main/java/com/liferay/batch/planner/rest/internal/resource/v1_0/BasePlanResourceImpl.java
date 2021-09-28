@@ -34,12 +34,6 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -49,17 +43,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -67,7 +50,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BasePlanResourceImpl implements PlanResource {
 
 	/**
@@ -75,18 +58,27 @@ public abstract class BasePlanResourceImpl implements PlanResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/batch-planner/v1.0/plans'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "page"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "pageSize"
+			)
 		}
 	)
-	@Path("/plans")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Plan")})
-	public Page<Plan> getPlansPage(@Context Pagination pagination)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Plan")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/plans")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
+	public Page<Plan> getPlansPage(
+			@javax.ws.rs.core.Context Pagination pagination)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -97,12 +89,14 @@ public abstract class BasePlanResourceImpl implements PlanResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/batch-planner/v1.0/plans' -d $'{"active": ___, "export": ___, "externalType": ___, "externalURL": ___, "id": ___, "internalClassName": ___, "mappings": ___, "name": ___, "policies": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Plan")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.Path("/plans")
+	@javax.ws.rs.POST
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Path("/plans")
-	@POST
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Plan")})
 	public Plan postPlan(Plan plan) throws Exception {
 		return new Plan();
 	}
@@ -112,14 +106,26 @@ public abstract class BasePlanResourceImpl implements PlanResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/batch-planner/v1.0/plans/{planId}'  -u 'test@liferay.com:test'
 	 */
-	@DELETE
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "planId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Plan")}
+	)
+	@javax.ws.rs.DELETE
+	@javax.ws.rs.Path("/plans/{planId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "planId")})
-	@Path("/plans/{planId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Plan")})
 	public void deletePlan(
-			@NotNull @Parameter(hidden = true) @PathParam("planId") Long planId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("planId")
+			Long planId)
 		throws Exception {
 	}
 
@@ -128,14 +134,26 @@ public abstract class BasePlanResourceImpl implements PlanResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/batch-planner/v1.0/plans/{planId}'  -u 'test@liferay.com:test'
 	 */
-	@GET
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "planId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Plan")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/plans/{planId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "planId")})
-	@Path("/plans/{planId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Plan")})
 	public Plan getPlan(
-			@NotNull @Parameter(hidden = true) @PathParam("planId") Long planId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("planId")
+			Long planId)
 		throws Exception {
 
 		return new Plan();
@@ -146,15 +164,27 @@ public abstract class BasePlanResourceImpl implements PlanResource {
 	 *
 	 * curl -X 'PATCH' 'http://localhost:8080/o/batch-planner/v1.0/plans/{planId}' -d $'{"active": ___, "export": ___, "externalType": ___, "externalURL": ___, "id": ___, "internalClassName": ___, "mappings": ___, "name": ___, "policies": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "planId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Plan")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.PATCH
+	@javax.ws.rs.Path("/plans/{planId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "planId")})
-	@PATCH
-	@Path("/plans/{planId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Plan")})
 	public Plan patchPlan(
-			@NotNull @Parameter(hidden = true) @PathParam("planId") Long planId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("planId")
+			Long planId,
 			Plan plan)
 		throws Exception {
 

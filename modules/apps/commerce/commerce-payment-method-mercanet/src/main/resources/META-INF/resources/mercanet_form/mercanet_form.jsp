@@ -25,6 +25,7 @@ String seal = URLDecoder.decode((String)request.getAttribute(CommercePaymentWebK
 <form action="<%= HtmlUtil.escapeHREF(redirectURL) %>" class="hide" id="formMercanet" method="post" name="formMercanet">
 	<input name="redirectionData" type="hidden" value="<%= HtmlUtil.escapeAttribute(redirectionData) %>" />
 	<input name="seal" type="hidden" value="<%= HtmlUtil.escapeAttribute(seal) %>" />
+
 	<input type="submit" value="Proceed to checkout" />
 </form>
 

@@ -136,6 +136,7 @@ else {
 	<!-- Begin LPS-38289, LPS-55993, and LPS-61876 -->
 
 	<input class="hide" type="password" />
+
 	<input class="hide" type="password" />
 
 	<!-- End LPS-38289, LPS-55993, and LPS-61876 -->

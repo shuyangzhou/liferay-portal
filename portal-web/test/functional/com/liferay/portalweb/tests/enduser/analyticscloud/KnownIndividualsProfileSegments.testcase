@@ -75,6 +75,8 @@ definition {
 				Navigator.gotoSitePage(
 					pageName = "AC Page",
 					siteName = "Site Name");
+
+				Pause(locator1 = "5000");
 			}
 
 			ACUtils.closeAllSessionsAndWait();
@@ -119,14 +121,13 @@ definition {
 				cardTitle = "Associated Segments",
 				searchItem = "Test1");
 
-			ACIndividualsDashboard.assertIndividualAttribute(key_individualAttribute = "Static Segment Test1");
+			ACIndividualsDashboard.assertSegmentInAssociatedSegmentsCard(itemName = "Static Segment Test1");
 
 			ACNavigation.openItem(itemName = "Static Segment Test1");
 
-			ACSegments.viewSegmentMembershipLegendNumbers(
-				anonymousNumber = "0",
-				knownNumber = "2",
-				totalNumber = "2");
+			ACNavigation.switchTab(tabName = "Membership");
+
+			ACUtils.viewNameList(nameList = "user1 user1");
 		}
 	}
 
@@ -148,6 +149,8 @@ definition {
 				Navigator.gotoSitePage(
 					pageName = "AC Page",
 					siteName = "Site Name");
+
+				Pause(locator1 = "5000");
 			}
 
 			ACUtils.closeAllSessionsAndWait();
@@ -192,14 +195,13 @@ definition {
 		task ("Assert can select a Segment in Individuals Associated Segments card") {
 			ACUtils.searchBar(searchItem = "Test2");
 
-			ACIndividualsDashboard.assertSegmentInAssociatedSegmentsCard(itemName = "Static Segment Test2");
+			ACIndividualsDashboard.assertIndividualAttribute(key_individualAttribute = "Static Segment Test2");
 
 			ACNavigation.openItem(itemName = "Static Segment Test2");
 
-			ACSegments.viewSegmentMembershipLegendNumbers(
-				anonymousNumber = "0",
-				knownNumber = "1",
-				totalNumber = "1");
+			ACNavigation.switchTab(tabName = "Membership");
+
+			ACUtils.viewNameList(nameList = "user1 user1");
 		}
 	}
 
@@ -233,6 +235,8 @@ definition {
 				Navigator.gotoSitePage(
 					pageName = "AC Page",
 					siteName = "Site Name");
+
+				Pause(locator1 = "5000");
 			}
 
 			ACUtils.closeAllSessionsAndWait();
@@ -299,7 +303,7 @@ definition {
 		}
 
 		task ("Check descending arrow descending of table title of Name") {
-			ACUtils.orderTableTitleArrow(type = "up");
+			ACUtils.orderTableTitleArrow(type = "down");
 		}
 
 		task ("Assert 3 segments in order filter by Name display") {
@@ -325,7 +329,7 @@ definition {
 		task ("Assert 3 segments in order filter by membership display") {
 			AssertTextEquals(
 				locator1 = "ACSegments#SEGMENT_POSITION_1",
-				value1 = "Static Segment Test3");
+				value1 = "Static Segment Test1");
 
 			AssertTextEquals(
 				locator1 = "ACSegments#SEGMENT_POSITION_2",
@@ -333,7 +337,7 @@ definition {
 
 			AssertTextEquals(
 				locator1 = "ACSegments#SEGMENT_POSITION_3",
-				value1 = "Static Segment Test1");
+				value1 = "Static Segment Test3");
 		}
 
 		task ("Check descending arrow descending of table title of Membership") {
@@ -343,7 +347,7 @@ definition {
 		task ("Assert 3 segments in order filter by membership display") {
 			AssertTextEquals(
 				locator1 = "ACSegments#SEGMENT_POSITION_1",
-				value1 = "Static Segment Test1");
+				value1 = "Static Segment Test3");
 
 			AssertTextEquals(
 				locator1 = "ACSegments#SEGMENT_POSITION_2",
@@ -351,7 +355,7 @@ definition {
 
 			AssertTextEquals(
 				locator1 = "ACSegments#SEGMENT_POSITION_3",
-				value1 = "Static Segment Test3");
+				value1 = "Static Segment Test1");
 		}
 	}
 
@@ -465,6 +469,8 @@ definition {
 				Navigator.gotoSitePage(
 					pageName = "AC Page",
 					siteName = "Site Name");
+
+				Pause(locator1 = "5000");
 			}
 
 			ACUtils.closeAllSessionsAndWait();

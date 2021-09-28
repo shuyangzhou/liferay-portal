@@ -1,3 +1,19 @@
+create table ObjectAction (
+	mvccVersion LONG default 0 not null,
+	uuid_ VARCHAR(75) null,
+	objectActionId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	objectDefinitionId LONG,
+	active_ BOOLEAN,
+	objectActionTriggerKey VARCHAR(75) null,
+	parameters TEXT null,
+	type_ VARCHAR(75) null
+);
+
 create table ObjectDefinition (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
@@ -62,24 +78,6 @@ create table ObjectField (
 	name VARCHAR(75) null,
 	relationshipType VARCHAR(75) null,
 	required BOOLEAN,
-	type_ VARCHAR(75) null
-);
-
-create table ObjectRelationship (
-	mvccVersion LONG default 0 not null,
-	uuid_ VARCHAR(75) null,
-	objectRelationshipId LONG not null primary key,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	objectDefinitionId1 LONG,
-	objectDefinitionId2 LONG,
-	objectFieldId2 LONG,
-	dbTableName VARCHAR(75) null,
-	label STRING null,
-	name VARCHAR(75) null,
 	type_ VARCHAR(75) null
 );
 

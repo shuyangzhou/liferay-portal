@@ -40,13 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.List;
@@ -58,15 +51,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -77,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseFormDocumentResourceImpl
 	implements EntityModelResource, FormDocumentResource,
 			   VulcanBatchEngineTaskItemDelegate<FormDocument> {
@@ -87,19 +71,28 @@ public abstract class BaseFormDocumentResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@liferay.com:test'
 	 */
-	@DELETE
 	@Deprecated
-	@Operation(deprecated = true)
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "formDocumentId")}
+	@io.swagger.v3.oas.annotations.Operation(deprecated = true)
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "formDocumentId"
+			)
+		}
 	)
-	@Path("/form-documents/{formDocumentId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "FormDocument")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "FormDocument")}
+	)
+	@javax.ws.rs.DELETE
+	@javax.ws.rs.Path("/form-documents/{formDocumentId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public void deleteFormDocument(
-			@NotNull @Parameter(hidden = true) @PathParam("formDocumentId") Long
-				formDocumentId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("formDocumentId")
+			Long formDocumentId)
 		throws Exception {
 	}
 
@@ -108,18 +101,26 @@ public abstract class BaseFormDocumentResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-form/v1.0/form-documents/batch'  -u 'test@liferay.com:test'
 	 */
-	@Consumes("application/json")
-	@DELETE
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.QUERY, name = "callbackURL")}
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "callbackURL"
+			)
+		}
 	)
-	@Path("/form-documents/batch")
-	@Produces("application/json")
-	@Tags(value = {@Tag(name = "FormDocument")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "FormDocument")}
+	)
+	@javax.ws.rs.Consumes("application/json")
+	@javax.ws.rs.DELETE
+	@javax.ws.rs.Path("/form-documents/batch")
+	@javax.ws.rs.Produces("application/json")
+	@Override
 	public Response deleteFormDocumentBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL") String
-				callbackURL,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("callbackURL")
+			String callbackURL,
 			Object object)
 		throws Exception {
 
@@ -145,18 +146,27 @@ public abstract class BaseFormDocumentResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@liferay.com:test'
 	 */
 	@Deprecated
-	@GET
-	@Operation(deprecated = true)
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "formDocumentId")}
+	@io.swagger.v3.oas.annotations.Operation(deprecated = true)
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "formDocumentId"
+			)
+		}
 	)
-	@Path("/form-documents/{formDocumentId}")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "FormDocument")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "FormDocument")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/form-documents/{formDocumentId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public FormDocument getFormDocument(
-			@NotNull @Parameter(hidden = true) @PathParam("formDocumentId") Long
-				formDocumentId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("formDocumentId")
+			Long formDocumentId)
 		throws Exception {
 
 		return new FormDocument();

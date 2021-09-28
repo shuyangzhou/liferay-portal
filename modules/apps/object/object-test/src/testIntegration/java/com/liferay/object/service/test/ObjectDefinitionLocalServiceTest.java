@@ -33,10 +33,8 @@ import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
@@ -54,13 +52,10 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.sql.Connection;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -285,14 +280,14 @@ public class ObjectDefinitionLocalServiceTest {
 
 		// Before publish, messaging
 
-		Assert.assertFalse(
+		/*Assert.assertFalse(
 			_messageBus.hasDestination(objectDefinition.getDestinationName()));
 
 		Collection<Destination> webhookCapableDestinations =
 			_messageBus.getWebhookCapableDestinations(
 				objectDefinition.getCompanyId());
 
-		int webhookCapableDestinationsCount = webhookCapableDestinations.size();
+		int webhookCapableDestinationsCount = webhookCapableDestinations.size();*/
 
 		// Before publish, resources
 
@@ -357,7 +352,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		// After publish, messaging
 
-		Destination destination = _messageBus.getDestination(
+		/*Destination destination = _messageBus.getDestination(
 			objectDefinition.getDestinationName());
 
 		Set<Destination.WebhookEvent> webhookEvents =
@@ -393,7 +388,7 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertEquals(
 			webhookCapableDestinations.toString(),
 			webhookCapableDestinationsCount + 1,
-			webhookCapableDestinations.size());
+			webhookCapableDestinations.size());*/
 
 		// After publish, resources
 
@@ -1113,10 +1108,10 @@ public class ObjectDefinitionLocalServiceTest {
 		}
 	}
 
-	private static final String[] _DESTINATION_WEBHOOK_EVENT_KEYS = {
+	/*private static final String[] _DESTINATION_WEBHOOK_EVENT_KEYS = {
 		"onAfterCreate", "onAfterRemove", "onAfterUpdate", "onBeforeCreate",
 		"onBeforeRemove", "onBeforeUpdate"
-	};
+	};*/
 
 	@Inject
 	private MessageBus _messageBus;

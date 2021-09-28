@@ -137,7 +137,8 @@ public class ResourceOpenAPIParser {
 		Set<String> methodAnnotations = new TreeSet<>();
 
 		if ((operation.getDescription() != null) || operation.isDeprecated()) {
-			StringBundler sb = new StringBundler("@Operation(");
+			StringBundler sb = new StringBundler(
+				"@io.swagger.v3.oas.annotations.Operation(");
 
 			if (operation.isDeprecated()) {
 				methodAnnotations.add("@Deprecated");
@@ -163,12 +164,14 @@ public class ResourceOpenAPIParser {
 			StringBundler sb = new StringBundler("");
 
 			for (String tag : operation.getTags()) {
-				sb.append("@Tag(name=\"");
+				sb.append("@io.swagger.v3.oas.annotations.tags.Tag(name=\"");
 				sb.append(tag);
 				sb.append("\"),");
 			}
 
-			methodAnnotations.add("@Tags(value={" + sb.toString() + "})");
+			methodAnnotations.add(
+				"@io.swagger.v3.oas.annotations.tags.Tags(value={" +
+					sb.toString() + "})");
 		}
 
 		List<JavaMethodParameter> javaMethodParameters =
@@ -193,15 +196,17 @@ public class ResourceOpenAPIParser {
 		}
 
 		if (sb.length() > 0) {
-			methodAnnotations.add("@Parameters(value={" + sb + "})");
+			methodAnnotations.add(
+				"@io.swagger.v3.oas.annotations.Parameters(value={" + sb +
+					"})");
 		}
 
-		methodAnnotations.add("@Path(\"" + path + "\")");
+		methodAnnotations.add("@javax.ws.rs.Path(\"" + path + "\")");
 
 		String annotationString = StringUtil.toUpperCase(
 			OpenAPIParserUtil.getHTTPMethod(operation));
 
-		methodAnnotations.add("@" + annotationString);
+		methodAnnotations.add("@javax.ws.rs." + annotationString);
 
 		String methodAnnotation = _getMethodAnnotationConsumes(
 			javaMethodSignature.getRequestBodyMediaTypes());
@@ -336,10 +341,11 @@ public class ResourceOpenAPIParser {
 		StringBundler sb = new StringBundler(4);
 
 		sb.append(
-			String.format(
-				"@Parameter(in = ParameterIn.%s, name = \"%s\"",
-				StringUtil.toUpperCase(parameter.getIn()),
-				parameter.getName()));
+			StringBundler.concat(
+				"@io.swagger.v3.oas.annotations.Parameter(in = ",
+				"io.swagger.v3.oas.annotations.enums.ParameterIn.",
+				StringUtil.toUpperCase(parameter.getIn()), ", name = \"",
+				parameter.getName(), "\""));
 
 		if (parameter.isDeprecated()) {
 			sb.append(
@@ -622,10 +628,10 @@ public class ResourceOpenAPIParser {
 		}
 
 		if (requestBodyMediaTypes.size() > 1) {
-			return "@Consumes({" + sb.toString() + "})";
+			return "@javax.ws.rs.Consumes({" + sb.toString() + "})";
 		}
 
-		return "@Consumes(" + sb.toString() + ")";
+		return "@javax.ws.rs.Consumes(" + sb.toString() + ")";
 	}
 
 	private static String _getMethodAnnotationProduces(Operation operation) {
@@ -666,10 +672,10 @@ public class ResourceOpenAPIParser {
 		sb.setLength(sb.length() - 2);
 
 		if (mediaTypes.size() > 1) {
-			return "@Produces({" + sb.toString() + "})";
+			return "@javax.ws.rs.Produces({" + sb.toString() + "})";
 		}
 
-		return "@Produces(" + sb.toString() + ")";
+		return "@javax.ws.rs.Produces(" + sb.toString() + ")";
 	}
 
 	private static String _getMethodName(
@@ -812,26 +818,26 @@ public class ResourceOpenAPIParser {
 		if (Objects.equals(parameterType, Aggregation.class.getName()) &&
 			parameterNames.contains("aggregationTerms")) {
 
-			return "@Context";
+			return "@javax.ws.rs.core.Context";
 		}
 
 		if (Objects.equals(parameterType, Filter.class.getName()) &&
 			parameterNames.contains("filter")) {
 
-			return "@Context";
+			return "@javax.ws.rs.core.Context";
 		}
 
 		if (Objects.equals(parameterType, Pagination.class.getName()) &&
 			parameterNames.contains("page") &&
 			parameterNames.contains("pageSize")) {
 
-			return "@Context";
+			return "@javax.ws.rs.core.Context";
 		}
 
 		if (Objects.equals(parameterType, Sort[].class.getName()) &&
 			parameterNames.contains("sort")) {
 
-			return "@Context";
+			return "@javax.ws.rs.core.Context";
 		}
 
 		for (Parameter parameter : operation.getParameters()) {
@@ -844,13 +850,13 @@ public class ResourceOpenAPIParser {
 				continue;
 			}
 
-			StringBundler sb = new StringBundler(10);
+			StringBundler sb = new StringBundler(11);
 
 			String defaultValue = _getDefaultValue(
 				openAPIYAML, parameter.getSchema());
 
 			if (defaultValue != null) {
-				sb.append("@DefaultValue(\"");
+				sb.append("@javax.ws.rs.DefaultValue(\"");
 				sb.append(defaultValue);
 				sb.append("\")");
 			}
@@ -860,10 +866,11 @@ public class ResourceOpenAPIParser {
 			}
 
 			if (parameter.isRequired()) {
-				sb.append("@NotNull");
+				sb.append("@javax.validation.constraints.NotNull");
 			}
 
-			sb.append("@Parameter(hidden=true)@");
+			sb.append("@io.swagger.v3.oas.annotations.Parameter(hidden=true)");
+			sb.append("@javax.ws.rs.");
 			sb.append(StringUtil.upperCaseFirstLetter(parameter.getIn()));
 			sb.append("Param(\"");
 			sb.append(parameter.getName());

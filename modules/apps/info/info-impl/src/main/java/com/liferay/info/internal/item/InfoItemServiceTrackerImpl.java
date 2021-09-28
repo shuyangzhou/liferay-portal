@@ -145,7 +145,7 @@ public class InfoItemServiceTrackerImpl implements InfoItemServiceTracker {
 	public List<InfoItemCapability> getInfoItemCapabilities(
 		String itemClassName) {
 
-		InfoItemCapabilitiesProvider infoItemCapabilitiesProvider =
+		InfoItemCapabilitiesProvider<?> infoItemCapabilitiesProvider =
 			getFirstInfoItemService(
 				InfoItemCapabilitiesProvider.class, itemClassName, null);
 
@@ -185,7 +185,7 @@ public class InfoItemServiceTrackerImpl implements InfoItemServiceTracker {
 		for (InfoItemClassDetails curInfoItemClassDetails :
 				getInfoItemClassDetails(InfoItemCapabilitiesProvider.class)) {
 
-			InfoItemCapabilitiesProvider infoItemCapabilitiesProvider =
+			InfoItemCapabilitiesProvider<?> infoItemCapabilitiesProvider =
 				getFirstInfoItemService(
 					InfoItemCapabilitiesProvider.class,
 					curInfoItemClassDetails.getClassName(), null);
@@ -306,22 +306,16 @@ public class InfoItemServiceTrackerImpl implements InfoItemServiceTracker {
 	private InfoItemClassDetails _getInfoItemClassDetails(
 		String itemClassName) {
 
-		InfoItemDetailsProvider infoItemDetailsProvider =
+		InfoItemDetailsProvider<?> infoItemDetailsProvider =
 			getFirstInfoItemService(
 				InfoItemDetailsProvider.class, itemClassName, null);
 
-		InfoItemClassDetails infoItemClassDetails = null;
-
 		if (infoItemDetailsProvider != null) {
-			infoItemClassDetails =
-				infoItemDetailsProvider.getInfoItemClassDetails();
-		}
-		else {
-			infoItemClassDetails = new InfoItemClassDetails(
-				itemClassName, InfoLocalizedValue.modelResource(itemClassName));
+			return infoItemDetailsProvider.getInfoItemClassDetails();
 		}
 
-		return infoItemClassDetails;
+		return new InfoItemClassDetails(
+			itemClassName, InfoLocalizedValue.modelResource(itemClassName));
 	}
 
 	private ServiceTrackerMap<String, InfoItemCapability>

@@ -40,12 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.List;
@@ -57,12 +51,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -72,7 +60,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v2.0")
+@javax.ws.rs.Path("/v2.0")
 public abstract class BaseProductGroupResourceImpl
 	implements EntityModelResource, ProductGroupResource,
 			   VulcanBatchEngineTaskItemDelegate<ProductGroup> {
@@ -82,19 +70,27 @@ public abstract class BaseProductGroupResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discount-product-groups/{discountProductGroupId}/product-group'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "discountProductGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "discountProductGroupId"
+			)
 		}
 	)
-	@Path("/discount-product-groups/{discountProductGroupId}/product-group")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "ProductGroup")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "ProductGroup")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
+		"/discount-product-groups/{discountProductGroupId}/product-group"
+	)
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public ProductGroup getDiscountProductGroupProductGroup(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("discountProductGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("discountProductGroupId")
 			Long discountProductGroupId)
 		throws Exception {
 
@@ -106,23 +102,27 @@ public abstract class BaseProductGroupResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-modifier-product-groups/{priceModifierProductGroupId}/product-group'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(
-				in = ParameterIn.PATH, name = "priceModifierProductGroupId"
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "priceModifierProductGroupId"
 			)
 		}
 	)
-	@Path(
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "ProductGroup")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
 		"/price-modifier-product-groups/{priceModifierProductGroupId}/product-group"
 	)
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "ProductGroup")})
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public ProductGroup getPriceModifierProductGroupProductGroup(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("priceModifierProductGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("priceModifierProductGroupId")
 			Long priceModifierProductGroupId)
 		throws Exception {
 

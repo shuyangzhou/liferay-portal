@@ -16,14 +16,4 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-CSDiagramSettingDisplayContext csDiagramSettingDisplayContext = (CSDiagramSettingDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
-
-CPDefinition cpDefinition = csDiagramSettingDisplayContext.getCPDefinition();
-
-String type = DefaultCSDiagramType.KEY;
-
-CSDiagramSetting csDiagramSetting = csDiagramSettingDisplayContext.fetchCSDiagramSetting();
-%>
-
-<%@ include file="/diagram_type/diagram.jspf" %>
+<div></div>

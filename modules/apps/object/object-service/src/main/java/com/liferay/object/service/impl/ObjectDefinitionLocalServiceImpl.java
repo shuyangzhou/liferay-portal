@@ -46,8 +46,6 @@ import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
-import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
@@ -359,6 +357,14 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	@Override
+	public ObjectDefinition getObjectDefinitionByClassName(
+			long companyId, String className)
+		throws PortalException {
+
+		return objectDefinitionPersistence.findByC_C(companyId, className);
+	}
+
+	@Override
 	public List<ObjectDefinition> getObjectDefinitions(
 		long companyId, boolean active, boolean system, int status) {
 
@@ -417,11 +423,10 @@ public class ObjectDefinitionLocalServiceImpl
 
 		_addingObjectDefinitionDeployer(
 			new ObjectDefinitionDeployerImpl(
-				_bundleContext, _destinationFactory,
-				_dynamicQueryBatchIndexingActionableFactory,
-				_listTypeEntryLocalService, _messageBus,
-				_modelSearchRegistrarHelper, this, _objectEntryLocalService,
-				_objectFieldLocalService, _objectScopeProviderRegistry,
+				_bundleContext, _dynamicQueryBatchIndexingActionableFactory,
+				_listTypeEntryLocalService, _modelSearchRegistrarHelper, this,
+				_objectEntryLocalService, _objectFieldLocalService,
+				_objectScopeProviderRegistry,
 				_persistedModelLocalServiceRegistry, _resourceActions,
 				_workflowStatusModelPreFilterContributor));
 
@@ -987,17 +992,11 @@ public class ObjectDefinitionLocalServiceImpl
 	private BundleContext _bundleContext;
 
 	@Reference
-	private DestinationFactory _destinationFactory;
-
-	@Reference
 	private DynamicQueryBatchIndexingActionableFactory
 		_dynamicQueryBatchIndexingActionableFactory;
 
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
-
-	@Reference
-	private MessageBus _messageBus;
 
 	@Reference
 	private ModelSearchRegistrarHelper _modelSearchRegistrarHelper;

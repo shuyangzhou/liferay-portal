@@ -112,19 +112,19 @@ ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT
 </liferay-frontend:side-panel-content>
 
 <script>
-	function getNode(name) {
-		return document.querySelector('#<portlet:namespace />' + name);
-	}
-
 	function <portlet:namespace />onChangeFieldType(event) {
-		const searchableContainer = getNode('searchableContainer');
+		const searchableContainer = document.querySelector(
+			'#<portlet:namespace />searchableContainer'
+		);
 
 		searchableContainer.style.display =
 			event.target.value !== 'Blob' ? 'block' : 'none';
 	}
 
 	function <portlet:namespace />onChangeSeachableSwitch(event) {
-		const indexedGroup = getNode('indexedGroup');
+		const indexedGroup = document.querySelector(
+			'#<portlet:namespace />indexedGroup'
+		);
 		const type = '<%= objectField.getType() %>';
 
 		indexedGroup.style.display =
@@ -132,24 +132,32 @@ ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT
 	}
 
 	function <portlet:namespace />onChangeSeachableType(value) {
-		const indexedLanguageIdGroup = getNode('indexedLanguageIdGroup');
+		const indexedLanguageIdGroup = document.querySelector(
+			'#<portlet:namespace />indexedLanguageIdGroup'
+		);
 
 		indexedLanguageIdGroup.style.display = value === 'text' ? 'block' : 'none';
 	}
 
 	function <portlet:namespace />saveObjectField() {
-		const inputIndexed = getNode('indexed');
+		const inputIndexed = document.querySelector(
+			'#<portlet:namespace />indexed'
+		);
 		const inputIndexedTypeKeyword = getNode(
 			'inputIndexedTypeKeyword'
 		).querySelector('input');
-		const inputIndexedTypeText = getNode('inputIndexedTypeText').querySelector(
-			'input'
+		const inputIndexedTypeText = document
+			.querySelector('#<portlet:namespace />inputIndexedTypeText')
+			.querySelector('input');
+		const inputIndexedLanguageId = document.querySelector(
+			'#<portlet:namespace />indexedLanguageId'
 		);
-		const inputIndexedLanguageId = getNode('indexedLanguageId');
-		const inputLabel = getNode('label');
-		const inputName = getNode('name');
-		const inputRequired = getNode('required');
-		const inputType = getNode('type');
+		const inputLabel = document.querySelector('#<portlet:namespace />label');
+		const inputName = document.querySelector('#<portlet:namespace />name');
+		const inputRequired = document.querySelector(
+			'#<portlet:namespace />required'
+		);
+		const inputType = document.querySelector('#<portlet:namespace />type');
 
 		const indexed = inputIndexed.checked;
 		const indexedAsKeyword =

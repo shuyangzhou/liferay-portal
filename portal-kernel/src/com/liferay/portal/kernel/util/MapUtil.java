@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 /**
@@ -362,6 +363,15 @@ public class MapUtil {
 
 	public static boolean isNotEmpty(Map<?, ?> map) {
 		return !isEmpty(map);
+	}
+
+	public static <K, V> void isNotEmptyForEach(
+		Map<? extends K, ? extends V> map,
+		BiConsumer<? super K, ? super V> biConsumer) {
+
+		if (!isEmpty(map)) {
+			map.forEach(biConsumer);
+		}
 	}
 
 	public static <K, V> void merge(

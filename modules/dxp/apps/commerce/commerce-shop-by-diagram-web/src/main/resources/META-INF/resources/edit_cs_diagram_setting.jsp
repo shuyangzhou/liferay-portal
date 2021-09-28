@@ -65,7 +65,18 @@ CSDiagramType csDiagramType = csDiagramSettingDisplayContext.getCSDiagramType(ty
 				>
 
 					<%
-					csDiagramType.render(csDiagramSetting, request, PipingServletResponseFactory.createPipingServletResponse(pageContext));
+					if (csDiagramSetting != null) {
+						csDiagramType.render(csDiagramSetting, request, PipingServletResponseFactory.createPipingServletResponse(pageContext));
+					}
+					else {
+					%>
+
+						<div class="p-3 text-center">
+							<liferay-ui:message key="please-upload-a-file" />
+						</div>
+
+					<%
+					}
 					%>
 
 				</commerce-ui:panel>

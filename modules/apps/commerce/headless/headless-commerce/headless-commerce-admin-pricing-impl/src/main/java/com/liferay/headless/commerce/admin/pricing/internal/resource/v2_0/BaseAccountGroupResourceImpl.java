@@ -40,12 +40,6 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.io.Serializable;
 
 import java.util.List;
@@ -57,12 +51,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -72,7 +60,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v2.0")
+@javax.ws.rs.Path("/v2.0")
 public abstract class BaseAccountGroupResourceImpl
 	implements AccountGroupResource, EntityModelResource,
 			   VulcanBatchEngineTaskItemDelegate<AccountGroup> {
@@ -82,19 +70,27 @@ public abstract class BaseAccountGroupResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discount-account-groups/{discountAccountGroupId}/account-group'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "discountAccountGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "discountAccountGroupId"
+			)
 		}
 	)
-	@Path("/discount-account-groups/{discountAccountGroupId}/account-group")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountGroup")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "AccountGroup")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
+		"/discount-account-groups/{discountAccountGroupId}/account-group"
+	)
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public AccountGroup getDiscountAccountGroupAccountGroup(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("discountAccountGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("discountAccountGroupId")
 			Long discountAccountGroupId)
 		throws Exception {
 
@@ -106,19 +102,27 @@ public abstract class BaseAccountGroupResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-list-account-groups/{priceListAccountGroupId}/account-group'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "priceListAccountGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "priceListAccountGroupId"
+			)
 		}
 	)
-	@Path("/price-list-account-groups/{priceListAccountGroupId}/account-group")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountGroup")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "AccountGroup")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
+		"/price-list-account-groups/{priceListAccountGroupId}/account-group"
+	)
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public AccountGroup getPriceListAccountGroupAccountGroup(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("priceListAccountGroupId")
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("priceListAccountGroupId")
 			Long priceListAccountGroupId)
 		throws Exception {
 

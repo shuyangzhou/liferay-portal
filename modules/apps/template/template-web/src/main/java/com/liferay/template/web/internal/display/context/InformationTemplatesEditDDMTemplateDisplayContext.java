@@ -25,6 +25,7 @@ import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemDetailsProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.item.provider.InfoItemFormVariationsProvider;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
 import com.liferay.template.model.TemplateEntry;
@@ -71,6 +73,10 @@ public class InformationTemplatesEditDDMTemplateDisplayContext
 	@Override
 	public String getTemplateSubtypeLabel() {
 		TemplateEntry templateEntry = _getTemplateEntry();
+
+		if (Validator.isNull(templateEntry.getInfoItemFormVariationKey())) {
+			return StringPool.BLANK;
+		}
 
 		return Optional.ofNullable(
 			_infoItemServiceTracker.getFirstInfoItemService(
@@ -108,6 +114,18 @@ public class InformationTemplatesEditDDMTemplateDisplayContext
 		);
 	}
 
+	public String getUpdateDDMTemplateURL() {
+		return PortletURLBuilder.createActionURL(
+			liferayPortletResponse
+		).setActionName(
+			"/template/update_template_entry"
+		).setTabs1(
+			getTabs1()
+		).setParameter(
+			"templateEntryId", getTemplateEntryId()
+		).buildString();
+	}
+
 	@Override
 	protected long getTemplateHandlerClassNameId() {
 		return PortalUtil.getClassNameId(InfoItemFormProvider.class);
@@ -136,20 +154,16 @@ public class InformationTemplatesEditDDMTemplateDisplayContext
 
 		InfoForm infoForm = null;
 
-		String formVariationKey = StringPool.BLANK;
-
-		if (getClassPK() > 0) {
-			formVariationKey = String.valueOf(getClassPK());
-		}
-
 		try {
 			infoForm = infoItemFormProvider.getInfoForm(
-				formVariationKey, _themeDisplay.getScopeGroupId());
+				templateEntry.getInfoItemFormVariationKey(),
+				_themeDisplay.getScopeGroupId());
 		}
 		catch (NoSuchFormVariationException noSuchFormVariationException) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Unable to get form variation with key " + formVariationKey,
+					"Unable to get form variation with key " +
+						templateEntry.getInfoItemFormVariationKey(),
 					noSuchFormVariationException);
 			}
 

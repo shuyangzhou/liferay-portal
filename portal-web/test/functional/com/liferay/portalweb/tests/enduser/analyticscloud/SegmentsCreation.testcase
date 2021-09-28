@@ -244,6 +244,8 @@ definition {
 			Navigator.gotoSitePage(
 				pageName = "AC Page",
 				siteName = "Site Name");
+
+			ACUtils.closeAllSessionsAndWait();
 		}
 
 		task ("Switch to new property in AC") {
@@ -1152,6 +1154,8 @@ definition {
 				siteName = "Site Name");
 		}
 
+		ACUtils.closeAllSessionsAndWait();
+
 		ACUtils.launchAC();
 
 		ACProperties.switchProperty(propertyName = "${propertyName}");
@@ -1299,11 +1303,13 @@ definition {
 					pageName = "AC Page",
 					siteName = "Site Name");
 
-				Pause(locator1 = "3000");
+				Pause(locator1 = "5000");
 			}
 		}
 
 		task ("Switch to new property in AC") {
+			ACUtils.closeAllSessionsAndWait();
+
 			ACUtils.launchAC();
 
 			ACProperties.switchProperty(propertyName = "${propertyName}");
@@ -1341,7 +1347,7 @@ definition {
 			ACUtils.viewNameList(nameList = "${usernameList}");
 
 			AssertElementNotPresent(
-				key_assetName = "user5 user5",
+				key_nameList = "user5 user5",
 				locator1 = "ACUtils#NAME_LIST");
 		}
 
@@ -1458,6 +1464,12 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8475 | Test Summary: Dynamic segment members preview in real time"
 	@priority = "3"
 	test CanPreviewDynamicSegmentMembers {
+		property portal.upstream = "quarantine";
+
+		// AC Refactor: A button to reload appears when users are searched because of a bug.
+		// AC Bug ticket: LRAC-9412
+		// AC Refactor ticket: LRAC-9429
+
 		var usernameList = "userfn userln,user1 user1";
 
 		task ("Add one more user with a jobTitle") {
@@ -1552,7 +1564,7 @@ definition {
 			ACUtils.viewNameList(nameList = "user1 user1");
 
 			AssertElementNotPresent(
-				key_assetName = "userfn userln",
+				key_nameList = "userfn userln",
 				locator1 = "ACUtils#NAME_LIST");
 		}
 	}
@@ -1560,17 +1572,18 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8473 | Test Summary: Filter the Segment 'Add Members' Modal"
 	@priority = "3"
 	test CanSearchUserInAddMembersModal {
+		property portal.upstream = "quarantine";
+
+		// AC Refactor: A button to reload appears when users are searched because of a bug.
+		// AC Bug ticket: LRAC-9420
+		// AC Refactor ticket: LRAC-9428
+
 		task ("Add one more user with a given birth date") {
 			JSONUser.addUser(
 				userEmailAddress = "user1@liferay.com",
 				userFirstName = "user1",
 				userLastName = "user1",
 				userScreenName = "user1");
-
-			JSONUser.setFirstPassword(
-				agreeToTermsAndAnswerReminderQuery = "true",
-				requireReset = "false",
-				userEmailAddress = "user1@liferay.com");
 		}
 
 		task ("Sync the Contact Data") {
@@ -1625,11 +1638,11 @@ definition {
 
 		task ("View only the userea shown in modal") {
 			AssertVisible(
-				key_assetName = "userfn userln",
+				key_nameList = "userfn userln",
 				locator1 = "ACUtils#NAME_LIST");
 
 			AssertElementNotPresent(
-				key_assetName = "user1 user1",
+				key_nameList = "user1 user1",
 				locator1 = "ACUtils#NAME_LIST");
 		}
 
@@ -1641,11 +1654,11 @@ definition {
 
 		task ("View only the user1 shown in modal") {
 			AssertVisible(
-				key_assetName = "user1 user1",
+				key_nameList = "user1 user1",
 				locator1 = "ACUtils#NAME_LIST");
 
 			AssertElementNotPresent(
-				key_assetName = "userfn userln",
+				key_nameList = "userfn userln",
 				locator1 = "ACUtils#NAME_LIST");
 		}
 	}

@@ -139,6 +139,28 @@ public class Configuration implements Cloneable, Serializable {
 
 	protected Highlight highlight;
 
+	public Map<String, Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<String, Parameter> parameters) {
+		this.parameters = parameters;
+	}
+
+	public void setParameters(
+		UnsafeSupplier<Map<String, Parameter>, Exception>
+			parametersUnsafeSupplier) {
+
+		try {
+			parameters = parametersUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Map<String, Parameter> parameters;
+
 	public Query[] getQueries() {
 		return queries;
 	}
@@ -159,6 +181,28 @@ public class Configuration implements Cloneable, Serializable {
 	}
 
 	protected Query[] queries;
+
+	public SortConfiguration getSortConfiguration() {
+		return sortConfiguration;
+	}
+
+	public void setSortConfiguration(SortConfiguration sortConfiguration) {
+		this.sortConfiguration = sortConfiguration;
+	}
+
+	public void setSortConfiguration(
+		UnsafeSupplier<SortConfiguration, Exception>
+			sortConfigurationUnsafeSupplier) {
+
+		try {
+			sortConfiguration = sortConfigurationUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected SortConfiguration sortConfiguration;
 
 	@Override
 	public Configuration clone() throws CloneNotSupportedException {

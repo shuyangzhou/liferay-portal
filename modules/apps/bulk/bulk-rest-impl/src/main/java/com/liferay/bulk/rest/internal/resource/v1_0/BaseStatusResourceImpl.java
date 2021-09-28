@@ -31,9 +31,6 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +39,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -52,7 +46,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseStatusResourceImpl implements StatusResource {
 
 	/**
@@ -60,11 +54,13 @@ public abstract class BaseStatusResourceImpl implements StatusResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/bulk/v1.0/status'  -u 'test@liferay.com:test'
 	 */
-	@GET
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Status")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/status")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Path("/status")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Status")})
 	public Status getStatus() throws Exception {
 		return new Status();
 	}

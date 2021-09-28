@@ -146,9 +146,11 @@ definition {
 			userLoginEmailAddress = "userea@liferay.com",
 			userLoginFullName = "userfn userln");
 
-		Navigator.openURL();
+		Navigator.gotoSitePage(
+			pageName = "AC Page",
+			siteName = "Site Name");
 
-		Pause(locator1 = "5000");
+		ACUtils.closeAllSessionsAndWait();
 
 		ACUtils.launchAC();
 
@@ -222,11 +224,11 @@ definition {
 				Navigator.gotoSitePage(
 					pageName = "AC Page",
 					siteName = "Site Name");
+
+				Pause(locator1 = "5000");
 			}
 
-			ACUtils.closeAllSessions();
-
-			Pause(locator1 = "5000");
+			ACUtils.closeAllSessionsAndWait();
 		}
 
 		task ("Switch to new property in AC") {

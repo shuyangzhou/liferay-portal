@@ -18,7 +18,7 @@ import ClayDropDown from '@clayui/drop-down';
 import {useDebounce} from '@clayui/shared';
 import {FieldBase} from 'dynamic-data-mapping-form-field-type/FieldBase/ReactFieldBase.es';
 import {fetch} from 'frontend-js-web';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 const NETWORK_STATUS_LOADING = 1;
 const NETWORK_STATUS_UNUSED = 4;
@@ -39,27 +39,48 @@ const LoadingWithDebounce = ({loading, render}) => {
 
 export function ObjectRelationship({
 	apiURL,
+	id,
+	initialLabel,
 	inputName,
 	labelKey = 'label',
-	initialLabel,
-	initialValue,
 	name,
 	onBlur = () => {},
 	onChange,
 	onFocus = () => {},
 	placeholder = Liferay.Language.get('search'),
-	predefinedValue,
 	readOnly,
 	required,
 	value,
 	valueKey = 'value',
 	...otherProps
 }) {
-	const mutatedRef = React.useRef(false);
+	const [active, setActive] = useState(false);
+	const [networkStatus, setNetworkStatus] = useState(NETWORK_STATUS_LOADING);
+	const [search, setSearch] = useState(initialLabel || '');
+	const autocompleteRef = useRef();
+	const dropdownRef = useRef();
 
-	const [networkStatus, setNetworkStatus] = React.useState(
-		NETWORK_STATUS_LOADING
-	);
+	useEffect(() => {
+		function handleClick(event) {
+			if (
+				autocompleteRef.current.contains(event.target) ||
+				event.target === dropdownRef.current.parentElement ||
+				(dropdownRef.current &&
+					dropdownRef.current.contains(event.target))
+			) {
+				return;
+			}
+
+			setActive(false);
+		}
+		if (active) {
+			document.addEventListener('mousedown', handleClick);
+		}
+
+		return () => {
+			document.removeEventListener('mousedown', handleClick);
+		};
+	}, [active]);
 
 	const {resource} = useResource({
 		fetch,
@@ -69,13 +90,11 @@ export function ObjectRelationship({
 		variables: {
 			page: 1,
 			pageSize: 10,
-			search: value,
+			search,
 		},
 	});
 
 	const loading = networkStatus < NETWORK_STATUS_UNUSED;
-
-	value = mutatedRef.current ? value : initialValue || predefinedValue;
 
 	return (
 		<FieldBase
@@ -86,54 +105,89 @@ export function ObjectRelationship({
 			value={value}
 			{...otherProps}
 		>
-			<ClayAutocomplete>
+			<ClayAutocomplete ref={autocompleteRef}>
+				<input id={id} name={name} type="hidden" value={value || ''} />
 				<ClayAutocomplete.Input
 					name={inputName}
 					onBlur={onBlur}
 					onChange={(event) => {
-						mutatedRef.current = true;
+						const currentSearch = event.target.value;
 
-						onChange(event, event.target.value);
+						if (currentSearch === '') {
+							onChange({
+								target: {
+									value: '',
+								},
+							});
+						}
+						else {
+							const searchedItem = resource?.items?.find(
+								(item) =>
+									String(item[labelKey]) === currentSearch
+							);
+
+							onChange({
+								target: {
+									value: searchedItem
+										? String(searchedItem[valueKey])
+										: null,
+								},
+							});
+						}
+
+						setSearch(currentSearch);
 					}}
-					onFocus={onFocus}
+					onFocus={(event) => {
+						onFocus(event);
+						setActive(true);
+					}}
+					onKeyUp={(event) => {
+						setActive(event.keyCode !== 27);
+					}}
 					placeholder={placeholder}
 					readOnly={readOnly}
 					required={required}
-					value={mutatedRef.current ? value : initialLabel}
+					value={search}
 				/>
 
 				<ClayAutocomplete.DropDown
-					active={readOnly ? false : !!resource && !!value}
+					active={active && (readOnly ? false : !!resource)}
 				>
-					<ClayDropDown.ItemList>
-						<LoadingWithDebounce
-							loading={loading}
-							render={
-								<>
-									{resource?.items?.length === 0 && (
-										<ClayDropDown.Item className="disabled">
-											{Liferay.Language.get(
-												'no-results-found'
-											)}
-										</ClayDropDown.Item>
-									)}
-									{resource?.items?.map((item) => (
-										<ClayAutocomplete.Item
-											key={item.id}
-											match={String(value)}
-											onClick={(event) =>
-												onChange(
-													event,
-													String(item[valueKey])
-												)
-											}
-											value={String(item[labelKey])}
-										/>
-									))}
-								</>
-							}
-						/>
-					</ClayDropDown.ItemList>
+					<div ref={dropdownRef}>
+						<ClayDropDown.ItemList>
+							<LoadingWithDebounce
+								loading={loading}
+								render={
+									<>
+										{resource?.items?.length === 0 && (
+											<ClayDropDown.Item className="disabled">
+												{Liferay.Language.get(
+													'no-results-found'
+												)}
+											</ClayDropDown.Item>
+										)}
+										{resource?.items?.map((item) => (
+											<ClayAutocomplete.Item
+												key={item.id}
+												match={String(value)}
+												onClick={(event) => {
+													onChange(
+														event,
+														String(item[valueKey])
+													);
+													setActive(false);
+													setSearch(
+														String(item[labelKey])
+													);
+												}}
+												value={String(item[labelKey])}
+											/>
+										))}
+									</>
+								}
+							/>
+						</ClayDropDown.ItemList>
+					</div>
 				</ClayAutocomplete.DropDown>
 				{loading && <ClayAutocomplete.LoadingIndicator />}
 			</ClayAutocomplete>

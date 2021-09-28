@@ -199,6 +199,36 @@ public class Configuration implements Serializable {
 
 	@Schema
 	@Valid
+	public Map<String, Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<String, Parameter> parameters) {
+		this.parameters = parameters;
+	}
+
+	@JsonIgnore
+	public void setParameters(
+		UnsafeSupplier<Map<String, Parameter>, Exception>
+			parametersUnsafeSupplier) {
+
+		try {
+			parameters = parametersUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Map<String, Parameter> parameters;
+
+	@Schema
+	@Valid
 	public Query[] getQueries() {
 		return queries;
 	}
@@ -225,6 +255,36 @@ public class Configuration implements Serializable {
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Query[] queries;
+
+	@Schema
+	@Valid
+	public SortConfiguration getSortConfiguration() {
+		return sortConfiguration;
+	}
+
+	public void setSortConfiguration(SortConfiguration sortConfiguration) {
+		this.sortConfiguration = sortConfiguration;
+	}
+
+	@JsonIgnore
+	public void setSortConfiguration(
+		UnsafeSupplier<SortConfiguration, Exception>
+			sortConfigurationUnsafeSupplier) {
+
+		try {
+			sortConfiguration = sortConfigurationUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected SortConfiguration sortConfiguration;
 
 	@Override
 	public boolean equals(Object object) {
@@ -303,6 +363,16 @@ public class Configuration implements Serializable {
 			sb.append(String.valueOf(highlight));
 		}
 
+		if (parameters != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"parameters\": ");
+
+			sb.append(_toJSON(parameters));
+		}
+
 		if (queries != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -321,6 +391,16 @@ public class Configuration implements Serializable {
 			}
 
 			sb.append("]");
+		}
+
+		if (sortConfiguration != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"sortConfiguration\": ");
+
+			sb.append(String.valueOf(sortConfiguration));
 		}
 
 		sb.append("}");
