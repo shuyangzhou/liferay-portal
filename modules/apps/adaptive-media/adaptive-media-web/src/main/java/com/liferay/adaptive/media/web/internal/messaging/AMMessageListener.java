@@ -48,9 +48,7 @@ public class AMMessageListener extends BaseMessageListener {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
 			bundleContext,
 			(Class<AMProcessor<Object, ?>>)(Class<?>)AMProcessor.class,
-			"(model.class.name=*)",
-			(serviceReference, emitter) -> emitter.emit(
-				(String)serviceReference.getProperty("model.class.name")));
+			"model.class.name");
 	}
 
 	@Deactivate

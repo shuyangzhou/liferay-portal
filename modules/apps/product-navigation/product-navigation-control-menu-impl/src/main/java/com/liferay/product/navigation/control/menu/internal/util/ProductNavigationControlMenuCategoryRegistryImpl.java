@@ -14,9 +14,9 @@
 
 package com.liferay.product.navigation.control.menu.internal.util;
 
-import com.liferay.osgi.service.tracker.collections.ServiceTrackerMapBuilder;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -114,15 +114,11 @@ public class ProductNavigationControlMenuCategoryRegistryImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_productNavigationControlMenuCategoryServiceTrackerMap =
-			ServiceTrackerMapBuilder.SelectorFactory.newSelector(
-				bundleContext, ProductNavigationControlMenuCategory.class
-			).map(
-				"product.navigation.control.menu.category.key"
-			).collectMultiValue(
-				Collections.reverseOrder(
-					new PropertyServiceReferenceComparator<>(
-						"product.navigation.control.menu.category.order"))
-			).build();
+			ServiceTrackerMapFactory.openMultiValueMap(
+				bundleContext, ProductNavigationControlMenuCategory.class,
+				"product.navigation.control.menu.category.key",
+				new PropertyServiceReferenceComparator<>(
+					"product.navigation.control.menu.category.order"));
 	}
 
 	@Deactivate

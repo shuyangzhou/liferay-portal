@@ -41,6 +41,31 @@ public class ServiceTrackerMapFactory {
 			new MultiValueServiceTrackerBucketFactory<S, S>(), null);
 	}
 
+	public static <S> ServiceTrackerMap<String, List<S>> openMultiValueMap(
+		BundleContext bundleContext, Class<S> clazz, String propertyKey,
+		Comparator<ServiceReference<S>> comparator) {
+
+		return new ServiceTrackerMapImpl<>(
+			bundleContext, clazz, "(" + propertyKey + "=*)",
+			new PropertyServiceReferenceMapper<String, S>(propertyKey),
+			new DefaultServiceTrackerCustomizer<S>(bundleContext),
+			new MultiValueServiceTrackerBucketFactory<S, S>(comparator), null);
+	}
+
+	public static <S> ServiceTrackerMap<String, List<S>> openMultiValueMap(
+		BundleContext bundleContext, Class<S> clazz, String propertyKey,
+		Comparator<ServiceReference<S>> comparator,
+		ServiceTrackerMapListener<String, S, List<S>>
+			serviceTrackerMapListener) {
+
+		return new ServiceTrackerMapImpl<>(
+			bundleContext, clazz, "(" + propertyKey + "=*)",
+			new PropertyServiceReferenceMapper<String, S>(propertyKey),
+			new DefaultServiceTrackerCustomizer<S>(bundleContext),
+			new MultiValueServiceTrackerBucketFactory<S, S>(comparator),
+			serviceTrackerMapListener);
+	}
+
 	public static <K, S> ServiceTrackerMap<K, List<S>> openMultiValueMap(
 		BundleContext bundleContext, Class<S> clazz, String filterString,
 		ServiceReferenceMapper<K, ? super S> serviceReferenceMapper) {

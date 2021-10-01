@@ -15,9 +15,9 @@
 package com.liferay.asset.publisher.web.internal.action;
 
 import com.liferay.asset.kernel.action.AssetEntryAction;
-import com.liferay.osgi.service.tracker.collections.ServiceTrackerMapBuilder;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,17 +45,12 @@ public class AssetEntryActionRegistry {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_assetEntryActionsMap =
-			ServiceTrackerMapBuilder.SelectorFactory.newSelector(
-				bundleContext,
-				(Class<AssetEntryAction<?>>)(Class<?>)AssetEntryAction.class
-			).map(
-				"model.class.name"
-			).collectMultiValue(
-				Collections.reverseOrder(
-					new PropertyServiceReferenceComparator<>(
-						"asset.entry.action.order"))
-			).build();
+		_assetEntryActionsMap = ServiceTrackerMapFactory.openMultiValueMap(
+			bundleContext,
+			(Class<AssetEntryAction<?>>)(Class<?>)AssetEntryAction.class,
+			"model.class.name",
+			new PropertyServiceReferenceComparator<>(
+				"asset.entry.action.order"));
 	}
 
 	private ServiceTrackerMap<String, List<AssetEntryAction<?>>>
