@@ -23,6 +23,7 @@ import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.petra.io.DummyWriter;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -47,8 +48,10 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -178,6 +181,12 @@ public class FreeMarkerFragmentEntryProcessor
 			return;
 		}
 
+		Set<String> templates = _templatesThreadLocal.get();
+
+		if (templates.contains(html)) {
+			return;
+		}
+
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_FTL,
 			new StringTemplateResource("template_id", "[#ftl] " + html), true);
@@ -224,6 +233,8 @@ public class FreeMarkerFragmentEntryProcessor
 
 				template.processTemplate(new DummyWriter());
 			}
+
+			templates.add(html);
 		}
 		catch (TemplateException templateException) {
 			throw new FragmentEntryContentException(
@@ -307,6 +318,12 @@ public class FreeMarkerFragmentEntryProcessor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FreeMarkerFragmentEntryProcessor.class);
+
+	private static final ThreadLocal<Set<String>> _templatesThreadLocal =
+		new CentralizedThreadLocal(
+			FreeMarkerFragmentEntryProcessor.class.getName() +
+				"._templatesThreadLocal",
+			HashSet::new);
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
