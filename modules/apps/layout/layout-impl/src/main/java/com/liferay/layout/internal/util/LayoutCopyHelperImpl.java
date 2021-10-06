@@ -392,14 +392,12 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
 					targetLayout.getPlid());
 
-			Stream<PortletPreferences> targetPortletPreferencesStream =
-				targetPortletPreferencesList.stream();
+			Map<String, PortletPreferences> targetPortletPreferencesMap =
+				new HashMap<>();
 
-			List<String> targetPortletIds = targetPortletPreferencesStream.map(
-				PortletPreferences::getPortletId
-			).collect(
-				Collectors.toList()
-			);
+			targetPortletPreferencesList.forEach(
+				portletPreferences -> targetPortletPreferencesMap.put(
+					portletPreferences.getPortletId(), portletPreferences));
 
 			for (PortletPreferences portletPreferences :
 					portletPreferencesList) {
@@ -411,18 +409,13 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 					continue;
 				}
 
-				targetPortletIds.remove(portletPreferences.getPortletId());
+				PortletPreferences targetPortletPreferences =
+					targetPortletPreferencesMap.remove(
+						portletPreferences.getPortletId());
 
 				javax.portlet.PortletPreferences jxPortletPreferences =
 					_portletPreferenceValueLocalService.getPreferences(
 						portletPreferences);
-
-				PortletPreferences targetPortletPreferences =
-					_portletPreferencesLocalService.fetchPortletPreferences(
-						PortletKeys.PREFS_OWNER_ID_DEFAULT,
-						PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
-						targetLayout.getPlid(),
-						portletPreferences.getPortletId());
 
 				if (targetPortletPreferences != null) {
 					_portletPreferencesLocalService.updatePreferences(
@@ -446,7 +439,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 				}
 			}
 
-			for (String portletId : targetPortletIds) {
+			for (String portletId : targetPortletPreferencesMap.keySet()) {
 				try {
 					_portletPreferencesLocalService.deletePortletPreferences(
 						PortletKeys.PREFS_OWNER_ID_DEFAULT,
