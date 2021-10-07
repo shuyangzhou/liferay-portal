@@ -25,18 +25,17 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -70,7 +69,7 @@ public class StoreFactory {
 
 		boolean found = false;
 
-		for (String key : _storeServiceTrackerMapHolder.keySet()) {
+		for (String key : _stores.keySet()) {
 			Store store = getStore(key);
 
 			Class<?> clazz = store.getClass();
@@ -106,8 +105,7 @@ public class StoreFactory {
 	}
 
 	public Store getStore() {
-		Store store = _storeServiceTrackerMapHolder.getService(
-			PropsValues.DL_STORE_IMPL);
+		Store store = _stores.getService(PropsValues.DL_STORE_IMPL);
 
 		if (store == null) {
 			throw new IllegalStateException("Store is not available");
@@ -117,11 +115,11 @@ public class StoreFactory {
 	}
 
 	public Store getStore(String key) {
-		return _storeServiceTrackerMapHolder.getService(key);
+		return _stores.getService(key);
 	}
 
 	public String[] getStoreTypes() {
-		Set<String> storeTypes = _storeServiceTrackerMapHolder.keySet();
+		Set<String> storeTypes = _stores.keySet();
 
 		return storeTypes.toArray(new String[0]);
 	}
@@ -137,81 +135,15 @@ public class StoreFactory {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
+	private static volatile CTStoreFactory _ctStoreFactory =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			CTStoreFactory.class, StoreFactory.class, "_ctStoreFactory", true);
 	private static StoreFactory _storeFactory;
-	private static final StoreServiceTrackerMapHolder
-		_storeServiceTrackerMapHolder = new StoreServiceTrackerMapHolder();
+	private static final ServiceTrackerMap<String, Store> _stores =
+		ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, Store.class, "store.type",
+			new StoreTypeServiceTrackerCustomizer(_ctStoreFactory));
 	private static boolean _warned;
-
-	private static class CTStoreFactoryServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<CTStoreFactory, ServiceTrackerMap<String, Store>> {
-
-		@Override
-		public ServiceTrackerMap<String, Store> addingService(
-			ServiceReference<CTStoreFactory> serviceReference) {
-
-			CTStoreFactory ctStoreFactory = _bundleContext.getService(
-				serviceReference);
-
-			return ServiceTrackerMapFactory.openSingleValueMap(
-				_bundleContext, Store.class, "store.type",
-				new StoreTypeServiceTrackerCustomizer(ctStoreFactory));
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<CTStoreFactory> serviceReference,
-			ServiceTrackerMap<String, Store> serviceTrackerMap) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<CTStoreFactory> serviceReference,
-			ServiceTrackerMap<String, Store> serviceTrackerMap) {
-
-			serviceTrackerMap.close();
-
-			_bundleContext.ungetService(serviceReference);
-		}
-
-	}
-
-	private static class StoreServiceTrackerMapHolder {
-
-		public StoreServiceTrackerMapHolder() {
-			_serviceTracker = new ServiceTracker<>(
-				_bundleContext, CTStoreFactory.class,
-				new CTStoreFactoryServiceTrackerCustomizer());
-
-			_serviceTracker.open();
-		}
-
-		public Store getService(String key) {
-			ServiceTrackerMap<String, Store> serviceTrackerMap =
-				_serviceTracker.getService();
-
-			if (serviceTrackerMap == null) {
-				return null;
-			}
-
-			return serviceTrackerMap.getService(key);
-		}
-
-		public Set<String> keySet() {
-			ServiceTrackerMap<String, Store> serviceTrackerMap =
-				_serviceTracker.getService();
-
-			if (serviceTrackerMap == null) {
-				return Collections.emptySet();
-			}
-
-			return serviceTrackerMap.keySet();
-		}
-
-		private final ServiceTracker
-			<CTStoreFactory, ServiceTrackerMap<String, Store>> _serviceTracker;
-
-	}
 
 	private static class StoreTypeServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<Store, Store> {
