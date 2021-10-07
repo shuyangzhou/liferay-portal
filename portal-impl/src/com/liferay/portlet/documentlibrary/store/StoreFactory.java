@@ -17,6 +17,7 @@ package com.liferay.portlet.documentlibrary.store;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.concurrent.DefaultNoticeableFuture;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.change.tracking.store.CTStoreFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -32,6 +33,7 @@ import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -105,13 +107,15 @@ public class StoreFactory {
 	}
 
 	public Store getStore() {
-		Store store = _stores.getService(PropsValues.DL_STORE_IMPL);
-
-		if (store == null) {
-			throw new IllegalStateException("Store is not available");
+		try {
+			return _defaultStoreFuture.get();
 		}
-
-		return store;
+		catch (InterruptedException interruptedException) {
+			throw new IllegalStateException(interruptedException);
+		}
+		catch (ExecutionException executionException) {
+			throw new IllegalStateException(executionException.getCause());
+		}
 	}
 
 	public Store getStore(String key) {
@@ -138,6 +142,8 @@ public class StoreFactory {
 	private static volatile CTStoreFactory _ctStoreFactory =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			CTStoreFactory.class, StoreFactory.class, "_ctStoreFactory", true);
+	private static final DefaultNoticeableFuture<Store> _defaultStoreFuture =
+		new DefaultNoticeableFuture<>();
 	private static StoreFactory _storeFactory;
 	private static final ServiceTrackerMap<String, Store> _stores =
 		ServiceTrackerMapFactory.openSingleValueMap(
@@ -162,6 +168,8 @@ public class StoreFactory {
 			Store store = _getStore(serviceReference, storeType);
 
 			if (StringUtil.equals(storeType, PropsValues.DL_STORE_IMPL)) {
+				_defaultStoreFuture.set(store);
+
 				_serviceRegistration = _bundleContext.registerService(
 					StoreFactory.class,
 					new StoreFactory() {
