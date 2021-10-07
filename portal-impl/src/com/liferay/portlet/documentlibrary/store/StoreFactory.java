@@ -241,7 +241,7 @@ public class StoreFactory {
 
 					},
 					MapUtil.singletonDictionary(
-						"dl.store.impl.enabled", GetterUtil.getObject("true")));
+						"dl.store.impl.enabled", "true"));
 			}
 
 			return store;
