@@ -169,6 +169,8 @@ public class OracleDB extends BaseDB {
 		matcher.appendTail(sb);
 
 		template = sb.toString();
+		
+		template = _applyMaxStringIndexLengthLimitation(template);
 
 		return super.replaceTemplate(template);
 	}
@@ -236,6 +238,62 @@ public class OracleDB extends BaseDB {
 		}
 	}
 
+	private String _applyMaxStringIndexLengthLimitation(String template) {
+
+		int stringIndexMaxLength = GetterUtil.getInteger(
+				PropsUtil.get(
+					PropsKeys.DATABASE_STRING_INDEX_MAX_LENGTH,
+					new Filter(DBType.ORACLE.toString())),
+				-1);
+		
+		Matcher matcher = _columnPattern.matcher(template);
+
+		StringBuffer sb = new StringBuffer();
+
+		if (stringIndexMaxLength < 0) {
+			while (matcher.find()) {
+				String column = matcher.group(1);
+
+				matcher.appendReplacement(sb, column);
+			}
+		}
+		else {
+			while (matcher.find()) {
+				String column = matcher.group(1);
+
+				StringBundler replacementSB = new StringBundler(5);
+
+				if (column.startsWith("(")) {
+					replacementSB.append("\\(substr\\(");
+					replacementSB.append(column.substring(1));
+					replacementSB.append(", 1, ");
+					replacementSB.append(stringIndexMaxLength);
+					replacementSB.append("\\)");
+				}
+				else {
+					replacementSB.append("substr\\(");
+					replacementSB.append(column);
+					replacementSB.append(", 1, ");
+					replacementSB.append(stringIndexMaxLength);
+					replacementSB.append("\\)");
+				}
+
+				int length = Integer.valueOf(matcher.group(2));
+
+				if (length > stringIndexMaxLength) {
+					matcher.appendReplacement(sb, replacementSB.toString());
+				}
+				else {
+					matcher.appendReplacement(sb, column);
+				}
+			}
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
+	}
+
 	private static final String[] _ORACLE = {
 		"--", "1", "0",
 		"to_date('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS')", "sysdate",
@@ -251,6 +309,8 @@ public class OracleDB extends BaseDB {
 
 	private static final boolean _SUPPORTS_INLINE_DISTINCT = false;
 
+	private static final Pattern _columnPattern = Pattern.compile(
+			"(\\S+)\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
 	private static final Pattern _varchar2CharPattern = Pattern.compile(
 		"VARCHAR2\\((\\d+) CHAR\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _varcharPattern = Pattern.compile(
