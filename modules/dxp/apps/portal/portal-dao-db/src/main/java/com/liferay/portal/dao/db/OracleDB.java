@@ -16,6 +16,7 @@ package com.liferay.portal.dao.db;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.db.Index;
@@ -23,6 +24,8 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -169,7 +172,7 @@ public class OracleDB extends BaseDB {
 		matcher.appendTail(sb);
 
 		template = sb.toString();
-		
+
 		template = _applyMaxStringIndexLengthLimitation(template);
 
 		return super.replaceTemplate(template);
@@ -239,13 +242,12 @@ public class OracleDB extends BaseDB {
 	}
 
 	private String _applyMaxStringIndexLengthLimitation(String template) {
-
 		int stringIndexMaxLength = GetterUtil.getInteger(
-				PropsUtil.get(
-					PropsKeys.DATABASE_STRING_INDEX_MAX_LENGTH,
-					new Filter(DBType.ORACLE.toString())),
-				-1);
-		
+			PropsUtil.get(
+				PropsKeys.DATABASE_STRING_INDEX_MAX_LENGTH,
+				new Filter(DBType.ORACLE.toString())),
+			-1);
+
 		Matcher matcher = _columnPattern.matcher(template);
 
 		StringBuffer sb = new StringBuffer();
@@ -310,7 +312,7 @@ public class OracleDB extends BaseDB {
 	private static final boolean _SUPPORTS_INLINE_DISTINCT = false;
 
 	private static final Pattern _columnPattern = Pattern.compile(
-			"(\\S+)\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
+		"(\\S+)\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
 	private static final Pattern _varchar2CharPattern = Pattern.compile(
 		"VARCHAR2\\((\\d+) CHAR\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _varcharPattern = Pattern.compile(

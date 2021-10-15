@@ -16,8 +16,8 @@ package com.liferay.portal.dao.db;
 
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.test.BaseDBTestCase;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PropsUtil;
 
@@ -49,9 +49,8 @@ public class OracleDBTest extends BaseDBTestCase {
 		PropsUtil.set(PropsKeys.DATABASE_STRING_INDEX_MAX_LENGTH, "-1");
 
 		Assert.assertEquals(
-				"create index IX on Test (cola);",
-				method.invoke(
-					db, "create index IX on Test (cola);"));
+			"create index IX on Test (cola);",
+			method.invoke(db, "create index IX on Test (cola);"));
 
 		Assert.assertEquals(
 			"create index IX on Test (cola);",
@@ -59,143 +58,180 @@ public class OracleDBTest extends BaseDBTestCase {
 				db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(db, "create index IX on Test (cola, colb);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb, colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(db, "create index IX on Test (cola, colb, colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, " +
+					"colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], " +
+					"colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb, colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb, " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$], colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$], colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$], colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$], " +
+						"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		PropsUtil.set(PropsKeys.DATABASE_STRING_INDEX_MAX_LENGTH, "256");
 
 		Assert.assertEquals(
-				"create index IX on Test (cola);",
-				method.invoke(
-					db, "create index IX on Test (cola);"));
+			"create index IX on Test (cola);",
+			method.invoke(db, "create index IX on Test (cola);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (substr(cola, 1, 256));",
+			method.invoke(
+				db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(db, "create index IX on Test (cola, colb);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256), colb);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb);"));
+			"create index IX on Test (substr(cola, 1, 256), colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, substr(colb, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, substr(colb, 1, 256));",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256), substr(colb, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (substr(cola, 1, 256), substr(colb, 1, " +
+				"256));",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb, colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(db, "create index IX on Test (cola, colb, colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256), colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, colc);"));
+			"create index IX on Test (substr(cola, 1, 256), colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, " +
+					"colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, substr(colb, 1, 256), colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], colc);"));
+			"create index IX on Test (cola, substr(colb, 1, 256), colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], " +
+					"colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, substr(colc, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola, colb, colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, substr(colc, 1, 256));",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb, " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256), substr(colb, 1, 256), colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$], colc);"));
+			"create index IX on Test (substr(cola, 1, 256), substr(colb, 1, " +
+				"256), colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$], colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256), colb, substr(colc, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (substr(cola, 1, 256), colb, " +
+				"substr(colc, 1, 256));",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (substr(cola, 1, 256), substr(colb, 1, 256), substr(colc, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$], colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (substr(cola, 1, 256), substr(colb, 1, " +
+				"256), substr(colc, 1, 256));",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$], " +
+						"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, substr(colb, 1, 256), substr(colc, 1, 256));",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, substr(colb, 1, 256), " +
+				"substr(colc, 1, 256));",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		PropsUtil.set(PropsKeys.DATABASE_STRING_INDEX_MAX_LENGTH, "4000");
 
 		Assert.assertEquals(
-				"create index IX on Test (cola);",
-				method.invoke(
-					db, "create index IX on Test (cola);"));
+			"create index IX on Test (cola);",
+			method.invoke(db, "create index IX on Test (cola);"));
 
 		Assert.assertEquals(
 			"create index IX on Test (cola);",
@@ -203,64 +239,81 @@ public class OracleDBTest extends BaseDBTestCase {
 				db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(db, "create index IX on Test (cola, colb);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb, colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(db, "create index IX on Test (cola, colb, colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, " +
+					"colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], " +
+					"colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb, colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb, " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$], colc);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$], colc);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb, " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola[$COLUMN_LENGTH:4000$], colb[$COLUMN_LENGTH:4000$], colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola[$COLUMN_LENGTH:4000$], " +
+					"colb[$COLUMN_LENGTH:4000$], " +
+						"colc[$COLUMN_LENGTH:4000$]);"));
 
 		Assert.assertEquals(
-				"create index IX on Test (cola, colb, colc);",
-				method.invoke(
-					db, "create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], colc[$COLUMN_LENGTH:4000$]);"));
+			"create index IX on Test (cola, colb, colc);",
+			method.invoke(
+				db,
+				"create index IX on Test (cola, colb[$COLUMN_LENGTH:4000$], " +
+					"colc[$COLUMN_LENGTH:4000$]);"));
 	}
 
 	@Test
