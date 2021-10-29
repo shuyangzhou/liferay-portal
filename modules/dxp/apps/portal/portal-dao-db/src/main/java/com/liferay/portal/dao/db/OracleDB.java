@@ -148,6 +148,47 @@ public class OracleDB extends BaseDB {
 	}
 
 	@Override
+	protected String prepareMaxStringIndexLengthLimitation(String template) {
+		if (!template.contains("[$COLUMN_LENGTH:")) {
+			return template;
+		}
+
+		Matcher matcher = _columnLengthPattern.matcher(template);
+
+		StringBuffer sb = new StringBuffer();
+
+		while (matcher.find()) {
+			String column = matcher.group(1);
+			String length = matcher.group(2);
+
+			StringBundler replacementSB = new StringBundler(6);
+
+			if (column.startsWith("(")) {
+				replacementSB.append("\\( substr\\(");
+				replacementSB.append(column.substring(1));
+				replacementSB.append(",1,[\\$COLUMN_LENGTH:");
+				replacementSB.append(length);
+				replacementSB.append("\\$\\]:");
+				replacementSB.append(column.substring(1));
+			}
+			else {
+				replacementSB.append("substr\\(");
+				replacementSB.append(column);
+				replacementSB.append(",1,[\\$COLUMN_LENGTH:");
+				replacementSB.append(length);
+				replacementSB.append("\\$\\]:");
+				replacementSB.append(column);
+			}
+
+			matcher.appendReplacement(sb, replacementSB.toString());
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
+	}
+
+	@Override
 	protected String replaceTemplate(String template) {
 
 		// LPS-12048
@@ -251,6 +292,8 @@ public class OracleDB extends BaseDB {
 
 	private static final boolean _SUPPORTS_INLINE_DISTINCT = false;
 
+	private static final Pattern _columnLengthPattern = Pattern.compile(
+		"(\\S+)\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
 	private static final Pattern _varchar2CharPattern = Pattern.compile(
 		"VARCHAR2\\((\\d+) CHAR\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _varcharPattern = Pattern.compile(
