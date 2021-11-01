@@ -107,22 +107,30 @@ public class PortalClassPathUtil {
 			classLoader = currentThread.getContextClassLoader();
 		}
 
-		StringBundler sb = new StringBundler(8);
+		File[] files = _listClassPathFiles(
+			classLoader, CentralizedThreadLocal.class.getName());
 
-		sb.append(
-			_buildClassPath(classLoader, ServletException.class.getName()));
+		StringBundler sb = new StringBundler((files.length * 2) + 4);
 
-		sb.append(File.pathSeparator);
-		sb.append(
-			_buildClassPath(
-				classLoader, CentralizedThreadLocal.class.getName()));
+		for (File file : files) {
+			String absolutePath = file.getAbsolutePath();
+
+			if (absolutePath.contains("petra")) {
+				sb.append(absolutePath);
+				sb.append(File.pathSeparator);
+			}
+		}
+
+		if (sb.index() > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
 
 		String bootstrapClassPath = sb.toString();
 
-		sb.append(File.pathSeparator);
 		sb.append(
 			_buildClassPath(
-				classLoader,
+				classLoader, ServletException.class.getName(),
+				CentralizedThreadLocal.class.getName(),
 				"com.liferay.shielded.container.ShieldedContainerInitializer"));
 
 		if (servletContext != null) {
