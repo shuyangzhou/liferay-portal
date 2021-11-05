@@ -22,6 +22,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.ServiceComponentLocalService;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.Dictionary;
 
@@ -31,6 +35,7 @@ import org.apache.felix.dm.ServiceDependency;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
 import org.osgi.framework.VersionRange;
 import org.osgi.framework.wiring.BundleWiring;
@@ -66,10 +71,25 @@ public class ServiceConfigurationExtender
 
 		Configuration portletConfiguration = ConfigurationUtil.getConfiguration(
 			classLoader, "portlet");
+
+		if (portletConfiguration != null) {
+			_initModuleResourceActions(classLoader, portletConfiguration);
+
+			BundleContext bundleContext = bundle.getBundleContext();
+
+			_serviceRegistration = bundleContext.registerService(
+				Configuration.class, portletConfiguration,
+				HashMapDictionaryBuilder.<String, Object>put(
+					"name", "portlet"
+				).put(
+					"origin.bundle.symbolic.name", bundle.getSymbolicName()
+				).build());
+		}
+
 		Configuration serviceConfiguration = ConfigurationUtil.getConfiguration(
 			classLoader, "service");
 
-		if ((portletConfiguration == null) && (serviceConfiguration == null)) {
+		if (serviceConfiguration == null) {
 			return null;
 		}
 
@@ -78,8 +98,8 @@ public class ServiceConfigurationExtender
 
 		ServiceConfigurationInitializer serviceConfigurationInitializer =
 			new ServiceConfigurationInitializer(
-				bundle, classLoader, portletConfiguration, serviceConfiguration,
-				_resourceActions, _serviceComponentLocalService);
+				bundle, classLoader, serviceConfiguration,
+				_serviceComponentLocalService);
 
 		ServiceConfigurationExtension serviceConfigurationExtension =
 			new ServiceConfigurationExtension(
@@ -102,6 +122,10 @@ public class ServiceConfigurationExtender
 		ServiceConfigurationExtension serviceConfigurationExtension) {
 
 		serviceConfigurationExtension.destroy();
+
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
 	}
 
 	public static class ServiceConfigurationExtension {
@@ -203,6 +227,32 @@ public class ServiceConfigurationExtender
 		_bundleTracker.close();
 	}
 
+	private void _initModuleResourceActions(
+		ClassLoader classLoader, Configuration portletConfiguration) {
+
+		try {
+			_resourceActions.populateModelResources(
+				classLoader,
+				StringUtil.split(
+					portletConfiguration.get(
+						PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
+
+			if (!PropsValues.RESOURCE_ACTIONS_STRICT_MODE_ENABLED) {
+				_resourceActions.populatePortletResources(
+					classLoader,
+					StringUtil.split(
+						portletConfiguration.get(
+							PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
+			}
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to read resource actions config in " +
+					PropsKeys.RESOURCE_ACTIONS_CONFIGS,
+				exception);
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServiceConfigurationExtender.class);
 
@@ -213,5 +263,7 @@ public class ServiceConfigurationExtender
 
 	@Reference
 	private ServiceComponentLocalService _serviceComponentLocalService;
+
+	private ServiceRegistration<Configuration> _serviceRegistration;
 
 }
