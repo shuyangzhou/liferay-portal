@@ -55,6 +55,8 @@ public class ServiceConfigurationInitializer {
 
 		if (_serviceRegistration != null) {
 			_serviceRegistration.unregister();
+
+			_serviceRegistration = null;
 		}
 	}
 

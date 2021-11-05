@@ -125,6 +125,8 @@ public class ServiceConfigurationExtender
 
 		if (_serviceRegistration != null) {
 			_serviceRegistration.unregister();
+
+			_serviceRegistration = null;
 		}
 	}
 
