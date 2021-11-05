@@ -344,8 +344,8 @@ public class TemplateContextHelper {
 
 					contextObjects.put("navItems", navItems);
 				}
-				catch (PortalException portalException) {
-					_log.error(portalException, portalException);
+				catch (Exception exception) {
+					_log.error(exception, exception);
 				}
 			}
 
