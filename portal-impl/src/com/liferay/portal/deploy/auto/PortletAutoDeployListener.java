@@ -41,13 +41,6 @@ public class PortletAutoDeployListener extends BaseAutoDeployListener {
 		else if (_mvcDeployer) {
 			autoDeployer = new MVCPortletAutoDeployer();
 		}
-		else if (_waiDeployer) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Deploying package as a web application");
-			}
-
-			autoDeployer = new WAIAutoDeployer();
-		}
 
 		if (autoDeployer == null) {
 			throw new AutoDeployException("Unable to find an auto deployer");
@@ -89,20 +82,6 @@ public class PortletAutoDeployListener extends BaseAutoDeployListener {
 			return true;
 		}
 
-		String fileName = file.getName();
-
-		if (!pluginAutoDeployListenerHelper.isHookPlugin() &&
-			!pluginAutoDeployListenerHelper.isMatchingFile(
-				"WEB-INF/liferay-layout-templates.xml") &&
-			!pluginAutoDeployListenerHelper.isThemePlugin() &&
-			!pluginAutoDeployListenerHelper.isWebPlugin() &&
-			fileName.endsWith(".war")) {
-
-			_waiDeployer = true;
-
-			return true;
-		}
-
 		return false;
 	}
 
@@ -111,6 +90,5 @@ public class PortletAutoDeployListener extends BaseAutoDeployListener {
 
 	private boolean _mvcDeployer;
 	private boolean _portletDeployer;
-	private boolean _waiDeployer;
 
 }
