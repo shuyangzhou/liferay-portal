@@ -16,8 +16,12 @@ package com.liferay.fragment.renderer;
 
 import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +43,31 @@ public class DefaultFragmentRendererContext implements FragmentRendererContext {
 	@Override
 	public Optional<Map<String, Object>> getFieldValuesOptional() {
 		return Optional.ofNullable(_fieldValues);
+	}
+
+	@Override
+	public String getFragmentElementId() {
+		StringBundler sb = new StringBundler(8);
+
+		sb.append("fragment-");
+		sb.append(_fragmentEntryLink.getFragmentEntryId());
+		sb.append("-");
+		sb.append(_fragmentEntryLink.getNamespace());
+
+		if (!ListUtil.isEmpty(_collectionStyledLayoutStructureItemIds)) {
+			sb.append("-");
+			sb.append(
+				ListUtil.toString(
+					_collectionStyledLayoutStructureItemIds, StringPool.BLANK,
+					StringPool.DASH));
+		}
+
+		if (_collectionElementIndex > -1) {
+			sb.append("-");
+			sb.append(_collectionElementIndex);
+		}
+
+		return sb.toString();
 	}
 
 	@Override
@@ -86,6 +115,17 @@ public class DefaultFragmentRendererContext implements FragmentRendererContext {
 		return _useCachedContent;
 	}
 
+	public void setCollectionElementIndex(int collectionElementIndex) {
+		_collectionElementIndex = collectionElementIndex;
+	}
+
+	public void setCollectionStyledLayoutStructureItemIds(
+		List<String> collectionStyledLayoutStructureItemIds) {
+
+		_collectionStyledLayoutStructureItemIds =
+			collectionStyledLayoutStructureItemIds;
+	}
+
 	public void setDisplayObject(Object object) {
 		_displayObject = object;
 	}
@@ -126,6 +166,8 @@ public class DefaultFragmentRendererContext implements FragmentRendererContext {
 		_useCachedContent = useCachedContent;
 	}
 
+	private int _collectionElementIndex = -1;
+	private List<String> _collectionStyledLayoutStructureItemIds;
 	private Object _displayObject;
 	private Map<String, Object> _fieldValues;
 	private final FragmentEntryLink _fragmentEntryLink;

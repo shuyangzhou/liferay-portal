@@ -49,7 +49,7 @@ export default function UpperToolbar({
 	};
 
 	const onInputBlur = () => {
-		if (selectedLanguageId) {
+		if (definitionTitle && selectedLanguageId) {
 			translations[selectedLanguageId] = definitionTitle;
 		}
 	};
@@ -89,7 +89,7 @@ export default function UpperToolbar({
 							)}
 							ref={inputRef}
 							type="text"
-							value={definitionTitle || title}
+							value={definitionTitle || ''}
 						/>
 					</ClayToolbar.Item>
 
@@ -109,7 +109,12 @@ export default function UpperToolbar({
 						</ClayToolbar.Item>
 					)}
 					<ClayToolbar.Item>
-						<ClayButton displayType="secondary">
+						<ClayButton
+							displayType="secondary"
+							onClick={() => {
+								window.history.back();
+							}}
+						>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 					</ClayToolbar.Item>

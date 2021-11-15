@@ -57,12 +57,13 @@ public class PoshiDependenciesFileLocationCheck extends BaseFileCheck {
 
 		_getTestCaseFileNames();
 
-		_checkDependenciesFileReferences(fileName);
+		_checkDependenciesFileReferences(absolutePath, fileName);
 
 		return content;
 	}
 
-	private synchronized void _checkDependenciesFileReferences(String fileName)
+	private synchronized void _checkDependenciesFileReferences(
+			String absolutePath, String fileName)
 		throws IOException {
 
 		if (!_dependenciesFileLocationsMapIsReady) {
@@ -101,7 +102,7 @@ public class PoshiDependenciesFileLocationCheck extends BaseFileCheck {
 
 			if (referencesFiles.size() > 1) {
 				for (String referencesFile : referencesFiles) {
-					if (referencesFile.equals(fileName)) {
+					if (referencesFile.equals(absolutePath)) {
 						addMessage(
 							fileName,
 							StringBundler.concat(

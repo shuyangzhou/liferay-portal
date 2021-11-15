@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -103,21 +104,21 @@ public class CommerceNotificationHelperImpl
 			placeholders.add(matcher.group());
 		}
 
-		List<CommerceDefinitionTermContributor> definitionTermContributors;
+		List<CommerceDefinitionTermContributor> definitionTermContributors =
+			new ArrayList<>();
 
 		if (fieldType == _TOFIELD) {
-			definitionTermContributors =
+			definitionTermContributors.addAll(
 				_commerceDefinitionTermContributorRegistry.
 					getDefinitionTermContributorsByContributorKey(
 						CommerceDefinitionTermConstants.
-							RECIPIENT_DEFINITION_TERMS_CONTRIBUTOR);
+							RECIPIENT_DEFINITION_TERMS_CONTRIBUTOR));
 		}
-		else {
-			definitionTermContributors =
-				_commerceDefinitionTermContributorRegistry.
-					getDefinitionTermContributorsByNotificationTypeKey(
-						commerceNotificationType.getKey());
-		}
+
+		definitionTermContributors.addAll(
+			_commerceDefinitionTermContributorRegistry.
+				getDefinitionTermContributorsByNotificationTypeKey(
+					commerceNotificationType.getKey()));
 
 		for (CommerceDefinitionTermContributor definitionTermContributor :
 				definitionTermContributors) {

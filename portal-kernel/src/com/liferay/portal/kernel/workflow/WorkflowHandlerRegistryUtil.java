@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
 import org.osgi.framework.BundleContext;
@@ -81,9 +80,8 @@ public class WorkflowHandlerRegistryUtil {
 	}
 
 	public static <T> T startWorkflowInstance(
-			final long companyId, final long groupId, final long userId,
-			String className, final long classPK, final T model,
-			ServiceContext serviceContext,
+			long companyId, long groupId, long userId, String className,
+			long classPK, T model, ServiceContext serviceContext,
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
@@ -93,8 +91,7 @@ public class WorkflowHandlerRegistryUtil {
 			return model;
 		}
 
-		final WorkflowHandler<T> workflowHandler = getWorkflowHandler(
-			className);
+		WorkflowHandler<T> workflowHandler = getWorkflowHandler(className);
 
 		if (workflowHandler == null) {
 			if (WorkflowThreadLocal.isEnabled()) {
@@ -160,27 +157,19 @@ public class WorkflowHandlerRegistryUtil {
 			model, status, workflowContext);
 
 		if (workflowDefinitionLink != null) {
-			final Map<String, Serializable> tempWorkflowContext =
-				workflowContext;
+			Map<String, Serializable> tempWorkflowContext = workflowContext;
 
 			TransactionCommitCallbackUtil.registerCallback(
-				new Callable<Void>() {
+				() -> {
+					if (!_hasWorkflowInstanceInProgress(
+							companyId, groupId, className, classPK)) {
 
-					@Override
-					public Void call() throws Exception {
-						boolean hasWorkflowInstanceInProgress =
-							_hasWorkflowInstanceInProgress(
-								companyId, groupId, className, classPK);
-
-						if (!hasWorkflowInstanceInProgress) {
-							workflowHandler.startWorkflowInstance(
-								companyId, groupId, userId, classPK, model,
-								tempWorkflowContext);
-						}
-
-						return null;
+						workflowHandler.startWorkflowInstance(
+							companyId, groupId, userId, classPK, model,
+							tempWorkflowContext);
 					}
 
+					return null;
 				});
 		}
 

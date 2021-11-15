@@ -15,14 +15,8 @@
 import ClayAlert from '@clayui/alert';
 import ClayBreadcrumb from '@clayui/breadcrumb';
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import ClayDropDown, {Align, ClayDropDownWithItems} from '@clayui/drop-down';
-import {
-	ClayCheckbox,
-	ClayInput,
-	ClayRadio,
-	ClayRadioGroup,
-	ClayToggle,
-} from '@clayui/form';
+import ClayDropDown from '@clayui/drop-down';
+import {ClayCheckbox, ClayInput, ClayToggle} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayManagementToolbar, {
@@ -104,12 +98,12 @@ export default ({
 	defaultLocale,
 	deleteCTCommentURL,
 	discardURL,
+	entryFromURL,
 	expired,
 	getCTCommentsURL,
 	keywordsFromURL,
 	modelData,
 	namespace,
-	pathFromURL,
 	rootDisplayClasses,
 	showHideableFromURL,
 	siteNames,
@@ -129,7 +123,6 @@ export default ({
 	const COLUMN_SITE = 'SITE';
 	const COLUMN_TITLE = 'TITLE';
 	const COLUMN_USER = 'USER';
-	const FILTER_CLASS_EVERYTHING = 'everything';
 	const GLOBAL_SITE_NAME = Liferay.Language.get('global');
 	const MENU_CHANGE_TYPES = 'MENU_CHANGE_TYPES';
 	const MENU_ROOT = 'MENU_ROOT';
@@ -139,16 +132,14 @@ export default ({
 	const MVC_RENDER_COMMAND_NAME = '/change_tracking/view_changes';
 	const PARAM_CHANGE_TYPES = namespace + 'changeTypes';
 	const PARAM_CT_COLLECTION_ID = namespace + 'ctCollectionId';
+	const PARAM_ENTRY = namespace + 'entry';
 	const PARAM_KEYWORDS = namespace + 'keywords';
 	const PARAM_MVC_RENDER_COMMAND_NAME = namespace + 'mvcRenderCommandName';
-	const PARAM_PATH = namespace + 'path';
 	const PARAM_SHOW_HIDEABLE = namespace + 'showHideable';
 	const PARAM_SITES = namespace + 'sites';
 	const PARAM_TYPES = namespace + 'types';
 	const PARAM_USERS = namespace + 'users';
 	const POP_STATE = 'popstate';
-	const VIEW_TYPE_CHANGES = 'changes';
-	const VIEW_TYPE_CONTEXT = 'context';
 
 	const isWithinApp = useCallback(
 		(params) => {
@@ -184,24 +175,25 @@ export default ({
 
 	const initialized = useRef(false);
 
-	if (
-		!initialized.current &&
-		isWithinApp(params) &&
-		(!window.history.state || !window.history.state.senna)
-	) {
+	if (!initialized.current) {
+		if (
+			isWithinApp(params) &&
+			(!window.history.state || !window.history.state.senna)
+		) {
+			const state = {
+				path: pathname + search,
+				senna: true,
+			};
+
+			window.history.replaceState(state, document.title);
+		}
+
 		initialized.current = true;
-
-		const state = {
-			path: pathname + search,
-			senna: true,
-		};
-
-		window.history.replaceState(state, document.title);
 	}
 
 	params.delete(PARAM_CHANGE_TYPES);
+	params.delete(PARAM_ENTRY);
 	params.delete(PARAM_KEYWORDS);
-	params.delete(PARAM_PATH);
 	params.delete(PARAM_SHOW_HIDEABLE);
 	params.delete(PARAM_SITES);
 	params.delete(PARAM_TYPES);
@@ -211,6 +203,31 @@ export default ({
 
 	const commentsCache = useRef({});
 	const renderCache = useRef({});
+
+	const getNodeId = useCallback(
+		(modelKey) => {
+			const stack = [contextView.everything];
+
+			while (stack.length > 0) {
+				const element = stack.pop();
+
+				if (element.modelKey === modelKey) {
+					return element.nodeId;
+				}
+
+				if (!element.children) {
+					continue;
+				}
+
+				for (let i = 0; i < element.children.length; i++) {
+					stack.push(element.children[i]);
+				}
+			}
+
+			return 0;
+		},
+		[contextView]
+	);
 
 	const modelsRef = useRef(null);
 
@@ -230,6 +247,7 @@ export default ({
 				model.siteName = GLOBAL_SITE_NAME;
 			}
 
+			model.nodeId = getNodeId(Number(modelKeys[i]));
 			model.typeName = typeNames[model.modelClassNameId];
 
 			if (model.ctEntryId) {
@@ -344,142 +362,6 @@ export default ({
 		}
 	}
 
-	const getPathState = useCallback(
-		(param) => {
-			if (!param) {
-				return {
-					filterClass: FILTER_CLASS_EVERYTHING,
-					nodeId: 0,
-					viewType: VIEW_TYPE_CHANGES,
-				};
-			}
-
-			const parts = param.split('/');
-
-			const path = [];
-
-			if (parts.length > 2) {
-				for (let i = 2; i < parts.length; i++) {
-					const part = parts[i];
-
-					const keys = part.split('-');
-
-					path.push({
-						modelClassNameId: keys[0],
-						modelClassPK: keys[1],
-					});
-				}
-			}
-
-			const pathState = {
-				filterClass: parts[1],
-				nodeId: 0,
-				viewType: parts[0],
-			};
-
-			if (
-				pathState.filterClass !== FILTER_CLASS_EVERYTHING &&
-				!contextViewRef.current[pathState.filterClass]
-			) {
-				pathState.filterClass = FILTER_CLASS_EVERYTHING;
-			}
-			else if (
-				pathState.viewType === VIEW_TYPE_CHANGES &&
-				path.length > 0
-			) {
-				const modelClassNameId = path[0].modelClassNameId;
-				const modelClassPK = path[0].modelClassPK;
-
-				for (let i = 0; i < changes.length; i++) {
-					const modelKey = changes[i];
-
-					const model = modelsRef.current[modelKey];
-
-					if (
-						modelClassNameId === model.modelClassNameId &&
-						modelClassPK === model.modelClassPK
-					) {
-						pathState.nodeId = modelKey;
-					}
-				}
-			}
-			else if (pathState.viewType === VIEW_TYPE_CONTEXT) {
-				let contextNode = contextViewRef.current.everything;
-
-				if (pathState.filterClass !== FILTER_CLASS_EVERYTHING) {
-					contextNode = contextViewRef.current[pathState.filterClass];
-				}
-
-				for (let i = 0; i < path.length; i++) {
-					if (!contextNode.children) {
-						break;
-					}
-
-					const sessionNode = path[i];
-
-					for (let j = 0; j < contextNode.children.length; j++) {
-						const child = contextNode.children[j];
-
-						const model = modelsRef.current[child.modelKey];
-
-						if (
-							model.modelClassNameId ===
-								sessionNode.modelClassNameId &&
-							model.modelClassPK === sessionNode.modelClassPK
-						) {
-							if (
-								pathState.filterClass !==
-									FILTER_CLASS_EVERYTHING &&
-								i === 0
-							) {
-								const stack = [
-									contextViewRef.current.everything,
-								];
-
-								while (stack.length > 0) {
-									const element = stack.pop();
-
-									if (element.nodeId === child.nodeId) {
-										contextNode = element;
-
-										break;
-									}
-									else if (!element.children) {
-										continue;
-									}
-
-									for (
-										let i = 0;
-										i < element.children.length;
-										i++
-									) {
-										stack.push(element.children[i]);
-									}
-								}
-							}
-							else {
-								contextNode = child;
-							}
-
-							pathState.nodeId = contextNode.nodeId;
-
-							break;
-						}
-					}
-				}
-			}
-
-			return pathState;
-		},
-		[FILTER_CLASS_EVERYTHING, changes]
-	);
-
-	const pathState = getPathState(pathFromURL);
-
-	const initialFilterClass = pathState.filterClass;
-	const initialNodeId = pathState.nodeId;
-	const initialViewType = pathState.viewType;
-
 	const getModels = useCallback((nodes) => {
 		if (!nodes) {
 			return [];
@@ -491,11 +373,9 @@ export default ({
 			const node = nodes[i];
 
 			let modelKey = node;
-			let nodeId = node;
 
 			if (typeof node === 'object') {
 				modelKey = node.modelKey;
-				nodeId = node.nodeId;
 			}
 
 			if (
@@ -511,7 +391,9 @@ export default ({
 				JSON.stringify(modelsRef.current[modelKey])
 			);
 
-			json.nodeId = nodeId;
+			if (typeof node === 'object') {
+				json.nodeId = node.nodeId;
+			}
 
 			models.push(json);
 		}
@@ -520,100 +402,121 @@ export default ({
 	}, []);
 
 	const getNode = useCallback(
-		(filterClass, nodeId, viewType) => {
-			if (viewType === VIEW_TYPE_CHANGES) {
-				if (nodeId === 0) {
-					return {children: getModels(changes)};
+		(nodeId) => {
+			const rootNode = {children: getModels(changes), nodeId: 0};
+
+			if (!nodeId) {
+				return rootNode;
+			}
+
+			let modelKey = null;
+
+			if (typeof nodeId === 'string') {
+				const parts = nodeId.split('-');
+
+				if (parts.length !== 2) {
+					return rootNode;
 				}
 
-				return JSON.parse(JSON.stringify(modelsRef.current[nodeId]));
-			}
-			else if (
-				filterClass !== FILTER_CLASS_EVERYTHING &&
-				nodeId === 0
-			) {
-				return {
-					children: getModels(
-						contextViewRef.current[filterClass].children
-					),
-				};
-			}
+				const modelClassNameId = parts[0];
+				const modelClassPK = parts[1];
 
-			const rootNode = contextViewRef.current.everything;
+				const keys = Object.keys(modelsRef.current);
 
-			if (nodeId === 0) {
-				return {children: getModels(rootNode.children)};
-			}
+				for (let i = 0; i < keys.length; i++) {
+					const model = modelsRef.current[keys[i]];
 
-			if (!rootNode.parents) {
-				rootNode.parents = [];
+					if (
+						model.modelClassNameId === modelClassNameId &&
+						model.modelClassPK === modelClassPK
+					) {
+						modelKey = Number(keys[i]);
 
-				for (let i = 0; i < rootNode.children.length; i++) {
-					rootNode.children[i].parents = [];
+						break;
+					}
+				}
+
+				if (modelKey === null) {
+					return rootNode;
 				}
 			}
 
-			const stack = [rootNode];
+			let node = null;
+			const parentsMap = {};
+
+			const stack = [contextViewRef.current.everything];
 
 			while (stack.length > 0) {
 				const element = stack.pop();
 
-				if (element.nodeId === nodeId) {
-					const entry = JSON.parse(
-						JSON.stringify(modelsRef.current[element.modelKey])
-					);
+				if (
+					(modelKey !== null && element.modelKey === modelKey) ||
+					element.nodeId === nodeId
+				) {
+					if (element.parentNodeId) {
+						parentsMap[element.parentModelKey] =
+							element.parentNodeId;
+					}
 
-					entry.children = getModels(element.children);
-					entry.nodeId = nodeId;
-					entry.parents = element.parents;
+					if (node === null) {
+						node = JSON.parse(
+							JSON.stringify(modelsRef.current[element.modelKey])
+						);
 
-					return entry;
+						node.children = getModels(element.children);
+						node.nodeId = element.nodeId;
+					}
+
+					if (modelKey === null) {
+						modelKey = element.modelKey;
+					}
 				}
-				else if (!element.children) {
+
+				if (!element.children) {
 					continue;
 				}
 
 				for (let i = 0; i < element.children.length; i++) {
 					const child = element.children[i];
 
-					if (!child.parents) {
-						const parents = element.parents.slice(0);
-
-						const model = modelsRef.current[element.modelKey];
-
-						parents.push({
-							hideable: model.hideable,
-							modelClassNameId: model.modelClassNameId,
-							modelClassPK: model.modelClassPK,
-							nodeId: element.nodeId,
-							title: model.title,
-							typeName: model.typeName,
-						});
-
-						child.parents = parents;
-					}
+					child.parentModelKey = element.modelKey;
+					child.parentNodeId = element.nodeId;
 
 					stack.push(child);
 				}
 			}
 
-			return null;
+			if (node === null) {
+				return rootNode;
+			}
+
+			const parents = [];
+
+			const keys = Object.keys(parentsMap);
+
+			for (let i = 0; i < keys.length; i++) {
+				const modelKey = keys[i];
+
+				const nodeId = parentsMap[modelKey];
+
+				parents.push({
+					modelKey,
+					nodeId,
+				});
+			}
+
+			node.parents = getModels(parents);
+
+			return node;
 		},
-		[FILTER_CLASS_EVERYTHING, changes, getModels]
+		[changes, getModels]
 	);
 
-	const initialNode = getNode(
-		initialFilterClass,
-		initialNodeId,
-		initialViewType
-	);
+	const initialNode = getNode(entryFromURL);
 
-	const initialShowHideable =
-		initialNode.hideable ||
-		(initialFilterClass !== FILTER_CLASS_EVERYTHING &&
-			contextViewRef.current[initialFilterClass].hideable)
-			? true
-			: !!showHideableFromURL;
+	const initialShowHideable = initialNode.hideable
+		? true
+		: !!showHideableFromURL;
 
 	const [ascendingState, setAscendingState] = useState(true);
 	const [columnState, setColumnState] = useState(COLUMN_TITLE);
@@ -684,10 +587,8 @@ export default ({
 	const [filtersState, setFiltersState] = useState(initialFilters);
 
 	const filterNodes = useCallback(
-		(filters, keywords, nodes, showHideable, viewType) => {
-			if (!nodes) {
-				return nodes;
-			}
+		(filters, keywords, showHideable) => {
+			const nodes = getModels(changes);
 
 			let filterTypes = [];
 
@@ -712,9 +613,6 @@ export default ({
 			return nodes.slice(0).filter((node) => {
 				if (!showHideable && node.hideable) {
 					return false;
-				}
-				else if (viewType === VIEW_TYPE_CONTEXT) {
-					return true;
 				}
 
 				const changeTypes = filters['changeTypes'];
@@ -770,33 +668,39 @@ export default ({
 				return true;
 			});
 		},
-		[GLOBAL_SITE_NAME, VIEW_TYPE_CONTEXT, siteNames]
+		[GLOBAL_SITE_NAME, changes, getModels, siteNames]
 	);
 
 	const [renderState, setRenderState] = useState({
-		children: filterNodes(
+		changes: filterNodes(
 			initialFilters,
 			keywordsFromURL,
-			initialNode.children,
-			initialShowHideable,
-			initialViewType
+			initialShowHideable
 		),
-		filterClass: initialFilterClass,
-		id: initialNodeId,
+		children: initialNode.children,
+		id: initialNode.nodeId,
 		node: initialNode,
 		page: 1,
+		parents: initialNode.parents,
 		showHideable: initialShowHideable,
-		viewType: initialViewType,
 	});
 
+	const getEntryParam = (node) => {
+		if (node.modelClassNameId) {
+			return node.modelClassNameId + '-' + node.modelClassPK;
+		}
+
+		return '';
+	};
+
 	const getPath = useCallback(
-		(filters, keywords, pathParam, showHideable) => {
+		(filters, entryParam, keywords, showHideable) => {
 			let path =
 				basePath.current +
 				'&' +
-				PARAM_PATH +
+				PARAM_ENTRY +
 				'=' +
-				pathParam +
+				entryParam +
 				'&' +
 				PARAM_SHOW_HIDEABLE +
 				'=' +
@@ -839,8 +743,8 @@ export default ({
 		},
 		[
 			PARAM_CHANGE_TYPES,
+			PARAM_ENTRY,
 			PARAM_KEYWORDS,
-			PARAM_PATH,
 			PARAM_SHOW_HIDEABLE,
 			PARAM_SITES,
 			PARAM_TYPES,
@@ -848,59 +752,8 @@ export default ({
 		]
 	);
 
-	const getPathParam = (filterClass, node, viewType) => {
-		let path = viewType + '/' + filterClass;
-
-		const nodes = [];
-
-		if (viewType === VIEW_TYPE_CONTEXT && node.parents) {
-			for (let i = 0; i < node.parents.length; i++) {
-				const parent = node.parents[i];
-
-				if (parent.modelClassNameId) {
-					nodes.push({
-						label: parent.title,
-						modelClassNameId: parent.modelClassNameId,
-						modelClassPK: parent.modelClassPK,
-					});
-				}
-			}
-		}
-
-		if (node.modelClassNameId) {
-			nodes.push({
-				label: node.title,
-				modelClassNameId: node.modelClassNameId,
-				modelClassPK: node.modelClassPK,
-			});
-		}
-
-		if (nodes.length > 0) {
-			let tree = '';
-
-			for (let i = 0; i < nodes.length; i++) {
-				const node = nodes[i];
-
-				if (node.modelClassNameId) {
-					tree +=
-						'/' + node.modelClassNameId + '-' + node.modelClassPK;
-				}
-			}
-
-			path += tree;
-		}
-
-		return path;
-	};
-
 	const handleNavigationUpdate = useCallback(
 		(json) => {
-			let filterClass = json.filterClass;
-
-			if (!filterClass) {
-				filterClass = renderState.filterClass;
-			}
-
 			const nodeId = json.nodeId;
 
 			let showHideable = renderState.showHideable;
@@ -909,47 +762,16 @@ export default ({
 				showHideable = json.showHideable;
 			}
 
-			let viewType = json.viewType;
+			const node = getNode(nodeId);
 
-			if (!viewType) {
-				viewType = renderState.viewType;
-			}
+			const entryParam = getEntryParam(node);
 
-			if (
-				viewType === VIEW_TYPE_CONTEXT &&
-				contextViewRef.current.errorMessage
-			) {
-				setRenderState({
-					children: renderState.children,
-					filterClass: renderState.filterClass,
-					id: renderState.id,
-					node: renderState.node,
-					page: renderState.page,
-					showHideable: renderState.showHideable,
-					viewType: VIEW_TYPE_CONTEXT,
-				});
-
-				return;
-			}
-
-			let filters = filtersState;
-			let keywords = resultsKeywords;
-
-			if (viewType === VIEW_TYPE_CONTEXT) {
-				filters = {
-					changeTypes: [],
-					sites: [],
-					types: [],
-					users: [],
-				};
-				keywords = '';
-			}
-
-			const node = getNode(filterClass, nodeId, viewType);
-
-			const pathParam = getPathParam(filterClass, node, viewType);
-
-			const path = getPath(filters, keywords, pathParam, showHideable);
+			const path = getPath(
+				filtersState,
+				entryParam,
+				resultsKeywords,
+				showHideable
+			);
 
 			const state = {
 				path,
@@ -958,32 +780,23 @@ export default ({
 
 			window.history.pushState(state, document.title, path);
 
-			if (viewType === VIEW_TYPE_CONTEXT) {
-				setFiltersState(filters);
-				setResultsKeywords(keywords);
-				setEntrySearchTerms(keywords);
-			}
-
 			setRenderState({
-				children: filterNodes(
-					filters,
-					keywords,
-					node.children,
-					showHideable,
-					viewType
+				changes: filterNodes(
+					filtersState,
+					resultsKeywords,
+					showHideable
 				),
-				filterClass,
+				children: node.children,
 				id: nodeId,
 				node,
 				page: 1,
+				parents: node.parents,
 				showHideable,
-				viewType,
 			});
 
 			window.scrollTo(0, 0);
 		},
 		[
-			VIEW_TYPE_CONTEXT,
 			filtersState,
 			filterNodes,
 			getNode,
@@ -1027,30 +840,7 @@ export default ({
 				return;
 			}
 
-			const pathState = getPathState(params.get(PARAM_PATH));
-
-			const filterClass = pathState.filterClass;
-			const nodeId = pathState.nodeId;
-			const viewType = pathState.viewType;
-
-			if (
-				viewType === VIEW_TYPE_CONTEXT &&
-				contextViewRef.current.errorMessage
-			) {
-				setRenderState({
-					children: renderState.children,
-					filterClass: renderState.filterClass,
-					id: renderState.id,
-					node: renderState.node,
-					page: renderState.page,
-					showHideable: renderState.showHideable,
-					viewType: VIEW_TYPE_CONTEXT,
-				});
-
-				return;
-			}
-
-			const node = getNode(filterClass, nodeId, viewType);
+			const node = getNode(params.get(PARAM_ENTRY));
 
 			let keywords = params.get(PARAM_KEYWORDS);
 
@@ -1065,12 +855,9 @@ export default ({
 				params.get(PARAM_USERS)
 			);
 
-			let showHideable =
-				node.hideable ||
-				(filterClass !== FILTER_CLASS_EVERYTHING &&
-					contextViewRef.current[filterClass].hideable)
-					? true
-					: !!renderState.showHideable;
+			let showHideable = node.hideable
+				? true
+				: !!renderState.showHideable;
 
 			if (!showHideable) {
 				const typeIds = filters['types'];
@@ -1086,35 +873,27 @@ export default ({
 
 			setFiltersState(filters);
 			setRenderState({
-				children: filterNodes(
-					filters,
-					keywords,
-					node.children,
-					showHideable,
-					viewType
-				),
-				filterClass,
-				id: nodeId,
+				changes: filterNodes(filters, keywords, showHideable),
+				children: node.children,
+				id: node.nodeId,
 				node,
 				page: 1,
+				parents: node.parents,
 				showHideable,
-				viewType,
 			});
 			setResultsKeywords(keywords);
 			setEntrySearchTerms(keywords);
 		},
 		[
 			PARAM_CHANGE_TYPES,
+			PARAM_ENTRY,
 			PARAM_KEYWORDS,
-			PARAM_PATH,
 			PARAM_SITES,
 			PARAM_TYPES,
 			PARAM_USERS,
-			VIEW_TYPE_CONTEXT,
 			filterNodes,
 			getFilters,
 			getNode,
-			getPathState,
 			isWithinApp,
 			renderState,
 		]
@@ -1137,7 +916,7 @@ export default ({
 	}, [handlePopState]);
 
 	const filterDisplayNodes = (nodes) => {
-		if (getColumn() === COLUMN_CHANGE_TYPE) {
+		if (columnState === COLUMN_CHANGE_TYPE) {
 			nodes.sort((a, b) => {
 				if (a.changeType < b.changeType) {
 					if (ascendingState) {
@@ -1180,7 +959,7 @@ export default ({
 				return 0;
 			});
 		}
-		else if (getColumn() === COLUMN_SITE) {
+		else if (columnState === COLUMN_SITE) {
 			nodes.sort((a, b) => {
 				const siteNameA = a.siteName.toLowerCase();
 				const siteNameB = b.siteName.toLowerCase();
@@ -1234,7 +1013,7 @@ export default ({
 				return 0;
 			});
 		}
-		else if (getColumn() === COLUMN_TITLE) {
+		else if (columnState === COLUMN_TITLE) {
 			nodes.sort((a, b) => {
 				const typeNameA = a.typeName.toLowerCase();
 				const typeNameB = b.typeName.toLowerCase();
@@ -1269,7 +1048,7 @@ export default ({
 				return 0;
 			});
 		}
-		else if (getColumn() === COLUMN_USER) {
+		else if (columnState === COLUMN_USER) {
 			nodes.sort((a, b) => {
 				const userNameA = a.userName.toLowerCase();
 				const userNameB = b.userName.toLowerCase();
@@ -1345,134 +1124,6 @@ export default ({
 		}
 
 		return nodes;
-	};
-
-	const getBreadcrumbItems = (filterClass, node, nodeId, viewType) => {
-		if (viewType === VIEW_TYPE_CHANGES) {
-			if (nodeId === 0) {
-				return [
-					{
-						active: true,
-						label: Liferay.Language.get('home'),
-					},
-				];
-			}
-
-			return [
-				{
-					label: Liferay.Language.get('home'),
-					onClick: () =>
-						handleNavigationUpdate({
-							nodeId: 0,
-						}),
-				},
-				{
-					active: true,
-					label: node.title,
-					modelClassNameId: node.modelClassNameId,
-					modelClassPK: node.modelClassPK,
-				},
-			];
-		}
-
-		const breadcrumbItems = [];
-		const homeBreadcrumbItem = {label: Liferay.Language.get('home')};
-
-		if (filterClass === FILTER_CLASS_EVERYTHING && nodeId === 0) {
-			homeBreadcrumbItem.active = true;
-
-			breadcrumbItems.push(homeBreadcrumbItem);
-
-			return breadcrumbItems;
-		}
-
-		homeBreadcrumbItem.onClick = () =>
-			handleNavigationUpdate({
-				filterClass: FILTER_CLASS_EVERYTHING,
-				nodeId: 0,
-			});
-
-		breadcrumbItems.push(homeBreadcrumbItem);
-
-		let showParent = false;
-
-		if (filterClass === FILTER_CLASS_EVERYTHING) {
-			showParent = true;
-		}
-		else {
-			let label = filterClass;
-
-			if (label.includes('.')) {
-				label = label.substring(
-					label.lastIndexOf('.') + 1,
-					label.length
-				);
-			}
-
-			const rootDisplayClassBreadcrumb = {label};
-
-			if (nodeId === 0) {
-				rootDisplayClassBreadcrumb.active = true;
-
-				breadcrumbItems.push(rootDisplayClassBreadcrumb);
-
-				return breadcrumbItems;
-			}
-
-			rootDisplayClassBreadcrumb.onClick = () =>
-				handleNavigationUpdate({
-					filterClass: renderState.filterClass,
-					nodeId: 0,
-				});
-
-			breadcrumbItems.push(rootDisplayClassBreadcrumb);
-		}
-
-		if (!node.parents) {
-			return null;
-		}
-
-		for (let i = 0; i < node.parents.length; i++) {
-			const parent = node.parents[i];
-
-			if (parent.typeName === filterClass) {
-				showParent = true;
-			}
-
-			if (!showParent) {
-				continue;
-			}
-
-			breadcrumbItems.push({
-				hideable: parent.hideable,
-				label: parent.title,
-				modelClassNameId: parent.modelClassNameId,
-				modelClassPK: parent.modelClassPK,
-				nodeId: parent.nodeId,
-				onClick: () =>
-					handleNavigationUpdate({
-						filterClass: renderState.filterClass,
-						nodeId: parent.nodeId,
-					}),
-			});
-		}
-
-		breadcrumbItems.push({
-			active: true,
-			label: node.title,
-			modelClassNameId: node.modelClassNameId,
-			modelClassPK: node.modelClassPK,
-		});
-
-		return breadcrumbItems;
-	};
-
-	const getColumn = () => {
-		if (renderState.viewType === VIEW_TYPE_CONTEXT) {
-			return COLUMN_TITLE;
-		}
-
-		return columnState;
 	};
 
 	const getColumnHeader = (column, title) => {
@@ -1813,36 +1464,22 @@ export default ({
 
 				rows.push(
 					<ClayTable.Row divider>
-						<ClayTable.Cell
-							colSpan={
-								renderState.viewType === VIEW_TYPE_CHANGES
-									? 5
-									: 1
-							}
-						>
+						<ClayTable.Cell colSpan={5}>
 							{node.typeName}
 						</ClayTable.Cell>
 					</ClayTable.Row>
 				);
 			}
 
-			const cells = [];
-
-			if (renderState.viewType === VIEW_TYPE_CONTEXT) {
-				cells.push(
-					<ClayTable.Cell>
-						<div className="publication-name">{node.title}</div>
-
-						{node.description && (
-							<div className="publication-description">
-								{node.description}
-							</div>
-						)}
-					</ClayTable.Cell>
-				);
-			}
-			else {
-				cells.push(
+			rows.push(
+				<ClayTable.Row
+					className="cursor-pointer"
+					onClick={() =>
+						handleNavigationUpdate({
+							nodeId: node.nodeId,
+						})
+					}
+				>
 					<ClayTable.Cell>
 						<ClaySticker
 							className={`sticker-user-icon ${
@@ -1865,42 +1502,19 @@ export default ({
 							)}
 						</ClaySticker>
 					</ClayTable.Cell>
-				);
-
-				cells.push(<ClayTable.Cell>{node.siteName}</ClayTable.Cell>);
-
-				cells.push(
+					<ClayTable.Cell>{node.siteName}</ClayTable.Cell>
 					<ClayTable.Cell className="publication-name table-cell-expand">
 						{node.title}
 					</ClayTable.Cell>
-				);
-
-				cells.push(
 					<ClayTable.Cell className="table-cell-expand-smallest">
 						{node.changeTypeLabel}
 					</ClayTable.Cell>
-				);
-
-				cells.push(
 					<ClayTable.Cell className="table-cell-expand-smallest">
 						{Liferay.Util.sub(
 							Liferay.Language.get('x-ago'),
 							node.timeDescription
 						)}
 					</ClayTable.Cell>
-				);
-			}
-
-			rows.push(
-				<ClayTable.Row
-					className="cursor-pointer"
-					onClick={() =>
-						handleNavigationUpdate({
-							nodeId: node.nodeId,
-						})
-					}
-				>
-					{cells}
 				</ClayTable.Row>
 			);
 		}
@@ -1909,16 +1523,12 @@ export default ({
 	};
 
 	const handleFiltersUpdate = (filters, keywords) => {
-		const pathParam = getPathParam(
-			renderState.filterClass,
-			renderState.node,
-			renderState.viewType
-		);
+		const entryParam = getEntryParam(renderState.node);
 
 		const path = getPath(
 			filters,
+			entryParam,
 			keywords,
-			pathParam,
 			renderState.showHideable
 		);
 
@@ -1932,80 +1542,24 @@ export default ({
 		setFiltersState(filters);
 		setResultsKeywords(keywords);
 		setRenderState({
-			children: filterNodes(
-				filters,
-				keywords,
-				renderState.node.children,
-				renderState.showHideable,
-				renderState.viewType
-			),
-			filterClass: renderState.filterClass,
+			changes: filterNodes(filters, keywords, renderState.showHideable),
+			children: renderState.children,
 			id: renderState.id,
 			node: renderState.node,
 			page: renderState.page,
+			parents: renderState.parents,
 			showHideable: renderState.showHideable,
-			viewType: renderState.viewType,
 		});
 
 		window.scrollTo(0, 0);
 	};
 
 	const handleShowHideableToggle = (showHideable) => {
-		const breadcrumbItems = getBreadcrumbItems(
-			renderState.filterClass,
-			renderState.node,
-			renderState.id,
-			renderState.viewType
-		);
-
-		if (!showHideable) {
-			if (
-				renderState.viewType === VIEW_TYPE_CONTEXT &&
-				contextViewRef.current[renderState.filterClass].hideable
-			) {
-				handleNavigationUpdate({
-					filterClass: FILTER_CLASS_EVERYTHING,
-					nodeId: 0,
-					showHideable,
-				});
-
-				return;
-			}
-			else if (renderState.node.hideable) {
-				let nodeId = 0;
-
-				for (let i = breadcrumbItems.length - 2; i > 0; i--) {
-					const breadcrumbItem = breadcrumbItems[i];
-
-					if (!breadcrumbItem.hideable) {
-						if (breadcrumbItem.nodeId) {
-							nodeId = breadcrumbItem.nodeId;
-						}
-
-						break;
-					}
-				}
-
-				handleNavigationUpdate({
-					nodeId,
-					showHideable,
-				});
-
-				return;
-			}
-		}
-
-		const oldState = window.history.state;
-
-		const pathParam = getPathParam(
-			renderState.filterClass,
-			renderState.node,
-			renderState.viewType
-		);
+		const entryParam = getEntryParam(renderState.node);
 
 		const params = new URLSearchParams(window.location.search);
 
-		const oldPathParam = params.get(PARAM_PATH);
+		const oldEntryParam = params.get(PARAM_ENTRY);
 
 		const filters = JSON.parse(JSON.stringify(filtersState));
 
@@ -2031,12 +1585,12 @@ export default ({
 
 		if (
 			isWithinApp(params) &&
-			(updatedFilters || !oldPathParam || oldPathParam === pathParam)
+			(updatedFilters || !oldEntryParam || oldEntryParam === entryParam)
 		) {
 			const path = getPath(
 				filters,
+				entryParam,
 				resultsKeywords,
-				pathParam,
 				showHideable
 			);
 
@@ -2045,13 +1599,13 @@ export default ({
 				senna: true,
 			};
 
-			if (oldState) {
-				newState = JSON.parse(JSON.stringify(oldState));
+			if (window.history.state) {
+				newState = JSON.parse(JSON.stringify(window.history.state));
 
 				newState.path = path;
 			}
 
-			if (updatedFilters) {
+			if (updatedFilters && renderState.id === 0) {
 				window.history.pushState(newState, document.title, path);
 			}
 			else {
@@ -2061,19 +1615,13 @@ export default ({
 
 		setFiltersState(filters);
 		setRenderState({
-			children: filterNodes(
-				filters,
-				resultsKeywords,
-				renderState.node.children,
-				showHideable,
-				renderState.viewType
-			),
-			filterClass: renderState.filterClass,
+			changes: filterNodes(filters, resultsKeywords, showHideable),
+			children: renderState.children,
 			id: renderState.id,
 			node: renderState.node,
 			page: renderState.page,
+			parents: renderState.parents,
 			showHideable,
-			viewType: renderState.viewType,
 		});
 	};
 
@@ -2096,7 +1644,7 @@ export default ({
 	};
 
 	const renderFilterDropdown = () => {
-		if (renderState.viewType === VIEW_TYPE_CONTEXT) {
+		if (renderState.id > 0) {
 			return '';
 		}
 
@@ -2206,15 +1754,11 @@ export default ({
 
 	const renderManagementToolbar = () => {
 		return (
-			<ClayManagementToolbar
-				className={
-					renderState.viewType === VIEW_TYPE_CONTEXT
-						? 'nav-item-expand'
-						: ''
-				}
-			>
+			<ClayManagementToolbar>
 				{renderFilterDropdown()}
-				{renderState.viewType === VIEW_TYPE_CHANGES && (
+				{renderState.id > 0 ? (
+					<ClayManagementToolbar.ItemList expand />
+				) : (
 					<ClayManagementToolbar.Search
 						onSubmit={(event) => {
 							event.preventDefault();
@@ -2251,6 +1795,7 @@ export default ({
 										symbol="times"
 									/>
 									<ClayButtonWithIcon
+										disabled={changes.length === 0}
 										displayType="unstyled"
 										spritemap={spritemap}
 										symbol="search"
@@ -2262,7 +1807,7 @@ export default ({
 					</ClayManagementToolbar.Search>
 				)}
 				<ClayManagementToolbar.ItemList>
-					{renderState.viewType === VIEW_TYPE_CHANGES ? (
+					{renderState.id === 0 && (
 						<ClayManagementToolbar.Item className="navbar-breakpoint-d-none">
 							<ClayButton
 								className="nav-link nav-link-monospaced"
@@ -2276,87 +1821,6 @@ export default ({
 								/>
 							</ClayButton>
 						</ClayManagementToolbar.Item>
-					) : (
-						<ClayManagementToolbar.Item>
-							<ClayDropDownWithItems
-								items={[
-									{
-										items: [
-											{
-												active:
-													getColumn() ===
-													COLUMN_TITLE,
-												label: Liferay.Language.get(
-													'title'
-												),
-												onClick: () =>
-													setColumnState(
-														COLUMN_TITLE
-													),
-											},
-										],
-										label: Liferay.Language.get('order-by'),
-										type: 'group',
-									},
-								]}
-								spritemap={spritemap}
-								trigger={
-									<ClayButton
-										className="nav-link"
-										disabled={changes.length === 0}
-										displayType="unstyled"
-									>
-										<span className="navbar-breakpoint-down-d-none">
-											<span className="navbar-text-truncate">
-												{Liferay.Language.get(
-													'filter-and-order'
-												)}
-											</span>
-
-											<ClayIcon
-												className="inline-item inline-item-after"
-												spritemap={spritemap}
-												symbol="caret-bottom"
-											/>
-										</span>
-										<span className="navbar-breakpoint-d-none">
-											<ClayIcon
-												spritemap={spritemap}
-												symbol="filter"
-											/>
-										</span>
-									</ClayButton>
-								}
-							/>
-						</ClayManagementToolbar.Item>
-					)}
-					{renderState.viewType === VIEW_TYPE_CONTEXT && (
-						<ClayManagementToolbar.Item
-							data-tooltip-align="top"
-							title={Liferay.Language.get(
-								'reverse-sort-direction'
-							)}
-						>
-							<ClayButton
-								disabled={changes.length === 0}
-								displayType="unstyled"
-								onClick={() =>
-									setAscendingState(!ascendingState)
-								}
-							>
-								<ClayIcon
-									spritemap={spritemap}
-									symbol={
-										ascendingState
-											? 'order-list-down'
-											: 'order-list-up'
-									}
-								/>
-							</ClayButton>
-						</ClayManagementToolbar.Item>
-					)}
-					{renderState.viewType === VIEW_TYPE_CONTEXT && (
-						<ClayManagementToolbar.Item className="nav-item-expand" />
 					)}
 					<ClayManagementToolbar.Item className="simple-toggle-switch-reverse">
 						<ClayToggle
@@ -2368,62 +1832,6 @@ export default ({
 							toggled={renderState.showHideable}
 						/>
 					</ClayManagementToolbar.Item>
-					{contextViewRef.current && (
-						<ClayManagementToolbar.Item
-							data-tooltip-align="top"
-							title={Liferay.Language.get('display-style')}
-						>
-							<ClayDropDownWithItems
-								alignmentPosition={Align.BottomLeft}
-								items={[
-									{
-										active:
-											renderState.viewType ===
-											VIEW_TYPE_CHANGES,
-										label: Liferay.Language.get('changes'),
-										onClick: () =>
-											handleNavigationUpdate({
-												filterClass: FILTER_CLASS_EVERYTHING,
-												nodeId: 0,
-												viewType: VIEW_TYPE_CHANGES,
-											}),
-										symbolLeft: 'list',
-									},
-									{
-										active:
-											renderState.viewType ===
-											VIEW_TYPE_CONTEXT,
-										label: Liferay.Language.get('context'),
-										onClick: () =>
-											handleNavigationUpdate({
-												filterClass: FILTER_CLASS_EVERYTHING,
-												nodeId: 0,
-												viewType: VIEW_TYPE_CONTEXT,
-											}),
-										symbolLeft: 'pages-tree',
-									},
-								]}
-								spritemap={spritemap}
-								trigger={
-									<ClayButton
-										className="nav-link nav-link-monospaced"
-										disabled={changes.length === 0}
-										displayType="unstyled"
-									>
-										<ClayIcon
-											spritemap={spritemap}
-											symbol={
-												renderState.viewType ===
-												VIEW_TYPE_CHANGES
-													? 'list'
-													: 'pages-tree'
-											}
-										/>
-									</ClayButton>
-								}
-							/>
-						</ClayManagementToolbar.Item>
-					)}
 					<ClayManagementToolbar.Item
 						data-tooltip-align="top"
 						title={Liferay.Language.get('comments')}
@@ -2446,65 +1854,8 @@ export default ({
 		);
 	};
 
-	const renderPanel = () => {
-		if (renderState.viewType === VIEW_TYPE_CHANGES) {
-			return '';
-		}
-
-		const items = [];
-
-		items.push(
-			<ClayRadio
-				label={Liferay.Language.get('everything')}
-				value={FILTER_CLASS_EVERYTHING}
-			/>
-		);
-
-		for (let i = 0; i < rootDisplayClasses.length; i++) {
-			const className = rootDisplayClasses[i];
-
-			if (
-				!renderState.showHideable &&
-				contextViewRef.current[className].hideable
-			) {
-				continue;
-			}
-
-			let label = className;
-
-			if (label.includes('.')) {
-				label = label.substring(
-					label.lastIndexOf('.') + 1,
-					label.length
-				);
-			}
-
-			items.push(<ClayRadio label={label} value={className} />);
-		}
-
-		return (
-			<div className="col-md-3">
-				<div className="panel panel-secondary">
-					<div className="panel-body">
-						<ClayRadioGroup
-							onSelectedValueChange={(filterClass) =>
-								handleNavigationUpdate({
-									filterClass,
-									nodeId: 0,
-								})
-							}
-							selectedValue={renderState.filterClass}
-						>
-							{items}
-						</ClayRadioGroup>
-					</div>
-				</div>
-			</div>
-		);
-	};
-
 	const renderResultsBar = () => {
-		if (renderState.viewType === VIEW_TYPE_CONTEXT) {
+		if (renderState.id > 0) {
 			return '';
 		}
 
@@ -2596,12 +1947,12 @@ export default ({
 				<span className="component-text text-truncate-inline">
 					<span className="text-truncate">
 						{Liferay.Util.sub(
-							renderState.children &&
-								renderState.children.length === 1
+							renderState.changes &&
+								renderState.changes.length === 1
 								? Liferay.Language.get('x-result-for')
 								: Liferay.Language.get('x-results-for'),
-							renderState.children
-								? renderState.children.length.toString()
+							renderState.changes
+								? renderState.changes.length.toString()
 								: '0'
 						)}
 					</span>
@@ -2671,25 +2022,20 @@ export default ({
 	};
 
 	const renderTable = () => {
-		if (!renderState.children || renderState.children.length === 0) {
-			if (
-				renderState.node.children &&
-				renderState.node.children.length > 0 &&
-				renderState.viewType === VIEW_TYPE_CHANGES
-			) {
-				return (
-					<div className="sheet taglib-empty-result-message">
-						<div className="taglib-empty-search-result-message-header" />
-						<div className="sheet-text text-center">
-							{Liferay.Language.get(
-								'there-are-no-changes-to-display-in-this-view'
-							)}
-						</div>
-					</div>
-				);
-			}
-
+		if (renderState.id > 0) {
 			return '';
+		}
+		else if (!renderState.changes || renderState.changes.length === 0) {
+			return (
+				<div className="sheet taglib-empty-result-message">
+					<div className="taglib-empty-search-result-message-header" />
+					<div className="sheet-text text-center">
+						{Liferay.Language.get(
+							'there-are-no-changes-to-display-in-this-view'
+						)}
+					</div>
+				</div>
+			);
 		}
 
 		return (
@@ -2700,57 +2046,54 @@ export default ({
 					hover
 					noWrap
 				>
-					{renderState.viewType === VIEW_TYPE_CHANGES && (
-						<ClayTable.Head>
-							<ClayTable.Row>
-								<ClayTable.Cell headingCell>
-									{getColumnHeader(
-										COLUMN_USER,
-										Liferay.Language.get('user')
-									)}
-								</ClayTable.Cell>
-								<ClayTable.Cell headingCell>
-									{getColumnHeader(
-										COLUMN_SITE,
-										Liferay.Language.get('site')
-									)}
-								</ClayTable.Cell>
-								<ClayTable.Cell
-									className="table-cell-expand"
-									headingCell
-								>
-									{getColumnHeader(
-										COLUMN_TITLE,
-										Liferay.Language.get('title')
-									)}
-								</ClayTable.Cell>
-								<ClayTable.Cell
-									className="table-cell-expand-smallest"
-									headingCell
-								>
-									{getColumnHeader(
-										COLUMN_CHANGE_TYPE,
-										Liferay.Language.get('change-type')
-									)}
-								</ClayTable.Cell>
-								<ClayTable.Cell
-									className="table-cell-expand-smallest"
-									headingCell
-								>
-									{getColumnHeader(
-										COLUMN_MODIFIED_DATE,
-										Liferay.Language.get('last-modified')
-									)}
-								</ClayTable.Cell>
-							</ClayTable.Row>
-						</ClayTable.Head>
-					)}
-
+					<ClayTable.Head>
+						<ClayTable.Row>
+							<ClayTable.Cell headingCell>
+								{getColumnHeader(
+									COLUMN_USER,
+									Liferay.Language.get('user')
+								)}
+							</ClayTable.Cell>
+							<ClayTable.Cell headingCell>
+								{getColumnHeader(
+									COLUMN_SITE,
+									Liferay.Language.get('site')
+								)}
+							</ClayTable.Cell>
+							<ClayTable.Cell
+								className="table-cell-expand"
+								headingCell
+							>
+								{getColumnHeader(
+									COLUMN_TITLE,
+									Liferay.Language.get('title')
+								)}
+							</ClayTable.Cell>
+							<ClayTable.Cell
+								className="table-cell-expand-smallest"
+								headingCell
+							>
+								{getColumnHeader(
+									COLUMN_CHANGE_TYPE,
+									Liferay.Language.get('change-type')
+								)}
+							</ClayTable.Cell>
+							<ClayTable.Cell
+								className="table-cell-expand-smallest"
+								headingCell
+							>
+								{getColumnHeader(
+									COLUMN_MODIFIED_DATE,
+									Liferay.Language.get('last-modified')
+								)}
+							</ClayTable.Cell>
+						</ClayTable.Row>
+					</ClayTable.Head>
 					<ClayTable.Body>
-						{getTableRows(filterDisplayNodes(renderState.children))}
+						{getTableRows(filterDisplayNodes(renderState.changes))}
 					</ClayTable.Body>
 				</ClayTable>
-				{renderState.children.length > 5 && (
+				{renderState.changes.length > 5 && (
 					<ClayPaginationBarWithBasicItems
 						activeDelta={deltaState}
 						activePage={renderState.page}
@@ -2761,27 +2104,27 @@ export default ({
 						onDeltaChange={(delta) => {
 							setDeltaState(delta);
 							setRenderState({
+								changes: renderState.changes,
 								children: renderState.children,
-								filterClass: renderState.filterClass,
 								id: renderState.id,
 								node: renderState.node,
 								page: 1,
+								parents: renderState.parents,
 								showHideable: renderState.showHideable,
-								viewType: renderState.viewType,
 							});
 						}}
 						onPageChange={(page) =>
 							setRenderState({
+								changes: renderState.changes,
 								children: renderState.children,
-								filterClass: renderState.filterClass,
 								id: renderState.id,
 								node: renderState.node,
 								page,
+								parents: renderState.parents,
 								showHideable: renderState.showHideable,
-								viewType: renderState.viewType,
 							})
 						}
-						totalItems={renderState.children.length}
+						totalItems={renderState.changes.length}
 					/>
 				)}
 			</>
@@ -2789,17 +2132,7 @@ export default ({
 	};
 
 	const renderMainContent = () => {
-		if (
-			renderState.viewType === VIEW_TYPE_CONTEXT &&
-			contextViewRef.current.errorMessage
-		) {
-			return (
-				<ClayAlert displayType="danger">
-					{contextViewRef.current.errorMessage}
-				</ClayAlert>
-			);
-		}
-		else if (changes.length === 0) {
+		if (changes.length === 0) {
 			return (
 				<div className="container-fluid container-fluid-max-xl">
 					{renderExpiredBanner()}
@@ -2814,33 +2147,33 @@ export default ({
 			);
 		}
 
+		const items = [
+			{
+				label: Liferay.Language.get('all-items'),
+				onClick: () =>
+					handleNavigationUpdate({
+						nodeId: 0,
+					}),
+			},
+			{
+				active: true,
+				label: renderState.node.title,
+			},
+		];
+
 		return (
 			<div className="container-fluid container-fluid-max-xl">
 				{renderExpiredBanner()}
 
-				<ClayBreadcrumb
-					ellipsisBuffer={1}
-					items={getBreadcrumbItems(
-						renderState.filterClass,
-						renderState.node,
-						renderState.id,
-						renderState.viewType
-					)}
-					spritemap={spritemap}
-				/>
+				{renderState.id > 0 && (
+					<ClayBreadcrumb items={items} spritemap={spritemap} />
+				)}
 
 				<div className="publications-changes-content row">
-					{renderPanel()}
-
-					<div
-						className={
-							renderState.viewType === VIEW_TYPE_CHANGES
-								? 'col-md-12'
-								: 'col-md-9'
-						}
-					>
+					<div className="col-md-12">
 						{renderState.node.modelClassNameId && (
 							<ChangeTrackingRenderView
+								childEntries={renderState.children}
 								ctEntry={!!renderState.node.ctEntryId}
 								dataURL={getDataURL(renderState.node)}
 								defaultLocale={defaultLocale}
@@ -2857,10 +2190,17 @@ export default ({
 											renderState.node.modelClassPK
 									]
 								}
+								handleNavigation={(nodeId) =>
+									handleNavigationUpdate({
+										nodeId,
+									})
+								}
+								parentEntries={renderState.parents}
 								showDropdown={
 									activeCTCollection &&
 									renderState.node.modelClassNameId
 								}
+								showHideable={renderState.showHideable}
 								spritemap={spritemap}
 								title={renderState.node.title}
 								updateCache={(data) => {
@@ -2869,16 +2209,6 @@ export default ({
 											'-' +
 											renderState.node.modelClassPK
 									] = data;
-
-									setRenderState({
-										children: renderState.children,
-										filterClass: renderState.filterClass,
-										id: renderState.id,
-										node: renderState.node,
-										page: renderState.page,
-										showHideable: renderState.showHideable,
-										viewType: renderState.viewType,
-									});
 								}}
 							/>
 						)}

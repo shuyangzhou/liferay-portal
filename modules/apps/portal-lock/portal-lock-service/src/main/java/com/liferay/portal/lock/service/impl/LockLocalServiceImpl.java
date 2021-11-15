@@ -40,7 +40,6 @@ import com.liferay.portal.lock.service.base.LockLocalServiceBaseImpl;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.LockAcquisitionException;
@@ -250,50 +249,45 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	@MasterDataSource
 	@Override
 	public Lock lock(
-		final String className, final String key, final String expectedOwner,
-		final String updatedOwner) {
+		String className, String key, String expectedOwner,
+		String updatedOwner) {
 
 		while (true) {
 			try {
 				return TransactionInvokerUtil.invoke(
 					_transactionConfig,
-					new Callable<Lock>() {
+					() -> {
+						Lock lock = lockPersistence.fetchByC_K(
+							className, key, false);
 
-						@Override
-						public Lock call() {
-							Lock lock = lockPersistence.fetchByC_K(
-								className, key, false);
+						if (lock == null) {
+							long lockId = counterLocalService.increment();
 
-							if (lock == null) {
-								long lockId = counterLocalService.increment();
+							lock = lockPersistence.create(lockId);
 
-								lock = lockPersistence.create(lockId);
+							lock.setCreateDate(new Date());
+							lock.setClassName(className);
+							lock.setKey(key);
+							lock.setOwner(updatedOwner);
 
-								lock.setCreateDate(new Date());
-								lock.setClassName(className);
-								lock.setKey(key);
-								lock.setOwner(updatedOwner);
+							lock = lockPersistence.update(lock);
 
-								lock = lockPersistence.update(lock);
+							lock.setNew(true);
+						}
+						else if (Objects.equals(
+									lock.getOwner(), expectedOwner)) {
 
-								lock.setNew(true);
-							}
-							else if (Objects.equals(
-										lock.getOwner(), expectedOwner)) {
+							lock.setCreateDate(new Date());
+							lock.setClassName(className);
+							lock.setKey(key);
+							lock.setOwner(updatedOwner);
 
-								lock.setCreateDate(new Date());
-								lock.setClassName(className);
-								lock.setKey(key);
-								lock.setOwner(updatedOwner);
+							lock = lockPersistence.update(lock);
 
-								lock = lockPersistence.update(lock);
-
-								lock.setNew(true);
-							}
-
-							return lock;
+							lock.setNew(true);
 						}
 
+						return lock;
 					});
 			}
 			catch (Throwable throwable) {
@@ -378,31 +372,24 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 	@MasterDataSource
 	@Override
-	public void unlock(
-		final String className, final String key, final String owner) {
-
+	public void unlock(String className, String key, String owner) {
 		while (true) {
 			try {
 				TransactionInvokerUtil.invoke(
 					_transactionConfig,
-					new Callable<Void>() {
+					() -> {
+						Lock lock = lockPersistence.fetchByC_K(
+							className, key, false);
 
-						@Override
-						public Void call() {
-							Lock lock = lockPersistence.fetchByC_K(
-								className, key, false);
-
-							if (lock == null) {
-								return null;
-							}
-
-							if (Objects.equals(lock.getOwner(), owner)) {
-								lockPersistence.remove(lock);
-							}
-
+						if (lock == null) {
 							return null;
 						}
 
+						if (Objects.equals(lock.getOwner(), owner)) {
+							lockPersistence.remove(lock);
+						}
+
+						return null;
 					});
 
 				return;

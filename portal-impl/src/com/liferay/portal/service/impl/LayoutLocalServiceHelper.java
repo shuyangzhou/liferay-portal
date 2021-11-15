@@ -63,9 +63,11 @@ import com.liferay.portal.util.LayoutTypeControllerTracker;
 import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +79,15 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 	public String getFriendlyURL(
 			long groupId, boolean privateLayout, long layoutId, String name,
 			String friendlyURL)
+		throws PortalException {
+
+		return getFriendlyURL(
+			groupId, privateLayout, layoutId, name, friendlyURL, null);
+	}
+
+	public String getFriendlyURL(
+			long groupId, boolean privateLayout, long layoutId, String name,
+			String friendlyURL, String languageId)
 		throws PortalException {
 
 		friendlyURL = getFriendlyURL(friendlyURL);
@@ -92,7 +103,7 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 		for (int i = 1;; i++) {
 			try {
 				validateFriendlyURL(
-					groupId, privateLayout, layoutId, friendlyURL);
+					groupId, privateLayout, layoutId, friendlyURL, languageId);
 
 				break;
 			}
@@ -129,7 +140,8 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 
 			if (Validator.isNotNull(friendlyURL)) {
 				friendlyURL = getFriendlyURL(
-					groupId, privateLayout, layoutId, name, friendlyURL);
+					groupId, privateLayout, layoutId, name, friendlyURL,
+					locale.getLanguage());
 
 				newFriendlyURLMap.put(locale, friendlyURL);
 			}
@@ -141,7 +153,8 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 			Validator.isNull(newFriendlyURLMap.get(siteDefaultLocale))) {
 
 			String friendlyURL = getFriendlyURL(
-				groupId, privateLayout, layoutId, name, StringPool.BLANK);
+				groupId, privateLayout, layoutId, name, StringPool.BLANK,
+				siteDefaultLocale.getLanguage());
 
 			newFriendlyURLMap.put(siteDefaultLocale, friendlyURL);
 		}
@@ -339,6 +352,15 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 			String friendlyURL)
 		throws PortalException {
 
+		validateFriendlyURL(
+			groupId, privateLayout, layoutId, friendlyURL, null);
+	}
+
+	public void validateFriendlyURL(
+			long groupId, boolean privateLayout, long layoutId,
+			String friendlyURL, String languageId)
+		throws PortalException {
+
 		if (Validator.isNull(friendlyURL)) {
 			return;
 		}
@@ -357,7 +379,10 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 			Layout layout = layoutPersistence.findByPrimaryKey(
 				layoutFriendlyURL.getPlid());
 
-			if (layout.getLayoutId() != layoutId) {
+			if ((layout.getLayoutId() != layoutId) ||
+				(Validator.isNotNull(languageId) &&
+				 !languageId.equals(layoutFriendlyURL.getLanguageId()))) {
+
 				LayoutFriendlyURLException layoutFriendlyURLException =
 					new LayoutFriendlyURLException(
 						LayoutFriendlyURLException.DUPLICATE);
@@ -438,7 +463,7 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 		}
 
 		for (Locale locale : LanguageUtil.getAvailableLocales()) {
-			String languageId = StringUtil.toLowerCase(
+			languageId = StringUtil.toLowerCase(
 				LocaleUtil.toLanguageId(locale));
 
 			String i18nPathLanguageId =
@@ -490,12 +515,25 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 
 		LayoutFriendlyURLsException layoutFriendlyURLsException = null;
 
+		Set<String> friendlyURLs = new HashSet<>(friendlyURLMap.values());
+
+		if (friendlyURLs.size() != friendlyURLMap.size()) {
+			LayoutFriendlyURLException layoutFriendlyURLException =
+				new LayoutFriendlyURLException(
+					LayoutFriendlyURLException.DUPLICATE);
+
+			layoutFriendlyURLsException = new LayoutFriendlyURLsException(
+				layoutFriendlyURLException);
+		}
+
 		for (Map.Entry<Locale, String> entry : friendlyURLMap.entrySet()) {
 			try {
 				String friendlyURL = entry.getValue();
+				Locale locale = entry.getKey();
 
 				validateFriendlyURL(
-					groupId, privateLayout, layoutId, friendlyURL);
+					groupId, privateLayout, layoutId, friendlyURL,
+					locale.toString());
 			}
 			catch (LayoutFriendlyURLException layoutFriendlyURLException) {
 				Locale locale = entry.getKey();

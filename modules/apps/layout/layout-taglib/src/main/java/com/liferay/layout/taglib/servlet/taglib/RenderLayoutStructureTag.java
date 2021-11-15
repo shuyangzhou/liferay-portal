@@ -163,6 +163,13 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				renderLayoutStructureDisplayContext)
 		throws Exception {
 
+		List<String> collectionStyledLayoutStructureItemIds =
+			renderLayoutStructureDisplayContext.
+				getCollectionStyledLayoutStructureItemIds();
+
+		collectionStyledLayoutStructureItemIds.add(
+			layoutStructureItem.getItemId());
+
 		JspWriter jspWriter = pageContext.getOut();
 
 		CollectionStyledLayoutStructureItem
@@ -195,6 +202,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 		if (ListUtil.isEmpty(collection)) {
 			_renderEmptyState(jspWriter);
+
+			collectionStyledLayoutStructureItemIds.remove(
+				collectionStyledLayoutStructureItemIds.size() - 1);
 
 			return;
 		}
@@ -284,7 +294,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 						colTag.doStartTag();
 
 						_renderLayoutStructure(
-							layoutStructureItem.getChildrenItemIds(),
+							layoutStructureItem.getChildrenItemIds(), index,
 							renderLayoutStructureDisplayContext);
 
 						colTag.doEndTag();
@@ -399,6 +409,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		}
 
 		jspWriter.write("</div>");
+
+		collectionStyledLayoutStructureItemIds.remove(
+			collectionStyledLayoutStructureItemIds.size() - 1);
 	}
 
 	private void _renderColumnLayoutStructureItem(
@@ -565,7 +578,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderFragmentStyledLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem,
+			int collectionElementIndex, LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -600,7 +613,10 @@ public class RenderLayoutStructureTag extends IncludeTag {
 					renderLayoutStructureDisplayContext.
 						getDefaultFragmentRendererContext(
 							fragmentEntryLink,
-							fragmentStyledLayoutStructureItem.getItemId());
+							fragmentStyledLayoutStructureItem.getItemId(),
+							renderLayoutStructureDisplayContext.
+								getCollectionStyledLayoutStructureItemIds(),
+							collectionElementIndex);
 
 				jspWriter.write("<div class=\"");
 				jspWriter.write(
@@ -630,7 +646,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderLayoutStructure(
-			List<String> childrenItemIds,
+			List<String> childrenItemIds, int collectionElementIndex,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -665,7 +681,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 						FragmentStyledLayoutStructureItem) {
 
 				_renderFragmentStyledLayoutStructureItem(
-					layoutStructureItem, renderLayoutStructureDisplayContext);
+					collectionElementIndex, layoutStructureItem,
+					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
 						RowStyledLayoutStructureItem) {
@@ -676,9 +693,20 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			else {
 				_renderLayoutStructure(
 					layoutStructureItem.getChildrenItemIds(),
+					collectionElementIndex,
 					renderLayoutStructureDisplayContext);
 			}
 		}
+	}
+
+	private void _renderLayoutStructure(
+			List<String> childrenItemIds,
+			RenderLayoutStructureDisplayContext
+				renderLayoutStructureDisplayContext)
+		throws Exception {
+
+		_renderLayoutStructure(
+			childrenItemIds, -1, renderLayoutStructureDisplayContext);
 	}
 
 	private void _renderRowStyledLayoutStructureItem(

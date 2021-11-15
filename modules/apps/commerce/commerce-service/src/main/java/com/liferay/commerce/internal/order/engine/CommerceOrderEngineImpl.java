@@ -348,15 +348,10 @@ public class CommerceOrderEngineImpl implements CommerceOrderEngine {
 			commerceOrderId, commerceOrder.getCommerceAccountId());
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				_bookQuantities(commerceOrderId);
 
-				@Override
-				public Void call() throws Exception {
-					_bookQuantities(commerceOrderId);
-
-					return null;
-				}
-
+				return null;
 			});
 
 		commerceOrder = _commerceOrderLocalService.recalculatePrice(

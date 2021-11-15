@@ -45,7 +45,7 @@ PortletURL portletURL = PortletURLBuilder.createRenderURL(
 	%>'
 />
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectFileEntryTypeFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectFileEntryTypeFm">
 	<liferay-ui:search-container
 		iteratorURL="<%= portletURL %>"
 	>

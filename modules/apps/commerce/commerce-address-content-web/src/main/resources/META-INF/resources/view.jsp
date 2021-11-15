@@ -52,7 +52,7 @@ CommerceAddressDisplayContext commerceAddressDisplayContext = (CommerceAddressDi
 			entries="<%= commerceAddressSearchContainer.getResults() %>"
 		>
 			<div class="container-fluid container-fluid-max-xl" id="<portlet:namespace />addressesContainer">
-				<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
+				<aui:form action="<%= portletURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 					<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.DELETE %>" />
 					<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 

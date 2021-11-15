@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.runner.Description;
@@ -478,20 +477,15 @@ public class SynchronousDestinationTestRule
 		extends TestSynchronousDestination {
 
 		@Override
-		public void send(final Message message) {
+		public void send(Message message) {
 			try {
 				TransactionInvokerUtil.invoke(
 					_transactionConfig,
-					new Callable<Void>() {
+					() -> {
+						CleanTransactionSynchronousDestination.super.send(
+							message);
 
-						@Override
-						public Void call() throws Exception {
-							CleanTransactionSynchronousDestination.super.send(
-								message);
-
-							return null;
-						}
-
+						return null;
 					});
 			}
 			catch (Throwable throwable) {

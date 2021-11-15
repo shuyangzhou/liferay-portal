@@ -57,6 +57,7 @@ import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.function.UnsafeSupplier;
@@ -178,6 +179,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		LayoutPageTemplateStructureLocalService
 			layoutPageTemplateStructureLocalService,
 		LayoutSetLocalService layoutSetLocalService,
+		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectDefinitionResource.Factory objectDefinitionResourceFactory,
 		ObjectEntryLocalService objectEntryLocalService, Portal portal,
 		RemoteAppEntryLocalService remoteAppEntryLocalService,
@@ -222,6 +224,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_layoutPageTemplateStructureLocalService =
 			layoutPageTemplateStructureLocalService;
 		_layoutSetLocalService = layoutSetLocalService;
+		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectDefinitionResourceFactory = objectDefinitionResourceFactory;
 		_objectEntryLocalService = objectEntryLocalService;
 		_portal = portal;
@@ -311,18 +314,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_invoke(() -> _addSAPEntries(serviceContext));
 			_invoke(() -> _addStyleBookEntries(serviceContext));
 			_invoke(() -> _addTaxonomyVocabularies(serviceContext));
-
-			_invoke(() -> _addCPDefinitions(serviceContext));
-
 			_invoke(() -> _updateLayoutSets(serviceContext));
-
-			Map<String, String> documentsStringUtilReplaceValues = _invoke(
-				() -> _addDocuments(serviceContext));
 
 			Map<String, String> assetListEntryIdsStringUtilReplaceValues =
 				_invoke(
 					() -> _addAssetListEntries(
 						_ddmStructureLocalService, serviceContext));
+
+			Map<String, String> documentsStringUtilReplaceValues = _invoke(
+				() -> _addDocuments(serviceContext));
+
+			_invoke(
+				() -> _addCPDefinitions(
+					documentsStringUtilReplaceValues, serviceContext));
 
 			_invoke(
 				() -> _addDDMTemplates(
@@ -607,6 +611,96 @@ public class BundleSiteInitializer implements SiteInitializer {
 				serviceContext.getScopeGroupId(), serviceContext.getUserId());
 	}
 
+	private void _addCommerceNotificationTemplate(
+			long commerceChannelId,
+			Map<String, String> documentsStringUtilReplaceValues,
+			String resourcePath, ServiceContext serviceContext)
+		throws Exception {
+
+		String json = _read(
+			resourcePath + "commerce-notification-template.json");
+
+		if (Validator.isNull(json)) {
+			return;
+		}
+
+		JSONObject commerceNotificationTemplateJSONObject =
+			JSONFactoryUtil.createJSONObject(json);
+
+		com.liferay.object.model.ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				serviceContext.getCompanyId(),
+				commerceNotificationTemplateJSONObject.getString(
+					"objectDefinitionName"));
+
+		if (objectDefinition == null) {
+			return;
+		}
+
+		CommerceChannel commerceChannel =
+			_commerceReferencesHolder.commerceChannelLocalService.
+				getCommerceChannel(commerceChannelId);
+
+		JSONObject bodyJSONObject = _jsonFactory.createJSONObject();
+
+		Enumeration<URL> enumeration = _bundle.findEntries(
+			resourcePath, "*.html", false);
+
+		if (enumeration != null) {
+			while (enumeration.hasMoreElements()) {
+				URL url = enumeration.nextElement();
+
+				bodyJSONObject.put(
+					FileUtil.getShortFileName(
+						FileUtil.stripExtension(url.getPath())),
+					StringUtil.replace(
+						StringUtil.read(url.openStream()), "[$", "$]",
+						documentsStringUtilReplaceValues));
+			}
+		}
+
+		_commerceReferencesHolder.commerceNotificationTemplateLocalService.
+			addCommerceNotificationTemplate(
+				serviceContext.getUserId(), commerceChannel.getGroupId(),
+				commerceNotificationTemplateJSONObject.getString("name"),
+				commerceNotificationTemplateJSONObject.getString("description"),
+				commerceNotificationTemplateJSONObject.getString("from"),
+				_toMap(
+					commerceNotificationTemplateJSONObject.getString(
+						"fromName")),
+				commerceNotificationTemplateJSONObject.getString("to"),
+				commerceNotificationTemplateJSONObject.getString("cc"),
+				commerceNotificationTemplateJSONObject.getString("bcc"),
+				StringBundler.concat(
+					objectDefinition.getClassName(), "#",
+					commerceNotificationTemplateJSONObject.getString("action")),
+				commerceNotificationTemplateJSONObject.getBoolean("enabled"),
+				_toMap(
+					commerceNotificationTemplateJSONObject.getString(
+						"subject")),
+				_toMap(bodyJSONObject.toString()), serviceContext);
+	}
+
+	private void _addCommerceNotificationTemplates(
+			long commerceChannelId,
+			Map<String, String> documentsStringUtilReplaceValues,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			"/site-initializer/commerce-notification-templates");
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return;
+		}
+
+		for (String resourcePath : resourcePaths) {
+			_addCommerceNotificationTemplate(
+				commerceChannelId, documentsStringUtilReplaceValues,
+				resourcePath, serviceContext);
+		}
+	}
+
 	private void _addCPDefinitions(
 			Catalog catalog, Channel channel,
 			List<CommerceInventoryWarehouse> commerceInventoryWarehouses,
@@ -651,7 +745,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 			serviceContext.getScopeGroupId(), serviceContext.getUserId());
 	}
 
-	private void _addCPDefinitions(ServiceContext serviceContext)
+	private void _addCPDefinitions(
+			Map<String, String> documentsStringUtilReplaceValues,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		if ((_commerceReferencesHolder == null) ||
@@ -661,9 +757,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return;
 		}
 
+		Channel channel = _addCommerceChannel(serviceContext);
+
+		if (channel == null) {
+			return;
+		}
+
 		_addCommerceCatalogs(
-			_addCommerceChannel(serviceContext),
-			_addCommerceInventoryWarehouses(serviceContext), serviceContext);
+			channel, _addCommerceInventoryWarehouses(serviceContext),
+			serviceContext);
+		_addCommerceNotificationTemplates(
+			channel.getId(), documentsStringUtilReplaceValues, serviceContext);
 	}
 
 	private void _addDDMStructures(ServiceContext serviceContext)
@@ -2175,6 +2279,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final LayoutPageTemplateStructureLocalService
 		_layoutPageTemplateStructureLocalService;
 	private final LayoutSetLocalService _layoutSetLocalService;
+	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private final ObjectDefinitionResource.Factory
 		_objectDefinitionResourceFactory;
 	private final ObjectEntryLocalService _objectEntryLocalService;

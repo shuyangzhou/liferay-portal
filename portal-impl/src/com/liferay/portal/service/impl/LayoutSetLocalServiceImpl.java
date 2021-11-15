@@ -63,7 +63,6 @@ import java.net.IDN;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 
 /**
  * @author Brian Wing Shun Chan
@@ -500,16 +499,11 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			layoutSetPersistence.clearCache(layoutSet);
 
 			TransactionCommitCallbackUtil.registerCallback(
-				new Callable<Void>() {
+				() -> {
+					EntityCacheUtil.removeResult(
+						LayoutSetImpl.class, layoutSet.getLayoutSetId());
 
-					@Override
-					public Void call() {
-						EntityCacheUtil.removeResult(
-							LayoutSetImpl.class, layoutSet.getLayoutSetId());
-
-						return null;
-					}
-
+					return null;
 				});
 		}
 

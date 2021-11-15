@@ -125,12 +125,22 @@ definition {
 	}
 
 	@description = "LPS-105216: Validate that Free trial and dismiss buttons ARE NOT displayed when AC is enabled"
-	@ignore = "true"
 	@priority = "3"
 	test FreeTrialButtonNotPresent {
+		task ("Open Content Performance and Assert if element is not present") {
+			if (IsVisible(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_PANEL")) {
+				Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
+			}
+			Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
 
-		// TODO LPS-139217 FreeTrialButtonNotPresent pending implementation
+			AssertElementNotPresent(
+				locator1 = "ContentPerformance#CONTENT_PERFORMANCE_START_FREE_TRIAL",
+				value1 = "Start Free Trial");
 
+			AssertElementNotPresent(
+				locator1 = "ContentPerformance#CONTENT_PERFORMANCE_DO_NOT_SHOW_AGAIN",
+				value1 = "Do not show me this again.");
+		}
 	}
 
 	@description = "LPS-105216: Validate that Free trial and dismiss buttons are displayed when AC is disabled"
@@ -263,12 +273,25 @@ definition {
 	}
 
 	@description = "LPS-111042: As a content writer I want to know the keywords driving traffic to my contents by different countries"
-	@ignore = "true"
 	@priority = "4"
 	test NoNavigationWithoutIncomingTraffic {
+		task ("Open Content Performance and Assert") {
+			if (IsVisible(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_PANEL")) {
+				Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
+			}
+			Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
 
-		// TODO LPS-139248 NoNavigationWithoutIncomingTraffic pending implementation
+			AssertElementPresent(
+				locator1 = "ContentPerformance#SELECT_TRAFFIC_SOURCES_NUMBER",
+				value1 = "0");
+		}
 
+		task ("Click and Assert if element still present") {
+			ClickNoError(locator1 = "ContentPerformance#SELECT_TRAFFIC_SOURCES_NUMBER");
+			AssertElementPresent(
+				locator1 = "ContentPerformance#SELECT_TRAFFIC_SOURCES_NUMBER",
+				value1 = "0");
+		}
 	}
 
 	@description = "LPS-108856: When user opens Content Performance panel and AC is connected but not synced, the Content Performance panel displays instructions to sync to AC (Dont show me this again button and the message is not displayed)"

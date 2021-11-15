@@ -2,7 +2,7 @@
 definition {
 
 	property osgi.modules.includes = "frontend-js-a11y-sample-web,frontend-js-a11y-web";
-	property portal.release = "true";
+	property portal.release = "false";
 	property portal.upstream = "true";
 	property testray.component.names = "User Interface";
 	property testray.main.component.name = "User Interface";
@@ -48,6 +48,33 @@ definition {
 				groupName = "Guest",
 				layoutName = "Blank Test Page");
 		}
+	}
+
+	@description = "LPS-142107. Verifies a11y tool can be disabled."
+	@priority = "5"
+	test CanBeDisabledWithDevelopment {
+		property osgi.module.configuration.file.names = "com.liferay.frontend.js.a11y.web.internal.configuration.FFA11yConfiguration.config";
+		property osgi.module.configurations = "enable=B&quot;true&quot;";
+
+		task ("Modify the config file to be set to false") {
+			OSGiConfig.deployOSGiConfigFile(
+				OSGiConfigFileName = "com.liferay.frontend.js.a11y.web.internal.configuration.FFA11yConfiguration.config",
+				OSGiConfigs = "enable=B&quot;false&quot;");
+		}
+
+		task ("Restart portal") {
+			Portlet.shutdownServer();
+
+			Portlet.startServer(deleteLiferayHome = "false");
+		}
+
+		task ("Assert the side panel is not present on the page") {
+			Navigator.gotoPage(pageName = "A11y Test Page");
+
+			AssertElementNotPresent(locator1 = "A11yTool#VIOLATION_PANEL_HEADER");
+		}
+
+		takeScreenshot();
 	}
 
 	@description = "LPS-140736. Ensures there is no accessibility side panel on a page with no violations."
@@ -112,20 +139,20 @@ definition {
 
 		task ("Verify page has Minor, Moderate, Serious, and Critical set of violations") {
 			VerifyElementPresent(
-				key_text = "minor",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "minor",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 
 			VerifyElementPresent(
-				key_text = "moderate",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "moderate",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 
 			VerifyElementPresent(
-				key_text = "serious",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "serious",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 
 			VerifyElementPresent(
-				key_text = "critical",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "critical",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 		}
 
 		task ("Filter impact by Critical") {
@@ -134,56 +161,56 @@ definition {
 
 		task ("Assert only critical violations are present on the side panel") {
 			AssertElementPresent(
-				key_text = "critical",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "critical",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 
 			AssertElementNotPresent(
-				key_text = "minor",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "minor",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 
 			AssertElementNotPresent(
-				key_text = "moderate",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "moderate",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 
 			AssertElementNotPresent(
-				key_text = "serious",
-				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_SEVERITY");
+				key_impact = "serious",
+				locator1 = "A11yTool#VIOLATION_PANEL_ITEM_IMPACT");
 		}
 
 		task ("Assert only critical elements are highlighted") {
 			AssertClick(
 				key_index = "1",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_COUNT",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_INDEX",
 				value1 = "");
 
 			AssertClick(
 				key_index = "2",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_COUNT",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_INDEX",
 				value1 = "");
 
 			AssertElementNotPresent(
 				key_index = "3",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_COUNT");
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_INDEX");
 
 			AssertElementPresent(
-				key_text = "critical",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_SEVERITY");
+				key_impact = "critical",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_IMPACT");
 
 			AssertElementPresent(locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_ICON");
 		}
 
 		task ("Assert minor, moderate, serious violations are not highlighted") {
 			AssertElementNotPresent(
-				key_text = "minor",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_SEVERITY");
+				key_impact = "minor",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_IMPACT");
 
 			AssertElementNotPresent(
-				key_text = "moderate",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_SEVERITY");
+				key_impact = "moderate",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_IMPACT");
 
 			AssertElementNotPresent(
-				key_text = "serious",
-				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_SEVERITY");
+				key_impact = "serious",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_POPOVER_IMPACT");
 		}
 
 		takeScreenshot();
@@ -210,6 +237,120 @@ definition {
 		AssertElementPresent(
 			key_text = "",
 			locator1 = "A11yTool#FILTER_LIST_ITEM");
+
+		takeScreenshot();
+	}
+
+	@description = "LPS-142318. Verifies multiple violations are highlighted with an icon."
+	@priority = "4"
+	test CanHighlightMultipleViolations {
+		property osgi.module.configuration.file.names = "com.liferay.frontend.js.a11y.web.internal.configuration.FFA11yConfiguration.config";
+		property osgi.module.configurations = "enable=B&quot;true&quot;";
+
+		// Workaround for side panel sometimes not displaying LPS-141442
+
+		while (IsElementNotPresent(locator1 = "A11yTool#VIOLATION_PANEL_HEADER")) {
+			Refresh();
+		}
+
+		task ("Verify there are 3 different a11y violations") {
+			VerifyElementPresent(
+				key_index = "1",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_INDEX");
+
+			VerifyElementPresent(
+				key_index = "2",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_INDEX");
+
+			VerifyElementPresent(
+				key_index = "3",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_INDEX");
+		}
+
+		task ("Assert all 3 violations are highlighted") {
+			AssertElementPresent(
+				key_index = "1",
+				key_text = "a11y-backdrop",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_OVERLAY");
+
+			AssertElementPresent(
+				key_index = "2",
+				key_text = "a11y-backdrop",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_OVERLAY");
+
+			AssertElementPresent(
+				key_index = "3",
+				key_text = "a11y-backdrop",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_OVERLAY");
+		}
+
+		task ("Assert all 3 violations have an icon") {
+			AssertElementPresent(
+				key_index = "1",
+				key_text = "a11y-indicator",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_OVERLAY");
+
+			AssertElementPresent(
+				key_index = "2",
+				key_text = "a11y-indicator",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_OVERLAY");
+
+			AssertElementPresent(
+				key_index = "3",
+				key_text = "a11y-indicator",
+				locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_OVERLAY");
+		}
+
+		takeScreenshot();
+	}
+
+	@description = "LPS-142271. Verifies violations are sorted by descending impact."
+	@priority = "4"
+	test OrdersViolationsByDescendingImpact {
+		property osgi.module.configuration.file.names = "com.liferay.frontend.js.a11y.web.internal.configuration.FFA11yConfiguration.config";
+		property osgi.module.configurations = "enable=B&quot;true&quot;";
+
+		// Workaround for side panel sometimes not displaying LPS-141442
+
+		while (IsElementNotPresent(locator1 = "A11yTool#VIOLATION_PANEL_HEADER")) {
+			Refresh();
+		}
+
+		task ("Verifies the panel is in top-level view") {
+			VerifyElementPresent(locator1 = "A11yTool#VIOLATION_PANEL_HEADER");
+
+			VerifyElementPresent(
+				key_text = "",
+				locator1 = "A11yTool#VIOLATION_PANEL_RULE_LIST_ITEM");
+		}
+
+		task ("Verfies there are violations on the page") {
+			VerifyElementPresent(locator1 = "A11yTool#HIGHLIGHTED_ELEMENT");
+
+			VerifyElementPresent(locator1 = "A11yTool#HIGHLIGHTED_ELEMENT_ICON");
+		}
+
+		task ("Asserts the list of rules are sorted in descending impact") {
+			AssertElementPresent(
+				key_impact = "critical",
+				key_index = "1",
+				locator1 = "A11yTool#VIOLATION_PANEL_RULE_LIST_INDEX");
+
+			AssertElementPresent(
+				key_impact = "serious",
+				key_index = "2",
+				locator1 = "A11yTool#VIOLATION_PANEL_RULE_LIST_INDEX");
+
+			AssertElementPresent(
+				key_impact = "moderate",
+				key_index = "3",
+				locator1 = "A11yTool#VIOLATION_PANEL_RULE_LIST_INDEX");
+
+			AssertElementPresent(
+				key_impact = "minor",
+				key_index = "4",
+				locator1 = "A11yTool#VIOLATION_PANEL_RULE_LIST_INDEX");
+		}
 
 		takeScreenshot();
 	}

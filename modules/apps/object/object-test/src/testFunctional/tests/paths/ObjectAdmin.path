@@ -187,7 +187,7 @@
 	</tr>
 	<tr>
 		<td>RELATIONSHIPS_TYPE_FORM</td>
-		<td>//div[contains(@class, 'form-control')]</td>
+		<td>//label[contains(text(),'Type')]/..//input</td>
 		<td></td>
 	</tr>
 	<tr>

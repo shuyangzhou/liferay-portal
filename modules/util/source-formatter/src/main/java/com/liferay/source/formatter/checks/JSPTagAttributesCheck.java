@@ -131,6 +131,16 @@ public class JSPTagAttributesCheck extends BaseTagAttributesCheck {
 				continue;
 			}
 
+			if ((tagName.equals("aui:form") ||
+				 tagName.equals("liferay-frontend:edit-form")) &&
+				attributeName.equals("action") &&
+				StringUtil.endsWith(attributeValue, "url.toString() %>")) {
+
+				tag.putAttribute(
+					attributeName,
+					StringUtil.replaceLast(attributeValue, ".toString()", ""));
+			}
+
 			if (tagName.equals("liferay-ui:message") &&
 				attributeName.equals("arguments")) {
 

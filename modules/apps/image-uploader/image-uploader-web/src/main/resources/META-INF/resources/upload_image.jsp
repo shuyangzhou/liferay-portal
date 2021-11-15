@@ -21,8 +21,8 @@ int aspectRatio = ParamUtil.getInteger(request, "aspectRatio");
 String currentImageURL = ParamUtil.getString(request, "currentLogoURL");
 long maxFileSize = ParamUtil.getLong(request, "maxFileSize");
 boolean preserveRatio = ParamUtil.getBoolean(request, "preserveRatio");
-String tempImageFileName = ParamUtil.getString(request, "tempImageFileName");
 String randomNamespace = ParamUtil.getString(request, "randomNamespace");
+String tempImageFileName = ParamUtil.getString(request, "tempImageFileName");
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/image_uploader/upload_image" var="previewURL">

@@ -49,7 +49,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "organizations"));
 	sortingURL="<%= selectOrganizationManagementToolbarDisplayContext.getSortingURL() %>"
 />
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectOrganizationFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectOrganizationFm">
 	<liferay-ui:search-container
 		searchContainer="<%= searchContainer %>"
 		var="organizationSearchContainer"

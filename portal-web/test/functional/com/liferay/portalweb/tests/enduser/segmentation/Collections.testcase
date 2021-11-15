@@ -23,12 +23,147 @@ definition {
 		}
 	}
 
-	@description = "LPS-111468 Having the Content recommendation not enabled in Collection, when a visitor that has viewed a content in its display page visits the home page, the asset publisher shows all content (term-related and term-non-related)"
+	@description = "LPS-108368: Asset Publisher configured with dynamic content set WITHOUT pagination shows assets for the two personalized views the user belongs to when the configuration is enabled"
+	@ignore = "true"
+	@priority = "5"
+	test CombineContentForMultisegmentDynamicCollectionWithoutPagination {
+
+		// TODO LPS-108368 CombineContentForMultisegmentDynamicCollectionWithoutPagination pending implementation
+
+	}
+
+	@description = "LPS-108368: Asset Publisher configured with dynamic content set WITH pagination shows assets for the two personalized views the user belongs to when the configuration is enabled"
+	@ignore = "true"
+	@priority = "5"
+	test CombineContentForMultisegmentDynamicCollectionWithPagination {
+
+		// TODO LPS-108368 CombineContentForMultisegmentDynamicCollectionWithPagination pending implementation
+
+	}
+
+	@description = "LPS-108368: Asset Publisher configured with manual content set WITHOUT pagination shows assets for the two personalized views the user belongs to when the configuration is enabled"
+	@ignore = "true"
+	@priority = "5"
+	test CombineContentForMultisegmentManualCollectionWithoutPagination {
+
+		// TODO LPS-108368 CombineContentForMultisegmentManualCollectionWithoutPagination pending implementation
+
+	}
+
+	@description = "LPS-108368: Asset Publisher configured with manual content set WITH pagination shows assets for the two personalized views the user belongs to when the configuration is enabled"
+	@ignore = "true"
+	@priority = "5"
+	test CombineContentForMultisegmentManualCollectionWithPagination {
+
+		// TODO LPS-108368 CombineContentForMultisegmentManualCollectionWithPagination pending implementation
+
+	}
+
+	@description = "LPS-86283: Validate if, only the content matching the criteria of the assigned segment must be shown in asset publisher	"
+	@ignore = "true"
+	@priority = "4"
+	test ContentMatchesSegmentCriteria {
+
+		// TODO LPS-86283 ContentMatchesSegmentCriteria pending implementation
+
+	}
+
+	@description = "LPS-108368: Asset Publisher configured with dynamic content set does not show assets for the personalized views that the user doesn't belongs to when the configuration is enabled"
+	@ignore = "true"
+	@priority = "3"
+	test NotCombineContentForMultisegmentDynamicCollection {
+
+		// TODO LPS-108368 NotCombineContentForMultisegmentDynamicCollection pending implementation
+
+	}
+
+	@description = "LPS-108368: Asset Publisher configured with manual content set does not show assets for the personalized views that the user doesn't belongs to when the configuration is enabled"
+	@ignore = "true"
+	@priority = "3"
+	test NotCombineContentForMultisegmentManualCollection {
+
+		// TODO LPS-108368 NotCombineContentForMultisegmentManualCollection pending implementation
+
+	}
+
+	@description = "LPS-86283: Validate if, can have only one variation per segment"
+	@ignore = "true"
+	@priority = "3"
+	test NumberOfVariationsBySegments {
+
+		// TODO LPS-86283 NumberOfVariationsBySegments pending implementation
+
+	}
+
+	@description = "LPS-87232: Validate if, The content recommendation not will works if it is disabled, so in this way, the Liferay will show all content for the user"
+	@ignore = "true"
+	@priority = "3"
+	test RecommendedContentForUsers {
+
+		// TODO LPS-87232 RecommendedContentForUsers pending implementation
+
+	}
+
+	@description = "LPS-86283: Validate if, when selecting a segment it is possible to filter and order, sorting and search	"
+	@ignore = "true"
+	@priority = "4"
+	test SearchingSegments {
+
+		// TODO LPS-86283 SearchingSegments pending implementation
+
+	}
+
+	@description = "LPS-93726: Validate if, on content set personalized variations, the same content can match different content set variations"
+	@ignore = "true"
+	@priority = "3"
+	test SelectAssetToDifferentVariations {
+
+		// TODO LPS-93726 SelectAssetToDifferentVariations pending implementation
+
+	}
+
+	@description = "LPS-111468: Having the Content recommendation not enabled in Collection, when a visitor that has viewed a content in its display page visits the home page, the asset publisher shows all content (term-related and term-non-related)"
 	@ignore = "true"
 	@priority = "3"
 	test TermRelatedAndTermNonRelated {
 
 		// TODO LPS-111468 TermRelatedAndTermNonRelated pending implementation
+
+	}
+
+	@description = "LPS-93726: Validate if, when the user creates one content set personalized, for Dynamic Content Sets, he can apply in some portlet (assert publisher) to use"
+	@ignore = "true"
+	@priority = "5"
+	test UseDynamicCollectionAtPortlet {
+
+		// TODO LPS-93726 UseDynamicCollectionAtPortlet pending implementation
+
+	}
+
+	@description = "LPS-93726: Validate if, when the user creates one content set personalized, for Manual Content Sets, he can apply in some portlet (assert publisher) to use"
+	@ignore = "true"
+	@priority = "5"
+	test UseManualCollectionAtPortlet {
+
+		// TODO LPS-93726 UseManualCollectionAtPortlet pending implementation
+
+	}
+
+	@description = "LPS-86283: Validate if, the name of the variation is provided by the name of the segment	"
+	@ignore = "true"
+	@priority = "3"
+	test VariationNameIsShown {
+
+		// TODO LPS-86283 VariationNameIsShown pending implementation
+
+	}
+
+	@description = "LPS-86283: Validate if, is possible to preview the content of a dynamic content set variation in a modal window	"
+	@ignore = "true"
+	@priority = "4"
+	test ViewContentOfAVariant {
+
+		// TODO LPS-86283 ViewContentOfAVariant pending implementation
 
 	}
 

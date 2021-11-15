@@ -17,9 +17,9 @@
 <%@ include file="/template_selector/init.jsp" %>
 
 <%
+List<DDMTemplate> ddmTemplates = (List<DDMTemplate>)request.getAttribute("liferay-template:template-selector:ddmTemplates");
 String displayStyle = (String)request.getAttribute("liferay-template:template-selector:displayStyle");
 long displayStyleGroupId = GetterUtil.getLong(String.valueOf(request.getAttribute("liferay-template:template-selector:displayStyleGroupId")));
-List<DDMTemplate> ddmTemplates = (List<DDMTemplate>)request.getAttribute("liferay-template:template-selector:ddmTemplates");
 List<String> displayStyles = (List<String>)request.getAttribute("liferay-template:template-selector:displayStyles");
 DDMTemplate portletDisplayDDMTemplate = (DDMTemplate)request.getAttribute("liferay-template:template-selector:portletDisplayDDMTemplate");
 %>

@@ -26,6 +26,11 @@
 			"value": ""
 		},
 		{
+			"fieldReference": "limitToOneSubmissionPerUser",
+			"name": "limitToOneSubmissionPerUser",
+			"value": "false"
+		},
+		{
 			"fieldReference": "objectDefinitionId",
 			"name": "objectDefinitionId",
 			"value": ""
@@ -53,6 +58,11 @@
 		{
 			"fieldReference": "sendEmailNotification",
 			"name": "sendEmailNotification",
+			"value": "false"
+		},
+		{
+			"fieldReference": "showPartialResultsToRespondents",
+			"name": "showPartialResultsToRespondents",
 			"value": "false"
 		},
 		{

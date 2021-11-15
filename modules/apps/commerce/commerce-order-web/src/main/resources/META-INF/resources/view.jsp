@@ -25,7 +25,7 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 %>
 
 <div class="pt-4" id="<portlet:namespace />orderDefinitionsContainer">
-	<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
+	<aui:form action="<%= portletURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 		<aui:input name="deleteCPDefinitionIds" type="hidden" />

@@ -211,7 +211,7 @@ BookmarksUtil.addPortletBreadcrumbEntries(folder, request, renderResponse);
 				<portlet:param name="mvcRenderCommandName" value="/bookmarks/edit_entry" />
 			</liferay-portlet:actionURL>
 
-			<aui:form action="<%= editEntryURL.toString() %>" method="get" name="fm">
+			<aui:form action="<%= editEntryURL %>" method="get" name="fm">
 				<aui:input name="<%= Constants.CMD %>" type="hidden" />
 				<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 				<aui:input name="newFolderId" type="hidden" />

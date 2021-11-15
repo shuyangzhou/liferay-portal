@@ -15,7 +15,7 @@
 --%>
 
 <portlet:renderURL var="editSXPBlueprintURL">
-	<portlet:param name="mvcRenderCommandName" value="/sxp_blueprint_admin/edit_sxp_blueprints" />
+	<portlet:param name="mvcRenderCommandName" value="/sxp_blueprint_admin/edit_sxp_blueprint" />
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 	<portlet:param name="sxpBlueprintId" value="<%= String.valueOf(sxpBlueprint.getSXPBlueprintId()) %>" />
 </portlet:renderURL>
@@ -79,7 +79,7 @@ for (int i = 0; Validator.isNull(title) && (i < languageIds.length); i++) {
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-jsp
-			path="/sxp_blueprint_actions.jsp"
+			path="/sxp_blueprint_admin/sxp_blueprint_actions.jsp"
 		/>
 	</c:when>
 	<c:otherwise>

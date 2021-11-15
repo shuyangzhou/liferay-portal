@@ -377,3 +377,8 @@ bad758b718f5e75748754d78dd864f0e53c3187f^..40f72bf7874dba15e797fed3fe37774fffccb
 # Bundle Version 6.0.36
 #
 9b64291b2c68de8abf6f18032cd86912cbee8495^..9fa72cf7adba0fb9fd3a01ec1eb0eb86bd55a0fd=LPS-140715
+
+#
+# Bundle Version 6.0.38
+#
+9fa72cf7adba0fb9fd3a01ec1eb0eb86bd55a0fd^..d0f546be497aee4e9f4bcf0b58071ee07aae1802=LPS-139972 LPS-141724

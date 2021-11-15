@@ -66,14 +66,12 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 		SearchRequestBuilder searchRequestBuilder,
 		com.liferay.search.experiences.model.SXPBlueprint sxpBlueprint) {
 
-		@SuppressWarnings("unchecked")
-		DTOConverter dtoConverter = _dtoConverterRegistry.getDTOConverter(
-			com.liferay.search.experiences.model.SXPBlueprint.class.getName());
+		DTOConverter
+			<com.liferay.search.experiences.model.SXPBlueprint, SXPBlueprint>
+				dtoConverter = _getDTOConverter();
 
 		try {
-			_enhance(
-				searchRequestBuilder,
-				(SXPBlueprint)dtoConverter.toDTO(sxpBlueprint));
+			_enhance(searchRequestBuilder, dtoConverter.toDTO(sxpBlueprint));
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
@@ -97,6 +95,9 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 		ScriptConverter scriptConverter = new ScriptConverter(_scripts);
 
 		_sxpSearchRequestBodyContributors = Arrays.asList(
+
+			// TODO AdvancedSXPSearchRequestBodyContributor with fetchSource
+
 			new AggsSXPSearchRequestBodyContributor(
 				_aggregations, _geoBuilders, highlightConverter, queryConverter,
 				scriptConverter, _significanceHeuristics, _sorts),
@@ -167,6 +168,18 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 					sxpParameterData)));
 
 		return sxpBlueprint2;
+	}
+
+	private DTOConverter
+		<com.liferay.search.experiences.model.SXPBlueprint, SXPBlueprint>
+			_getDTOConverter() {
+
+		String dtoClassName =
+			com.liferay.search.experiences.model.SXPBlueprint.class.getName();
+
+		return (DTOConverter
+			<com.liferay.search.experiences.model.SXPBlueprint, SXPBlueprint>)
+				_dtoConverterRegistry.getDTOConverter(dtoClassName);
 	}
 
 	@Reference

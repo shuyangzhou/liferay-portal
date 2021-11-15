@@ -909,7 +909,7 @@ This improves using all signing algorithms supported by OpenID Connect providers
 
 #### What changed?
 
-Automatically applied the Service Builder plugin to all OSGi projects but restricted the `buildService` task target to  `*-service` module folders that contain a `service.xml` file. 
+Automatically applied the Service Builder plugin to all OSGi projects but restricted the `buildService` task target to `*-service` module folders that contain a `service.xml` file.
 
 #### Who is affected?
 

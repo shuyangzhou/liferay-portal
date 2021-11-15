@@ -11,6 +11,7 @@ definition {
 
 	@description = "This is a use case for LRQA-48218. User should be redirected to the changed landing page upon login."
 	@priority = "5"
+	@uitest
 	test DefaultPortalLandingPage {
 		property test.name.skip.portal.instance = "Login#DefaultPortalLandingPage";
 
@@ -27,20 +28,9 @@ definition {
 		}
 
 		task ("Add public page") {
-			ApplicationsMenu.gotoPortlet(
-				category = "Sites",
-				panel = "Control Panel",
-				portlet = "Sites");
-
-			var siteName = TestCase.getSiteName(siteName = "${siteName}");
-
-			Navigator.openSiteURL(siteName = "${siteName}");
-
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
-
-			SitePages.addPublicPage(pageName = "landing");
+			JSONLayout.addPublicLayout(
+				groupName = "Guest",
+				layoutName = "landing");
 		}
 
 		task ("Logout and login") {
@@ -52,9 +42,7 @@ definition {
 		}
 
 		task ("Assert url value") {
-			var portalURL = PropsUtil.get("portal.url");
-
-			AssertLocation(value1 = "${portalURL}/web/guest/landing");
+			AssertLocation(value1 = "http://localhost:8080/web/guest/landing");
 		}
 	}
 
@@ -67,11 +55,9 @@ definition {
 		task ("Login and add a public page ") {
 			User.firstLoginPG();
 
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
-
-			SitePages.addPublicPage(pageName = "landing");
+			JSONLayout.addPublicLayout(
+				groupName = "Guest",
+				layoutName = "landing");
 		}
 
 		task ("Logout and login") {
@@ -83,14 +69,13 @@ definition {
 		}
 
 		task ("Assert url value") {
-			var portalURL = PropsUtil.get("portal.url");
-
-			AssertLocation(value1 = "${portalURL}/web/guest/landing");
+			AssertLocation(value1 = "http://localhost:8080/web/guest/landing");
 		}
 	}
 
 	@description = "This is a use case for LPS-105151. User could login to a virtual instance using the system level's OpenID Connect Provider."
 	@priority = "4"
+	@uitest
 	test EnabledOpenIDConnectOnSystemLevel {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "Login#EnabledOpenIDConnectOnSystemLevel";
@@ -131,10 +116,7 @@ definition {
 		task ("Enable openID connect CP") {
 			Navigator.openURL();
 
-			ApplicationsMenu.gotoPortlet(
-				category = "Configuration",
-				panel = "Control Panel",
-				portlet = "System Settings");
+			SystemSettings.openSystemSettingsAdmin();
 
 			SystemSettings.gotoConfiguration(
 				configurationCategory = "SSO",
@@ -145,10 +127,7 @@ definition {
 		}
 
 		task ("Add OpenID connect provider") {
-			ApplicationsMenu.gotoPortlet(
-				category = "Configuration",
-				panel = "Control Panel",
-				portlet = "System Settings");
+			SystemSettings.openSystemSettingsAdmin();
 
 			SystemSettings.gotoConfiguration(
 				configurationCategory = "SSO",
@@ -174,6 +153,7 @@ definition {
 
 	@description = "This is a use case for LRQA-27624. Users could login and logout using their Facebook profile."
 	@priority = "4"
+	@uitest
 	test FacebookSSOSmoke {
 		property portal.ssl.enabled = "true";
 		property test.name.skip.portal.instance = "Login#FacebookSSOSmoke";
@@ -184,12 +164,12 @@ definition {
 		var facebookPassword = PropsUtil.get("facebook.password");
 
 		task ("Login and edit facebook authentication") {
-			User.firstLoginUI();
+			User.firstLoginPG();
 
 			var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 			PortalSettings.gotoConfiguration(
-				baseURL = "https://localhost:8443",
+				baseURL = "http://localhost:8080",
 				configurationCategory = "SSO",
 				configurationName = "Facebook Connect",
 				configurationScope = "Virtual Instance Scope");
@@ -217,11 +197,12 @@ definition {
 
 	@description = "This is a use case for LPS-72398. Users could login to Portal when the default langauge is not English."
 	@priority = "5"
+	@uitest
 	test LoginWithSpanishOnlyEnabledLocale {
 		property test.name.skip.portal.instance = "Login#LoginWithSpanishOnlyEnabledLocale";
 
 		task ("Login and configure spanish as default and current portal language") {
-			User.firstLoginUI();
+			User.firstLoginPG();
 
 			var portalURL = PropsUtil.get("portal.url");
 
@@ -254,6 +235,7 @@ definition {
 
 	@description = "Users could login through the UI."
 	@priority = "5"
+	@uitest
 	test LoginWithUI {
 		property environment.acceptance = "true";
 		property portal.acceptance = "true";
@@ -317,10 +299,7 @@ definition {
 		task ("Inable OpenID connection CP") {
 			Navigator.openURL();
 
-			ApplicationsMenu.gotoPortlet(
-				category = "Configuration",
-				panel = "Control Panel",
-				portlet = "System Settings");
+			SystemSettings.openSystemSettingsAdmin();
 
 			SystemSettings.gotoConfiguration(
 				configurationCategory = "SSO",
@@ -331,10 +310,7 @@ definition {
 		}
 
 		task ("Add SSO openID connect provider") {
-			ApplicationsMenu.gotoPortlet(
-				category = "Configuration",
-				panel = "Control Panel",
-				portlet = "System Settings");
+			SystemSettings.openSystemSettingsAdmin();
 
 			SystemSettings.gotoConfiguration(
 				configurationCategory = "SSO",
@@ -399,6 +375,7 @@ definition {
 
 	@description = "This is a use case for LPS-105151. Users could login with instance-level configured OpenID Connect provider."
 	@priority = "4"
+	@uitest
 	test OpenIDConnectOnInstanceLevelSmoke {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "Login#OpenIDConnectOnInstanceLevelSmoke";
@@ -409,7 +386,7 @@ definition {
 		var userPassword = PropsUtil.get("email.password.2");
 
 		task ("Login and add CP") {
-			User.firstLoginUI();
+			User.firstLoginPG();
 
 			ApplicationsMenu.gotoPortlet(
 				category = "System",
@@ -477,6 +454,7 @@ definition {
 
 	@description = "This is a use case for LRQA-40911. Users could login and logout using OpenID Connect provider."
 	@priority = "4"
+	@uitest
 	test OpenIDConnectSmoke {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "Login#OpenIDConnectSmoke";
@@ -499,10 +477,7 @@ definition {
 
 			PortalSettings.enableOpenIDConnectCP();
 
-			ApplicationsMenu.gotoPortlet(
-				category = "Configuration",
-				panel = "Control Panel",
-				portlet = "System Settings");
+			SystemSettings.openSystemSettingsAdmin();
 
 			SystemSettings.gotoConfiguration(
 				configurationCategory = "SSO",
@@ -524,11 +499,7 @@ definition {
 		}
 
 		task ("Logout and login") {
-			User.logoutPG();
-
-			User.loginUserPG(
-				password = "test",
-				userEmailAddress = "test@liferay.com");
+			User.logoutAndLoginPG();
 		}
 	}
 
@@ -607,11 +578,12 @@ definition {
 
 	@description = "This is a use case for LRQA-27622. Users could login using Token Based SSO."
 	@priority = "5"
+	@uitest
 	test TokenBasedSSOSmoke {
 		property test.name.skip.portal.instance = "Login#TokenBasedSSOSmoke";
 
 		task ("Login and reset token based SSO configuration") {
-			User.firstLoginUI();
+			User.firstLoginPG();
 
 			SystemSettings.openSystemSettingsAdmin();
 

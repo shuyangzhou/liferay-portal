@@ -63,6 +63,7 @@ JSPJavaParserCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Performs JavaParser
 JSPLineBreakCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds missing and unnecessary line breaks in `.jsp` lines. |
 JSPStylingCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Applies rules to enforce consisteny in code style. |
 JSPVarNameCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that values of attribute `var` follow naming conventions. |
+JSPVariableOrderCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks if variable names are in alphabetical order. |
 JSPWhitespaceCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds missing and unnecessary whitespace in `.jsp` files. |
 JSStylingCheck | .js or .jsx | Applies rules to enforce consisteny in code style. |
 JSWhitespaceCheck | .js or .jsx | Finds missing and unnecessary whitespace in `.js` files. |

@@ -86,6 +86,35 @@ public class ElementDefinition implements Serializable {
 	protected String category;
 
 	@Schema
+	@Valid
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	@JsonIgnore
+	public void setConfiguration(
+		UnsafeSupplier<Configuration, Exception> configurationUnsafeSupplier) {
+
+		try {
+			configuration = configurationUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Configuration configuration;
+
+	@Schema
 	public String getIcon() {
 		return icon;
 	}
@@ -110,35 +139,6 @@ public class ElementDefinition implements Serializable {
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String icon;
-
-	@Schema
-	@Valid
-	public SXPBlueprint getSxpBlueprint() {
-		return sxpBlueprint;
-	}
-
-	public void setSxpBlueprint(SXPBlueprint sxpBlueprint) {
-		this.sxpBlueprint = sxpBlueprint;
-	}
-
-	@JsonIgnore
-	public void setSxpBlueprint(
-		UnsafeSupplier<SXPBlueprint, Exception> sxpBlueprintUnsafeSupplier) {
-
-		try {
-			sxpBlueprint = sxpBlueprintUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected SXPBlueprint sxpBlueprint;
 
 	@Schema
 	@Valid
@@ -211,6 +211,16 @@ public class ElementDefinition implements Serializable {
 			sb.append("\"");
 		}
 
+		if (configuration != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"configuration\": ");
+
+			sb.append(String.valueOf(configuration));
+		}
+
 		if (icon != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -223,16 +233,6 @@ public class ElementDefinition implements Serializable {
 			sb.append(_escape(icon));
 
 			sb.append("\"");
-		}
-
-		if (sxpBlueprint != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"sxpBlueprint\": ");
-
-			sb.append(String.valueOf(sxpBlueprint));
 		}
 
 		if (uiConfiguration != null) {

@@ -36,7 +36,7 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 			</clay:container-fluid>
 		</div>
 	</c:when>
-	<c:when test="<%= ddmFormDisplayContext.isRequireAuthentication() %>">
+	<c:when test="<%= (ddmFormDisplayContext.isLimitToOneSubmissionPerUserEnabled() && !ddmFormDisplayContext.isLoggedUser()) || ddmFormDisplayContext.isRequireAuthentication() %>">
 		<div class="ddm-form-basic-info">
 			<clay:container-fluid>
 				<clay:alert
@@ -70,6 +70,17 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 							<h1 class="ddm-form-name"><%= HtmlUtil.escape(GetterUtil.getString(title.getString(displayLocale), title.getString(title.getDefaultLocale()))) %></h1>
 
 							<p class="ddm-form-description"><%= HtmlUtil.escape(GetterUtil.getString(body.getString(displayLocale), body.getString(body.getDefaultLocale()))) %></p>
+						</clay:container-fluid>
+					</div>
+				</div>
+			</c:when>
+			<c:when test="<%= ddmFormDisplayContext.hasSubmittedAnEntry() && !ddmFormDisplayContext.isPreview() %>">
+				<div class="portlet-forms">
+					<div class="ddm-form-basic-info">
+						<clay:container-fluid>
+							<h1 class="ddm-form-name"><%= LanguageUtil.get(request, "you-have-already-responded") %></h1>
+
+							<p class="ddm-form-description"><%= LanguageUtil.get(request, "you-can-fill-out-this-form-only-once.-contact-the-owner-of-the-form-if-you-think-this-is-a-mistake") %></p>
 						</clay:container-fluid>
 					</div>
 				</div>

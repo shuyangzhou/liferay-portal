@@ -58,7 +58,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -90,19 +89,14 @@ public class BackgroundTaskLocalServiceImpl
 
 		backgroundTask = super.addBackgroundTask(backgroundTask);
 
-		final long backgroundTaskId = backgroundTask.getBackgroundTaskId();
+		long backgroundTaskId = backgroundTask.getBackgroundTaskId();
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				backgroundTaskLocalService.triggerBackgroundTask(
+					backgroundTaskId);
 
-				@Override
-				public Void call() throws Exception {
-					backgroundTaskLocalService.triggerBackgroundTask(
-						backgroundTaskId);
-
-					return null;
-				}
-
+				return null;
 			});
 
 		return backgroundTask;
@@ -213,9 +207,8 @@ public class BackgroundTaskLocalServiceImpl
 
 	@Clusterable(onMaster = true)
 	@Override
-	public void cleanUpBackgroundTask(long backgroundTaskId, final int status) {
-		final BackgroundTask backgroundTask = fetchBackgroundTask(
-			backgroundTaskId);
+	public void cleanUpBackgroundTask(long backgroundTaskId, int status) {
+		BackgroundTask backgroundTask = fetchBackgroundTask(backgroundTaskId);
 
 		try {
 			_backgroundTaskLockHelper.unlockBackgroundTask(
@@ -228,27 +221,22 @@ public class BackgroundTaskLocalServiceImpl
 		}
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				Message message = new Message();
 
-				@Override
-				public Void call() throws Exception {
-					Message message = new Message();
+				message.put(
+					BackgroundTaskConstants.BACKGROUND_TASK_ID,
+					backgroundTask.getBackgroundTaskId());
+				message.put("name", backgroundTask.getName());
+				message.put("status", status);
+				message.put(
+					"taskExecutorClassName",
+					backgroundTask.getTaskExecutorClassName());
 
-					message.put(
-						BackgroundTaskConstants.BACKGROUND_TASK_ID,
-						backgroundTask.getBackgroundTaskId());
-					message.put("name", backgroundTask.getName());
-					message.put("status", status);
-					message.put(
-						"taskExecutorClassName",
-						backgroundTask.getTaskExecutorClassName());
+				_messageBus.sendMessage(
+					DestinationNames.BACKGROUND_TASK_STATUS, message);
 
-					_messageBus.sendMessage(
-						DestinationNames.BACKGROUND_TASK_STATUS, message);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 
@@ -705,7 +693,7 @@ public class BackgroundTaskLocalServiceImpl
 			user = _userLocalService.fetchUser(userId);
 		}
 
-		final long backgroundTaskId = counterLocalService.increment();
+		long backgroundTaskId = counterLocalService.increment();
 
 		BackgroundTask backgroundTask = backgroundTaskPersistence.create(
 			backgroundTaskId);
@@ -743,16 +731,11 @@ public class BackgroundTaskLocalServiceImpl
 		backgroundTask = backgroundTaskPersistence.update(backgroundTask);
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				backgroundTaskLocalService.triggerBackgroundTask(
+					backgroundTaskId);
 
-				@Override
-				public Void call() throws Exception {
-					backgroundTaskLocalService.triggerBackgroundTask(
-						backgroundTaskId);
-
-					return null;
-				}
-
+				return null;
 			});
 
 		return backgroundTask;

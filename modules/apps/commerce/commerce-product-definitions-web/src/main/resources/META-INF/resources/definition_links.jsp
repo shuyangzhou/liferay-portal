@@ -36,7 +36,7 @@ PortletURL portletURL = cpDefinitionLinkDisplayContext.getPortletURL();
 	</aui:form>
 
 	<div class="pt-4" id="<portlet:namespace />productDefinitionLinksContainer">
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+		<aui:form action="<%= portletURL %>" method="post" name="fm">
 			<aui:input name="<%= Constants.CMD %>" type="hidden" />
 			<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 

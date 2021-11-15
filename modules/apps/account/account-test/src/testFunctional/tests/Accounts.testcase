@@ -300,6 +300,8 @@ definition {
 	@description = "This test asserts that an Account Manager can view all accounts that are added by other users in the Accounts Admin portlet, not just the ones he created"
 	@priority = "5"
 	test AllAccountsEntriesDisplay {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
 		task ("Add several accounts") {
 			for (var accountNum : list "1,2,3") {
 				JSONAccountEntry.addAccountEntry(
@@ -763,6 +765,72 @@ definition {
 		Accounts.viewAssignee(assigneeName = "userfn");
 	}
 
+	@description = "This test asserts that multiple users can be assigned to an account via the Assign Users Modal"
+	@priority = "4"
+	test CanAssignMultipleUsersViaAssignUsersModal {
+		task ("Create an account and add 4 users into it") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Business Account",
+				accountEntryType = "Business");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+			for (var userNum : list "1,2,3,4") {
+				Accounts.addNewUserToBusinessAccount(
+					accountName = "Business Account",
+					assigneeName = "userfn${userNum}",
+					userEmailAddress = "userea${userNum}@liferay.com",
+					userFirstName = "userfn${userNum}",
+					userLastName = "userln${userNum}",
+					userScreenName = "usersn${userNum}");
+			}
+		}
+
+		task ("Remove all users from Account so they can later be assigned") {
+			PortletEntry.selectAll();
+
+			ClickNoError(
+				key_text = "times-circle",
+				locator1 = "Icon#ANY");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to remove the selected users?");
+
+			Alert.viewSuccessMessage();
+		}
+
+		task ("Open and click into the Assign Users Modal") {
+			LexiconEntry.gotoAdd();
+
+			WaitForElementPresent(
+				key_title = "Assign Users to Business Account",
+				locator1 = "IFrame#MODAL_ANY");
+
+			SelectFrame(
+				key_title = "Assign Users to Business Account",
+				locator1 = "IFrame#MODAL_ANY");
+		}
+
+		task ("Assign multiple users from Assign Users modal and assert that the correct users were added") {
+			for (var accountUser : list "1,2,3") {
+				LexiconEntry.selectEntry(rowEntry = "userfn${accountUser} userln${accountUser}");
+			}
+
+			SelectFrameTop();
+
+			Button.clickAssign();
+
+			Alert.viewSuccessMessage();
+
+			for (var accountUser : list "1,2,3") {
+				LexiconEntry.viewEntryName(rowEntry = "userfn${accountUser} userln${accountUser}");
+			}
+
+			LexiconEntry.viewNoEntry(rowEntry = "userfn4 userln4");
+		}
+	}
+
 	@description = "This test adds an organization as an assignee of a business account with domain."
 	@priority = "4"
 	test CanAssignOrganizationToAccountWithDomain {
@@ -1064,6 +1132,75 @@ definition {
 		Pagination.viewResults(results = "Showing 5 to 6 of 6 entries.");
 	}
 
+	@description = "This test asserts that pagination can be changed in the Assign Users Modal."
+	@priority = "4"
+	test CanChangePaginationInAssignUsersModal {
+		task ("Add an account and add 5 users to it") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Business Account",
+				accountEntryType = "Business");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+			for (var userNum : list "1,2,3,4,5") {
+				Accounts.addNewUserToBusinessAccount(
+					accountName = "Business Account",
+					assigneeName = "userfn${userNum}",
+					userEmailAddress = "userea${userNum}@liferay.com",
+					userFirstName = "userfn${userNum}",
+					userLastName = "userln${userNum}",
+					userScreenName = "usersn${userNum}");
+			}
+		}
+
+		task ("Open and click into the Assign Users Modal") {
+			LexiconEntry.gotoAdd();
+
+			WaitForElementPresent(
+				key_title = "Assign Users to Business Account",
+				locator1 = "IFrame#MODAL_ANY");
+
+			SelectFrame(
+				key_title = "Assign Users to Business Account",
+				locator1 = "IFrame#MODAL_ANY");
+		}
+
+		task ("Assert pagination can be changed and correct entries and amount are displayed") {
+			for (var listEntries : list "4,8,20") {
+				Pagination.changePagination(itemsPerPage = "${listEntries}");
+
+				if ("${listEntries}" == "4") {
+					Pagination.viewResults(results = "Showing 1 to 4 of 5 entries.");
+
+					LexiconEntry.viewNoEntry(rowEntry = "userfn5 userln5");
+
+					for (var accountUsers : list "userfn1 userln1,userfn2 userln2,userfn3 userln3,userfn4 userln4") {
+						LexiconEntry.viewEntryName(rowEntry = "${accountUsers}");
+					}
+
+					Click(locator1 = "Pagination#NEXT_LINK");
+
+					Pagination.viewResults(results = "Showing 5 to 5 of 5 entries.");
+
+					LexiconEntry.viewEntryName(rowEntry = "userfn5 userln5");
+
+					for (var accountUsers : list "userfn1 userln1,userfn2 userln2,userfn3 userln3,userfn4 userln4") {
+						LexiconEntry.viewNoEntry(rowEntry = "${accountUsers}");
+					}
+				}
+				else {
+					Pagination.viewResults(results = "Showing 1 to 5 of 5 entries.");
+
+					for (var allUsers : list "userfn1 userln1,userfn2 userln2,userfn3 userln3,userfn4 userln4,userfn5 userln5") {
+						LexiconEntry.viewEntryName(rowEntry = "${allUsers}");
+					}
+				}
+			}
+		}
+	}
+
 	@description = "This test adds more than 3 Owned Roles to an account and asserts correct pagination in the Roles list."
 	@ignore = "true"
 	@priority = "3"
@@ -1273,6 +1410,8 @@ definition {
 			Check(locator1 = "RolesPermissions#ACCOUNTS_APPLICATION_PERMISSIONS_SELECT_ALL");
 
 			Button.clickSave();
+
+			WaitForElementPresent(locator1 = "NavBar#CONTAINER");
 
 			AssertElementPresent(
 				key_permissionDefinitionValue = "All Sites and Asset Libraries",
@@ -1608,6 +1747,66 @@ definition {
 			customFieldText = "Custom Field for Account");
 	}
 
+	@description = "This test asserts that address fields are able to be added and edited."
+	@priority = "4"
+	test CanEditAddressFields {
+		task ("Add an inital account entry with city, country, postal code, region, and street.") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "CanEditAddressFields",
+				accountEntryType = "Business");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "CanEditAddressFields");
+
+			Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+			Accounts.addAddress(
+				addressCity = "Dalian",
+				addressCountry = "Cuba",
+				addressName = "Address Entry Name",
+				addressPostalCode = "116023",
+				addressStreet1 = "537 Huangpu Road Taide Building,");
+		}
+
+		task ("Edit the previously added account entry information.") {
+			Accounts.editAddress(
+				addressCity = "Irvine",
+				addressCountry = "Chile",
+				addressName = "Address Entry Name",
+				addressPostalCode = "123456",
+				addressStreet1 = "Street address one");
+		}
+
+		task ("Assert that the correct edits were made to street and city") {
+			AssertTextEquals(
+				key_columnName = "lfr-street-column",
+				key_rowEntry = "Address Entry Name",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+				value1 = "Street address one");
+
+			AssertTextEquals(
+				key_columnName = "lfr-city-column",
+				key_rowEntry = "Address Entry Name",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+				value1 = "Irvine");
+		}
+
+		task ("Assert that original names are no longer present for street and city.") {
+			AssertTextNotEquals(
+				key_columnName = "lfr-street-column",
+				key_rowEntry = "Address Entry Name",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+				value1 = "537 Huangpu Road Taide Building,");
+
+			AssertTextNotEquals(
+				key_columnName = "lfr-city-column",
+				key_rowEntry = "Address Entry Name",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+				value1 = "Dalian");
+		}
+	}
+
 	@description = "This test asserts that External Reference Code is editable."
 	@priority = "3"
 	test CanEditExternalReferenceCode {
@@ -1729,12 +1928,16 @@ definition {
 		LexiconEntry.viewNoEntry(rowEntry = "Update Accounts Name for Test");
 	}
 
-	@description = "This test asserts accounts are filtered by All Accounts by default. Changing filter to Business and Person shows accurate results."
+	@description = "This is a use case for LPS-139477. This test asserts accounts are filtered by All Accounts by default. Changing filter to Business, Guest and Person shows accurate results."
 	@priority = "3"
 	test CanFilterAccountsByType {
 		JSONAccountEntry.addAccountEntry(
 			accountEntryName = "Business Account",
 			accountEntryType = "Business");
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Guest Account",
+			accountEntryType = "Guest");
 
 		JSONAccountEntry.addAccountEntry(
 			accountEntryName = "Person Account",
@@ -1750,6 +1953,16 @@ definition {
 
 		LexiconEntry.viewEntryName(rowEntry = "Business Account");
 
+		LexiconEntry.viewNoEntry(rowEntry = "Guest Account");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Person Account");
+
+		ManagementBar.setFilterAndOrder(filterBy = "Guest");
+
+		LexiconEntry.viewEntryName(rowEntry = "Guest Account");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Business Account");
+
 		LexiconEntry.viewNoEntry(rowEntry = "Person Account");
 
 		ManagementBar.setFilterAndOrder(filterBy = "Person");
@@ -1757,6 +1970,115 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "Person Account");
 
 		LexiconEntry.viewNoEntry(rowEntry = "Business Account");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Guest Account");
+	}
+
+	@description = "This test asserts that users are correctly filtered by First Name, Last Name, and Email Address in the Assign Users Modal"
+	@priority = "4"
+	test CanFilterAndOrderUsersInAssignUsersModal {
+		task ("Add an account and add 3 different users with varying names and email addresses") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Business Account",
+				accountEntryType = "Business");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+			Accounts.addNewUserToBusinessAccount(
+				accountName = "Business Account",
+				assigneeName = "A-user",
+				userEmailAddress = "Z-ea@liferay.com",
+				userFirstName = "A-user",
+				userLastName = "userln2",
+				userScreenName = "A-user");
+
+			Accounts.addNewUserToBusinessAccount(
+				accountName = "Business Account",
+				assigneeName = "B-user",
+				userEmailAddress = "Y-ea@liferay.com",
+				userFirstName = "B-user",
+				userLastName = "userln3",
+				userScreenName = "B-user");
+
+			Accounts.addNewUserToBusinessAccount(
+				accountName = "Business Account",
+				assigneeName = "C-user",
+				userEmailAddress = "X-ea@liferay.com",
+				userFirstName = "C-user",
+				userLastName = "userln1",
+				userScreenName = "C-user");
+		}
+
+		task ("Open and click into the Assign Users Modal") {
+			LexiconEntry.gotoAdd();
+
+			WaitForElementPresent(
+				key_title = "Assign Users to Business Account",
+				locator1 = "IFrame#MODAL_ANY");
+
+			SelectFrame(
+				key_title = "Assign Users to Business Account",
+				locator1 = "IFrame#MODAL_ANY");
+		}
+
+		task ("Assert users can be ordered by First Name and are in correct order") {
+			ManagementBar.setFilterAndOrder(orderBy = "First Name");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "1",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "A-user");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "2",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "B-user");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "3",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "C-user");
+		}
+
+		task ("Assert users can be ordered by Last Name and are in correct order") {
+			ManagementBar.setFilterAndOrder(orderBy = "Last Name");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "1",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "userln1");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "2",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "userln2");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "3",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "userln3");
+		}
+
+		task ("Assert users can be ordered by Email Address and are in correct order") {
+			ManagementBar.setFilterAndOrder(orderBy = "Email Address");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "1",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "x-ea@liferay.com");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "2",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "y-ea@liferay.com");
+
+			AssertTextEquals.assertPartialText(
+				key_rowNumber = "3",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER",
+				value1 = "z-ea@liferay.com");
+		}
 	}
 
 	@description = "This asserts that filter in setting default shipping will not change to billing and that billing addresses do not display as options."
@@ -2164,6 +2486,51 @@ definition {
 			Search.searchCP(searchTerm = "${searchTerm}");
 
 			LexiconEntry.viewEntryName(rowEntry = "Liferay Dalian Software Co., Ltd.");
+		}
+	}
+
+	@description = "This test searches for organizations assigned to an account"
+	@priority = "4"
+	test CanSearchForAssignedOrganizations {
+		task ("Add an account and add two organizations") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Business Account",
+				accountEntryType = "Business");
+
+			for (var org : list "Organization Name,New Selection for Search Test") {
+				JSONOrganization.addOrganization(
+					organizationName = "${org}",
+					organizationSite = "true");
+			}
+		}
+
+		task ("Assign both organizations to the account") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Business Account");
+
+			for (var org : list "Organization Name,New Selection for Search Test") {
+				Accounts.assignOrganizations(
+					accountName = "Business Account",
+					assigneeName = "${org}");
+			}
+		}
+
+		task ("Search for both organizations and assert only the searched organization is displayed") {
+			for (var searchTerm : list "Organization Name,New Selection for Search Test") {
+				Search.searchCP(searchTerm = "${searchTerm}");
+
+				if ("${searchTerm}" == "Organization Name") {
+					LexiconEntry.viewEntryName(rowEntry = "Organization Name");
+
+					LexiconEntry.viewNoEntry(rowEntry = "New Selection for Search Test");
+				}
+				else if ("${searchTerm}" == "New Selection for Search Test") {
+					LexiconEntry.viewEntryName(rowEntry = "New Selection for Search Test");
+
+					LexiconEntry.viewNoEntry(rowEntry = "Organization Name");
+				}
+			}
 		}
 	}
 

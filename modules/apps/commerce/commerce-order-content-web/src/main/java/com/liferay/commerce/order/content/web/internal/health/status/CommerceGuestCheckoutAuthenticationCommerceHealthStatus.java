@@ -35,17 +35,20 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutService;
+import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.List;
 import java.util.Locale;
@@ -106,6 +109,20 @@ public class CommerceGuestCheckoutAuthenticationCommerceHealthStatus
 			commerceChannel.getSiteGroupId(), privateLayout,
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, name, name, null,
 			LayoutConstants.TYPE_PORTLET, true, friendlyURL, serviceContext);
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			layout.getTypeSettingsProperties();
+
+		typeSettingsUnicodeProperties.put(
+			"lfr-theme:regular:show-mini-cart", "false");
+
+		layout.setTypeSettingsProperties(typeSettingsUnicodeProperties);
+
+		Theme theme = layout.getTheme();
+
+		_layoutSetLocalService.updateLookAndFeel(
+			serviceContext.getScopeGroupId(), privateLayout, theme.getThemeId(),
+			StringPool.BLANK, StringPool.BLANK);
 
 		LayoutTypePortlet layoutTypePortlet =
 			(LayoutTypePortlet)layout.getLayoutType();
@@ -285,6 +302,9 @@ public class CommerceGuestCheckoutAuthenticationCommerceHealthStatus
 
 	@Reference
 	private LayoutService _layoutService;
+
+	@Reference
+	private LayoutSetLocalService _layoutSetLocalService;
 
 	@Reference
 	private PortletPreferencesFactory _portletPreferencesFactory;

@@ -19,7 +19,7 @@ definition {
 		task ("Add a content page") {
 			JSONLayout.addPublicLayout(
 				groupName = "Test Site Name",
-				layoutName = "Test Content Page Name",
+				layoutName = "Test Page Name",
 				type = "content");
 		}
 	}
@@ -32,6 +32,342 @@ definition {
 		}
 		else {
 			JSONGroup.deleteGroupByName(groupName = "Test Site Name");
+		}
+	}
+
+	@description = "This is a test for LPS-128810. The user cannot modify experiences at view mode."
+	@priority = "4"
+	test CannotModifyExperienceAtViewMode {
+		property osgi.module.configuration.file.names = "com.liferay.product.navigation.control.menu.web.internal.configuration.FFProductNavigationControlMenuConfiguration.config:com.liferay.segments.web.internal.configuration.FFSegmentsConfiguration.config";
+		property osgi.module.configurations = "layoutExperienceSelectorEnabled=&quot;true&quot;:layoutExperienceSelectorEnabled=&quot;true&quot;";
+
+		task ("Add a Button fragment to a content page") {
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Button");
+		}
+
+		task ("Add a new experience") {
+			PageEditor.addExperience(
+				experienceName = "New Experience",
+				segmentName = "Anyone");
+		}
+
+		task ("Add a Heading fragment below the Button then publish") {
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Heading",
+				targetFragmentName = "Button");
+
+			PageEditor.clickPublish();
+		}
+
+		task ("View cannot prioritize, deprioritize, edit, duplicate, delete experiences at view mode") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			ContentPages.openExperienceMenu();
+
+			for (var experienceName : list "Default,New Experience") {
+				MenuItem.viewPresent(menuItem = "${experienceName}");
+			}
+
+			for (var action : list "Prioritize,Deprioritize,Edit,Duplicate,Delete") {
+				AssertElementNotPresent(
+					ariaLabel = "${action} Experience",
+					locator1 = "Button#ANY_WITH_ARIA_LABEL");
+			}
+		}
+	}
+
+	@description = "This is a test for LPS-128810. The user cannot modify experiences on preview draft page."
+	@priority = "4"
+	test CannotModifyExperiencesOnPreviewDraftPage {
+		property osgi.module.configuration.file.names = "com.liferay.product.navigation.control.menu.web.internal.configuration.FFProductNavigationControlMenuConfiguration.config:com.liferay.segments.web.internal.configuration.FFSegmentsConfiguration.config";
+		property osgi.module.configurations = "layoutExperienceSelectorEnabled=&quot;true&quot;:layoutExperienceSelectorEnabled=&quot;true&quot;";
+
+		task ("Add a Button fragment to a content page") {
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Button");
+		}
+
+		task ("Add a new experience") {
+			PageEditor.addExperience(
+				experienceName = "New Experience",
+				segmentName = "Anyone");
+		}
+
+		task ("Add a Heading fragment below the Button") {
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Heading",
+				targetFragmentName = "Button");
+		}
+
+		task ("View cannot prioritize, deprioritize, edit, duplicate, delete experiences on preview draft page") {
+			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+			SitePages.gotoPageMenuItem(
+				menuItem = "Preview Draft",
+				pageName = "Test Page Name");
+
+			SelectWindow.selectPopUp(locator1 = "null");
+
+			ControlMenu.viewHeaderTitle(headerTitle = "Test Page Name *");
+
+			ControlMenu.viewHeaderTitleLabel(headerTitleLabel = "Draft");
+
+			ContentPages.openExperienceMenu();
+
+			for (var experienceName : list "Default,New Experience") {
+				MenuItem.viewPresent(menuItem = "${experienceName}");
+			}
+
+			for (var action : list "Prioritize,Deprioritize,Edit,Duplicate,Delete") {
+				AssertElementNotPresent(
+					ariaLabel = "${action} Experience",
+					locator1 = "Button#ANY_WITH_ARIA_LABEL");
+			}
+		}
+	}
+
+	@description = "This is a test for LPS-128810. The user can switch experiences at view mode."
+	@priority = "4"
+	test SwitchExperienceAtViewMode {
+		property osgi.module.configuration.file.names = "com.liferay.product.navigation.control.menu.web.internal.configuration.FFProductNavigationControlMenuConfiguration.config:com.liferay.segments.web.internal.configuration.FFSegmentsConfiguration.config";
+		property osgi.module.configurations = "layoutExperienceSelectorEnabled=&quot;true&quot;:layoutExperienceSelectorEnabled=&quot;true&quot;";
+
+		task ("Add a Button fragment to a content page") {
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Button");
+		}
+
+		task ("Add a new experience") {
+			PageEditor.addExperience(
+				experienceName = "New Experience",
+				segmentName = "Anyone");
+		}
+
+		task ("Add a Heading fragment below the Button then publish") {
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Heading",
+				targetFragmentName = "Button");
+
+			PageEditor.clickPublish();
+		}
+
+		task ("View the current experience is Default at view mode") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			ContentPages.viewCurrentExperience(experienceName = "Default");
+
+			AssertElementNotPresent(
+				fragmentName = "heading",
+				id = "element-text",
+				index = "1",
+				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_TEXT");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+		}
+
+		task ("Switch to the new experience") {
+			ContentPages.changeExperience(experienceName = "New Experience");
+		}
+
+		task ("View both Button and Heading fragments are shown") {
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "heading",
+				id = "element-text",
+				text = "Heading Example");
+		}
+
+		task ("View the order of experiences at view mode") {
+			ContentPages.viewExperienceOrder(experienceNameList = "Default,New Experience");
+		}
+
+		task ("Prioritize the new experience in page editor") {
+			ContentPages.gotoPageEditor();
+
+			PageEditor.prioritizeExperience(experienceName = "New Experience");
+
+			PageEditor.clickBack();
+		}
+
+		task ("View the new order of experiences at view mode") {
+			ContentPages.viewExperienceOrder(experienceNameList = "New Experience,Default");
+		}
+
+		task ("View both Button and Heading fragments are shown") {
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "heading",
+				id = "element-text",
+				text = "Heading Example");
+		}
+
+		task ("Switch back to the default experience") {
+			ContentPages.changeExperience(experienceName = "Default");
+		}
+
+		task ("View only Button fragment is shown") {
+			AssertElementNotPresent(
+				fragmentName = "heading",
+				id = "element-text",
+				index = "1",
+				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_TEXT");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+		}
+	}
+
+	@description = "This is a test for LPS-128810. The user can switch experiences on preview draft page."
+	@priority = "4"
+	test SwitchExperienceOnPreviewDraftPage {
+		property osgi.module.configuration.file.names = "com.liferay.product.navigation.control.menu.web.internal.configuration.FFProductNavigationControlMenuConfiguration.config:com.liferay.segments.web.internal.configuration.FFSegmentsConfiguration.config";
+		property osgi.module.configurations = "layoutExperienceSelectorEnabled=&quot;true&quot;:layoutExperienceSelectorEnabled=&quot;true&quot;";
+
+		task ("Add a Button fragment to a content page") {
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Button");
+		}
+
+		task ("Add a new experience") {
+			PageEditor.addExperience(
+				experienceName = "New Experience",
+				segmentName = "Anyone");
+		}
+
+		task ("Add a Heading fragment to below the Button") {
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Heading",
+				targetFragmentName = "Button");
+		}
+
+		task ("View the current experience is Default on preview draft page") {
+			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+			SitePages.gotoPageMenuItem(
+				menuItem = "Preview Draft",
+				pageName = "Test Page Name");
+
+			SelectWindow.selectPopUp(locator1 = "null");
+
+			ControlMenu.viewHeaderTitle(headerTitle = "Test Page Name *");
+
+			ControlMenu.viewHeaderTitleLabel(headerTitleLabel = "Draft");
+
+			ContentPages.viewCurrentExperience(experienceName = "Default");
+
+			AssertElementNotPresent(
+				fragmentName = "heading",
+				id = "element-text",
+				index = "1",
+				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_TEXT");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+		}
+
+		task ("Switch to the new experience") {
+			ContentPages.changeExperience(experienceName = "New Experience");
+		}
+
+		task ("View both Button and Heading fragments are shown") {
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "heading",
+				id = "element-text",
+				text = "Heading Example");
+		}
+
+		task ("View the order of experiences on preview draft page") {
+			ContentPages.viewExperienceOrder(experienceNameList = "Default,New Experience");
+		}
+
+		task ("Prioritize the new experience in page editor") {
+			ContentPages.gotoPageEditor();
+
+			PageEditor.prioritizeExperience(experienceName = "New Experience");
+
+			PageEditor.clickBack();
+		}
+
+		task ("View the new order of experiences on preview draft page") {
+			ContentPages.viewExperienceOrder(experienceNameList = "New Experience,Default");
+		}
+
+		task ("View both Button and Heading fragments are shown") {
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "heading",
+				id = "element-text",
+				text = "Heading Example");
+		}
+
+		task ("Switch back to the default experience") {
+			ContentPages.changeExperience(experienceName = "Default");
+		}
+
+		task ("View only Button fragment is shown") {
+			AssertElementNotPresent(
+				fragmentName = "heading",
+				id = "element-text",
+				index = "1",
+				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_TEXT");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "Go Somewhere");
 		}
 	}
 
@@ -118,7 +454,7 @@ definition {
 
 		task ("Add a Collection Display fragment to content page") {
 			ContentPagesNavigator.openEditContentPage(
-				pageName = "Test Content Page Name",
+				pageName = "Test Page Name",
 				siteName = "Test Site Name");
 
 			PageEditor.addFragment(
@@ -150,7 +486,7 @@ definition {
 
 		task ("View both web contents shown in simulation modal by default") {
 			ContentPagesNavigator.openViewContentPage(
-				pageName = "Test Content Page Name",
+				pageName = "Test Page Name",
 				siteName = "Test Site Name");
 
 			MobileDevice.previewPG();
@@ -191,7 +527,7 @@ definition {
 	test ViewInlineTextItemsFromCurrentExperienceInPageContentPanel {
 		task ("Add a new experience") {
 			ContentPagesNavigator.openEditContentPage(
-				pageName = "Content Page Name",
+				pageName = "Test Page Name",
 				siteName = "Test Site Name");
 
 			PageEditor.addExperience(

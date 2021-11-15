@@ -29,17 +29,12 @@ import {
 	DEFAULT_PARAMETER_CONFIGURATION,
 	DEFAULT_SORT_CONFIGURATION,
 } from '../utils/data';
+import {fetchData} from '../utils/fetch';
 import {FRAMEWORK_TYPES} from '../utils/frameworkTypes';
-import {openErrorToast} from '../utils/toasts';
-import {getSXPElementOutput, getUIConfigurationValues} from '../utils/utils';
+import {getSXPBlueprintForm, getSXPElementOutput} from '../utils/utils';
 
 const DEFAULT_SELECTED_BASELINE_SXP_ELEMENTS = DEFAULT_BASELINE_SXP_ELEMENTS.map(
-	(sxpElement) => ({
-		...sxpElement,
-		uiConfigurationValues: getUIConfigurationValues(
-			sxpElement.uiConfigurationJSON
-		),
-	})
+	getSXPBlueprintForm
 );
 
 const FrameworkCard = ({
@@ -99,12 +94,14 @@ const AddModal = ({
 	closeModal,
 	defaultLocale,
 	dialogTitle,
+	editSXPBlueprintURL,
 	initialVisible,
-	keywordQueryContributorsString = '[]',
-	modelPrefilterContributorsString = '[]',
-	namespace,
-	queryPrefilterContributorsString = '[]',
-	searchableTypesString = '[]',
+	keywordQueryContributors = [],
+	modelPrefilterContributors = [],
+	portletNamespace,
+	queryPrefilterContributors = [],
+	redirectURL = '',
+	searchableTypes = [],
 	submitButtonLabel = Liferay.Language.get('create'),
 }) => {
 	const isMounted = useIsMounted();
@@ -116,73 +113,73 @@ const AddModal = ({
 	const [descriptionInputValue, setDescriptionInputValue] = useState('');
 
 	const handleFormError = (responseContent) => {
-		setErrorMessage(responseContent.error || '');
+		setErrorMessage(responseContent.error || DEFAULT_ERROR);
 
 		setLoadingResponse(false);
 	};
 
+	const _getConfiguration = () => ({
+		advanced: DEFAULT_ADVANCED_CONFIGURATION,
+		aggregationConfiguration: {},
+		facet: {},
+		general: {
+			clauseContributorsExcludes:
+				framework === FRAMEWORK_TYPES.ALL
+					? []
+					: BASELINE_CLAUSE_CONTRIBUTORS_CONFIGURATION.excludes,
+			clauseContributorsIncludes:
+				framework === FRAMEWORK_TYPES.ALL
+					? [
+							...keywordQueryContributors,
+							...modelPrefilterContributors,
+							...queryPrefilterContributors,
+					  ]
+					: BASELINE_CLAUSE_CONTRIBUTORS_CONFIGURATION.includes,
+			searchableAssetTypes: searchableTypes,
+		},
+		highlight: DEFAULT_HIGHLIGHT_CONFIGURATION,
+		parameters: DEFAULT_PARAMETER_CONFIGURATION,
+		queryConfiguration: {
+			applyIndexerClauses: framework === FRAMEWORK_TYPES.ALL,
+			queryEntries:
+				framework === FRAMEWORK_TYPES.BASELINE
+					? DEFAULT_SELECTED_BASELINE_SXP_ELEMENTS.map(
+							getSXPElementOutput
+					  )
+					: [],
+		},
+		sortConfiguration: DEFAULT_SORT_CONFIGURATION,
+	});
+
 	const _handleSubmit = (event) => {
 		event.preventDefault();
 
-		const formData = new FormData(
-			document.querySelector(`#${namespace}form`)
-		);
-
-		formData.append(
-			`${namespace}configuration`,
-			JSON.stringify({
-				advanced_configuration: DEFAULT_ADVANCED_CONFIGURATION,
-				aggregation_configuration: {},
-				facet_configuration: {},
-				framework_configuration: {
-					apply_indexer_clauses: framework === FRAMEWORK_TYPES.ALL,
-					clause_contributors:
-						framework === FRAMEWORK_TYPES.ALL
-							? {
-									includes: [
-										...JSON.parse(
-											keywordQueryContributorsString
-										),
-										...JSON.parse(
-											modelPrefilterContributorsString
-										),
-										...JSON.parse(
-											queryPrefilterContributorsString
-										),
-									],
-							  }
-							: BASELINE_CLAUSE_CONTRIBUTORS_CONFIGURATION,
-					searchable_asset_types: JSON.parse(searchableTypesString),
+		fetch('/o/search-experiences-rest/v1.0/sxp-blueprints', {
+			body: JSON.stringify({
+				configuration: _getConfiguration(),
+				description: descriptionInputValue,
+				description_i18n: {[defaultLocale]: descriptionInputValue},
+				elementInstances: {
+					queryConfiguration: {
+						queryEntries:
+							framework === FRAMEWORK_TYPES.BASELINE
+								? DEFAULT_SELECTED_BASELINE_SXP_ELEMENTS
+								: [],
+					},
 				},
-				highlight_configuration: DEFAULT_HIGHLIGHT_CONFIGURATION,
-				parameter_configuration: DEFAULT_PARAMETER_CONFIGURATION,
-				query_configuration:
-					framework === FRAMEWORK_TYPES.BASELINE
-						? DEFAULT_SELECTED_BASELINE_SXP_ELEMENTS.map(
-								getSXPElementOutput
-						  )
-						: [],
-				sort_configuration: DEFAULT_SORT_CONFIGURATION,
-			})
-		);
+				title: inputValue,
+				title_i18n: {[defaultLocale]: inputValue},
+			}),
 
-		formData.append(
-			`${namespace}selectedSXPElements`,
-			JSON.stringify({
-				query_configuration:
-					framework === FRAMEWORK_TYPES.BASELINE
-						? DEFAULT_SELECTED_BASELINE_SXP_ELEMENTS
-						: [],
-			})
-		);
+			headers: new Headers({
+				'Content-Type': 'application/json',
+			}),
 
-		fetch('/o/search-experiences-rest/sxp-blueprints/', {
-			body: formData,
 			method: 'POST',
 		})
 			.then((response) => {
 				if (!response.ok) {
-					handleFormError({error: DEFAULT_ERROR});
+					handleFormError();
 				}
 
 				return response.json();
@@ -197,8 +194,18 @@ const AddModal = ({
 
 						closeModal();
 
-						if (responseContent.redirectURL) {
-							navigate(responseContent.redirectURL);
+						if (responseContent.id) {
+							const url = new URL(editSXPBlueprintURL);
+
+							url.searchParams.set(
+								`${portletNamespace}sxpBlueprintId`,
+								responseContent.id
+							);
+
+							navigate(url);
+						}
+						else {
+							navigate(redirectURL);
 						}
 					}
 				}
@@ -227,7 +234,7 @@ const AddModal = ({
 			>
 				<ClayModal.Header>{dialogTitle}</ClayModal.Header>
 
-				<form id={`${namespace}form`} onSubmit={_handleSubmit}>
+				<form id={`${portletNamespace}form`} onSubmit={_handleSubmit}>
 					<ClayModal.Body>
 						<div
 							className={getCN('form-group', {
@@ -236,7 +243,7 @@ const AddModal = ({
 						>
 							<label
 								className="control-label"
-								htmlFor={`${namespace}title`}
+								htmlFor={`${portletNamespace}title`}
 							>
 								{Liferay.Language.get('name')}
 
@@ -249,8 +256,8 @@ const AddModal = ({
 								autoFocus
 								className="form-control"
 								disabled={loadingResponse}
-								id={`${namespace}title`}
-								name={`${namespace}title`}
+								id={`${portletNamespace}title`}
+								name={`${portletNamespace}title`}
 								onChange={(event) =>
 									setInputValue(event.target.value)
 								}
@@ -260,8 +267,8 @@ const AddModal = ({
 							/>
 
 							<input
-								id={`${namespace}title_${defaultLocale}`}
-								name={`${namespace}title_${defaultLocale}`}
+								id={`${portletNamespace}title_${defaultLocale}`}
+								name={`${portletNamespace}title_${defaultLocale}`}
 								type="hidden"
 								value={inputValue}
 							/>
@@ -281,7 +288,7 @@ const AddModal = ({
 						<div className="form-group">
 							<label
 								className="control-label"
-								htmlFor={`${namespace}description`}
+								htmlFor={`${portletNamespace}description`}
 							>
 								{Liferay.Language.get('description')}
 							</label>
@@ -289,8 +296,8 @@ const AddModal = ({
 							<textarea
 								className="form-control"
 								disabled={loadingResponse}
-								id={`${namespace}description`}
-								name={`${namespace}description`}
+								id={`${portletNamespace}description`}
+								name={`${portletNamespace}description`}
 								onChange={(event) =>
 									setDescriptionInputValue(event.target.value)
 								}
@@ -298,8 +305,8 @@ const AddModal = ({
 							/>
 
 							<input
-								id={`${namespace}description_${defaultLocale}`}
-								name={`${namespace}description_${defaultLocale}`}
+								id={`${portletNamespace}description_${defaultLocale}`}
+								name={`${portletNamespace}description_${defaultLocale}`}
 								type="hidden"
 								value={descriptionInputValue}
 							/>
@@ -308,7 +315,7 @@ const AddModal = ({
 						<div className="form-group">
 							<label
 								className="control-label"
-								htmlFor={`${namespace}framework`}
+								htmlFor={`${portletNamespace}framework`}
 							>
 								{Liferay.Language.get('start-with')}
 
@@ -403,36 +410,66 @@ export function AddSXPBlueprintModal({
 	contextPath,
 	defaultLocale,
 	dialogTitle,
-	namespace,
+	editSXPBlueprintURL,
+	portletNamespace,
+	redirectURL,
 }) {
-	const [resource, setResource] = useState(null);
+	const [searchableTypes, setSearchableTypes] = useState(null);
+	const [keywordQueryContributors, setKeywordQueryContributors] = useState(
+		null
+	);
+	const [
+		modelPrefilterContributors,
+		setModelPrefilterContributors,
+	] = useState(null);
+	const [
+		queryPrefilterContributors,
+		setQueryPrefilterContributors,
+	] = useState(null);
 
 	useEffect(() => {
-		fetch('/o/search-experiences-rest/sxp-blueprints/', {
-			method: 'POST',
-		})
-			.then((response) => {
-				if (!response.ok) {
-					throw DEFAULT_ERROR;
-				}
-
-				return response.json();
-			})
-			.then((responseContent) => {
-				setResource(responseContent);
-			})
-			.catch((error) => {
-				openErrorToast();
-
-				if (process.env.NODE_ENV === 'development') {
-					console.error(error);
-				}
-
-				setResource({});
-			});
+		[
+			{
+				setProperty: setSearchableTypes,
+				url: '/o/search-experiences-rest/v1.0/searchable-asset-names',
+			},
+			{
+				setProperty: setKeywordQueryContributors,
+				url:
+					'/o/search-experiences-rest/v1.0/keyword-query-contributors',
+			},
+			{
+				setProperty: setModelPrefilterContributors,
+				url:
+					'/o/search-experiences-rest/v1.0/model-prefilter-contributors',
+			},
+			{
+				setProperty: setQueryPrefilterContributors,
+				url:
+					'/o/search-experiences-rest/v1.0/query-prefilter-contributors',
+			},
+		].forEach(({setProperty, url}) =>
+			fetchData(
+				url,
+				{method: 'GET'},
+				(responseContent) =>
+					setProperty(
+						responseContent.items
+							.map(({className}) => className)
+							.filter((item) => item)
+							.sort()
+					),
+				() => setProperty({})
+			)
+		);
 	}, []); //eslint-disable-line
 
-	if (!resource) {
+	if (
+		!keywordQueryContributors ||
+		!modelPrefilterContributors ||
+		!queryPrefilterContributors ||
+		!searchableTypes
+	) {
 		return null;
 	}
 
@@ -442,18 +479,14 @@ export function AddSXPBlueprintModal({
 			contextPath={contextPath}
 			defaultLocale={defaultLocale}
 			dialogTitle={dialogTitle}
+			editSXPBlueprintURL={editSXPBlueprintURL}
 			initialVisible
-			keywordQueryContributorsString={
-				resource.keywordQueryContributorsString
-			}
-			modelPrefilterContributorsString={
-				resource.modelPrefilterContributorsString
-			}
-			namespace={namespace}
-			queryPrefilterContributorsString={
-				resource.queryPrefilterContributorsString
-			}
-			searchableTypesString={resource.searchableTypesString}
+			keywordQueryContributors={keywordQueryContributors}
+			modelPrefilterContributors={modelPrefilterContributors}
+			portletNamespace={portletNamespace}
+			queryPrefilterContributors={queryPrefilterContributors}
+			redirectURL={redirectURL}
+			searchableTypes={searchableTypes}
 		/>
 	);
 }

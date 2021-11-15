@@ -65,7 +65,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * @author Alessio Antonio Rendina
@@ -782,26 +781,21 @@ public class CommerceSubscriptionEntryLocalServiceImpl
 		long commerceSubscriptionEntryId, int subscriptionStatus) {
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				Message message = new Message();
 
-				@Override
-				public Void call() throws Exception {
-					Message message = new Message();
+				message.setPayload(
+					JSONUtil.put(
+						"commerceSubscriptionEntryId",
+						commerceSubscriptionEntryId
+					).put(
+						"subscriptionStatus", subscriptionStatus
+					));
 
-					message.setPayload(
-						JSONUtil.put(
-							"commerceSubscriptionEntryId",
-							commerceSubscriptionEntryId
-						).put(
-							"subscriptionStatus", subscriptionStatus
-						));
+				MessageBusUtil.sendMessage(
+					DestinationNames.COMMERCE_SUBSCRIPTION_STATUS, message);
 
-					MessageBusUtil.sendMessage(
-						DestinationNames.COMMERCE_SUBSCRIPTION_STATUS, message);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 

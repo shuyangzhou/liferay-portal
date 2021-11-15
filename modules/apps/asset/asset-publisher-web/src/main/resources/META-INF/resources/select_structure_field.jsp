@@ -66,9 +66,9 @@ ClassType classType = classTypeReader.getClassType(classTypeId, locale);
 		>
 
 			<%
+			long ddmStructureId = field.getClassTypeId();
 			String label = field.getLabel();
 			String name = field.getName();
-			long ddmStructureId = field.getClassTypeId();
 			%>
 
 			<liferay-ui:search-container-column-text>

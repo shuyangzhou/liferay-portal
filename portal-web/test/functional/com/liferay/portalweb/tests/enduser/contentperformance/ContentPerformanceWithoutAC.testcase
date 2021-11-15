@@ -1,0 +1,90 @@
+@component-name = "portal-ab-test"
+definition {
+
+	property portal.release = "false";
+	property portal.upstream = "true";
+	property property.group = "analytics.cloud.profile";
+	property testray.main.component.name = "Content Performance";
+
+	setUp {
+		task ("Go to DXP portal, login and create site") {
+			TestCase.setUpPortalInstance();
+
+			User.firstLoginPG();
+
+			Navigator.openURL();
+
+			JSONGroup.addGroup(groupName = "Test Site Name");
+		}
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+	}
+
+	@description = "LPS-108856: When user opens Content Performance panel and AC is not connected, a Dont show me this again button is displayed"
+	@ignore = "true"
+	@priority = "3"
+	test DontShowButton {
+
+		// TODO LPS-139239 DontShowButton pending implementation
+
+	}
+
+	@description = "LPS-105216: Validate that Free trial and dismiss buttons are displayed when AC is disabled"
+	@ignore = "true"
+	@priority = "5"
+	test FreeTrialButtonPresent {
+		task ("Open Content Performance and Assert if element is present") {
+			if (IsVisible(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_PANEL")) {
+				Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
+			}
+			Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
+
+			AssertElementPresent(
+				locator1 = "ContentPerformance#CONTENT_PERFORMANCE_START_FREE_TRIAL",
+				value1 = "Start Free Trial");
+
+			AssertElementPresent(
+				locator1 = "ContentPerformance#CONTENT_PERFORMANCE_DO_NOT_SHOW_AGAIN",
+				value1 = "Do not show me this again.");
+		}
+	}
+
+	@description = "LPS-108856: When user clicks on Dont show me this again button, the Content Performance panel disappears"
+	@ignore = "true"
+	@priority = "5"
+	test HideContentPerformancePanel {
+
+		// TODO LPS-139239 HideContentPerformancePanel pending implementation
+
+	}
+
+	@description = "LPS-118006: When the DXP is not connected to AC, if the user clicks on the Metrics button, the sidebar panel shows up and displays a button titled Dont show me this again and a message informing the user that the panel will show up again if AC is connected"
+	@ignore = "true"
+	@priority = "4"
+	test MetricsInContentDashboardACDisabled {
+
+		// TODO LPS-139257 MetricsInContentDashboardACDisabled pending implementation
+
+	}
+
+	@description = "LPS-118006: When the DXP is connected to AC after the user has clicked the Don't show me this again button, the Metrics option is shown again, and the sidebar panel with instructions to sync, and without the Dont show me this again button shows up when the user clicks on it"
+	@ignore = "true"
+	@priority = "4"
+	test MetricsInContentDashboardACEnabled {
+
+		// TODO LPS-139257 MetricsInContentDashboardACEnabled pending implementation
+
+	}
+
+	@description = "LPS-108856: When user opens Content Performance panel and AC is connected but not synced, the Content Performance panel displays instructions to sync to AC (Dont show me this again button and the message is not displayed)"
+	@ignore = "true"
+	@priority = "3"
+	test NotSyncedPanel {
+
+		// TODO LPS-139239 NotSyncedPanel pending implementation
+
+	}
+
+}

@@ -14,9 +14,7 @@
 
 package com.liferay.search.experiences.internal.blueprint.parameter.contributor;
 
-import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.search.experiences.blueprint.parameter.DateSXPParameter;
 import com.liferay.search.experiences.blueprint.parameter.IntegerSXPParameter;
 import com.liferay.search.experiences.blueprint.parameter.SXPParameter;
@@ -39,13 +37,6 @@ import java.util.TimeZone;
  * @author Petteri Karttunen
  */
 public class TimeSXPParameterContributor implements SXPParameterContributor {
-
-	public TimeSXPParameterContributor(
-		Language language, UserLocalService userLocalService) {
-
-		_language = language;
-		_userLocalService = userLocalService;
-	}
 
 	@Override
 	public void contribute(
@@ -94,7 +85,7 @@ public class TimeSXPParameterContributor implements SXPParameterContributor {
 				_getTimeOfDay(localDateTime.toLocalTime())));
 		sxpParameters.add(
 			new StringSXPParameter(
-				"time.time_zone_locale_name", true,
+				"time.time_zone_name_localized", true,
 				timeZone.getDisplayName(searchContext.getLocale())));
 	}
 
@@ -126,8 +117,8 @@ public class TimeSXPParameterContributor implements SXPParameterContributor {
 			new SXPParameterContributorDefinition(
 				StringSXPParameter.class, "time-of-day", "time.time_of_day"),
 			new SXPParameterContributorDefinition(
-				StringSXPParameter.class, "time-zone-locale-name",
-				"time.time_zone_locale_name"));
+				StringSXPParameter.class, "time-zone-name-localized",
+				"time.time_zone_name_localized"));
 	}
 
 	private String _getTimeOfDay(LocalTime localTime) {
@@ -163,8 +154,5 @@ public class TimeSXPParameterContributor implements SXPParameterContributor {
 	private static final LocalTime _LOCAL_TIME_17 = LocalTime.of(17, 0, 0);
 
 	private static final LocalTime _LOCAL_TIME_20 = LocalTime.of(20, 0, 0);
-
-	private final Language _language;
-	private final UserLocalService _userLocalService;
 
 }

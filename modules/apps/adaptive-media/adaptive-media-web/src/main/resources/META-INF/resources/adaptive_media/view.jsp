@@ -81,7 +81,7 @@ AMManagementToolbarDisplayContext amManagementToolbarDisplayContext = new AMMana
 			List<AMImageConfigurationEntry> selectedConfigurationEntries = amManagementToolbarDisplayContext.getSelectedConfigurationEntries();
 			%>
 
-			<aui:form action="<%= deleteImageConfigurationEntryURL.toString() %>" method="post" name="fm">
+			<aui:form action="<%= deleteImageConfigurationEntryURL %>" method="post" name="fm">
 				<liferay-ui:search-container
 					emptyResultsMessage="there-are-no-image-resolutions"
 					id="imageConfigurationEntries"

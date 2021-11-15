@@ -61,7 +61,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * @author Andrea Di Giorgi
@@ -335,15 +334,10 @@ public class CPSpecificationOptionLocalServiceImpl
 		long companyId, long cpSpecificationOptionId) {
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				_reindexCPDefinitions(companyId, cpSpecificationOptionId);
 
-				@Override
-				public Void call() throws Exception {
-					_reindexCPDefinitions(companyId, cpSpecificationOptionId);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 

@@ -38,7 +38,7 @@ PortletURL portletURL = PortletURLBuilder.create(
 
 <div id="<portlet:namespace />dispatchTriggerContainer">
 	<div class="closed container" id="<portlet:namespace />infoPanelId">
-		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+		<aui:form action="<%= portletURL %>" method="post" name="fm">
 			<aui:input name="<%= Constants.CMD %>" type="hidden" />
 			<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 			<aui:input name="deleteDispatchTriggerIds" type="hidden" />

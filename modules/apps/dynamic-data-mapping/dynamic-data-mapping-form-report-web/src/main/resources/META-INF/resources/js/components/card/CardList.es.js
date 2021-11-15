@@ -34,65 +34,6 @@ const chartFactory = ({
 	const {options, type} = field;
 
 	switch (type) {
-		case 'checkbox_multiple':
-			return (
-				<SimpleBarChart
-					data={toDataArray(options, values)}
-					totalEntries={totalEntries}
-				/>
-			);
-		case 'numeric': {
-			if (Array.isArray(values)) {
-				return (
-					<List
-						data={toArray(values)}
-						field={field}
-						summary={summary}
-						totalEntries={totalEntries}
-					/>
-				);
-			}
-			else {
-				return '';
-			}
-		}
-		case 'grid': {
-			return (
-				<MultiBarChart
-					data={values}
-					field={field}
-					structure={structure}
-					totalEntries={sumTotalValues}
-				/>
-			);
-		}
-		case 'object-relationship':
-		case 'radio':
-		case 'select': {
-			return (
-				<PieChart
-					data={toDataArray(options, values)}
-					totalEntries={sumTotalValues}
-				/>
-			);
-		}
-		case 'checkbox': {
-			const newValues = {};
-			for (const [key, value] of Object.entries(values)) {
-				const newKey =
-					key === 'true'
-						? Liferay.Language.get('true')
-						: Liferay.Language.get('false');
-				newValues[newKey] = value;
-			}
-
-			return (
-				<PieChart
-					data={toDataArray(options, newValues)}
-					totalEntries={sumTotalValues}
-				/>
-			);
-		}
 		case 'address':
 		case 'city':
 		case 'color':
@@ -115,6 +56,66 @@ const chartFactory = ({
 			else {
 				return '';
 			}
+		}
+		case 'checkbox': {
+			const newValues = {};
+			for (const [key, value] of Object.entries(values)) {
+				const newKey =
+					key === 'true'
+						? Liferay.Language.get('true')
+						: Liferay.Language.get('false');
+				newValues[newKey] = value;
+			}
+
+			return (
+				<PieChart
+					data={toDataArray(options, newValues)}
+					totalEntries={sumTotalValues}
+				/>
+			);
+		}
+		case 'checkbox_multiple': {
+			return (
+				<SimpleBarChart
+					data={toDataArray(options, values)}
+					totalEntries={totalEntries}
+				/>
+			);
+		}
+		case 'grid': {
+			return (
+				<MultiBarChart
+					data={values}
+					field={field}
+					structure={structure}
+					totalEntries={sumTotalValues}
+				/>
+			);
+		}
+		case 'numeric': {
+			if (Array.isArray(values)) {
+				return (
+					<List
+						data={toArray(values)}
+						field={field}
+						summary={summary}
+						totalEntries={totalEntries}
+					/>
+				);
+			}
+			else {
+				return '';
+			}
+		}
+		case 'object-relationship':
+		case 'radio':
+		case 'select': {
+			return (
+				<PieChart
+					data={toDataArray(options, values)}
+					totalEntries={sumTotalValues}
+				/>
+			);
 		}
 		default:
 			return null;

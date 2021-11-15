@@ -106,7 +106,7 @@ ruleGroupSearch.setResults(mdrRuleGroups);
 
 		<c:if test="<%= (mdrRuleGroupsCount > 0) || searchTerms.isSearch() %>">
 			<li>
-				<aui:form action="<%= portletURL.toString() %>" name="searchFm">
+				<aui:form action="<%= portletURL %>" name="searchFm">
 					<liferay-ui:input-search
 						markupView="lexicon"
 					/>

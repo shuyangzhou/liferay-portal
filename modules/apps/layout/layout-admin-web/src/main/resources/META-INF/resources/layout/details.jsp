@@ -91,39 +91,11 @@ String friendlyURLBase = StringPool.BLANK;
 
 		<c:choose>
 			<c:when test="<%= selLayoutType.isURLFriendliable() && !layoutsAdminDisplayContext.isDraft() && !selLayout.isSystem() %>">
-				<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/layout_admin/get_friendly_url_entry_localizations" var="friendlyURLEntryLocalizationsURL">
-					<portlet:param name="plid" value="<%= String.valueOf(selLayout.getPlid()) %>" />
-				</liferay-portlet:resourceURL>
-
-				<portlet:actionURL name="/layout_admin/delete_friendly_url_entry_localization" var="deleteFriendlyURLEntryLocalizationURL">
-					<portlet:param name="plid" value="<%= String.valueOf(selLayout.getPlid()) %>" />
-				</portlet:actionURL>
-
-				<portlet:actionURL name="/layout_admin/restore_friendly_url_entry_localization" var="restoreFriendlyURLEntryLocalizationURL">
-					<portlet:param name="plid" value="<%= String.valueOf(selLayout.getPlid()) %>" />
-				</portlet:actionURL>
-
-				<div class="btn-url-history-wrapper">
-
-					<%
-					User defaultUser = company.getDefaultUser();
-					%>
-
-					<react:component
-						module="js/friendly_url_history/FriendlyURLHistory"
-						props='<%=
-							HashMapBuilder.<String, Object>put(
-								"defaultLanguageId", LocaleUtil.toLanguageId(defaultUser.getLocale())
-							).put(
-								"deleteFriendlyURLEntryLocalizationURL", deleteFriendlyURLEntryLocalizationURL
-							).put(
-								"friendlyURLEntryLocalizationsURL", friendlyURLEntryLocalizationsURL
-							).put(
-								"restoreFriendlyURLEntryLocalizationURL", restoreFriendlyURLEntryLocalizationURL
-							).build()
-						%>'
-					/>
-				</div>
+				<liferay-friendly-url:history
+					className="<%= Layout.class.getName() %>"
+					classPK="<%= selLayout.getPlid() %>"
+					elementId='<%= portletDisplay.getNamespace() + "friendlyURL" %>'
+				/>
 
 				<div class="form-group friendly-url">
 					<label for="<portlet:namespace />friendlyURL"><liferay-ui:message key="friendly-url" /> <liferay-ui:icon-help message='<%= LanguageUtil.format(request, "there-is-a-limit-of-x-characters-in-encoded-format-for-friendly-urls-(e.g.-x)", new String[] {String.valueOf(LayoutConstants.FRIENDLY_URL_MAX_LENGTH), "<em>/news</em>"}, false) %>' /></label>

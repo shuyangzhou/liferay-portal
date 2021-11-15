@@ -10,8 +10,6 @@ definition {
 		TestCase.setUpPortalInstance();
 
 		User.firstLoginPG();
-
-		WorkflowUser.disableCaptchaToCreateNewUser();
 	}
 
 	tearDown {

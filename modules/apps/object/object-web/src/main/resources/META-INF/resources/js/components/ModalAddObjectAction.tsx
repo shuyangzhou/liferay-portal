@@ -19,7 +19,7 @@ import ClayModal, {ClayModalProvider, useModal} from '@clayui/modal';
 import React, {useEffect, useState} from 'react';
 
 import useForm from '../hooks/useForm';
-import CustomSelect from './form/CustomSelect';
+import CustomSelect from './form/CustomSelect/CustomSelect';
 import Input from './form/Input';
 
 const headers = new Headers({

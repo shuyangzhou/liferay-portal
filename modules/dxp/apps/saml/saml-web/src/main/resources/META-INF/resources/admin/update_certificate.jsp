@@ -75,7 +75,7 @@ X509Certificate x509Certificate = (X509Certificate)request.getAttribute(SamlWebK
 	<portlet:param name="certificateUsage" value="<%= certificateUsage.name() %>" />
 </liferay-portlet:actionURL>
 
-<aui:form action="<%= updateCertificateURL.toString() %>" cssClass="" method="post" name="fm1">
+<aui:form action="<%= updateCertificateURL %>" cssClass="" method="post" name="fm1">
 	<c:choose>
 		<c:when test='<%= cmd.equals("import") && (x509Certificate == null) %>'>
 			<liferay-util:include page="/admin/import_certificate.jsp" servletContext="<%= application %>" />

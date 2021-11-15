@@ -230,6 +230,14 @@ definition {
 		PageEditor.viewFragment(fragmentName = "Collection Display");
 	}
 
+	macro changeExperience {
+		ContentPages.openExperienceMenu();
+
+		MenuItem.click(menuItem = "${experienceName}");
+
+		ContentPages.viewCurrentExperience(experienceName = "${experienceName}");
+	}
+
 	macro focusSlide {
 		Click(
 			ariaLabel = "Focus slide ${slideNumber}",
@@ -240,6 +248,28 @@ definition {
 		Click(locator1 = "Icon#EDIT_PENCIL");
 
 		PageEditor.assertFragmentSidebarLoaded();
+	}
+
+	macro openExperienceMenu {
+		Click(
+			key_text = "caret-double",
+			locator1 = "Icon#ANY");
+	}
+
+	macro viewCurrentExperience {
+		AssertVisible(
+			key_text = "${experienceName}",
+			locator1 = "Button#ANY");
+	}
+
+	macro viewExperienceOrder {
+		ContentPages.openExperienceMenu();
+
+		MenuItem.viewOrder(menuItemList = "${experienceNameList}");
+
+		Click(
+			key_text = "caret-double",
+			locator1 = "Icon#ANY");
 	}
 
 	macro viewFragmentBackgroundImage {

@@ -46,7 +46,6 @@ DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletI
 				boolean hasPDFImages = PDFProcessorUtil.hasImages(fileVersion);
 				boolean hasVideo = VideoProcessorUtil.hasVideo(fileVersion);
 
-				String imagePreviewURL = null;
 				String imageURL = themeDisplay.getPathThemeImages() + "/file_system/large/" + DLUtil.getGenericName(fileEntry.getExtension()) + ".png";
 				int playerHeight = 500;
 
@@ -65,16 +64,13 @@ DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletI
 							dataOptions += "&" + audioContainer + "PreviewURL=" + HtmlUtil.escapeURL(DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&supportedAudio=1&audioPreview=1&type=" + audioContainer));
 						}
 
-						imagePreviewURL = DLURLHelperUtil.getImagePreviewURL(fileEntry, fileVersion, themeDisplay);
 						imageURL = DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, HtmlUtil.escapeURL("&audioPreview=1") + "&supportedAudio=1&mediaGallery=1");
 						playerHeight = 43;
 					}
 					else if (hasImages) {
-						imagePreviewURL = DLURLHelperUtil.getThumbnailSrc(fileEntry, fileVersion, themeDisplay);
 						imageURL = DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&imagePreview=1");
 					}
 					else if (hasPDFImages) {
-						imagePreviewURL = DLURLHelperUtil.getImagePreviewURL(fileEntry, fileVersion, themeDisplay);
 						imageURL = DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&previewFileIndex=1");
 					}
 					else if (hasVideo) {
@@ -82,10 +78,15 @@ DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletI
 							dataOptions += "&" + videoContainer + "PreviewURL=" + HtmlUtil.escapeURL(DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&supportedVideo=1&videoPreview=1&type=" + videoContainer));
 						}
 
-						imagePreviewURL = DLURLHelperUtil.getImagePreviewURL(fileEntry, fileVersion, themeDisplay);
 						imageURL = DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&supportedVideo=1&mediaGallery=1");
 						playerHeight = PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_HEIGHT;
 					}
+				}
+
+				String thumbnailSrc = null;
+
+				if (PropsValues.DL_FILE_ENTRY_THUMBNAIL_ENABLED) {
+					thumbnailSrc = DLURLHelperUtil.getThumbnailSrc(fileEntry, fileVersion, themeDisplay);
 				}
 
 				String title = fileEntry.getTitle();
@@ -96,9 +97,9 @@ DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletI
 				%>
 
 				<liferay-ui:search-container-column-text>
-					<a class="image-link preview" <%= (hasAudio || hasVideo) ? "data-options=\"height=" + playerHeight + "&thumbnailURL=" + HtmlUtil.escapeURL(DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&videoThumbnail=1")) + "&width=640" + dataOptions + "\"" : StringPool.BLANK %> href="<%= imageURL %>" thumbnailId="<%= thumbnailId %>" title="<%= title %>">
+					<div class="image-link preview" <%= (hasAudio || hasVideo) ? "data-options=\"height=" + playerHeight + "&thumbnailURL=" + HtmlUtil.escapeURL(DLURLHelperUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&videoThumbnail=1")) + "&width=640" + dataOptions + "\"" : StringPool.BLANK %> href="<%= imageURL %>" tabindex="0" thumbnailId="<%= thumbnailId %>" title="<%= title %>">
 						<c:choose>
-							<c:when test="<%= Validator.isNull(imagePreviewURL) %>">
+							<c:when test="<%= Validator.isNull(thumbnailSrc) %>">
 								<liferay-frontend:icon-vertical-card
 									actionJsp='<%= dlPortletInstanceSettingsHelper.isShowActions() ? "/image_gallery_display/image_action.jsp" : StringPool.BLANK %>'
 									actionJspServletContext="<%= application %>"
@@ -115,13 +116,13 @@ DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletI
 									actionJspServletContext="<%= application %>"
 									cardCssClass="card-interactive card-interactive-secondary"
 									cssClass="entry-display-style"
-									imageUrl="<%= imagePreviewURL %>"
+									imageUrl="<%= thumbnailSrc %>"
 									resultRow="<%= row %>"
 									title="<%= dlPortletInstanceSettingsHelper.isShowActions() ? fileEntry.getTitle() : StringPool.BLANK %>"
 								/>
 							</c:otherwise>
 						</c:choose>
-					</a>
+					</div>
 				</liferay-ui:search-container-column-text>
 			</c:when>
 			<c:otherwise>
@@ -272,6 +273,24 @@ PortletURL embeddedPlayerURL = PortletURLBuilder.createRenderURL(
 		}
 		else {
 			this._player.setHTML(TPL_PLAYER_PLAY);
+		}
+	};
+
+	// LPS-141384
+
+	var onKeydownDefaultFn = imageViewer._onKeydown;
+	imageViewer._onKeydown = function (event) {
+		onKeydownDefaultFn.call(this, event);
+
+		var target = document.activeElement;
+
+		if (
+			!this.get('visible') &&
+			event.isKey('ENTER') &&
+			target.classList.contains('image-link')
+		) {
+			this.show();
+			this.set('currentIndex', this.get('links').indexOf(target));
 		}
 	};
 

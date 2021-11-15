@@ -34,7 +34,7 @@ PortletURL portletURL = cpInstanceCommercePriceEntryDisplayContext.getPortletURL
 </aui:form>
 
 <div id="<portlet:namespace />entriesContainer">
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+	<aui:form action="<%= portletURL %>" method="post" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 		<aui:input name="deleteCommercePriceEntryIds" type="hidden" />

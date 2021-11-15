@@ -27,7 +27,7 @@ Map<String, String> contextParams = HashMapBuilder.<String, String>put(
 %>
 
 <c:if test="<%= CommerceCatalogPermission.contains(permissionChecker, cpAttachmentFileEntriesDisplayContext.getCPDefinition(), ActionKeys.VIEW) %>">
-	<aui:form action="<%= portletURL.toString() %>" cssClass="pt-4" method="post" name="fm">
+	<aui:form action="<%= portletURL %>" cssClass="pt-4" method="post" name="fm">
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 
 		<liferay-ui:error exception="<%= NoSuchSkuContributorCPDefinitionOptionRelException.class %>" message="there-are-no-options-set-as-sku-contributor" />

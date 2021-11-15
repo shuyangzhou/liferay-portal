@@ -7564,18 +7564,9 @@ virtualHostname="localhost"
 	</target>
 
 	<target name="execute-mysql">
-		<loadfile
-			property="mysql.statement"
-			srcfile="${mysql.input.file}"
-		/>
-
 		<get-test-app-server-lib-portal-dir />
 
-		<sql classpath="${test.app.server.lib.portal.dir}/${jdbc.mysql.driver}" driver="${database.mysql.driver}" onerror="continue" output="${mysql.output.file}" password="${database.mysql.password}" print="true" url="${database.mysql.url}" userid="${database.mysql.username}">
-			<![CDATA[
-				${mysql.statement}
-			]]>
-		</sql>
+		<sql classpath="${test.app.server.lib.portal.dir}/${jdbc.mysql.driver}" driver="${database.mysql.driver}" onerror="continue" output="${mysql.output.file}" password="${database.mysql.password}" print="true" src="${mysql.input.file}" url="${database.mysql.url}" userid="${database.mysql.username}" />
 	</target>
 
 	<target name="generate-changelog">
@@ -11348,6 +11339,16 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 			</then>
 		</if>
 
+		<if>
+			<or>
+				<equals arg1="${app.server.type}" arg2="weblogic" />
+				<equals arg1="${app.server.type}" arg2="websphere" />
+			</or>
+			<then>
+				<ant antfile="build-test-elasticsearch7.xml" target="get-sidecar-binaries" />
+			</then>
+		</if>
+
 		<lstopwatch action="total" name="prepare.bundles.${app.server.name}" />
 	</target>
 
@@ -11789,6 +11790,15 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 			dest="${liferay.home}"
 			src="${portal.legacy.dir}/${portal.version}/data-archive/${data.archive.type}-${database.type}.zip"
 		/>
+
+		<if>
+			<not>
+				<equals arg1="${data.archive.type}" arg2="data-archive-search-result-rankings" />
+			</not>
+			<then>
+				<delete dir="${liferay.home}/data/elasticsearch7" />
+			</then>
+		</if>
 
 		<get-testcase-property property.name="database.partition.enabled" />
 

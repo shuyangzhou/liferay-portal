@@ -20,7 +20,7 @@ import React, {useEffect, useState} from 'react';
 
 import useForm from '../hooks/useForm';
 import {toCamelCase} from '../utils/string';
-import CustomSelect from './form/CustomSelect';
+import CustomSelect from './form/CustomSelect/CustomSelect';
 import Input from './form/Input';
 import Select from './form/Select';
 

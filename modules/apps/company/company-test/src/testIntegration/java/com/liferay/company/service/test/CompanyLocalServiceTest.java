@@ -109,7 +109,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.junit.After;
@@ -314,27 +313,22 @@ public class CompanyLocalServiceTest {
 
 		long userId = UserLocalServiceUtil.getDefaultUserId(companyId);
 
-		final Group group = GroupTestUtil.addGroup(
+		Group group = GroupTestUtil.addGroup(
 			companyId, userId, GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 		LayoutSetPrototype layoutSetPrototype = addLayoutSetPrototype(
 			companyId, userId, RandomTestUtil.randomString());
 
-		final long layoutSetPrototypeId =
+		long layoutSetPrototypeId =
 			layoutSetPrototype.getLayoutSetPrototypeId();
 
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
-			new Callable<Void>() {
+			() -> {
+				SitesUtil.updateLayoutSetPrototypesLinks(
+					group, layoutSetPrototypeId, 0, true, false);
 
-				@Override
-				public Void call() throws Exception {
-					SitesUtil.updateLayoutSetPrototypesLinks(
-						group, layoutSetPrototypeId, 0, true, false);
-
-					return null;
-				}
-
+				return null;
 			});
 
 		addUser(
@@ -365,26 +359,21 @@ public class CompanyLocalServiceTest {
 		Group group = GroupTestUtil.addGroup(
 			companyId, userId, GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
-		final UserGroup userGroup = UserGroupTestUtil.addUserGroup(
+		UserGroup userGroup = UserGroupTestUtil.addUserGroup(
 			group.getGroupId());
 
-		final LayoutSetPrototype layoutSetPrototype = addLayoutSetPrototype(
+		LayoutSetPrototype layoutSetPrototype = addLayoutSetPrototype(
 			companyId, userId, RandomTestUtil.randomString());
 
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
-			new Callable<Void>() {
+			() -> {
+				SitesUtil.updateLayoutSetPrototypesLinks(
+					userGroup.getGroup(),
+					layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
+					false);
 
-				@Override
-				public Void call() throws Exception {
-					SitesUtil.updateLayoutSetPrototypesLinks(
-						userGroup.getGroup(),
-						layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
-						false);
-
-					return null;
-				}
-
+				return null;
 			});
 
 		CompanyLocalServiceUtil.deleteCompany(companyId);
@@ -600,22 +589,17 @@ public class CompanyLocalServiceTest {
 	public void testDeleteCompanyDeletesNondefaultPasswordPolicies()
 		throws Throwable {
 
-		final Company company = addCompany();
+		Company company = addCompany();
 
 		CompanyLocalServiceUtil.deleteCompany(company);
 
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
-			new Callable<Void>() {
+			() -> {
+				PasswordPolicyLocalServiceUtil.getPasswordPolicy(
+					company.getCompanyId(), false);
 
-				@Override
-				public Void call() throws Exception {
-					PasswordPolicyLocalServiceUtil.getPasswordPolicy(
-						company.getCompanyId(), false);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 
@@ -646,50 +630,39 @@ public class CompanyLocalServiceTest {
 
 	@Test
 	public void testDeleteCompanyDeletesPortalPreferences() throws Throwable {
-		final Company company = addCompany();
+		Company company = addCompany();
 
 		CompanyLocalServiceUtil.deleteCompany(company);
 
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
-			new Callable<Void>() {
+			() -> {
+				PortalPreferences portalPreferences =
+					PortalPreferencesLocalServiceUtil.fetchPortalPreferences(
+						company.getCompanyId(),
+						PortletKeys.PREFS_OWNER_TYPE_COMPANY);
 
-				@Override
-				public Void call() throws Exception {
-					PortalPreferences portalPreferences =
-						PortalPreferencesLocalServiceUtil.
-							fetchPortalPreferences(
-								company.getCompanyId(),
-								PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+				Assert.assertNull(portalPreferences);
 
-					Assert.assertNull(portalPreferences);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 
 	@Test
 	public void testDeleteCompanyDeletesPortlets() throws Throwable {
-		final Company company = addCompany();
+		Company company = addCompany();
 
 		CompanyLocalServiceUtil.deleteCompany(company);
 
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
-			new Callable<Void>() {
+			() -> {
+				int count = PortletLocalServiceUtil.getPortletsCount(
+					company.getCompanyId());
 
-				@Override
-				public Void call() {
-					int count = PortletLocalServiceUtil.getPortletsCount(
-						company.getCompanyId());
+				Assert.assertEquals(0, count);
 
-					Assert.assertEquals(0, count);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 

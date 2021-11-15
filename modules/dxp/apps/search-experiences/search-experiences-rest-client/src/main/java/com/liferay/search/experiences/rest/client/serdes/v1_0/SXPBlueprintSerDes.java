@@ -14,6 +14,7 @@
 
 package com.liferay.search.experiences.rest.client.serdes.v1_0;
 
+import com.liferay.search.experiences.rest.client.dto.v1_0.ElementInstance;
 import com.liferay.search.experiences.rest.client.dto.v1_0.SXPBlueprint;
 import com.liferay.search.experiences.rest.client.json.BaseJSONParser;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -87,6 +89,29 @@ public class SXPBlueprintSerDes {
 			sb.append("\"description_i18n\": ");
 
 			sb.append(_toJSON(sxpBlueprint.getDescription_i18n()));
+		}
+
+		if (sxpBlueprint.getElementInstances() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"elementInstances\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < sxpBlueprint.getElementInstances().length;
+				 i++) {
+
+				sb.append(
+					String.valueOf(sxpBlueprint.getElementInstances()[i]));
+
+				if ((i + 1) < sxpBlueprint.getElementInstances().length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		if (sxpBlueprint.getId() != null) {
@@ -168,6 +193,15 @@ public class SXPBlueprintSerDes {
 				String.valueOf(sxpBlueprint.getDescription_i18n()));
 		}
 
+		if (sxpBlueprint.getElementInstances() == null) {
+			map.put("elementInstances", null);
+		}
+		else {
+			map.put(
+				"elementInstances",
+				String.valueOf(sxpBlueprint.getElementInstances()));
+		}
+
 		if (sxpBlueprint.getId() == null) {
 			map.put("id", null);
 		}
@@ -227,6 +261,19 @@ public class SXPBlueprintSerDes {
 					sxpBlueprint.setDescription_i18n(
 						(Map)SXPBlueprintSerDes.toMap(
 							(String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "elementInstances")) {
+				if (jsonParserFieldValue != null) {
+					sxpBlueprint.setElementInstances(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> ElementInstanceSerDes.toDTO(
+								(String)object)
+						).toArray(
+							size -> new ElementInstance[size]
+						));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "id")) {

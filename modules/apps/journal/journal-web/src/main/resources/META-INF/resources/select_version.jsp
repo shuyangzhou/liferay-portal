@@ -36,7 +36,7 @@ PortletURL portletURL = PortletURLBuilder.createRenderURL(
 ).buildPortletURL();
 %>
 
-<aui:form action="<%= portletURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectVersionFm">
+<aui:form action="<%= portletURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectVersionFm">
 	<liferay-ui:search-container
 		iteratorURL="<%= portletURL %>"
 		total="<%= JournalArticleLocalServiceUtil.getArticlesCount(groupId, articleId) %>"

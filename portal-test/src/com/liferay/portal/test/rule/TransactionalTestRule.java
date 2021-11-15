@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.junit.Assert;
 import org.junit.internal.runners.statements.RunAfters;
@@ -121,21 +120,15 @@ public class TransactionalTestRule implements TestRule {
 						TransactionInvokerUtil.invoke(
 							getTransactionConfig(
 								description.getAnnotation(Transactional.class)),
-							new Callable<Void>() {
-
-								@Override
-								public Void call() throws Exception {
-									try {
-										statement.evaluate();
-									}
-									catch (Throwable throwable) {
-										ReflectionUtil.throwException(
-											throwable);
-									}
-
-									return null;
+							() -> {
+								try {
+									statement.evaluate();
+								}
+								catch (Throwable throwable) {
+									ReflectionUtil.throwException(throwable);
 								}
 
+								return null;
 							});
 					}
 				}
@@ -187,8 +180,7 @@ public class TransactionalTestRule implements TestRule {
 		extends FrameworkMethod {
 
 		@Override
-		public Object invokeExplosively(
-				final Object target, final Object... params)
+		public Object invokeExplosively(Object target, Object... params)
 			throws Throwable {
 
 			try (Closeable closeable = _installTransactionExecutor(
@@ -196,21 +188,16 @@ public class TransactionalTestRule implements TestRule {
 
 				return TransactionInvokerUtil.invoke(
 					_transactionConfig,
-					new Callable<Object>() {
-
-						@Override
-						public Object call() throws Exception {
-							try {
-								return TransactionalFrameworkMethod.super.
-									invokeExplosively(target, params);
-							}
-							catch (Throwable throwable) {
-								ReflectionUtil.throwException(throwable);
-							}
-
-							return null;
+					() -> {
+						try {
+							return TransactionalFrameworkMethod.super.
+								invokeExplosively(target, params);
+						}
+						catch (Throwable throwable) {
+							ReflectionUtil.throwException(throwable);
 						}
 
+						return null;
 					});
 			}
 		}

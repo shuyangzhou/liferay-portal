@@ -17,9 +17,9 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String title = LocalizationUtil.getPreferencesValue(portletPreferences, "title", themeDisplay.getLanguageId());
 String description = LocalizationUtil.getPreferencesValue(portletPreferences, "description", themeDisplay.getLanguageId());
 String successURL = portletPreferences.getValue("successURL", StringPool.BLANK);
+String title = LocalizationUtil.getPreferencesValue(portletPreferences, "title", themeDisplay.getLanguageId());
 %>
 
 <portlet:actionURL var="saveDataURL">

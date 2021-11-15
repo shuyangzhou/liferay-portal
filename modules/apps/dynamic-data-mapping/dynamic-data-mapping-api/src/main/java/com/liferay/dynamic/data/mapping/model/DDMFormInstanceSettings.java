@@ -98,7 +98,11 @@ import org.osgi.annotation.versioning.ProviderType;
 				@DDMFormLayoutRow(
 					{
 						@DDMFormLayoutColumn(
-							size = 12, value = "limitToOneSubmissionPerUser"
+							size = 12,
+							value = {
+								"showPartialResultsToRespondents",
+								"limitToOneSubmissionPerUser"
+							}
 						)
 					}
 				)
@@ -137,8 +141,7 @@ public interface DDMFormInstanceSettings {
 
 	@DDMFormField(
 		label = "%limit-to-one-submission-per-user",
-		tip = "%require-user-athentication-for-more-accurate-data",
-		type = "checkbox"
+		tip = "%respondents-will-be-required-to-sign-in", type = "checkbox"
 	)
 	public boolean limitToOneSubmissionPerUser();
 
@@ -179,6 +182,12 @@ public interface DDMFormInstanceSettings {
 		properties = "showAsSwitcher=true", type = "checkbox"
 	)
 	public boolean sendEmailNotification();
+
+	@DDMFormField(
+		label = "%show-partial-results-to-respondents",
+		tip = "%respondents-can-see-all-submitted-form-data", type = "checkbox"
+	)
+	public boolean showPartialResultsToRespondents();
 
 	@DDMFormField(
 		label = "%select-a-storage-type", predefinedValue = "[\"default\"]",

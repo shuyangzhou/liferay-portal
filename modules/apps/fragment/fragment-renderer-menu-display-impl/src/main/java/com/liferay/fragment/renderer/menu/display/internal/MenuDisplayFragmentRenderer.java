@@ -23,7 +23,6 @@ import com.liferay.fragment.renderer.menu.display.internal.MenuDisplayFragmentCo
 import com.liferay.fragment.renderer.menu.display.internal.MenuDisplayFragmentConfiguration.DisplayStyle;
 import com.liferay.fragment.renderer.menu.display.internal.MenuDisplayFragmentConfiguration.SiteNavigationMenuSource;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
@@ -116,9 +115,10 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 			FragmentEntryLink fragmentEntryLink =
 				fragmentRendererContext.getFragmentEntryLink();
 
-			String fragmentId = _getFragmentId(fragmentEntryLink);
+			String fragmentElementId =
+				fragmentRendererContext.getFragmentElementId();
 
-			printWriter.write("<div id=\"" + fragmentId + "\">");
+			printWriter.write("<div id=\"" + fragmentElementId + "\">");
 
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)httpServletRequest.getAttribute(
@@ -131,7 +131,8 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 					themeDisplay.getScopeGroupId());
 
 			_writeCss(
-				fragmentId, menuDisplayFragmentConfiguration, printWriter);
+				fragmentElementId, menuDisplayFragmentConfiguration,
+				printWriter);
 
 			NavigationMenuTag navigationMenuTag = _getNavigationMenuTag(
 				themeDisplay.getCompanyId(), menuDisplayFragmentConfiguration);
@@ -216,12 +217,6 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 			menuDisplayFragmentConfiguration.sublevels() + 1);
 	}
 
-	private String _getFragmentId(FragmentEntryLink fragmentEntryLink) {
-		return StringBundler.concat(
-			"fragment-", fragmentEntryLink.getFragmentEntryId(), "-",
-			fragmentEntryLink.getNamespace());
-	}
-
 	private NavigationMenuTag _getNavigationMenuTag(
 			long companyId,
 			MenuDisplayFragmentConfiguration menuDisplayFragmentConfiguration)
@@ -268,7 +263,7 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 	}
 
 	private void _writeCss(
-			String fragmentId,
+			String fragmentElementId,
 			MenuDisplayFragmentConfiguration menuDisplayFragmentConfiguration,
 			PrintWriter printWriter)
 		throws IOException {
@@ -280,7 +275,7 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 					"/dependencies/styles.tmpl"),
 			"${", "}",
 			HashMapBuilder.put(
-				"fragmentId", fragmentId
+				"fragmentElementId", fragmentElementId
 			).put(
 				"hoveredItemColor",
 				() -> {

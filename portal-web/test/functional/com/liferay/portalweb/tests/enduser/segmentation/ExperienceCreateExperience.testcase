@@ -3061,6 +3061,123 @@ definition {
 		}
 	}
 
+	@description = "LPS-90586: Validate if the user can cancel the confirmation from delete alert and your experience is not deleted"
+	@ignore = "true"
+	@priority = "3"
+	test CancelDeletingExperience {
+
+		// TODO LPS-90586 CancelDeletingExperience pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can change the background color of some section in the experiences that can be different from other experiences (already published)"
+	@ignore = "true"
+	@priority = "3"
+	test ChangingBackgroundColor {
+
+		// TODO LPS-86285 ChangingBackgroundColor pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can change the background image of some section in the experiences that can be different from other experiences (already published)"
+	@ignore = "true"
+	@priority = "3"
+	test ChangingBackgroundImage {
+
+		// TODO LPS-86285 ChangingBackgroundImage pending implementation
+
+	}
+
+	@description = "LPS-90586: Validate if all experiences were deleted, only the Default experience will appear"
+	@ignore = "true"
+	@priority = "5"
+	test CheckDefaultAfterDeletingExperiences {
+
+		// TODO LPS-90586 CheckDefaultAfterDeletingExperiences pending implementation
+
+	}
+
+	@description = "LPS-90586: Validate if the Default experience doesn't offer a delete button"
+	@ignore = "true"
+	@priority = "3"
+	test CheckDefaultDeleteButton {
+
+		// TODO LPS-90586 CheckDefaultDeleteButton pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can create the content in the experiences that can be different from others experiences"
+	@ignore = "true"
+	@priority = "3"
+	test CreatingContentInDifferentExperiences {
+
+		// TODO LPS-86285 CreatingContentInDifferentExperiences pending implementation
+
+	}
+
+	@description = "LPS-90585: Validate in the list of Experiences if the decrease priority button working properly"
+	@ignore = "true"
+	@priority = "4"
+	test DecreaseExperiencePriority {
+
+		// TODO LPS-90585 DecreaseExperiencePriority pending implementation
+
+	}
+
+	@description = "LPS-90585: Validate if the Default segment doesn't offer any option to be prioritized"
+	@ignore = "true"
+	@priority = "3"
+	test DefaultExperienceCantBePrioritized {
+
+		// TODO LPS-90585 DefaultExperienceCantBePrioritized pending implementation
+
+	}
+
+	@description = "LPS-90585: Validate in the list of Experiences if the default option is always the last option"
+	@ignore = "true"
+	@priority = "3"
+	test DefaultExperienceLastOption {
+
+		// TODO LPS-90585 DefaultExperienceLastOption pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can discard the section when he is editing the experiences (not published)	"
+	@ignore = "true"
+	@priority = "3"
+	test DiscardingASectionOfAnUnpublishedExperiment {
+
+		// TODO LPS-86285 DiscardingASectionOfAnUnpublishedExperiment pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can discard the changes when he is editing the experiences (not published)"
+	@ignore = "true"
+	@priority = "3"
+	test DiscardingChangesFromUnpublishedExperiences {
+
+		// TODO LPS-86285 DiscardingChangesFromUnpublishedExperiences pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can discard the changes when he is editing the experiences (already published)"
+	@ignore = "true"
+	@priority = "4"
+	test DiscardingChangesStillInTheEdition {
+
+		// TODO LPS-86285 DiscardingChangesStillInTheEdition pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can discard the section when he is editing the experiences (already published)"
+	@ignore = "true"
+	@priority = "3"
+	test DiscardingSection {
+
+		// TODO LPS-86285 DiscardingSection pending implementation
+
+	}
+
 	@description = "When the user clicks on the Duplicate option of an experience, a new experience with [the same name] + Copy and the same audience (Segment) appears in the last position of the list, always below the default experience"
 	@priority = "5"
 	test DuplicateExperience {
@@ -3154,6 +3271,153 @@ definition {
 		PageEditor.clickPublish();
 	}
 
+	@description = "LPS-91876: Validate if when the user tries to edit the name of some Experience can be edited with success"
+	@ignore = "true"
+	@priority = "5"
+	test EditExperienceName {
+
+		// TODO LPS-91876 EditExperienceName pending implementation
+
+	}
+
+	@description = "LPS-91876: Validate if when the user tries to edit the segment associated of some Experience can be changed with success"
+	@ignore = "true"
+	@priority = "3"
+	test EditExperienceSegment {
+
+		// TODO LPS-91876 EditExperienceSegment pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with how the user interacts with the Experiences Dropdown, when the user has permissions and segments are available and interact with the New Segment by New Experience"
+	@ignore = "true"
+	@priority = "3"
+	test ExperienceDropdownAddNewSegment {
+
+		// TODO LPS-90588 ExperienceDropdownAddNewSegment pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with how the user interacts with the Experiences Dropdown, when the user has permissions but no segments are available and interact with the New Segment by New Experience"
+	@ignore = "true"
+	@priority = "3"
+	test ExperienceDropdownAddNewSegmentButton {
+
+		// TODO LPS-90588 ExperienceDropdownAddNewSegmentButton pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with once the user is creating the new Segment, when the user saves the segment	"
+	@ignore = "true"
+	@priority = "5"
+	test ExperienceDropdownAddNewSegmentCancel {
+
+		// TODO LPS-90588 ExperienceDropdownAddNewSegmentCancel pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with once the user is creating the new Segment, when the user closes segments edition"
+	@ignore = "true"
+	@priority = "3"
+	test ExperienceDropdownAddNewSegmentCancelInputs {
+
+		// TODO LPS-90588 ExperienceDropdownAddNewSegmentCancelInputs pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with how the user interacts with the Experiences Dropdown, when the user has permissions and segments are available and interact with the New Experience button"
+	@ignore = "true"
+	@priority = "3"
+	test ExperienceDropdownAddNewSegmentEmpty {
+
+		// TODO LPS-90588 ExperienceDropdownAddNewSegmentEmpty pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with how the user interacts with the Experiences Dropdown, when the user has permissions but no segments are available and interact with the New Experience button"
+	@ignore = "true"
+	@priority = "3"
+	test ExperienceDropdownWithNoSegmentsUserWithNoPermisisons {
+
+		// TODO LPS-90588 ExperienceDropdownWithNoSegmentsUserWithNoPermisisons pending implementation
+
+	}
+
+	@description = "LPS-90588: Validate the interaction with how the user interacts with the Experiences Dropdown, when segments available but the user has no permissions"
+	@ignore = "true"
+	@priority = "3"
+	test ExperienceDropdownWithSegmentsUserWithNoPermisisons {
+
+		// TODO LPS-90588 ExperienceDropdownWithSegmentsUserWithNoPermisisons pending implementation
+
+	}
+
+	@description = "LPS-91946: Given: in the Site Editor => Page => Content Editor; Having at least on Segment created, with a faulty edition and creation experience web service
+	When: trying to create a new experience
+	Then: the modal does not hides away and an toast error message appears at the bottom left side of the screen."
+
+	@ignore = "true"
+	@priority = "4"
+	test GeneralErrorOrToastError {
+
+		// TODO LPS-91946 GeneralErrorOrToastError pending implementation
+
+	}
+
+	@description = "LPS-86292: Validate if, on simulate view, is possible to have no segment selected, in this case, the page shown is the default
+	Create a segment;
+	Create an experience based on that segment;
+	Validate that in the simulation mode the default experience is shown when no segment is selected"
+	@ignore = "true"
+	@priority = "4"
+	test PreviewDefaultExperience {
+
+		// TODO LPS-86292 PreviewDefaultExperience pending implementation
+
+	}
+
+	@description = "LPS-86292: Validate if, on simulate view, after selecting a segment, the page updates related to the criteria of the segment
+	Create a segment;
+	Create an experience based on that segment;
+	Validate that in the simulation mode the experience is shown for that segment"
+	@ignore = "true"
+	@priority = "5"
+	test PreviewExperience {
+
+		// TODO LPS-86292 PreviewExperience pending implementation
+
+	}
+
+	@description = "LPS-86292: Validate if, on simulate view, is possible to navigate inside the page under the selected segment criteria
+	Create a segment;
+	Create an experience based on that segment;
+	Validate that in the simulation mode its possible to navigate insided the page"
+	@ignore = "true"
+	@priority = "3"
+	test PreviewExperienceNavigation {
+
+		// TODO LPS-86292 PreviewExperienceNavigation pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can publish the content in the experiences that can be different from others experiences"
+	@ignore = "true"
+	@priority = "5"
+	test PublishContentInDifferentExperiences {
+
+		// TODO LPS-86285 PublishContentInDifferentExperiences pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can remove a section in the experiences that can be different from others experiences (already published)"
+	@ignore = "true"
+	@priority = "5"
+	test RemoveDifferentSections {
+
+		// TODO LPS-86285 RemoveDifferentSections pending implementation
+
+	}
+
 	@description = "This is a test for LPS-132573. Assert no error occurs after switching back to default experience with fragment removed."
 	@priority = "4"
 	test RemoveFragmentAndChangeBackToDefaultExperience {
@@ -3202,6 +3466,44 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
 
 		PageEditor.viewFragmentNotPresent(fragmentName = "Heading");
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can remove a section in the experiences that can be different from others experiences (not published)	"
+	@ignore = "true"
+	@priority = "3"
+	test RemovingASectionOfDifferentAndUnpublishedExperiences {
+
+		// TODO LPS-86285 RemovingASectionOfDifferentAndUnpublishedExperiences pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can remove fragment in the experiences that can be different from others experiences (already published)"
+	@ignore = "true"
+	@priority = "4"
+	test RemovingFragmentInDifferentExperiences {
+
+		// TODO LPS-86285 RemovingFragmentInDifferentExperiences pending implementation
+
+	}
+
+	@description = "LPS-86285: Validate in the content page if, the user can remove fragment in the experiences that can be different from others experiences (not published)"
+	@ignore = "true"
+	@priority = "3"
+	test RemovingFragmentOfUnpublishedExperiences {
+
+		// TODO LPS-86285 RemovingFragmentOfUnpublishedExperiences pending implementation
+
+	}
+
+	@description = "LPS-91946: Given: in the Site Editor => Page => Content Editor; Having at least on Segment created.
+	When: trying to create a new experience without filling the Experience Name input
+	Then: the modal does not hides away and the Experience Name input reports an error"
+	@ignore = "true"
+	@priority = "4"
+	test RequiredField {
+
+		// TODO LPS-91946 RequiredField pending implementation
+
 	}
 
 }

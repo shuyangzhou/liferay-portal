@@ -498,6 +498,13 @@ public abstract class BaseWorkspaceGitRepository
 				continue;
 			}
 
+			if (JenkinsResultsParserUtil.isWindows() &&
+				propertyValue.startsWith("/") &&
+				!propertyValue.startsWith("/c/")) {
+
+				propertyValue = "C:" + propertyValue;
+			}
+
 			properties.put(propertyName, propertyValue);
 		}
 
@@ -505,13 +512,7 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	protected Set<String> getPropertyOptions() {
-		Set<String> propertyOptions = new HashSet<>(_propertyOptions);
-
-		if (JenkinsResultsParserUtil.isWindows()) {
-			propertyOptions.add("windows");
-		}
-
-		return propertyOptions;
+		return _propertyOptions;
 	}
 
 	private LocalGitBranch _createPullRequestLocalGitBranch() {

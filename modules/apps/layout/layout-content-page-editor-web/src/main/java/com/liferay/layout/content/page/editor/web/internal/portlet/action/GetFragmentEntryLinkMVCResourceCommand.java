@@ -31,6 +31,7 @@ import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemDetailsProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
+import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
 import com.liferay.layout.display.page.constants.LayoutDisplayPageWebKeys;
@@ -87,6 +88,12 @@ public class GetFragmentEntryLinkMVCResourceCommand
 			DefaultFragmentRendererContext defaultFragmentRendererContext =
 				new DefaultFragmentRendererContext(fragmentEntryLink);
 
+			int collectionItemIndex = ParamUtil.getInteger(
+				resourceRequest, "collectionItemIndex", -1);
+
+			defaultFragmentRendererContext.setCollectionElementIndex(
+				collectionItemIndex);
+
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)resourceRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
@@ -105,6 +112,15 @@ public class GetFragmentEntryLinkMVCResourceCommand
 
 			defaultFragmentRendererContext.setSegmentsExperienceIds(
 				new long[] {segmentsExperienceId});
+
+			defaultFragmentRendererContext.
+				setCollectionStyledLayoutStructureItemIds(
+					LayoutStructureUtil.
+						getCollectionStyledLayoutStructureItemIds(
+							fragmentEntryLink.getFragmentEntryLinkId(),
+							LayoutStructureUtil.getLayoutStructure(
+								themeDisplay.getScopeGroupId(),
+								themeDisplay.getPlid(), segmentsExperienceId)));
 
 			String itemClassName = ParamUtil.getString(
 				resourceRequest, "itemClassName");

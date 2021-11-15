@@ -44,6 +44,7 @@ definition {
 	@priority = "5"
 	test CheckGeneralEventsForUnknownUser {
 		property proxy.server.enabled = "true";
+		property test.name.skip.portal.instance = "GeneralEvents#CheckGeneralEventsForUnknownUser";
 
 		task ("Add widget pages") {
 			for (var layoutName : list "WebContent,Blog,Document,Form") {
@@ -173,9 +174,9 @@ definition {
 				eventId = "pageLoaded",
 				property = "pageLoadTime");
 
-			TestUtils.isLessThan(
+			TestUtils.isGreaterThan(
 				actual = "${pageLoadTime}",
-				expected = "1500");
+				expected = "0");
 		}
 
 		task ("View the WebContent events triggered for guest") {
@@ -458,9 +459,9 @@ definition {
 				eventId = "fieldBlurred",
 				property = "focusDuration");
 
-			TestUtils.isLessThan(
+			TestUtils.isGreaterThan(
 				actual = "${focusDuration}",
-				expected = "1500");
+				expected = "0");
 
 			ACUtils.assertEventPropertyValue(
 				applicationId = "Form",

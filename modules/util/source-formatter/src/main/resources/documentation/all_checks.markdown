@@ -146,6 +146,7 @@ JSPTagAttributesCheck | [Bug Prevention](bug_prevention_checks.markdown#bug-prev
 [JSPUnusedJSPFCheck](checks/jsp_unused_jspf_check.markdown#jspunusedjspfcheck) | [Performance](performance_checks.markdown#performance-checks) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds `.jspf` files that are not used. |
 JSPUnusedTermsCheck | [Performance](performance_checks.markdown#performance-checks) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds taglibs, variables and imports that are unused. |
 JSPVarNameCheck | [Styling](styling_checks.markdown#styling-checks) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that values of attribute `var` follow naming conventions. |
+JSPVariableOrderCheck | [Styling](styling_checks.markdown#styling-checks) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks if variable names are in alphabetical order. |
 JSPWhitespaceCheck | [Styling](styling_checks.markdown#styling-checks) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds missing and unnecessary whitespace in `.jsp` files. |
 JSPXSSVulnerabilitiesCheck | [Security](security_checks.markdown#security-checks) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds xss vulnerabilities. |
 JSStylingCheck | [Styling](styling_checks.markdown#styling-checks) | .js or .jsx | Applies rules to enforce consisteny in code style. |

@@ -116,7 +116,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "specifications"));
 
 		<div class="sidenav-content">
 			<clay:container-fluid>
-				<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+				<aui:form action="<%= portletURL %>" method="post" name="fm">
 					<aui:input name="<%= Constants.CMD %>" type="hidden" />
 					<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 					<aui:input name="deleteCPOptionCategoryIds" type="hidden" />

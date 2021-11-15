@@ -14,7 +14,6 @@
 
 package com.liferay.portal.deploy;
 
-import com.liferay.portal.events.GlobalStartupAction;
 import com.liferay.portal.kernel.deploy.DeployManager;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployDir;
 import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
@@ -39,9 +38,7 @@ public class DeployManagerImpl implements DeployManager {
 	public void deploy(AutoDeploymentContext autoDeploymentContext)
 		throws Exception {
 
-		AutoDeployDir.deploy(
-			autoDeploymentContext,
-			GlobalStartupAction.getAutoDeployListeners(false));
+		AutoDeployDir.deploy(autoDeploymentContext);
 	}
 
 	@Override

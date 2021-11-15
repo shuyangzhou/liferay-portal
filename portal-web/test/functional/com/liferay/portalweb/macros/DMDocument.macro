@@ -338,6 +338,24 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro addDMShortcutCPWithStaging {
+		DMNavigator.gotoAddDocumentTypeCP(dmDocumentTypeName = "Shortcut");
+
+		Click(locator1 = "DocumentsAndMediaAddShortcut#SELECT_DOCUMENT_BUTTON");
+
+		IFrame.selectModalFrame();
+
+		if (isSet(folder)) {
+			LexiconCard.clickCardTitleLink(card = "${folder}");
+		}
+
+		LexiconCard.clickCard(card = "${dmDocumentTitle}");
+
+		SelectFrameTop(value1 = "relative=top");
+
+		PortletEntry.save();
+	}
+
 	macro addDMShortcutPG {
 		DMNavigator.gotoAddDocumentTypePG(
 			contentPage = "${contentPage}",
@@ -797,7 +815,7 @@ definition {
 
 		var key_dmDocumentTitle = "${dmDocumentTitle}";
 
-		DMDocument.viewCardTitle(dmDocumentTitle = "${dmDocumentTitle}");
+		LexiconEntry.viewEntryName(rowEntry = "${dmDocumentTitle}");
 	}
 
 	macro assertFileNameFromTempFolder {

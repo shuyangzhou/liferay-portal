@@ -3782,6 +3782,23 @@ definition {
 		FormFields.viewCheckboxChecked(fieldName = "exportEnabled");
 	}
 
+	macro viewMatchingCalendarIndexesInPartitionedDatabase {
+		var baseSchemaIndex = SQL.executeMySQLStatement(
+			mysqlStatement = "SHOW INDEX FROM lportal.Calendar;");
+
+		var partitionSchemaIndex = SQL.executeMySQLStatement(
+			mysqlStatement = "SHOW INDEX FROM lpartition_41246.Calendar;");
+
+		if ("${baseSchemaIndex}" == "${partitionSchemaIndex}") {
+			echo("Calendar Index matches: ${baseSchemaIndex}");
+		}
+		else {
+			echo("Calendar Index does not match between database schemas");
+
+			fail("Base schema index is ${baseSchemaIndex} but partitioned schema index is ${partitionSchemaIndex}");
+		}
+	}
+
 	macro viewMessageBoards {
 		Navigator.gotoPage(pageName = "Message Boards");
 
@@ -4963,9 +4980,7 @@ definition {
 			webContentContent = "WC WebContent2 Content",
 			webContentTitle = "WC WebContent2 Title");
 
-		SignOut.signOut();
-
-		SignIn.signIn();
+		Upgrade.viewMatchingCalendarIndexesInPartitionedDatabase();
 	}
 
 	macro ViewWebContentWCStructureWCTemplateWCDandAssetPublisher {

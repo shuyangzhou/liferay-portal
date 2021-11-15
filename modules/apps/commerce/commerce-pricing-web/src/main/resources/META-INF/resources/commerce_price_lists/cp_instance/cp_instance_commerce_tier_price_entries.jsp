@@ -27,7 +27,7 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 %>
 
 <div class="tier-price-entries-container" id="<portlet:namespace />entriesContainer">
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+	<aui:form action="<%= portletURL %>" method="post" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 

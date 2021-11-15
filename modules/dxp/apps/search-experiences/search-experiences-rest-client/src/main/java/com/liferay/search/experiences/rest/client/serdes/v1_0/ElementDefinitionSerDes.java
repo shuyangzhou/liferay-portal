@@ -69,6 +69,16 @@ public class ElementDefinitionSerDes {
 			sb.append("\"");
 		}
 
+		if (elementDefinition.getConfiguration() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"configuration\": ");
+
+			sb.append(String.valueOf(elementDefinition.getConfiguration()));
+		}
+
 		if (elementDefinition.getIcon() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -81,16 +91,6 @@ public class ElementDefinitionSerDes {
 			sb.append(_escape(elementDefinition.getIcon()));
 
 			sb.append("\"");
-		}
-
-		if (elementDefinition.getSxpBlueprint() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"sxpBlueprint\": ");
-
-			sb.append(String.valueOf(elementDefinition.getSxpBlueprint()));
 		}
 
 		if (elementDefinition.getUiConfiguration() != null) {
@@ -132,20 +132,20 @@ public class ElementDefinitionSerDes {
 				"category", String.valueOf(elementDefinition.getCategory()));
 		}
 
+		if (elementDefinition.getConfiguration() == null) {
+			map.put("configuration", null);
+		}
+		else {
+			map.put(
+				"configuration",
+				String.valueOf(elementDefinition.getConfiguration()));
+		}
+
 		if (elementDefinition.getIcon() == null) {
 			map.put("icon", null);
 		}
 		else {
 			map.put("icon", String.valueOf(elementDefinition.getIcon()));
-		}
-
-		if (elementDefinition.getSxpBlueprint() == null) {
-			map.put("sxpBlueprint", null);
-		}
-		else {
-			map.put(
-				"sxpBlueprint",
-				String.valueOf(elementDefinition.getSxpBlueprint()));
 		}
 
 		if (elementDefinition.getUiConfiguration() == null) {
@@ -183,15 +183,16 @@ public class ElementDefinitionSerDes {
 					elementDefinition.setCategory((String)jsonParserFieldValue);
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "configuration")) {
+				if (jsonParserFieldValue != null) {
+					elementDefinition.setConfiguration(
+						ConfigurationSerDes.toDTO(
+							(String)jsonParserFieldValue));
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "icon")) {
 				if (jsonParserFieldValue != null) {
 					elementDefinition.setIcon((String)jsonParserFieldValue);
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "sxpBlueprint")) {
-				if (jsonParserFieldValue != null) {
-					elementDefinition.setSxpBlueprint(
-						SXPBlueprintSerDes.toDTO((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "uiConfiguration")) {

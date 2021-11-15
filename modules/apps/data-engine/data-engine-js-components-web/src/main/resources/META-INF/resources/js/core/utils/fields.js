@@ -158,7 +158,7 @@ export const updateFieldValidationProperty = (
 				expression &&
 				expression.value
 			) {
-				expression.value = expression.value.replace(
+				expression.value = expression.value.replaceAll(
 					fieldName,
 					propertyValue
 				);
