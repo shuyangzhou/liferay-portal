@@ -20,7 +20,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.DocUtil;
 import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.deploy.DeployUtil;
-import com.liferay.portal.kernel.deploy.Deployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
@@ -93,7 +92,7 @@ import org.apache.oro.io.GlobFilenameFilter;
  * @author Brian Wing Shun Chan
  * @author Sandeep Soni
  */
-public class BaseDeployer implements AutoDeployer, Deployer {
+public class BaseAutoDeployer implements AutoDeployer {
 
 	public static final String DEPLOY_TO_PREFIX = "DEPLOY_TO__";
 
@@ -114,7 +113,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			}
 		}
 
-		try (BaseDeployer baseDeployer = new BaseDeployer(wars, jars)) {
+		try (BaseAutoDeployer baseAutoDeployer = new BaseAutoDeployer(
+				wars, jars)) {
 		}
 		catch (IOException ioException) {
 			if (_log.isWarnEnabled()) {
@@ -123,16 +123,16 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		}
 	}
 
-	public BaseDeployer() {
+	public BaseAutoDeployer() {
 		ServiceLoader<DeploymentExtension> serviceLoader = ServiceLoader.load(
-			DeploymentExtension.class, BaseDeployer.class.getClassLoader());
+			DeploymentExtension.class, BaseAutoDeployer.class.getClassLoader());
 
 		for (DeploymentExtension deploymentExtension : serviceLoader) {
 			_deploymentExtensions.add(deploymentExtension);
 		}
 	}
 
-	public BaseDeployer(List<String> wars, List<String> jars) {
+	public BaseAutoDeployer(List<String> wars, List<String> jars) {
 		this();
 
 		baseDir = System.getProperty("deployer.base.dir");
@@ -2089,7 +2089,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	private static final String _PORTAL_CLASS_LOADER =
 		"com.liferay.support.tomcat.loader.PortalClassLoader";
 
-	private static final Log _log = LogFactoryUtil.getLog(BaseDeployer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseAutoDeployer.class);
 
 	private final List<DeploymentExtension> _deploymentExtensions =
 		new ArrayList<>();
