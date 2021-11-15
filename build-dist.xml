@@ -378,6 +378,10 @@
 			/>
 		</delete>
 
+		<fileset id="dist.contents" dir="${lp.plugins.dir}/dist" includes="*"/>
+		<property name="prop.dist.contents" refid="dist.contents"/>
+		<echo>#######Files inside ${lp.plugins.dir}/dist : ${prop.dist.contents}</echo>
+
 		<java
 			classname="com.liferay.portal.tools.deploy.ExtDeployer"
 			classpathref="project.classpath"
