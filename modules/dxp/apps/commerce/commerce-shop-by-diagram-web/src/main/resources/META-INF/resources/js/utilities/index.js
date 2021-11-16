@@ -11,6 +11,8 @@
 
 import {DIAGRAM_LABELS_MAX_LENGTH, DRAG_AND_DROP_THRESHOLD} from './constants';
 
+export const TOOLTIP_DISTANCE_FROM_TARGET = 10;
+
 export function calculateTooltipStyleFromTarget(target) {
 	const {
 		height: targetHeight,
@@ -23,18 +25,13 @@ export function calculateTooltipStyleFromTarget(target) {
 	const targetRight = window.innerWidth - targetLeft - targetWidth;
 	const style = {};
 
-	if (targetTop + targetHeight / 2 < window.innerHeight / 2) {
-		style.top = distanceFromTop + targetHeight;
-	}
-	else {
-		style.top = distanceFromTop + targetHeight - 150;
-	}
+	style.top = distanceFromTop + targetHeight / 2;
 
 	if (targetLeft + targetWidth / 2 < window.innerWidth / 2) {
-		style.left = targetLeft + targetWidth + 10;
+		style.left = targetLeft + targetWidth + TOOLTIP_DISTANCE_FROM_TARGET;
 	}
 	else {
-		style.right = targetRight + targetWidth + 10;
+		style.right = targetRight + targetWidth + TOOLTIP_DISTANCE_FROM_TARGET;
 	}
 
 	return style;
@@ -110,4 +107,35 @@ export function formatLabel(label) {
 	}
 
 	return label;
+}
+
+export function formatProductOptions(skuOptions, productOptions) {
+	const optionsData = Object.entries(skuOptions);
+
+	if (!optionsData.length) {
+		return 'null';
+	}
+
+	const [optionId, optionValueId] = optionsData[0];
+
+	const option = productOptions.find(
+		(productOption) => String(productOption.id) === String(optionId)
+	);
+
+	const optionValue =
+		option &&
+		option.productOptionValues.find(
+			(productOptionValue) =>
+				String(productOptionValue.id) === String(optionValueId)
+		);
+
+	return JSON.stringify([{key: option.key, value: [optionValue.key]}]);
+}
+
+export function getProductURL(productBaseURL, productURLs) {
+	const productShortLink =
+		productURLs[Liferay.ThemeDisplay.getLanguageId()] ||
+		productURLs[Liferay.ThemeDisplay.getDefaultLanguageId()];
+
+	return productBaseURL + productShortLink;
 }

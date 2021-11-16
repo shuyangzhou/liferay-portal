@@ -53,7 +53,6 @@ function CartItem({item: cartItem}) {
 		cartState,
 		displayDiscountLevels,
 		setIsUpdating,
-		spritemap,
 		updateCartModel,
 	} = useContext(MiniCartContext);
 
@@ -110,6 +109,10 @@ function CartItem({item: cartItem}) {
 			...INITIAL_ITEM_STATE,
 			isGettingRemoved: true,
 			removalTimeoutRef: setTimeout(() => {
+				if (!isMounted()) {
+					return;
+				}
+
 				setIsUpdating(true);
 
 				setItemState({
@@ -200,7 +203,6 @@ function CartItem({item: cartItem}) {
 						}
 					}}
 					quantity={quantity}
-					spritemap={spritemap}
 					{...settings}
 				/>
 			</div>
@@ -217,18 +219,12 @@ function CartItem({item: cartItem}) {
 					onClick={removeItem}
 					type="button"
 				>
-					<ClayIcon
-						spritemap={spritemap}
-						symbol="times-circle-full"
-					/>
+					<ClayIcon symbol="times-circle-full" />
 				</button>
 			</div>
 			{(errorMessages || isShowingErrors) && (
 				<div className="mini-cart-item-errors">
-					<ClayIcon
-						spritemap={spritemap}
-						symbol="exclamation-circle"
-					/>
+					<ClayIcon symbol="exclamation-circle" />
 
 					<span>
 						{Liferay.Language.get('an-unexpected-error-occurred')}

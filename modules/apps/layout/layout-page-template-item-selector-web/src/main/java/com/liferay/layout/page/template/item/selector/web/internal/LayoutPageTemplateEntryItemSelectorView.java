@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.IOException;
 
@@ -208,24 +207,7 @@ public class LayoutPageTemplateEntryItemSelectorView
 		public String getSubtitle(Locale locale) {
 			if (Objects.equals(
 					_layoutPageTemplateEntry.getType(),
-					LayoutPageTemplateEntryTypeConstants.TYPE_BASIC)) {
-
-				LayoutPageTemplateCollection layoutPageTemplateCollection =
-					_layoutPageTemplateCollectionLocalService.
-						fetchLayoutPageTemplateCollection(
-							_layoutPageTemplateEntry.
-								getLayoutPageTemplateCollectionId());
-
-				if (layoutPageTemplateCollection == null) {
-					return StringPool.BLANK;
-				}
-
-				return layoutPageTemplateCollection.getName();
-			}
-			else if (Objects.equals(
-						_layoutPageTemplateEntry.getType(),
-						LayoutPageTemplateEntryTypeConstants.
-							TYPE_DISPLAY_PAGE)) {
+					LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE)) {
 
 				String typeLabel = _getTypeLabel();
 
@@ -262,16 +244,18 @@ public class LayoutPageTemplateEntryItemSelectorView
 				return LanguageUtil.format(
 					_httpServletRequest, "x-usages", layoutsCount);
 			}
-			else if (Objects.equals(
-						_layoutPageTemplateEntry.getType(),
-						LayoutPageTemplateEntryTypeConstants.
-							TYPE_WIDGET_PAGE)) {
 
-				return LanguageUtil.get(
-					_httpServletRequest, "widget-page-template");
+			LayoutPageTemplateCollection layoutPageTemplateCollection =
+				_layoutPageTemplateCollectionLocalService.
+					fetchLayoutPageTemplateCollection(
+						_layoutPageTemplateEntry.
+							getLayoutPageTemplateCollectionId());
+
+			if (layoutPageTemplateCollection == null) {
+				return StringPool.BLANK;
 			}
 
-			return StringPool.BLANK;
+			return layoutPageTemplateCollection.getName();
 		}
 
 		@Override
@@ -409,7 +393,7 @@ public class LayoutPageTemplateEntryItemSelectorView
 						getLayoutPageTemplateEntries(
 							_getGroupId(),
 							_layoutPageTemplateEntryItemSelectorCriterion.
-								getLayoutType(),
+								getLayoutTypes(),
 							searchContainer.getStart(),
 							searchContainer.getEnd(),
 							searchContainer.getOrderByComparator()));
@@ -418,7 +402,7 @@ public class LayoutPageTemplateEntryItemSelectorView
 						getLayoutPageTemplateEntriesCount(
 							_getGroupId(),
 							_layoutPageTemplateEntryItemSelectorCriterion.
-								getLayoutType()));
+								getLayoutTypes()));
 			}
 			else {
 				searchContainer.setResults(
@@ -426,8 +410,7 @@ public class LayoutPageTemplateEntryItemSelectorView
 						getLayoutPageTemplateEntries(
 							_getGroupId(), keywords,
 							_layoutPageTemplateEntryItemSelectorCriterion.
-								getLayoutType(),
-							WorkflowConstants.STATUS_ANY,
+								getLayoutTypes(),
 							searchContainer.getStart(),
 							searchContainer.getEnd(),
 							searchContainer.getOrderByComparator()));
@@ -436,8 +419,7 @@ public class LayoutPageTemplateEntryItemSelectorView
 						getLayoutPageTemplateEntriesCount(
 							_getGroupId(), keywords,
 							_layoutPageTemplateEntryItemSelectorCriterion.
-								getLayoutType(),
-							WorkflowConstants.STATUS_ANY));
+								getLayoutTypes()));
 			}
 
 			return searchContainer;

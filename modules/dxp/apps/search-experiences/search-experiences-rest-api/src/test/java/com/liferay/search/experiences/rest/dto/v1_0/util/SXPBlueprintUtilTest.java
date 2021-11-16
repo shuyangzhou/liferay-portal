@@ -36,14 +36,14 @@ public class SXPBlueprintUtilTest {
 	@Test
 	public void testToSXPBlueprint() throws Exception {
 		String[] fileNames = {
-			"advanced_configuration_test",
-			"aggregations_test",
+			"advanced_configuration",
+			"aggregations",
 
-			// TODO "content_driven_test",
+			// TODO "content_driven",
 
-			"highlights_test",
-			"personalization_test",
-			"sorts_tests"
+			"highlights",
+			"personalization",
+			"sorts"
 		};
 
 		for (String fileName : fileNames) {

@@ -14,12 +14,15 @@
 
 package com.liferay.commerce.shop.by.diagram.admin.web.internal.type;
 
+import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.constants.CommerceWebKeys;
 import com.liferay.commerce.context.CommerceContext;
+import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.portlet.action.ActionHelper;
+import com.liferay.commerce.product.url.CPFriendlyURL;
 import com.liferay.commerce.shop.by.diagram.admin.web.internal.frontend.taglib.clay.data.set.constants.CSDiagramDataSetConstants;
 import com.liferay.commerce.shop.by.diagram.admin.web.internal.util.CSDiagramSettingUtil;
 import com.liferay.commerce.shop.by.diagram.configuration.CSDiagramSettingImageConfiguration;
@@ -33,9 +36,12 @@ import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -105,6 +111,20 @@ public class DefaultCSDiagramType implements CSDiagramType {
 				CSDiagramSettingImageConfiguration.class, properties);
 	}
 
+	private String _getProductBaseURL(ThemeDisplay themeDisplay) {
+		Layout layout = themeDisplay.getLayout();
+
+		Group group = layout.getGroup();
+
+		String siteBaseURL = HtmlUtil.escape(
+			group.getDisplayURL(themeDisplay, layout.isPrivateLayout()));
+
+		String productURLSeparator = _cpFriendlyURL.getProductURLSeparator(
+			themeDisplay.getCompanyId());
+
+		return siteBaseURL + productURLSeparator;
+	}
+
 	private Map<String, Object> _getProps(
 			CSDiagramSetting csDiagramSetting,
 			HttpServletRequest httpServletRequest)
@@ -153,10 +173,33 @@ public class DefaultCSDiagramType implements CSDiagramType {
 			if (commerceOrder != null) {
 				hashMapWrapper.put(
 					"cartId", commerceOrder.getCommerceOrderId());
+
+				hashMapWrapper.put("orderUUID", commerceOrder.getUuid());
 			}
 
 			hashMapWrapper.put(
+				"channelGroupId", commerceContext.getCommerceChannelGroupId());
+
+			hashMapWrapper.put(
 				"channelId", commerceContext.getCommerceChannelId());
+
+			CommerceAccount commerceAccount =
+				commerceContext.getCommerceAccount();
+
+			if (commerceAccount != null) {
+				hashMapWrapper.put(
+					"commerceAccountId",
+					commerceAccount.getCommerceAccountId());
+			}
+
+			CommerceCurrency commerceCurrency =
+				commerceContext.getCommerceCurrency();
+
+			hashMapWrapper.put(
+				"commerceCurrencyCode", commerceCurrency.getCode());
+
+			hashMapWrapper.put(
+				"productBaseURL", _getProductBaseURL(themeDisplay));
 		}
 
 		return hashMapWrapper.build();
@@ -164,6 +207,9 @@ public class DefaultCSDiagramType implements CSDiagramType {
 
 	@Reference
 	private ActionHelper _actionHelper;
+
+	@Reference
+	private CPFriendlyURL _cpFriendlyURL;
 
 	private volatile CSDiagramSettingImageConfiguration
 		_csDiagramSettingImageConfiguration;

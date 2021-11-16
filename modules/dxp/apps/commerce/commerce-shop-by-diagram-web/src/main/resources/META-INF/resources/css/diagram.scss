@@ -197,12 +197,25 @@ $diagram-height: 700px;
 	}
 }
 
-.diagram-tooltip {
-	background: $white;
-	border-radius: 3px;
-	box-shadow: 1px 6px 11px rgba(0, 0, 0, 0.1);
-	padding: map-get($spacers, 4);
+.diagram-tooltip-wrapper {
 	position: absolute;
-	width: 400px;
-	z-index: 900;
+	z-index: 990;
+
+	.diagram-tooltip {
+		background: $white;
+		border-radius: 3px;
+		box-shadow: 1px 6px 11px rgba(0, 0, 0, 0.1);
+		padding: map-get($spacers, 3);
+		transform: translate(0, -50%);
+		width: 400px;
+	}
+
+	.fill-cover .sticker-img {
+		height: 100%;
+		object-fit: cover;
+		object-position: 50%;
+		position: static;
+		transform: none;
+		width: 100%;
+	}
 }

@@ -248,6 +248,15 @@ components:
                     type: array
                 urlImage:
                     type: string
+                urls:
+                    additionalProperties:
+                        type: string
+                    example:
+                        en_US: product-url-us
+                        hr_HR: product-url-hr
+                        hu_HU: product-url-hu
+                    readOnly: true
+                    type: object
             type: object
         ProductConfiguration:
             properties:
@@ -482,7 +491,7 @@ components:
 info:
     description:
         "Headless Commerce Delivery Catalog API. A Java client JAR is available for use with the group ID 'com.liferay',
-        artifact ID 'com.liferay.headless.commerce.delivery.catalog.client', and version '4.0.9'."
+        artifact ID 'com.liferay.headless.commerce.delivery.catalog.client', and version '4.0.11'."
     license:
         name: Apache 2.0
         url: http://www.apache.org/licenses/LICENSE-2.0.html

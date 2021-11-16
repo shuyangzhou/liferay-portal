@@ -13,7 +13,7 @@ import {fetch} from 'frontend-js-web';
 
 import {HEADERS} from './constants';
 
-const PINS_ENDPOINT = '/o/headless-commerce-admin-catalog/v1.0';
+export const PINS_ENDPOINT = '/o/headless-commerce-admin-catalog/v1.0';
 
 export const loadPins = (productId) => {
 	const url = new URL(
@@ -118,4 +118,43 @@ export const getMappedProducts = (productId, query, page, pageSize) => {
 	return fetch(url, {
 		headers: HEADERS,
 	}).then((response) => response.json());
+};
+
+const products = new Map();
+
+export const getProduct = (productId, channelId, accountId) => {
+	const fetchedProduct = products.get(productId);
+
+	if (fetchedProduct) {
+		return Promise.resolve(fetchedProduct);
+	}
+
+	const productURL = new URL(
+		`/o/headless-commerce-delivery-catalog/v1.0/channels/${channelId}/products/${productId}`,
+		themeDisplay.getPortalURL()
+	);
+
+	if (accountId) {
+		productURL.searchParams.set('accountId', accountId);
+	}
+
+	productURL.searchParams.set('nestedFields', 'skus,images,productOptions');
+
+	return fetch(productURL, {
+		headers: HEADERS,
+	}).then((response) => {
+		if (response.status === 404) {
+			return null;
+		}
+
+		if (!response.ok) {
+			return response.json().then(Promise.reject);
+		}
+
+		return response.json().then((product) => {
+			products.set(productId, product);
+
+			return product;
+		});
+	});
 };

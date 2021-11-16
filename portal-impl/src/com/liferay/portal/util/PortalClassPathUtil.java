@@ -20,7 +20,6 @@ import com.liferay.petra.process.ProcessLog;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -108,43 +107,45 @@ public class PortalClassPathUtil {
 			classLoader = currentThread.getContextClassLoader();
 		}
 
-		StringBundler sb = new StringBundler(8);
+		File[] files = _listClassPathFiles(
+			classLoader, CentralizedThreadLocal.class.getName());
 
-		String appServerGlobalClassPath = _buildClassPath(
-			classLoader, ServletException.class.getName());
+		StringBundler bootstrapClassPathSB = new StringBundler(
+			files.length * 2);
 
-		sb.append(appServerGlobalClassPath);
+		for (File file : files) {
+			String absolutePath = file.getAbsolutePath();
 
-		sb.append(File.pathSeparator);
-
-		String portalGlobalClassPath = _buildClassPath(
-			classLoader, CentralizedThreadLocal.class.getName(),
-			PortalException.class.getName());
-
-		sb.append(portalGlobalClassPath);
-
-		String globalClassPath = sb.toString();
-
-		sb.append(File.pathSeparator);
-		sb.append(
-			_buildClassPath(
-				classLoader,
-				"com.liferay.portal.internal.servlet.MainServlet"));
-
-		if (servletContext != null) {
-			sb.append(File.pathSeparator);
-			sb.append(servletContext.getRealPath(""));
-			sb.append("/WEB-INF/classes");
+			if (absolutePath.contains("petra")) {
+				bootstrapClassPathSB.append(absolutePath);
+				bootstrapClassPathSB.append(File.pathSeparator);
+			}
 		}
 
-		String portalClassPath = sb.toString();
+		if (bootstrapClassPathSB.index() > 0) {
+			bootstrapClassPathSB.setIndex(bootstrapClassPathSB.index() - 1);
+		}
+
+		StringBundler runtimeClassPathSB = new StringBundler(4);
+
+		runtimeClassPathSB.append(
+			_buildClassPath(
+				classLoader, ServletException.class.getName(),
+				CentralizedThreadLocal.class.getName(),
+				"com.liferay.shielded.container.ShieldedContainerInitializer"));
+
+		if (servletContext != null) {
+			runtimeClassPathSB.append(File.pathSeparator);
+			runtimeClassPathSB.append(servletContext.getRealPath(""));
+			runtimeClassPathSB.append("/WEB-INF/classes");
+		}
 
 		ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
 		builder.setArguments(_processArgs);
-		builder.setBootstrapClassPath(globalClassPath);
+		builder.setBootstrapClassPath(bootstrapClassPathSB.toString());
 		builder.setReactClassLoader(classLoader);
-		builder.setRuntimeClassPath(portalClassPath);
+		builder.setRuntimeClassPath(runtimeClassPathSB.toString());
 
 		_portalProcessConfig = builder.build();
 	}

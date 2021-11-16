@@ -11,6 +11,10 @@
 
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import classNames from 'classnames';
+import {
+	useCommerceAccount,
+	useCommerceCart,
+} from 'commerce-frontend-js/utilities/hooks';
 import PropTypes from 'prop-types';
 import React, {
 	useCallback,
@@ -23,20 +27,29 @@ import React, {
 import AdminTooltipContent from '../components/AdminTooltipContent';
 import DiagramFooter from '../components/DiagramFooter';
 import Sequence from '../components/Sequence';
-import TooltipProvider from '../components/TooltipProvider';
 import {DIAGRAM_TABLE_EVENTS} from '../utilities/constants';
 import {loadPins} from '../utilities/data';
 import D3Handler from './D3Handler';
 
 import '../../css/diagram.scss';
+import StorefrontTooltipContent from '../components/StorefrontTooltipContent';
+import TooltipProvider from '../components/TooltipProvider';
 
 function Diagram({
+	cartId: initialCartId,
+	channelGroupId,
+	channelId,
+	commerceAccountId: initialAccountId,
+	commerceCurrencyCode,
 	datasetDisplayId,
 	imageURL,
 	isAdmin,
+	orderUUID,
 	pinsCSSSelectors,
 	productId,
 }) {
+	const commerceCart = useCommerceCart({id: initialCartId});
+	const commerceAccount = useCommerceAccount({id: initialAccountId});
 	const chartInstance = useRef(null);
 	const svgRef = useRef(null);
 	const wrapperRef = useRef(null);
@@ -232,19 +245,31 @@ function Diagram({
 				</div>
 			</div>
 
-			{isAdmin && tooltipData && (
+			{tooltipData && (
 				<TooltipProvider
 					closeTooltip={() => setTooltipData(null)}
 					target={tooltipData.target}
 				>
-					<AdminTooltipContent
-						closeTooltip={() => setTooltipData(null)}
-						datasetDisplayId={datasetDisplayId}
-						productId={productId}
-						readOnlySequence={true}
-						updatePins={updatePins}
-						{...tooltipData}
-					/>
+					{isAdmin ? (
+						<AdminTooltipContent
+							closeTooltip={() => setTooltipData(null)}
+							datasetDisplayId={datasetDisplayId}
+							productId={productId}
+							readOnlySequence={false}
+							updatePins={updatePins}
+							{...tooltipData}
+						/>
+					) : (
+						<StorefrontTooltipContent
+							accountId={commerceAccount.id}
+							cartId={commerceCart.id}
+							channelGroupId={channelGroupId}
+							channelId={channelId}
+							currencyCode={commerceCurrencyCode}
+							orderUUID={orderUUID}
+							{...tooltipData}
+						/>
+					)}
 				</TooltipProvider>
 			)}
 
@@ -260,10 +285,16 @@ function Diagram({
 }
 
 Diagram.propTypes = {
+	cartId: PropTypes.string,
+	channelGroupId: PropTypes.string,
+	channelId: PropTypes.string,
+	commerceAccountId: PropTypes.string,
+	commerceCurrencyCode: PropTypes.string,
 	datasetDisplayId: PropTypes.string,
 	diagramId: PropTypes.string.isRequired,
 	imageURL: PropTypes.string.isRequired,
 	isAdmin: PropTypes.bool.isRequired,
+	orderUUID: PropTypes.string,
 	pinsCSSSelectors: PropTypes.array.isRequired,
 	productId: PropTypes.string.isRequired,
 };

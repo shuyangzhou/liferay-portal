@@ -60,6 +60,8 @@ export const HEADERS = new Headers({
 	'Content-Type': 'application/json',
 });
 
+export const ADD_TO_CART_FROM_TABLE = false;
+
 export const PINS_RADIUS = {
 	DEFAULT: 1,
 	MAX: 3,
@@ -104,3 +106,6 @@ export const LINKING_OPTIONS = {
 };
 
 export const DIAGRAM_LABELS_MAX_LENGTH = 6;
+
+export const ZOOM_DISABLED = process.env.NODE_ENV === 'test';
+export const TRANSITIONS_DISABLED = ZOOM_DISABLED;

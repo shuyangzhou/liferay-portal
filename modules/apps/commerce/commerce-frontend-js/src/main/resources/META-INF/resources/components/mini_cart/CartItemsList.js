@@ -24,7 +24,6 @@ function CartItemsList() {
 		cartState,
 		isUpdating,
 		labels,
-		spritemap,
 		summaryDataMapper,
 	} = useContext(MiniCartContext);
 
@@ -53,10 +52,7 @@ function CartItemsList() {
 			) : (
 				<div className="empty-cart">
 					<div className="empty-cart-icon mb-3">
-						<ClayIcon
-							spritemap={spritemap}
-							symbol="shopping-cart"
-						/>
+						<ClayIcon symbol="shopping-cart" />
 					</div>
 
 					<p className="empty-cart-label">{labels[ADD_PRODUCT]}</p>
