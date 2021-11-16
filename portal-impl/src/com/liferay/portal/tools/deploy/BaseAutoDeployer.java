@@ -304,11 +304,6 @@ public class BaseAutoDeployer implements AutoDeployer {
 
 	@Override
 	public void checkArguments() {
-		if (Validator.isNull(baseDir)) {
-			throw new IllegalArgumentException(
-				"The system property deployer.base.dir is not set");
-		}
-
 		if (Validator.isNull(appServerType)) {
 			throw new IllegalArgumentException(
 				"The system property deployer.app.server.type is not set");
@@ -668,7 +663,6 @@ public class BaseAutoDeployer implements AutoDeployer {
 
 	protected String appServerType;
 	protected String auiTaglibDTD;
-	protected String baseDir;
 	protected List<String> jars;
 	protected String jbossPrefix;
 	protected String portletExtTaglibDTD;
