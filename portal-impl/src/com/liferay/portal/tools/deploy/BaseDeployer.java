@@ -249,38 +249,6 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	}
 
 	@Override
-	public AutoDeployer cloneAutoDeployer() throws AutoDeployException {
-		try {
-			Class<? extends BaseDeployer> clazz = getClass();
-
-			BaseDeployer baseDeployer = (BaseDeployer)clazz.newInstance();
-
-			baseDeployer.setAppServerType(appServerType);
-			baseDeployer.setAuiTaglibDTD(auiTaglibDTD);
-			baseDeployer.setBaseDir(baseDir);
-			baseDeployer.setDestDir(destDir);
-			baseDeployer.setFilePattern(filePattern);
-			baseDeployer.setJars(jars);
-			baseDeployer.setJbossPrefix(jbossPrefix);
-			baseDeployer.setPortletExtTaglibDTD(portletExtTaglibDTD);
-			baseDeployer.setPortletTaglibDTD(portletTaglibDTD);
-			baseDeployer.setSecurityTaglibDTD(securityTaglibDTD);
-			baseDeployer.setThemeTaglibDTD(themeTaglibDTD);
-			baseDeployer.setTomcatLibDir(tomcatLibDir);
-			baseDeployer.setUiTaglibDTD(uiTaglibDTD);
-			baseDeployer.setUnpackWar(unpackWar);
-			baseDeployer.setUtilTaglibDTD(utilTaglibDTD);
-			baseDeployer.setWars(wars);
-			baseDeployer.setWildflyPrefix(wildflyPrefix);
-
-			return (AutoDeployer)baseDeployer;
-		}
-		catch (Exception exception) {
-			throw new AutoDeployException(exception);
-		}
-	}
-
-	@Override
 	public void close() throws IOException {
 		UnsafeConsumer.accept(
 			tempDirPaths, DeployUtil::deletePath, IOException.class);
@@ -831,13 +799,6 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Deploying " + srcFile.getName());
-		}
-
-		String autoDeploymentContextAppServerType =
-			autoDeploymentContext.getAppServerType();
-
-		if (Validator.isNotNull(autoDeploymentContextAppServerType)) {
-			appServerType = autoDeploymentContextAppServerType;
 		}
 
 		String specifiedContext = autoDeploymentContext.getContext();
@@ -1910,91 +1871,6 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		}
 
 		return document.compactString();
-	}
-
-	@Override
-	public void setAppServerType(String appServerType) {
-		this.appServerType = appServerType;
-	}
-
-	@Override
-	public void setAuiTaglibDTD(String auiTaglibDTD) {
-		this.auiTaglibDTD = auiTaglibDTD;
-	}
-
-	@Override
-	public void setBaseDir(String baseDir) {
-		this.baseDir = baseDir;
-	}
-
-	@Override
-	public void setDestDir(String destDir) {
-		this.destDir = destDir;
-	}
-
-	@Override
-	public void setFilePattern(String filePattern) {
-		this.filePattern = filePattern;
-	}
-
-	@Override
-	public void setJars(List<String> jars) {
-		this.jars = jars;
-	}
-
-	@Override
-	public void setJbossPrefix(String jbossPrefix) {
-		this.jbossPrefix = jbossPrefix;
-	}
-
-	@Override
-	public void setPortletExtTaglibDTD(String portletExtTaglibDTD) {
-		this.portletExtTaglibDTD = portletExtTaglibDTD;
-	}
-
-	@Override
-	public void setPortletTaglibDTD(String portletTaglibDTD) {
-		this.portletTaglibDTD = portletTaglibDTD;
-	}
-
-	@Override
-	public void setSecurityTaglibDTD(String securityTaglibDTD) {
-		this.securityTaglibDTD = securityTaglibDTD;
-	}
-
-	@Override
-	public void setThemeTaglibDTD(String themeTaglibDTD) {
-		this.themeTaglibDTD = themeTaglibDTD;
-	}
-
-	@Override
-	public void setTomcatLibDir(String tomcatLibDir) {
-		this.tomcatLibDir = tomcatLibDir;
-	}
-
-	@Override
-	public void setUiTaglibDTD(String uiTaglibDTD) {
-		this.uiTaglibDTD = uiTaglibDTD;
-	}
-
-	@Override
-	public void setUnpackWar(boolean unpackWar) {
-		this.unpackWar = unpackWar;
-	}
-
-	@Override
-	public void setUtilTaglibDTD(String utilTaglibDTD) {
-		this.utilTaglibDTD = utilTaglibDTD;
-	}
-
-	@Override
-	public void setWars(List<String> wars) {
-		this.wars = wars;
-	}
-
-	@Override
-	public void setWildflyPrefix(String wildflyPrefix) {
-		this.wildflyPrefix = wildflyPrefix;
 	}
 
 	public void updateDeployDirectory(File srcFile) throws Exception {
