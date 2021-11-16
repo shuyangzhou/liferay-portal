@@ -60,7 +60,6 @@ import com.liferay.portal.webserver.DynamicResourceServlet;
 import com.liferay.util.ant.CopyTask;
 import com.liferay.util.ant.DeleteTask;
 import com.liferay.util.ant.ExpandTask;
-import com.liferay.util.ant.UpToDateTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -991,14 +990,6 @@ public class BaseAutoDeployer implements AutoDeployer {
 
 		if (undeployOnRedeploy) {
 			DeployUtil.undeploy(appServerType, deployDir);
-		}
-
-		if (!overwrite && UpToDateTask.isUpToDate(srcFile, deployDir)) {
-			if (_log.isInfoEnabled()) {
-				_log.info(deployDir + " is already up to date");
-			}
-
-			return false;
 		}
 
 		Path tempDirPath = Files.createTempDirectory(
