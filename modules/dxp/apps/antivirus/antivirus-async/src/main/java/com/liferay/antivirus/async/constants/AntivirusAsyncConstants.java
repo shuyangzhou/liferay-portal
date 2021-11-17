@@ -30,6 +30,12 @@ public class AntivirusAsyncConstants {
 
 	public static final String ANTIVIRUS_ASYNC_EVENT = "antivirus.async.event";
 
+	public static final String ANTIVIRUS_BATCH_DESTINATION =
+		"liferay/" + ANTIVIRUS + "_batch_destination";
+
+	public static final String ANTIVIRUS_BATCH_GROUP_NAME =
+		"Antivirus Batch Scan";
+
 	public static final String ANTIVIRUS_DESTINATION =
 		"liferay/" + ANTIVIRUS + "_destination";
 
