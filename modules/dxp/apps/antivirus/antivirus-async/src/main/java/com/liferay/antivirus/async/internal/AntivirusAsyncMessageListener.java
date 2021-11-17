@@ -14,14 +14,17 @@
 
 package com.liferay.antivirus.async.internal;
 
+import com.liferay.antivirus.async.configuration.AntivirusAsyncConfiguration;
 import com.liferay.antivirus.async.constants.AntivirusAsyncConstants;
 import com.liferay.antivirus.async.internal.events.AntivirusAsyncEventListenerManager;
 import com.liferay.antivirus.async.internal.util.AntivirusAsyncUtil;
+import com.liferay.antivirus.async.retry.AntivirusAsyncRetryScheduler;
 import com.liferay.document.library.kernel.antivirus.AntivirusScanner;
 import com.liferay.document.library.kernel.antivirus.AntivirusScannerException;
 import com.liferay.document.library.kernel.antivirus.AntivirusVirusFoundException;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
@@ -30,6 +33,7 @@ import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
+import com.liferay.portal.kernel.messaging.MessageRunnable;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
 
@@ -57,26 +61,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 )
 public class AntivirusAsyncMessageListener implements MessageListener {
 
-	@Activate
-	public AntivirusAsyncMessageListener(
-		BundleContext bundleContext, Map<String, Object> properties,
-		@Reference(policyOption = ReferencePolicyOption.GREEDY)
-			DestinationFactory destinationFactory) {
-
+	public AntivirusAsyncMessageListener() {
 		_storeFactory = StoreFactory.getInstance();
-
-		DestinationConfiguration destinationConfiguration =
-			DestinationConfiguration.createSerialDestinationConfiguration(
-				AntivirusAsyncConstants.ANTIVIRUS_DESTINATION);
-
-		_destination = destinationFactory.createDestination(
-			destinationConfiguration);
-
-		_destinationServiceRegistration = bundleContext.registerService(
-			Destination.class, _destination,
-			HashMapDictionaryBuilder.<String, Object>put(
-				"destination.name", _destination.getName()
-			).build());
 	}
 
 	@Override
@@ -166,6 +152,54 @@ public class AntivirusAsyncMessageListener implements MessageListener {
 		}
 	}
 
+	@Activate
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
+		AntivirusAsyncConfiguration antivirusAsyncConfiguration =
+			ConfigurableUtil.createConfigurable(
+				AntivirusAsyncConfiguration.class, properties);
+
+		DestinationConfiguration destinationConfiguration =
+			DestinationConfiguration.createSerialDestinationConfiguration(
+				AntivirusAsyncConstants.ANTIVIRUS_DESTINATION);
+
+		int maximumQueueSize = antivirusAsyncConfiguration.maximumQueueSize();
+
+		if (maximumQueueSize == 0) {
+			maximumQueueSize = Integer.MAX_VALUE;
+		}
+
+		destinationConfiguration.setMaximumQueueSize(maximumQueueSize);
+
+		destinationConfiguration.setRejectedExecutionHandler(
+			(runnable, executor) -> {
+				MessageRunnable messageRunnable = (MessageRunnable)runnable;
+
+				Message message = messageRunnable.getMessage();
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						StringBundler.concat(
+							AntivirusAsyncUtil.getFileIdentifier(message),
+							" is being scheduled persistently for later ",
+							"because the async antivirus queue is overflowing ",
+							message.getValues()));
+				}
+
+				_antivirusAsyncRetryScheduler.schedule(message);
+			});
+
+		_destination = _destinationFactory.createDestination(
+			destinationConfiguration);
+
+		_destinationServiceRegistration = bundleContext.registerService(
+			Destination.class, _destination,
+			HashMapDictionaryBuilder.<String, Object>put(
+				"destination.name", _destination.getName()
+			).build());
+	}
+
 	@Deactivate
 	protected void deactivate() {
 		if (_destinationServiceRegistration != null) {
@@ -185,11 +219,17 @@ public class AntivirusAsyncMessageListener implements MessageListener {
 		_antivirusAsyncEventListenerManager;
 
 	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private AntivirusAsyncRetryScheduler _antivirusAsyncRetryScheduler;
+
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private AntivirusScanner _antivirusScanner;
 
-	private final Destination _destination;
-	private final ServiceRegistration<Destination>
-		_destinationServiceRegistration;
+	private Destination _destination;
+
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private DestinationFactory _destinationFactory;
+
+	private ServiceRegistration<Destination> _destinationServiceRegistration;
 	private final StoreFactory _storeFactory;
 
 }
