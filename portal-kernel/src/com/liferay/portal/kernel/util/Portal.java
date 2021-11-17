@@ -1206,8 +1206,6 @@ public interface Portal {
 
 	public boolean isSystemRole(String roleName);
 
-	public boolean isUpdateAvailable();
-
 	public boolean isValidResourceId(String resourceId);
 
 	public boolean removePortalInetSocketAddressEventListener(
