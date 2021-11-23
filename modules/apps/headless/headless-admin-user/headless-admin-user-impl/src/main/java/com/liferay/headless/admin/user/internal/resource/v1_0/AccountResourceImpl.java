@@ -230,6 +230,10 @@ public class AccountResourceImpl
 			account.getName(), account.getDescription(), _getDomains(account),
 			null, null, null, _getType(account), _getStatus(account), null);
 
+		accountEntry = _accountEntryService.updateExternalReferenceCode(
+			accountEntry.getAccountEntryId(),
+			account.getExternalReferenceCode());
+
 		_accountEntryOrganizationRelLocalService.
 			setAccountEntryOrganizationRels(
 				accountEntry.getAccountEntryId(), _getOrganizationIds(account));
@@ -262,6 +266,9 @@ public class AccountResourceImpl
 	@Override
 	public Account putAccount(Long accountId, Account account)
 		throws Exception {
+
+		_accountEntryService.updateExternalReferenceCode(
+			accountId, account.getExternalReferenceCode());
 
 		_accountEntryOrganizationRelLocalService.
 			setAccountEntryOrganizationRels(

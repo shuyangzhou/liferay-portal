@@ -95,14 +95,12 @@ uploadExtraRemoteApp {
 }
 
 zipExtraRemoteApp {
-	if (gradle.startParameter.taskNames.contains("uploadExtraRemoteApp") || gradle.startParameter.taskNames.contains("zipExtraRemoteApp")) {
-		dependsOn buildExtraRemoteApp
+	dependsOn buildExtraRemoteApp
 
-		archiveName "extra-remote-app.zip"
-		destinationDir new File(buildDir, "dist")
-		from new File(projectDir, "extra/remote-app/build/static/js")
-		include "*.js"
-	}
+	archiveName "extra-remote-app.zip"
+	destinationDir new File(buildDir, "dist")
+	from new File(projectDir, "extra/remote-app/build/static/js")
+	include "*.js"
 }
 
 _createExtraRemoteAppTasks()

@@ -40,7 +40,9 @@ import com.liferay.portal.search.query.WrapperQuery;
 import com.liferay.portal.search.rescore.Rescore;
 import com.liferay.portal.search.searcher.SearchRequest;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
+import com.liferay.portal.search.sort.FieldSort;
 import com.liferay.portal.search.sort.Sort;
+import com.liferay.portal.search.sort.SortOrder;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterDataCreator;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
@@ -82,6 +84,60 @@ public class SXPBlueprintSearchRequestEnhancerImplTest {
 
 		Assert.assertEquals(
 			aggregationsMap.toString(), 10, aggregationsMap.size());
+
+		_assert(sxpBlueprint);
+	}
+
+	@Test
+	public void testElementInstances() throws Exception {
+		SXPBlueprint sxpBlueprint = SXPBlueprintUtil.toSXPBlueprint(_read());
+
+		SearchRequest searchRequest = _toSearchRequest(sxpBlueprint);
+
+		List<ComplexQueryPart> complexQueryParts =
+			searchRequest.getComplexQueryParts();
+
+		ComplexQueryPart complexQueryPart1 = complexQueryParts.get(0);
+
+		Assert.assertEquals("must", complexQueryPart1.getOccur());
+
+		TermQuery termQuery1 = (TermQuery)complexQueryPart1.getQuery();
+
+		Assert.assertEquals("version", termQuery1.getField());
+		Assert.assertEquals("7.4", termQuery1.getValue());
+
+		ComplexQueryPart complexQueryPart2 = complexQueryParts.get(1);
+
+		Assert.assertEquals("should", complexQueryPart2.getOccur());
+
+		WrapperQuery wrapperQuery = (WrapperQuery)complexQueryPart2.getQuery();
+
+		Assert.assertEquals(
+			_formatJSON(JSONUtil.put("match", JSONUtil.put("ranking", 5))),
+			_formatJSON(new String(wrapperQuery.getSource())));
+
+		ComplexQueryPart complexQueryPart3 = complexQueryParts.get(2);
+
+		Assert.assertEquals("should", complexQueryPart3.getOccur());
+
+		TermQuery termQuery2 = (TermQuery)complexQueryPart3.getQuery();
+
+		Assert.assertEquals(Float.valueOf(142857), termQuery2.getBoost());
+		Assert.assertEquals("entryClassName", termQuery2.getField());
+		Assert.assertEquals(
+			"com.liferay.journal.model.JournalArticle", termQuery2.getValue());
+
+		List<Sort> sorts = searchRequest.getSorts();
+
+		FieldSort fieldSort1 = (FieldSort)sorts.get(0);
+
+		Assert.assertEquals("department", fieldSort1.getField());
+		Assert.assertEquals(SortOrder.ASC, fieldSort1.getSortOrder());
+
+		FieldSort fieldSort2 = (FieldSort)sorts.get(1);
+
+		Assert.assertEquals("lastName", fieldSort2.getField());
+		Assert.assertEquals(SortOrder.DESC, fieldSort2.getSortOrder());
 
 		_assert(sxpBlueprint);
 	}

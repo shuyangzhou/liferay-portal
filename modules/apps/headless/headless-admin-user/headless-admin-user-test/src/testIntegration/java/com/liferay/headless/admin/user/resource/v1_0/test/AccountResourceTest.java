@@ -22,6 +22,7 @@ import com.liferay.account.service.AccountEntryOrganizationRelLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.headless.admin.user.client.dto.v1_0.Account;
 import com.liferay.headless.admin.user.client.pagination.Page;
+import com.liferay.headless.admin.user.client.problem.Problem;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
@@ -270,6 +271,30 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 	@Override
 	@Test
+	public void testPostAccount() throws Exception {
+		super.testPostAccount();
+
+		Account account1 = _postAccount();
+
+		try {
+			Account account2 = randomAccount();
+
+			account2.setExternalReferenceCode(
+				account1.getExternalReferenceCode());
+
+			_postAccount(account2);
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Assert.assertEquals(
+				"The externalReferenceCode belongs to another account",
+				problemException.getMessage());
+		}
+	}
+
+	@Override
+	@Test
 	public void testPostOrganizationAccounts() throws Exception {
 		Organization organization = OrganizationTestUtil.addOrganization();
 
@@ -330,7 +355,7 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
-		return new String[] {"name", "type"};
+		return new String[] {"externalReferenceCode", "name", "type"};
 	}
 
 	@Override

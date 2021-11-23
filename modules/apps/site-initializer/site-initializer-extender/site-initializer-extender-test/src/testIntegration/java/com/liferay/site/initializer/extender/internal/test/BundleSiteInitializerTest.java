@@ -19,8 +19,12 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
+import com.liferay.asset.list.model.AssetListEntry;
+import com.liferay.asset.list.service.AssetListEntryLocalService;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseLocalService;
+import com.liferay.commerce.notification.model.CommerceNotificationTemplate;
+import com.liferay.commerce.notification.service.CommerceNotificationTemplateLocalService;
 import com.liferay.commerce.product.model.CPAttachmentFileEntry;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CommerceCatalog;
@@ -38,6 +42,9 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentEntryLocalService;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.model.JournalFolder;
+import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalFolderService;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
@@ -47,10 +54,17 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.LayoutSetLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -58,8 +72,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -123,6 +139,7 @@ public class BundleSiteInitializerTest {
 
 		try {
 			siteInitializer.initialize(group.getGroupId());
+			_assertAssetListEntries(group);
 			_assertAssetVocabularies(group);
 			_assertCommerceCatalogs(group);
 			_assertCommerceChannel(group);
@@ -132,15 +149,18 @@ public class BundleSiteInitializerTest {
 			_assertDDMTemplate(group);
 			_assertDLFileEntry(group);
 			_assertFragmentEntries(group);
+			_assertJournalArticles(group);
 			_assertLayoutPageTemplateEntry(group);
 			_assertLayouts(group);
+			_assertLayoutSets(group);
 			_assertObjectDefinition(group);
+			_assertPermissions(group);
 			_assertStyleBookEntry(group);
-
-			GroupLocalServiceUtil.deleteGroup(group);
 		}
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
+
+			GroupLocalServiceUtil.deleteGroup(group);
 
 			// TODO We should not need to delete the object definition manually
 			// because of DataGuardTestRule. However,
@@ -153,11 +173,13 @@ public class BundleSiteInitializerTest {
 					serviceContext.getCompanyId(),
 					"C_TestBundleSiteInitializer");
 
-			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition.getObjectDefinitionId());
-		}
+			if (objectDefinition != null) {
+				_objectDefinitionLocalService.deleteObjectDefinition(
+					objectDefinition.getObjectDefinitionId());
+			}
 
-		bundle.uninstall();
+			bundle.uninstall();
+		}
 	}
 
 	private void _assertAssetCategories(Group group) throws Exception {
@@ -201,6 +223,29 @@ public class BundleSiteInitializerTest {
 			"TESTCAT0004", testAssetCategory4.getExternalReferenceCode());
 	}
 
+	private void _assertAssetListEntries(Group group) {
+		List<AssetListEntry> assetListEntries =
+			_assetListEntryLocalService.getAssetListEntries(group.getGroupId());
+
+		Assert.assertTrue(assetListEntries.size() == 2);
+
+		AssetListEntry assetListEntry1 = assetListEntries.get(0);
+
+		Assert.assertEquals(
+			"Test Asset List Entry 1", assetListEntry1.getTitle());
+		Assert.assertEquals(
+			"com.liferay.journal.model.JournalArticle",
+			assetListEntry1.getAssetEntryType());
+
+		AssetListEntry assetListEntry2 = assetListEntries.get(1);
+
+		Assert.assertEquals(
+			"Test Asset List Entry 2", assetListEntry2.getTitle());
+		Assert.assertEquals(
+			"com.liferay.journal.model.JournalArticle",
+			assetListEntry2.getAssetEntryType());
+	}
+
 	private void _assertAssetVocabularies(Group group) throws Exception {
 		Group companyGroup = _groupLocalService.getCompanyGroup(
 			group.getCompanyId());
@@ -242,6 +287,8 @@ public class BundleSiteInitializerTest {
 		Assert.assertNotNull(commerceCatalog2);
 		Assert.assertEquals(
 			"Test Commerce Catalog 2", commerceCatalog2.getName());
+
+		_assertCPDefinition(group);
 	}
 
 	private void _assertCommerceChannel(Group group) throws Exception {
@@ -254,6 +301,8 @@ public class BundleSiteInitializerTest {
 			"TESTVOC0001", commerceChannel.getExternalReferenceCode());
 		Assert.assertEquals("Test Commerce Channel", commerceChannel.getName());
 		Assert.assertEquals("site", commerceChannel.getType());
+
+		_assertCommerceNotificationTemplate(commerceChannel, group);
 	}
 
 	private void _assertCommerceInventoryWarehouse(Group group) {
@@ -265,6 +314,29 @@ public class BundleSiteInitializerTest {
 		Assert.assertNotNull(commerceInventoryWarehouse);
 		Assert.assertEquals(
 			"Test Commerce Warehouse", commerceInventoryWarehouse.getName());
+	}
+
+	private void _assertCommerceNotificationTemplate(
+			CommerceChannel commerceChannel, Group group)
+		throws Exception {
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				group.getCompanyId(), "C_TestBundleSiteInitializer");
+
+		List<CommerceNotificationTemplate> commerceNotificationTemplates =
+			_commerceNotificationTemplateLocalService.
+				getCommerceNotificationTemplates(
+					commerceChannel.getGroupId(),
+					objectDefinition.getClassName() + "#create", true);
+
+		CommerceNotificationTemplate commerceNotificationTemplate =
+			commerceNotificationTemplates.get(0);
+
+		Assert.assertNotNull(commerceNotificationTemplate);
+		Assert.assertEquals(
+			"Test Commerce Notification Template",
+			commerceNotificationTemplate.getName());
 	}
 
 	private void _assertCPDefinition(Group group) throws Exception {
@@ -342,6 +414,41 @@ public class BundleSiteInitializerTest {
 			"Test Fragment Entry 2", testFragmentEntry2.getName());
 	}
 
+	private void _assertJournalArticles(Group group) throws Exception {
+		JournalArticle journalArticle1 =
+			_journalArticleLocalService.fetchArticle(
+				group.getGroupId(), "test-journal-article-1");
+
+		Assert.assertNotNull(journalArticle1);
+		Assert.assertEquals(
+			"TEST DDM TEMPLATE KEY", journalArticle1.getDDMTemplateKey());
+		Assert.assertEquals(
+			"Test Journal Article 1", journalArticle1.getTitle());
+
+		JournalArticle journalArticle2 =
+			_journalArticleLocalService.fetchArticle(
+				group.getGroupId(), "test-journal-article-2");
+
+		Assert.assertNotNull(journalArticle2);
+		Assert.assertEquals(
+			"TEST DDM TEMPLATE KEY", journalArticle2.getDDMTemplateKey());
+		Assert.assertEquals(
+			"Test Journal Article 2", journalArticle2.getTitle());
+
+		List<JournalFolder> journalFolders = _journalFolderService.getFolders(
+			group.getGroupId());
+
+		Assert.assertTrue(journalFolders.size() == 2);
+
+		JournalFolder journalFolder1 = journalFolders.get(0);
+
+		Assert.assertEquals("Test Journal Article 1", journalFolder1.getName());
+
+		JournalFolder journalFolder2 = journalFolders.get(1);
+
+		Assert.assertEquals("Test Journal Article 2", journalFolder2.getName());
+	}
+
 	private void _assertLayoutPageTemplateEntry(Group group) throws Exception {
 		LayoutPageTemplateEntry layoutPageTemplateEntry =
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
@@ -381,6 +488,50 @@ public class BundleSiteInitializerTest {
 		Assert.assertEquals("content", publicLayout.getType());
 	}
 
+	private void _assertLayoutSets(Group group) throws Exception {
+		LayoutSet privateLayoutSet = _layoutSetLocalService.fetchLayoutSet(
+			group.getGroupId(), true);
+
+		Assert.assertNotNull(privateLayoutSet);
+
+		Theme privateTheme = privateLayoutSet.getTheme();
+
+		Assert.assertEquals("Dialect", privateTheme.getName());
+
+		UnicodeProperties privateLayoutSetUnicodeProperties =
+			privateLayoutSet.getSettingsProperties();
+
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				privateLayoutSetUnicodeProperties.getProperty(
+					"lfr-theme:regular:show-footer")));
+		Assert.assertFalse(
+			GetterUtil.getBoolean(
+				privateLayoutSetUnicodeProperties.getProperty(
+					"lfr-theme:regular:show-header")));
+
+		LayoutSet publicLayoutSet = _layoutSetLocalService.fetchLayoutSet(
+			group.getGroupId(), false);
+
+		Assert.assertNotNull(publicLayoutSet);
+
+		Theme publicTheme = publicLayoutSet.getTheme();
+
+		Assert.assertEquals("Dialect", publicTheme.getName());
+
+		UnicodeProperties publicLayoutSetUnicodeProperties =
+			publicLayoutSet.getSettingsProperties();
+
+		Assert.assertFalse(
+			GetterUtil.getBoolean(
+				publicLayoutSetUnicodeProperties.getProperty(
+					"lfr-theme:regular:show-footer")));
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				publicLayoutSetUnicodeProperties.getProperty(
+					"lfr-theme:regular:show-header")));
+	}
+
 	private void _assertObjectDefinition(Group group) throws Exception {
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
@@ -401,6 +552,50 @@ public class BundleSiteInitializerTest {
 			0,
 			_objectEntryLocalService.getObjectEntriesCount(
 				group.getGroupId(), objectDefinition.getObjectDefinitionId()));
+	}
+
+	private void _assertPermissions(Group group) throws Exception {
+		_assertRoles(group);
+
+		_assertResourcePermission(group);
+	}
+
+	private void _assertResourcePermission(Group group) throws Exception {
+		Role role = _roleLocalService.fetchRole(
+			group.getCompanyId(), "Test Role 1");
+
+		ResourcePermission resourcePermission =
+			_resourcePermissionLocalService.fetchResourcePermission(
+				group.getCompanyId(), "com.liferay.commerce.product", 3, "0",
+				role.getRoleId());
+
+		Assert.assertNotNull(resourcePermission);
+	}
+
+	private void _assertRoles(Group group) {
+		Role role1 = _roleLocalService.fetchRole(
+			group.getCompanyId(), "Test Role 1");
+
+		Assert.assertNotNull(role1);
+		Assert.assertEquals(1, role1.getType());
+
+		Role role2 = _roleLocalService.fetchRole(
+			group.getCompanyId(), "Test Role 2");
+
+		Assert.assertNotNull(role2);
+		Assert.assertEquals(1, role2.getType());
+
+		Role role3 = _roleLocalService.fetchRole(
+			group.getCompanyId(), "Test Role 3");
+
+		Assert.assertNotNull(role3);
+		Assert.assertEquals(1, role3.getType());
+
+		Role role4 = _roleLocalService.fetchRole(
+			group.getCompanyId(), "Test Role 4");
+
+		Assert.assertNotNull(role4);
+		Assert.assertEquals(2, role4.getType());
 	}
 
 	private void _assertStyleBookEntry(Group group) {
@@ -430,6 +625,9 @@ public class BundleSiteInitializerTest {
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Inject
+	private AssetListEntryLocalService _assetListEntryLocalService;
+
+	@Inject
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	@Inject
@@ -441,6 +639,10 @@ public class BundleSiteInitializerTest {
 	@Inject
 	private CommerceInventoryWarehouseLocalService
 		_commerceInventoryWarehouseLocalService;
+
+	@Inject
+	private CommerceNotificationTemplateLocalService
+		_commerceNotificationTemplateLocalService;
 
 	@Inject
 	private CPDefinitionLocalService _cpDefinitionLocalService;
@@ -461,11 +663,20 @@ public class BundleSiteInitializerTest {
 	private GroupLocalService _groupLocalService;
 
 	@Inject
+	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Inject
+	private JournalFolderService _journalFolderService;
+
+	@Inject
 	private LayoutLocalService _layoutLocalService;
 
 	@Inject
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
+
+	@Inject
+	private LayoutSetLocalService _layoutSetLocalService;
 
 	@Inject
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
@@ -475,6 +686,12 @@ public class BundleSiteInitializerTest {
 
 	@Inject
 	private Portal _portal;
+
+	@Inject
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@Inject
+	private RoleLocalService _roleLocalService;
 
 	@Inject
 	private ServletContext _servletContext;

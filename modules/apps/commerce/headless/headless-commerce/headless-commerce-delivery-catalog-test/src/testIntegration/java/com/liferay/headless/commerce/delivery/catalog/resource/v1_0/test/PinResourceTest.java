@@ -12,26 +12,17 @@
  * details.
  */
 
-package com.liferay.external.data.source.test.service.destroyer;
+package com.liferay.headless.commerce.delivery.catalog.resource.v1_0.test;
 
-import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
-import javax.sql.DataSource;
+import org.junit.Ignore;
+import org.junit.runner.RunWith;
 
 /**
- * @author Preston Crary
+ * @author Andrea Sbarra
  */
-public class DataSourceDestroyer {
-
-	public DataSourceDestroyer(DataSource dataSource) {
-		_dataSource = dataSource;
-	}
-
-	@SuppressWarnings("unused")
-	public void destroy() throws Exception {
-		DataSourceFactoryUtil.destroyDataSource(_dataSource);
-	}
-
-	private final DataSource _dataSource;
-
+@Ignore
+@RunWith(Arquillian.class)
+public class PinResourceTest extends BasePinResourceTestCase {
 }

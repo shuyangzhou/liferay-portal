@@ -15,11 +15,15 @@
 package com.liferay.portal.upgrade.internal.release;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Dictionary;
@@ -40,18 +44,28 @@ import org.osgi.service.component.annotations.Reference;
  * @author Miguel Pastor
  * @author Carlos Sierra Andrés
  */
-@Component(immediate = true, service = ReleasePublisher.class)
-public final class ReleasePublisher {
+@Component(
+	immediate = true, service = {ModelListener.class, ReleasePublisher.class}
+)
+public final class ReleasePublisher extends BaseModelListener<Release> {
 
-	public void publish(Release release) {
-		ServiceRegistration<Release> oldServiceRegistration =
-			_serviceConfiguratorRegistrations.get(
-				release.getServletContextName());
+	@Override
+	public void onAfterRemove(Release release) throws ModelListenerException {
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				ServiceRegistration<Release> serviceRegistration =
+					_serviceConfiguratorRegistrations.remove(
+						release.getServletContextName());
 
-		if (oldServiceRegistration != null) {
-			oldServiceRegistration.unregister();
-		}
+				if (serviceRegistration != null) {
+					serviceRegistration.unregister();
+				}
 
+				return null;
+			});
+	}
+
+	public ServiceRegistration<Release> publish(Release release) {
 		Dictionary<String, Object> properties = new Hashtable<>();
 
 		properties.put(
@@ -76,14 +90,14 @@ public final class ReleasePublisher {
 		ServiceRegistration<Release> newServiceRegistration =
 			_bundleContext.registerService(Release.class, release, properties);
 
-		_serviceConfiguratorRegistrations.put(
+		return _serviceConfiguratorRegistrations.put(
 			release.getServletContextName(), newServiceRegistration);
 	}
 
-	public void publishInProgress(Release release) {
+	public ServiceRegistration<Release> publishInProgress(Release release) {
 		release.setState(_STATE_IN_PROGRESS);
 
-		publish(release);
+		return publish(release);
 	}
 
 	@Activate
