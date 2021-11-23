@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -41,7 +42,6 @@ import java.sql.Connection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -87,7 +87,10 @@ public class ExternalDataSourceControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		PropsUtil.set("jdbc.test.driverClassName", JDBCDriver.class.getName());
-		PropsUtil.set("jdbc.test.url", _JDBC_URL);
+		PropsUtil.set(
+			"jdbc.test.url",
+			_JDBC_URL.replace(
+				"%databaseName%", "external" + RandomTestUtil.nextInt()));
 		PropsUtil.set("jdbc.test.username", "sa");
 		PropsUtil.set("jdbc.test.password", "");
 		PropsUtil.set("jdbc.test.initializationFailTimeout", "0");
@@ -101,17 +104,11 @@ public class ExternalDataSourceControllerTest {
 			"/com.liferay.external.data.source.test.api.jar");
 		_serviceBundle = _installServiceBundle();
 
-		DB db = DBManagerUtil.getDB(DBType.HYPERSONIC, null);
-
-		Properties properties = new Properties();
-
-		properties.put("password", "");
-		properties.put("user", "sa");
+		DB db = DBManagerUtil.getDB();
 
 		URL resource = _serviceBundle.getResource("/META-INF/sql/tables.sql");
 
-		try (Connection connection = JDBCDriver.getConnection(
-				_JDBC_URL, properties);
+		try (Connection connection = DataAccess.getConnection();
 			InputStream inputStream = resource.openStream()) {
 
 			db.runSQL(connection, StringUtil.read(inputStream));
@@ -134,6 +131,14 @@ public class ExternalDataSourceControllerTest {
 
 		try (Connection connection = DataAccess.getConnection()) {
 			portalDB.runSQL(connection, "drop table TestEntity");
+			portalDB.runSQL(
+				connection,
+				"delete from Release_ where servletContextName = " +
+					"'com.liferay.external.data.source.test.service'");
+			portalDB.runSQL(
+				connection,
+				"delete from ServiceComponent where buildNamespace = " +
+					"'ExternalDatasource'");
 		}
 	}
 
@@ -235,14 +240,12 @@ public class ExternalDataSourceControllerTest {
 			path, new UnsyncByteArrayInputStream(_getServiceJarBytes(path)));
 	}
 
-	private static final String _EXTERNAL_DATABASE_NAME = "external";
-
 	private static final String _HYPERSONIC_TEMP_DIR_NAME =
 		PropsValues.LIFERAY_HOME + "/data/hypersonic_temp/";
 
 	private static final String _JDBC_URL = StringBundler.concat(
-		"jdbc:hsqldb:", _HYPERSONIC_TEMP_DIR_NAME, _EXTERNAL_DATABASE_NAME,
-		";hsqldb.write_delay=false;shutdown=true");
+		"jdbc:hsqldb:", _HYPERSONIC_TEMP_DIR_NAME, "%databaseName%;",
+		"hsqldb.lock_file=false,hsqldb.write_delay=false;shutdown=true");
 
 	private Bundle _apiBundle;
 	private BundleContext _bundleContext;

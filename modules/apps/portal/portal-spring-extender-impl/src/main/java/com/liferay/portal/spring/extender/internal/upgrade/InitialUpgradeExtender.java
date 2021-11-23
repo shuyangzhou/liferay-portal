@@ -30,6 +30,9 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.internal.configuration.ConfigurationUtil;
+import com.liferay.portal.spring.extender.internal.context.ModuleApplicationContextPreload;
+import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
+import com.liferay.portal.spring.hibernate.DialectDetector;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +76,9 @@ public class InitialUpgradeExtender
 			return null;
 		}
 
-		return _processInitialUpgrade(_bundleContext, bundle, _dataSource);
+		return _processInitialUpgrade(
+			_bundleContext, bundle,
+			headers.get("Liferay-Spring-Context") != null);
 	}
 
 	@Override
@@ -106,7 +111,7 @@ public class InitialUpgradeExtender
 	}
 
 	private ServiceRegistration<UpgradeStep> _processInitialUpgrade(
-		BundleContext bundleContext, Bundle bundle, DataSource dataSource) {
+		BundleContext bundleContext, Bundle bundle, boolean springBundle) {
 
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
@@ -140,7 +145,9 @@ public class InitialUpgradeExtender
 		properties.put("upgrade.to.schema.version", upgradeToSchemaVersion);
 
 		return bundleContext.registerService(
-			UpgradeStep.class, new InitialUpgradeStep(bundle, dataSource),
+			UpgradeStep.class,
+			new InitialUpgradeStep(
+				bundle, _moduleApplicationContextPreload, springBundle),
 			properties);
 	}
 
@@ -152,6 +159,9 @@ public class InitialUpgradeExtender
 
 	@Reference(target = "(&(bean.id=liferayDataSource)(original.bean=true))")
 	private DataSource _dataSource;
+
+	@Reference
+	private ModuleApplicationContextPreload _moduleApplicationContextPreload;
 
 	private static class InitialUpgradeStep implements UpgradeStep {
 
@@ -168,9 +178,25 @@ public class InitialUpgradeExtender
 
 			DBManager dbManager = dbContext.getDBManager();
 
-			_db = dbManager.getDB();
+			BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
 			try {
+				if (_springBundle) {
+					_moduleApplicationContextPreload.start(_bundle);
+
+					_dataSource = DataSourceUtil.getSpringDataSource(
+						bundleWiring.getClassLoader());
+				}
+				else {
+					_dataSource = DataSourceUtil.getProviderDataSource(
+						bundleWiring.getClassLoader());
+				}
+
+				_db = dbManager.getDB(
+					dbManager.getDBType(
+						DialectDetector.getDialect(_dataSource)),
+					_dataSource);
+
 				_db.process(
 					companyId -> {
 						if (_log.isInfoEnabled() &&
@@ -190,9 +216,14 @@ public class InitialUpgradeExtender
 			}
 		}
 
-		private InitialUpgradeStep(Bundle bundle, DataSource dataSource) {
+		private InitialUpgradeStep(
+			Bundle bundle,
+			ModuleApplicationContextPreload moduleApplicationContextPreload,
+			boolean springBundle) {
+
 			_bundle = bundle;
-			_dataSource = dataSource;
+			_moduleApplicationContextPreload = moduleApplicationContextPreload;
+			_springBundle = springBundle;
 		}
 
 		private String _getSQLTemplateString(String templateName)
@@ -272,8 +303,11 @@ public class InitialUpgradeExtender
 		}
 
 		private final Bundle _bundle;
-		private final DataSource _dataSource;
+		private DataSource _dataSource;
 		private DB _db;
+		private final ModuleApplicationContextPreload
+			_moduleApplicationContextPreload;
+		private final boolean _springBundle;
 
 	}
 
