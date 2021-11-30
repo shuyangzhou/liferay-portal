@@ -15,10 +15,35 @@
 package com.liferay.portal.tools.service.builder.test.service.impl;
 
 import com.liferay.portal.tools.service.builder.test.service.base.NullConvertibleEntryLocalServiceBaseImpl;
+import com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry;
+
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class NullConvertibleEntryLocalServiceImpl
 	extends NullConvertibleEntryLocalServiceBaseImpl {
+
+	@Override
+	public NullConvertibleEntry addNullConvertibleEntry(String name) {
+		long nullConvertibleEntryId = counterLocalService.increment();
+
+		NullConvertibleEntry nullConvertibleEntry =
+			nullConvertibleEntryPersistence.create(nullConvertibleEntryId);
+
+		nullConvertibleEntry.setName(name);
+
+		return nullConvertibleEntryPersistence.update(nullConvertibleEntry);
+	}
+
+	@Override
+	public int countByName(String name) {
+		return nullConvertibleEntryPersistence.countByName(name);
+	}
+
+	@Override
+	public NullConvertibleEntry fetchByName(String name) {
+		return nullConvertibleEntryPersistence.fetchByName(name);
+	}
+
 }
