@@ -50,6 +50,7 @@ public class KaleoInstanceModelDocumentContributor
 			Field.CREATE_DATE, kaleoInstance.getCreateDate());
 		document.addDateSortable(
 			Field.MODIFIED_DATE, kaleoInstance.getModifiedDate());
+		document.addKeyword("active", kaleoInstance.isActive());
 		document.addKeyword("className", kaleoInstance.getClassName());
 		document.addKeyword(
 			Field.CLASS_NAME_ID,

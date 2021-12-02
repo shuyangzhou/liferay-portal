@@ -245,7 +245,7 @@ if (recurrence != null) {
 	var recurrenceContainerNode = A.one(
 		'#<portlet:namespace />recurrenceContainer'
 	);
-	var repeatCheckboxNode = A.one('#<portlet:namespace />repeat');
+	var repeatCheckboxNode = document.getElementById('<portlet:namespace />repeat');
 	var summaryNode = A.one('#<portlet:namespace />summary');
 
 	var recurrenceDialogController = new Liferay.RecurrenceDialogController({
@@ -367,8 +367,8 @@ if (recurrence != null) {
 		Liferay.on('destroyPortlet', destroyRecurrenceDialog);
 	};
 
-	repeatCheckboxNode.on('change', (event) => {
-		var checked = event.currentTarget.get('checked');
+	repeatCheckboxNode.addEventListener('change', (event) => {
+		var checked = event.currentTarget.checked;
 
 		if (!checked) {
 			summaryNode.empty();

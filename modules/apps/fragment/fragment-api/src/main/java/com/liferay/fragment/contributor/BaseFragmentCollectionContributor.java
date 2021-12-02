@@ -399,8 +399,8 @@ public abstract class BaseFragmentCollectionContributor
 		fragmentEntry.setJs(js);
 		fragmentEntry.setCacheable(cacheable);
 		fragmentEntry.setConfiguration(configuration);
-		fragmentEntry.setType(type);
 		fragmentEntry.setIcon(jsonObject.getString("icon", "code"));
+		fragmentEntry.setType(type);
 		fragmentEntry.setImagePreviewURL(thumbnailURL);
 
 		return fragmentEntry;

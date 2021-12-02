@@ -85,13 +85,56 @@ definition {
 	}
 
 	@description = "This is a test for LPS-136824. It checks that a folder with multiple files can be deleted using the normal publication process."
-	@ignore = "true"
 	@priority = "3"
 	test CanPublishDeletedFolderWithMultipleFiles {
-		property portal.acceptance = "false";
+		JSONFolder.addFolder(
+			dmFolderDescription = "DM Folder Description",
+			dmFolderName = "DM Folder Name",
+			groupName = "Site Name-staging");
 
-		// TODO LPS-136824 CanPublishDeletedFolderWithMultipleFiles pending implementation
+		JSONDocument.addFileWithUploadedFile(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentTitle = "Document_1.jpeg",
+			folderName = "DM Folder Name",
+			groupName = "Site Name-staging",
+			mimeType = "image/jpeg",
+			sourceFileName = "Document_1.jpeg");
 
+		JSONDocument.addFileWithUploadedFile(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentTitle = "Document_2.jpg",
+			folderName = "DM Folder Name",
+			groupName = "Site Name-staging",
+			mimeType = "image/jpeg",
+			sourceFileName = "Document_2.jpg");
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging DM Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
+
+		DMFolder.viewCP(dmFolderName = "DM Folder Name");
+
+		JSONFolder.moveFolderToTrash(
+			folderName = "DM Folder Name",
+			groupName = "Site Name-staging");
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging DM Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
+
+		DMDocument.viewDefault();
 	}
 
 	@description = "This is a test for LPS-136818. It checks that a folder with multiple files can be published using the SAP."
@@ -612,7 +655,7 @@ definition {
 		ProductMenu.gotoLiveSite();
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			panel = "Site Administration",
 			portlet = "Documents and Media");
 
@@ -625,7 +668,7 @@ definition {
 			siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			panel = "Site Administration",
 			portlet = "Documents and Media");
 
@@ -646,7 +689,7 @@ definition {
 		ProductMenu.gotoLiveSite();
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			panel = "Site Administration",
 			portlet = "Documents and Media");
 
@@ -672,7 +715,7 @@ definition {
 			groupName = "Site Name-staging");
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			portlet = "Documents and Media");
 
 		DMFolder.configureWorkflowCP(
@@ -682,7 +725,7 @@ definition {
 			workflowRestriction = "Specific Restrictions");
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			portlet = "Documents and Media");
 
 		DMNavigator.gotoFolder(dmFolderName = "DM Folder Name");
@@ -729,7 +772,7 @@ definition {
 		ProductMenu.gotoLiveSite(site = "Site Name");
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			portlet = "Documents and Media");
 
 		DMNavigator.gotoMetadataSets();
@@ -1079,7 +1122,7 @@ definition {
 		ProductMenu.gotoLiveSite(site = "Guest");
 
 		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
+			category = "Content & Data",
 			portlet = "Documents and Media");
 
 		for (var folderCount : list "1,2,3") {

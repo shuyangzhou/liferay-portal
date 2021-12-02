@@ -646,12 +646,26 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 			(type == RoleConstants.TYPE_ORGANIZATION) ||
 			(type == RoleConstants.TYPE_SITE)) {
 
+			DynamicQuery userDynamicQuery = _userLocalService.dynamicQuery();
+
+			Property statusProperty = PropertyFactoryUtil.forName("status");
+
+			userDynamicQuery.add(
+				statusProperty.eq(WorkflowConstants.STATUS_APPROVED));
+
+			userDynamicQuery.setProjection(
+				ProjectionFactoryUtil.property("userId"));
+
 			DynamicQuery userGroupRoleDynamicQuery =
 				_userGroupRoleLocalService.dynamicQuery();
 
-			Property property = PropertyFactoryUtil.forName("roleId");
+			Property userIdProperty = PropertyFactoryUtil.forName("userId");
 
-			userGroupRoleDynamicQuery.add(property.eq(roleId));
+			userGroupRoleDynamicQuery.add(userIdProperty.in(userDynamicQuery));
+
+			Property roleIdProperty = PropertyFactoryUtil.forName("roleId");
+
+			userGroupRoleDynamicQuery.add(roleIdProperty.eq(roleId));
 
 			userGroupRoleDynamicQuery.setProjection(
 				ProjectionFactoryUtil.countDistinct("userId"));

@@ -274,13 +274,19 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 	public void testPostAccount() throws Exception {
 		super.testPostAccount();
 
-		Account account1 = _postAccount();
+		Account account1 = randomAccount();
+
+		Account postAccount = accountResource.postAccount(account1);
+
+		Assert.assertEquals(
+			account1.getExternalReferenceCode(),
+			postAccount.getExternalReferenceCode());
 
 		try {
 			Account account2 = randomAccount();
 
 			account2.setExternalReferenceCode(
-				account1.getExternalReferenceCode());
+				postAccount.getExternalReferenceCode());
 
 			_postAccount(account2);
 
@@ -355,7 +361,7 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
-		return new String[] {"externalReferenceCode", "name", "type"};
+		return new String[] {"name", "type"};
 	}
 
 	@Override

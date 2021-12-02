@@ -1202,38 +1202,14 @@
 		</check>
 	</source-processor>
 	<source-processor name="PoshiSourceProcessor">
-		<check name="PoshiAnnotationsOrderCheck">
-			<category name="Styling" />
-			<description name="Checks the order of annotations." />
-		</check>
-		<check name="PoshiCommandsOrderCheck">
-			<category name="Styling" />
-			<description name="Checks the order of poshi commands." />
-		</check>
 		<check name="PoshiDependenciesFileLocationCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks that dependencies files are located in the correct directory." />
 			<property name="enabled" value="false" />
 		</check>
-		<check name="PoshiEmptyLinesCheck">
-			<category name="Styling" />
-			<description name="Finds missing and unnecessary empty lines." />
-		</check>
-		<check name="PoshiIndentationCheck">
-			<category name="Styling" />
-			<description name="Finds incorrect indentation in poshi files." />
-		</check>
-		<check name="PoshiParametersOrderCheck">
-			<category name="Styling" />
-			<description name="Checks the order of parameters in `.function` and `.macro` files." />
-		</check>
 		<check name="PoshiStylingCheck">
 			<category name="Styling" />
 			<description name="Applies rules to enforce consisteny in code style." />
-		</check>
-		<check name="PoshiWhitespaceCheck">
-			<category name="Styling" />
-			<description name="Finds missing and unnecessary whitespace in poshi files." />
 		</check>
 	</source-processor>
 	<source-processor name="PropertiesSourceProcessor">
