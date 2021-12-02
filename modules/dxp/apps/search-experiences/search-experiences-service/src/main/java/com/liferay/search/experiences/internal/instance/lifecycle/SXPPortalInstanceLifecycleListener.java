@@ -57,6 +57,9 @@ public class SXPPortalInstanceLifecycleListener
 
 	@Override
 	public void portalInstanceUnregistered(Company company) throws Exception {
+
+		// TODO Move to CompanyModelListener
+
 		_sxpBlueprintLocalService.deleteCompanySXPBlueprints(
 			company.getCompanyId());
 
@@ -66,6 +69,9 @@ public class SXPPortalInstanceLifecycleListener
 
 	@Activate
 	protected void activate(Map<String, Object> properties) {
+
+		// Fix
+
 		try {
 			_companyLocalService.forEachCompany(
 				company -> _addSXPElements(company));
