@@ -14,6 +14,8 @@
 
 package com.liferay.portal.language;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -28,6 +30,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -39,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -84,6 +89,7 @@ public class LanguageResources {
 				}
 
 			};
+	private static ServiceTrackerList<LanguageOverrideProvider> _languageOverrideProviders;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
@@ -113,6 +119,12 @@ public class LanguageResources {
 
 		if (languageMap == null) {
 			languageMap = _loadLocale(locale);
+		}
+
+		String overrideValue = _getOverrideValue(key, locale);
+
+		if (Validator.isNotNull(overrideValue)) {
+			return overrideValue;
 		}
 
 		String value = languageMap.get(key);
@@ -162,12 +174,17 @@ public class LanguageResources {
 
 		_serviceTracker.open();
 
+		_languageOverrideProviders = ServiceTrackerListFactory.open(_bundleContext,
+			LanguageOverrideProvider.class);
+
 		ResourceBundleLoaderUtil.setPortalResourceBundleLoader(
 			PORTAL_RESOURCE_BUNDLE_LOADER);
 	}
 
 	public void destroy() {
 		_serviceTracker.close();
+
+		_languageOverrideProviders.close();
 	}
 
 	public void setConfig(String config) {
@@ -343,6 +360,10 @@ public class LanguageResources {
 		return diffLanguageMap;
 	}
 
+	private static volatile LanguageOverrideProvider _languageOverrideProvider =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			LanguageOverrideProvider.class, LanguageResources.class, "_languageOverrideProvider", false);
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LanguageResources.class);
 
@@ -358,13 +379,45 @@ public class LanguageResources {
 		SystemBundleUtil.getBundleContext();
 	private ServiceTracker<?, ?> _serviceTracker;
 
+	private static Set<String> _getSetWithOverrideKeys(Set<String> keySet, Locale locale) {
+		if (_languageOverrideProvider == null) {
+			return keySet;
+		}
+
+		Set<String> overrideKeySet = _languageOverrideProvider.keySet(locale);
+
+		if (SetUtil.isEmpty(overrideKeySet)) {
+			return keySet;
+		}
+
+		Set<String> resultSet = new HashSet<>(keySet);
+
+		resultSet.addAll(overrideKeySet);
+
+		return resultSet;
+	}
+
+	private static String _getOverrideValue(String key, Locale locale) {
+		if (_languageOverrideProvider == null) {
+			return null;
+		}
+
+		String value = _languageOverrideProvider.get(key, locale);
+
+		if (Validator.isNull(value)) {
+			return null;
+		}
+
+		return value;
+	}
+
 	private static class LanguageResourcesBundle extends ResourceBundle {
 
 		@Override
 		public Enumeration<String> getKeys() {
 			Map<String, String> languageMap = _getLanguageMap();
 
-			Set<String> keySet = languageMap.keySet();
+			Set<String> keySet = _getSetWithOverrideKeys(languageMap.keySet(), _locale);
 
 			if (parent == null) {
 				return Collections.enumeration(keySet);
@@ -380,6 +433,12 @@ public class LanguageResources {
 
 		@Override
 		protected Object handleGetObject(String key) {
+			String overrideValue = _getOverrideValue(key, _locale);
+
+			if (Validator.isNotNull(overrideValue)) {
+				return overrideValue;
+			}
+
 			Map<String, String> languageMap = _getLanguageMap();
 
 			return languageMap.get(key);
@@ -389,7 +448,7 @@ public class LanguageResources {
 		protected Set<String> handleKeySet() {
 			Map<String, String> languageMap = _getLanguageMap();
 
-			return languageMap.keySet();
+			return _getSetWithOverrideKeys(languageMap.keySet(), _locale);
 		}
 
 		private LanguageResourcesBundle(Locale locale) {
