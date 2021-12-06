@@ -15,9 +15,7 @@
 package com.liferay.portal.events;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.deploy.DeployUtil;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployDir;
-import com.liferay.portal.kernel.deploy.auto.AutoDeployListener;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployUtil;
 import com.liferay.portal.kernel.deploy.hot.HotDeployListener;
 import com.liferay.portal.kernel.deploy.hot.HotDeployUtil;
@@ -47,43 +45,6 @@ import javax.servlet.ServletContext;
  * @author Brian Wing Shun Chan
  */
 public class GlobalStartupAction extends SimpleAction {
-
-	public static List<AutoDeployListener> getAutoDeployListeners(
-		boolean reset) {
-
-		if ((_autoDeployListeners != null) && !reset) {
-			return _autoDeployListeners;
-		}
-
-		List<AutoDeployListener> autoDeployListeners = new ArrayList<>();
-
-		String[] autoDeployListenerClassNames = PropsUtil.getArray(
-			PropsKeys.AUTO_DEPLOY_LISTENERS);
-
-		for (String autoDeployListenerClassName :
-				autoDeployListenerClassNames) {
-
-			try {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Instantiating " + autoDeployListenerClassName);
-				}
-
-				AutoDeployListener autoDeployListener =
-					(AutoDeployListener)InstanceFactory.newInstance(
-						autoDeployListenerClassName);
-
-				autoDeployListeners.add(autoDeployListener);
-			}
-			catch (Exception exception) {
-				_log.error(
-					"Unable to initialiaze auto deploy listener", exception);
-			}
-		}
-
-		_autoDeployListeners = autoDeployListeners;
-
-		return _autoDeployListeners;
-	}
 
 	public static List<HotDeployListener> getHotDeployListeners() {
 		if (_hotDeployListeners != null) {
@@ -125,12 +86,10 @@ public class GlobalStartupAction extends SimpleAction {
 
 		try {
 			File deployDir = new File(PropsValues.AUTO_DEPLOY_DEPLOY_DIR);
-			File destDir = new File(DeployUtil.getAutoDeployDestDir());
 			long interval = PropsValues.AUTO_DEPLOY_INTERVAL;
 
 			AutoDeployDir autoDeployDir = new AutoDeployDir(
-				AutoDeployDir.DEFAULT_NAME, deployDir, destDir, interval,
-				getAutoDeployListeners(false));
+				AutoDeployDir.DEFAULT_NAME, deployDir, interval);
 
 			if (PropsValues.AUTO_DEPLOY_ENABLED) {
 				if (_log.isInfoEnabled()) {
@@ -189,7 +148,6 @@ public class GlobalStartupAction extends SimpleAction {
 	private static final Log _log = LogFactoryUtil.getLog(
 		GlobalStartupAction.class);
 
-	private static List<AutoDeployListener> _autoDeployListeners;
 	private static List<HotDeployListener> _hotDeployListeners;
 
 }

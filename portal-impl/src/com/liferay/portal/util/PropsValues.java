@@ -272,14 +272,8 @@ public class PropsValues {
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.AUTO_DEPLOY_CUSTOM_PORTLET_XML));
 
-	public static final String AUTO_DEPLOY_DEFAULT_DEST_DIR = PropsUtil.get(
-		PropsKeys.AUTO_DEPLOY_DEFAULT_DEST_DIR);
-
 	public static final String AUTO_DEPLOY_DEPLOY_DIR = PropsUtil.get(
 		PropsKeys.AUTO_DEPLOY_DEPLOY_DIR);
-
-	public static final String AUTO_DEPLOY_DEST_DIR = PropsUtil.get(
-		PropsKeys.AUTO_DEPLOY_DEST_DIR);
 
 	public static final boolean AUTO_DEPLOY_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.AUTO_DEPLOY_ENABLED));
@@ -287,20 +281,8 @@ public class PropsValues {
 	public static final int AUTO_DEPLOY_INTERVAL = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.AUTO_DEPLOY_INTERVAL));
 
-	public static final String AUTO_DEPLOY_JBOSS_PREFIX = PropsUtil.get(
-		PropsKeys.AUTO_DEPLOY_JBOSS_PREFIX);
-
 	public static final String AUTO_DEPLOY_TOMCAT_CONF_DIR = PropsUtil.get(
 		PropsKeys.AUTO_DEPLOY_TOMCAT_CONF_DIR);
-
-	public static final String AUTO_DEPLOY_TOMCAT_DEST_DIR = PropsUtil.get(
-		PropsKeys.AUTO_DEPLOY_TOMCAT_DEST_DIR);
-
-	public static final String AUTO_DEPLOY_TOMCAT_LIB_DIR = PropsUtil.get(
-		PropsKeys.AUTO_DEPLOY_TOMCAT_LIB_DIR);
-
-	public static final boolean AUTO_DEPLOY_UNPACK_WAR = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.AUTO_DEPLOY_UNPACK_WAR));
 
 	public static final String
 		AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_INSTALL_OPTIONS =
@@ -327,9 +309,6 @@ public class PropsValues {
 
 	public static final String AUTO_DEPLOY_WEBSPHERE_WSADMIN_PROPERTIES_FILE =
 		PropsUtil.get(PropsKeys.AUTO_DEPLOY_WEBSPHERE_WSADMIN_PROPERTIES_FILE);
-
-	public static final String AUTO_DEPLOY_WILDFLY_PREFIX = PropsUtil.get(
-		PropsKeys.AUTO_DEPLOY_WILDFLY_PREFIX);
 
 	public static final boolean AXIS_SERVLET_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.AXIS_SERVLET_ENABLED));

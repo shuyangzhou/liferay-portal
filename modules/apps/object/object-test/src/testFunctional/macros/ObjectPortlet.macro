@@ -64,6 +64,13 @@ definition {
 			locator1 = "ObjectPortlet#ENTRY_VALUE");
 	}
 
+	macro assertEntryStauts {
+		AssertElementPresent(
+			key_entry = "${entry}",
+			key_status = "${status}",
+			locator1 = "ObjectPortlet#ENTRY_STATUS");
+	}
+
 	macro assertFieldEntryColumnIsDisplayed {
 		AssertElementPresent(
 			key_fieldLabelName = "${fieldLabelName}",

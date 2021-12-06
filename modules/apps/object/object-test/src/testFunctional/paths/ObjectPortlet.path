@@ -51,6 +51,11 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td>ENTRY_STATUS</td>
+		<td>//div[contains(text(),'${key_entry}')]/following-sibling::div//strong[contains(@class, 'workflow-value') and contains(text(),'${key_status}')]</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td>ENTRY_VALUE</td>
 		<td>//div[contains(@class,'dnd-tbody')]//div[contains(text(),'${key_entry}')]</td>
 		<td></td>

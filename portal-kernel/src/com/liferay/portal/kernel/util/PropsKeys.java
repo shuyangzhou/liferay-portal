@@ -259,34 +259,17 @@ public interface PropsKeys {
 	public static final String AUTO_DEPLOY_CUSTOM_PORTLET_XML =
 		"auto.deploy.custom.portlet.xml";
 
-	public static final String AUTO_DEPLOY_DEFAULT_DEST_DIR =
-		"auto.deploy.default.dest.dir";
-
 	public static final String AUTO_DEPLOY_DEPLOY_DIR =
 		"auto.deploy.deploy.dir";
-
-	public static final String AUTO_DEPLOY_DEST_DIR = "auto.deploy.dest.dir";
 
 	public static final String AUTO_DEPLOY_ENABLED = "auto.deploy.enabled";
 
 	public static final String AUTO_DEPLOY_INTERVAL = "auto.deploy.interval";
 
-	public static final String AUTO_DEPLOY_JBOSS_PREFIX =
-		"auto.deploy.jboss.prefix";
-
 	public static final String AUTO_DEPLOY_LISTENERS = "auto.deploy.listeners";
 
 	public static final String AUTO_DEPLOY_TOMCAT_CONF_DIR =
 		"auto.deploy.tomcat.conf.dir";
-
-	public static final String AUTO_DEPLOY_TOMCAT_DEST_DIR =
-		"auto.deploy.tomcat.dest.dir";
-
-	public static final String AUTO_DEPLOY_TOMCAT_LIB_DIR =
-		"auto.deploy.tomcat.lib.dir";
-
-	public static final String AUTO_DEPLOY_UNPACK_WAR =
-		"auto.deploy.unpack.war";
 
 	public static final String
 		AUTO_DEPLOY_WEBSPHERE_WSADMIN_APP_MANAGER_INSTALL_OPTIONS =
@@ -308,9 +291,6 @@ public interface PropsKeys {
 
 	public static final String AUTO_DEPLOY_WEBSPHERE_WSADMIN_PROPERTIES_FILE =
 		"auto.deploy.websphere.wsadmin.properties.file.name";
-
-	public static final String AUTO_DEPLOY_WILDFLY_PREFIX =
-		"auto.deploy.wildfly.prefix";
 
 	public static final String AUTO_LOGIN_HOOKS = "auto.login.hooks";
 

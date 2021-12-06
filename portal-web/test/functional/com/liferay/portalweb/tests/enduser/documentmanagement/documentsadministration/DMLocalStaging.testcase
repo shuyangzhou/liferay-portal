@@ -25,21 +25,21 @@ definition {
 	@priority = "4"
 	@refactorneeded
 	test AddCustomTypeWithoutFields {
-		DMNavigator.openToAddDocumentType(siteURLKey = "site-name");
+		DMNavigator.openToAddDocumentType(siteURLKey = "site-name-staging");
 
 		PortletEntry.inputName(name = "DM Document Type Name");
 
-		DDLDataDefinition.save();
+		Button.clickSave();
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR",
 			value1 = "Error:At least one field must be added.");
 
-		DMNavigator.openMetadataSetsAdmin(siteURLKey = "site-name");
+		DMNavigator.openMetadataSetsAdmin(siteURLKey = "site-name-staging");
 
 		DMMetadataSet.addTitle(metadataSetName = "Document Metadata Set Name");
 
-		DDLDataDefinition.save();
+		Button.clickSave();
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR",
@@ -230,13 +230,50 @@ definition {
 	}
 
 	@description = "This is a test for LPS-136827. It checks that the related asset of a file can be published."
-	@ignore = "true"
 	@priority = "3"
 	test CanPublishRelatedAsset {
-		property portal.acceptance = "false";
+		JSONWebcontent.addWebContent(
+			content = "Web Content Content",
+			groupName = "Site Name (Staging)",
+			site = "false",
+			title = "Web Content Title");
 
-		// TODO LPS-136827 CanPublishRelatedAsset pending implementation
+		JSONDocument.addFileWithUploadedFile(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentTitle = "DM Document Title",
+			groupName = "Site Name-staging",
+			mimeType = "image/jpeg",
+			site = "false",
+			sourceFileName = "Document_1.jpeg");
 
+		DMNavigator.openToEditEntryInSite(
+			dmDocumentTitle = "DM Document Title",
+			groupName = "Site Name (Staging)",
+			site = "false",
+			siteURLKey = "site-name-staging");
+
+		RelatedAssets.selectAsset(
+			assetTitle = "Web Content Title",
+			assetType = "Basic Web Content");
+
+		Button.clickPublish();
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging DM Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		DMNavigator.openToEntryInAdmin(
+			dmDocumentTitle = "DM Document Title",
+			groupName = "Site Name",
+			siteURLKey = "site-name");
+
+		DMDocument.viewCP(
+			dmDocumentTitle = "DM Document Title",
+			relatedAssetsTitle = "Web Content Title");
 	}
 
 	@description = "This is a test for LPS-136821. It checks that a repository can be published."

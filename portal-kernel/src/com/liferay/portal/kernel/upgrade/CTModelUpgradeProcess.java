@@ -57,6 +57,8 @@ public class CTModelUpgradeProcess extends UpgradeProcess {
 		String normalizedTableName = dbInspector.normalizeName(
 			tableName, databaseMetaData);
 
+		ensureTableExists(databaseMetaData, dbInspector, normalizedTableName);
+
 		try (ResultSet resultSet = databaseMetaData.getColumns(
 				dbInspector.getCatalog(), dbInspector.getSchema(),
 				normalizedTableName,
