@@ -754,6 +754,8 @@ public class RepositoryEntryModelImpl
 
 		repositoryEntryImpl.setMvccVersion(
 			this.<Long>getColumnOriginalValue("mvccVersion"));
+		repositoryEntryImpl.setCtCollectionId(
+			this.<Long>getColumnOriginalValue("ctCollectionId"));
 		repositoryEntryImpl.setUuid(
 			this.<String>getColumnOriginalValue("uuid_"));
 		repositoryEntryImpl.setRepositoryEntryId(

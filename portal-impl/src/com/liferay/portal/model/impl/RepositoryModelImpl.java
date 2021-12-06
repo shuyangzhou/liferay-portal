@@ -910,6 +910,8 @@ public class RepositoryModelImpl
 
 		repositoryImpl.setMvccVersion(
 			this.<Long>getColumnOriginalValue("mvccVersion"));
+		repositoryImpl.setCtCollectionId(
+			this.<Long>getColumnOriginalValue("ctCollectionId"));
 		repositoryImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		repositoryImpl.setRepositoryId(
 			this.<Long>getColumnOriginalValue("repositoryId"));
