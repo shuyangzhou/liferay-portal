@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.service.RegionLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -256,6 +257,10 @@ public class CommerceUpgradeStepRegistrator implements UpgradeStepRegistrator {
 			"7.3.0", "8.0.0",
 			new com.liferay.commerce.internal.upgrade.v8_0_0.
 				CommerceOrderItemUpgradeProcess());
+
+		registry.register(
+			"8.0.0", "8.1.0",
+			new CTModelUpgradeProcess("CPDefinitionInventory"));
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce upgrade step registrator finished");
