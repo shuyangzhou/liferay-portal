@@ -29,6 +29,8 @@ public interface UpgradeStepRegistrator {
 			String fromSchemaVersionString, String toSchemaVersionString,
 			UpgradeStep... upgradeSteps);
 
+		public void registerInitialUpgradeSteps(UpgradeStep... upgradeSteps);
+
 	}
 
 }

@@ -12,12 +12,11 @@
  *
  */
 
-package com.liferay.search.experiences.internal.instance.lifecycle;
+package com.liferay.search.experiences.internal.util;
 
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
-import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -41,56 +40,20 @@ import java.util.Set;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author André de Oliveira
- * @author Petteri Karttunen
+ * @author Shuyang Zhou
  */
-@Component(
-	enabled = true, immediate = true,
-	service = PortalInstanceLifecycleListener.class
-)
-public class SXPPortalInstanceLifecycleListener
-	extends BasePortalInstanceLifecycleListener {
+public class SXPElementDataUtil {
 
-	public SXPPortalInstanceLifecycleListener() throws IOException {
-		Class<?> clazz = getClass();
+	public static void addSXPElements(
+			SXPElementLocalService sxpElementLocalService, Company company)
+		throws PortalException {
 
-		Bundle bundle = FrameworkUtil.getBundle(clazz);
-
-		Package pkg = clazz.getPackage();
-
-		String path = StringUtil.replace(
-			pkg.getName(), CharPool.PERIOD, CharPool.SLASH);
-
-		Enumeration<URL> enumeration = bundle.findEntries(
-			path.concat("/dependencies"), "*.json", false);
-
-		while (enumeration.hasMoreElements()) {
-			URL url = enumeration.nextElement();
-
-			_sxpElements.add(
-				SXPElementUtil.toSXPElement(
-					StreamUtil.toString(url.openStream())));
-		}
-	}
-
-	@Override
-	public void portalInstanceRegistered(Company company) throws Exception {
-
-		// TODO Move to an upgrade process for existing companies. For new
-		// companies, use a model listener.
-
-		_addSXPElements(company);
-	}
-
-	private void _addSXPElements(Company company) throws Exception {
 		Set<String> titles = new HashSet<>();
 
 		for (com.liferay.search.experiences.model.SXPElement sxpPElement :
-				_sxpElementLocalService.getSXPElements(
+				sxpElementLocalService.getSXPElements(
 					company.getCompanyId(), true)) {
 
 			titles.add(sxpPElement.getTitle(LocaleUtil.US));
@@ -108,7 +71,7 @@ public class SXPPortalInstanceLifecycleListener
 
 			User user = company.getDefaultUser();
 
-			_sxpElementLocalService.addSXPElement(
+			sxpElementLocalService.addSXPElement(
 				user.getUserId(),
 				LocalizedMapUtil.getLocalizedMap(
 					sxpElement.getDescription_i18n()),
@@ -126,9 +89,35 @@ public class SXPPortalInstanceLifecycleListener
 		}
 	}
 
-	@Reference
-	private SXPElementLocalService _sxpElementLocalService;
+	private static List<SXPElement> _createSXPElements() {
+		Bundle bundle = FrameworkUtil.getBundle(SXPElementDataUtil.class);
 
-	private final List<SXPElement> _sxpElements = new ArrayList<>();
+		Package pkg = SXPElementDataUtil.class.getPackage();
+
+		String path = StringUtil.replace(
+			pkg.getName(), CharPool.PERIOD, CharPool.SLASH);
+
+		List<SXPElement> sxpElements = new ArrayList<>();
+
+		Enumeration<URL> enumeration = bundle.findEntries(
+			path.concat("/dependencies"), "*.json", false);
+
+		try {
+			while (enumeration.hasMoreElements()) {
+				URL url = enumeration.nextElement();
+
+				sxpElements.add(
+					SXPElementUtil.toSXPElement(
+						StreamUtil.toString(url.openStream())));
+			}
+		}
+		catch (IOException ioException) {
+			throw new ExceptionInInitializerError(ioException);
+		}
+
+		return sxpElements;
+	}
+
+	private static final List<SXPElement> _sxpElements = _createSXPElements();
 
 }
