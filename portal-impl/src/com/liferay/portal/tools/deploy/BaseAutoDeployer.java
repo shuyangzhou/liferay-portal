@@ -52,18 +52,19 @@ import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.tools.WebXMLBuilder;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.webserver.DynamicResourceServlet;
-import com.liferay.util.ant.CopyTask;
-import com.liferay.util.ant.DeleteTask;
-import com.liferay.util.ant.ExpandTask;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -544,6 +545,60 @@ public class BaseAutoDeployer implements AutoDeployer {
 	protected String uiTaglibDTD;
 	protected String utilTaglibDTD;
 
+	private void _copyDirectory(
+		File source, File destination, boolean overwrite) {
+
+		Path sourcePath = source.toPath();
+
+		Path destinationPath = destination.toPath();
+
+		try {
+			Files.walkFileTree(
+				sourcePath,
+				new SimpleFileVisitor<Path>() {
+
+					@Override
+					public FileVisitResult preVisitDirectory(
+							Path dirPath,
+							BasicFileAttributes basicFileAttributes)
+						throws IOException {
+
+						if (dirPath.equals(destinationPath)) {
+							return FileVisitResult.SKIP_SUBTREE;
+						}
+
+						Files.createDirectories(
+							destinationPath.resolve(
+								sourcePath.relativize(dirPath)));
+
+						return FileVisitResult.CONTINUE;
+					}
+
+					@Override
+					public FileVisitResult visitFile(
+							Path filePath,
+							BasicFileAttributes basicFileAttributes)
+						throws IOException {
+
+						Path destinationFile = destinationPath.resolve(
+							sourcePath.relativize(filePath));
+
+						if (Files.notExists(destinationFile) || overwrite) {
+							Files.copy(
+								filePath, destinationFile,
+								StandardCopyOption.REPLACE_EXISTING);
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+				});
+		}
+		catch (IOException ioException) {
+			_log.error(ioException, ioException);
+		}
+	}
+
 	private void _copyJars(File srcFile) throws Exception {
 		for (String jar : _jars) {
 			String jarFullName = DeployUtil.getResourcePath(tempDirPaths, jar);
@@ -780,7 +835,7 @@ public class BaseAutoDeployer implements AutoDeployer {
 
 		updateDeployDirectory(srcFile);
 
-		CopyTask.copyDirectory(srcFile, deployDir, null, null, overwrite, true);
+		_copyDirectory(srcFile, deployDir, overwrite);
 	}
 
 	private boolean _deployFile(
@@ -793,13 +848,13 @@ public class BaseAutoDeployer implements AutoDeployer {
 
 		File tempDir = tempDirPath.toFile();
 
-		ExpandTask.expand(srcFile, tempDir);
+		FileUtil.unzip(srcFile, tempDir);
 
 		_deployDirectory(
 			tempDir, mergeDir, deployDir, displayName, overwrite,
 			pluginPackage);
 
-		DeleteTask.deleteDirectory(tempDir);
+		FileUtil.deltree(tempDir);
 
 		return true;
 	}
@@ -1092,7 +1147,7 @@ public class BaseAutoDeployer implements AutoDeployer {
 			return;
 		}
 
-		CopyTask.copyDirectory(mergeDir, targetDir, null, null, true, false);
+		_copyDirectory(mergeDir, targetDir, true);
 	}
 
 	private PluginPackage _readPluginPackage(File file) {

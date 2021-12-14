@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.util.ant;
+package com.liferay.ant.manifest.helper;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.OSDetector;
@@ -46,13 +46,6 @@ public class ManifestHelperTask extends Task {
 		catch (Exception exception) {
 			throw new BuildException(exception);
 		}
-	}
-
-	/**
-	 * @deprecated As of Mueller (7.2.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setAnalyze(boolean analyze) {
 	}
 
 	public void setClasspathRef(Reference reference) {
@@ -126,16 +119,6 @@ public class ManifestHelperTask extends Task {
 			}
 
 			return execute("git rev-parse HEAD");
-		}
-
-		File svnDir = new File(projectDir, ".svn");
-
-		if (svnDir.exists()) {
-			if (OSDetector.isWindows()) {
-				return execute("cmd /c svnversion .");
-			}
-
-			return execute("svnversion .");
 		}
 
 		return StringPool.BLANK;
