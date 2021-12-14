@@ -57,21 +57,45 @@ definition {
 	}
 
 	@description = "LRQA-71360 - Verify that the user can add a new calendar on the Manage Calendar Page"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanAddCalendarOnManageCalendarPage {
+		CalendarNavigator.gotoMyCalendarsManage();
 
-		// TODO LRQA-71553 CanAddCalendarOnManageCalendarPage pending implementation
+		ManageCalendar.addCalendar(calendarName = "test");
 
+		ManageCalendar.viewCalendarNameByColumn(nameList = "test");
 	}
 
 	@description = "LRQA-71360 - Verify that the user can not delete a Default Calendar"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanNotDeleteDefaultCalendar {
+		CalendarNavigator.gotoMyCalendarsManage();
 
-		// TODO LRQA-71883 CanNotDeleteDefaultCalendar pending implementation
+		ManageCalendar.viewMenuItemNotPresent(
+			calendarName = "Test Test",
+			menuItem = "Delete");
 
+		ManageCalendar.addCalendar(calendarName = "Test Calendar");
+
+		ManageCalendar.viewDefaultOptionOfCalendar(
+			calendarName = "Test Calendar",
+			defaultOption = "No");
+
+		ManageCalendar.viewMenuItemPresent(
+			calendarName = "Test Calendar",
+			menuItem = "Delete");
+
+		ManageCalendar.editCalendar(
+			calendarCurrentName = "Test Calendar",
+			defaultCalendarOption = "check");
+
+		ManageCalendar.viewDefaultOptionOfCalendar(
+			calendarName = "Test Test",
+			defaultOption = "No");
+
+		ManageCalendar.viewMenuItemNotPresent(
+			calendarName = "Test Calendar",
+			menuItem = "Delete");
 	}
 
 	@priority = "3"
@@ -215,12 +239,19 @@ definition {
 	}
 
 	@description = "LRQA-71360 - Verify that when the user change the calendar color it also changes the color column on the Manage Calendar page"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CheckTheColorColumnIsChanged {
+		Calendar.tearDownColor();
 
-		// TODO LRQA-71551 CheckTheColorColumnIsChanged pending implementation
+		CalendarNavigator.gotoMyCalendarsManage();
 
+		ManageCalendar.viewColorByColumn(colorList = "D96666");
+
+		ManageCalendar.editCalendar(
+			calendarCurrentName = "Test Test",
+			newColor = "E67399");
+
+		ManageCalendar.viewColorByColumn(colorList = "E67399");
 	}
 
 	@priority = "4"
@@ -302,12 +333,11 @@ definition {
 	}
 
 	@description = "LRQA-71360 - Verify  that the Manage Calendar page displays the  Name, Description, Color and Default columns"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test DisplayNameDescriptionColorsDefaultColumns {
+		CalendarNavigator.gotoMyCalendarsManage();
 
-		// TODO LRQA-71552 DisplayNameDescriptionColorsDefaultColumns pending implementation
-
+		ManageCalendar.viewTableDisplaysColumns();
 	}
 
 	@priority = "3"

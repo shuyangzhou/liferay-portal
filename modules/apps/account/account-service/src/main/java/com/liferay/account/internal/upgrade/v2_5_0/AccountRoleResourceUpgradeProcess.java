@@ -38,7 +38,7 @@ public class AccountRoleResourceUpgradeProcess extends UpgradeProcess {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				StringBundler.concat(
 					"select AccountRole.accountRoleId, Role_.companyId, ",
-					"Role_.userId from AccountRole inner join Role_ where ",
+					"Role_.userId from AccountRole inner join Role_ on ",
 					"AccountRole.roleId = Role_.roleId"));
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 

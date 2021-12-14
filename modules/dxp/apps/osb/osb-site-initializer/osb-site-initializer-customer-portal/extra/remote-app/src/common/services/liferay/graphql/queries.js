@@ -101,6 +101,17 @@ export const getBannedEmailDomains = gql`
 				items {
 					bannedEmailDomainId
 					domain
+					accountKey
+					code
+					dxpVersion
+					slaCurrent
+					slaExpired
+					slaFuture
+					slaCurrentEndDate
+					region
+					liferayContactName
+					liferayContactRole
+					liferayContactEmailAddress
 				}
 			}
 		}
@@ -224,6 +235,33 @@ export const getUserAccount = gql`
 			externalReferenceCode
 			image
 			name
+		}
+	}
+`;
+
+export const getAccountSubscriptionsGroups = gql`
+	query getAccountSubscriptionGroups($accountSubscriptionGroupERC: String) {
+		c {
+			accountSubscriptions(filter: $accountSubscriptionGroupERC) {
+				items {
+					name
+					accountSubscriptionGroupERC
+				}
+			}
+		}
+	}
+`;
+
+export const getAccountSubscriptionsTerms = gql`
+	query getAccountSubscriptionTerms($accountSubscriptionERC: String) {
+		c {
+			accountSubscriptionTerms(filter: $accountSubscriptionERC) {
+				items {
+					accountSubscriptionTermId
+					startDate
+					endDate
+				}
+			}
 		}
 	}
 `;

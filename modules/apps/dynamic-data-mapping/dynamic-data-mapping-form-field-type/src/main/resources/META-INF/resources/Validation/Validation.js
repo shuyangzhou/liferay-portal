@@ -118,6 +118,7 @@ const Validation = ({
 					name={name}
 					onBlur={onBlur}
 					parameter={parameter}
+					parentFieldName={validation.fieldName}
 					readOnly={readOnly}
 					selectedValidation={selectedValidation}
 					transformSelectedValidation={transformSelectedValidation}
@@ -163,7 +164,6 @@ const ValidationWrapper = ({
 			onChange={(value) => onChange({target: {value}})}
 			readOnly={readOnly}
 			validation={validation}
-			value={value}
 			visible={visible}
 		/>
 	);

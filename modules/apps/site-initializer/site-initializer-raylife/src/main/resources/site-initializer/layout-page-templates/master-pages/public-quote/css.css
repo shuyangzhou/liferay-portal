@@ -229,37 +229,3 @@ a {
 	margin-right: var(--spacer-3);
 	transform: translateY(-2px);
 }
-
-/*Footer*/
-
-.footer {
-	background-color: var(--color-brand-primary-darken-5);
-	padding-bottom: var(--spacer-8);
-	padding-top: var(--spacer-8);
-}
-.footer .footer-list-title {
-	color: var(--color-neutral-0);
-	margin-top: var(--spacer-2);
-}
-.footer .footer-nav {
-	padding: 0;
-}
-.footer .footer-nav .nav-link {
-	color: var(--gray-500);
-	padding-left: 0;
-}
-.footer .footer-bottom {
-	border-bottom: 1px solid var(--gray-800);
-	display: flex;
-	justify-content: space-between;
-	margin-top: var(--spacer-9);
-	padding-bottom: var(--spacer-4);
-}
-.footer .footer-bottom .nav-link {
-	color: var(--secondary);
-	margin-right: var(--spacer-4);
-}
-.footer .footer-copy {
-	color: var(--secondary);
-	margin-top: var(--spacer-3);
-}

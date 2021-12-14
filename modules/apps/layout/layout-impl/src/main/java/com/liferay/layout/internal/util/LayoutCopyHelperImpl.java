@@ -968,14 +968,6 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 				_sourceLayout.getTypeSettings()
 			).build();
 
-			if (_sourceLayout.isDraftLayout()) {
-				unicodeProperties.put("published", Boolean.TRUE.toString());
-
-				_layoutLocalService.updateLayout(
-					_sourceLayout.getGroupId(), _sourceLayout.isPrivateLayout(),
-					_sourceLayout.getLayoutId(), unicodeProperties.toString());
-			}
-
 			_layoutLocalService.updateLayout(
 				_targetLayout.getGroupId(), _targetLayout.isPrivateLayout(),
 				_targetLayout.getLayoutId(), unicodeProperties.toString());

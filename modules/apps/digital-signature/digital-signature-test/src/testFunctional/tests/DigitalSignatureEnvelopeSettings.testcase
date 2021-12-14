@@ -42,7 +42,7 @@ definition {
 		DigitalSignature.createEnvelopeWith2Documents(
 			emailMessage = "Email Message",
 			emailSubject = "Email Subject",
-			envelopeName = "Poshi Test Envelope Name",
+			envelopeName = "Poshi Test CanAddMoreThan1Document",
 			recipientEmail = "test@liferay.com",
 			recipientFullName = "Recipient Full Name");
 
@@ -60,7 +60,7 @@ definition {
 
 		RecycleBin.emptyCP();
 
-		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test Envelope Name");
+		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test CanAddMoreThan1Document");
 	}
 
 	@description = "This is a test for LPS-131425. Verify if its possible only maximum of 10 recipients can be added"
@@ -143,35 +143,6 @@ definition {
 		RecycleBin.emptyCP();
 	}
 
-	@description = "This is a test for LPS-131425. Verify if Error message appear"
-	@ignore = "true"
-	@priority = "4"
-	test CanViewErrorMessage {
-		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
-
-		DigitalSignature.createEnvelope(
-			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
-			emailMessage = "Email Message",
-			emailSubject = "Email Subject",
-			envelopeName = "Poshi Test Envelope Name",
-			recipientEmail = "test@liferay",
-			recipientFullName = "Recipient Full Name");
-
-		Button.click(button = "Send");
-
-		Alert.viewErrorMessage(errorMessage = "There was an error in processing your request.  Please try again later.");
-
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
-
-		DMDocument.deleteCP(dmDocumentTitle = "DM Document Title");
-
-		RecycleBin.openRecycleBinAdmin(siteURLKey = "guest");
-
-		RecycleBin.emptyCP();
-
-		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test Envelope Name");
-	}
-
 	@description = "This is a test for LPS-131425. Verify if unsuportted files Error message appear"
 	@priority = "5"
 	test CanViewErrorMessageForUnsuporttedFiles {
@@ -181,7 +152,7 @@ definition {
 			dmDocumentFile = "Document_2.mp4",
 			emailMessage = "Email Message",
 			emailSubject = "Email Subject",
-			envelopeName = "Poshi Test Envelope Name",
+			envelopeName = "Poshi Test CanViewErrorMessageForUnsuporttedFiles",
 			recipientEmail = "test@liferay.com",
 			recipientFullName = "Recipient Full Name");
 
@@ -207,7 +178,7 @@ definition {
 			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
 			emailMessage = "Email Message",
 			emailSubject = "Email Subject",
-			envelopeName = "Poshi Test Envelope Name",
+			envelopeName = "Poshi Test CanViewSuccessMessage",
 			recipientEmail = "test@liferay.com",
 			recipientFullName = "Recipient Full Name");
 
@@ -223,7 +194,7 @@ definition {
 
 		RecycleBin.emptyCP();
 
-		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test Envelope Name");
+		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test CanViewSuccessMessage");
 	}
 
 	@description = "This is a test for LPS-131425. Verify if Email Subject field is required"

@@ -34,11 +34,13 @@ renderResponse.setTitle(LanguageUtil.get(request, "export"));
 			<h4 class="card-header"><%= LanguageUtil.get(request, "export-settings") %></h4>
 
 			<div class="card-body">
-				<liferay-frontend:edit-form-body>
 
-					<%
-					EditBatchPlannerPlanDisplayContext editBatchPlannerPlanDisplayContext = (EditBatchPlannerPlanDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
-					%>
+				<%
+				EditBatchPlannerPlanDisplayContext editBatchPlannerPlanDisplayContext = (EditBatchPlannerPlanDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+				%>
+
+				<liferay-frontend:edit-form-body>
+					<div id="<portlet:namespace />templateSelect"></div>
 
 					<clay:row>
 						<clay:col
@@ -195,5 +197,16 @@ renderResponse.setTitle(LanguageUtil.get(request, "export"));
 </div>
 
 <liferay-frontend:component
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"initialTemplateClassName", editBatchPlannerPlanDisplayContext.getSelectedInternalClassName()
+		).put(
+			"initialTemplateHeadlessEndpoint", editBatchPlannerPlanDisplayContext.getSelectedHeadlessEndpoint()
+		).put(
+			"initialTemplateMapping", editBatchPlannerPlanDisplayContext.getSelectedBatchPlannerPlanMappings()
+		).put(
+			"templatesOptions", editBatchPlannerPlanDisplayContext.getTemplateSelectOptions()
+		).build()
+	%>'
 	module="js/edit_batch_planner_plan"
 />

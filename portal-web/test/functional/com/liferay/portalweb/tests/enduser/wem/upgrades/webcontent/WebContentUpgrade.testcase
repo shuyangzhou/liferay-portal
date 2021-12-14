@@ -917,6 +917,39 @@ definition {
 		}
 	}
 
+	@priority = "5"
+	test PublishDraftWebContentAfterUpgrade625 {
+		property data.archive.type = "data-archive-web-content-draft";
+		property database.types = "mariadb,mysql,postgresql";
+		property portal.version = "6.2.5";
+
+		Upgrade.addWCStructureAndTemplate();
+
+		Upgrade.publishWCDraft();
+	}
+
+	@priority = "5"
+	test PublishDraftWebContentAfterUpgrade621015 {
+		property data.archive.type = "data-archive-web-content-draft";
+		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.version = "6.2.10.15";
+
+		Upgrade.addWCStructureAndTemplate();
+
+		Upgrade.publishWCDraft();
+	}
+
+	@priority = "5"
+	test PublishDraftWebContentAfterUpgrade621021 {
+		property data.archive.type = "data-archive-web-content-draft";
+		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.version = "6.2.10.21";
+
+		Upgrade.addWCStructureAndTemplate();
+
+		Upgrade.publishWCDraft();
+	}
+
 	@description = "This is a test for LPS-126653. Upgrade 7.0 to Master with a Web Content, a Structure, a WC Template and a page with Web Content Display and Asset Publisher"
 	@priority = "5"
 	test ViewAndEditWebContentWCStructureWCTemplateWCDAndAssetPublisher704 {
@@ -1027,123 +1060,6 @@ definition {
 		Upgrade.EditWebContentAndViewInWCDandAssetPublisher();
 
 		Upgrade.EditWCStructureAndTemplateAndViewInWCDandAssetPublisher(webContentColor = "false");
-	}
-
-	@description = "This is a use case for LPS-75561."
-	@priority = "5"
-	test ViewLayoutArchive625 {
-		property data.archive.type = "data-archive-pages-administration";
-		property database.types = "mariadb,mysql,postgresql";
-		property portal.version = "6.2.5";
-
-		Navigator.openURL();
-
-		Portlet.addPG(portletName = "Web Content Display");
-
-		AssertTextNotPresent(value1 = "There was an unexpected error. Please refresh the current page.");
-	}
-
-	@description = "This is a use case for LPS-75561."
-	@priority = "5"
-	test ViewLayoutArchive621015 {
-		property data.archive.type = "data-archive-pages-administration";
-		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
-		property portal.version = "6.2.10.15";
-
-		Navigator.openURL();
-
-		Portlet.addPG(portletName = "Web Content Display");
-
-		AssertTextNotPresent(value1 = "There was an unexpected error. Please refresh the current page.");
-	}
-
-	@description = "This is a use case for LPS-75561."
-	@priority = "5"
-	test ViewLayoutArchive621021 {
-		property data.archive.type = "data-archive-pages-administration";
-		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
-		property portal.version = "6.2.10.21";
-
-		Navigator.openURL();
-
-		Portlet.addPG(portletName = "Web Content Display");
-
-		AssertTextNotPresent(value1 = "There was an unexpected error. Please refresh the current page.");
-	}
-
-	@description = "This is a use case for LPS-71487."
-	@priority = "5"
-	test ViewMultiWCDArchive625 {
-		property data.archive.type = "data-archive-multi-wcd-portlet";
-		property database.types = "mysql";
-		property portal.version = "6.2.5";
-
-		Navigator.gotoPage(pageName = "Web Content Display Page");
-
-		Portlet.viewDuplicatePG(
-			portletName = "Web Content Display",
-			totalPortletCount = "3");
-	}
-
-	@description = "This is a use case for LPS-71487."
-	@priority = "5"
-	test ViewMultiWCDArchive621015 {
-		property data.archive.type = "data-archive-multi-wcd-portlet";
-		property database.types = "db2,mysql,oracle,sybase";
-		property portal.version = "6.2.10.15";
-
-		Navigator.gotoPage(pageName = "Web Content Display Page");
-
-		Portlet.viewDuplicatePG(
-			portletName = "Web Content Display",
-			totalPortletCount = "3");
-	}
-
-	@description = "This is a use case for LPS-71487."
-	@priority = "5"
-	test ViewMultiWCDArchive621021 {
-		property data.archive.type = "data-archive-multi-wcd-portlet";
-		property database.types = "db2,mysql,oracle,postgresql,sybase";
-		property portal.version = "6.2.10.21";
-
-		Navigator.gotoPage(pageName = "Web Content Display Page");
-
-		Portlet.viewDuplicatePG(
-			portletName = "Web Content Display",
-			totalPortletCount = "3");
-	}
-
-	@priority = "5"
-	test ViewWebContentArchive625 {
-		property data.archive.type = "data-archive-web-content-draft";
-		property database.types = "mariadb,mysql,postgresql";
-		property portal.version = "6.2.5";
-
-		Upgrade.addWCStructureAndTemplate();
-
-		Upgrade.publishWCDraft();
-	}
-
-	@priority = "5"
-	test ViewWebContentArchive621015 {
-		property data.archive.type = "data-archive-web-content-draft";
-		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
-		property portal.version = "6.2.10.15";
-
-		Upgrade.addWCStructureAndTemplate();
-
-		Upgrade.publishWCDraft();
-	}
-
-	@priority = "5"
-	test ViewWebContentArchive621021 {
-		property data.archive.type = "data-archive-web-content-draft";
-		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
-		property portal.version = "6.2.10.21";
-
-		Upgrade.addWCStructureAndTemplate();
-
-		Upgrade.publishWCDraft();
 	}
 
 	@description = "This is a use case for LRQA-62720. View web content with all fields and value after upgrade from 6.2."

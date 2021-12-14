@@ -93,68 +93,49 @@ public class EditLayoutModeProductNavigationControlMenuEntry
 				WebKeys.THEME_DISPLAY);
 
 		try {
-			String redirect = themeDisplay.getURLCurrent();
-
 			Layout layout = themeDisplay.getLayout();
 
-			long publishedLayoutPlid = layout.getPlid();
-
 			if (layout.isDraftLayout()) {
-				publishedLayoutPlid = layout.getClassPK();
-
-				redirect = _portal.getLayoutFullURL(
-					_layoutLocalService.getLayout(publishedLayoutPlid),
+				String layoutFullURL = _portal.getLayoutFullURL(
+					_layoutLocalService.getLayout(layout.getClassPK()),
 					themeDisplay);
-			}
-			else {
-				Layout draftLayout = layout.fetchDraftLayout();
 
-				if (draftLayout == null) {
-					UnicodeProperties unicodeProperties =
-						layout.getTypeSettingsProperties();
-
-					unicodeProperties.put("published", "true");
-
-					ServiceContext serviceContext =
-						ServiceContextFactory.getInstance(httpServletRequest);
-
-					draftLayout = _layoutLocalService.addLayout(
-						layout.getUserId(), layout.getGroupId(),
-						layout.isPrivateLayout(), layout.getParentLayoutId(),
-						_portal.getClassNameId(Layout.class), layout.getPlid(),
-						layout.getNameMap(), layout.getTitleMap(),
-						layout.getDescriptionMap(), layout.getKeywordsMap(),
-						layout.getRobotsMap(), layout.getType(),
-						unicodeProperties.toString(), true, true,
-						Collections.emptyMap(), layout.getMasterLayoutPlid(),
-						serviceContext);
-
-					draftLayout = _layoutCopyHelper.copyLayout(
-						layout, draftLayout);
-
-					_layoutLocalService.updateStatus(
-						draftLayout.getUserId(), draftLayout.getPlid(),
-						WorkflowConstants.STATUS_APPROVED, serviceContext);
-				}
-
-				redirect = _portal.getLayoutFullURL(draftLayout, themeDisplay);
+				return _getRedirect(
+					httpServletRequest, layoutFullURL, layout, themeDisplay);
 			}
 
-			redirect = _http.setParameter(
-				redirect, "p_l_back_url",
-				_portal.getLayoutFullURL(
-					themeDisplay.getLayout(), themeDisplay));
-			redirect = _http.setParameter(redirect, "p_l_mode", Constants.EDIT);
+			Layout draftLayout = layout.fetchDraftLayout();
 
-			long segmentsExperienceId = ParamUtil.getLong(
-				httpServletRequest, "segmentsExperienceId", -1);
+			if (draftLayout == null) {
+				UnicodeProperties unicodeProperties =
+					layout.getTypeSettingsProperties();
 
-			if (segmentsExperienceId != -1) {
-				redirect = _http.setParameter(
-					redirect, "segmentsExperienceId", segmentsExperienceId);
+				ServiceContext serviceContext =
+					ServiceContextFactory.getInstance(httpServletRequest);
+
+				draftLayout = _layoutLocalService.addLayout(
+					layout.getUserId(), layout.getGroupId(),
+					layout.isPrivateLayout(), layout.getParentLayoutId(),
+					_portal.getClassNameId(Layout.class), layout.getPlid(),
+					layout.getNameMap(), layout.getTitleMap(),
+					layout.getDescriptionMap(), layout.getKeywordsMap(),
+					layout.getRobotsMap(), layout.getType(),
+					unicodeProperties.toString(), true, true,
+					Collections.emptyMap(), layout.getMasterLayoutPlid(),
+					serviceContext);
+
+				draftLayout = _layoutCopyHelper.copyLayout(layout, draftLayout);
+
+				_layoutLocalService.updateStatus(
+					draftLayout.getUserId(), draftLayout.getPlid(),
+					WorkflowConstants.STATUS_APPROVED, serviceContext);
 			}
 
-			return redirect;
+			String layoutFullURL = _portal.getLayoutFullURL(
+				draftLayout, themeDisplay);
+
+			return _getRedirect(
+				httpServletRequest, layoutFullURL, layout, themeDisplay);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -235,6 +216,28 @@ public class EditLayoutModeProductNavigationControlMenuEntry
 		}
 
 		return false;
+	}
+
+	private String _getRedirect(
+			HttpServletRequest httpServletRequest, String fullLayoutURL,
+			Layout layout, ThemeDisplay themeDisplay)
+		throws PortalException {
+
+		String redirect = _http.setParameter(
+			fullLayoutURL, "p_l_back_url",
+			_portal.getLayoutFullURL(layout, themeDisplay));
+
+		redirect = _http.setParameter(redirect, "p_l_mode", Constants.EDIT);
+
+		long segmentsExperienceId = ParamUtil.getLong(
+			httpServletRequest, "segmentsExperienceId", -1);
+
+		if (segmentsExperienceId != -1) {
+			redirect = _http.setParameter(
+				redirect, "segmentsExperienceId", segmentsExperienceId);
+		}
+
+		return redirect;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

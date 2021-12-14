@@ -2,7 +2,7 @@ definition {
 
 	macro typeAllEmployeesInfoFields {
 		Click(
-			field = "employees.hasFein",
+			field = "Does your business have a Federal Employer Identification Number (FEIN)?",
 			locator1 = "Raylife#BUTTON_YES_OPTION");
 
 		RaylifeEmployees.typeEmployeesInfoFields(
@@ -14,7 +14,7 @@ definition {
 			value = "2000");
 
 		Click(
-			field = "employees.businessOperatesYearRound",
+			field = "Does your business operate year round?",
 			locator1 = "Raylife#BUTTON_NO_OPTION");
 
 		RaylifeEmployees.typeEmployeesInfoFields(
@@ -38,6 +38,46 @@ definition {
 		Type(
 			locator1 = "Raylife#FORMS_FIELDS",
 			value1 = "${value}");
+	}
+
+	macro viewEmployeesInfo {
+		AssertElementPresent(
+			field = "Does your business have a Federal Employer Identification Number (FEIN)?",
+			locator1 = "Raylife#BUTTON_YES_OPTION");
+
+		AssertElementPresent(
+			label = "employees.fein",
+			locator1 = "Raylife#FORMS_VALUE",
+			value = "12-3456789");
+
+		AssertElementPresent(
+			label = "employees.startBusinessAtYear",
+			locator1 = "Raylife#FORMS_FIELDS",
+			value1 = "2000");
+
+		AssertElementPresent(
+			field = "Does your business operate year round?",
+			locator1 = "Raylife#BUTTON_NO_OPTION");
+
+		AssertElementPresent(
+			label = "employees.partTimeEmployees",
+			locator1 = "Raylife#FORMS_VALUE",
+			value = "200");
+
+		AssertElementPresent(
+			label = "employees.estimatedAnnualGrossRevenue",
+			locator1 = "Raylife#FORMS_VALUE",
+			value = "$111.00");
+
+		AssertElementPresent(
+			label = "employees.annualPayrollForOwner",
+			locator1 = "Raylife#FORMS_VALUE",
+			value = "$111.00");
+
+		AssertElementPresent(
+			label = "employees.annualPayrollForEmployees",
+			locator1 = "Raylife#FORMS_VALUE",
+			value = "$111.00");
 	}
 
 }

@@ -51,6 +51,8 @@ import com.liferay.journal.service.JournalFolderService;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
+import com.liferay.object.admin.rest.dto.v1_0.ObjectRelationship;
+import com.liferay.object.admin.rest.resource.v1_0.ObjectRelationshipResource;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
@@ -83,6 +85,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.SiteInitializerRegistry;
 import com.liferay.site.navigation.menu.item.layout.constants.SiteNavigationMenuItemTypeConstants;
@@ -161,7 +164,7 @@ public class BundleSiteInitializerTest {
 			_assertLayoutPageTemplateEntry(group);
 			_assertLayouts(group);
 			_assertLayoutSets(group);
-			_assertObjectDefinition(group);
+			_assertObjectDefinition(group, serviceContext);
 			_assertPermissions(group);
 			_assertSiteNavigationMenu(group);
 			_assertStyleBookEntry(group);
@@ -177,14 +180,22 @@ public class BundleSiteInitializerTest {
 			// for PortalRunMode#isTestMode which is not returning true when the
 			// DataGuardTestRule runs.
 
-			ObjectDefinition objectDefinition =
+			ObjectDefinition objectDefinition1 =
 				_objectDefinitionLocalService.fetchObjectDefinition(
-					serviceContext.getCompanyId(),
-					"C_TestBundleSiteInitializer");
+					serviceContext.getCompanyId(), "C_TestObjectDefinition1");
 
-			if (objectDefinition != null) {
+			if (objectDefinition1 != null) {
 				_objectDefinitionLocalService.deleteObjectDefinition(
-					objectDefinition.getObjectDefinitionId());
+					objectDefinition1.getObjectDefinitionId());
+			}
+
+			ObjectDefinition objectDefinition2 =
+				_objectDefinitionLocalService.fetchObjectDefinition(
+					serviceContext.getCompanyId(), "C_TestObjectDefinition2");
+
+			if (objectDefinition2 != null) {
+				_objectDefinitionLocalService.deleteObjectDefinition(
+					objectDefinition2.getObjectDefinitionId());
 			}
 
 			bundle.uninstall();
@@ -573,16 +584,28 @@ public class BundleSiteInitializerTest {
 					"lfr-theme:regular:show-header")));
 	}
 
-	private void _assertObjectDefinition(Group group) throws Exception {
-		ObjectDefinition objectDefinition =
+	private void _assertObjectDefinition(
+			Group group, ServiceContext serviceContext)
+		throws Exception {
+
+		ObjectDefinition objectDefinition1 =
 			_objectDefinitionLocalService.fetchObjectDefinition(
-				group.getCompanyId(), "C_TestBundleSiteInitializer");
+				group.getCompanyId(), "C_TestObjectDefinition1");
+
+		Assert.assertEquals(objectDefinition1.isSystem(), false);
+		Assert.assertEquals(
+			objectDefinition1.getStatus(), WorkflowConstants.STATUS_APPROVED);
+
+		_assertObjectEntries(group, objectDefinition1);
+		_assertObjectRelationships(objectDefinition1, serviceContext);
+
+		ObjectDefinition objectDefinition2 =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				group.getCompanyId(), "C_TestObjectDefinition2");
 
 		Assert.assertEquals(
-			objectDefinition.getStatus(), WorkflowConstants.STATUS_APPROVED);
-		Assert.assertEquals(objectDefinition.isSystem(), false);
-
-		_assertObjectEntries(group, objectDefinition);
+			objectDefinition2.getStatus(), WorkflowConstants.STATUS_APPROVED);
+		Assert.assertEquals(objectDefinition2.isSystem(), false);
 	}
 
 	private void _assertObjectEntries(
@@ -593,6 +616,59 @@ public class BundleSiteInitializerTest {
 			0,
 			_objectEntryLocalService.getObjectEntriesCount(
 				group.getGroupId(), objectDefinition.getObjectDefinitionId()));
+	}
+
+	private void _assertObjectRelationships(
+			ObjectDefinition objectDefinition, ServiceContext serviceContext)
+		throws Exception {
+
+		ObjectRelationshipResource.Builder objectRelationshipResourceBuilder =
+			_objectRelationshipResourceFactory.create();
+
+		ObjectRelationshipResource objectRelationshipResource =
+			objectRelationshipResourceBuilder.user(
+				serviceContext.fetchUser()
+			).build();
+
+		Page<ObjectRelationship> page1 =
+			objectRelationshipResource.
+				getObjectDefinitionObjectRelationshipsPage(
+					objectDefinition.getObjectDefinitionId(), null,
+					objectRelationshipResource.toFilter("name eq 'testOR1'"),
+					null);
+
+		Assert.assertNotNull(page1);
+
+		ObjectRelationship existingObjectRelationship1 = page1.fetchFirstItem();
+
+		Assert.assertEquals(
+			"TestObjectDefinition1",
+			existingObjectRelationship1.getObjectDefinitionName2());
+
+		ObjectRelationship.Type objectRelationshipType1 =
+			existingObjectRelationship1.getType();
+
+		Assert.assertEquals("oneToMany", objectRelationshipType1.toString());
+
+		Page<ObjectRelationship> page2 =
+			objectRelationshipResource.
+				getObjectDefinitionObjectRelationshipsPage(
+					objectDefinition.getObjectDefinitionId(), null,
+					objectRelationshipResource.toFilter("name eq 'testOR2'"),
+					null);
+
+		Assert.assertNotNull(page2);
+
+		ObjectRelationship existingObjectRelationship2 = page2.fetchFirstItem();
+
+		Assert.assertEquals(
+			"TestObjectDefinition2",
+			existingObjectRelationship2.getObjectDefinitionName2());
+
+		ObjectRelationship.Type objectRelationshipType2 =
+			existingObjectRelationship2.getType();
+
+		Assert.assertEquals("manyToMany", objectRelationshipType2.toString());
 	}
 
 	private void _assertPermissions(Group group) throws Exception {
@@ -651,7 +727,7 @@ public class BundleSiteInitializerTest {
 				siteNavigationMenu.getSiteNavigationMenuId());
 
 		Assert.assertEquals(
-			siteNavigationMenuItems.toString(), 3,
+			siteNavigationMenuItems.toString(), 4,
 			siteNavigationMenuItems.size());
 
 		SiteNavigationMenuItem siteNavigationMenuItem1 =
@@ -764,6 +840,10 @@ public class BundleSiteInitializerTest {
 
 	@Inject
 	private ObjectEntryLocalService _objectEntryLocalService;
+
+	@Inject
+	private ObjectRelationshipResource.Factory
+		_objectRelationshipResourceFactory;
 
 	@Inject
 	private Portal _portal;

@@ -77,6 +77,17 @@ AUI.add(
 
 		var WIN = A.config.win;
 
+		var createIframeURL = () => {
+			const url = new URL(WIN.location.href);
+			const searchParams = new URLSearchParams(url.search);
+			if (searchParams.has('segmentsExperienceId')) {
+				searchParams.delete('segmentsExperienceId');
+			}
+			searchParams.append('p_l_mode', 'preview');
+
+			return `${url.origin}${url.pathname}?${searchParams.toString()}`;
+		};
+
 		var SimulationDevice = A.Component.create({
 			ATTRS: {
 				devices: {
@@ -374,10 +385,7 @@ AUI.add(
 								title: Liferay.Language.get(
 									'simulation-preview'
 								),
-								uri: Liferay.Util.addParams(
-									'p_l_mode=preview',
-									WIN.location.href
-								),
+								uri: createIframeURL(),
 							},
 							(dialogWindow) => {
 								var dialogBoundingBox = dialogWindow.get(

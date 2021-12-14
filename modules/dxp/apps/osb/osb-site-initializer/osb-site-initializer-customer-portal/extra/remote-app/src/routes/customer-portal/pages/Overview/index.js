@@ -45,8 +45,6 @@ const Overview = ({userAccount}) => {
 	if (isLoading || isLoadingKoroneiki) {
 		return <div>Overview Skeleton</div>;
 	}
-
-	return <div>Overview Page</div>;
 };
 
 export default Overview;

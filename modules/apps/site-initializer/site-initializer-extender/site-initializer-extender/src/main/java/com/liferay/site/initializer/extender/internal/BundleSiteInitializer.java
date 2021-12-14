@@ -62,7 +62,9 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocal
 import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
+import com.liferay.object.admin.rest.dto.v1_0.ObjectRelationship;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
+import com.liferay.object.admin.rest.resource.v1_0.ObjectRelationshipResource;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.petra.function.UnsafeRunnable;
@@ -194,6 +196,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		ListTypeEntryResource.Factory listTypeEntryResourceFactory,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectDefinitionResource.Factory objectDefinitionResourceFactory,
+		ObjectRelationshipResource.Factory objectRelationshipResourceFactory,
 		ObjectEntryLocalService objectEntryLocalService, Portal portal,
 		RemoteAppEntryLocalService remoteAppEntryLocalService,
 		ResourcePermissionLocalService resourcePermissionLocalService,
@@ -244,6 +247,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_listTypeEntryResourceFactory = listTypeEntryResourceFactory;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectDefinitionResourceFactory = objectDefinitionResourceFactory;
+		_objectRelationshipResourceFactory = objectRelationshipResourceFactory;
 		_objectEntryLocalService = objectEntryLocalService;
 		_portal = portal;
 		_remoteAppEntryLocalService = remoteAppEntryLocalService;
@@ -357,12 +361,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 					assetListEntryIdsStringUtilReplaceValues,
 					documentsStringUtilReplaceValues, serviceContext));
 
-			Map<String, String> listTypeDefinitionsStringUtilReplaceValues =
+			Map<String, String> listTypeDefinitionIdsStringUtilReplaceValues =
 				_invoke(() -> _addListTypeDefinitions(serviceContext));
 
+			Map<String, String> objectDefinitionIdsStringUtilReplaceValues =
+				_invoke(
+					() -> _addObjectDefinitions(
+						listTypeDefinitionIdsStringUtilReplaceValues,
+						serviceContext));
+
 			_invoke(
-				() -> _addObjectDefinitions(
-					listTypeDefinitionsStringUtilReplaceValues,
+				() -> _addObjectRelationships(
+					objectDefinitionIdsStringUtilReplaceValues,
 					serviceContext));
 
 			Map<String, String> remoteAppEntryIdsStringUtilReplaceValues =
@@ -1485,11 +1495,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 		Set<String> resourcePaths = _servletContext.getResourcePaths(
 			"/site-initializer/list-type-definitions");
 
-		Map<String, String> listTypeDefinitionsStringUtilReplaceValues =
+		Map<String, String> listTypeDefinitionIdsStringUtilReplaceValues =
 			new HashMap<>();
 
 		if (SetUtil.isEmpty(resourcePaths)) {
-			return listTypeDefinitionsStringUtilReplaceValues;
+			return listTypeDefinitionIdsStringUtilReplaceValues;
 		}
 
 		ListTypeDefinitionResource.Builder listTypeDefinitionResourceBuilder =
@@ -1540,7 +1550,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 						existingListTypeDefinition.getId(), listTypeDefinition);
 			}
 
-			listTypeDefinitionsStringUtilReplaceValues.put(
+			listTypeDefinitionIdsStringUtilReplaceValues.put(
 				"LIST_TYPE_DEFINITION_ID:" + listTypeDefinition.getName(),
 				String.valueOf(listTypeDefinition.getId()));
 
@@ -1590,7 +1600,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			}
 		}
 
-		return listTypeDefinitionsStringUtilReplaceValues;
+		return listTypeDefinitionIdsStringUtilReplaceValues;
 	}
 
 	private void _addModelResourcePermissions(
@@ -1622,16 +1632,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
-	private void _addObjectDefinitions(
-			Map<String, String> listTypeDefinitionsStringUtilReplaceValues,
+	private Map<String, String> _addObjectDefinitions(
+			Map<String, String> listTypeDefinitionIdsStringUtilReplaceValues,
 			ServiceContext serviceContext)
 		throws Exception {
+
+		Map<String, String> objectDefinitionIdsStringUtilReplaceValues =
+			new HashMap<>();
 
 		Set<String> resourcePaths = _servletContext.getResourcePaths(
 			"/site-initializer/object-definitions");
 
 		if (SetUtil.isEmpty(resourcePaths)) {
-			return;
+			return objectDefinitionIdsStringUtilReplaceValues;
 		}
 
 		ObjectDefinitionResource.Builder objectDefinitionResourceBuilder =
@@ -1650,7 +1663,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			String json = _read(resourcePath);
 
 			json = StringUtil.replace(
-				json, "[$", "$]", listTypeDefinitionsStringUtilReplaceValues);
+				json, "[$", "$]", listTypeDefinitionIdsStringUtilReplaceValues);
 
 			ObjectDefinition objectDefinition = ObjectDefinition.toDTO(json);
 
@@ -1686,6 +1699,16 @@ public class BundleSiteInitializer implements SiteInitializer {
 						existingObjectDefinition.getId(), objectDefinition);
 			}
 
+			objectDefinitionIdsStringUtilReplaceValues.put(
+				"OBJECT_DEFINITION_ID:" + objectDefinition.getName(),
+				String.valueOf(objectDefinition.getId()));
+
+			if (Objects.equals(objectDefinition.getScope(), "company") &&
+				(existingObjectDefinition != null)) {
+
+				continue;
+			}
+
 			String objectEntriesJSON = _read(
 				StringUtil.replaceLast(
 					resourcePath, ".json", ".object-entries.json"));
@@ -1705,6 +1728,71 @@ public class BundleSiteInitializer implements SiteInitializer {
 						Serializable.class,
 						String.valueOf(jsonArray.getJSONObject(i))),
 					serviceContext);
+			}
+		}
+
+		return objectDefinitionIdsStringUtilReplaceValues;
+	}
+
+	private void _addObjectRelationships(
+			Map<String, String> objectDefinitionIdsStringUtilReplaceValues,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			"/site-initializer/object-relationships");
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return;
+		}
+
+		ObjectRelationshipResource.Builder objectRelationshipResourceBuilder =
+			_objectRelationshipResourceFactory.create();
+
+		ObjectRelationshipResource objectRelationshipResource =
+			objectRelationshipResourceBuilder.user(
+				serviceContext.fetchUser()
+			).build();
+
+		for (String resourcePath : resourcePaths) {
+			String json = _read(resourcePath);
+
+			json = StringUtil.replace(
+				json, "[$", "$]", objectDefinitionIdsStringUtilReplaceValues);
+
+			ObjectRelationship objectRelationship = ObjectRelationship.toDTO(
+				json);
+
+			if (objectRelationship == null) {
+				_log.error(
+					"Unable to transform object relationship from JSON: " +
+						json);
+
+				continue;
+			}
+
+			Page<ObjectRelationship> objectRelationshipsPage =
+				objectRelationshipResource.
+					getObjectDefinitionObjectRelationshipsPage(
+						objectRelationship.getObjectDefinitionId1(), null,
+						objectRelationshipResource.toFilter(
+							StringBundler.concat(
+								"name eq '", objectRelationship.getName(),
+								"'")),
+						null);
+
+			ObjectRelationship existingObjectRelationship =
+				objectRelationshipsPage.fetchFirstItem();
+
+			if (existingObjectRelationship == null) {
+				objectRelationshipResource.
+					postObjectDefinitionObjectRelationship(
+						objectRelationship.getObjectDefinitionId1(),
+						objectRelationship);
+			}
+			else {
+				objectRelationshipResource.putObjectRelationship(
+					existingObjectRelationship.getId(), objectRelationship);
 			}
 		}
 	}
@@ -2580,6 +2668,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final ObjectDefinitionResource.Factory
 		_objectDefinitionResourceFactory;
 	private final ObjectEntryLocalService _objectEntryLocalService;
+	private final ObjectRelationshipResource.Factory
+		_objectRelationshipResourceFactory;
 	private final Portal _portal;
 	private final RemoteAppEntryLocalService _remoteAppEntryLocalService;
 	private final ResourcePermissionLocalService

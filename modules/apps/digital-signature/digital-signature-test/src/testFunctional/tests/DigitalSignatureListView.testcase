@@ -97,7 +97,7 @@ definition {
 			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
 			emailMessage = "Email Message",
 			emailSubject = "Email Subject",
-			envelopeName = "Poshi Test Envelope Name",
+			envelopeName = "Poshi Test CanViewCorrectDate",
 			recipientEmail = "test@liferay.com",
 			recipientFullName = "Recipient Full Name");
 
@@ -117,7 +117,7 @@ definition {
 
 		RecycleBin.emptyCP();
 
-		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test Envelope Name");
+		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test CanViewCorrectDate");
 	}
 
 	@description = "This is a test for LPS-131206. Verify if its possible view envelope details"
@@ -159,7 +159,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-137169. Verify if have more recipients than one"
-	@priority = "3"
+	@priority = "4"
 	test HaveMoreRecipientsThanOne {
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
 
@@ -167,7 +167,7 @@ definition {
 			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
 			emailMessage = "Email Message",
 			emailSubject = "Email Subject",
-			envelopeName = "Poshi Test Envelope Name",
+			envelopeName = "Poshi Test HaveMoreRecipientsThanOne",
 			recipientEmail = "test@liferay.com",
 			recipientFullName = "Recipient Full Name");
 
@@ -197,7 +197,7 @@ definition {
 
 		RecycleBin.emptyCP();
 
-		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test Envelope Name");
+		DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test HaveMoreRecipientsThanOne");
 
 		AssertElementPresent(locator1 = "DigitalSignatureListView#DIGITAL_SIGNATURE_RECIPIENTS_BADGE");
 	}
