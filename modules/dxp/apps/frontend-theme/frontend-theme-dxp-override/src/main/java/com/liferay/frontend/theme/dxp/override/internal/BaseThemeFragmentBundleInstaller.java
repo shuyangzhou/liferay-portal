@@ -81,13 +81,10 @@ public abstract class BaseThemeFragmentBundleInstaller {
 					}
 
 					try {
-						fragmentBundle = bundleContext.installBundle(
-							location, _generateBundleContent());
-
-						frameworkWiring.resolveBundles(
-							Collections.singleton(fragmentBundle));
-
-						_trackedBundles.put(bundle, fragmentBundle);
+						_trackedBundles.put(
+							bundle,
+							bundleContext.installBundle(
+								location, _generateBundleContent()));
 
 						return null;
 					}
