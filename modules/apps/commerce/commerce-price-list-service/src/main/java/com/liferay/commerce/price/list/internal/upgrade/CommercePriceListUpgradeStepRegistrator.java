@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
+import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -112,6 +113,14 @@ public class CommercePriceListUpgradeStepRegistrator
 				}
 
 			});
+
+		registry.register(
+			"2.3.0", "2.4.0",
+			new CTModelUpgradeProcess(
+				"CPLCommerceGroupAccountRel", "CommercePriceEntry",
+				"CommercePriceList", "CommercePriceListAccountRel",
+				"CommercePriceListChannelRel", "CommercePriceListDiscountRel",
+				"CommercePriceListOrderTypeRel", "CommerceTierPriceEntry"));
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce price list upgrade step registrator finished");
