@@ -41,18 +41,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/development/ant-apache-bsf.jar</file-name>
-				<version>1.10.9</version>
-				<project-name>Ant</project-name>
-				<project-url>http://ant.apache.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>lib/development/ant-compress.jar</file-name>
 				<version>1.5</version>
 				<project-name>Apache Compress Antlib</project-name>
@@ -1106,19 +1094,6 @@
 					<license>
 						<license-name>Apache License 2.0</license-name>
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/portal/bsf.jar</file-name>
-				<version>2.4.0</version>
-				<project-name>Bean Scripting Framework</project-name>
-				<project-url>http://jakarta.apache.org/bsf</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-						<copyright-notice>Copyright (c) 2002-2006 The Apache Software Foundation.</copyright-notice>
 					</license>
 				</licenses>
 			</library>
