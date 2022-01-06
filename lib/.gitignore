@@ -1,7 +1,6 @@
 /development/activation.jar
 /development/alloy-taglib.jar
 /development/annotations.jar
-/development/ant-apache-bsf.jar
 /development/ant-compress.jar
 /development/appium.jar
 /development/aspectj-rt.jar
@@ -95,7 +94,6 @@
 /portal/asm.jar
 /portal/axis-ant.jar
 /portal/axis.jar
-/portal/bsf.jar
 /portal/c3p0.jar
 /portal/ccpp-ri.jar
 /portal/ccpp.jar
