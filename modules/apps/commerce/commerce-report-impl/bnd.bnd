@@ -38,7 +38,6 @@ Import-Package:\
 	!net.sourceforge.barbecue.*,\
 	\
 	!org.apache.bcel.*,\
-	!org.apache.bsf.*,\
 	!org.apache.commons.cli.*,\
 	!org.apache.commons.javaflow.*,\
 	!org.apache.commons.jci.*,\

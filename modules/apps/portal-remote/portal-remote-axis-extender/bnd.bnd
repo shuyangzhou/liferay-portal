@@ -12,7 +12,6 @@ Import-Package:\
 	\
 	!javax.swing.*,\
 	\
-	!org.apache.bsf.*,\
 	!org.apache.commons.httpclient.*,\
 	!org.apache.commons.net.*,\
 	\
