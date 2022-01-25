@@ -1,3 +1,25 @@
+task jarFinalize
+
 dependencies {
 	compileInclude group: "javax.ccpp", name: "ccpp", version: "1.0"
+}
+
+jar {
+	finalizedBy jarFinalize
+}
+
+jarFinalize {
+	doLast {
+		File jarFile = jar.archivePath
+
+		File tmpFile = new File(jarFile.parentFile, jarFile.name.replace(".jar", ".tmp.jar"))
+
+		ant.move(file: jarFile, tofile: tmpFile)
+
+		ant.jar(destfile: jarFile) {
+			zipfileset(includes: "lib/**,META-INF/**,OSGI-INF/**", src: tmpFile)
+		}
+
+		delete tmpFile
+	}
 }
