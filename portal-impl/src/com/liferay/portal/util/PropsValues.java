@@ -257,10 +257,6 @@ public class PropsValues {
 	public static final String AUTH_TOKEN_SHARED_SECRET = PropsUtil.get(
 		PropsKeys.AUTH_TOKEN_SHARED_SECRET);
 
-	public static final boolean AUTH_USER_UUID_STORE_ENABLED =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.AUTH_USER_UUID_STORE_ENABLED));
-
 	public static final boolean AUTO_DEPLOY_COPY_COMMONS_LOGGING =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.AUTO_DEPLOY_COPY_COMMONS_LOGGING));
@@ -1218,13 +1214,6 @@ public class PropsValues {
 	public static final boolean INDEX_WITH_THREAD = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.INDEX_WITH_THREAD));
 
-	public static final String INTRABAND_PROXY_DUMP_CLASSES_DIR = PropsUtil.get(
-		PropsKeys.INTRABAND_PROXY_DUMP_CLASSES_DIR);
-
-	public static final boolean INTRABAND_PROXY_DUMP_CLASSES_ENABLED =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.INTRABAND_PROXY_DUMP_CLASSES_ENABLED));
-
 	public static final boolean JAVASCRIPT_BAREBONE_ENABLED =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.JAVASCRIPT_BAREBONE_ENABLED));
@@ -2117,84 +2106,6 @@ public class PropsValues {
 	public static final String POP_SERVER_SUBDOMAIN = PropsUtil.get(
 		PropsKeys.POP_SERVER_SUBDOMAIN);
 
-	public static final String PORTAL_FABRIC_AGENT_SELECTOR_CLASS =
-		PropsUtil.get(PropsKeys.PORTAL_FABRIC_AGENT_SELECTOR_CLASS);
-
-	public static final boolean PORTAL_FABRIC_ENABLED = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.PORTAL_FABRIC_ENABLED));
-
-	public static final int PORTAL_FABRIC_SERVER_BOSS_GROUP_THREAD_COUNT =
-		GetterUtil.getInteger(
-			PropsUtil.get(
-				PropsKeys.PORTAL_FABRIC_SERVER_BOSS_GROUP_THREAD_COUNT));
-
-	public static final int
-		PORTAL_FABRIC_SERVER_FILE_SERVER_FOLDER_COMPRESSION_LEVEL =
-			GetterUtil.getInteger(
-				PropsUtil.get(
-					PropsKeys.
-						PORTAL_FABRIC_SERVER_FILE_SERVER_FOLDER_COMPRESSION_LEVEL));
-
-	public static final int
-		PORTAL_FABRIC_SERVER_FILE_SERVER_GROUP_THREAD_COUNT =
-			GetterUtil.getInteger(
-				PropsUtil.get(
-					PropsKeys.
-						PORTAL_FABRIC_SERVER_FILE_SERVER_GROUP_THREAD_COUNT));
-
-	public static final String PORTAL_FABRIC_SERVER_HOST = PropsUtil.get(
-		PropsKeys.PORTAL_FABRIC_SERVER_HOST);
-
-	public static final int PORTAL_FABRIC_SERVER_PORT = GetterUtil.getInteger(
-		PropsUtil.get(PropsKeys.PORTAL_FABRIC_SERVER_PORT));
-
-	public static final int
-		PORTAL_FABRIC_SERVER_REGISTRATION_GROUP_THREAD_COUNT =
-			GetterUtil.getInteger(
-				PropsUtil.get(
-					PropsKeys.
-						PORTAL_FABRIC_SERVER_REGISTRATION_GROUP_THREAD_COUNT));
-
-	public static final long PORTAL_FABRIC_SERVER_REPOSITORY_GET_FILE_TIMEOUT =
-		GetterUtil.getLong(
-			PropsUtil.get(
-				PropsKeys.PORTAL_FABRIC_SERVER_REPOSITORY_GET_FILE_TIMEOUT));
-
-	public static final String PORTAL_FABRIC_SERVER_REPOSITORY_PARENT_FOLDER =
-		PropsUtil.get(PropsKeys.PORTAL_FABRIC_SERVER_REPOSITORY_PARENT_FOLDER);
-
-	public static final int PORTAL_FABRIC_SERVER_RPC_GROUP_THREAD_COUNT =
-		GetterUtil.getInteger(
-			PropsUtil.get(
-				PropsKeys.PORTAL_FABRIC_SERVER_RPC_GROUP_THREAD_COUNT));
-
-	public static final long PORTAL_FABRIC_SERVER_RPC_RELAY_TIMEOUT =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.PORTAL_FABRIC_SERVER_RPC_RELAY_TIMEOUT));
-
-	public static final boolean PORTAL_FABRIC_SERVER_WARMUP_AGENT_ON_REGISTER =
-		GetterUtil.getBoolean(
-			PropsUtil.get(
-				PropsKeys.PORTAL_FABRIC_SERVER_WARMUP_AGENT_ON_REGISTER));
-
-	public static final int PORTAL_FABRIC_SERVER_WORKER_GROUP_THREAD_COUNT =
-		GetterUtil.getInteger(
-			PropsUtil.get(
-				PropsKeys.PORTAL_FABRIC_SERVER_WORKER_GROUP_THREAD_COUNT));
-
-	public static final long PORTAL_FABRIC_SERVER_WORKER_STARTUP_TIMEOUT =
-		GetterUtil.getLong(
-			PropsUtil.get(
-				PropsKeys.PORTAL_FABRIC_SERVER_WORKER_STARTUP_TIMEOUT));
-
-	public static final long PORTAL_FABRIC_SHUTDOWN_QUIET_PERIOD =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.PORTAL_FABRIC_SHUTDOWN_QUIET_PERIOD));
-
-	public static final long PORTAL_FABRIC_SHUTDOWN_TIMEOUT =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.PORTAL_FABRIC_SHUTDOWN_TIMEOUT));
-
 	public static final boolean PORTAL_IMPERSONATION_ENABLE =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.PORTAL_IMPERSONATION_ENABLE));
@@ -2244,31 +2155,6 @@ public class PropsValues {
 
 	public static final String PORTAL_PROXY_PATH = PropsUtil.get(
 		PropsKeys.PORTAL_PROXY_PATH);
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final boolean PORTAL_RESILIENCY_ENABLED =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.PORTAL_RESILIENCY_ENABLED));
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final boolean PORTAL_RESILIENCY_PORTLET_SHOW_FOOTER =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.PORTAL_RESILIENCY_PORTLET_SHOW_FOOTER));
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final int PORTAL_RESILIENCY_SPI_AGENT_CLIENT_POOL_MAX_SIZE =
-		GetterUtil.getInteger(
-			PropsUtil.get(
-				PropsKeys.PORTAL_RESILIENCY_SPI_AGENT_CLIENT_POOL_MAX_SIZE));
 
 	public static final String[]
 		PORTAL_SECURITY_MANAGER_PRELOAD_CLASSLOADER_CLASSES =

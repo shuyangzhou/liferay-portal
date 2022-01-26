@@ -242,9 +242,6 @@ public interface PropsKeys {
 	public static final String AUTH_TOKEN_SHARED_SECRET =
 		"auth.token.shared.secret";
 
-	public static final String AUTH_USER_UUID_STORE_ENABLED =
-		"auth.user.uuid.store.enabled";
-
 	public static final String AUTH_VERIFIER = "auth.verifier.";
 
 	public static final String AUTH_VERIFIER_PIPELINE =
@@ -1415,46 +1412,6 @@ public interface PropsKeys {
 
 	public static final String INDEXER_ENABLED = "indexer.enabled";
 
-	public static final String INTRABAND_IMPL = "intraband.impl";
-
-	public static final String INTRABAND_MAILBOX_REAPER_THREAD_ENABLED =
-		"intraband.mailbox.reaper.thread.enabled";
-
-	public static final String INTRABAND_MAILBOX_STORAGE_LIFE =
-		"intraband.mailbox.storage.life";
-
-	public static final String INTRABAND_PROXY_DUMP_CLASSES_DIR =
-		"intraband.proxy.dump.classes.dir";
-
-	public static final String INTRABAND_PROXY_DUMP_CLASSES_ENABLED =
-		"intraband.proxy.dump.classes.enabled";
-
-	public static final String INTRABAND_TIMEOUT_DEFAULT =
-		"intraband.timeout.default";
-
-	public static final String INTRABAND_WELDER_IMPL = "intraband.welder.impl";
-
-	public static final String INTRABAND_WELDER_SOCKET_BUFFER_SIZE =
-		"intraband.welder.socket.buffer.size";
-
-	public static final String INTRABAND_WELDER_SOCKET_KEEP_ALIVE =
-		"intraband.welder.socket.keep.alive";
-
-	public static final String INTRABAND_WELDER_SOCKET_REUSE_ADDRESS =
-		"intraband.welder.socket.reuse.address";
-
-	public static final String INTRABAND_WELDER_SOCKET_SERVER_START_PORT =
-		"intraband.welder.socket.server.start.port";
-
-	public static final String INTRABAND_WELDER_SOCKET_SO_LINGER =
-		"intraband.welder.socket.so.linger";
-
-	public static final String INTRABAND_WELDER_SOCKET_SO_TIMEOUT =
-		"intraband.welder.socket.so.timeout";
-
-	public static final String INTRABAND_WELDER_SOCKET_TCP_NO_DELAY =
-		"intraband.welder.socket.tcp.no.delay";
-
 	public static final String INVOKER_FILTER_CHAIN_ENABLED =
 		"invoker.filter.chain.cache.enabled";
 
@@ -2436,92 +2393,6 @@ public interface PropsKeys {
 
 	public static final String POP_SERVER_SUBDOMAIN = "pop.server.subdomain";
 
-	public static final String PORTAL_FABRIC_AGENT_SELECTOR_CLASS =
-		"portal.fabric.agent.selector.class";
-
-	public static final String
-		PORTAL_FABRIC_CLIENT_EVENT_LOOP_GROUP_THREAD_COUNT =
-			"portal.fabric.client.event.loop.group.thread.count";
-
-	public static final String
-		PORTAL_FABRIC_CLIENT_EXECUTION_GROUP_THREAD_COUNT =
-			"portal.fabric.client.execution.group.thread.count";
-
-	public static final String PORTAL_FABRIC_CLIENT_EXECUTION_TIMEOUT =
-		"portal.fabric.client.execution.timeout";
-
-	public static final String
-		PORTAL_FABRIC_CLIENT_FILE_SERVER_FOLDER_COMPRESSION_LEVEL =
-			"portal.fabric.client.file.server.folder.compression.level";
-
-	public static final String
-		PORTAL_FABRIC_CLIENT_FILE_SERVER_GROUP_THREAD_COUNT =
-			"portal.fabric.client.file.server.group.thread.count";
-
-	public static final String PORTAL_FABRIC_CLIENT_RECONNECT_COUNT =
-		"portal.fabric.client.reconnect.count";
-
-	public static final String PORTAL_FABRIC_CLIENT_RECONNECT_INTERVAL =
-		"portal.fabric.client.reconnect.interval";
-
-	public static final String
-		PORTAL_FABRIC_CLIENT_REPOSITORY_GET_FILE_TIMEOUT =
-			"portal.fabric.client.repository.get.file.timeout";
-
-	public static final String PORTAL_FABRIC_CLIENT_RPC_GROUP_THREAD_COUNT =
-		"portal.fabric.client.rpc.group.thread.count";
-
-	public static final String PORTAL_FABRIC_ENABLED = "portal.fabric.enabled";
-
-	public static final String PORTAL_FABRIC_SERVER_BOSS_GROUP_THREAD_COUNT =
-		"portal.fabric.server.boss.group.thread.count";
-
-	public static final String
-		PORTAL_FABRIC_SERVER_FILE_SERVER_FOLDER_COMPRESSION_LEVEL =
-			"portal.fabric.server.file.server.folder.compression.level";
-
-	public static final String
-		PORTAL_FABRIC_SERVER_FILE_SERVER_GROUP_THREAD_COUNT =
-			"portal.fabric.server.file.server.group.thread.count";
-
-	public static final String PORTAL_FABRIC_SERVER_HOST =
-		"portal.fabric.server.host";
-
-	public static final String PORTAL_FABRIC_SERVER_PORT =
-		"portal.fabric.server.port";
-
-	public static final String
-		PORTAL_FABRIC_SERVER_REGISTRATION_GROUP_THREAD_COUNT =
-			"portal.fabric.server.registeration.group.thread.count";
-
-	public static final String
-		PORTAL_FABRIC_SERVER_REPOSITORY_GET_FILE_TIMEOUT =
-			"portal.fabric.server.repository.get.file.timeout";
-
-	public static final String PORTAL_FABRIC_SERVER_REPOSITORY_PARENT_FOLDER =
-		"portal.fabric.server.repository.parent.folder";
-
-	public static final String PORTAL_FABRIC_SERVER_RPC_GROUP_THREAD_COUNT =
-		"portal.fabric.server.rpc.group.thread.count";
-
-	public static final String PORTAL_FABRIC_SERVER_RPC_RELAY_TIMEOUT =
-		"portal.fabric.server.rpc.relay.timeout";
-
-	public static final String PORTAL_FABRIC_SERVER_WARMUP_AGENT_ON_REGISTER =
-		"portal.fabric.server.warmup.agent.on.register";
-
-	public static final String PORTAL_FABRIC_SERVER_WORKER_GROUP_THREAD_COUNT =
-		"portal.fabric.server.worker.group.thread.count";
-
-	public static final String PORTAL_FABRIC_SERVER_WORKER_STARTUP_TIMEOUT =
-		"portal.fabric.server.worker.startup.timeout";
-
-	public static final String PORTAL_FABRIC_SHUTDOWN_QUIET_PERIOD =
-		"portal.fabric.shutdown.quiet.period";
-
-	public static final String PORTAL_FABRIC_SHUTDOWN_TIMEOUT =
-		"portal.fabric.shutdown.timeout";
-
 	public static final String PORTAL_IMPERSONATION_DEFAULT_URL =
 		"portal.impersonation.default.url";
 
@@ -2567,28 +2438,6 @@ public interface PropsKeys {
 		"portal.jaas.strict.password";
 
 	public static final String PORTAL_PROXY_PATH = "portal.proxy.path";
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String PORTAL_RESILIENCY_ENABLED =
-		"portal.resiliency.enabled";
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String PORTAL_RESILIENCY_PORTLET_SHOW_FOOTER =
-		"portal.resiliency.portlet.show.footer";
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String
-		PORTAL_RESILIENCY_SPI_AGENT_CLIENT_POOL_MAX_SIZE =
-			"portal.resiliency.spi.agent.client.pool.max.size";
 
 	public static final String
 		PORTAL_SECURITY_MANAGER_FILE_CHECKER_DEFAULT_READ_PATHS =

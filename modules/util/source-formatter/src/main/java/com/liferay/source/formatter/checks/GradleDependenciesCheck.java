@@ -90,13 +90,10 @@ public class GradleDependenciesCheck extends BaseFileCheck {
 					_ALLOWED_COMMERCE_DEPENDENCIES_MODULE_PATH_NAMES,
 					absolutePath));
 
-			Matcher matcher = _restClientPattern.matcher(dependencies);
+			if (isAttributeValue(
+					_CHECK_REST_CLIENT_DEPENDENCIES_KEY, absolutePath)) {
 
-			if (matcher.find()) {
-				addMessage(
-					fileName,
-					"Project dependencies '.*-rest-client' can only be used " +
-						"for 'testIntegrationCompile'");
+				_checkRestClientDependencies(fileName, content, dependencies);
 			}
 		}
 
@@ -150,6 +147,21 @@ public class GradleDependenciesCheck extends BaseFileCheck {
 					"Only modules/core/petra dependencies are allowed",
 					SourceUtil.getLineNumber(content, content.indexOf(line)));
 			}
+		}
+	}
+
+	private void _checkRestClientDependencies(
+		String fileName, String content, String dependencies) {
+
+		Matcher matcher = _restClientPattern.matcher(dependencies);
+
+		while (matcher.find()) {
+			addMessage(
+				fileName,
+				"Project dependencies '.*-rest-client' can only be used for " +
+					"'testIntegrationCompile'",
+				SourceUtil.getLineNumber(
+					content, content.indexOf(matcher.group())));
 		}
 	}
 
@@ -297,6 +309,9 @@ public class GradleDependenciesCheck extends BaseFileCheck {
 
 	private static final String _CHECK_PETRA_DEPENDENCIES_KEY =
 		"checkPetraDependencies";
+
+	private static final String _CHECK_REST_CLIENT_DEPENDENCIES_KEY =
+		"checkRestClientDependencies";
 
 	private static final String
 		_CHECK_TEST_INTEGRATION_COMPILE_DEPENDENCIES_KEY =

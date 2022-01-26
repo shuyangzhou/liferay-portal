@@ -8,6 +8,8 @@ Import-Package:\
 	\
 	!com.fasterxml.aalto.*,\
 	\
+	!com.github.luben.zstd,\
+	\
 	!com.google.protobuf.*,\
 	\
 	!com.jcraft.jzlib.*,\
@@ -19,8 +21,6 @@ Import-Package:\
 	!com.sun.nio.sctp.*,\
 	\
 	!gnu.io.*,\
-	\
-	!io.netty.internal.tcnative.*,\
 	\
 	!lzma.sdk.*,\
 	\
@@ -46,7 +46,5 @@ Import-Package:\
 	\
 	!sun.security.util.*,\
 	!sun.security.x509.*,\
-	\
-	io.netty.channel.socket.nio,\
 	\
 	*

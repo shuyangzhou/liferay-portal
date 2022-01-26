@@ -15,7 +15,7 @@
 package com.liferay.remote.app.internal.upgrade.v2_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.remote.app.internal.upgrade.v1_0_1.util.RemoteAppEntryTable;
+import com.liferay.remote.app.internal.upgrade.v2_2_0.util.RemoteAppEntryTable;
 
 /**
  * @author Iván Zaera Avellón

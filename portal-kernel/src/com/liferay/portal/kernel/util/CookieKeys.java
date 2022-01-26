@@ -57,8 +57,6 @@ public class CookieKeys {
 
 	public static final String REMOTE_PREFERENCE_PREFIX = "REMOTE_PREFERENCE_";
 
-	public static final String SCREEN_NAME = "SCREEN_NAME";
-
 	public static final String USER_UUID = "USER_UUID";
 
 	public static void addCookie(
@@ -264,7 +262,7 @@ public class CookieKeys {
 
 	public static boolean isEncodedCookie(String name) {
 		if (name.equals(ID) || name.equals(LOGIN) || name.equals(PASSWORD) ||
-			name.equals(SCREEN_NAME) || name.equals(USER_UUID)) {
+			name.equals(USER_UUID)) {
 
 			return true;
 		}

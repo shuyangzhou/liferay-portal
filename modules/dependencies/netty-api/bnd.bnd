@@ -1,0 +1,5 @@
+Bundle-Name: Liferay Netty API
+Bundle-SymbolicName: com.liferay.netty.api
+Bundle-Version: 1.0.0
+Export-Package: io.netty.*
+Import-Package: !com.aayushatharva.brotli4j.*

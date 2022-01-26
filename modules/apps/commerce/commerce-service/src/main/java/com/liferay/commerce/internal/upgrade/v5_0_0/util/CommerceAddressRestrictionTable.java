@@ -68,8 +68,8 @@ TABLE_COLUMNS_MAP.put("countryId", Types.BIGINT);
 "drop table CommerceAddressRestriction";
 
 	public static final String[] TABLE_SQL_ADD_INDEXES = {
-		"create unique index IX_495311F8 on CommerceAddressRestriction (classNameId, classPK, commerceCountryId)",
-		"create index IX_69DBF5AD on CommerceAddressRestriction (commerceCountryId)"
+		"create unique index IX_9DD3ABD3 on CommerceAddressRestriction (classNameId, classPK, countryId)",
+		"create index IX_AE21488 on CommerceAddressRestriction (countryId)"
 	};
 
 }

@@ -24,13 +24,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.security.auth.AuthenticatedUserUUIDStoreUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.PortalSessionContext;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
-import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 
@@ -96,15 +93,6 @@ public class PortalSessionDestroyer extends BasePortalLifecycle {
 
 				MessageBusUtil.sendMessage(
 					DestinationNames.LIVE_USERS, jsonObject.toString());
-			}
-
-			if (PropsValues.AUTH_USER_UUID_STORE_ENABLED) {
-				String userUUID = (String)_httpSession.getAttribute(
-					CookieKeys.USER_UUID);
-
-				if (Validator.isNotNull(userUUID)) {
-					AuthenticatedUserUUIDStoreUtil.unregister(userUUID);
-				}
 			}
 		}
 		catch (IllegalStateException illegalStateException) {

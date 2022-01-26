@@ -105,12 +105,12 @@ TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
 
 	public static final String[] TABLE_SQL_ADD_INDEXES = {
 		"create index IX_15EA4714 on CommerceAddress (classNameId, classPK)",
-		"create index IX_CD76FE87 on CommerceAddress (commerceCountryId)",
-		"create index IX_71C5A9DD on CommerceAddress (commerceRegionId)",
 		"create index IX_6D0EADB7 on CommerceAddress (companyId, classNameId, classPK, type_)",
 		"create index IX_4E616A54 on CommerceAddress (companyId, externalReferenceCode[$COLUMN_LENGTH:75$])",
+		"create index IX_C1D89762 on CommerceAddress (countryId)",
 		"create index IX_EEACF18E on CommerceAddress (groupId, classNameId, classPK, defaultBilling)",
-		"create index IX_333246DF on CommerceAddress (groupId, classNameId, classPK, defaultShipping)"
+		"create index IX_333246DF on CommerceAddress (groupId, classNameId, classPK, defaultShipping)",
+		"create index IX_9AB009A2 on CommerceAddress (regionId)"
 	};
 
 }
