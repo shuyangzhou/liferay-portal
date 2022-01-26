@@ -111,7 +111,7 @@ public class ZipWriterImpl implements ZipWriter {
 
 			Path parentPath = path.getParent();
 
-			if (parentPath != null) {
+			if ((parentPath != null) && !Files.exists(parentPath)) {
 				Files.createDirectories(parentPath);
 			}
 
@@ -142,7 +142,7 @@ public class ZipWriterImpl implements ZipWriter {
 
 			Path parentPath = path.getParent();
 
-			if (parentPath != null) {
+			if ((parentPath != null) && !Files.exists(parentPath)) {
 				Files.createDirectories(parentPath);
 			}
 
@@ -219,7 +219,7 @@ public class ZipWriterImpl implements ZipWriter {
 
 				Path parentPath = path.getParent();
 
-				if (parentPath != null) {
+				if ((parentPath != null) && !Files.exists(parentPath)) {
 					Files.createDirectories(parentPath);
 				}
 
