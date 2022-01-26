@@ -16,7 +16,7 @@ jarFinalize {
 
 		ant.move(file: jarFile, tofile: tmpFile)
 
-		ant.jar(destfile: jarFile) {
+		ant.jar(destfile: jarFile, filesetmanifest: "merge") {
 			zipfileset(includes: "lib/**,META-INF/**,OSGI-INF/**", src: tmpFile)
 		}
 
