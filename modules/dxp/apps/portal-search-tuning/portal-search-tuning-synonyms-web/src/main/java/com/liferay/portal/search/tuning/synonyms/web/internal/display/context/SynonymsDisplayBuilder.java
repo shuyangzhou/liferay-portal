@@ -150,8 +150,6 @@ public class SynonymsDisplayBuilder {
 				_renderRequest, _getPortletURL(), null, "there-are-no-entries");
 
 		searchContainer.setId("synonymSetsEntries");
-		searchContainer.setRowChecker(
-			new EmptyOnClickRowChecker(_renderResponse));
 
 		SearchSynonymSetRequest searchSynonymSetRequest =
 			new SearchSynonymSetRequest(
@@ -161,12 +159,14 @@ public class SynonymsDisplayBuilder {
 		SearchSynonymSetResponse searchSynonymSetResponse =
 			searchSynonymSetRequest.search();
 
-		searchContainer.setResults(
-			_buildSynonymSetDisplayContexts(
-				searchSynonymSetResponse.getSearchHits()));
+		searchContainer.setResultsAndTotal(
+			() -> _buildSynonymSetDisplayContexts(
+				searchSynonymSetResponse.getSearchHits()),
+			searchSynonymSetResponse.getTotalHits());
 
+		searchContainer.setRowChecker(
+			new EmptyOnClickRowChecker(_renderResponse));
 		searchContainer.setSearch(true);
-		searchContainer.setTotal(searchSynonymSetResponse.getTotalHits());
 
 		return searchContainer;
 	}

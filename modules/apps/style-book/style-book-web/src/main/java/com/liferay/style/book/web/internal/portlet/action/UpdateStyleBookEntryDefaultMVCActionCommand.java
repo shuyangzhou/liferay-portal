@@ -16,12 +16,8 @@ package com.liferay.style.book.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.style.book.constants.StyleBookPortletKeys;
-import com.liferay.style.book.model.StyleBookEntry;
-import com.liferay.style.book.service.StyleBookEntryLocalService;
 import com.liferay.style.book.service.StyleBookEntryService;
 
 import javax.portlet.ActionRequest;
@@ -52,31 +48,12 @@ public class UpdateStyleBookEntryDefaultMVCActionCommand
 		long styleBookEntryId = ParamUtil.getLong(
 			actionRequest, "styleBookEntryId");
 
-		if (styleBookEntryId > 0) {
-			boolean defaultStyleBookEntry = ParamUtil.getBoolean(
-				actionRequest, "defaultStyleBookEntry");
+		boolean defaultStyleBookEntry = ParamUtil.getBoolean(
+			actionRequest, "defaultStyleBookEntry");
 
-			_styleBookEntryService.updateDefaultStyleBookEntry(
-				styleBookEntryId, defaultStyleBookEntry);
-
-			return;
-		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		StyleBookEntry styleBookEntry =
-			_styleBookEntryLocalService.fetchDefaultStyleBookEntry(
-				themeDisplay.getScopeGroupId());
-
-		if (styleBookEntry != null) {
-			_styleBookEntryService.updateDefaultStyleBookEntry(
-				styleBookEntry.getStyleBookEntryId(), false);
-		}
+		_styleBookEntryService.updateDefaultStyleBookEntry(
+			styleBookEntryId, defaultStyleBookEntry);
 	}
-
-	@Reference
-	private StyleBookEntryLocalService _styleBookEntryLocalService;
 
 	@Reference
 	private StyleBookEntryService _styleBookEntryService;

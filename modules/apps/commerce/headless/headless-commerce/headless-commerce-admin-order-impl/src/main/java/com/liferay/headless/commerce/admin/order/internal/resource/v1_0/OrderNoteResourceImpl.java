@@ -241,7 +241,7 @@ public class OrderNoteResourceImpl extends BaseOrderNoteResourceImpl {
 		throws Exception {
 
 		commerceOrderNote = _commerceOrderNoteService.updateCommerceOrderNote(
-			orderNote.getOrderId(),
+			commerceOrderNote.getCommerceOrderNoteId(),
 			GetterUtil.get(
 				orderNote.getContent(), commerceOrderNote.getContent()),
 			GetterUtil.get(

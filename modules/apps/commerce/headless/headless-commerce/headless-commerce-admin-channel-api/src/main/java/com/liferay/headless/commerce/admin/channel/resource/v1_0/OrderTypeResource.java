@@ -58,6 +58,10 @@ public interface OrderTypeResource {
 			Long paymentMethodGroupRelOrderTypeId)
 		throws Exception;
 
+	public OrderType getShippingFixedOptionOrderTypeOrderType(
+			Long shippingFixedOptionOrderTypeId)
+		throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

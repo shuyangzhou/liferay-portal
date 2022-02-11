@@ -9,15 +9,16 @@
  * distribution rights of the Software.
  */
 
-const VIRTUAL_CLUSTER = 'virtual-cluster';
+import {hasVirtualCluster} from '../../index';
 
 const KeyTypeColumn = ({activationKey, assetsPath}) => {
-	const hasVirtualCluster =
-		activationKey.licenseEntryType === VIRTUAL_CLUSTER;
+	const hasVirtualClusterForActivationKeys = hasVirtualCluster(
+		activationKey?.licenseEntryType
+	);
 
 	return (
 		<div className="align-items-start d-flex">
-			{hasVirtualCluster && (
+			{hasVirtualClusterForActivationKeys && (
 				<img
 					className="ml-n4 mr-1"
 					src={`${assetsPath}/assets/virtual_cluster.svg`}
@@ -26,11 +27,13 @@ const KeyTypeColumn = ({activationKey, assetsPath}) => {
 
 			<div>
 				<p className="font-weight-bold m-0 text-neutral-10">
-					{hasVirtualCluster ? 'Virtual Cluster' : 'On-Premise'}
+					{hasVirtualClusterForActivationKeys
+						? 'Virtual Cluster'
+						: 'On-Premise'}
 				</p>
 
 				<p className="font-weight-normal m-0 text-neutral-7 text-paragraph-sm text-truncate">
-					{hasVirtualCluster
+					{hasVirtualClusterForActivationKeys
 						? `${activationKey.maxClusterNodes} Cluster Nodes (Keys)`
 						: activationKey.hostName || '-'}
 				</p>

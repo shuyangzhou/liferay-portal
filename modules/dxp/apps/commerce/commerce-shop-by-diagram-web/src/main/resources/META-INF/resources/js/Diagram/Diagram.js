@@ -37,6 +37,7 @@ import D3Handler from './D3Handler';
 import useTableHandlers from './useTableHandlers';
 
 import '../../css/diagram.scss';
+import {useEscapeKeyHandler} from '../utilities/hooks';
 
 const debouncedUpdatePinsRadius = debounce(updateGlobalPinsRadius, 800);
 
@@ -69,6 +70,17 @@ function Diagram({
 	const [pinsRadius, setPinsRadius] = useState(initialPinsRadius);
 	const [tooltipData, setTooltipData] = useState(false);
 	const isMounted = useIsMounted();
+
+	useEscapeKeyHandler(
+		expanded,
+		tooltipData,
+		() => setExpanded(false),
+		() => {
+			setTooltipData(null);
+
+			chartInstanceRef.current?.resetActivePinsState();
+		}
+	);
 
 	useTableHandlers(chartInstanceRef, productId, () =>
 		loadPins(productId, !isAdmin && channelId, commerceAccount.id).then(

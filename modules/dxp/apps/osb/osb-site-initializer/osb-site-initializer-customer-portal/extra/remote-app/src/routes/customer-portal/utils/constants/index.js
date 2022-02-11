@@ -10,7 +10,7 @@
  */
 
 export * from './alertDownloadType';
-export * from './autoCloseDownloadAlertTime';
+export * from './autoCloseAlertTime';
 export * from './contentTypes';
 export * from './customEventTypes';
 export * from './extensionFileTypes';

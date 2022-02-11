@@ -8,26 +8,17 @@
  * permissions and limitations under the License, including but not limited to
  * distribution rights of the Software.
  */
-
-import {getPascalCase} from '../../../../../utils/getPascalCase';
+import {getProductDescription, getProductName} from '../../index';
 
 const EnvironmentTypeColumn = ({activationKey}) => {
-	const productName = getPascalCase(activationKey.licenseEntryType)
-		.split('-')
-		.join(' ');
-
-	const productDescription = activationKey.complimentary
-		? 'Complimentary'
-		: 'Subscription';
-
 	return (
 		<div>
 			<p className="font-weight-bold m-0 text-neutral-10">
-				{productName.replace('Production', 'Prod')}
+				{getProductName(activationKey)?.replace('Production', 'Prod')}
 			</p>
 
 			<p className="font-weight-normal m-0 text-neutral-7 text-paragraph-sm">
-				{productDescription}
+				{getProductDescription(activationKey?.complimentary)}
 			</p>
 		</div>
 	);

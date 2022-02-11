@@ -51,7 +51,8 @@ const SCHEMA = {
 	},
 };
 
-const fileSchema = ['currencyCode', 'type', 'name'];
+const fileSchema1 = ['currencyCode', 'type', 'name'];
+const fileSchema2 = ['code', 'fabio', 'igor'];
 
 describe('ImportForm', () => {
 	afterEach(cleanup);
@@ -68,11 +69,38 @@ describe('ImportForm', () => {
 				schema: SCHEMA,
 			});
 			Liferay.fire(FILE_SCHEMA_EVENT, {
-				schema: fileSchema,
+				schema: fileSchema1,
 			});
 		});
 
-		fileSchema.forEach((field) => getByLabelText(field));
+		fileSchema1.forEach((field) => getByLabelText(field));
+	});
+
+	it('must automatically map matching field names', () => {
+		const {getAllByRole} = render(<ImportForm {...BASE_PROPS} />);
+
+		act(() => {
+			Liferay.fire(SCHEMA_SELECTED_EVENT, {
+				schema: SCHEMA,
+			});
+			Liferay.fire(FILE_SCHEMA_EVENT, {
+				schema: fileSchema1,
+			});
+		});
+
+		var matches = 0;
+
+		getAllByRole('button').forEach((buttonElement) => {
+			if (!buttonElement.id.startsWith('input-')) {
+				return;
+			}
+
+			expect(fileSchema1).toContain(buttonElement.textContent);
+
+			matches++;
+		});
+
+		expect(matches).toBe(fileSchema1.length);
 	});
 
 	it('must have button disabled with no selection', () => {
@@ -83,7 +111,7 @@ describe('ImportForm', () => {
 				schema: SCHEMA,
 			});
 			Liferay.fire(FILE_SCHEMA_EVENT, {
-				schema: fileSchema,
+				schema: fileSchema2,
 			});
 		});
 
@@ -99,7 +127,7 @@ describe('ImportForm', () => {
 				schema: SCHEMA,
 			});
 			Liferay.fire(FILE_SCHEMA_EVENT, {
-				schema: fileSchema,
+				schema: fileSchema2,
 			});
 		});
 
@@ -125,7 +153,7 @@ describe('ImportForm', () => {
 				schema: SCHEMA,
 			});
 			Liferay.fire(FILE_SCHEMA_EVENT, {
-				schema: fileSchema,
+				schema: fileSchema2,
 			});
 		});
 

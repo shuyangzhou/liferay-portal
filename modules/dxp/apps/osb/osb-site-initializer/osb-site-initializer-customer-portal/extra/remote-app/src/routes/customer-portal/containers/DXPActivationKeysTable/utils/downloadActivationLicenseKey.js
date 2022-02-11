@@ -9,7 +9,11 @@
  * distribution rights of the Software.
  */
 
-import {getActivationDownloadKey} from '../../../../../common/services/liferay/rest/raysource/LicenseKeys';
+import {
+	getActivationDownloadKey,
+	getAggregatedActivationDownloadKey,
+	getExportedLicenseKeys,
+} from '../../../../../common/services/liferay/rest/raysource/LicenseKeys';
 import downloadFromBlob from '../../../../../common/utils/downloadFromBlob';
 import {EXTENSION_FILE_TYPES, STATUS_CODE} from '../../../utils/constants';
 
@@ -30,5 +34,45 @@ export async function downloadActivationLicenseKey(
 		const licenseBlob = await license.blob();
 
 		return downloadFromBlob(licenseBlob, `license${extensionFile}`);
+	}
+}
+
+export async function downloadAggregatedActivationKey(
+	selectedKeysIDs,
+	licenseKeyDownloadURL,
+	sessionId
+) {
+	const license = await getAggregatedActivationDownloadKey(
+		selectedKeysIDs,
+		licenseKeyDownloadURL,
+		sessionId
+	);
+
+	if (license.status === STATUS_CODE.success) {
+		const contentType = license.headers.get('content-type');
+		const extensionFile = EXTENSION_FILE_TYPES[contentType] || '.txt';
+		const licenseBlob = await license.blob();
+
+		return downloadFromBlob(licenseBlob, `license${extensionFile}`);
+	}
+}
+
+export async function downloadAllKeysDetails(
+	accountKey,
+	licenseKeyDownloadURL,
+	sessionId
+) {
+	const license = await getExportedLicenseKeys(
+		accountKey,
+		licenseKeyDownloadURL,
+		sessionId
+	);
+
+	if (license.status === STATUS_CODE.success) {
+		const contentType = license.headers.get('content-type');
+		const extensionFile = EXTENSION_FILE_TYPES[contentType] || '.txt';
+		const licenseBlob = await license.blob();
+
+		return downloadFromBlob(licenseBlob, `activation-keys${extensionFile}`);
 	}
 }

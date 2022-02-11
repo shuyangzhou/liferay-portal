@@ -12,7 +12,7 @@
  * details.
  */
 
-import {createRenderURL, openSelectionModal} from 'frontend-js-web';
+import {openSelectionModal} from 'frontend-js-web';
 
 export default function propsTransformer({
 	additionalProps,
@@ -24,13 +24,8 @@ export default function propsTransformer({
 		onClick() {
 			const {url} = additionalProps;
 
-			const renderURL = createRenderURL(url, {
-				styleBookEntryId: getSelectedStyleBookEntryId(portletNamespace),
-			});
-
 			openSelectionModal({
 				buttonAddLabel: Liferay.Language.get('done'),
-				iframeBodyCssClass: '',
 				multiple: true,
 				onSelect(selectedItem) {
 					if (selectedItem) {
@@ -49,16 +44,8 @@ export default function propsTransformer({
 				},
 				selectEventName: `${portletNamespace}selectStyleBook`,
 				title: Liferay.Language.get('select-style-book'),
-				url: renderURL.toString(),
+				url,
 			});
 		},
 	};
-}
-
-function getSelectedStyleBookEntryId(portletNamespace) {
-	const styleBookEntryIdInput = document.getElementById(
-		`${portletNamespace}styleBookEntryId`
-	);
-
-	return styleBookEntryIdInput ? styleBookEntryIdInput.value : 0;
 }

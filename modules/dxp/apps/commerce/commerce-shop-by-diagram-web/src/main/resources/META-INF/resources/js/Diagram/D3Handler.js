@@ -107,7 +107,7 @@ class D3Handler extends DiagramZoomHandler {
 	}
 
 	_handleZoom() {
-		this._resetActivePinsState();
+		this.resetActivePinsState();
 		this._setTooltipData(null);
 
 		super._handleZoom();
@@ -131,7 +131,7 @@ class D3Handler extends DiagramZoomHandler {
 		return super._recenterViewport(x, y, duration);
 	}
 
-	_resetActivePinsState() {
+	resetActivePinsState() {
 		if (this._activePin) {
 			this._activePin.classList.remove('active');
 		}
@@ -143,7 +143,7 @@ class D3Handler extends DiagramZoomHandler {
 	}
 
 	_handleImageClick() {
-		this._resetActivePinsState();
+		this.resetActivePinsState();
 
 		if (!this._allowPinsUpdate) {
 			this._setTooltipData(null);
@@ -197,7 +197,7 @@ class D3Handler extends DiagramZoomHandler {
 
 	updatePins(pins) {
 		this._pins = pins;
-		this._resetActivePinsState();
+		this.resetActivePinsState();
 
 		if (this.imageRendered) {
 			this._updatePrintedPins();
@@ -230,7 +230,7 @@ class D3Handler extends DiagramZoomHandler {
 	}
 
 	_selectPinNode(target) {
-		this._resetActivePinsState();
+		this.resetActivePinsState();
 
 		target.classList.add('active');
 
@@ -321,7 +321,7 @@ class D3Handler extends DiagramZoomHandler {
 
 		selectedPin.classList.add('drag-started');
 
-		this._resetActivePinsState();
+		this.resetActivePinsState();
 		this._setTooltipData(null);
 	}
 

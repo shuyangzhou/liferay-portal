@@ -91,14 +91,12 @@ public class SelectSiteInitializerDisplayContext {
 		List<SiteInitializerItem> siteInitializerItems =
 			_getSiteInitializerItems();
 
-		siteInitializerItemSearchContainer.setTotal(
+		siteInitializerItemSearchContainer.setResultsAndTotal(
+			() -> ListUtil.subList(
+				siteInitializerItems,
+				siteInitializerItemSearchContainer.getStart(),
+				siteInitializerItemSearchContainer.getEnd()),
 			siteInitializerItems.size());
-
-		siteInitializerItems = ListUtil.subList(
-			siteInitializerItems, siteInitializerItemSearchContainer.getStart(),
-			siteInitializerItemSearchContainer.getEnd());
-
-		siteInitializerItemSearchContainer.setResults(siteInitializerItems);
 
 		return siteInitializerItemSearchContainer;
 	}
@@ -137,10 +135,9 @@ public class SelectSiteInitializerDisplayContext {
 				themeDisplay.getCompanyId(), true);
 
 		for (SiteInitializer siteInitializer : siteInitializers) {
-			SiteInitializerItem siteInitializerItem = new SiteInitializerItem(
-				siteInitializer, themeDisplay.getLocale());
-
-			siteInitializerItems.add(siteInitializerItem);
+			siteInitializerItems.add(
+				new SiteInitializerItem(
+					siteInitializer, themeDisplay.getLocale()));
 		}
 
 		return ListUtil.sort(

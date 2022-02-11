@@ -97,6 +97,38 @@ public abstract class BaseOrderTypeResourceImpl
 		return new OrderType();
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-commerce-admin-channel/v1.0/shipping-fixed-option-order-types/{shippingFixedOptionOrderTypeId}/order-type'  -u 'test@liferay.com:test'
+	 */
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "shippingFixedOptionOrderTypeId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "OrderType")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
+		"/shipping-fixed-option-order-types/{shippingFixedOptionOrderTypeId}/order-type"
+	)
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
+	public OrderType getShippingFixedOptionOrderTypeOrderType(
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("shippingFixedOptionOrderTypeId")
+			Long shippingFixedOptionOrderTypeId)
+		throws Exception {
+
+		return new OrderType();
+	}
+
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(

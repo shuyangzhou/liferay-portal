@@ -14,6 +14,7 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.exception.DuplicateObjectRelationshipException;
 import com.liferay.object.exception.ObjectRelationshipNameException;
@@ -317,6 +318,8 @@ public class ObjectRelationshipLocalServiceImpl
 		objectField.setUserName(user.getFullName());
 		objectField.setListTypeDefinitionId(0);
 		objectField.setObjectDefinitionId(objectDefinitionId2);
+		objectField.setBusinessType(
+			ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP);
 
 		ObjectDefinition objectDefinition1 =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId1);
@@ -337,7 +340,7 @@ public class ObjectRelationshipLocalServiceImpl
 
 		objectField.setDBTableName(dbTableName);
 
-		objectField.setDBType("Long");
+		objectField.setDBType(ObjectFieldConstants.DB_TYPE_LONG);
 		objectField.setIndexed(true);
 		objectField.setIndexedAsKeyword(false);
 		objectField.setIndexedLanguageId(null);

@@ -16,6 +16,7 @@ package com.liferay.gradle.plugins.defaults;
 
 import com.github.erdi.gradle.webdriver.WebDriverBinariesPluginExtension;
 
+import com.liferay.gradle.plugins.defaults.internal.util.CIUtil;
 import com.liferay.gradle.plugins.defaults.internal.util.GradlePluginsDefaultsUtil;
 import com.liferay.gradle.plugins.defaults.internal.util.GradleUtil;
 import com.liferay.gradle.plugins.poshi.runner.PoshiRunnerPlugin;
@@ -46,12 +47,14 @@ public class PoshiRunnerDefaultsPlugin implements Plugin<Project> {
 
 		webDriverBinariesPluginExtension.setChromedriver("86.0.4240.22");
 
-		ResourceHandler resourceHandler = project.getResources();
+		if (CIUtil.isRunningInCIEnvironment()) {
+			ResourceHandler resourceHandler = project.getResources();
 
-		TextResourceFactory textResourceFactory = resourceHandler.getText();
+			TextResourceFactory textResourceFactory = resourceHandler.getText();
 
-		webDriverBinariesPluginExtension.setDriverUrlsConfiguration(
-			textResourceFactory.fromUri(_WEB_DRIVER_URI));
+			webDriverBinariesPluginExtension.setDriverUrlsConfiguration(
+				textResourceFactory.fromUri(_WEB_DRIVER_URI));
+		}
 	}
 
 	private static final String _WEB_DRIVER_URI =

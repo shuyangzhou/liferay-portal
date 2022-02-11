@@ -1,9 +1,15 @@
+@import './Header/dxp-activation-keys-table-header';
+
 .cp-dxp-activation-key-container {
 	max-width: 1271px;
 }
 
 .cp-dxp-activation-key-table {
 	max-width: 85vw;
+
+	.cursor-pointer {
+		cursor: pointer;
+	}
 
 	tbody {
 		tr:first-child {

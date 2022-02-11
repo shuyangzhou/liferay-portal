@@ -722,7 +722,7 @@ public class AssetListAssetEntryProviderImpl
 		).map(
 			AssetListEntrySegmentsEntryRelModel::getSegmentsEntryId
 		).mapToLong(
-			segmentsEntryId -> segmentsEntryId
+			i -> i
 		).toArray();
 	}
 

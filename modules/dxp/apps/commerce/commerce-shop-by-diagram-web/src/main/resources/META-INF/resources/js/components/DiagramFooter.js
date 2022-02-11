@@ -26,6 +26,7 @@ function DiagramFooter({
 }) {
 	function _handleZoomUpdate(value) {
 		chartInstance.current?.updateZoom(value);
+
 		updateCurrentZoom(value);
 	}
 
@@ -51,7 +52,9 @@ function DiagramFooter({
 								/>
 							</span>
 
-							{Liferay.Language.get('expand')}
+							{expanded
+								? Liferay.Language.get('compress')
+								: Liferay.Language.get('expand')}
 						</ClayButton>
 					</ClayManagementToolbar.Item>
 

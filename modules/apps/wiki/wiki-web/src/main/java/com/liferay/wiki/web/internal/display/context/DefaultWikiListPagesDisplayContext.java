@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchContextFactory;
-import com.liferay.portal.kernel.search.SearchResult;
 import com.liferay.portal.kernel.search.SearchResultUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -47,11 +46,11 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.subscription.service.SubscriptionLocalServiceUtil;
 import com.liferay.taglib.search.ResultRow;
 import com.liferay.taglib.security.PermissionsURLTag;
@@ -206,9 +205,6 @@ public class DefaultWikiListPagesDisplayContext
 
 		String keywords = ParamUtil.getString(_httpServletRequest, "keywords");
 
-		int total = 0;
-		List<WikiPage> results = new ArrayList<>();
-
 		if (Validator.isNotNull(keywords)) {
 			Indexer<WikiPage> indexer = IndexerRegistryUtil.getIndexer(
 				WikiPage.class);
@@ -227,76 +223,72 @@ public class DefaultWikiListPagesDisplayContext
 
 			Hits hits = indexer.search(searchContext);
 
-			searchContainer.setTotal(hits.getLength());
-
-			List<SearchResult> searchResults =
+			List<WikiPage> pages = TransformUtil.transform(
 				SearchResultUtil.getSearchResults(
-					hits, themeDisplay.getLocale());
+					hits, themeDisplay.getLocale()),
+				searchResult -> WikiPageLocalServiceUtil.getPage(
+					searchResult.getClassPK()));
 
-			for (SearchResult searchResult : searchResults) {
-				WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(
-					searchResult.getClassPK());
-
-				results.add(wikiPage);
-			}
+			searchContainer.setResultsAndTotal(() -> pages, hits.getLength());
 		}
 		else if (navigation.equals("all-pages")) {
-			total = WikiPageServiceUtil.getPagesCount(
-				themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(), true,
-				themeDisplay.getUserId(), true,
-				WorkflowConstants.STATUS_APPROVED);
+			searchContainer.setResultsAndTotal(
+				() -> {
+					PermissionChecker permissionChecker =
+						_wikiRequestHelper.getPermissionChecker();
 
-			searchContainer.setTotal(total);
+					return TransformUtil.transform(
+						WikiPageServiceUtil.getPages(
+							themeDisplay.getScopeGroupId(),
+							_wikiNode.getNodeId(), true,
+							themeDisplay.getUserId(), true,
+							WorkflowConstants.STATUS_APPROVED,
+							searchContainer.getStart(),
+							searchContainer.getEnd(),
+							WikiPortletUtil.getPageOrderByComparator(
+								searchContainer.getOrderByCol(),
+								searchContainer.getOrderByType())),
+						curPage -> {
+							if (!permissionChecker.isContentReviewer(
+									_wikiRequestHelper.getCompanyId(),
+									_wikiRequestHelper.getScopeGroupId()) &&
+								!WikiPagePermission.contains(
+									permissionChecker, curPage,
+									ActionKeys.UPDATE)) {
 
-			OrderByComparator<WikiPage> orderByComparator =
-				WikiPortletUtil.getPageOrderByComparator(
-					searchContainer.getOrderByCol(),
-					searchContainer.getOrderByType());
+								return curPage;
+							}
 
-			List<WikiPage> pages = WikiPageServiceUtil.getPages(
-				themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(), true,
-				themeDisplay.getUserId(), true,
-				WorkflowConstants.STATUS_APPROVED, searchContainer.getStart(),
-				searchContainer.getEnd(), orderByComparator);
+							WikiPage lastPage = null;
 
-			PermissionChecker permissionChecker =
-				_wikiRequestHelper.getPermissionChecker();
+							try {
+								lastPage = WikiPageLocalServiceUtil.getPage(
+									curPage.getResourcePrimKey(), false);
+							}
+							catch (PortalException portalException) {
 
-			results = new ArrayList<>(results.size());
+								// LPS-52675
 
-			for (WikiPage curPage : pages) {
-				WikiPage resultPage = curPage;
+								if (_log.isDebugEnabled()) {
+									_log.debug(
+										portalException, portalException);
+								}
+							}
 
-				if (permissionChecker.isContentReviewer(
-						_wikiRequestHelper.getCompanyId(),
-						_wikiRequestHelper.getScopeGroupId()) ||
-					WikiPagePermission.contains(
-						permissionChecker, curPage, ActionKeys.UPDATE)) {
+							if ((lastPage != null) &&
+								(curPage.getVersion() <
+									lastPage.getVersion())) {
 
-					WikiPage lastPage = null;
+								return lastPage;
+							}
 
-					try {
-						lastPage = WikiPageLocalServiceUtil.getPage(
-							curPage.getResourcePrimKey(), false);
-					}
-					catch (PortalException portalException) {
-
-						// LPS-52675
-
-						if (_log.isDebugEnabled()) {
-							_log.debug(portalException, portalException);
-						}
-					}
-
-					if ((lastPage != null) &&
-						(curPage.getVersion() < lastPage.getVersion())) {
-
-						resultPage = lastPage;
-					}
-				}
-
-				results.add(resultPage);
-			}
+							return curPage;
+						});
+				},
+				WikiPageServiceUtil.getPagesCount(
+					themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(), true,
+					themeDisplay.getUserId(), true,
+					WorkflowConstants.STATUS_APPROVED));
 		}
 		else if (navigation.equals("categorized-pages") ||
 				 navigation.equals("tagged-pages")) {
@@ -306,26 +298,30 @@ public class DefaultWikiListPagesDisplayContext
 
 			assetEntryQuery.setEnablePermissions(true);
 
-			total = AssetEntryServiceUtil.getEntriesCount(assetEntryQuery);
+			searchContainer.setResultsAndTotal(
+				() -> {
+					assetEntryQuery.setEnd(searchContainer.getEnd());
+					assetEntryQuery.setStart(searchContainer.getStart());
 
-			searchContainer.setTotal(total);
+					List<AssetEntry> assetEntries =
+						AssetEntryServiceUtil.getEntries(assetEntryQuery);
 
-			assetEntryQuery.setEnd(searchContainer.getEnd());
-			assetEntryQuery.setStart(searchContainer.getStart());
+					List<WikiPage> results = new ArrayList<>();
 
-			List<AssetEntry> assetEntries = AssetEntryServiceUtil.getEntries(
-				assetEntryQuery);
+					for (AssetEntry assetEntry : assetEntries) {
+						WikiPageResource pageResource =
+							WikiPageResourceLocalServiceUtil.getPageResource(
+								assetEntry.getClassPK());
 
-			for (AssetEntry assetEntry : assetEntries) {
-				WikiPageResource pageResource =
-					WikiPageResourceLocalServiceUtil.getPageResource(
-						assetEntry.getClassPK());
+						WikiPage assetPage = WikiPageLocalServiceUtil.getPage(
+							pageResource.getNodeId(), pageResource.getTitle());
 
-				WikiPage assetPage = WikiPageLocalServiceUtil.getPage(
-					pageResource.getNodeId(), pageResource.getTitle());
+						results.add(assetPage);
+					}
 
-				results.add(assetPage);
-			}
+					return results;
+				},
+				AssetEntryServiceUtil.getEntriesCount(assetEntryQuery));
 		}
 		else if (navigation.equals("draft-pages") ||
 				 navigation.equals("pending-pages")) {
@@ -342,22 +338,24 @@ public class DefaultWikiListPagesDisplayContext
 				draftUserId = 0;
 			}
 
+			long wikiPageDraftUserId = draftUserId;
+
 			int status = WorkflowConstants.STATUS_DRAFT;
 
 			if (navigation.equals("pending-pages")) {
 				status = WorkflowConstants.STATUS_PENDING;
 			}
 
-			total = WikiPageServiceUtil.getPagesCount(
-				themeDisplay.getScopeGroupId(), draftUserId,
-				_wikiNode.getNodeId(), status);
+			int wikiPageStatus = status;
 
-			searchContainer.setTotal(total);
-
-			results = WikiPageServiceUtil.getPages(
-				themeDisplay.getScopeGroupId(), draftUserId,
-				_wikiNode.getNodeId(), status, searchContainer.getStart(),
-				searchContainer.getEnd());
+			searchContainer.setResultsAndTotal(
+				() -> WikiPageServiceUtil.getPages(
+					themeDisplay.getScopeGroupId(), wikiPageDraftUserId,
+					_wikiNode.getNodeId(), wikiPageStatus,
+					searchContainer.getStart(), searchContainer.getEnd()),
+				WikiPageServiceUtil.getPagesCount(
+					themeDisplay.getScopeGroupId(), wikiPageDraftUserId,
+					_wikiNode.getNodeId(), wikiPageStatus));
 		}
 		else if (navigation.equals("frontpage")) {
 			WikiWebComponentProvider wikiWebComponentProvider =
@@ -366,68 +364,58 @@ public class DefaultWikiListPagesDisplayContext
 			WikiGroupServiceConfiguration wikiGroupServiceConfiguration =
 				wikiWebComponentProvider.getWikiGroupServiceConfiguration();
 
-			WikiPage wikiPage = WikiPageServiceUtil.getPage(
-				themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(),
-				wikiGroupServiceConfiguration.frontPageName());
-
-			searchContainer.setTotal(1);
-
-			results.add(wikiPage);
+			searchContainer.setResultsAndTotal(
+				() -> ListUtil.fromArray(
+					WikiPageServiceUtil.getPage(
+						themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(),
+						wikiGroupServiceConfiguration.frontPageName())),
+				1);
 		}
 		else if (navigation.equals("history")) {
-			total = WikiPageLocalServiceUtil.getPagesCount(
-				page.getNodeId(), page.getTitle());
-
-			searchContainer.setTotal(total);
-
-			results = WikiPageLocalServiceUtil.getPages(
-				page.getNodeId(), page.getTitle(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, new PageVersionComparator());
+			searchContainer.setResultsAndTotal(
+				() -> WikiPageLocalServiceUtil.getPages(
+					page.getNodeId(), page.getTitle(), QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, new PageVersionComparator()),
+				WikiPageLocalServiceUtil.getPagesCount(
+					page.getNodeId(), page.getTitle()));
 		}
 		else if (navigation.equals("incoming-links")) {
 			List<WikiPage> links = WikiPageLocalServiceUtil.getIncomingLinks(
 				page.getNodeId(), page.getTitle());
 
-			total = links.size();
-
-			searchContainer.setTotal(total);
-
-			results = ListUtil.subList(
-				links, searchContainer.getStart(), searchContainer.getEnd());
+			searchContainer.setResultsAndTotal(
+				() -> ListUtil.subList(
+					links, searchContainer.getStart(),
+					searchContainer.getEnd()),
+				links.size());
 		}
 		else if (navigation.equals("orphan-pages")) {
 			List<WikiPage> orphans = WikiPageServiceUtil.getOrphans(_wikiNode);
 
-			total = orphans.size();
-
-			searchContainer.setTotal(total);
-
-			results = ListUtil.subList(
-				orphans, searchContainer.getStart(), searchContainer.getEnd());
+			searchContainer.setResultsAndTotal(
+				() -> ListUtil.subList(
+					orphans, searchContainer.getStart(),
+					searchContainer.getEnd()),
+				orphans.size());
 		}
 		else if (navigation.equals("outgoing-links")) {
 			List<WikiPage> links = WikiPageLocalServiceUtil.getOutgoingLinks(
 				page.getNodeId(), page.getTitle());
 
-			total = links.size();
-
-			searchContainer.setTotal(total);
-
-			results = ListUtil.subList(
-				links, searchContainer.getStart(), searchContainer.getEnd());
+			searchContainer.setResultsAndTotal(
+				() -> ListUtil.subList(
+					links, searchContainer.getStart(),
+					searchContainer.getEnd()),
+				links.size());
 		}
 		else if (navigation.equals("recent-changes")) {
-			total = WikiPageServiceUtil.getRecentChangesCount(
-				themeDisplay.getScopeGroupId(), _wikiNode.getNodeId());
-
-			searchContainer.setTotal(total);
-
-			results = WikiPageServiceUtil.getRecentChanges(
-				themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(),
-				searchContainer.getStart(), searchContainer.getEnd());
+			searchContainer.setResultsAndTotal(
+				() -> WikiPageServiceUtil.getRecentChanges(
+					themeDisplay.getScopeGroupId(), _wikiNode.getNodeId(),
+					searchContainer.getStart(), searchContainer.getEnd()),
+				WikiPageServiceUtil.getRecentChangesCount(
+					themeDisplay.getScopeGroupId(), _wikiNode.getNodeId()));
 		}
-
-		searchContainer.setResults(results);
 	}
 
 	private void _addChildPageMenuItem(
@@ -446,7 +434,6 @@ public class DefaultWikiListPagesDisplayContext
 
 		urlMenuItem.setKey(WikiUIItemKeys.ADD_CHILD_PAGE);
 		urlMenuItem.setLabel("add-child-page");
-
 		urlMenuItem.setURL(
 			PortletURLBuilder.createRenderURL(
 				_wikiRequestHelper.getLiferayPortletResponse()
@@ -478,7 +465,6 @@ public class DefaultWikiListPagesDisplayContext
 
 		urlMenuItem.setKey(WikiUIItemKeys.COPY);
 		urlMenuItem.setLabel("copy");
-
 		urlMenuItem.setURL(
 			PortletURLBuilder.createRenderURL(
 				_wikiRequestHelper.getLiferayPortletResponse()
@@ -515,7 +501,6 @@ public class DefaultWikiListPagesDisplayContext
 			deleteMenuItem.setTrash(
 				_trashHelper.isTrashEnabled(
 					_wikiRequestHelper.getScopeGroupId()));
-
 			deleteMenuItem.setURL(
 				PortletURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
@@ -553,7 +538,6 @@ public class DefaultWikiListPagesDisplayContext
 
 			urlMenuItem.setKey(WikiUIItemKeys.DELETE);
 			urlMenuItem.setLabel("discard-draft");
-
 			urlMenuItem.setURL(
 				PortletURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
@@ -589,7 +573,6 @@ public class DefaultWikiListPagesDisplayContext
 
 		urlMenuItem.setKey(WikiUIItemKeys.EDIT);
 		urlMenuItem.setLabel("edit");
-
 		urlMenuItem.setURL(
 			PortletURLBuilder.createRenderURL(
 				_wikiRequestHelper.getLiferayPortletResponse()
@@ -615,7 +598,6 @@ public class DefaultWikiListPagesDisplayContext
 
 		urlMenuItem.setKey(WikiUIItemKeys.MOVE);
 		urlMenuItem.setLabel("move");
-
 		urlMenuItem.setURL(
 			PortletURLBuilder.createRenderURL(
 				_wikiRequestHelper.getLiferayPortletResponse()
@@ -650,21 +632,18 @@ public class DefaultWikiListPagesDisplayContext
 		urlMenuItem.setMethod("get");
 		urlMenuItem.setUseDialog(true);
 
-		String url = null;
-
 		try {
-			url = PermissionsURLTag.doTag(
-				null, WikiPage.class.getName(), wikiPage.getTitle(), null,
-				String.valueOf(wikiPage.getResourcePrimKey()),
-				LiferayWindowState.POP_UP.toString(), null,
-				_httpServletRequest);
+			urlMenuItem.setURL(
+				PermissionsURLTag.doTag(
+					null, WikiPage.class.getName(), wikiPage.getTitle(), null,
+					String.valueOf(wikiPage.getResourcePrimKey()),
+					LiferayWindowState.POP_UP.toString(), null,
+					_httpServletRequest));
 		}
 		catch (Exception exception) {
 			throw new SystemException(
 				"Unable to create permissions URL", exception);
 		}
-
-		urlMenuItem.setURL(url);
 
 		menuItems.add(urlMenuItem);
 	}
@@ -676,7 +655,6 @@ public class DefaultWikiListPagesDisplayContext
 
 		javaScriptMenuItem.setKey(WikiUIItemKeys.PRINT);
 		javaScriptMenuItem.setLabel("print");
-
 		javaScriptMenuItem.setOnClick(
 			StringBundler.concat(
 				"window.open('",
@@ -741,7 +719,6 @@ public class DefaultWikiListPagesDisplayContext
 
 			urlMenuItem.setKey(WikiUIItemKeys.UNSUBSCRIBE);
 			urlMenuItem.setLabel("unsubscribe");
-
 			urlMenuItem.setURL(
 				PortletURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
@@ -764,7 +741,6 @@ public class DefaultWikiListPagesDisplayContext
 
 			urlMenuItem.setKey(WikiUIItemKeys.SUBSCRIBE);
 			urlMenuItem.setLabel("subscribe");
-
 			urlMenuItem.setURL(
 				PortletURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()

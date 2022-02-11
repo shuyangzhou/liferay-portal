@@ -57,48 +57,68 @@ definition {
 	}
 
 	@description = "LRQA-72024 - Verify that the calendar has Month view"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CalendaHasMonthView {
+		CalendarNavigator.gotoView(viewType = "Month");
 
-		// TODO LRQA-72028 CalendaHasMonthView pending implementation
-
+		CalendarPage.viewTypeOfTableView(tableType = "Month");
 	}
 
 	@description = "LRQA-72024 - Verify that the calendar has Agenda view"
 	@ignore = "Test Stub"
 	@priority = "3"
 	test CalendarHasAgendaView {
+		CalendarNavigator.gotoView(viewType = "Agenda");
 
-		// TODO LRQA-72029 CanModCalendarHasAgendaViewifyBorder pending implementation
-
+		CalendarPage.viewTypeOfTableView(tableType = "Mont");
 	}
 
 	@description = "LRQA-72024 - Verify that the calendar has Day view"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CalendarHasDayView {
+		CalendarNavigator.gotoView(viewType = "Day");
 
-		// TODO LRQA-72026 CalendarHasDayView pending implementation
-
+		CalendarPage.viewTypeOfTableView(tableType = "Day");
 	}
 
 	@description = "LRQA-72024 - Verify that the calendar has Week view"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CalendarHasWeekView {
+		CalendarNavigator.gotoView(viewType = "Week");
 
-		// TODO LRQA-72027 CalendarHasWeekView pending implementation
-
+		CalendarPage.viewTypeOfTableView(tableType = "Week");
 	}
 
 	@description = "LRQA-72024 - Verify that the user can change the color of the Calendar"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanChangeCalendarColor {
+		Calendar.tearDownColor();
 
-		// TODO LRQA-72030 CanChangeCalendarColor pending implementation
+		Calendar.changeColor(
+			calendarType = "My Calendars",
+			myCalendarColor = "668CD9",
+			user = "Test Test");
 
+		Navigator.gotoPage(pageName = "Calendar Page");
+
+		Calendar.viewColor(
+			calendarType = "My Calendars",
+			myCalendarColor = "668CD9");
+
+		CalendarNavigator.gotoAddEvent();
+
+		CalendarEvent.add(
+			calendarName = "Test Test",
+			eventTitle = "Calendar Event Regular Title",
+			eventType = "Regular",
+			pageName = "Calendar Page");
+
+		Navigator.gotoPage(pageName = "Calendar Page");
+
+		CalendarScheduler.viewEventColor(
+			eventBackgroundColorRgb = "(208, 219, 240)",
+			eventFontColorRgb = "(104, 142, 217)",
+			eventTitle = "Calendar Event Regular Title");
 	}
 
 	@description = "LRQA-72024 - Verify that the user can go back and forward on Calendar"
@@ -111,39 +131,65 @@ definition {
 	}
 
 	@description = "LRQA-72024 - Verify that the user can hide Events from a specific Calendar"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanHideEvents {
+		CalendarNavigator.gotoAddEventViaMyCalendars(user = "Test Test");
 
-		// TODO LRQA-72034 CanHideEvents pending implementation
+		CalendarEvent.editTitle(eventTitle = "Calendar Event Title1");
 
+		CalendarEvent.publish();
+
+		IFrame.closeFrame();
+
+		CalendarNavigator.gotoAddEventViaCurrentSite(site = "Liferay DXP");
+
+		CalendarEvent.editTitle(eventTitle = "Calendar Event Title2");
+
+		CalendarEvent.publish();
+
+		IFrame.closeFrame();
+
+		CalendarScheduler.selectSpecificEvent(eventTitle = "Calendar Event Title1");
+
+		CalendarScheduler.selectSpecificEvent(eventTitle = "Calendar Event Title2");
+
+		CalendarEvent.disableEventBySiteCalendarName(calendarName = "Liferay DXP");
+
+		CalendarScheduler.viewSpecificEventNotPresent(eventTitle = "Calendar Event Title2");
 	}
 
 	@description = "LRQA-72024 - Verify that the user can hide/show the sidebar"
-	@ignore = "Test Stub"
 	@priority = "2"
 	test CanHideShowSidebar {
+		CalendarPage.viewMiniCalendarOnSideBar();
 
-		// TODO LRQA-72035 CanHideShowSidebar pending implementation
+		CalendarPage.clickOnTheCaretLeftIcon();
 
+		CalendarPage.viewNoMiniCalendarOnSideBar();
 	}
 
 	@description = "LRQA-72024 - Verify that a mini Calendar is displayed on sidebar"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test MiniCalendarIsDisplayed {
+		CalendarNavigator.gotoView(viewType = "Month");
 
-		// TODO LRQA-72031 MiniCalendarIsDisplayed pending implementation
+		CalendarNavigator.gotoToday();
 
+		CalendarPage.viewMiniCalendarOnSideBar();
+
+		CalendarPage.viewCurrentMonthByMiniCalendar();
 	}
 
 	@description = "LRQA-72024 - Verify that the Today button brings the user back for the current day"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test TodayButtonDisplaysCurrentDay {
+		CalendarPage.viewCurrentDayForCalendarDay();
 
-		// TODO LRQA-72032 TodayButtonDisplaysCurrentDay pending implementation
+		CalendarPage.viewCurrentDayForCalendarWeek();
 
+		CalendarPage.viewCurrentDayForCalendarMonth();
+
+		CalendarPage.viewCurrentDayForCalendarAgenda();
 	}
 
 }

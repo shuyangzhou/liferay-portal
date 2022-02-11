@@ -6729,6 +6729,14 @@ org.apache.catalina.tribes.level = FINE]]>
 
 		<replace
 			failOnNoReplacements="true"
+			file="${app.server.tomcat.dir}/conf/logging.properties"
+		>
+			<replacetoken><![CDATA[3manager.org.apache.juli.AsyncFileHandler,]]></replacetoken>
+			<replacevalue><![CDATA[3manager.org.apache.juli.AsyncFileHandler, 5cluster.org.apache.juli.AsyncFileHandler,]]></replacevalue>
+		</replace>
+
+		<replace
+			failOnNoReplacements="true"
 			file="${app.server.tomcat.dir}/conf/server.xml"
 		>
 			<replacetoken><![CDATA[<Engine name="Catalina" defaultHost="localhost">]]></replacetoken>
@@ -8744,6 +8752,8 @@ browser.launcher.url=
 
 setup.wizard.enabled=false
 
+passwords.default.policy.changeable=false
+
 mail.send.blacklist=
 
 mail.session.jndi.name=
@@ -9277,6 +9287,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			liferay.app.server.global.lib.dir=${app.server.lib.global.dir}
 			liferay.app.server.portal.lib.dir=${app.server.lib.portal.dir}
 			liferay.app.server.portal.web.dir=${app.server.portal.dir}
+			logger.resources.url=${test.poshi.logger.resources.url}
 			output.dir.name=${selenium.output.dir.name}
 			product.names=${product.names}
 			project.dir=${project.dir}

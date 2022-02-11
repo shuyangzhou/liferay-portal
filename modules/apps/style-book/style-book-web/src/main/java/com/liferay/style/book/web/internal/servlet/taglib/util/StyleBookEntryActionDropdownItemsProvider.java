@@ -63,16 +63,6 @@ public class StyleBookEntryActionDropdownItemsProvider {
 	}
 
 	public List<DropdownItem> getActionDropdownItems() {
-		if (_styleBookEntry.getStyleBookEntryId() <= 0) {
-			return DropdownItemListBuilder.addGroup(
-				dropdownGroupItem -> dropdownGroupItem.setDropdownItems(
-					DropdownItemListBuilder.add(
-						() -> !_styleBookEntry.isDefaultStyleBookEntry(),
-						_getMarkAsDefaultStyleBookEntryActionUnsafeConsumer()
-					).build())
-			).build();
-		}
-
 		return DropdownItemListBuilder.addGroup(
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
@@ -103,7 +93,6 @@ public class StyleBookEntryActionDropdownItemsProvider {
 						},
 						_getDiscardDraftStyleBookEntryActionUnsafeConsumer()
 					).add(
-						() -> !_styleBookEntry.isDefaultStyleBookEntry(),
 						_getMarkAsDefaultStyleBookEntryActionUnsafeConsumer()
 					).add(
 						_getRenameStyleBookEntrytActionUnsafeConsumer()
@@ -320,8 +309,13 @@ public class StyleBookEntryActionDropdownItemsProvider {
 
 			dropdownItem.putData("message", message);
 
-			dropdownItem.setLabel(
-				LanguageUtil.get(_httpServletRequest, "mark-as-default"));
+			String label = "mark-as-default";
+
+			if (_styleBookEntry.isDefaultStyleBookEntry()) {
+				label = "unmark-as-default";
+			}
+
+			dropdownItem.setLabel(LanguageUtil.get(_httpServletRequest, label));
 		};
 	}
 

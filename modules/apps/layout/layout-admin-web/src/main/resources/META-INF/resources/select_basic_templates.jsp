@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-SelectLayoutPageTemplateEntryDisplayContext selectLayoutPageTemplateEntryDisplayContext = new SelectLayoutPageTemplateEntryDisplayContext(request, liferayPortletResponse);
+SelectLayoutPageTemplateEntryDisplayContext selectLayoutPageTemplateEntryDisplayContext = new SelectLayoutPageTemplateEntryDisplayContext(request);
 %>
 
 <div class="lfr-search-container-wrapper" id="<portlet:namespace />layoutTypes">

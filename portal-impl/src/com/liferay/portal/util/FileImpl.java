@@ -14,6 +14,7 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.petra.io.unsync.UnsyncBufferedInputStream;
 import com.liferay.petra.nio.CharsetEncoderUtil;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessChannel;
@@ -71,16 +72,12 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.compress.archivers.zip.UnsupportedZipFeatureException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.poi.EncryptedDocumentException;
 import org.apache.tika.Tika;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.extractor.EmbeddedDocumentExtractor;
 import org.apache.tika.extractor.ParsingEmbeddedDocumentExtractor;
-import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
@@ -401,14 +398,12 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 	}
 
 	@Override
-	public String extractText(InputStream inputStream, String fileName) {
-		return extractText(inputStream, fileName, -1);
+	public String extractText(InputStream inputStream) {
+		return extractText(inputStream, -1);
 	}
 
 	@Override
-	public String extractText(
-		InputStream inputStream, String fileName, int maxStringLength) {
-
+	public String extractText(InputStream inputStream, int maxStringLength) {
 		if (maxStringLength == 0) {
 			return StringPool.BLANK;
 		}
@@ -422,10 +417,12 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 
 			boolean forkProcess = false;
 
-			TikaInputStream tikaInputStream = TikaInputStream.get(inputStream);
+			if (!inputStream.markSupported()) {
+				inputStream = new UnsyncBufferedInputStream(inputStream);
+			}
 
 			if (PropsValues.TEXT_EXTRACTION_FORK_PROCESS_ENABLED) {
-				String mimeType = tika.detect(tikaInputStream);
+				String mimeType = tika.detect(inputStream);
 
 				if (ArrayUtil.contains(
 						PropsValues.TEXT_EXTRACTION_FORK_PROCESS_MIME_TYPES,
@@ -436,6 +433,8 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			}
 
 			if (forkProcess) {
+				InputStream finalInputStream = inputStream;
+
 				ProcessChannel<String> processChannel =
 					SystemBundleUtil.callService(
 						ProcessExecutor.class,
@@ -445,7 +444,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 									PortalClassPathUtil.
 										getPortalProcessConfig(),
 									new ExtractTextProcessCallable(
-										getBytes(tikaInputStream)));
+										getBytes(finalInputStream)));
 							}
 							catch (Exception exception) {
 								return ReflectionUtil.throwException(exception);
@@ -458,51 +457,13 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 				text = future.get();
 			}
 			else {
-				if (!_isEmptyTikaInputStream(tikaInputStream)) {
-					text = _parseToString(tika, tikaInputStream);
-				}
+				text = _parseToString(tika, inputStream);
 			}
 		}
-		catch (Throwable throwable) {
-			Throwable rootCauseThrowable = ExceptionUtils.getRootCause(
-				throwable);
-
-			if (rootCauseThrowable instanceof EncryptedDocumentException ||
-				rootCauseThrowable instanceof UnsupportedZipFeatureException) {
-
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to extract text from an encrypted file " +
-							fileName,
-						throwable);
-				}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception, exception);
 			}
-			else if (throwable instanceof TikaException) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to extract text from " + fileName, throwable);
-				}
-			}
-			else {
-				_log.error(throwable, throwable);
-			}
-		}
-
-		if (_log.isInfoEnabled()) {
-			if (text == null) {
-				_log.info("Text extraction failed for " + fileName);
-			}
-			else {
-				_log.info("Text was extracted for " + fileName);
-			}
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Extractor returned text:\n\n" + text);
-		}
-
-		if (text == null) {
-			text = StringPool.BLANK;
 		}
 
 		return text;
@@ -1109,9 +1070,19 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 		}
 	}
 
-	private static String _parseToString(
-			Tika tika, TikaInputStream tikaInputStream)
+	private static String _parseToString(Tika tika, InputStream inputStream)
 		throws IOException, TikaException {
+
+		inputStream.mark(1);
+
+		try {
+			if (inputStream.read() == -1) {
+				return StringPool.BLANK;
+			}
+		}
+		finally {
+			inputStream.reset();
+		}
 
 		UniversalEncodingDetector universalEncodingDetector =
 			new UniversalEncodingDetector();
@@ -1119,7 +1090,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 		Metadata metadata = new Metadata();
 
 		Charset charset = universalEncodingDetector.detect(
-			tikaInputStream, metadata);
+			inputStream, metadata);
 
 		String contentEncoding = StringPool.BLANK;
 
@@ -1166,7 +1137,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			parseContext.set(Parser.class, parser);
 
 			parser.parse(
-				tikaInputStream, new BodyContentHandler(writeOutContentHandler),
+				inputStream, new BodyContentHandler(writeOutContentHandler),
 				metadata, parseContext);
 		}
 		catch (SAXException saxException) {
@@ -1176,28 +1147,10 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			}
 		}
 		finally {
-			tikaInputStream.close();
+			inputStream.close();
 		}
 
 		return writeOutContentHandler.toString();
-	}
-
-	private boolean _isEmptyTikaInputStream(TikaInputStream tikaInputStream)
-		throws IOException {
-
-		if (tikaInputStream.hasLength() && (tikaInputStream.getLength() > 0)) {
-			return false;
-		}
-
-		byte[] bytes = new byte[1];
-
-		int count = tikaInputStream.peek(bytes);
-
-		if (count > 0) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private static final String[] _SAFE_FILE_NAME_1 = {
@@ -1243,9 +1196,8 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			Tika tika = new Tika(TikaConfigHolder._tikaConfig);
 
 			try {
-				InputStream inputStream = new UnsyncByteArrayInputStream(_data);
-
-				return _parseToString(tika, TikaInputStream.get(inputStream));
+				return _parseToString(
+					tika, new UnsyncByteArrayInputStream(_data));
 			}
 			catch (Exception exception) {
 				throw new ProcessException(exception);

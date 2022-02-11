@@ -162,3 +162,8 @@ cb5d43b200e78ea17aab28ab079bfaa0ddeeaa69^..c1dd4c4da2a907ef6493a6af2a4f2956ec336
 # Bundle Version 5.0.31
 #
 c1dd4c4da2a907ef6493a6af2a4f2956ec3365fc^..bfb6804a0e80a6fdfdd1711e1b85c0a6ae0472d8=COMMERCE-8309
+
+#
+# Bundle Version 5.0.32
+#
+bfb6804a0e80a6fdfdd1711e1b85c0a6ae0472d8^..9ead72792b077752d5f415ad1dd7cc170ac12eaa=COMMERCE-6912 COMMERCE-8395

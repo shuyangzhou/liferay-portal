@@ -13,3 +13,6 @@ export * from './activationKeysLicenseFilterTypes';
 export * from './activationStatus';
 export * from './columns';
 export * from './alertActivationKeysDownloadText';
+export * from './downlodableLicenseKeys';
+export * from './tooltipContentRendererTypes';
+export * from './tooltipClassnamesTypes';

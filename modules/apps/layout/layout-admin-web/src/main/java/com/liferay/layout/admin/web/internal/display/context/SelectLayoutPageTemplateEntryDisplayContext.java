@@ -14,6 +14,7 @@
 
 package com.liferay.layout.admin.web.internal.display.context;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.layout.admin.web.internal.util.LayoutPageTemplatePortletUtil;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
@@ -23,10 +24,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutTypeController;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -34,10 +32,12 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.LayoutTypeControllerTracker;
+import com.liferay.style.book.model.StyleBookEntry;
+import com.liferay.style.book.service.StyleBookEntryLocalServiceUtil;
+import com.liferay.style.book.util.comparator.StyleBookEntryNameComparator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,11 +48,9 @@ import javax.servlet.http.HttpServletRequest;
 public class SelectLayoutPageTemplateEntryDisplayContext {
 
 	public SelectLayoutPageTemplateEntryDisplayContext(
-		HttpServletRequest httpServletRequest,
-		LiferayPortletResponse liferayPortletResponse) {
+		HttpServletRequest httpServletRequest) {
 
 		_httpServletRequest = httpServletRequest;
-		_liferayPortletResponse = liferayPortletResponse;
 
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -72,22 +70,6 @@ public class SelectLayoutPageTemplateEntryDisplayContext {
 		_backURL = backURL;
 
 		return _backURL;
-	}
-
-	public Map<String, Object> getComponentContext() {
-		return HashMapBuilder.<String, Object>put(
-			"eventName",
-			() -> {
-				String eventName = ParamUtil.getString(
-					_httpServletRequest, "eventName",
-					_liferayPortletResponse.getNamespace() +
-						"selectMasterLayout");
-
-				return HtmlUtil.escape(eventName);
-			}
-		).put(
-			"selector", ".select-master-layout-option"
-		).build();
 	}
 
 	public List<LayoutPageTemplateEntry> getGlobalLayoutPageTemplateEntries() {
@@ -195,6 +177,13 @@ public class SelectLayoutPageTemplateEntryDisplayContext {
 		return _selectedTab;
 	}
 
+	public List<StyleBookEntry> getStyleBookEntries() {
+		return StyleBookEntryLocalServiceUtil.getStyleBookEntries(
+			StagingUtil.getLiveGroupId(_themeDisplay.getScopeGroupId()),
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			new StyleBookEntryNameComparator(true));
+	}
+
 	public List<String> getTypes() {
 		if (_types != null) {
 			return _types;
@@ -250,7 +239,6 @@ public class SelectLayoutPageTemplateEntryDisplayContext {
 	private String _backURL;
 	private final HttpServletRequest _httpServletRequest;
 	private Long _layoutPageTemplateCollectionId;
-	private final LiferayPortletResponse _liferayPortletResponse;
 	private String _redirect;
 	private String _selectedTab;
 	private final ThemeDisplay _themeDisplay;

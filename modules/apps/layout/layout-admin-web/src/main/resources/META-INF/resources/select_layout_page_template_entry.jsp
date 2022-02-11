@@ -25,7 +25,7 @@ if (Validator.isNull(backURL)) {
 	backURL = portletURL.toString();
 }
 
-SelectLayoutPageTemplateEntryDisplayContext selectLayoutPageTemplateEntryDisplayContext = new SelectLayoutPageTemplateEntryDisplayContext(request, liferayPortletResponse);
+SelectLayoutPageTemplateEntryDisplayContext selectLayoutPageTemplateEntryDisplayContext = new SelectLayoutPageTemplateEntryDisplayContext(request);
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(backURL);

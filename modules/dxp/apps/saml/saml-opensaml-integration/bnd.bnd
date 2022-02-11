@@ -1,6 +1,6 @@
 Bundle-Name: Liferay SAML OpenSAML Integration
 Bundle-SymbolicName: com.liferay.saml.opensaml.integration
-Bundle-Version: 5.3.19
+Bundle-Version: 5.3.20
 Export-Package:\
 	com.liferay.saml.opensaml.integration.field.expression.handler,\
 	com.liferay.saml.opensaml.integration.field.expression.handler.registry,\
@@ -48,6 +48,9 @@ Import-Package:\
 	!org.apache.oro.*,\
 	!org.apache.poi.*,\
 	!org.apache.tools.ant.*,\
+	!org.apache.xml.dtm.*,\
+	!org.apache.xml.utils.*,\
+	!org.apache.xpath.*,\
 	\
 	!org.checkerframework.*,\
 	\

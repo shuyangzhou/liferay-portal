@@ -41,6 +41,7 @@ import {formatMappedProduct} from '../utilities/index';
 import D3Handler from './D3Handler';
 
 import '../../css/diagram.scss';
+import {useEscapeKeyHandler} from '../utilities/hooks';
 
 function Diagram({
 	cartId: initialCartId,
@@ -70,6 +71,13 @@ function Diagram({
 	const svgRef = useRef(null);
 	const wrapperRef = useRef(null);
 	const zoomHandlerRef = useRef(null);
+
+	useEscapeKeyHandler(
+		expanded,
+		!!tooltipData,
+		() => setExpanded(false),
+		() => setTooltipData(null)
+	);
 
 	useEffect(() => {
 		getMappedProducts(
