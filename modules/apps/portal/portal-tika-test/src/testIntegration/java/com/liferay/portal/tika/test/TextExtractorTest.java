@@ -12,80 +12,78 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.tika.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.util.File;
-import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.TextExtractor;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.nio.charset.Charset;
 
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.tika.config.TikaConfig;
-import org.apache.tika.mime.MediaType;
-import org.apache.tika.parser.CompositeParser;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.ocr.TesseractOCRConfig;
-import org.apache.tika.parser.ocr.TesseractOCRParser;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
- * @author Igor Spasic
- * @see    MimeTypesImplTest
+ * @author Shuyang Zhou
  */
-public class FileImplExtractTest {
+@RunWith(Arquillian.class)
+public class TextExtractorTest {
 
 	@ClassRule
 	@Rule
-	public static final LiferayUnitTestRule liferayUnitTestRule =
-		LiferayUnitTestRule.INSTANCE;
+	public static final AggregateTestRule aggregateTestRule =
+		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() throws Exception {
-		Class<?> clazz = Class.forName(
-			"com.liferay.portal.util.FileImpl$TikaConfigHolder");
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		Class<?> clazz = _textExtractor.getClass();
 
-		TikaConfig tikaConfig = ReflectionTestUtil.getFieldValue(
-			clazz, "_tikaConfig");
+		ClassLoader classLoader = clazz.getClassLoader();
 
-		CompositeParser compositeParser =
-			(CompositeParser)tikaConfig.getParser();
+		Class<?> tesseractOCRParserClass = classLoader.loadClass(
+			"org.apache.tika.parser.ocr.TesseractOCRParser");
 
-		Map<MediaType, Parser> parsers = compositeParser.getParsers();
+		Map<String, Boolean> map = ReflectionTestUtil.getAndSetFieldValue(
+			tesseractOCRParserClass, "TESSERACT_PRESENT",
+			new HashMap<String, Boolean>() {
 
-		Set<Map.Entry<MediaType, Parser>> set = parsers.entrySet();
-
-		Iterator<Map.Entry<MediaType, Parser>> iterator = set.iterator();
-
-		while (iterator.hasNext()) {
-			Map.Entry<MediaType, Parser> entry = iterator.next();
-
-			Parser parser = entry.getValue();
-
-			if (parser instanceof TesseractOCRParser) {
-				TesseractOCRParser tesseractOCRParser =
-					(TesseractOCRParser)parser;
-
-				if (tesseractOCRParser.hasTesseract(new TesseractOCRConfig())) {
-					iterator.remove();
+				@Override
+				public boolean containsKey(Object key) {
+					return true;
 				}
-			}
-		}
 
-		compositeParser.setParsers(parsers);
+				@Override
+				public Boolean get(Object key) {
+					return Boolean.FALSE;
+				}
+
+			});
+
+		_resetTikaConfigCloseable = () -> ReflectionTestUtil.setFieldValue(
+			tesseractOCRParserClass, "TESSERACT_PRESENT", map);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws IOException {
+		_resetTikaConfigCloseable.close();
 	}
 
 	@Test
@@ -110,7 +108,8 @@ public class FileImplExtractTest {
 	public void testEmpty() {
 		Assert.assertEquals(
 			StringPool.BLANK,
-			_file.extractText(new UnsyncByteArrayInputStream(new byte[0])));
+			_textExtractor.extractText(
+				new UnsyncByteArrayInputStream(new byte[0]), -1));
 	}
 
 	@Test
@@ -176,8 +175,8 @@ public class FileImplExtractTest {
 	@Test
 	public void testTxtEncodedWithShift_JIS() throws IOException {
 		String expectedText = new String(
-			_file.getBytes(
-				FileImplExtractTest.class.getResourceAsStream(
+			StreamUtil.toByteArray(
+				TextExtractorTest.class.getResourceAsStream(
 					"dependencies/test-encoding-Shift_JIS.txt")),
 			Charset.forName("Shift_JIS"));
 
@@ -212,11 +211,14 @@ public class FileImplExtractTest {
 		InputStream inputStream = clazz.getResourceAsStream(
 			"dependencies/" + fileName);
 
-		String text = _file.extractText(inputStream);
+		String text = _textExtractor.extractText(inputStream, -1);
 
 		return text.trim();
 	}
 
-	private final File _file = FileImpl.getInstance();
+	private static Closeable _resetTikaConfigCloseable;
+
+	@Inject
+	private static TextExtractor _textExtractor;
 
 }
