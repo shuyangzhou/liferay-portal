@@ -13535,6 +13535,10 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 					</not>
 					<then>
 						<antcall target="upgrade-legacy-database" />
+
+						<!-- LPS-148703 -->
+
+						<antcall target="delete-liferay-home" />
 					</then>
 				</if>
 			</then>
