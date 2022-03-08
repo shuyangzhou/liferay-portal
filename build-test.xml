@@ -5809,6 +5809,28 @@ war.path=${app.server.portal.dir}/</echo>
 
 					<stop-app-server app.server.bundle.index="@{app.server.bundle.index}" />
 
+					<if>
+						<equals arg1="${app.server.type}" arg2="tomcat" />
+						<then>
+							<echo>Printing Tomcat log files</echo>
+
+							<fileset
+								dir="${test.app.server.dir}/logs"
+								id="tomcat.log.files"
+							>
+								<include name="*.log" />
+							</fileset>
+
+							<pathconvert pathsep="," property="tomcat.log.files" refid="tomcat.log.files" />
+
+							<for list="${tomcat.log.files}" param="log.file">
+								<sequential>
+									<print-file file.name="@{log.file}" />
+								</sequential>
+							</for>
+						</then>
+					</if>
+
 					<fail if="app.server.waiting.timeout" message="No server is available at ${app.server.waiting.url}" />
 				</then>
 			</if>
