@@ -211,6 +211,33 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Initialized the OSGi framework");
 		}
+
+		if (System.getenv("JENKINS_HOME") != null) {
+			BundleContext bundleContext = _framework.getBundleContext();
+
+			SynchronousBundleListener synchronousBundleListener =
+				bundleEvent -> {
+					Bundle bundle = bundleEvent.getBundle();
+
+					if (!Objects.equals(
+							bundle.getSymbolicName(),
+							"org.apache.felix.configurator")) {
+
+						return;
+					}
+
+					int type = bundleEvent.getType();
+
+					if (type == BundleEvent.STOPPING) {
+						_log.error("Stopping " + bundle, new Exception());
+					}
+					else if (type == BundleEvent.STOPPED) {
+						_log.error("Stopped " + bundle, new Exception());
+					}
+				};
+
+			bundleContext.addBundleListener(synchronousBundleListener);
+		}
 	}
 
 	@Override
