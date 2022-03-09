@@ -212,32 +212,40 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			_log.debug("Initialized the OSGi framework");
 		}
 
-		if (System.getenv("JENKINS_HOME") != null) {
-			BundleContext bundleContext = _framework.getBundleContext();
+		BundleContext bundleContext = _framework.getBundleContext();
 
-			SynchronousBundleListener synchronousBundleListener =
-				bundleEvent -> {
-					Bundle bundle = bundleEvent.getBundle();
+		SynchronousBundleListener synchronousBundleListener =
+			bundleEvent -> {
+				Bundle bundle = bundleEvent.getBundle();
 
-					if (!Objects.equals(
-							bundle.getSymbolicName(),
-							"org.apache.felix.configurator")) {
+				if (!Objects.equals(
+						bundle.getSymbolicName(),
+						"org.apache.felix.configurator")) {
 
-						return;
-					}
+					return;
+				}
 
-					int type = bundleEvent.getType();
+				int type = bundleEvent.getType();
 
-					if (type == BundleEvent.STOPPING) {
-						_log.error("Stopping " + bundle, new Exception());
-					}
-					else if (type == BundleEvent.STOPPED) {
-						_log.error("Stopped " + bundle, new Exception());
-					}
-				};
+				if (type == BundleEvent.STOPPING) {
+					_log.error("Stopping " + bundle, new Exception());
 
-			bundleContext.addBundleListener(synchronousBundleListener);
-		}
+					new Exception("Stopping " + bundle).printStackTrace(
+						System.out);
+				}
+				else if (type == BundleEvent.STOPPED) {
+					_log.error("Stopped " + bundle, new Exception());
+
+					new Exception("Stopped " + bundle).printStackTrace(
+						System.out);
+				}
+				else {
+					new Exception("Type : " + type + " to " + bundle).printStackTrace(
+						System.out);
+				}
+			};
+
+		bundleContext.addBundleListener(synchronousBundleListener);
 	}
 
 	@Override

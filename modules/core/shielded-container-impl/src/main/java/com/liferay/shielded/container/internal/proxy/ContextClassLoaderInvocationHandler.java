@@ -42,6 +42,11 @@ public class ContextClassLoaderInvocationHandler implements InvocationHandler {
 		try {
 			return method.invoke(_target, args);
 		}
+		catch (Throwable throwable) {
+			throwable.printStackTrace(System.out);
+
+			throw throwable;
+		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
 		}
