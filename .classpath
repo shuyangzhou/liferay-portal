@@ -149,7 +149,6 @@
 	<classpathentry kind="lib" path="lib/portal/commons-pool.jar"/>
 	<classpathentry kind="lib" path="lib/portal/crypt.jar"/>
 	<classpathentry kind="lib" path="lib/portal/dom4j.jar"/>
-	<classpathentry kind="lib" path="lib/portal/fontbox.jar"/>
 	<classpathentry kind="lib" path="lib/portal/hibernate-core.jar"/>
 	<classpathentry kind="lib" path="lib/portal/hikaricp.jar"/>
 	<classpathentry kind="lib" path="lib/portal/httpclient.jar"/>
@@ -168,10 +167,8 @@
 	<classpathentry kind="lib" path="lib/portal/jaxrs-api.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jaxws-api.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jaxws-rt.jar"/>
-	<classpathentry kind="lib" path="lib/portal/jbig2-imageio.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jcl-over-slf4j.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jdom2.jar"/>
-	<classpathentry kind="lib" path="lib/portal/jempbox.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jericho-html.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jersey-common.jar"/>
 	<classpathentry kind="lib" path="lib/portal/jodd-json.jar"/>
@@ -185,7 +182,6 @@
 	<classpathentry kind="lib" path="lib/portal/mchange-commons-java.jar"/>
 	<classpathentry kind="lib" path="lib/portal/mimepull.jar"/>
 	<classpathentry kind="lib" path="lib/portal/netcdf.jar"/>
-	<classpathentry kind="lib" path="lib/portal/pdfbox.jar"/>
 	<classpathentry kind="lib" path="lib/portal/persistence.jar"/>
 	<classpathentry kind="lib" path="lib/portal/portlet.jar"/>
 	<classpathentry kind="lib" path="lib/portal/portletmvc4spring-framework.jar"/>
