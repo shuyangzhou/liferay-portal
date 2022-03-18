@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
@@ -33,6 +34,7 @@ import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -55,6 +57,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.logging.log4j.core.Appender;
@@ -67,6 +71,7 @@ import org.springframework.context.ApplicationContext;
 /**
  * @author Michael C. Han
  * @author Brian Wing Shun Chan
+ * @author Luis Ortiz
  */
 public class DBUpgrader {
 
@@ -195,6 +200,108 @@ public class DBUpgrader {
 		verifyResourcePermissions.verify();
 	}
 
+	public static void waitForLocks() throws Exception {
+		if (!PropsValues.UPGRADE_DATABASE_MANAGED_STARTUP) {
+			return;
+		}
+
+		while (true) {
+			if (!_hasLockTable()) {
+				return;
+			}
+
+			try (Connection connection = DataAccess.getConnection();
+				PreparedStatement preparedStatement =
+					_getSelectLockPreparedStatement(connection);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+
+				if (!resultSet.next()) {
+					return;
+				}
+			}
+			catch (SQLException sqlException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(sqlException);
+				}
+			}
+
+			Thread.sleep(PropsValues.UPGRADE_DATABASE_LOCK_REFRESH_TIME);
+		}
+	}
+
+	private static Lock _acquireLock() throws Exception {
+		_createLockTable();
+
+		long lockId;
+
+		while (true) {
+			if (!_hasLockTable()) {
+				return null;
+			}
+
+			try (Connection connection = DataAccess.getConnection();
+				PreparedStatement preparedStatement =
+					_getSelectLockPreparedStatement(connection);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+
+				if (resultSet.next()) {
+					lockId = resultSet.getLong(1);
+
+					break;
+				}
+
+				lockId = SecureRandomUtil.nextLong();
+
+				try (PreparedStatement preparedStatement2 =
+						_getInsertLockPreparedStatement(connection, lockId)) {
+
+					if (preparedStatement2.executeUpdate() == 1) {
+						break;
+					}
+				}
+				catch (SQLException sqlException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(sqlException);
+					}
+				}
+			}
+		}
+
+		Connection connection = DataAccess.getConnection();
+
+		boolean autoCommit = connection.getAutoCommit();
+
+		while (true) {
+			if (!_hasLockTable()) {
+				connection.setAutoCommit(autoCommit);
+				connection.close();
+
+				return null;
+			}
+
+			try (PreparedStatement preparedStatement =
+					_getBlockingSelectLockPreparedStatement(
+						connection, lockId)) {
+
+				connection.setAutoCommit(false);
+
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					if (!resultSet.next()) {
+						connection.setAutoCommit(autoCommit);
+						connection.close();
+
+						return null;
+					}
+
+					return new Lock(autoCommit, connection, lockId);
+				}
+			}
+			catch (SQLException sqlException) {
+				Thread.sleep(PropsValues.UPGRADE_DATABASE_LOCK_REFRESH_TIME);
+			}
+		}
+	}
+
 	private static void _checkClassNamesAndResourceActions() {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Check class names");
@@ -207,6 +314,60 @@ public class DBUpgrader {
 		}
 
 		StartupHelperUtil.initResourceActions();
+	}
+
+	private static void _createLockTable() throws Exception {
+		while (true) {
+			if (_hasLockTable()) {
+				return;
+			}
+
+			DB db = DBManagerUtil.getDB();
+
+			try (Connection connection = DataAccess.getConnection();
+				PreparedStatement preparedStatement1 =
+					connection.prepareStatement(
+						db.buildSQL(
+							StringBundler.concat(
+								"create table ", _UPGRADES_LOCK_TABLE,
+								" (lockId LONG not null primary key, ",
+								"createDate DATE default null, className ",
+								"VARCHAR(75) default null, key_ VARCHAR(200) ",
+								"default null)")));
+				PreparedStatement preparedStatement2 =
+					connection.prepareStatement(
+						db.buildSQL(
+							StringBundler.concat(
+								"create unique index IX_UPGDLOCK on ",
+								_UPGRADES_LOCK_TABLE, " (className, key_)")))) {
+
+				preparedStatement1.executeUpdate();
+				preparedStatement2.executeUpdate();
+			}
+			catch (SQLException sqlException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(sqlException);
+				}
+			}
+		}
+	}
+
+	private static PreparedStatement _getBlockingSelectLockPreparedStatement(
+			Connection connection, long lockId)
+		throws SQLException {
+
+		PreparedStatement preparedStatement = connection.prepareStatement(
+			SQLTransformer.transform(
+				StringBundler.concat(
+					"select lockId from ", _UPGRADES_LOCK_TABLE,
+					" where className = ? and key_ = ? and lockId = ? ",
+					"FOR_UPDATE")));
+
+		preparedStatement.setString(1, DBUpgrader.class.getName());
+		preparedStatement.setString(2, _LOCK_KEY);
+		preparedStatement.setLong(3, lockId);
+
+		return preparedStatement;
 	}
 
 	private static int _getBuildNumberForMissedUpgradeProcesses(int buildNumber)
@@ -224,6 +385,38 @@ public class DBUpgrader {
 		}
 
 		return buildNumber;
+	}
+
+	private static PreparedStatement _getDeleteLockPreparedStatement(
+			Connection connection, long lockId)
+		throws SQLException {
+
+		PreparedStatement preparedStatement = connection.prepareStatement(
+			StringBundler.concat(
+				"delete from ", _UPGRADES_LOCK_TABLE, " where lockId = ?"));
+
+		preparedStatement.setLong(1, lockId);
+
+		return preparedStatement;
+	}
+
+	private static PreparedStatement _getInsertLockPreparedStatement(
+			Connection connection, long lockId)
+		throws SQLException {
+
+		PreparedStatement preparedStatement = connection.prepareStatement(
+			StringBundler.concat(
+				"insert into ", _UPGRADES_LOCK_TABLE, " (lockId, createDate, ",
+				"className, key_) values (?, ?, ?, ?)"));
+
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+
+		preparedStatement.setLong(1, lockId);
+		preparedStatement.setTimestamp(2, now);
+		preparedStatement.setString(3, DBUpgrader.class.getName());
+		preparedStatement.setString(4, _LOCK_KEY);
+
+		return preparedStatement;
 	}
 
 	private static int _getReleaseColumnValue(String columnName)
@@ -248,6 +441,29 @@ public class DBUpgrader {
 		}
 	}
 
+	private static PreparedStatement _getSelectLockPreparedStatement(
+			Connection connection)
+		throws SQLException {
+
+		PreparedStatement preparedStatement = connection.prepareStatement(
+			StringBundler.concat(
+				"select lockId from ", _UPGRADES_LOCK_TABLE,
+				" where className = ? and key_ = ?"));
+
+		preparedStatement.setString(1, DBUpgrader.class.getName());
+		preparedStatement.setString(2, _LOCK_KEY);
+
+		return preparedStatement;
+	}
+
+	private static boolean _hasLockTable() throws Exception {
+		try (Connection connection = DataAccess.getConnection()) {
+			DBInspector dbInspector = new DBInspector(connection);
+
+			return dbInspector.hasTable(_UPGRADES_LOCK_TABLE);
+		}
+	}
+
 	private static void _registerModuleServiceLifecycle(
 		String moduleServiceLifecycle) {
 
@@ -264,6 +480,25 @@ public class DBUpgrader {
 			).put(
 				"service.version", ReleaseInfo.getVersion()
 			).build());
+	}
+
+	private static void _releaseLock(Lock lock) throws Exception {
+		if ((lock == null) || !_hasLockTable()) {
+			return;
+		}
+
+		try (Connection connection = lock.getConnection();
+			PreparedStatement preparedStatement1 =
+				_getDeleteLockPreparedStatement(connection, lock.getLockId());
+			PreparedStatement preparedStatement2 = connection.prepareStatement(
+				SQLTransformer.transform(
+					StringBundler.concat(
+						"DROP_TABLE_IF_EXISTS(", _UPGRADES_LOCK_TABLE, ")")))) {
+
+			preparedStatement1.executeUpdate();
+			connection.setAutoCommit(lock.getAutoCommit());
+			preparedStatement2.executeUpdate();
+		}
 	}
 
 	private static void _startUpgradeReportLogAppender() {
@@ -419,6 +654,10 @@ public class DBUpgrader {
 		verify();
 	}
 
+	private static final String _LOCK_KEY = "UpgradeProcess";
+
+	private static final String _UPGRADES_LOCK_TABLE = "UpgradesLock_";
+
 	private static final Version _VERSION_7010 = new Version(0, 0, 6);
 
 	private static final Log _log = LogFactoryUtil.getLog(DBUpgrader.class);
@@ -426,5 +665,32 @@ public class DBUpgrader {
 	private static volatile Appender _appender;
 	private static volatile ServiceReference<Appender>
 		_appenderServiceReference;
+
+	private static class Lock {
+
+		public Lock(boolean autoCommit, Connection connection, long lockId) {
+			_connection = connection;
+			_lockId = lockId;
+
+			_autocommit = autoCommit;
+		}
+
+		public boolean getAutoCommit() {
+			return _autocommit;
+		}
+
+		public Connection getConnection() {
+			return _connection;
+		}
+
+		public long getLockId() {
+			return _lockId;
+		}
+
+		private final boolean _autocommit;
+		private final Connection _connection;
+		private final long _lockId;
+
+	}
 
 }
