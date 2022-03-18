@@ -191,7 +191,9 @@ public class DBUpgrader {
 
 			DependencyManagerSyncUtil.sync();
 		}
-		
+
+		StartupHelperUtil.setUpgrading(false);
+
 		if (PropsValues.UPGRADE_DATABASE_MANAGED_STARTUP) {
 			_releaseLock(lock);
 		}
