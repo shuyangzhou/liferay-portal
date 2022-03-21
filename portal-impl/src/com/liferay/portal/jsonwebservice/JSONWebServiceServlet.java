@@ -48,8 +48,7 @@ public class JSONWebServiceServlet extends JSONServlet {
 
 		if (!PropsValues.JSONWS_WEB_SERVICE_API_DISCOVERABLE ||
 			(!path.equals(StringPool.BLANK) &&
-			 !path.equals(StringPool.SLASH)) ||
-			(httpServletRequest.getParameter("discover") != null)) {
+			 !path.equals(StringPool.SLASH))) {
 
 			Locale locale = PortalUtil.getLocale(
 				httpServletRequest, httpServletResponse, true);

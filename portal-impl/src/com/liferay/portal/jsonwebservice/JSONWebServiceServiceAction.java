@@ -186,9 +186,7 @@ public class JSONWebServiceServiceAction extends JSONServiceAction {
 			return new JSONWebServiceInvokerAction(httpServletRequest);
 		}
 
-		if (PropsValues.JSONWS_WEB_SERVICE_API_DISCOVERABLE &&
-			(httpServletRequest.getParameter("discover") != null)) {
-
+		if (PropsValues.JSONWS_WEB_SERVICE_API_DISCOVERABLE) {
 			return new JSONWebServiceDiscoverAction(httpServletRequest);
 		}
 
