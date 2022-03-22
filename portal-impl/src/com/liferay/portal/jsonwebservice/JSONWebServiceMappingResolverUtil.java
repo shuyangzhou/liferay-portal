@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.kernel.jsonwebservice;
+package com.liferay.portal.jsonwebservice;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.lang.reflect.Method;
@@ -22,15 +23,9 @@ import java.lang.reflect.Method;
 /**
  * @author Igor Spasic
  */
-public class JSONWebServiceMappingResolver {
+public class JSONWebServiceMappingResolverUtil {
 
-	public JSONWebServiceMappingResolver(
-		JSONWebServiceNaming jsonWebServiceNaming) {
-
-		_jsonWebServiceNaming = jsonWebServiceNaming;
-	}
-
-	public String resolveHttpMethod(Method method) {
+	public static String resolveHttpMethod(Method method) {
 		JSONWebService annotationJSONWebService = method.getAnnotation(
 			JSONWebService.class);
 
@@ -44,10 +39,10 @@ public class JSONWebServiceMappingResolver {
 			return httpMethod;
 		}
 
-		return _jsonWebServiceNaming.convertMethodToHttpMethod(method);
+		return JSONWebServiceNamingUtil.convertMethodToHttpMethod(method);
 	}
 
-	public String resolvePath(Class<?> clazz, Method method) {
+	public static String resolvePath(Class<?> clazz, Method method) {
 		JSONWebService annotationJSONWebService = method.getAnnotation(
 			JSONWebService.class);
 
@@ -58,7 +53,7 @@ public class JSONWebServiceMappingResolver {
 		}
 
 		if ((path == null) || (path.length() == 0)) {
-			path = _jsonWebServiceNaming.convertMethodToPath(method);
+			path = JSONWebServiceNamingUtil.convertMethodToPath(method);
 		}
 
 		if (path.startsWith(StringPool.SLASH)) {
@@ -76,7 +71,7 @@ public class JSONWebServiceMappingResolver {
 		}
 
 		if ((pathFromClass == null) || (pathFromClass.length() == 0)) {
-			pathFromClass = _jsonWebServiceNaming.convertServiceClassToPath(
+			pathFromClass = JSONWebServiceNamingUtil.convertServiceClassToPath(
 				clazz);
 		}
 
@@ -86,7 +81,5 @@ public class JSONWebServiceMappingResolver {
 
 		return pathFromClass + path;
 	}
-
-	private final JSONWebServiceNaming _jsonWebServiceNaming;
 
 }

@@ -63,27 +63,10 @@ public class JSONWebServiceActionsManagerUtil {
 			contextName);
 	}
 
-	public static int getJSONWebServiceActionsCount(String contextName) {
-		return _jsonWebServiceActionsManager.getJSONWebServiceActionsCount(
-			contextName);
-	}
-
 	public static JSONWebServiceActionsManager
 		getJSONWebServiceActionsManager() {
 
 		return _jsonWebServiceActionsManager;
-	}
-
-	public static JSONWebServiceNaming getJSONWebServiceNaming() {
-		return _jsonWebServiceActionsManager.getJSONWebServiceNaming();
-	}
-
-	public static void registerJSONWebServiceAction(
-		String contextName, String contextPath, Class<?> actionClass,
-		Method actionMethod, String path, String method) {
-
-		_jsonWebServiceActionsManager.registerJSONWebServiceAction(
-			contextName, contextPath, actionClass, actionMethod, path, method);
 	}
 
 	public static void registerJSONWebServiceAction(
@@ -103,11 +86,6 @@ public class JSONWebServiceActionsManagerUtil {
 	public static int unregisterJSONWebServiceActions(Object actionObject) {
 		return _jsonWebServiceActionsManager.unregisterJSONWebServiceActions(
 			actionObject);
-	}
-
-	public static int unregisterJSONWebServiceActions(String contextPath) {
-		return _jsonWebServiceActionsManager.unregisterJSONWebServiceActions(
-			contextPath);
 	}
 
 	public static int unregisterServletContext(ServletContext servletContext) {

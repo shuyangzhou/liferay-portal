@@ -12,10 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.remote.json.web.service.extender.internal;
+package com.liferay.portal.jsonwebservice;
 
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
-import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceScannerStrategy;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceWrapper;
@@ -30,17 +29,14 @@ import java.util.List;
 /**
  * @author Miguel Pastor
  */
-public class ServiceJSONWebServiceScannerStrategy
-	implements JSONWebServiceScannerStrategy {
+public class JSONWebServiceScannerUtil {
 
-	@Override
-	public MethodDescriptor[] scan(Object service) {
+	public static Method[] scan(Object service) {
 		Class<?> clazz = _getTargetClass(service);
 
 		Method[] methods = clazz.getMethods();
 
-		List<MethodDescriptor> methodDescriptors = new ArrayList<>(
-			methods.length);
+		List<Method> serviceMethods = new ArrayList<>(methods.length);
 
 		for (Method method : methods) {
 			Class<?> declaringClass = method.getDeclaringClass();
@@ -49,17 +45,13 @@ public class ServiceJSONWebServiceScannerStrategy
 				continue;
 			}
 
-			methodDescriptors.add(new MethodDescriptor(method));
+			serviceMethods.add(method);
 		}
 
-		return methodDescriptors.toArray(new MethodDescriptor[0]);
+		return serviceMethods.toArray(new Method[0]);
 	}
 
-	/**
-	 * @see com.liferay.portal.jsonwebservice.SpringJSONWebServiceScannerStrategy#_getTargetClass(
-	 *      Object)
-	 */
-	private Class<?> _getTargetClass(Object service) {
+	private static Class<?> _getTargetClass(Object service) {
 		while (ProxyUtil.isProxyClass(service.getClass())) {
 			InvocationHandler invocationHandler =
 				ProxyUtil.getInvocationHandler(service);
@@ -102,6 +94,6 @@ public class ServiceJSONWebServiceScannerStrategy
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ServiceJSONWebServiceScannerStrategy.class);
+		JSONWebServiceScannerUtil.class);
 
 }
