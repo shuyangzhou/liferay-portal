@@ -102,18 +102,6 @@ public class CounterLocalServiceTest {
 							objectName, "softEvictConnections", null, null);
 					}
 
-					// Tomcat
-
-					for (ObjectName objectName :
-							mBeanServer.queryNames(
-								null,
-								new ObjectName(
-									"TomcatJDBCPool:type=ConnectionPool," +
-										"name=*"))) {
-
-						mBeanServer.invoke(objectName, "purge", null, null);
-					}
-
 					return null;
 				}
 
