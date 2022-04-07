@@ -19,6 +19,9 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.jdbc.ConnectionThreadProxyHandler;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ThrowableCollector;
@@ -28,6 +31,7 @@ import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
@@ -39,6 +43,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -47,6 +53,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.naming.NamingException;
+
+import javax.sql.DataSource;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Hugo Huijser
@@ -220,6 +233,68 @@ public abstract class BaseDBProcess implements DBProcess {
 		DB db = DBManagerUtil.getDB();
 
 		return db.dropIndexes(connection, tableName, columnName);
+	}
+
+	protected Connection getConnection() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		boolean partitionConcurrencyEnabled = false;
+
+		if (GetterUtil.getBoolean(
+				PropsUtil.get("database.partition.enabled")) &&
+			GetterUtil.getBoolean(
+				PropsUtil.get("database.partition.thread.pool.enabled"),
+				true)) {
+
+			partitionConcurrencyEnabled = true;
+		}
+
+		if (bundle != null) {
+			BundleContext bundleContext = bundle.getBundleContext();
+
+			Collection<ServiceReference<DataSource>> serviceReferences =
+				bundleContext.getServiceReferences(
+					DataSource.class,
+					StringBundler.concat(
+						"(origin.bundle.symbolic.name=",
+						bundle.getSymbolicName(), ")"));
+
+			Iterator<ServiceReference<DataSource>> iterator =
+				serviceReferences.iterator();
+
+			if (iterator.hasNext()) {
+				ServiceReference<DataSource> serviceReference = iterator.next();
+
+				DataSource dataSource = bundleContext.getService(
+					serviceReference);
+
+				try {
+					if (dataSource != null) {
+						if (partitionConcurrencyEnabled) {
+							return (Connection)ProxyUtil.newProxyInstance(
+								ClassLoader.getSystemClassLoader(),
+								new Class<?>[] {Connection.class},
+								new ConnectionThreadProxyHandler(
+									bundleContext, serviceReference));
+						}
+
+						return dataSource.getConnection();
+					}
+				}
+				finally {
+					bundleContext.ungetService(serviceReference);
+				}
+			}
+		}
+
+		if (partitionConcurrencyEnabled) {
+			return (Connection)ProxyUtil.newProxyInstance(
+				ClassLoader.getSystemClassLoader(),
+				new Class<?>[] {Connection.class},
+				new ConnectionThreadProxyHandler());
+		}
+
+		return DataAccess.getConnection();
 	}
 
 	protected String[] getPrimaryKeyColumnNames(
