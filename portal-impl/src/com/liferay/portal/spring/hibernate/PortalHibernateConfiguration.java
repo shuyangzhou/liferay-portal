@@ -17,7 +17,6 @@ package com.liferay.portal.spring.hibernate;
 import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.asm.ASMWrapperUtil;
 import com.liferay.portal.change.tracking.registry.CTModelRegistration;
 import com.liferay.portal.change.tracking.registry.CTModelRegistry;
 import com.liferay.portal.dao.orm.hibernate.event.MVCCSynchronizerPostUpdateEventListener;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PreloadClassLoader;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -411,7 +411,7 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 				sessionFactoryImplementor);
 		}
 
-		return ASMWrapperUtil.createASMWrapper(
+		return ProxyUtil.newDelegateProxyInstance(
 			SessionFactoryImplementor.class.getClassLoader(),
 			SessionFactoryImplementor.class, sessionFactoryDelegate,
 			sessionFactoryImplementor);
