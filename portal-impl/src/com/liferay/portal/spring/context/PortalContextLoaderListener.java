@@ -333,6 +333,8 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				StartupHelperUtil.setUpgrading(false);
 			}
 			else {
+				DBUpgrader.waitForLocks();
+
 				ModuleFrameworkUtil.registerContext(applicationContext);
 			}
 		}

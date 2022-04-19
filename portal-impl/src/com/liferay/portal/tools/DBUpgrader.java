@@ -162,6 +162,12 @@ public class DBUpgrader {
 	public static void upgrade(ApplicationContext applicationContext)
 		throws Exception {
 
+		Lock lock = null;
+
+		if (PropsValues.UPGRADE_DATABASE_MANAGED_STARTUP) {
+			lock = _acquireLock();
+		}
+
 		StartupHelperUtil.setUpgrading(true);
 
 		_upgradePortal();
@@ -180,8 +186,14 @@ public class DBUpgrader {
 			}
 		}
 
-		if (applicationContext == null) {
+		if ((applicationContext == null) ||
+			PropsValues.UPGRADE_DATABASE_MANAGED_STARTUP) {
+
 			DependencyManagerSyncUtil.sync();
+		}
+		
+		if (PropsValues.UPGRADE_DATABASE_MANAGED_STARTUP) {
+			_releaseLock(lock);
 		}
 	}
 
