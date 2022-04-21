@@ -63,13 +63,13 @@ public class BatchPlannerPlanLocalServiceUtil {
 
 	public static BatchPlannerPlan addBatchPlannerPlan(
 			long userId, boolean export, String externalType,
-			String externalURL, String internalClassName, String name,
+			String externalURL, String internalClassName, String name, int size,
 			String taskItemDelegateName, boolean template)
 		throws PortalException {
 
 		return getService().addBatchPlannerPlan(
 			userId, export, externalType, externalURL, internalClassName, name,
-			taskItemDelegateName, template);
+			size, taskItemDelegateName, template);
 	}
 
 	/**
@@ -300,8 +300,7 @@ public class BatchPlannerPlanLocalServiceUtil {
 	}
 
 	public static BatchPlannerPlan updateActive(
-			boolean active, String batchEngineTaskERC)
-		throws PortalException {
+		boolean active, String batchEngineTaskERC) {
 
 		return getService().updateActive(active, batchEngineTaskERC);
 	}
@@ -336,6 +335,13 @@ public class BatchPlannerPlanLocalServiceUtil {
 
 		return getService().updateBatchPlannerPlan(
 			batchPlannerPlanId, externalType, internalClassName, name);
+	}
+
+	public static BatchPlannerPlan updateStatus(
+			long batchPlannerPlanId, int status)
+		throws PortalException {
+
+		return getService().updateStatus(batchPlannerPlanId, status);
 	}
 
 	public static BatchPlannerPlanLocalService getService() {

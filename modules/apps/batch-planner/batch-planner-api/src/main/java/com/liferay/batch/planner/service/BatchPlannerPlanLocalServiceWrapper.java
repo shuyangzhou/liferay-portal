@@ -58,13 +58,13 @@ public class BatchPlannerPlanLocalServiceWrapper
 	@Override
 	public com.liferay.batch.planner.model.BatchPlannerPlan addBatchPlannerPlan(
 			long userId, boolean export, String externalType,
-			String externalURL, String internalClassName, String name,
+			String externalURL, String internalClassName, String name, int size,
 			String taskItemDelegateName, boolean template)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _batchPlannerPlanLocalService.addBatchPlannerPlan(
 			userId, export, externalType, externalURL, internalClassName, name,
-			taskItemDelegateName, template);
+			size, taskItemDelegateName, template);
 	}
 
 	/**
@@ -337,8 +337,7 @@ public class BatchPlannerPlanLocalServiceWrapper
 
 	@Override
 	public com.liferay.batch.planner.model.BatchPlannerPlan updateActive(
-			boolean active, String batchEngineTaskERC)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		boolean active, String batchEngineTaskERC) {
 
 		return _batchPlannerPlanLocalService.updateActive(
 			active, batchEngineTaskERC);
@@ -381,6 +380,15 @@ public class BatchPlannerPlanLocalServiceWrapper
 
 		return _batchPlannerPlanLocalService.updateBatchPlannerPlan(
 			batchPlannerPlanId, externalType, internalClassName, name);
+	}
+
+	@Override
+	public com.liferay.batch.planner.model.BatchPlannerPlan updateStatus(
+			long batchPlannerPlanId, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _batchPlannerPlanLocalService.updateStatus(
+			batchPlannerPlanId, status);
 	}
 
 	@Override
