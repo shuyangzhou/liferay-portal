@@ -225,7 +225,8 @@ public class ObjectValidationRuleLocalServiceImpl
 
 				if (GetterUtil.getBoolean(results.get("invalidFields"))) {
 					throw new ObjectValidationRuleEngineException(
-						"Script has invalid fields");
+						objectValidationRule.getErrorLabel(
+							LocaleUtil.getMostRelevantLocale()));
 				}
 			}
 			else {
@@ -234,7 +235,8 @@ public class ObjectValidationRuleLocalServiceImpl
 						objectValidationRule.getScript())) {
 
 					throw new ObjectValidationRuleEngineException(
-						"Unable to evaluate script");
+						objectValidationRule.getErrorLabel(
+							LocaleUtil.getMostRelevantLocale()));
 				}
 			}
 		}

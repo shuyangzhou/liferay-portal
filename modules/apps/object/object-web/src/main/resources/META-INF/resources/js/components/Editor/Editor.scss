@@ -1,0 +1,9 @@
+.lfr-objects__editor__CodeMirrorEditor {
+	border: 1px solid #a7a9bc;
+	flex-grow: 1;
+
+	> .CodeMirror {
+		height: 300px;
+		min-width: 500px;
+	}
+}

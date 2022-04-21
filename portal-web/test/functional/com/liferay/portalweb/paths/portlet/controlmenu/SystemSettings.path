@@ -72,7 +72,7 @@
 </tr>
 <tr>
 	<td>SETTINGS_TEXT</td>
-	<td>//span[contains(@class,'form-text')][contains(.,'${key_settingsText}')]</td>
+	<td>//span[contains(@id,'fieldDetails')][contains(.,'${key_settingsText}')]</td>
 	<td></td>
 </tr>
 <!--ASSETS-->

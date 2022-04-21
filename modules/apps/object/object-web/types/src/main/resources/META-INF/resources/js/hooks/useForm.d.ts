@@ -12,7 +12,7 @@
  * details.
  */
 
-import {ChangeEventHandler, FormEventHandler} from 'react';
+import {ChangeEventHandler, FormEventHandler, MouseEventHandler} from 'react';
 export declare function invalidateRequired(text: string | void): boolean;
 export default function useForm<T, P = {}, K extends Partial<T> = Partial<T>>({
 	initialValues,
@@ -30,7 +30,8 @@ interface IProps<T, P = {}, K extends Partial<T> = Partial<T>> {
 interface IUseForm<T, P = {}, K extends Partial<T> = Partial<T>> {
 	errors: FormError<T & P>;
 	handleChange: ChangeEventHandler<HTMLInputElement>;
-	handleSubmit: FormEventHandler<HTMLFormElement>;
+	handleSubmit: FormEventHandler<HTMLFormElement> &
+		MouseEventHandler<HTMLButtonElement>;
 	setValues: (values: Partial<T>) => void;
 	values: K;
 }

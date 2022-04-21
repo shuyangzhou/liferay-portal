@@ -4085,6 +4085,18 @@ tell application "Safari" to quit
 				</then>
 			</if>
 
+			<get-testcase-property property.name="release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS" />
+
+			<if>
+				<isset property="release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS" />
+				<then>
+					<equals arg1="${release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS}" arg2="true" />
+					<then>
+						<echo file="${liferay.home}/osgi/configs/com.liferay.release.feature.flag.web.internal.configuration.ReleaseFeatureFlagConfiguration.config">disabledReleaseFeatureFlags=["DEACTIVATE_PRIVATE_LAYOUTS"]</echo>
+					</then>
+				</then>
+			</if>
+
 			<get-testcase-property property.name="test.assert.javascript.errors" />
 
 			<if>
@@ -10913,11 +10925,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 					test.base.dir.name=${test.base.dir.name}
 				</echo>
 			</then>
-			<else>
-				<echo append="true" file="${test.ext.properties.file}">
-					test.base.dir.name=${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/
-				</echo>
-			</else>
 		</if>
 
 		<if>
@@ -11031,6 +11038,18 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		</if>
 
 		<if>
+			<or>
+				<equals arg1="${test.dirs}" arg2="" />
+				<isset property="test.dirs" />
+			</or>
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					test.dirs=${test.dirs}
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<isset property="test.include.dir.names" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
@@ -11071,15 +11090,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					test.run.environment=${test.run.environment}
-				</echo>
-			</then>
-		</if>
-
-		<if>
-			<isset property="test.subrepo.dirs" />
-			<then>
-				<echo append="true" file="${test.ext.properties.file}">
-					test.subrepo.dirs=${test.subrepo.dirs}
 				</echo>
 			</then>
 		</if>
@@ -11280,11 +11290,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 					test.base.dir.name=${test.base.dir.name}
 				</echo>
 			</then>
-			<else>
-				<echo append="true" file="${test.ext.properties.file}">
-					test.base.dir.name=${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/
-				</echo>
-			</else>
 		</if>
 
 		<get-testcase-property property.name="test.skip.tear.down" />

@@ -462,18 +462,17 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "totalDiscountAmount");
 
 		_commerceOrderService.updateCommerceOrderPrices(
-			commerceOrder.getCommerceOrderId(), new BigDecimal(subtotal),
-			new BigDecimal(subtotalDiscountAmount),
-			commerceOrder.getSubtotalDiscountPercentageLevel1(),
-			commerceOrder.getSubtotalDiscountPercentageLevel2(),
-			commerceOrder.getSubtotalDiscountPercentageLevel3(),
-			commerceOrder.getSubtotalDiscountPercentageLevel4(),
-			new BigDecimal(shippingAmount),
+			commerceOrder.getCommerceOrderId(), new BigDecimal(shippingAmount),
 			new BigDecimal(shippingDiscountAmount),
 			commerceOrder.getShippingDiscountPercentageLevel1(),
 			commerceOrder.getShippingDiscountPercentageLevel2(),
 			commerceOrder.getShippingDiscountPercentageLevel3(),
 			commerceOrder.getShippingDiscountPercentageLevel4(),
+			new BigDecimal(subtotal), new BigDecimal(subtotalDiscountAmount),
+			commerceOrder.getSubtotalDiscountPercentageLevel1(),
+			commerceOrder.getSubtotalDiscountPercentageLevel2(),
+			commerceOrder.getSubtotalDiscountPercentageLevel3(),
+			commerceOrder.getSubtotalDiscountPercentageLevel4(),
 			new BigDecimal(taxAmount), new BigDecimal(total),
 			new BigDecimal(totalDiscountAmount),
 			commerceOrder.getTotalDiscountPercentageLevel1(),
@@ -644,13 +643,14 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 			commerceOrder.getExternalReferenceCode(),
 			commerceOrder.getCommerceOrderId(),
 			commerceOrder.getBillingAddressId(),
-			commerceOrder.getShippingAddressId(),
-			commerceOrder.getCommercePaymentMethodKey(),
 			commerceOrder.getCommerceShippingMethodId(),
-			commerceOrder.getShippingOptionName(),
-			commerceOrder.getPurchaseOrderNumber(), new BigDecimal(subtotal),
-			new BigDecimal(shippingPrice), new BigDecimal(total),
-			commerceOrder.getAdvanceStatus(), commerceContext);
+			commerceOrder.getShippingAddressId(),
+			commerceOrder.getAdvanceStatus(),
+			commerceOrder.getCommercePaymentMethodKey(),
+			commerceOrder.getPurchaseOrderNumber(),
+			new BigDecimal(shippingPrice),
+			commerceOrder.getShippingOptionName(), new BigDecimal(subtotal),
+			new BigDecimal(total), commerceContext);
 	}
 
 	@Reference
