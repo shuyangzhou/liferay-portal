@@ -38,7 +38,7 @@ public class SybaseSQLTransformerLogic extends BaseSQLTransformerLogic {
 			getDropTableIfExistsTextFunction(), getInstrFunction(),
 			getIntegerDivisionFunction(), getLengthFunction(), getModFunction(),
 			getNullDateFunction(), getSubstrFunction(), _getCrossJoinFunction(),
-			_getReplaceFunction()
+			_getReplaceFunction(), getForUpdateFunction()
 		};
 
 		if (!db.isSupportsStringCaseSensitiveQuery()) {

@@ -34,7 +34,7 @@ public class HypersonicSQLTransformerLogic extends BaseSQLTransformerLogic {
 			getBooleanFunction(), getCastClobTextFunction(),
 			getCastLongFunction(), getCastTextFunction(),
 			getDropTableIfExistsTextFunction(), getIntegerDivisionFunction(),
-			getNullDateFunction()
+			getNullDateFunction(), getForUpdateFunction()
 		};
 
 		if (!db.isSupportsStringCaseSensitiveQuery()) {

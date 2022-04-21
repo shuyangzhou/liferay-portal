@@ -108,6 +108,18 @@ public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 			"DROP_TABLE_IF_EXISTS\\((.+?)\\)", Pattern.CASE_INSENSITIVE);
 	}
 
+	protected Function<String, String> getForUpdateFunction() {
+		Pattern pattern = getForUpdatePattern();
+
+		return (String sql) -> replaceForUpdate(pattern.matcher(sql));
+	}
+
+	protected Pattern getForUpdatePattern() {
+		return Pattern.compile(
+			"(select.+?from)(.+?)?(where.*?)?FOR_UPDATE",
+			Pattern.CASE_INSENSITIVE);
+	}
+
 	protected Function<String, String> getInstrFunction() {
 		Pattern pattern = getInstrPattern();
 
@@ -220,6 +232,10 @@ public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 
 	protected String replaceDropTableIfExistsText(Matcher matcher) {
 		return matcher.replaceAll("DROP TABLE IF EXISTS $1");
+	}
+
+	protected String replaceForUpdate(Matcher matcher) {
+		return matcher.replaceAll("$1 $2 $3 FOR UPDATE");
 	}
 
 	protected String replaceInstr(Matcher matcher) {

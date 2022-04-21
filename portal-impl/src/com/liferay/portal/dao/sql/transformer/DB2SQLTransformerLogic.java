@@ -36,7 +36,8 @@ public class DB2SQLTransformerLogic extends BaseSQLTransformerLogic {
 			getBooleanFunction(), getCastClobTextFunction(),
 			getCastLongFunction(), getCastTextFunction(), getConcatFunction(),
 			getDropTableIfExistsTextFunction(), getIntegerDivisionFunction(),
-			getNullDateFunction(), _getQuestionMarkFunction()
+			getNullDateFunction(), _getQuestionMarkFunction(),
+			getForUpdateFunction()
 		};
 
 		if (!db.isSupportsStringCaseSensitiveQuery()) {
@@ -67,6 +68,11 @@ public class DB2SQLTransformerLogic extends BaseSQLTransformerLogic {
 			"BEGIN END;\n", "EXECUTE IMMEDIATE 'DROP TABLE $1';\n", "END");
 
 		return matcher.replaceAll(dropTableIfExists);
+	}
+
+	@Override
+	protected String replaceForUpdate(Matcher matcher) {
+		return matcher.replaceAll("$1 $2 $3 WITH RS USE AND KEEP UPDATE LOCKS");
 	}
 
 	private Function<String, String> _getQuestionMarkFunction() {

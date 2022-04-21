@@ -34,7 +34,7 @@ public class SQLServerSQLTransformerLogic extends BaseSQLTransformerLogic {
 			getCastTextFunction(), getConcatFunction(),
 			getDropTableIfExistsTextFunction(), getInstrFunction(),
 			getIntegerDivisionFunction(), getLengthFunction(), getModFunction(),
-			getNullDateFunction(), getSubstrFunction()
+			getNullDateFunction(), getSubstrFunction(), getForUpdateFunction()
 		};
 
 		if (!db.isSupportsStringCaseSensitiveQuery()) {
@@ -55,6 +55,11 @@ public class SQLServerSQLTransformerLogic extends BaseSQLTransformerLogic {
 			"IF OBJECT_ID('$1', 'U') IS NOT NULL DROP TABLE $1";
 
 		return matcher.replaceAll(dropTableIfExists);
+	}
+
+	@Override
+	protected String replaceForUpdate(Matcher matcher) {
+		return matcher.replaceAll("$1 $2 WITH (UPDLOCK) $3");
 	}
 
 }
