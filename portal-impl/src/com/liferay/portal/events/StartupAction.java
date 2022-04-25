@@ -15,6 +15,7 @@
 package com.liferay.portal.events;
 
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
+import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
@@ -35,8 +36,6 @@ import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -72,7 +71,7 @@ public class StartupAction extends SimpleAction {
 		try (InputStream inputStream = classLoader.getResourceAsStream(
 				"com/liferay/portal/events/dependencies/startup.txt")) {
 
-			System.out.println(IOUtils.toString(inputStream));
+			System.out.println(StreamUtil.toString(inputStream));
 		}
 
 		System.out.println("Starting " + ReleaseInfo.getReleaseInfo() + "\n");
