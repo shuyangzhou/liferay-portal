@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.util.PropsUtil;
 
 import java.io.File;
@@ -38,7 +37,6 @@ import java.util.List;
 
 import org.apache.commons.fileupload.FileItemHeaders;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.output.DeferredFileOutputStream;
 
 /**
  * @author Brian Wing Shun Chan
@@ -155,25 +153,6 @@ public class LiferayFileItem extends DiskFileItem implements FileItem {
 	@Override
 	public int getSizeThreshold() {
 		return _sizeThreshold;
-	}
-
-	@Override
-	public File getStoreLocation() {
-		if (!ServerDetector.isWebLogic()) {
-			return super.getStoreLocation();
-		}
-
-		try {
-			DeferredFileOutputStream deferredFileOutputStream =
-				(DeferredFileOutputStream)getOutputStream();
-
-			return deferredFileOutputStream.getFile();
-		}
-		catch (IOException ioException) {
-			_log.error(ioException);
-
-			return null;
-		}
 	}
 
 	@Override
