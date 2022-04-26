@@ -27,6 +27,7 @@ import {useSelector} from '../../contexts/StoreContext';
 import {getFrontendTokenValue} from '../../utils/getFrontendTokenValue';
 import getLayoutDataItemTopperUniqueClassName from '../../utils/getLayoutDataItemTopperUniqueClassName';
 import {getResponsiveConfig} from '../../utils/getResponsiveConfig';
+import hasInnerCommonStyles from '../../utils/hasInnerCustomStyles';
 import {isValidSpacingOption} from '../../utils/isValidSpacingOption';
 import FragmentContent from '../fragment-content/FragmentContent';
 import Topper from '../topper/Topper';
@@ -48,12 +49,14 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 	const itemConfig = getResponsiveConfig(item.config, selectedViewportSize);
 	const [setRef, itemElement] = useSetRef(ref);
 
-	const editableValues = useMemo(() => {
-		const fieldNames = [];
-		const fragment = fragmentEntryLinks[item.config.fragmentEntryLinkId];
+	const fragmentEntryLink =
+		fragmentEntryLinks[item.config.fragmentEntryLinkId];
 
-		if (fragment) {
-			fragment.configuration?.fieldSets?.forEach((fieldSet) => {
+	const mappedEditableValues = useMemo(() => {
+		const fieldNames = [];
+
+		if (fragmentEntryLink) {
+			fragmentEntryLink.configuration?.fieldSets?.forEach((fieldSet) => {
 				fieldSet.fields.forEach((field) => {
 					if (FIELD_TYPES.includes(field.type)) {
 						fieldNames.push(field.name);
@@ -63,33 +66,34 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 
 			const filteredFieldNames = fieldNames.filter(
 				(fieldName) =>
-					fragment.editableValues[
+					fragmentEntryLink.editableValues[
 						FREEMARKER_FRAGMENT_ENTRY_PROCESSOR
 					]?.[fieldName]?.classPK
 			);
 
 			return filteredFieldNames.map(
 				(fieldName) =>
-					fragment.editableValues[
+					fragmentEntryLink.editableValues[
 						FREEMARKER_FRAGMENT_ENTRY_PROCESSOR
 					]?.[fieldName] || {}
 			);
 		}
-	}, [item, fragmentEntryLinks]);
+	}, [fragmentEntryLink]);
 
 	useEffect(() => {
-		if (editableValues.length) {
-			const someEditableIsHovered = editableValues.some((editableValue) =>
-				isHovered({
-					editableValue,
-					hoveredItemId,
-					hoveredItemType,
-				})
+		if (mappedEditableValues.length) {
+			const someEditableIsHovered = mappedEditableValues.some(
+				(editableValue) =>
+					isHovered({
+						editableValue,
+						hoveredItemId,
+						hoveredItemType,
+					})
 			);
 
 			setHovered(someEditableIsHovered);
 		}
-	}, [hoveredItemType, hoveredItemId, editableValues]);
+	}, [hoveredItemType, hoveredItemId, mappedEditableValues]);
 
 	const {
 		display,
@@ -114,9 +118,9 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 	return (
 		<Topper
 			className={classNames({
-				[getLayoutDataItemTopperUniqueClassName(
-					item.itemId
-				)]: config.featureFlagLps132571,
+				[getLayoutDataItemTopperUniqueClassName(item.itemId)]:
+					config.featureFlagLps132571 &&
+					!hasInnerCommonStyles(fragmentEntryLink),
 				[`mb-${marginBottom}`]: isValidSpacingOption(marginBottom),
 				[`ml-${marginLeft}`]: isValidSpacingOption(marginLeft),
 				[`mr-${marginRight}`]: isValidSpacingOption(marginRight),

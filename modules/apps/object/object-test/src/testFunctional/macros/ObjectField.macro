@@ -66,6 +66,10 @@ definition {
 		Check.checkToggleSwitch(locator1 = "ObjectField#MANDATORY_TOGGLE");
 	}
 
+	macro closeModal {
+		Click(locator1 = "ObjectField#MODAL_CLOSE_BUTTON");
+	}
+
 	macro save {
 		Click(locator1 = "ObjectField#SAVE_BUTTON");
 

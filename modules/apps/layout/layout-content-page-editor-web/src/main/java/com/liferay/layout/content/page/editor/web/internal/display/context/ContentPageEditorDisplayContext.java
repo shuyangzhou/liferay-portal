@@ -349,6 +349,9 @@ public class ContentPageEditorDisplayContext {
 				"featureFlagLps132571",
 				GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-132571"))
 			).put(
+				"featureFlagLps150277",
+				GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-150277"))
+			).put(
 				"frontendTokens",
 				() -> {
 					LayoutSet layoutSet =
@@ -372,6 +375,11 @@ public class ContentPageEditorDisplayContext {
 				_getResourceURL(
 					"/layout_content_page_editor" +
 						"/get_available_image_configurations")
+			).put(
+				"getAvailableInfoItemFormProviders",
+				_getResourceURL(
+					"/layout_content_page_editor" +
+						"/get_available_info_item_form_providers")
 			).put(
 				"getAvailableListItemRenderersURL",
 				_getResourceURL(

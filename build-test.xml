@@ -7179,7 +7179,8 @@ war.path=${app.server.portal.dir}/</echo>
 
 					<beanshell>
 						<![CDATA[
-							import org.apache.commons.io.FileUtils;
+							import java.nio.file.Files;
+
 							import org.apache.tools.ant.DirectoryScanner;
 
 							public String getCatalinaLogFilesContent() {
@@ -7214,7 +7215,7 @@ war.path=${app.server.portal.dir}/</echo>
 								for (String key : keys) {
 									File file = catalinaLogFiles.get(key);
 
-									sb.append(FileUtils.readFileToString(file));
+									sb.append(new String(Files.readAllBytes(file.toPath())));
 								}
 
 								return sb.toString();
@@ -7276,7 +7277,8 @@ war.path=${app.server.portal.dir}/</echo>
 				<![CDATA[
 					import java.io.File;
 
-					import org.apache.commons.io.FileUtils;
+					import java.nio.file.Files;
+
 					import org.apache.tools.ant.DirectoryScanner;
 
 					public boolean isContainedInCatalinaLogFiles(String searchString) {
@@ -7301,7 +7303,7 @@ war.path=${app.server.portal.dir}/</echo>
 
 							File file = new File(filePath);
 
-							String fileContent = FileUtils.readFileToString(file);
+							String fileContent = new String(Files.readAllBytes(file.toPath()));
 
 							if (fileContent.contains(searchString)) {
 								return true;
@@ -14943,7 +14945,7 @@ diff -y -B -W250 upgraded.sql fresh.sql | expand | grep -E -C40 '^.{123} [|>]( |
 
 				<beanshell>
 					<![CDATA[
-						import org.apache.commons.io.FileUtils;
+						import java.nio.file.Files;
 
 						Set requiredPluginNamesSet = new HashSet();
 
@@ -14975,7 +14977,7 @@ diff -y -B -W250 upgraded.sql fresh.sql | expand | grep -E -C40 '^.{123} [|>]( |
 								try {
 									File file = new File(logFilePath);
 
-									String content = FileUtils.readFileToString(file);
+									String content = new String(Files.readAllBytes(file.toPath()));
 
 									if (content.contains(pluginName + " is available for use") ||
 										content.contains(pluginName + " are available for use")) {
