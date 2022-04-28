@@ -49,7 +49,7 @@ import org.apache.commons.io.output.DeferredFileOutputStream;
 public class LiferayFileItem extends DiskFileItem implements FileItem {
 
 	public static final long THRESHOLD_SIZE = GetterUtil.getLong(
-		PropsUtil.get(LiferayFileItem.class.getName() + ".threshold.size"));
+		PropsUtil.get(FileItem.class.getName() + ".threshold.size"));
 
 	public LiferayFileItem(
 		String fieldName, String contentType, boolean formField,
