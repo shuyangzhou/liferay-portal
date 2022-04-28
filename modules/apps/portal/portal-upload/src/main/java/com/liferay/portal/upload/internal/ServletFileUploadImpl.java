@@ -69,13 +69,13 @@ public class ServletFileUploadImpl implements ServletFileUpload {
 					servletFileUpload.parseRequest(httpServletRequest)) {
 
 				if (fileItem.isFormField() &&
-					(fileItem.getSize() > LiferayFileItem.THRESHOLD_SIZE)) {
+					(fileItem.getSize() > FileItem.THRESHOLD_SIZE)) {
 
 					UploadException uploadException = new UploadException(
 						StringBundler.concat(
 							"The field ", fileItem.getFieldName(),
 							" exceeds its maximum permitted size of ",
-							LiferayFileItem.THRESHOLD_SIZE, " bytes"));
+							FileItem.THRESHOLD_SIZE, " bytes"));
 
 					uploadException.setExceededLiferayFileItemSizeLimit(true);
 
