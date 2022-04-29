@@ -12,17 +12,21 @@
  * details.
  */
 
-package com.liferay.portal.kernel.service.persistence;
+package com.liferay.portal.upload;
+
+import com.liferay.portal.kernel.upload.FileItem;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author     Manuel de la Peña
- * @deprecated As of Mueller (7.2.x), with no direct replacement
+ * @author Shuyang Zhou
  */
-@Deprecated
-public interface CompanyProvider {
+public interface ServletFileUpload {
 
-	public long getCompanyId();
-
-	public String getCompanyIdName();
+	public List<FileItem> parseRequest(
+		HttpServletRequest httpServletRequest, long sizeMax, long fileSizeMax,
+		String location, int fileSizeThreshold);
 
 }

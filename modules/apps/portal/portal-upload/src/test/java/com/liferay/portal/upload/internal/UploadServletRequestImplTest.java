@@ -12,26 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.upload;
+package com.liferay.portal.upload.internal;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;
+import com.liferay.portal.upload.UploadServletRequestImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-
-import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Roberto Díaz
@@ -61,11 +58,9 @@ public class UploadServletRequestImplTest {
 
 	@Test
 	public void testSort() {
-		UploadServletRequestImpl uploadServletRequestImpl =
-			new UploadServletRequestImpl(new MockHttpServletRequest());
-
-		List<FileItem> sortedFileItems = uploadServletRequestImpl.sort(
-			_fileItems);
+		List<FileItem> sortedFileItems = ReflectionTestUtil.invoke(
+			UploadServletRequestImpl.class, "_sort",
+			new Class<?>[] {List.class}, _fileItems);
 
 		Assert.assertEquals(
 			sortedFileItems.toString(), 10, sortedFileItems.size());
@@ -88,11 +83,9 @@ public class UploadServletRequestImplTest {
 
 	@Test
 	public void testSortKeepsOriginalOrderWithSameParameterName() {
-		UploadServletRequestImpl uploadServletRequestImpl =
-			new UploadServletRequestImpl(new MockHttpServletRequest());
-
-		List<FileItem> sortedFileItems = uploadServletRequestImpl.sort(
-			_fileItems);
+		List<FileItem> sortedFileItems = ReflectionTestUtil.invoke(
+			UploadServletRequestImpl.class, "_sort",
+			new Class<?>[] {List.class}, _fileItems);
 
 		FileItem fileItem1 = sortedFileItems.get(1);
 
@@ -108,8 +101,8 @@ public class UploadServletRequestImplTest {
 	}
 
 	private FileItem _getFileItem(String fieldName, long size) {
-		FileItem fileItem = new DiskFileItem(
-			fieldName, null, false, null, 0, null);
+		FileItem fileItem = new LiferayFileItem(
+			fieldName, null, false, null, 0, null, null);
 
 		ReflectionTestUtil.setFieldValue(fileItem, "size", size);
 

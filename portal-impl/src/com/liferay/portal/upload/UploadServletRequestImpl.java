@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperU
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ProgressTracker;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -48,9 +49,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.FileUploadBase;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Zongliang Li
@@ -59,14 +57,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  */
 public class UploadServletRequestImpl
 	extends HttpServletRequestWrapper implements UploadServletRequest {
-
-	public static File getTempDir() {
-		return _getTempDir(null);
-	}
-
-	public static void setTempDir(File tempDir) {
-		_tempDir = tempDir;
-	}
 
 	public UploadServletRequestImpl(HttpServletRequest httpServletRequest) {
 		this(httpServletRequest, 0, null, 0, 0);
@@ -81,171 +71,101 @@ public class UploadServletRequestImpl
 		_fileParameters = new LinkedHashMap<>();
 		_regularParameters = new LinkedHashMap<>();
 
-		LiferayServletRequest liferayServletRequest = null;
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		try {
-			HttpSession httpSession = httpServletRequest.getSession();
+		httpSession.removeAttribute(ProgressTracker.PERCENT);
 
-			httpSession.removeAttribute(ProgressTracker.PERCENT);
+		long uploadServletRequestImplMaxSize =
+			UploadServletRequestConfigurationHelperUtil.getMaxSize();
 
-			ServletFileUpload servletFileUpload;
+		if (maxRequestSize <= 0) {
+			maxRequestSize = uploadServletRequestImplMaxSize;
+		}
 
-			if (fileSizeThreshold > 0) {
-				servletFileUpload = new ServletFileUpload(
-					new LiferayFileItemFactory(
-						_getTempDir(location), fileSizeThreshold));
-			}
-			else {
-				servletFileUpload = new ServletFileUpload(
-					new LiferayFileItemFactory(getTempDir()));
-			}
+		if (maxFileSize <= 0) {
+			maxFileSize = uploadServletRequestImplMaxSize;
+		}
 
-			long uploadServletRequestImplMaxSize =
-				UploadServletRequestConfigurationHelperUtil.getMaxSize();
+		LiferayServletRequest liferayServletRequest = new LiferayServletRequest(
+			httpServletRequest);
 
-			if (maxRequestSize > 0) {
-				servletFileUpload.setSizeMax(maxRequestSize);
-			}
-			else {
-				servletFileUpload.setSizeMax(uploadServletRequestImplMaxSize);
-			}
+		List<FileItem> fileItemList = _servletFileUpload.parseRequest(
+			liferayServletRequest, maxRequestSize, maxFileSize, location,
+			fileSizeThreshold);
 
-			if (maxFileSize > 0) {
-				servletFileUpload.setFileSizeMax(maxFileSize);
-			}
-			else {
-				servletFileUpload.setFileSizeMax(
-					uploadServletRequestImplMaxSize);
-			}
+		if (fileItemList == null) {
+			_liferayServletRequest = null;
 
-			liferayServletRequest = new LiferayServletRequest(
-				httpServletRequest);
+			return;
+		}
 
-			List<org.apache.commons.fileupload.FileItem> fileItems =
-				servletFileUpload.parseRequest(liferayServletRequest);
+		liferayServletRequest.setFinishedReadingOriginalStream(true);
 
-			liferayServletRequest.setFinishedReadingOriginalStream(true);
+		long uploadServletRequestImplSize = 0;
 
-			long uploadServletRequestImplSize = 0;
+		int contentLength = httpServletRequest.getContentLength();
 
-			int contentLength = httpServletRequest.getContentLength();
+		if ((uploadServletRequestImplMaxSize > 0) &&
+			((contentLength == -1) ||
+			 (contentLength > uploadServletRequestImplMaxSize))) {
 
-			if ((uploadServletRequestImplMaxSize > 0) &&
-				((contentLength == -1) ||
-				 (contentLength > uploadServletRequestImplMaxSize))) {
+			fileItemList = _sort(fileItemList);
+		}
 
-				fileItems = sort(fileItems);
-			}
+		for (FileItem fileItem : fileItemList) {
+			if (uploadServletRequestImplMaxSize > 0) {
+				long itemSize = fileItem.getSize();
 
-			for (org.apache.commons.fileupload.FileItem fileItem : fileItems) {
-				LiferayFileItem liferayFileItem = (LiferayFileItem)fileItem;
+				if ((uploadServletRequestImplSize + itemSize) >
+						uploadServletRequestImplMaxSize) {
 
-				if (uploadServletRequestImplMaxSize > 0) {
-					long itemSize = liferayFileItem.getSize();
+					UploadException uploadException = new UploadException(
+						StringBundler.concat(
+							"Request reached the maximum permitted size of ",
+							uploadServletRequestImplMaxSize, " bytes"));
 
-					if ((uploadServletRequestImplSize + itemSize) >
-							uploadServletRequestImplMaxSize) {
+					uploadException.setExceededUploadRequestSizeLimit(true);
 
-						UploadException uploadException = new UploadException(
-							StringBundler.concat(
-								"Request reached the maximum permitted size ",
-								"of ", uploadServletRequestImplMaxSize,
-								" bytes"));
-
-						uploadException.setExceededUploadRequestSizeLimit(true);
-
-						httpServletRequest.setAttribute(
-							WebKeys.UPLOAD_EXCEPTION, uploadException);
-
-						continue;
-					}
-
-					uploadServletRequestImplSize += itemSize;
-				}
-
-				if (liferayFileItem.isFormField()) {
-					liferayFileItem.setString(
-						httpServletRequest.getCharacterEncoding());
-
-					String fieldName = liferayFileItem.getFieldName();
-
-					if (!_regularParameters.containsKey(fieldName)) {
-						_regularParameters.put(
-							fieldName, new ArrayList<String>());
-					}
-
-					List<String> values = _regularParameters.get(fieldName);
-
-					if (liferayFileItem.getSize() >
-							LiferayFileItem.THRESHOLD_SIZE) {
-
-						UploadException uploadException = new UploadException(
-							StringBundler.concat(
-								"The field ", fieldName,
-								" exceeds its maximum permitted size of ",
-								LiferayFileItem.THRESHOLD_SIZE, " bytes"));
-
-						uploadException.setExceededLiferayFileItemSizeLimit(
-							true);
-
-						httpServletRequest.setAttribute(
-							WebKeys.UPLOAD_EXCEPTION, uploadException);
-					}
-
-					values.add(liferayFileItem.getEncodedString());
+					httpServletRequest.setAttribute(
+						WebKeys.UPLOAD_EXCEPTION, uploadException);
 
 					continue;
 				}
 
-				FileItem[] liferayFileItems = _fileParameters.get(
-					liferayFileItem.getFieldName());
+				uploadServletRequestImplSize += itemSize;
+			}
 
-				if (liferayFileItems == null) {
-					liferayFileItems = new LiferayFileItem[] {liferayFileItem};
-				}
-				else {
-					LiferayFileItem[] newLiferayFileItems =
-						new LiferayFileItem[liferayFileItems.length + 1];
+			if (fileItem.isFormField()) {
+				String fieldName = fileItem.getFieldName();
 
-					System.arraycopy(
-						liferayFileItems, 0, newLiferayFileItems, 0,
-						liferayFileItems.length);
-
-					newLiferayFileItems[newLiferayFileItems.length - 1] =
-						liferayFileItem;
-
-					liferayFileItems = newLiferayFileItems;
+				if (!_regularParameters.containsKey(fieldName)) {
+					_regularParameters.put(fieldName, new ArrayList<String>());
 				}
 
-				_fileParameters.put(
-					liferayFileItem.getFieldName(), liferayFileItems);
-			}
-		}
-		catch (Exception exception) {
-			UploadException uploadException = new UploadException(exception);
+				List<String> values = _regularParameters.get(fieldName);
 
-			if (exception instanceof
-					FileUploadBase.FileSizeLimitExceededException) {
+				values.add(fileItem.getString());
 
-				uploadException.setExceededFileSizeLimit(true);
-			}
-			else if (exception instanceof
-						FileUploadBase.SizeLimitExceededException) {
-
-				uploadException.setExceededUploadRequestSizeLimit(true);
+				continue;
 			}
 
-			httpServletRequest.setAttribute(
-				WebKeys.UPLOAD_EXCEPTION, uploadException);
+			FileItem[] fileItems = _fileParameters.get(fileItem.getFieldName());
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
+			if (fileItems == null) {
+				fileItems = new FileItem[] {fileItem};
 			}
-			else if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to parse upload request: " +
-						exception.getMessage());
+			else {
+				FileItem[] newFileItems = new FileItem[fileItems.length + 1];
+
+				System.arraycopy(
+					fileItems, 0, newFileItems, 0, fileItems.length);
+
+				newFileItems[newFileItems.length - 1] = fileItem;
+
+				fileItems = newFileItems;
 			}
+
+			_fileParameters.put(fileItem.getFieldName(), fileItems);
 		}
 
 		_liferayServletRequest = liferayServletRequest;
@@ -608,12 +528,10 @@ public class UploadServletRequestImpl
 		return inputStream;
 	}
 
-	protected List<org.apache.commons.fileupload.FileItem> sort(
-		List<org.apache.commons.fileupload.FileItem> fileItems) {
-
+	private List<FileItem> _sort(List<FileItem> fileItems) {
 		Map<String, GroupedFileItems> groupedFileItemsMap = new HashMap<>();
 
-		for (org.apache.commons.fileupload.FileItem fileItem : fileItems) {
+		for (FileItem fileItem : fileItems) {
 			String fieldName = fileItem.getFieldName();
 
 			GroupedFileItems groupedFileItems = groupedFileItemsMap.get(
@@ -631,8 +549,7 @@ public class UploadServletRequestImpl
 		Set<GroupedFileItems> groupedFileItemsList = new TreeSet<>(
 			groupedFileItemsMap.values());
 
-		List<org.apache.commons.fileupload.FileItem> sortedFileItems =
-			new ArrayList<>();
+		List<FileItem> sortedFileItems = new ArrayList<>();
 
 		for (GroupedFileItems groupedFileItems : groupedFileItemsList) {
 			sortedFileItems.addAll(groupedFileItems.getFileItems());
@@ -641,23 +558,13 @@ public class UploadServletRequestImpl
 		return sortedFileItems;
 	}
 
-	private static File _getTempDir(String configuredTempDir) {
-		if (Validator.isNotNull(configuredTempDir)) {
-			return new File(configuredTempDir);
-		}
-
-		if (_tempDir == null) {
-			_tempDir = new File(
-				UploadServletRequestConfigurationHelperUtil.getTempDir());
-		}
-
-		return _tempDir;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		UploadServletRequestImpl.class);
 
-	private static File _tempDir;
+	private static volatile ServletFileUpload _servletFileUpload =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			ServletFileUpload.class, UploadServletRequestImpl.class,
+			"_servletFileUpload", true);
 
 	private final Map<String, FileItem[]> _fileParameters;
 	private final LiferayServletRequest _liferayServletRequest;
@@ -670,9 +577,7 @@ public class UploadServletRequestImpl
 			_key = key;
 		}
 
-		public void addFileItem(
-			org.apache.commons.fileupload.FileItem fileItem) {
-
+		public void addFileItem(FileItem fileItem) {
 			_fileItems.add(fileItem);
 
 			_fileItemsSize += fileItem.getSize();
@@ -697,7 +602,7 @@ public class UploadServletRequestImpl
 			return -1;
 		}
 
-		public List<org.apache.commons.fileupload.FileItem> getFileItems() {
+		public List<FileItem> getFileItems() {
 			return _fileItems;
 		}
 
@@ -705,8 +610,7 @@ public class UploadServletRequestImpl
 			return _fileItemsSize;
 		}
 
-		private final List<org.apache.commons.fileupload.FileItem> _fileItems =
-			new ArrayList<>();
+		private final List<FileItem> _fileItems = new ArrayList<>();
 		private int _fileItemsSize;
 		private final String _key;
 

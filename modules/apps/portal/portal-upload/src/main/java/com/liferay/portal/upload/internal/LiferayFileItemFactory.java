@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upload;
+package com.liferay.portal.upload.internal;
 
 import java.io.File;
 
@@ -23,15 +23,19 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
  */
 public class LiferayFileItemFactory extends DiskFileItemFactory {
 
-	public static final int DEFAULT_SIZE = 1024;
+	public LiferayFileItemFactory(
+		File tempDir, int sizeThreshold, String encoding) {
 
-	public LiferayFileItemFactory(File tempDir) {
-		this(tempDir, DEFAULT_SIZE);
-	}
-
-	public LiferayFileItemFactory(File tempDir, int sizeThreshold) {
 		_tempDir = tempDir;
-		_sizeThreshold = sizeThreshold;
+
+		if (sizeThreshold > 0) {
+			_sizeThreshold = sizeThreshold;
+		}
+		else {
+			_sizeThreshold = _DEFAULT_SIZE;
+		}
+
+		_encoding = encoding;
 	}
 
 	@Override
@@ -41,9 +45,12 @@ public class LiferayFileItemFactory extends DiskFileItemFactory {
 
 		return new LiferayFileItem(
 			fieldName, contentType, formField, fileName, _sizeThreshold,
-			_tempDir);
+			_tempDir, _encoding);
 	}
 
+	private static final int _DEFAULT_SIZE = 1024;
+
+	private final String _encoding;
 	private final int _sizeThreshold;
 	private final File _tempDir;
 
