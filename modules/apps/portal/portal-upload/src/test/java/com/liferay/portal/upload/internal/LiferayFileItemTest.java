@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upload;
+package com.liferay.portal.upload.internal;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.DependenciesTestUtil;
@@ -115,7 +115,7 @@ public class LiferayFileItemTest {
 			});
 
 		_liferayFileItemFactory = new LiferayFileItemFactory(
-			FileUtil.createTempFolder());
+			FileUtil.createTempFolder(), 0, "UTF-8");
 	}
 
 	@Test
@@ -163,16 +163,6 @@ public class LiferayFileItemTest {
 	}
 
 	@Test
-	public void testGetEncodedStringAfterCreateItem() {
-		LiferayFileItem liferayFileItem = _liferayFileItemFactory.createItem(
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(), false,
-			RandomTestUtil.randomString());
-
-		Assert.assertNotNull(liferayFileItem);
-		Assert.assertNull(liferayFileItem.getEncodedString());
-	}
-
-	@Test
 	public void testGetFileNameExtension() {
 		LiferayFileItem liferayFileItem = _liferayFileItemFactory.createItem(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(), false,
@@ -198,20 +188,7 @@ public class LiferayFileItemTest {
 
 		liferayFileItem.getOutputStream();
 
-		liferayFileItem.setString("UTF-8");
-
-		Assert.assertEquals("", liferayFileItem.getEncodedString());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSetStringWithoutOutputStream() {
-		LiferayFileItem liferayFileItem = _liferayFileItemFactory.createItem(
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(), false,
-			RandomTestUtil.randomString() + ".txt");
-
-		Assert.assertNotNull(liferayFileItem);
-
-		liferayFileItem.setString(RandomTestUtil.randomString());
+		Assert.assertEquals("", liferayFileItem.getString());
 	}
 
 	@Test
@@ -224,9 +201,7 @@ public class LiferayFileItemTest {
 
 		liferayFileItem.write(FileUtil.createTempFile());
 
-		liferayFileItem.setString("UTF-8");
-
-		Assert.assertEquals("", liferayFileItem.getEncodedString());
+		Assert.assertEquals("", liferayFileItem.getString());
 	}
 
 	private static LiferayFileItemFactory _liferayFileItemFactory;
