@@ -22,9 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.util.PropsUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +43,6 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
  * @author Neil Griffin
  */
 public class LiferayFileItem extends DiskFileItem implements FileItem {
-
-	public static final long THRESHOLD_SIZE = GetterUtil.getLong(
-		PropsUtil.get(FileItem.class.getName() + ".threshold.size"));
 
 	public LiferayFileItem(
 		String fieldName, String contentType, boolean formField,
