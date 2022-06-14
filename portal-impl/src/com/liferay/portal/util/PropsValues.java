@@ -1180,9 +1180,6 @@ public class PropsValues {
 	public static final String LIFERAY_HOME = PropsUtil.get(
 		PropsKeys.LIFERAY_HOME);
 
-	public static final String LIFERAY_LIB_GLOBAL_SHARED_DIR = PropsUtil.get(
-		PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR);
-
 	public static final String LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR =
 		PropsUtil.get(PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
 
@@ -2558,6 +2555,10 @@ public class PropsValues {
 
 	public static final String[] VIRTUAL_HOSTS_IGNORE_EXTENSIONS =
 		PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_EXTENSIONS);
+
+	public static final boolean VIRTUAL_HOSTS_STRICT_ACCESS =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.VIRTUAL_HOSTS_STRICT_ACCESS));
 
 	public static final String[] VIRTUAL_HOSTS_VALID_HOSTS = PropsUtil.getArray(
 		PropsKeys.VIRTUAL_HOSTS_VALID_HOSTS);

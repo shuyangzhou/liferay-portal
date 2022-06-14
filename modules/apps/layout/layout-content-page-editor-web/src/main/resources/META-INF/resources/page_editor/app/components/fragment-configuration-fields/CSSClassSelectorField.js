@@ -58,9 +58,10 @@ export default function CSSClassSelectorField({
 		}
 	};
 
-	const onItemClick = (newItem) => {
-		setValue('');
-		setDropdownActive(false);
+	const addItem = (newItem) => {
+		if (!newItem.trim()) {
+			return;
+		}
 
 		if (!items.some((item) => item.value === newItem)) {
 			const nextItems = [...items, {label: newItem, value: newItem}];
@@ -71,6 +72,13 @@ export default function CSSClassSelectorField({
 				nextItems.map((item) => item.value)
 			);
 		}
+	};
+
+	const onItemClick = (newItem) => {
+		setValue('');
+		setDropdownActive(false);
+
+		addItem(newItem);
 
 		// https://github.com/liferay/clay/issues/4915
 
@@ -79,26 +87,42 @@ export default function CSSClassSelectorField({
 
 	return (
 		<>
-			<ClayForm.Group small>
+			<ClayForm.Group
+				className="page-editor__css-class-selector-field"
+				small
+			>
 				<label htmlFor={cssClassesInputId}>
 					{Liferay.Language.get('css-classes')}
 				</label>
 
 				<ClayMultiSelect
-					autocomplete="off"
+					autoComplete="off"
 					id={cssClassesInputId}
 					items={items}
+					onBlur={() => {
+						if (!dropDownActive) {
+							addItem(value);
+							setValue('');
+						}
+					}}
 					onChange={setValue}
 					onFocus={() => {
 						setDropdownActive(false);
+						setValue((previousValue) => previousValue.trim());
 					}}
 					onItemsChange={(items) => {
-						setItems(items);
+						const nextItems = [
+							...new Set(items.map((item) => item.value)),
+						];
 
-						onValueSelect(
-							field.name,
-							items.map((item) => item.value)
+						setItems(
+							nextItems.map((item) => ({
+								label: item,
+								value: item,
+							}))
 						);
+
+						onValueSelect(field.name, nextItems);
 					}}
 					onKeyDown={(event) => {
 						if (event.key === ' ' && value.trim().length > 0) {
@@ -174,6 +198,10 @@ function CSSClassSelectorDropDown({
 		<ClayDropDown.Menu
 			active={active}
 			alignElementRef={multiSelectRef}
+			className="page-editor__css-class-selector-dropdown"
+			containerProps={{
+				className: 'cadmin',
+			}}
 			onKeyDown={onKeyDown}
 			onSetActive={onSetActive}
 			ref={dropdownRef}

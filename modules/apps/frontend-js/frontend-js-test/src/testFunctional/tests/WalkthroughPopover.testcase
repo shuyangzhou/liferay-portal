@@ -47,6 +47,22 @@ definition {
 		}
 	}
 
+	@description = "LPS-154368. Assert component will switch to hotspot mode in the current step when closing popover."
+	@priority = "5"
+	test CanBeClosed {
+		task ("Given click hotspot element") {
+			Click(locator1 = "Walkthrough#HOTSPOT");
+		}
+
+		task ("When Click close icon") {
+			Click(locator1 = "Walkthrough#CLOSE_POPOVER");
+		}
+
+		task ("Then hotspot element is present") {
+			AssertElementPresent(locator1 = "Walkthrough#HOTSPOT");
+		}
+	}
+
 	@description = "LPS-154643. Assert popover mode contains content."
 	@priority = "5"
 	test CanDisplayContent {
@@ -72,6 +88,23 @@ definition {
 			AssertElementPresent(
 				key_title = "Step 1 of 5: Title 1",
 				locator1 = "Walkthrough#POPOVER_TITLE");
+		}
+	}
+
+	@description = "LPS-154641. Assert a dark background overlay can be toggled."
+	@priority = "3"
+	test CanHaveADarkBackgroundOverlay {
+		task ("When click hotspot element") {
+			Click(locator1 = "Walkthrough#HOTSPOT");
+		}
+
+		task ("Then outside the element has a dark background overlay") {
+			AssertElementPresent(locator1 = "Walkthrough#POPOVER_OVERLAY");
+
+			AssertAttributeValue(
+				attribute1 = "fill",
+				locator1 = "Walkthrough#POPOVER_OVERLAY",
+				value1 = "#393a4a");
 		}
 	}
 

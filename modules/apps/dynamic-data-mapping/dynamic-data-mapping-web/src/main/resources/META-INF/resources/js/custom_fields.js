@@ -264,7 +264,7 @@ AUI.add(
 					if (input) {
 						var val = input.val();
 
-						if (/#[A-F\d]{6}/.test(val)) {
+						if (/#[A-F\d]{6}/.test(val) || val === '') {
 							retVal = val;
 						}
 					}

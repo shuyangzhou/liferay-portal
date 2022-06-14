@@ -66,13 +66,18 @@ function getInputCommonConfiguration(configurationValues, formFields) {
 			formFields
 		);
 
-		fields.push({
-			defaultValue: isRequiredField,
-			disabled: isRequiredField,
-			label: Liferay.Language.get('mark-as-required'),
-			name: REQUIRED_CONFIGURATION_KEY,
-			type: 'checkbox',
-		});
+		fields.push(
+			{
+				defaultValue: isRequiredField,
+				disabled: isRequiredField,
+				label: Liferay.Language.get('mark-as-required'),
+				name: REQUIRED_CONFIGURATION_KEY,
+				type: 'checkbox',
+			},
+			{
+				type: 'separator',
+			}
+		);
 	}
 
 	fields.push(
@@ -91,16 +96,16 @@ function getInputCommonConfiguration(configurationValues, formFields) {
 			type: 'text',
 		},
 		{
+			type: 'separator',
+		},
+		{
 			defaultValue: true,
 			label: Liferay.Language.get('show-help-text'),
 			name: SHOW_HELP_TEXT_CONFIGURATION_KEY,
 			type: 'checkbox',
 			typeOptions: {displayType: 'toggle'},
-		}
-	);
-
-	if (configurationValues[SHOW_HELP_TEXT_CONFIGURATION_KEY] !== false) {
-		fields.push({
+		},
+		{
 			defaultValue: '',
 			label: Liferay.Language.get('help-text'),
 			localizable: true,
@@ -112,8 +117,11 @@ function getInputCommonConfiguration(configurationValues, formFields) {
 					'guide-your-users-to-fill-in-the-field-by-adding-help-text-here'
 				),
 			},
-		});
-	}
+		},
+		{
+			type: 'separator',
+		}
+	);
 
 	return fields;
 }
@@ -382,8 +390,8 @@ function FormInputMappingOptions({configurationValues, form, onValueSelect}) {
 					className={classNames(
 						'page-editor__mapping-panel__type-label',
 						{
-							'mb-0': subtype,
-							'mb-3': !subtype,
+							'mb-1': subtype,
+							'mb-4': !subtype,
 						}
 					)}
 				>
@@ -396,7 +404,7 @@ function FormInputMappingOptions({configurationValues, form, onValueSelect}) {
 			)}
 
 			{subtype && (
-				<p className="mb-3 page-editor__mapping-panel__type-label">
+				<p className="mb-4 page-editor__mapping-panel__type-label">
 					<span className="mr-1">
 						{Liferay.Language.get('subtype')}:
 					</span>

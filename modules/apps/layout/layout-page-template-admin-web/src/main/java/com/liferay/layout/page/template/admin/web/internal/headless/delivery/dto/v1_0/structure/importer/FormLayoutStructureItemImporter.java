@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.util.PropsUtil;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -59,6 +61,16 @@ public class FormLayoutStructureItemImporter
 
 		if (definitionMap == null) {
 			return formStyledLayoutStructureItem;
+		}
+
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-147511")) &&
+			definitionMap.containsKey("cssClasses")) {
+
+			List<String> cssClasses = (List<String>)definitionMap.get(
+				"cssClasses");
+
+			formStyledLayoutStructureItem.setCssClasses(
+				new HashSet<>(cssClasses));
 		}
 
 		Map<String, Object> sourceMap = (Map<String, Object>)definitionMap.get(

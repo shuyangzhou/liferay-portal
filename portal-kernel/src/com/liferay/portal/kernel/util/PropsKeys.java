@@ -1414,9 +1414,6 @@ public interface PropsKeys {
 
 	public static final String LIFERAY_HOME = "liferay.home";
 
-	public static final String LIFERAY_LIB_GLOBAL_SHARED_DIR =
-		"liferay.lib.global.shared.dir";
-
 	public static final String LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR =
 		"liferay.shielded.container.lib.portal.dir";
 
@@ -2950,6 +2947,9 @@ public interface PropsKeys {
 
 	public static final String VIRTUAL_HOSTS_IGNORE_PATHS =
 		"virtual.hosts.ignore.paths";
+
+	public static final String VIRTUAL_HOSTS_STRICT_ACCESS =
+		"virtual.hosts.strict.access";
 
 	public static final String VIRTUAL_HOSTS_VALID_HOSTS =
 		"virtual.hosts.valid.hosts";

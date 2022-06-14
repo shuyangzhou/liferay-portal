@@ -63,10 +63,12 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsUtil;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -116,6 +118,16 @@ public class FragmentLayoutStructureItemImporter
 
 		if (definitionMap == null) {
 			return fragmentStyledLayoutStructureItem;
+		}
+
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-147511")) &&
+			definitionMap.containsKey("cssClasses")) {
+
+			List<String> cssClasses = (List<String>)definitionMap.get(
+				"cssClasses");
+
+			fragmentStyledLayoutStructureItem.setCssClasses(
+				new HashSet<>(cssClasses));
 		}
 
 		Map<String, Object> fragmentStyleMap =

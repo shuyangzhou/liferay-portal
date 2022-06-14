@@ -70,7 +70,13 @@ function appendXMLActions(
 	}
 
 	if (hasAction) {
-		const {description, executionType, priority, script} = actions;
+		const {
+			description,
+			executionType,
+			priority,
+			script,
+			scriptLanguage,
+		} = actions;
 
 		const xmlAction = XMLUtil.createObj(actionNodeName || 'action');
 
@@ -85,7 +91,12 @@ function appendXMLActions(
 				buffer.push(XMLUtil.create('script', cdata(script[index])));
 			}
 
-			buffer.push(XMLUtil.create('scriptLanguage', DEFAULT_LANGUAGE));
+			buffer.push(
+				XMLUtil.create(
+					'scriptLanguage',
+					scriptLanguage || DEFAULT_LANGUAGE
+				)
+			);
 
 			if (isValidValue(priority, index)) {
 				buffer.push(XMLUtil.create('priority', priority[index]));
@@ -229,13 +240,13 @@ function appendXMLAssignments(
 		else if (assignmentType === 'scriptedRecipient') {
 			const xmlScriptedRecipient = XMLUtil.createObj('scriptedRecipient');
 
-			dataAssignments.script.forEach((item, index) => {
+			dataAssignments.script.forEach((item) => {
 				buffer.push(
 					xmlScriptedRecipient.open,
 					XMLUtil.create('script', cdata(item)),
 					XMLUtil.create(
 						'scriptLanguage',
-						dataAssignments.scriptLanguage[index]
+						dataAssignments.scriptLanguage
 					),
 					xmlScriptedRecipient.close
 				);
@@ -552,6 +563,7 @@ function serializeDefinition(
 		const id = item.id;
 		const initial = item.type === 'start';
 		const script = item.data?.script;
+		const scriptLanguage = item.data?.scriptLanguage;
 		let xmlType = item.type;
 
 		if (xmlType === 'start' || xmlType === 'end') {
@@ -611,7 +623,12 @@ function serializeDefinition(
 		}
 
 		if (xmlType === 'condition') {
-			buffer.push(XMLUtil.create('scriptLanguage', DEFAULT_LANGUAGE));
+			buffer.push(
+				XMLUtil.create(
+					'scriptLanguage',
+					scriptLanguage || DEFAULT_LANGUAGE
+				)
+			);
 		}
 
 		const nodeTransitions = transitions.filter(

@@ -60,12 +60,17 @@ definition {
 
 		Portlet.addPG(portletName = "Documents and Media");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
+		Navigator.gotoPage(pageName = "Documents and Media Page");
+
 		DMNavigator.gotoAddRepositoryPG();
 
 		DMRepository.edit(dmRepositoryName = "Sharepoint Repository Name");
 
 		DMRepository.addSharepoint(
 			dmRepositoryLibraryName = "Documents",
+			dmRepositoryLibraryPath = "Shared Documents",
 			dmRepositoryName = "Sharepoint",
 			dmRepositorySiteURL = "http://${sharepointVmHostName}",
 			dmServerVersion = "2013");

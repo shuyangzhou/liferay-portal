@@ -19,7 +19,13 @@ import com.liferay.headless.delivery.dto.v1_0.FragmentStyle;
 import com.liferay.headless.delivery.dto.v1_0.FragmentViewport;
 import com.liferay.headless.delivery.dto.v1_0.PageWidgetInstanceDefinition;
 import com.liferay.headless.delivery.internal.dto.v1_0.mapper.WidgetInstanceMapper;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsUtil;
+
+import java.util.Set;
 
 /**
  * @author Jürgen Kappler
@@ -28,7 +34,7 @@ import com.liferay.portal.kernel.util.Validator;
 public class PageWidgetInstanceDefinitionUtil {
 
 	public static PageWidgetInstanceDefinition toPageWidgetInstanceDefinition(
-		FragmentEntryLink fragmentEntryLink,
+		Set<String> cssClassesSet, FragmentEntryLink fragmentEntryLink,
 		FragmentStyle pageWidgetInstanceDefinitionFragmentStyle,
 		FragmentViewport[] pageWidgetInstanceDefinitionFragmentViewports,
 		String portletId, WidgetInstanceMapper widgetInstanceMapper) {
@@ -44,6 +50,18 @@ public class PageWidgetInstanceDefinitionUtil {
 					pageWidgetInstanceDefinitionFragmentViewports;
 				widgetInstance = widgetInstanceMapper.getWidgetInstance(
 					fragmentEntryLink, portletId);
+
+				setCssClasses(
+					() -> {
+						if (!GetterUtil.getBoolean(
+								PropsUtil.get("feature.flag.LPS-147511")) ||
+							SetUtil.isEmpty(cssClassesSet)) {
+
+							return null;
+						}
+
+						return ArrayUtil.toStringArray(cssClassesSet);
+					});
 			}
 		};
 	}

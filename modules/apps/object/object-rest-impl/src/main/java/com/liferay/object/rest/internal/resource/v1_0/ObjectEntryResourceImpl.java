@@ -40,6 +40,7 @@ import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
@@ -171,30 +172,12 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
 
-		for (ObjectEntry item : page.getItems()) {
-			Map<String, Map<String, String>> actions = item.getActions();
-
-			for (Map.Entry<String, Map<String, String>> entry :
-					actions.entrySet()) {
-
-				Map<String, String> map = entry.getValue();
-
-				String href = map.get("href");
-
-				map.put(
-					"href",
-					StringUtil.replace(
-						href,
-						StringUtil.lowerCaseFirstLetter(
-							_objectDefinition.getPluralLabel(
-								contextAcceptLanguage.getPreferredLocale())),
-						StringUtil.lowerCaseFirstLetter(
-							objectDefinition2.getPluralLabel(
-								contextAcceptLanguage.getPreferredLocale()))));
-			}
-		}
-
-		return page;
+		return Page.of(
+			page.getActions(),
+			TransformUtil.transform(
+				page.getItems(),
+				objectEntry -> _getRelatedObjectEntry(
+					objectDefinition2, objectEntry)));
 	}
 
 	@Override
@@ -332,13 +315,22 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			Long relatedObjectEntryId)
 		throws Exception {
 
+		ObjectRelationship objectRelationship =
+			_objectRelationshipService.getObjectRelationship(
+				_objectDefinition.getObjectDefinitionId(),
+				objectRelationshipName);
+
 		ObjectEntryManager objectEntryManager =
 			_objectEntryManagerServicesTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
-		return objectEntryManager.addObjectRelationshipMappingTableValues(
-			_getDTOConverterContext(currentObjectEntryId), _objectDefinition,
-			objectRelationshipName, currentObjectEntryId, relatedObjectEntryId);
+		return _getRelatedObjectEntry(
+			_objectDefinitionLocalService.getObjectDefinition(
+				objectRelationship.getObjectDefinitionId2()),
+			objectEntryManager.addObjectRelationshipMappingTableValues(
+				_getDTOConverterContext(currentObjectEntryId),
+				_objectDefinition, objectRelationshipName, currentObjectEntryId,
+				relatedObjectEntryId));
 	}
 
 	@Override
@@ -413,6 +405,33 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			contextHttpServletRequest, objectEntryId,
 			contextAcceptLanguage.getPreferredLocale(), contextUriInfo,
 			contextUser);
+	}
+
+	private ObjectEntry _getRelatedObjectEntry(
+		ObjectDefinition objectDefinition, ObjectEntry objectEntry) {
+
+		Map<String, Map<String, String>> actions = objectEntry.getActions();
+
+		for (Map.Entry<String, Map<String, String>> entry :
+				actions.entrySet()) {
+
+			Map<String, String> map = entry.getValue();
+
+			String href = map.get("href");
+
+			map.put(
+				"href",
+				StringUtil.replace(
+					href,
+					StringUtil.lowerCaseFirstLetter(
+						_objectDefinition.getPluralLabel(
+							contextAcceptLanguage.getPreferredLocale())),
+					StringUtil.lowerCaseFirstLetter(
+						objectDefinition.getPluralLabel(
+							contextAcceptLanguage.getPreferredLocale()))));
+		}
+
+		return objectEntry;
 	}
 
 	private void _loadObjectDefinition(Map<String, Serializable> parameters)

@@ -98,6 +98,11 @@ DeserializeUtil.prototype = {
 					script: node.script,
 				};
 
+				if (type === 'condition') {
+					data.scriptLanguage =
+						node.scriptLanguage || DEFAULT_LANGUAGE;
+				}
+
 				if (type === 'task') {
 					node.assignments?.forEach((assignment) => {
 						var roleTypes = assignment['role-type'];

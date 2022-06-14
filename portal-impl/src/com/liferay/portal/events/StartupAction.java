@@ -40,6 +40,9 @@ import com.liferay.portal.util.PropsValues;
 import java.io.File;
 import java.io.InputStream;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.Arrays;
 
 import org.osgi.framework.BundleContext;
@@ -70,18 +73,22 @@ public class StartupAction extends SimpleAction {
 		// Check Tomcat's lib/ext directory
 
 		if (ServerDetector.isTomcat()) {
-			File libExtDir = new File(
-				PropsValues.LIFERAY_LIB_GLOBAL_SHARED_DIR, "ext");
+			Path libPath = Paths.get(
+				System.getProperty("catalina.base"), "lib");
 
-			if (libExtDir.exists()) {
-				File[] extJarFiles = libExtDir.listFiles();
+			Path extPath = libPath.resolve("ext");
+
+			File extDir = extPath.toFile();
+
+			if (extDir.exists()) {
+				File[] extJarFiles = extDir.listFiles();
 
 				if (extJarFiles.length != 0) {
 					_log.error(
 						StringBundler.concat(
 							"Files ", Arrays.toString(extJarFiles), " in ",
-							libExtDir, " are no longer read. Move them to ",
-							PropsValues.LIFERAY_LIB_GLOBAL_SHARED_DIR, " or ",
+							extDir, " are no longer read. Move them to ",
+							libPath, " or ",
 							PropsValues.
 								LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
 							"."));

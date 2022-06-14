@@ -150,18 +150,6 @@ public class CollectionLayoutStructureItemImporter
 		collectionStyledLayoutStructureItem.setTemplateKey(
 			(String)definitionMap.get("templateKey"));
 
-		Map<String, Object> fragmentStyleMap =
-			(Map<String, Object>)definitionMap.get("fragmentStyle");
-
-		if (fragmentStyleMap != null) {
-			JSONObject jsonObject = JSONUtil.put(
-				"styles",
-				toStylesJSONObject(
-					layoutStructureItemImporterContext, fragmentStyleMap));
-
-			collectionStyledLayoutStructureItem.updateItemConfig(jsonObject);
-		}
-
 		if (definitionMap.containsKey("fragmentViewports")) {
 			List<Map<String, Object>> fragmentViewports =
 				(List<Map<String, Object>>)definitionMap.get(

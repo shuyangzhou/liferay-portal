@@ -22,7 +22,13 @@ import com.liferay.headless.delivery.dto.v1_0.PageFormDefinition;
 import com.liferay.layout.util.structure.FormStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.util.PropsUtil;
+
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -59,6 +65,25 @@ public class FormLayoutStructureItemMapper
 						};
 						indexed = formStyledLayoutStructureItem.isIndexed();
 
+						setCssClasses(
+							() -> {
+								if (!GetterUtil.getBoolean(
+										PropsUtil.get(
+											"feature.flag.LPS-147511"))) {
+
+									return null;
+								}
+
+								Set<String> cssClasses =
+									formStyledLayoutStructureItem.
+										getCssClasses();
+
+								if (SetUtil.isEmpty(cssClasses)) {
+									return null;
+								}
+
+								return ArrayUtil.toStringArray(cssClasses);
+							});
 						setFragmentStyle(
 							() -> {
 								JSONObject itemConfigJSONObject =

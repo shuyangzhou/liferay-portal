@@ -34,9 +34,14 @@ import com.liferay.layout.page.template.util.ShadowConverter;
 import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsUtil;
+
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -72,6 +77,25 @@ public class ContainerLayoutStructureItemMapper
 							containerStyledLayoutStructureItem.isIndexed();
 						layout = _toLayout(containerStyledLayoutStructureItem);
 
+						setCssClasses(
+							() -> {
+								if (!GetterUtil.getBoolean(
+										PropsUtil.get(
+											"feature.flag.LPS-147511"))) {
+
+									return null;
+								}
+
+								Set<String> cssClasses =
+									containerStyledLayoutStructureItem.
+										getCssClasses();
+
+								if (SetUtil.isEmpty(cssClasses)) {
+									return null;
+								}
+
+								return ArrayUtil.toStringArray(cssClasses);
+							});
 						setFragmentStyle(
 							() -> {
 								JSONObject itemConfigJSONObject =

@@ -100,17 +100,6 @@ public class CollectionLayoutStructureItemMapper
 						setCollectionViewports(
 							_getCollectionViewports(
 								collectionStyledLayoutStructureItem));
-						setFragmentStyle(
-							() -> {
-								JSONObject itemConfigJSONObject =
-									collectionStyledLayoutStructureItem.
-										getItemConfigJSONObject();
-
-								return toFragmentStyle(
-									itemConfigJSONObject.getJSONObject(
-										"styles"),
-									saveMappingConfiguration);
-							});
 						setFragmentViewports(
 							() -> getFragmentViewPorts(
 								collectionStyledLayoutStructureItem.

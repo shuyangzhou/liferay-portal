@@ -323,6 +323,7 @@
 		<exception>DuplicateFragmentEntry</exception>
 		<exception>DuplicateFragmentEntryKey</exception>
 		<exception>FragmentCollectionName</exception>
+		<exception>FragmentCompositionDescription</exception>
 		<exception>FragmentCompositionName</exception>
 		<exception>FragmentEntryConfiguration</exception>
 		<exception>FragmentEntryContent</exception>

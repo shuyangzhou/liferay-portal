@@ -22,7 +22,9 @@ import com.liferay.layout.util.structure.RowStyledLayoutStructureItem;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.util.PropsUtil;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,6 +59,16 @@ public class RowLayoutStructureItemImporter
 
 		if (definitionMap == null) {
 			return rowStyledLayoutStructureItem;
+		}
+
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-147511")) &&
+			definitionMap.containsKey("cssClasses")) {
+
+			List<String> cssClasses = (List<String>)definitionMap.get(
+				"cssClasses");
+
+			rowStyledLayoutStructureItem.setCssClasses(
+				new HashSet<>(cssClasses));
 		}
 
 		rowStyledLayoutStructureItem.setGutters(
