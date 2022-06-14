@@ -559,7 +559,10 @@ public class BaseAutoDeployer implements AutoDeployer {
 						throws IOException {
 
 						if (dirPath.equals(destinationPath)) {
-							return FileVisitResult.SKIP_SUBTREE;
+							throw new Error(
+								"Self copying for " + dirPath +
+									", caused by source : " + source +
+									", destination : " + destination);
 						}
 
 						Files.createDirectories(
