@@ -50,6 +50,9 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DelegateProxyFactory;
@@ -301,7 +304,18 @@ public class PortletTracker
 						return null;
 					});
 
-				_serviceTracker.open();
+				try {
+					TransactionInvokerUtil.invoke(
+						_transactionConfig,
+						() -> {
+							_serviceTracker.open();
+
+							return null;
+						});
+				}
+				catch (Throwable throwable) {
+					throw new Exception(throwable);
+				}
 
 				return null;
 			});
@@ -1458,6 +1472,9 @@ public class PortletTracker
 				String.valueOf(WindowState.MAXIMIZED),
 				String.valueOf(WindowState.MINIMIZED),
 				String.valueOf(WindowState.NORMAL)));
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	@Reference
 	private BeanProperties _beanProperties;
