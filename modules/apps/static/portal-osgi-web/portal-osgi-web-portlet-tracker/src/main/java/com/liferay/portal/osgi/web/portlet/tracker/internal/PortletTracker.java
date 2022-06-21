@@ -94,9 +94,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 import javax.portlet.Portlet;
@@ -279,9 +276,6 @@ public class PortletTracker
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_executorService = _portalExecutorManager.getPortalExecutor(
-			PortletTracker.class.getName());
-
 		_serviceTracker = new ServiceTracker<>(
 			_bundleContext, Portlet.class, this);
 
@@ -338,8 +332,6 @@ public class PortletTracker
 	@Deactivate
 	protected void deactivate() {
 		_serviceTracker.close();
-
-		_executorService.shutdownNow();
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Deactivated");
@@ -1354,34 +1346,12 @@ public class PortletTracker
 			return;
 		}
 
-		List<Future<Void>> futures = new ArrayList<>();
-
 		List<Company> companies = _companyLocalService.getCompanies(false);
 
 		for (Company company : companies) {
-			futures.add(
-				_executorService.submit(
-					() -> {
-						_portletLocalService.deployRemotePortlet(
-							new long[] {company.getCompanyId()}, portletModel,
-							ArrayUtil.toStringArray(categoryNames), false,
-							false);
-
-						return null;
-					}));
-		}
-
-		for (Future<Void> future : futures) {
-			try {
-				future.get();
-			}
-			catch (Exception exception) {
-				if (exception instanceof ExecutionException) {
-					throw new PortalException(exception.getCause());
-				}
-
-				throw new PortalException(exception);
-			}
+			_portletLocalService.deployRemotePortlet(
+				new long[] {company.getCompanyId()}, portletModel,
+				ArrayUtil.toStringArray(categoryNames), false, false);
 		}
 
 		_portletLocalService.clearCache();
@@ -1487,7 +1457,6 @@ public class PortletTracker
 	@Reference
 	private DelegateProxyFactory _delegateProxyFactory;
 
-	private ExecutorService _executorService;
 	private String _httpServiceEndpoint = StringPool.BLANK;
 
 	@Reference(
