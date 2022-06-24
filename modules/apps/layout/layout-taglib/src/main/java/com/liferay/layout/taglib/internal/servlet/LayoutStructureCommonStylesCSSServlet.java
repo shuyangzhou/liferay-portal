@@ -18,8 +18,9 @@ import com.liferay.frontend.token.definition.FrontendToken;
 import com.liferay.frontend.token.definition.FrontendTokenDefinition;
 import com.liferay.frontend.token.definition.FrontendTokenDefinitionRegistry;
 import com.liferay.frontend.token.definition.FrontendTokenMapping;
+import com.liferay.layout.page.template.util.LayoutStructureUtil;
 import com.liferay.layout.responsive.ViewportSize;
-import com.liferay.layout.taglib.internal.util.LayoutStructureUtil;
+import com.liferay.layout.taglib.internal.util.SegmentsExperienceUtil;
 import com.liferay.layout.util.structure.CommonStylesUtil;
 import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
@@ -110,7 +111,9 @@ public class LayoutStructureCommonStylesCSSServlet extends HttpServlet {
 
 		LayoutStructure layoutStructure =
 			LayoutStructureUtil.getLayoutStructure(
-				httpServletRequest, layout.getPlid());
+				layout.getPlid(),
+				SegmentsExperienceUtil.getSegmentsExperienceId(
+					httpServletRequest));
 
 		if (layoutStructure == null) {
 			httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);

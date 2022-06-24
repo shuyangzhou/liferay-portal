@@ -23,12 +23,21 @@ import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.creator.InfoItemCreator;
+import com.liferay.layout.page.template.util.LayoutStructureUtil;
+import com.liferay.layout.util.structure.FormStyledLayoutStructureItem;
+import com.liferay.layout.util.structure.LayoutStructure;
+import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.portal.kernel.captcha.CaptchaException;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.LayoutService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -64,6 +73,10 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 
 		String className = _portal.getClassName(
 			ParamUtil.getLong(originalHttpServletRequest, "classNameId"));
+		String formItemId = ParamUtil.getString(
+			httpServletRequest, "formItemId");
+
+		String redirect = null;
 
 		try {
 			CaptchaUtil.check(httpServletRequest);
@@ -89,6 +102,17 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 				).infoItemReference(
 					new InfoItemReference(className, 0)
 				).build());
+
+			LayoutStructure layoutStructure = _getLayoutStructure(
+				httpServletRequest);
+
+			redirect = _getRedirect(
+				_getFormStyledLayoutStructureItem(formItemId, layoutStructure),
+				themeDisplay);
+
+			if (redirect == null) {
+				SessionMessages.add(originalHttpServletRequest, formItemId);
+			}
 		}
 		catch (CaptchaException captchaException) {
 			if (_log.isDebugEnabled()) {
@@ -96,8 +120,7 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			}
 
 			SessionErrors.add(
-				originalHttpServletRequest,
-				ParamUtil.getString(httpServletRequest, "formItemId"),
+				originalHttpServletRequest, formItemId,
 				new InfoFormValidationException.InvalidCaptcha());
 		}
 		catch (InfoFormValidationException infoFormValidationException) {
@@ -106,8 +129,7 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			}
 
 			SessionErrors.add(
-				originalHttpServletRequest,
-				ParamUtil.getString(httpServletRequest, "formItemId"),
+				originalHttpServletRequest, formItemId,
 				infoFormValidationException);
 
 			if (Validator.isNotNull(
@@ -125,9 +147,7 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			}
 
 			SessionErrors.add(
-				originalHttpServletRequest,
-				ParamUtil.getString(httpServletRequest, "formItemId"),
-				infoFormException);
+				originalHttpServletRequest, formItemId, infoFormException);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -141,13 +161,14 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			}
 
 			SessionErrors.add(
-				originalHttpServletRequest,
-				ParamUtil.getString(httpServletRequest, "formItemId"),
-				infoFormException);
+				originalHttpServletRequest, formItemId, infoFormException);
 		}
 
-		httpServletResponse.sendRedirect(
-			httpServletRequest.getHeader(HttpHeaders.REFERER));
+		if (redirect == null) {
+			redirect = httpServletRequest.getHeader(HttpHeaders.REFERER);
+		}
+
+		httpServletResponse.sendRedirect(redirect);
 
 		return null;
 	}
@@ -159,6 +180,109 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			new InfoRequestFieldValuesProviderHelper(_infoItemServiceTracker);
 	}
 
+	private FormStyledLayoutStructureItem _getFormStyledLayoutStructureItem(
+			String formItemId, LayoutStructure layoutStructure)
+		throws Exception {
+
+		LayoutStructureItem formLayoutStructureItem =
+			layoutStructure.getLayoutStructureItem(formItemId);
+
+		if ((formLayoutStructureItem == null) ||
+			!(formLayoutStructureItem instanceof
+				FormStyledLayoutStructureItem)) {
+
+			throw new InfoFormException();
+		}
+
+		return (FormStyledLayoutStructureItem)formLayoutStructureItem;
+	}
+
+	private String _getLayoutRedirect(
+			JSONObject successMessageJSONObject, ThemeDisplay themeDisplay)
+		throws Exception {
+
+		long groupId = successMessageJSONObject.getLong("groupId");
+		boolean privateLayout = successMessageJSONObject.getBoolean(
+			"privateLayout");
+		long layoutId = successMessageJSONObject.getLong("layoutId");
+
+		Layout layout = _layoutService.fetchLayout(
+			groupId, privateLayout, layoutId);
+
+		if (layout != null) {
+			return _portal.getLayoutURL(layout, themeDisplay);
+		}
+
+		return null;
+	}
+
+	private LayoutStructure _getLayoutStructure(
+			HttpServletRequest httpServletRequest)
+		throws InfoFormException {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		LayoutStructure layoutStructure =
+			LayoutStructureUtil.getLayoutStructure(
+				ParamUtil.getLong(
+					httpServletRequest, "plid", themeDisplay.getPlid()),
+				ParamUtil.getLong(
+					httpServletRequest, "segmentsExperienceId",
+					themeDisplay.getPlid()));
+
+		if (layoutStructure == null) {
+			throw new InfoFormException();
+		}
+
+		return layoutStructure;
+	}
+
+	private String _getRedirect(
+			FormStyledLayoutStructureItem formStyledLayoutStructureItem,
+			ThemeDisplay themeDisplay)
+		throws Exception {
+
+		JSONObject successMessageJSONObject =
+			formStyledLayoutStructureItem.getSuccessMessageJSONObject();
+
+		if (successMessageJSONObject == null) {
+			return null;
+		}
+
+		String redirect = null;
+
+		if (successMessageJSONObject.has("url")) {
+			redirect = _getURLRedirect(themeDisplay, successMessageJSONObject);
+		}
+		else if (successMessageJSONObject.has("layoutUuid")) {
+			redirect = _getLayoutRedirect(
+				successMessageJSONObject, themeDisplay);
+		}
+
+		return redirect;
+	}
+
+	private String _getURLRedirect(
+			ThemeDisplay themeDisplay, JSONObject successMessageJSONObject)
+		throws Exception {
+
+		JSONObject urlJSONObject = successMessageJSONObject.getJSONObject(
+			"url");
+
+		String redirect = urlJSONObject.getString(themeDisplay.getLanguageId());
+
+		if (Validator.isNull(redirect)) {
+			String siteDefaultLanguageId = LanguageUtil.getLanguageId(
+				_portal.getSiteDefaultLocale(themeDisplay.getScopeGroupId()));
+
+			redirect = urlJSONObject.getString(siteDefaultLanguageId);
+		}
+
+		return redirect;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AddInfoItemStrutsAction.class);
 
@@ -167,6 +291,9 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 
 	private volatile InfoRequestFieldValuesProviderHelper
 		_infoRequestFieldValuesProviderHelper;
+
+	@Reference
+	private LayoutService _layoutService;
 
 	@Reference
 	private Portal _portal;

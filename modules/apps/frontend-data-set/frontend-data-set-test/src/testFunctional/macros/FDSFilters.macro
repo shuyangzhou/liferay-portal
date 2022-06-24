@@ -1,26 +1,30 @@
 definition {
 
-	macro enableStatusFilters {
-		Click(
-			key_filter = "Status",
-			locator1 = "FrontendDataSet#FILTER_OPTION");
+	macro disableStatusFilters {
+		if (IsElementPresent(key_filter = "Status", locator1 = "FrontendDataSet#FILTER_OPTION")) {
+			Click(
+				key_filter = "Status",
+				locator1 = "FrontendDataSet#FILTER_OPTION");
+		}
 
 		for (var status : list "${key_status}") {
-			if ("${status}" == "Approved") {
-				Check.checkNotVisibleNoErrors(
-					key_status = "Approved",
-					locator1 = "FrontendDataSet#STATUS_FILTER_CHECKBOX");
-			}
-			else if ("${status}" == "Draft") {
-				Check.checkNotVisibleNoErrors(
-					key_status = "Draft",
-					locator1 = "FrontendDataSet#STATUS_FILTER_CHECKBOX");
-			}
-			else if ("${status}" == "Pending") {
-				Check.checkNotVisibleNoErrors(
-					key_status = "Pending",
-					locator1 = "FrontendDataSet#STATUS_FILTER_CHECKBOX");
-			}
+			Uncheck.uncheckNotVisible(
+				key_status = "${status}",
+				locator1 = "FrontendDataSet#STATUS_FILTER_CHECKBOX");
+		}
+	}
+
+	macro enableStatusFilters {
+		if (IsElementPresent(key_filter = "Status", locator1 = "FrontendDataSet#FILTER_OPTION")) {
+			Click(
+				key_filter = "Status",
+				locator1 = "FrontendDataSet#FILTER_OPTION");
+		}
+
+		for (var status : list "${key_status}") {
+			Check.checkNotVisibleNoErrors(
+				key_status = "${status}",
+				locator1 = "FrontendDataSet#STATUS_FILTER_CHECKBOX");
 		}
 	}
 

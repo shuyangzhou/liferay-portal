@@ -12,13 +12,12 @@
  * details.
  */
 
-package com.liferay.layout.taglib.internal.util;
+package com.liferay.layout.page.template.util;
 
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
-import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.layout.util.structure.DropZoneLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
@@ -27,11 +26,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.segments.manager.SegmentsExperienceManager;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Víctor Galán
@@ -39,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LayoutStructureUtil {
 
 	public static LayoutStructure getLayoutStructure(
-		HttpServletRequest httpServletRequest, long plid) {
+		long plid, long segmentsExperienceId) {
 
 		try {
 			Layout layout = _getLayout(plid);
@@ -50,7 +45,7 @@ public class LayoutStructureUtil {
 						layout.getGroupId(), layout.getPlid(), true);
 
 			String data = layoutPageTemplateStructure.getData(
-				getSegmentsExperienceId(httpServletRequest));
+				segmentsExperienceId);
 
 			if (Validator.isNull(data)) {
 				return null;
@@ -70,24 +65,6 @@ public class LayoutStructureUtil {
 
 			return null;
 		}
-	}
-
-	public static long getSegmentsExperienceId(
-		HttpServletRequest httpServletRequest) {
-
-		long selectedSegmentsExperienceId = ParamUtil.getLong(
-			httpServletRequest, "segmentsExperienceId", -1);
-
-		if (selectedSegmentsExperienceId != -1) {
-			return selectedSegmentsExperienceId;
-		}
-
-		SegmentsExperienceManager segmentsExperienceManager =
-			new SegmentsExperienceManager(
-				ServletContextUtil.getSegmentsExperienceLocalService());
-
-		return segmentsExperienceManager.getSegmentsExperienceId(
-			httpServletRequest);
 	}
 
 	private static Layout _getLayout(long plid) {

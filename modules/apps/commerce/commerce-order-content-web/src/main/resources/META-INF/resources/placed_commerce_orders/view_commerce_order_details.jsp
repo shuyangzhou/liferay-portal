@@ -348,12 +348,12 @@ if (commerceOrder != null) {
 					<dd class="text-right"><%= HtmlUtil.escape(subtotalCommerceMoney.format(locale)) %></dd>
 
 					<c:if test="<%= (subtotalCommerceDiscountValue != null) && (BigDecimal.ZERO.compareTo(subtotalCommerceDiscountValue.getDiscountPercentage()) < 0) %>">
+						<dt><liferay-ui:message key="subtotal-discount" /></dt>
 
 						<%
 						CommerceMoney subtotalDiscountAmountCommerceMoney = subtotalCommerceDiscountValue.getDiscountAmount();
 						%>
 
-						<dt><liferay-ui:message key="subtotal-discount" /></dt>
 						<dd class="text-right"><%= HtmlUtil.escape(subtotalDiscountAmountCommerceMoney.format(locale)) %></dd>
 						<dt></dt>
 						<dd class="text-right"><%= HtmlUtil.escape(commerceOrderContentDisplayContext.getLocalizedPercentage(subtotalCommerceDiscountValue.getDiscountPercentage(), locale)) %></dd>
@@ -363,15 +363,20 @@ if (commerceOrder != null) {
 					<dd class="text-right"><%= HtmlUtil.escape(shippingValueCommerceMoney.format(locale)) %></dd>
 
 					<c:if test="<%= (shippingCommerceDiscountValue != null) && (BigDecimal.ZERO.compareTo(shippingCommerceDiscountValue.getDiscountPercentage()) < 0) %>">
+						<dt><liferay-ui:message key="delivery-discount" /></dt>
 
 						<%
 						CommerceMoney shippingDiscountAmountCommerceMoney = shippingCommerceDiscountValue.getDiscountAmount();
 						%>
 
-						<dt><liferay-ui:message key="delivery-discount" /></dt>
 						<dd class="text-right"><%= HtmlUtil.escape(shippingDiscountAmountCommerceMoney.format(locale)) %></dd>
 						<dt></dt>
-						<dd class="text-right"><%= HtmlUtil.escape(commerceOrderContentDisplayContext.getLocalizedPercentage(shippingCommerceDiscountValue.getDiscountPercentage(), locale)) %></dd>
+
+						<%
+						CommerceDiscountValue shippingDiscountValueWithTaxAmount = commerceOrderPrice.getShippingDiscountValueWithTaxAmount();
+						%>
+
+						<dd class="text-right"><%= HtmlUtil.escape(commerceOrderContentDisplayContext.getLocalizedPercentage(shippingDiscountValueWithTaxAmount.getDiscountPercentage(), locale)) %></dd>
 					</c:if>
 
 					<c:if test="<%= priceDisplayType.equals(CommercePricingConstants.TAX_EXCLUDED_FROM_PRICE) %>">
@@ -380,12 +385,12 @@ if (commerceOrder != null) {
 					</c:if>
 
 					<c:if test="<%= (totalCommerceDiscountValue != null) && (BigDecimal.ZERO.compareTo(totalCommerceDiscountValue.getDiscountPercentage()) < 0) %>">
+						<dt><liferay-ui:message key="total-discount" /></dt>
 
 						<%
 						CommerceMoney totalDiscountAmountCommerceMoney = totalCommerceDiscountValue.getDiscountAmount();
 						%>
 
-						<dt><liferay-ui:message key="total-discount" /></dt>
 						<dd class="text-right"><%= HtmlUtil.escape(totalDiscountAmountCommerceMoney.format(locale)) %></dd>
 						<dt></dt>
 						<dd class="text-right"><%= HtmlUtil.escape(commerceOrderContentDisplayContext.getLocalizedPercentage(totalCommerceDiscountValue.getDiscountPercentage(), locale)) %></dd>
