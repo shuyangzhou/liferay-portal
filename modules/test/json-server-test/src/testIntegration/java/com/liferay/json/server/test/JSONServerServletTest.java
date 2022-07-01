@@ -422,9 +422,9 @@ public class JSONServerServletTest {
 				"The input is invalid.", message.get("message"));
 		}
 
-		// /fruit/grape/filter?name=merlot
+		// /fruit/plantae/tracheophyta/magnoliopsida/vitales/vitaceae/vitis?filter=name+eq+merlot
 
-		mockHttpServletRequest.setPathInfo("/fruit/grape/filter?name=merlot");
+		mockHttpServletRequest.setPathInfo("/fruit/plantae/tracheophyta/magnoliopsida/vitales/vitaceae/vitis?filter=name+eq+merlot");
 
 		mockHttpServletResponse = new MockHttpServletResponse();
 

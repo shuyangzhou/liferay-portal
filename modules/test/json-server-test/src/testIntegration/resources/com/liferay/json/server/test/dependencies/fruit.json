@@ -53,7 +53,7 @@
 			}
 		}
 	],
-	"grape/filter?name=merlot": [
+	"plantae/tracheophyta/magnoliopsida/vitales/vitaceae/vitis?filter=name+eq+merlot": [
 		{
 			"id": 1,
 			"name": "Merlot"
