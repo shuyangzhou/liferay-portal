@@ -162,9 +162,7 @@ public abstract class UpgradeProcess
 		IndexMetadata indexMetadata = new IndexMetadata(
 			"IX_TEMP", tableName, unique, columnNames);
 
-		try (LoggingTimer loggingTimer = new LoggingTimer(
-				"Add temporary index for " + tableName)) {
-
+		try (LoggingTimer loggingTimer = new LoggingTimer(tableName)) {
 			addIndexes(
 				connection, new ArrayList<>(Arrays.asList(indexMetadata)));
 		}

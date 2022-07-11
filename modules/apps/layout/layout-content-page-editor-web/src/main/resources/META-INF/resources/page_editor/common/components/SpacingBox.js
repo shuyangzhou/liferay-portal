@@ -19,6 +19,7 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {useGlobalContext} from '../../app/contexts/GlobalContext';
 import {useId} from '../../app/utils/useId';
+import {useStyleBook} from '../../plugins/page-design-options/hooks/useStyleBook';
 import {Tooltip} from './Tooltip';
 
 /**
@@ -54,6 +55,7 @@ const DROPDOWN_CLASSNAME = 'page-editor__spacing-selector__dropdown';
 
 export default function SpacingBox({fields, onChange, value}) {
 	const ref = useRef();
+	const {tokenValues} = useStyleBook();
 
 	const focusButton = (type, position) => {
 		const button = document.querySelector(
@@ -138,6 +140,7 @@ export default function SpacingBox({fields, onChange, value}) {
 								key={key}
 								onChange={(value) => onChange(key, value)}
 								position={position}
+								tokenValues={tokenValues}
 								type={type}
 								value={value[key]}
 							/>
@@ -149,7 +152,14 @@ export default function SpacingBox({fields, onChange, value}) {
 	);
 }
 
-function SpacingSelectorButton({field, onChange, position, type, value}) {
+function SpacingSelectorButton({
+	field,
+	onChange,
+	position,
+	tokenValues,
+	type,
+	value,
+}) {
 	const [active, setActive] = useState(false);
 	const disabled = !field || field.disabled;
 	const itemListRef = useRef();
@@ -160,9 +170,15 @@ function SpacingSelectorButton({field, onChange, position, type, value}) {
 
 	useEffect(() => {
 		if (active && itemListRef.current) {
-			itemListRef.current.querySelector('button')?.focus();
+			itemListRef.current
+				.querySelector(
+					Liferay.FeatureFlags['LPS-147895']
+						? `button[data-value="${value || field?.defaultValue}"]`
+						: 'button'
+				)
+				?.focus();
 		}
-	}, [active]);
+	}, [active, field, value]);
 
 	return (
 		<ClayDropDown
@@ -201,6 +217,7 @@ function SpacingSelectorButton({field, onChange, position, type, value}) {
 									{field.label} -{' '}
 									<SpacingOptionValue
 										position={position}
+										tokenValues={tokenValues}
 										type={type}
 										value={value || field.defaultValue}
 									/>
@@ -210,10 +227,11 @@ function SpacingSelectorButton({field, onChange, position, type, value}) {
 						/>
 					) : null}
 
-					<span ref={setLabelElement}>
+					<span className="text-truncate" ref={setLabelElement}>
 						<SpacingOptionValue
 							position={position}
 							removeValueUnit
+							tokenValues={tokenValues}
 							type={type}
 							value={value || field?.defaultValue}
 						/>
@@ -231,6 +249,7 @@ function SpacingSelectorButton({field, onChange, position, type, value}) {
 									[field.label, option.label]
 								)}
 								className="d-flex"
+								data-value={option.value}
 								key={option.value}
 								onClick={() => {
 									onChange(option.value);
@@ -238,13 +257,17 @@ function SpacingSelectorButton({field, onChange, position, type, value}) {
 									document.getElementById(triggerId)?.focus();
 								}}
 							>
-								<span className="flex-grow-1 text-truncate">
-									{option.label}
+								<span className="text-truncate w-50">
+									{Liferay.FeatureFlags['LPS-147895']
+										? tokenValues[`spacer${option.value}`]
+												?.label || option.label
+										: option.label}
 								</span>
 
-								<strong className="flex-shrink-0 pl-2">
+								<strong className="flex-grow-1 pl-2 text-right text-truncate">
 									<SpacingOptionValue
 										position={position}
+										tokenValues={tokenValues}
 										type={type}
 										value={option.value}
 									/>
@@ -261,6 +284,7 @@ function SpacingSelectorButton({field, onChange, position, type, value}) {
 function SpacingOptionValue({
 	position,
 	removeValueUnit = false,
+	tokenValues,
 	type,
 	value: optionValue,
 }) {
@@ -268,6 +292,15 @@ function SpacingOptionValue({
 	const [value, setValue] = useState(optionValue);
 
 	useEffect(() => {
+		if (
+			Liferay.FeatureFlags['LPS-147895'] &&
+			tokenValues[`spacer${optionValue}`]
+		) {
+			setValue(tokenValues[`spacer${optionValue}`].value);
+
+			return;
+		}
+
 		const element = globalContext.document.createElement('div');
 		element.style.display = 'none';
 		element.classList.add(`${type[0]}${position[0]}-${optionValue}`);
@@ -277,7 +310,7 @@ function SpacingOptionValue({
 			.getComputedStyle(element)
 			.getPropertyValue(`${type}-${position}`);
 
-		if (removeValueUnit) {
+		if (!Liferay.FeatureFlags['LPS-147895'] && removeValueUnit) {
 			nextValue = parseFloat(nextValue);
 
 			if (isNaN(nextValue)) {
@@ -290,7 +323,14 @@ function SpacingOptionValue({
 
 		setValue(nextValue);
 		globalContext.document.body.removeChild(element);
-	}, [globalContext, optionValue, position, removeValueUnit, type]);
+	}, [
+		globalContext,
+		optionValue,
+		position,
+		removeValueUnit,
+		type,
+		tokenValues,
+	]);
 
 	return value === undefined ? '' : value;
 }
