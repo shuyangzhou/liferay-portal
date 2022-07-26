@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -42,9 +43,15 @@ public class ComponentExecutorFactoryBundleActivator
 
 	@Override
 	public void start(BundleContext bundleContext) {
-		boolean threadPoolEnabled = GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED),
-			true);
+		boolean threadPoolEnabled = false;
+
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED),
+				true) &&
+			!PropsValues.UPGRADE_DATABASE_AUTO_RUN) {
+
+			threadPoolEnabled = true;
+		}
 
 		if (!threadPoolEnabled) {
 			return;
