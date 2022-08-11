@@ -279,6 +279,8 @@ public class InitialUpgradeExtender
 				if (tablesSQL != null) {
 					System.out.println("Start table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 
+					connection.setAutoCommit(false);
+
 					try {
 						_db.runSQLTemplateString(connection, tablesSQL, true);
 					}
@@ -290,12 +292,17 @@ public class InitialUpgradeExtender
 								tablesSQL),
 							exception);
 					}
+					finally {
+						connection.commit();
+					}
 
 					System.out.println("End table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 				}
 
 				if (sequencesSQL != null) {
 					System.out.println("Start sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
+					connection.setAutoCommit(false);
 
 					try {
 						_db.runSQLTemplateString(
@@ -309,12 +316,17 @@ public class InitialUpgradeExtender
 								sequencesSQL),
 							exception);
 					}
+					finally {
+						connection.commit();
+					}
 
 					System.out.println("End sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 				}
 
 				if (indexesSQL != null) {
 					System.out.println("Start index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
+					connection.setAutoCommit(true);
 
 					try {
 						_db.runSQLTemplateString(connection, indexesSQL, true);
@@ -326,6 +338,9 @@ public class InitialUpgradeExtender
 								" has invalid content in indexes.sql:\n",
 								indexesSQL),
 							exception);
+					}
+					finally {
+						connection.commit();
 					}
 
 					System.out.println("End index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
