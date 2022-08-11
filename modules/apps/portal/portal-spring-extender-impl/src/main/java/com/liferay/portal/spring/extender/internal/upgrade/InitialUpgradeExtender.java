@@ -277,7 +277,7 @@ public class InitialUpgradeExtender
 
 			try (Connection connection = _dataSource.getConnection()) {
 				if (tablesSQL != null) {
-					System.out.println("Start table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					System.out.println("Start table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " auto commit status : " + connection.getAutoCommit() + " at " + simpleDateFormat.format(new Date()));
 
 					try {
 						_db.runSQLTemplateString(connection, tablesSQL, true);
@@ -291,11 +291,13 @@ public class InitialUpgradeExtender
 							exception);
 					}
 
-					System.out.println("End table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					connection.commit();
+
+					System.out.println("End table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " auto commit status : " + connection.getAutoCommit() + " at " + simpleDateFormat.format(new Date()));
 				}
 
 				if (sequencesSQL != null) {
-					System.out.println("Start sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					System.out.println("Start sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " auto commit status : " + connection.getAutoCommit() + " at " + simpleDateFormat.format(new Date()));
 
 					try {
 						_db.runSQLTemplateString(
@@ -310,11 +312,13 @@ public class InitialUpgradeExtender
 							exception);
 					}
 
-					System.out.println("End sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					connection.commit();
+
+					System.out.println("End sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " auto commit status : " + connection.getAutoCommit() + " at " + simpleDateFormat.format(new Date()));
 				}
 
 				if (indexesSQL != null) {
-					System.out.println("Start index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					System.out.println("Start index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " auto commit status : " + connection.getAutoCommit() + " at " + simpleDateFormat.format(new Date()));
 
 					try {
 						_db.runSQLTemplateString(connection, indexesSQL, true);
@@ -328,7 +332,9 @@ public class InitialUpgradeExtender
 							exception);
 					}
 
-					System.out.println("End index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					connection.commit();
+
+					System.out.println("End index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " auto commit status : " + connection.getAutoCommit() + " at " + simpleDateFormat.format(new Date()));
 				}
 			}
 			catch (SQLException sqlException) {
