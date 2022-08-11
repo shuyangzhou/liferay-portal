@@ -41,6 +41,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.util.Date;
 import java.util.Dictionary;
 
 import javax.sql.DataSource;
@@ -300,6 +301,17 @@ public class InitialUpgradeExtender
 							exception);
 					}
 				}
+
+				System.out.println("#####Start sleeping for bundle " + _bundle + " by thread " + Thread.currentThread() + " at " + new Date());
+
+				try {
+					Thread.sleep(10000);
+				}
+				catch (InterruptedException interruptedException) {
+					throw new UpgradeException(interruptedException);
+				}
+
+				System.out.println("#####End sleeping for bundle " + _bundle + " by thread " + Thread.currentThread() + " at " + new Date());
 
 				if (indexesSQL != null) {
 					try {
