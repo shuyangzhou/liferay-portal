@@ -10609,6 +10609,8 @@ ${update.properties}</echo>
 	<Loggers>
 		<Logger level="DEBUG" name="com.liferay.frontend.js.spa.web.internal.servlet.taglib" />
 
+		<Logger level="DEBUG" name="com.liferay.portal.dao.db.BaseDB" />
+
 		<Logger level="INFO" name="com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper" />
 
 		<Logger level="DEBUG" name="com.liferay.portal.bootstrap.log" />
