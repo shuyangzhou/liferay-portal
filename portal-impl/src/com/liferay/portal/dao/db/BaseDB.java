@@ -383,6 +383,10 @@ public abstract class BaseDB implements DB {
 	public void runSQL(Connection connection, String[] sqls)
 		throws IOException, SQLException {
 
+		boolean autoCommit = connection.getAutoCommit();
+
+		connection.setAutoCommit(false);
+
 		try (Statement s = connection.createStatement()) {
 			for (String sql : sqls) {
 				sql = buildSQL(sql);
@@ -410,7 +414,7 @@ public abstract class BaseDB implements DB {
 				}
 
 				try {
-					s.executeUpdate(sql);
+					s.addBatch(sql);
 				}
 				catch (SQLException sqlException) {
 					if (_log.isDebugEnabled()) {
@@ -427,6 +431,33 @@ public abstract class BaseDB implements DB {
 					throw sqlException;
 				}
 			}
+
+			try {
+				s.executeBatch();
+			}
+			catch (SQLException sqlException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						StringBundler.concat(
+							"SQL state: ", sqlException.getSQLState(),
+							"\nVendor: ", getDBType(), "\nVendor error code: ",
+							sqlException.getErrorCode(),
+							"\nVendor error message: ",
+							sqlException.getMessage()));
+				}
+
+				throw sqlException;
+			}
+		}
+		catch (SQLException sqlException) {
+			connection.rollback();
+
+			throw sqlException;
+		}
+		finally {
+			connection.commit();
+
+			connection.setAutoCommit(autoCommit);
 		}
 	}
 
