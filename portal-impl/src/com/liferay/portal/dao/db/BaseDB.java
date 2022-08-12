@@ -447,116 +447,23 @@ public abstract class BaseDB implements DB {
 			Connection connection, String template, boolean failOnError)
 		throws IOException, NamingException, SQLException {
 
-		template = StringUtil.trim(template);
+		List<String> sqls = new ArrayList<>();
 
-		if ((template == null) || template.isEmpty()) {
+		_collectSQLs(template, sqls);
+
+		if (sqls.isEmpty()) {
 			return;
 		}
 
-		if (!template.endsWith(StringPool.SEMICOLON)) {
-			template += StringPool.SEMICOLON;
+		try {
+			runSQL(connection, sqls.toArray(new String[0]));
 		}
-
-		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(new UnsyncStringReader(template))) {
-
-			StringBundler sb = new StringBundler();
-
-			String line = null;
-
-			Thread currentThread = Thread.currentThread();
-
-			ClassLoader classLoader = currentThread.getContextClassLoader();
-
-			while ((line = unsyncBufferedReader.readLine()) != null) {
-				if (line.isEmpty() || line.startsWith("##")) {
-					continue;
-				}
-
-				if (line.startsWith("@include ")) {
-					int pos = line.indexOf(" ");
-
-					int end = line.length();
-
-					if (StringUtil.endsWith(line, StringPool.SEMICOLON)) {
-						end -= 1;
-					}
-
-					String includeFileName = line.substring(pos + 1, end);
-
-					InputStream inputStream = classLoader.getResourceAsStream(
-						"com/liferay/portal/tools/sql/dependencies/" +
-							includeFileName);
-
-					if (inputStream == null) {
-						inputStream = classLoader.getResourceAsStream(
-							includeFileName);
-					}
-
-					String include = StringUtil.read(inputStream);
-
-					include = replaceTemplate(include);
-
-					runSQLTemplateString(connection, include, true);
-				}
-				else {
-					sb.append(line);
-					sb.append(StringPool.NEW_LINE);
-
-					if (line.endsWith(";")) {
-						String sql = sb.toString();
-
-						sb.setIndex(0);
-
-						try {
-							if (!sql.equals("COMMIT_TRANSACTION;\n")) {
-								runSQL(connection, sql);
-							}
-							else {
-								if (_log.isDebugEnabled()) {
-									_log.debug("Skip commit sql");
-								}
-							}
-						}
-						catch (IOException ioException) {
-							if (failOnError) {
-								throw ioException;
-							}
-							else if (_log.isWarnEnabled()) {
-								_log.warn(ioException);
-							}
-						}
-						catch (SecurityException securityException) {
-							if (failOnError) {
-								throw securityException;
-							}
-							else if (_log.isWarnEnabled()) {
-								_log.warn(securityException);
-							}
-						}
-						catch (SQLException sqlException) {
-							if (failOnError) {
-								throw sqlException;
-							}
-
-							String message = GetterUtil.getString(
-								sqlException.getMessage());
-
-							if (!message.startsWith("Duplicate key name") &&
-								_log.isWarnEnabled()) {
-
-								_log.warn(message + ": " + buildSQL(sql));
-							}
-
-							if (message.startsWith("Duplicate entry") ||
-								message.startsWith(
-									"Specified key was too long")) {
-
-								_log.error(line);
-							}
-						}
-					}
-				}
+		catch (IOException | SecurityException | SQLException exception) {
+			if (failOnError) {
+				throw exception;
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn(exception);
 			}
 		}
 	}
@@ -1065,6 +972,84 @@ public abstract class BaseDB implements DB {
 		matcher.appendTail(sb);
 
 		return sb.toString();
+	}
+
+	private void _collectSQLs(String template, List<String> sqls)
+		throws IOException {
+
+		template = StringUtil.trim(template);
+
+		if ((template == null) || template.isEmpty()) {
+			return;
+		}
+
+		if (!template.endsWith(StringPool.SEMICOLON)) {
+			template += StringPool.SEMICOLON;
+		}
+
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new UnsyncStringReader(template))) {
+
+			StringBundler sb = new StringBundler();
+
+			String line = null;
+
+			Thread currentThread = Thread.currentThread();
+
+			ClassLoader classLoader = currentThread.getContextClassLoader();
+
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				if (line.isEmpty() || line.startsWith("##")) {
+					continue;
+				}
+
+				if (line.startsWith("@include ")) {
+					int pos = line.indexOf(" ");
+
+					int end = line.length();
+
+					if (StringUtil.endsWith(line, StringPool.SEMICOLON)) {
+						end -= 1;
+					}
+
+					String includeFileName = line.substring(pos + 1, end);
+
+					InputStream inputStream = classLoader.getResourceAsStream(
+						"com/liferay/portal/tools/sql/dependencies/" +
+							includeFileName);
+
+					if (inputStream == null) {
+						inputStream = classLoader.getResourceAsStream(
+							includeFileName);
+					}
+
+					String include = StringUtil.read(inputStream);
+
+					include = replaceTemplate(include);
+
+					_collectSQLs(include, sqls);
+				}
+				else {
+					sb.append(line);
+					sb.append(StringPool.NEW_LINE);
+
+					if (line.endsWith(";")) {
+						String sql = sb.toString();
+
+						sb.setIndex(0);
+
+						if (!sql.equals("COMMIT_TRANSACTION;\n")) {
+							sqls.add(sql);
+						}
+						else {
+							if (_log.isDebugEnabled()) {
+								_log.debug("Skip commit sql");
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private static final boolean _SUPPORTS_ALTER_COLUMN_NAME = true;
