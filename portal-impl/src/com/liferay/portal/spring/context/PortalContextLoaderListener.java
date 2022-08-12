@@ -83,6 +83,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.FutureTask;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
@@ -188,6 +190,39 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		Thread thread = new Thread() {
+
+			@Override
+			public void run() {
+				long previousTime = System.currentTimeMillis();
+
+				while (true) {
+					try {
+						Thread.sleep(100);
+					}
+					catch (InterruptedException ex) {
+						throw new Error();
+					}
+
+					long currentTime = System.currentTimeMillis();
+
+					long delta = currentTime - previousTime;
+
+					if (delta < 100) {
+						System.out.println("########Time drift detected, invalid delta " + delta + "ms");
+					}
+
+					previousTime = currentTime;
+				}
+			}
+
+		};
+
+		thread.setDaemon(true);
+		thread.setName("Time drift detector");
+
+		thread.start();
+
 		try {
 			Class.forName(SystemProperties.class.getName());
 		}
