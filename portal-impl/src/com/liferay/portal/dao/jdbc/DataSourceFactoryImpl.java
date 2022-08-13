@@ -184,6 +184,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				DialectDetector.getDialect(dataSource));
 
 			if (dbType == DBType.DB2) {
+				System.out.println(
+					"#####Wrapping AntiTimeDriftDataSourceWrapper for " +
+						dataSource);
+
 				dataSource = new AntiTimeDriftDataSourceWrapper(dataSource);
 			}
 		}
