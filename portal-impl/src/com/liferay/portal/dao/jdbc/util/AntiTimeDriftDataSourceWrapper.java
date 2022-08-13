@@ -174,6 +174,11 @@ public class AntiTimeDriftDataSourceWrapper extends DataSourceWrapper {
 
 				throw throwable1;
 			}
+			catch (Throwable throwable) {
+				throwable.printStackTrace();
+
+				throw throwable;
+			}
 		}
 
 		private AntiTimeDriftInvocationHandler(Object target) {
