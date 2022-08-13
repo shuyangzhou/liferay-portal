@@ -179,9 +179,13 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 		}
 
-		if (System.getenv("JENKINS_HOME") != null) {
+		System.out.println("##########" + System.getenv("JENKINS_HOME"));
+
+//		if (System.getenv("JENKINS_HOME") != null) {
 			DBType dbType = DBManagerUtil.getDBType(
 				DialectDetector.getDialect(dataSource));
+
+			System.out.println("********" + dbType);
 
 			if (dbType == DBType.DB2) {
 				System.out.println(
@@ -190,7 +194,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 				dataSource = new AntiTimeDriftDataSourceWrapper(dataSource);
 			}
-		}
+//		}
 
 		return dataSource;
 	}
