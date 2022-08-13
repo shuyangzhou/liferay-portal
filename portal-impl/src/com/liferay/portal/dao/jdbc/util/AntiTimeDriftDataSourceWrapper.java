@@ -14,8 +14,6 @@
 
 package com.liferay.portal.dao.jdbc.util;
 
-import com.google.common.base.Objects;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -27,6 +25,8 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import java.util.Objects;
 
 import javax.sql.DataSource;
 
@@ -141,7 +141,7 @@ public class AntiTimeDriftDataSourceWrapper extends DataSourceWrapper {
 					SQLException sqlException = (SQLException)throwable1;
 
 					if ((sqlException.getErrorCode() == -204) &&
-						Objects.equal("42704", sqlException.getSQLState()) &&
+						Objects.equals("42704", sqlException.getSQLState()) &&
 						_checkTimeDrift()) {
 
 						if (_log.isWarnEnabled()) {
