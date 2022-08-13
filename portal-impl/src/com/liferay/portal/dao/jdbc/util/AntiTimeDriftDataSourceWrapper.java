@@ -41,21 +41,30 @@ public class AntiTimeDriftDataSourceWrapper extends DataSourceWrapper {
 
 	@Override
 	public Connection getConnection() throws SQLException {
+		Connection connection = super.getConnection();
+
+		System.out.println(
+			"######Wrapping AntiTimeDriftInvocationHandler for " + connection);
+
 		return (Connection)ProxyUtil.newProxyInstance(
 			AntiTimeDriftDataSourceWrapper.class.getClassLoader(),
 			new Class<?>[] {Connection.class},
-			new AntiTimeDriftInvocationHandler(super.getConnection()));
+			new AntiTimeDriftInvocationHandler(connection));
 	}
 
 	@Override
 	public Connection getConnection(String userName, String password)
 		throws SQLException {
 
+		Connection connection = super.getConnection(userName, password);
+
+		System.out.println(
+			"######Wrapping AntiTimeDriftInvocationHandler for " + connection);
+
 		return (Connection)ProxyUtil.newProxyInstance(
 			AntiTimeDriftDataSourceWrapper.class.getClassLoader(),
 			new Class<?>[] {Connection.class},
-			new AntiTimeDriftInvocationHandler(
-				super.getConnection(userName, password)));
+			new AntiTimeDriftInvocationHandler(connection));
 	}
 
 	private static synchronized boolean _checkTimeDrift() {
@@ -95,6 +104,9 @@ public class AntiTimeDriftDataSourceWrapper extends DataSourceWrapper {
 
 	private static Object _wrapStatement(Object target) {
 		if (target instanceof Statement) {
+			System.out.println(
+				"#####Wrapping AntiTimeDriftInvocationHandler for " + target);
+
 			Class<?> targetClass = target.getClass();
 
 			target = ProxyUtil.newProxyInstance(
