@@ -179,6 +179,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 		}
 
+		System.out.println("####All envs : " + System.getenv());
+
 		System.out.println("##########" + System.getenv("JENKINS_HOME"));
 
 //		if (System.getenv("JENKINS_HOME") != null) {
