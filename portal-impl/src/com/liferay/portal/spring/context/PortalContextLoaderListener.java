@@ -188,161 +188,170 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		try {
-			Class.forName(SystemProperties.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new RuntimeException(classNotFoundException);
-		}
-
-		ServletContext servletContext = servletContextEvent.getServletContext();
-
-		PortalClassPathUtil.initializeClassPaths(servletContext);
-
-		InitUtil.init();
-
-		// Log JVM arguments after Log4j is initialized
-
-		_logJVMArguments();
-
-		_portalServletContextName = servletContext.getServletContextName();
-
-		if (_portalServletContextName == null) {
-			_portalServletContextName = StringPool.BLANK;
-		}
-
-		_portalServletContextPath = servletContext.getContextPath();
-
-		File tempDir = (File)servletContext.getAttribute(
-			JavaConstants.JAVAX_SERVLET_CONTEXT_TEMPDIR);
-
-		PropsValues.LIFERAY_WEB_PORTAL_CONTEXT_TEMPDIR =
-			tempDir.getAbsolutePath();
-
-		Path tempDirPath = Paths.get(System.getProperty("java.io.tmpdir"));
-
-		if (!Files.exists(tempDirPath)) {
 			try {
-				Files.createDirectories(tempDirPath);
-			}
-			catch (IOException ioException) {
-				_log.error("Unable to create " + tempDirPath, ioException);
-			}
-		}
-
-		try {
-			ModuleFrameworkUtil.initFramework();
-
-			DBInitUtil.init();
-
-			_arrayApplicationContext = new ArrayApplicationContext(
-				PropsValues.SPRING_INFRASTRUCTURE_CONFIGS);
-
-			servletContext.setAttribute(
-				PortalApplicationContext.PARENT_APPLICATION_CONTEXT,
-				_arrayApplicationContext);
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
-
-		ClassLoaderPool.register(_portalServletContextName, portalClassLoader);
-		ServletContextClassLoaderPool.register(
-			_portalServletContextName, portalClassLoader);
-
-		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
-
-		serviceLatch.waitFor(MessageBus.class);
-		serviceLatch.waitFor(PortalExecutorManager.class);
-		serviceLatch.waitFor(SchedulerEngineHelper.class);
-
-		serviceLatch.openOn(
-			() -> _serviceWrapperRegistry = new ServiceWrapperRegistry());
-
-		FutureTask<Void> springInitTask = null;
-
-		if (PropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
-			springInitTask = new FutureTask<>(
-				() -> {
-					super.contextInitialized(servletContextEvent);
-
-					return null;
-				});
-
-			Thread springInitThread = new Thread(
-				springInitTask, "Portal Spring Init Thread");
-
-			springInitThread.setContextClassLoader(portalClassLoader);
-			springInitThread.setDaemon(true);
-
-			springInitThread.start();
-		}
-
-		try {
-			ModuleFrameworkUtil.registerContext(_arrayApplicationContext);
-
-			ModuleFrameworkUtil.startFramework();
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-
-		if (springInitTask == null) {
-			super.contextInitialized(servletContextEvent);
-		}
-		else {
 			try {
-				springInitTask.get();
+				Class.forName(SystemProperties.class.getName());
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				throw new RuntimeException(classNotFoundException);
+			}
+
+			ServletContext servletContext = servletContextEvent.getServletContext();
+
+			PortalClassPathUtil.initializeClassPaths(servletContext);
+
+			InitUtil.init();
+
+			// Log JVM arguments after Log4j is initialized
+
+			_logJVMArguments();
+
+			_portalServletContextName = servletContext.getServletContextName();
+
+			if (_portalServletContextName == null) {
+				_portalServletContextName = StringPool.BLANK;
+			}
+
+			_portalServletContextPath = servletContext.getContextPath();
+
+			File tempDir = (File)servletContext.getAttribute(
+				JavaConstants.JAVAX_SERVLET_CONTEXT_TEMPDIR);
+
+			PropsValues.LIFERAY_WEB_PORTAL_CONTEXT_TEMPDIR =
+				tempDir.getAbsolutePath();
+
+			Path tempDirPath = Paths.get(System.getProperty("java.io.tmpdir"));
+
+			if (!Files.exists(tempDirPath)) {
+				try {
+					Files.createDirectories(tempDirPath);
+				}
+				catch (IOException ioException) {
+					_log.error("Unable to create " + tempDirPath, ioException);
+				}
+			}
+
+			try {
+				ModuleFrameworkUtil.initFramework();
+
+				DBInitUtil.init();
+
+				_arrayApplicationContext = new ArrayApplicationContext(
+					PropsValues.SPRING_INFRASTRUCTURE_CONFIGS);
+
+				servletContext.setAttribute(
+					PortalApplicationContext.PARENT_APPLICATION_CONTEXT,
+					_arrayApplicationContext);
 			}
 			catch (Exception exception) {
 				throw new RuntimeException(exception);
 			}
-		}
 
-		InitUtil.registerSpringInitialized();
+			ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
 
-		ServletContextPool.put(_portalServletContextName, servletContext);
+			ClassLoaderPool.register(_portalServletContextName, portalClassLoader);
+			ServletContextClassLoaderPool.register(
+				_portalServletContextName, portalClassLoader);
 
-		ApplicationContext applicationContext =
-			ContextLoader.getCurrentWebApplicationContext();
+			ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
 
-		BeanLocatorImpl beanLocatorImpl = new BeanLocatorImpl(
-			portalClassLoader, applicationContext);
+			serviceLatch.waitFor(MessageBus.class);
+			serviceLatch.waitFor(PortalExecutorManager.class);
+			serviceLatch.waitFor(SchedulerEngineHelper.class);
 
-		PortalBeanLocatorUtil.setBeanLocator(beanLocatorImpl);
+			serviceLatch.openOn(
+				() -> _serviceWrapperRegistry = new ServiceWrapperRegistry());
 
-		ClassLoader classLoader = portalClassLoader;
+			FutureTask<Void> springInitTask = null;
 
-		while (classLoader != null) {
-			CachedIntrospectionResults.clearClassLoader(classLoader);
+			if (PropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
+				springInitTask = new FutureTask<>(
+					() -> {
+						super.contextInitialized(servletContextEvent);
 
-			classLoader = classLoader.getParent();
-		}
+						return null;
+					});
 
-		clearFilteredPropertyDescriptorsCache(
-			applicationContext.getAutowireCapableBeanFactory());
+				Thread springInitThread = new Thread(
+					springInitTask, "Portal Spring Init Thread");
 
-		DynamicProxyCreator dynamicProxyCreator =
-			DynamicProxyCreator.getDynamicProxyCreator();
+				springInitThread.setContextClassLoader(portalClassLoader);
+				springInitThread.setDaemon(true);
 
-		dynamicProxyCreator.clear();
-
-		if (PropsValues.UPGRADE_DATABASE_AUTO_RUN) {
-			StartupHelperUtil.setUpgrading(true);
+				springInitThread.start();
+			}
 
 			try {
-				DBUpgrader.upgradePortal();
+				ModuleFrameworkUtil.registerContext(_arrayApplicationContext);
+
+				ModuleFrameworkUtil.startFramework();
 			}
 			catch (Exception exception) {
 				throw new RuntimeException(exception);
 			}
+
+			if (springInitTask == null) {
+				super.contextInitialized(servletContextEvent);
+			}
+			else {
+				try {
+					springInitTask.get();
+				}
+				catch (Exception exception) {
+					throw new RuntimeException(exception);
+				}
+			}
+
+			InitUtil.registerSpringInitialized();
+
+			ServletContextPool.put(_portalServletContextName, servletContext);
+
+			ApplicationContext applicationContext =
+				ContextLoader.getCurrentWebApplicationContext();
+
+			BeanLocatorImpl beanLocatorImpl = new BeanLocatorImpl(
+				portalClassLoader, applicationContext);
+
+			PortalBeanLocatorUtil.setBeanLocator(beanLocatorImpl);
+
+			ClassLoader classLoader = portalClassLoader;
+
+			while (classLoader != null) {
+				CachedIntrospectionResults.clearClassLoader(classLoader);
+
+				classLoader = classLoader.getParent();
+			}
+
+			clearFilteredPropertyDescriptorsCache(
+				applicationContext.getAutowireCapableBeanFactory());
+
+			DynamicProxyCreator dynamicProxyCreator =
+				DynamicProxyCreator.getDynamicProxyCreator();
+
+			dynamicProxyCreator.clear();
+
+			if (PropsValues.UPGRADE_DATABASE_AUTO_RUN) {
+				StartupHelperUtil.setUpgrading(true);
+
+				try {
+					DBUpgrader.upgradePortal();
+				}
+				catch (Exception exception) {
+					throw new RuntimeException(exception);
+				}
+			}
+
+			ModuleFrameworkUtil.registerContext(applicationContext);
+
+			CustomJspBagRegistryUtil.getCustomJspBags();
+
+			System.out.println("**********Initialized!!!");
 		}
+		catch (Throwable throwable) {
+			throwable.printStackTrace();
 
-		ModuleFrameworkUtil.registerContext(applicationContext);
-
-		CustomJspBagRegistryUtil.getCustomJspBags();
+			throw throwable;
+		}
 	}
 
 	protected void clearFilteredPropertyDescriptorsCache(
