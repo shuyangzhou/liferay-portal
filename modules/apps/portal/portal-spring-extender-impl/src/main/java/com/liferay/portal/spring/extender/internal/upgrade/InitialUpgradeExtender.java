@@ -272,47 +272,61 @@ public class InitialUpgradeExtender
 			String indexesSQL = _getSQLTemplateString("indexes.sql");
 
 			try (Connection connection = _dataSource.getConnection()) {
-				if (tablesSQL != null) {
-					try {
-						_db.runSQLTemplateString(connection, tablesSQL, true);
+				connection.setAutoCommit(false);
+
+				try {
+					if (tablesSQL != null) {
+						try {
+							_db.runSQLTemplateString(
+								connection, tablesSQL, true);
+						}
+						catch (Exception exception) {
+							throw new UpgradeException(
+								StringBundler.concat(
+									"Bundle ", _bundle,
+									" has invalid content in tables.sql:\n",
+									tablesSQL),
+								exception);
+						}
 					}
-					catch (Exception exception) {
-						throw new UpgradeException(
-							StringBundler.concat(
-								"Bundle ", _bundle,
-								" has invalid content in tables.sql:\n",
-								tablesSQL),
-							exception);
+
+					if (sequencesSQL != null) {
+						try {
+							_db.runSQLTemplateString(
+								connection, sequencesSQL, true);
+						}
+						catch (Exception exception) {
+							throw new UpgradeException(
+								StringBundler.concat(
+									"Bundle ", _bundle,
+									" has invalid content in sequences.sql:\n",
+									sequencesSQL),
+								exception);
+						}
+					}
+
+					if (indexesSQL != null) {
+						try {
+							_db.runSQLTemplateString(
+								connection, indexesSQL, true);
+						}
+						catch (Exception exception) {
+							throw new UpgradeException(
+								StringBundler.concat(
+									"Bundle ", _bundle,
+									" has invalid content in indexes.sql:\n",
+									indexesSQL),
+								exception);
+						}
 					}
 				}
+				catch (UpgradeException upgradeException) {
+					connection.rollback();
 
-				if (sequencesSQL != null) {
-					try {
-						_db.runSQLTemplateString(
-							connection, sequencesSQL, true);
-					}
-					catch (Exception exception) {
-						throw new UpgradeException(
-							StringBundler.concat(
-								"Bundle ", _bundle,
-								" has invalid content in sequences.sql:\n",
-								sequencesSQL),
-							exception);
-					}
+					throw upgradeException;
 				}
-
-				if (indexesSQL != null) {
-					try {
-						_db.runSQLTemplateString(connection, indexesSQL, true);
-					}
-					catch (Exception exception) {
-						throw new UpgradeException(
-							StringBundler.concat(
-								"Bundle ", _bundle,
-								" has invalid content in indexes.sql:\n",
-								indexesSQL),
-							exception);
-					}
+				finally {
+					connection.commit();
 				}
 			}
 			catch (SQLException sqlException) {
