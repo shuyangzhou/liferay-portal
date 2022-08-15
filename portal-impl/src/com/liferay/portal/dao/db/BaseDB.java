@@ -50,7 +50,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -405,24 +407,41 @@ public abstract class BaseDB implements DB {
 					sql = sql.substring(0, sql.length() - 2);
 				}
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(sql);
-				}
+//				if (_log.isDebugEnabled()) {
+//					_log.debug(sql);
+//				}
+
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+				System.out.println("About to execute " + sql + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 
 				try {
 					s.executeUpdate(sql);
 				}
 				catch (SQLException sqlException) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							StringBundler.concat(
-								"SQL: ", sql, "\nSQL state: ",
-								sqlException.getSQLState(), "\nVendor: ",
-								getDBType(), "\nVendor error code: ",
-								sqlException.getErrorCode(),
-								"\nVendor error message: ",
-								sqlException.getMessage()));
-					}
+//					if (_log.isDebugEnabled()) {
+//						_log.debug(
+//							StringBundler.concat(
+//								"SQL: ", sql, "\nSQL state: ",
+//								sqlException.getSQLState(), "\nVendor: ",
+//								getDBType(), "\nVendor error code: ",
+//								sqlException.getErrorCode(),
+//								"\nVendor error message: ",
+//								sqlException.getMessage()));
+//					}
+
+					System.out.println(
+						StringBundler.concat(
+							"SQL: ", sql, "\nSQL state: ",
+							sqlException.getSQLState(), "\nVendor: ",
+							getDBType(), "\nVendor error code: ",
+							sqlException.getErrorCode(),
+							"\nVendor error message: ",
+							sqlException.getMessage(),
+							"\nBy thread :",
+							Thread.currentThread(),
+							" at time ",
+							simpleDateFormat.format(new Date())));
 
 					throw sqlException;
 				}

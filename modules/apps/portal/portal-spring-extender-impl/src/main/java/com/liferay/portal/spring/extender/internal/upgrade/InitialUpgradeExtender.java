@@ -41,6 +41,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Dictionary;
 
 import javax.sql.DataSource;
@@ -271,8 +273,12 @@ public class InitialUpgradeExtender
 			String sequencesSQL = _getSQLTemplateString("sequences.sql");
 			String indexesSQL = _getSQLTemplateString("indexes.sql");
 
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
 			try (Connection connection = _dataSource.getConnection()) {
 				if (tablesSQL != null) {
+					System.out.println("Start table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
 					try {
 						_db.runSQLTemplateString(connection, tablesSQL, true);
 					}
@@ -284,9 +290,13 @@ public class InitialUpgradeExtender
 								tablesSQL),
 							exception);
 					}
+
+					System.out.println("End table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 				}
 
 				if (sequencesSQL != null) {
+					System.out.println("Start sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
 					try {
 						_db.runSQLTemplateString(
 							connection, sequencesSQL, true);
@@ -299,9 +309,13 @@ public class InitialUpgradeExtender
 								sequencesSQL),
 							exception);
 					}
+
+					System.out.println("End sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 				}
 
 				if (indexesSQL != null) {
+					System.out.println("Start index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
 					try {
 						_db.runSQLTemplateString(connection, indexesSQL, true);
 					}
@@ -313,6 +327,8 @@ public class InitialUpgradeExtender
 								indexesSQL),
 							exception);
 					}
+
+					System.out.println("End index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 				}
 			}
 			catch (SQLException sqlException) {
