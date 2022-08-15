@@ -41,6 +41,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Dictionary;
 
 import javax.sql.DataSource;
@@ -271,48 +273,74 @@ public class InitialUpgradeExtender
 			String sequencesSQL = _getSQLTemplateString("sequences.sql");
 			String indexesSQL = _getSQLTemplateString("indexes.sql");
 
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
 			try (Connection connection = _dataSource.getConnection()) {
-				if (tablesSQL != null) {
-					try {
-						_db.runSQLTemplateString(connection, tablesSQL, true);
+				connection.setAutoCommit(false);
+
+				try {
+					if (tablesSQL != null) {
+						System.out.println("Start table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
+						try {
+							_db.runSQLTemplateString(connection, tablesSQL, true);
+						}
+						catch (Exception exception) {
+							throw new UpgradeException(
+								StringBundler.concat(
+									"Bundle ", _bundle,
+									" has invalid content in tables.sql:\n",
+									tablesSQL),
+								exception);
+						}
+
+						System.out.println("End table creation for bundle " + _bundle + " sql : " + tablesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 					}
-					catch (Exception exception) {
-						throw new UpgradeException(
-							StringBundler.concat(
-								"Bundle ", _bundle,
-								" has invalid content in tables.sql:\n",
-								tablesSQL),
-							exception);
+
+					if (sequencesSQL != null) {
+						System.out.println("Start sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
+						try {
+							_db.runSQLTemplateString(
+								connection, sequencesSQL, true);
+						}
+						catch (Exception exception) {
+							throw new UpgradeException(
+								StringBundler.concat(
+									"Bundle ", _bundle,
+									" has invalid content in sequences.sql:\n",
+									sequencesSQL),
+								exception);
+						}
+
+						System.out.println("End sequence insert for bundle " + _bundle + " sql : " + sequencesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+					}
+
+					if (indexesSQL != null) {
+						System.out.println("Start index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
+
+						try {
+							_db.runSQLTemplateString(connection, indexesSQL, true);
+						}
+						catch (Exception exception) {
+							throw new UpgradeException(
+								StringBundler.concat(
+									"Bundle ", _bundle,
+									" has invalid content in indexes.sql:\n",
+									indexesSQL),
+								exception);
+						}
+
+						System.out.println("End index insert for bundle " + _bundle + " sql : " + indexesSQL + " by thread " + Thread.currentThread() + " at " + simpleDateFormat.format(new Date()));
 					}
 				}
+				catch (UpgradeException upgradeException) {
+					connection.rollback();
 
-				if (sequencesSQL != null) {
-					try {
-						_db.runSQLTemplateString(
-							connection, sequencesSQL, true);
-					}
-					catch (Exception exception) {
-						throw new UpgradeException(
-							StringBundler.concat(
-								"Bundle ", _bundle,
-								" has invalid content in sequences.sql:\n",
-								sequencesSQL),
-							exception);
-					}
+					throw upgradeException;
 				}
-
-				if (indexesSQL != null) {
-					try {
-						_db.runSQLTemplateString(connection, indexesSQL, true);
-					}
-					catch (Exception exception) {
-						throw new UpgradeException(
-							StringBundler.concat(
-								"Bundle ", _bundle,
-								" has invalid content in indexes.sql:\n",
-								indexesSQL),
-							exception);
-					}
+				finally {
+					connection.commit();
 				}
 			}
 			catch (SQLException sqlException) {
