@@ -148,6 +148,8 @@ public class PortalUpgradeProcessRegistryImpl
 				}
 
 			});
+
+		upgradeProcesses.put(new Version(16, 1, 1), new UpgradeGroupType());
 	}
 
 }
