@@ -21,14 +21,9 @@ import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Iván Zaera
  */
-@Component(
-	enabled = false, immediate = true, service = UpgradeStepRegistrator.class
-)
 public class ClientExtensionUpgradeStepRegistrator
 	implements UpgradeStepRegistrator {
 
