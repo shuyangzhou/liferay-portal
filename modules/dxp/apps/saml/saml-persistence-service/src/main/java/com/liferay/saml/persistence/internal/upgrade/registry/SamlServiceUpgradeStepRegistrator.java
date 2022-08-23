@@ -15,53 +15,27 @@
 package com.liferay.saml.persistence.internal.upgrade.registry;
 
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
-import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.release.BaseUpgradeServiceModuleRelease;
 import com.liferay.saml.persistence.internal.upgrade.v2_4_0.util.SamlPeerBindingTable;
 import com.liferay.saml.persistence.internal.upgrade.v3_0_1.SamlSpIdpConnectionDataUpgradeProcess;
 
 import org.osgi.service.cm.ConfigurationAdmin;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Carlos Sierra Andrés
  */
-@Component(immediate = true, service = UpgradeStepRegistrator.class)
 public class SamlServiceUpgradeStepRegistrator
 	implements UpgradeStepRegistrator {
 
+	public SamlServiceUpgradeStepRegistrator(
+		ConfigurationAdmin configurationAdmin) {
+
+		_configurationAdmin = configurationAdmin;
+	}
+
 	@Override
 	public void register(Registry registry) {
-		try {
-			BaseUpgradeServiceModuleRelease baseUpgradeServiceModuleRelease =
-				new BaseUpgradeServiceModuleRelease() {
-
-					@Override
-					protected String getNamespace() {
-						return "Saml";
-					}
-
-					@Override
-					protected String getNewBundleSymbolicName() {
-						return "com.liferay.saml.persistence.service";
-					}
-
-					@Override
-					protected String getOldBundleSymbolicName() {
-						return "saml-portlet";
-					}
-
-				};
-
-			baseUpgradeServiceModuleRelease.upgrade();
-		}
-		catch (UpgradeException upgradeException) {
-			throw new RuntimeException(upgradeException);
-		}
-
 		registry.register("0.0.1", "1.0.0", new DummyUpgradeStep());
 
 		registry.register(
@@ -158,7 +132,6 @@ public class SamlServiceUpgradeStepRegistrator
 			"3.0.0", "3.0.1", new SamlSpIdpConnectionDataUpgradeProcess());
 	}
 
-	@Reference
-	private ConfigurationAdmin _configurationAdmin;
+	private final ConfigurationAdmin _configurationAdmin;
 
 }

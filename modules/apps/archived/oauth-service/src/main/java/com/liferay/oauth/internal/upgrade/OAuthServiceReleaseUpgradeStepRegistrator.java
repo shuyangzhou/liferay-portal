@@ -14,17 +14,31 @@
 
 package com.liferay.oauth.internal.upgrade;
 
-import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.BaseReleaseUpgradeStepRegistrator;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author Shuyang Zhou
  */
-public class OAuthServiceUpgrade implements UpgradeStepRegistrator {
+@Component(service = UpgradeStepRegistrator.class)
+public class OAuthServiceReleaseUpgradeStepRegistrator
+	extends BaseReleaseUpgradeStepRegistrator {
 
 	@Override
-	public void register(Registry registry) {
-		registry.register("0.0.1", "1.0.0", new DummyUpgradeStep());
+	protected String getNewServletContextName() {
+		return "com.liferay.oauth.service";
+	}
+
+	@Override
+	protected String getOldServletContextName() {
+		return "oauth-portlet";
+	}
+
+	@Override
+	protected UpgradeStepRegistrator getUpgradeStepRegistrator() {
+		return new OAuthServiceUpgrade();
 	}
 
 }
