@@ -14,11 +14,11 @@
 
 package com.liferay.saml.persistence.internal.upgrade.registry;
 
+import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
-import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.release.BaseUpgradeServiceModuleRelease;
+import com.liferay.portal.upgrade.release.ReleaseRenamingUpgradeStep;
 import com.liferay.saml.persistence.internal.upgrade.v2_4_0.util.SamlPeerBindingTable;
 import com.liferay.saml.persistence.internal.upgrade.v3_0_1.SamlSpIdpConnectionDataUpgradeProcess;
 
@@ -35,32 +35,10 @@ public class SamlServiceUpgradeStepRegistrator
 
 	@Override
 	public void register(Registry registry) {
-		try {
-			BaseUpgradeServiceModuleRelease baseUpgradeServiceModuleRelease =
-				new BaseUpgradeServiceModuleRelease() {
-
-					@Override
-					protected String getNamespace() {
-						return "Saml";
-					}
-
-					@Override
-					protected String getNewBundleSymbolicName() {
-						return "com.liferay.saml.persistence.service";
-					}
-
-					@Override
-					protected String getOldBundleSymbolicName() {
-						return "saml-portlet";
-					}
-
-				};
-
-			baseUpgradeServiceModuleRelease.upgrade();
-		}
-		catch (UpgradeException upgradeException) {
-			throw new RuntimeException(upgradeException);
-		}
+		registry.registerReleaseCreationUpgradeSteps(
+			new ReleaseRenamingUpgradeStep(
+				"com.liferay.saml.persistence.service", "saml-portlet",
+				_releaseLocalService));
 
 		registry.register("0.0.1", "1.0.0", new DummyUpgradeStep());
 
@@ -160,5 +138,8 @@ public class SamlServiceUpgradeStepRegistrator
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
+
+	@Reference
+	private ReleaseLocalService _releaseLocalService;
 
 }

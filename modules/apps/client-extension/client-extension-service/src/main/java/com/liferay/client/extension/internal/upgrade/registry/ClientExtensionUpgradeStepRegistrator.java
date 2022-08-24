@@ -16,24 +16,30 @@ package com.liferay.client.extension.internal.upgrade.registry;
 
 import com.liferay.client.extension.internal.upgrade.v3_0_0.ClassNamesUpgradeProcess;
 import com.liferay.client.extension.internal.upgrade.v3_1_0.util.ClientExtensionEntryRelTable;
+import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.ReleaseRenamingUpgradeStep;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Iván Zaera
  */
-@Component(
-	enabled = false, immediate = true, service = UpgradeStepRegistrator.class
-)
+@Component(service = UpgradeStepRegistrator.class)
 public class ClientExtensionUpgradeStepRegistrator
 	implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
+		registry.registerReleaseCreationUpgradeSteps(
+			new ReleaseRenamingUpgradeStep(
+				"com.liferay.client.extension.service",
+				"com.liferay.remote.app.service", _releaseLocalService));
+
 		registry.register(
 			"1.0.0", "1.0.1",
 			UpgradeProcessFactory.alterColumnType(
@@ -102,5 +108,8 @@ public class ClientExtensionUpgradeStepRegistrator
 			UpgradeProcessFactory.addColumns(
 				"ClientExtensionEntryRel", "typeSettings TEXT null"));
 	}
+
+	@Reference
+	private ReleaseLocalService _releaseLocalService;
 
 }
