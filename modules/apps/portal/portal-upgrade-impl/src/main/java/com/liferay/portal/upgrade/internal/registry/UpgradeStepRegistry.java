@@ -36,6 +36,10 @@ public class UpgradeStepRegistry implements UpgradeStepRegistrator.Registry {
 		return _initialUpgradeSteps;
 	}
 
+	public List<UpgradeStep> getReleaseUpgradeSteps() {
+		return _releaseUpgradeSteps;
+	}
+
 	public List<UpgradeInfo> getUpgradeInfos() {
 		return _upgradeInfos;
 	}
@@ -53,6 +57,13 @@ public class UpgradeStepRegistry implements UpgradeStepRegistrator.Registry {
 	@Override
 	public void registerInitialUpgradeSteps(UpgradeStep... upgradeSteps) {
 		Collections.addAll(_initialUpgradeSteps, upgradeSteps);
+	}
+
+	@Override
+	public void registerReleaseCreationUpgradeSteps(
+		UpgradeStep... upgradeSteps) {
+
+		Collections.addAll(_releaseUpgradeSteps, upgradeSteps);
 	}
 
 	private void _createUpgradeInfos(
@@ -108,6 +119,7 @@ public class UpgradeStepRegistry implements UpgradeStepRegistrator.Registry {
 
 	private final int _buildNumber;
 	private final List<UpgradeStep> _initialUpgradeSteps = new ArrayList<>();
+	private final List<UpgradeStep> _releaseUpgradeSteps = new ArrayList<>();
 	private final List<UpgradeInfo> _upgradeInfos = new ArrayList<>();
 
 }

@@ -34,6 +34,9 @@ public interface UpgradeStepRegistrator {
 
 		public void registerInitialUpgradeSteps(UpgradeStep... upgradeSteps);
 
+		public void registerReleaseCreationUpgradeSteps(
+			UpgradeStep... upgradeSteps);
+
 	}
 
 }
