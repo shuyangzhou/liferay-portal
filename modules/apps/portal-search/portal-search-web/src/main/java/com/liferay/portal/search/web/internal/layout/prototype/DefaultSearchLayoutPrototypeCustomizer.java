@@ -17,7 +17,6 @@ package com.liferay.portal.search.web.internal.layout.prototype;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.util.DefaultLayoutPrototypesUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.search.web.constants.SearchBarPortletKeys;
 import com.liferay.portal.search.web.constants.SearchResultsPortletKeys;
 import com.liferay.portal.search.web.internal.category.facet.constants.CategoryFacetPortletKeys;
@@ -122,10 +121,7 @@ public class DefaultSearchLayoutPrototypeCustomizer
 			layout, portletKey, columnId);
 
 		DefaultLayoutPrototypesUtil.updatePortletSetup(
-			layout, portletId,
-			HashMapBuilder.put(
-				"portletSetupPortletDecoratorId", "barebone"
-			).build());
+			layout, portletId, "portletSetupPortletDecoratorId", "barebone");
 	}
 
 }

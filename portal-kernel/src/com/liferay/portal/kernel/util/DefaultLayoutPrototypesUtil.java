@@ -85,16 +85,14 @@ public class DefaultLayoutPrototypesUtil {
 	}
 
 	public static PortletPreferences updatePortletSetup(
-			Layout layout, String portletId, Map<String, String> preferences)
+			Layout layout, String portletId, String key, String value)
 		throws Exception {
 
 		PortletPreferences portletSetup =
 			PortletPreferencesFactoryUtil.getLayoutPortletSetup(
 				layout, portletId);
 
-		for (Map.Entry<String, String> entry : preferences.entrySet()) {
-			portletSetup.setValue(entry.getKey(), entry.getValue());
-		}
+		portletSetup.setValue(key, value);
 
 		portletSetup.store();
 
