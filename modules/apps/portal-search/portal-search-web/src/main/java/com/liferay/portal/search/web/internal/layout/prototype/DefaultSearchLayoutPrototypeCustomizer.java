@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.web.internal.layout.prototype;
 
+import com.liferay.asset.kernel.util.NotifiedAssetEntryThreadLocal;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.util.DefaultLayoutPrototypesUtil;
@@ -41,71 +43,75 @@ public class DefaultSearchLayoutPrototypeCustomizer
 	public void customize(Layout layout) throws Exception {
 		String portletInstanceId = PortletIdCodec.generateInstanceId();
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				SearchBarPortletKeys.SEARCH_BAR, portletInstanceId),
-			"column-1");
+		try (SafeCloseable safeCloseable =
+				NotifiedAssetEntryThreadLocal.setWithSafeCloseable(true)) {
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				SuggestionsPortletKeys.SUGGESTIONS, portletInstanceId),
-			"column-1");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					SearchBarPortletKeys.SEARCH_BAR, portletInstanceId),
+				"column-1");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				SearchResultsPortletKeys.SEARCH_RESULTS, portletInstanceId),
-			"column-3");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					SuggestionsPortletKeys.SUGGESTIONS, portletInstanceId),
+				"column-1");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				SearchOptionsPortletKeys.SEARCH_OPTIONS, portletInstanceId),
-			"column-3");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					SearchResultsPortletKeys.SEARCH_RESULTS, portletInstanceId),
+				"column-3");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				SiteFacetPortletKeys.SITE_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					SearchOptionsPortletKeys.SEARCH_OPTIONS, portletInstanceId),
+				"column-3");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				TypeFacetPortletKeys.TYPE_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					SiteFacetPortletKeys.SITE_FACET, portletInstanceId),
+				"column-2");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				TagFacetPortletKeys.TAG_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					TypeFacetPortletKeys.TYPE_FACET, portletInstanceId),
+				"column-2");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				CategoryFacetPortletKeys.CATEGORY_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					TagFacetPortletKeys.TAG_FACET, portletInstanceId),
+				"column-2");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				FolderFacetPortletKeys.FOLDER_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					CategoryFacetPortletKeys.CATEGORY_FACET, portletInstanceId),
+				"column-2");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				UserFacetPortletKeys.USER_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					FolderFacetPortletKeys.FOLDER_FACET, portletInstanceId),
+				"column-2");
 
-		_addBorderlessPortlet(
-			layout,
-			PortletIdCodec.encode(
-				ModifiedFacetPortletKeys.MODIFIED_FACET, portletInstanceId),
-			"column-2");
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					UserFacetPortletKeys.USER_FACET, portletInstanceId),
+				"column-2");
+
+			_addBorderlessPortlet(
+				layout,
+				PortletIdCodec.encode(
+					ModifiedFacetPortletKeys.MODIFIED_FACET, portletInstanceId),
+				"column-2");
+		}
 	}
 
 	@Override

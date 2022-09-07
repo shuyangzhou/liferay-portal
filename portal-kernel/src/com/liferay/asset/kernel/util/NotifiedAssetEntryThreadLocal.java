@@ -15,6 +15,7 @@
 package com.liferay.asset.kernel.util;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.lang.SafeCloseable;
 
 /**
  * @author Jonathan McCann
@@ -31,8 +32,15 @@ public class NotifiedAssetEntryThreadLocal {
 		_isNotifiedAssetEntryIdsModified.set(notifiedAssetEntryIdsModified);
 	}
 
-	private static final ThreadLocal<Boolean> _isNotifiedAssetEntryIdsModified =
-		new CentralizedThreadLocal<>(
+	public static SafeCloseable setWithSafeCloseable(
+		boolean notifiedAssetEntryIdsModified) {
+
+		return _isNotifiedAssetEntryIdsModified.setWithSafeCloseable(
+			notifiedAssetEntryIdsModified);
+	}
+
+	private static final CentralizedThreadLocal<Boolean>
+		_isNotifiedAssetEntryIdsModified = new CentralizedThreadLocal<>(
 			NotifiedAssetEntryThreadLocal.class +
 				"._isNotifiedAssetEntryIdsModified",
 			() -> Boolean.FALSE);
