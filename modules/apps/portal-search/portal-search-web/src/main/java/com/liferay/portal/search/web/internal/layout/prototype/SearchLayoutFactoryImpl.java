@@ -15,15 +15,20 @@
 package com.liferay.portal.search.web.internal.layout.prototype;
 
 import com.liferay.layout.page.template.util.LayoutPrototypeHelperUtil;
+import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutPrototype;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
@@ -41,7 +46,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -84,6 +93,12 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 		catch (Exception exception) {
 			throw new SystemException(exception);
 		}
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceRegistration = bundleContext.registerService(
+			ModelListener.class, new LayoutModelListener(), null);
 	}
 
 	protected void createSearchLayout(
@@ -149,18 +164,12 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 			layoutPrototypeLocalService.search(
 				companyId, null, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Layout layout = LayoutPrototypeHelperUtil.addLayoutPrototype(
-			layoutPrototypeLocalService, companyId, defaultUserId, nameMap,
-			descriptionMap, layoutTemplateId, layoutPrototypes);
+		try (SafeCloseable safeCloseable =
+				_customizeThreadLocal.setWithSafeCloseable(Boolean.TRUE)) {
 
-		if (layout == null) {
-			return;
-		}
-
-		customize(layout);
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Search Page Template created");
+			LayoutPrototypeHelperUtil.addLayoutPrototype(
+				layoutPrototypeLocalService, companyId, defaultUserId, nameMap,
+				descriptionMap, layoutTemplateId, layoutPrototypes);
 		}
 	}
 
@@ -171,6 +180,11 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 		else {
 			_defaultSearchLayoutPrototypeCustomizer.customize(layout);
 		}
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
 	}
 
 	protected String getLayoutTemplateId() {
@@ -278,8 +292,38 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchLayoutFactoryImpl.class);
 
+	private static final CentralizedThreadLocal<Boolean> _customizeThreadLocal =
+		new CentralizedThreadLocal<>(
+			SearchLayoutFactoryImpl.class.getName() + "._customizeThreadLocal",
+			() -> Boolean.FALSE);
+
 	private final SearchLayoutPrototypeCustomizer
 		_defaultSearchLayoutPrototypeCustomizer =
 			new DefaultSearchLayoutPrototypeCustomizer();
+	private ServiceRegistration<?> _serviceRegistration;
+
+	private class LayoutModelListener extends BaseModelListener<Layout> {
+
+		@Override
+		public void onBeforeCreate(Layout layout)
+			throws ModelListenerException {
+
+			if (!_customizeThreadLocal.get()) {
+				return;
+			}
+
+			try {
+				customize(layout);
+			}
+			catch (Exception exception) {
+				throw new ModelListenerException(exception);
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Search Page Template created");
+			}
+		}
+
+	}
 
 }

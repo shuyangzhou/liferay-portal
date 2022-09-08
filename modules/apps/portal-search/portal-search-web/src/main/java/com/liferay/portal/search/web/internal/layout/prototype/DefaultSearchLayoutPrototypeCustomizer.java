@@ -111,6 +111,9 @@ public class DefaultSearchLayoutPrototypeCustomizer
 				PortletIdCodec.encode(
 					ModifiedFacetPortletKeys.MODIFIED_FACET, portletInstanceId),
 				"column-2");
+
+			layout.setTypeSettingsProperties(
+				layout.getTypeSettingsProperties());
 		}
 	}
 
