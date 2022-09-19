@@ -11489,8 +11489,4 @@ public class FragmentEntryLinkPersistenceImpl
 	@Reference
 	private PortalUUID _portalUUID;
 
-	@Reference
-	private FragmentEntryLinkModelArgumentsResolver
-		_fragmentEntryLinkModelArgumentsResolver;
-
 }
