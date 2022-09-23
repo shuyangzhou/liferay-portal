@@ -29,6 +29,7 @@ import com.liferay.commerce.account.internal.upgrade.v4_0_0.CommerceAccountOrgan
 import com.liferay.commerce.account.internal.upgrade.v5_0_0.CommerceAccountUserRelUpgradeProcess;
 import com.liferay.commerce.account.internal.upgrade.v9_3_0.CommerceAccountRoleUpgradeProcess;
 import com.liferay.commerce.account.internal.upgrade.v9_4_0.AccountGroupUpgradeProcess;
+import com.liferay.commerce.account.internal.verify.CommerceAccountServiceVerifyProcess;
 import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelLocalService;
 import com.liferay.commerce.term.service.CommerceTermEntryLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
@@ -47,6 +48,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
@@ -67,6 +69,18 @@ public class CommerceAccountServiceUpgradeStepRegistrator
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce account upgrade step registrator started");
 		}
+
+		registry.registerInitialDeploymentUpgradeSteps(
+			new UpgradeProcess() {
+
+				@Override
+				protected void doUpgrade() throws Exception {
+					_commerceAccountServiceVerifyProcess.verifyAccountRoles();
+
+					_commerceAccountServiceVerifyProcess.verifyAccountGroup();
+				}
+
+			});
 
 		registry.register(
 			"1.0.0", "1.1.0", new CommerceAccountUpgradeProcess());
@@ -214,6 +228,10 @@ public class CommerceAccountServiceUpgradeStepRegistrator
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private CommerceAccountServiceVerifyProcess
+		_commerceAccountServiceVerifyProcess;
 
 	@Reference
 	private CommerceChannelAccountEntryRelLocalService

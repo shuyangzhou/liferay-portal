@@ -16,10 +16,13 @@ package com.liferay.portal.security.service.access.policy.internal.upgrade.regis
 
 import com.liferay.portal.kernel.upgrade.BaseSQLServerDatetimeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.security.service.access.policy.internal.upgrade.v3_0_0.util.SAPEntryTable;
+import com.liferay.portal.security.service.access.policy.internal.verify.SAPServiceVerifyProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marcellus Tavares
@@ -30,6 +33,16 @@ public class SAPServiceUpgradeStepRegistrator
 
 	@Override
 	public void register(Registry registry) {
+		registry.registerInitialDeploymentUpgradeSteps(
+			new UpgradeProcess() {
+
+				@Override
+				protected void doUpgrade() throws Exception {
+					_sapServiceVerifyProcess.verifyDefaultSAPEntry();
+				}
+
+			});
+
 		registry.register("2.0.0", "2.0.13", new DummyUpgradeStep());
 
 		registry.register("2.0.1", "2.0.13", new DummyUpgradeStep());
@@ -61,5 +74,8 @@ public class SAPServiceUpgradeStepRegistrator
 			new BaseSQLServerDatetimeUpgradeProcess(
 				new Class<?>[] {SAPEntryTable.class}));
 	}
+
+	@Reference
+	private SAPServiceVerifyProcess _sapServiceVerifyProcess;
 
 }

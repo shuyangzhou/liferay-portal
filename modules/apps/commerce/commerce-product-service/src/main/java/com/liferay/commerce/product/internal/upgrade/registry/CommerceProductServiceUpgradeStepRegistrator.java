@@ -38,6 +38,7 @@ import com.liferay.commerce.product.internal.upgrade.v2_3_0.CommerceChannelUpgra
 import com.liferay.commerce.product.internal.upgrade.v2_5_0.FriendlyURLEntryUpgradeProcess;
 import com.liferay.commerce.product.internal.upgrade.v3_9_2.MiniumSiteInitializerUpgradeProcess;
 import com.liferay.commerce.product.internal.upgrade.v4_0_0.util.CommerceChannelAccountEntryRelTable;
+import com.liferay.commerce.product.internal.verify.CommerceProductServiceVerifyProcess;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -53,6 +54,7 @@ import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -76,6 +78,17 @@ public class CommerceProductServiceUpgradeStepRegistrator
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce product upgrade step registrator started");
 		}
+
+		registry.registerInitialDeploymentUpgradeSteps(
+			new UpgradeProcess() {
+
+				@Override
+				protected void doUpgrade() throws Exception {
+					_commerceProductServiceVerifyProcess.
+						verifyCPMeasurementUnits();
+				}
+
+			});
 
 		registry.register("1.0.0", "1.1.0", new DummyUpgradeProcess());
 
@@ -344,6 +357,10 @@ public class CommerceProductServiceUpgradeStepRegistrator
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private CommerceProductServiceVerifyProcess
+		_commerceProductServiceVerifyProcess;
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;

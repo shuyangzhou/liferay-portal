@@ -20,6 +20,7 @@ import com.liferay.commerce.price.list.internal.upgrade.v2_0_0.util.CommercePric
 import com.liferay.commerce.price.list.internal.upgrade.v2_1_0.util.CommercePriceListChannelRelTable;
 import com.liferay.commerce.price.list.internal.upgrade.v2_1_0.util.CommercePriceListDiscountRelTable;
 import com.liferay.commerce.price.list.internal.upgrade.v2_2_0.util.CommercePriceListOrderTypeRelTable;
+import com.liferay.commerce.price.list.internal.verify.CommercePriceListServiceVerifyProcess;
 import com.liferay.commerce.price.list.model.impl.CommercePriceEntryModelImpl;
 import com.liferay.commerce.price.list.model.impl.CommercePriceListAccountRelModelImpl;
 import com.liferay.commerce.price.list.model.impl.CommerceTierPriceEntryModelImpl;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
@@ -55,6 +57,17 @@ public class CommercePriceListServiceUpgradeStepRegistrator
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce price list upgrade step registrator started");
 		}
+
+		registry.registerInitialDeploymentUpgradeSteps(
+			new UpgradeProcess() {
+
+				@Override
+				protected void doUpgrade() throws Exception {
+					_commercePriceListServiceVerifyProcess.
+						verifyBasePriceLists();
+				}
+
+			});
 
 		registry.register(
 			"1.0.0", "1.1.0",
@@ -158,6 +171,10 @@ public class CommercePriceListServiceUpgradeStepRegistrator
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommercePriceListServiceUpgradeStepRegistrator.class);
+
+	@Reference
+	private CommercePriceListServiceVerifyProcess
+		_commercePriceListServiceVerifyProcess;
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;
