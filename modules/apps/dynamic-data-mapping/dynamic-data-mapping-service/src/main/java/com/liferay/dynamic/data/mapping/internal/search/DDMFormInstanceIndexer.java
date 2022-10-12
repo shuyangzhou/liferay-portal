@@ -80,8 +80,8 @@ public class DDMFormInstanceIndexer extends BaseIndexer<DDMFormInstance> {
 	@Override
 	protected void doReindex(DDMFormInstance ddmFormInstance) throws Exception {
 		indexWriterHelper.updateDocument(
-			getSearchEngineId(), ddmFormInstance.getCompanyId(),
-			getDocument(ddmFormInstance), isCommitImmediately());
+			ddmFormInstance.getCompanyId(), getDocument(ddmFormInstance),
+			isCommitImmediately());
 
 		_reindexRecords(ddmFormInstance);
 	}
@@ -128,7 +128,6 @@ public class DDMFormInstanceIndexer extends BaseIndexer<DDMFormInstance> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

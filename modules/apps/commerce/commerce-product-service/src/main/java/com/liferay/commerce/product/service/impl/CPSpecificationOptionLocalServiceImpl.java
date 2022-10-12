@@ -392,8 +392,6 @@ public class CPSpecificationOptionLocalServiceImpl
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(
-			indexer.getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

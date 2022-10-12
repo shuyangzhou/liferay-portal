@@ -169,7 +169,7 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 			}
 
 			_indexWriterHelper.updateDocuments(
-				getSearchEngineId(), CompanyConstants.SYSTEM, documents, false);
+				CompanyConstants.SYSTEM, documents, false);
 		}
 		catch (SearchException searchException) {
 			_log.error(
@@ -255,8 +255,8 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 		throws Exception {
 
 		_indexWriterHelper.deleteDocument(
-			getSearchEngineId(), CompanyConstants.SYSTEM,
-			_getUID(configurationModel), isCommitImmediately());
+			CompanyConstants.SYSTEM, _getUID(configurationModel),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -361,8 +361,8 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), CompanyConstants.SYSTEM,
-			getDocument(configurationModel), isCommitImmediately());
+			CompanyConstants.SYSTEM, getDocument(configurationModel),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -405,7 +405,7 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 
 	private void _commit() {
 		try {
-			_indexWriterHelper.commit(getSearchEngineId());
+			_indexWriterHelper.commit();
 		}
 		catch (SearchException searchException) {
 			if (_log.isWarnEnabled()) {

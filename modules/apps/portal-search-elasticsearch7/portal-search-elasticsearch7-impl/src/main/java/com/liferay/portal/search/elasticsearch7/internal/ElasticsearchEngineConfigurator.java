@@ -20,18 +20,18 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.SearchEngine;
-import com.liferay.portal.kernel.search.SearchEngineConfigurator;
-import com.liferay.portal.kernel.search.SearchEngineHelper;
-import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.SearchEngineProxyWrapper;
 import com.liferay.portal.kernel.search.messaging.BaseSearchEngineMessageListener;
 import com.liferay.portal.kernel.search.messaging.SearchReaderMessageListener;
 import com.liferay.portal.kernel.search.messaging.SearchWriterMessageListener;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
@@ -47,48 +47,35 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
  */
-@Component(
-	immediate = true, property = "search.engine.impl=Elasticsearch",
-	service = SearchEngineConfigurator.class
-)
-public class ElasticsearchEngineConfigurator
-	implements SearchEngineConfigurator {
+@Component(service = ElasticsearchEngineConfigurator.class)
+public class ElasticsearchEngineConfigurator {
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
+	public void configure(SearchEngine searchEngine) {
+		_registerSearchEngineMessageListener(
+			searchEngine, _getSearchReaderDestination(),
+			new SearchReaderMessageListener(), searchEngine.getIndexSearcher());
 
 		_registerSearchEngineMessageListener(
-			SearchEngineHelper.SYSTEM_ENGINE_ID, _searchEngine,
-			_getSearchReaderDestination(), new SearchReaderMessageListener(),
-			_searchEngine.getIndexSearcher());
-
-		_registerSearchEngineMessageListener(
-			SearchEngineHelper.SYSTEM_ENGINE_ID, _searchEngine,
-			_getSearchWriterDestination(), new SearchWriterMessageListener(),
-			_searchEngine.getIndexWriter());
+			searchEngine, _getSearchWriterDestination(),
+			new SearchWriterMessageListener(), searchEngine.getIndexWriter());
 
 		SearchEngineProxyWrapper searchEngineProxyWrapper =
 			new SearchEngineProxyWrapper(
-				_searchEngine, _indexSearcher, _indexWriter);
+				searchEngine, _indexSearcher, _indexWriter);
 
-		_searchEngineHelper.setSearchEngine(
-			SearchEngineHelper.SYSTEM_ENGINE_ID, searchEngineProxyWrapper);
+		for (Company company : _companyLocalService.getCompanies()) {
+			searchEngineProxyWrapper.initialize(company.getCompanyId());
+		}
 
 		searchEngineProxyWrapper.initialize(CompanyConstants.SYSTEM);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_searchEngineHelper.removeSearchEngine(
-			SearchEngineHelper.SYSTEM_ENGINE_ID);
-
+	public void unconfigure() {
 		for (ServiceRegistration<?> serviceRegistration :
 				_destinationServiceRegistrations) {
 
@@ -96,6 +83,11 @@ public class ElasticsearchEngineConfigurator
 		}
 
 		_destinationServiceRegistrations.clear();
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 	}
 
 	private Destination _createSearchReaderDestination(
@@ -158,16 +150,12 @@ public class ElasticsearchEngineConfigurator
 	}
 
 	private Destination _getSearchReaderDestination() {
-		String searchReaderDestinationName =
-			SearchEngineHelperUtil.getSearchReaderDestinationName(
-				SearchEngineHelper.SYSTEM_ENGINE_ID);
-
 		Destination searchReaderDestination = _messageBus.getDestination(
-			searchReaderDestinationName);
+			DestinationNames.SEARCH_READER);
 
 		if (searchReaderDestination == null) {
 			searchReaderDestination = _createSearchReaderDestination(
-				searchReaderDestinationName);
+				DestinationNames.SEARCH_READER);
 
 			_destinationServiceRegistrations.add(
 				_bundleContext.registerService(
@@ -181,16 +169,12 @@ public class ElasticsearchEngineConfigurator
 	}
 
 	private Destination _getSearchWriterDestination() {
-		String searchWriterDestinationName =
-			SearchEngineHelperUtil.getSearchWriterDestinationName(
-				SearchEngineHelper.SYSTEM_ENGINE_ID);
-
 		Destination searchWriterDestination = _messageBus.getDestination(
-			searchWriterDestinationName);
+			DestinationNames.SEARCH_WRITER);
 
 		if (searchWriterDestination == null) {
 			searchWriterDestination = _createSearchWriterDestination(
-				searchWriterDestinationName);
+				DestinationNames.SEARCH_WRITER);
 
 			_destinationServiceRegistrations.add(
 				_bundleContext.registerService(
@@ -204,15 +188,13 @@ public class ElasticsearchEngineConfigurator
 	}
 
 	private void _registerSearchEngineMessageListener(
-		String searchEngineId, SearchEngine searchEngine,
-		Destination destination,
+		SearchEngine searchEngine, Destination destination,
 		BaseSearchEngineMessageListener baseSearchEngineMessageListener,
 		Object manager) {
 
 		baseSearchEngineMessageListener.setManager(manager);
 		baseSearchEngineMessageListener.setMessageBus(_messageBus);
 		baseSearchEngineMessageListener.setSearchEngine(searchEngine);
-		baseSearchEngineMessageListener.setSearchEngineId(searchEngineId);
 
 		destination.register(
 			baseSearchEngineMessageListener,
@@ -229,6 +211,9 @@ public class ElasticsearchEngineConfigurator
 	private BundleContext _bundleContext;
 
 	@Reference
+	private CompanyLocalService _companyLocalService;
+
+	@Reference
 	private DestinationFactory _destinationFactory;
 
 	private final List<ServiceRegistration<?>>
@@ -242,13 +227,5 @@ public class ElasticsearchEngineConfigurator
 
 	@Reference
 	private MessageBus _messageBus;
-
-	@Reference(
-		target = "(&(search.engine.id=SYSTEM_ENGINE)(search.engine.impl=Elasticsearch))"
-	)
-	private SearchEngine _searchEngine;
-
-	@Reference
-	private SearchEngineHelper _searchEngineHelper;
 
 }

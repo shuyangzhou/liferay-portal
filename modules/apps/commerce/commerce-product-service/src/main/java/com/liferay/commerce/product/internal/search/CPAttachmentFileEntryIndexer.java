@@ -268,7 +268,7 @@ public class CPAttachmentFileEntryIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), cpAttachmentFileEntry.getCompanyId(),
+			cpAttachmentFileEntry.getCompanyId(),
 			getDocument(cpAttachmentFileEntry), isCommitImmediately());
 	}
 
@@ -312,7 +312,6 @@ public class CPAttachmentFileEntryIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

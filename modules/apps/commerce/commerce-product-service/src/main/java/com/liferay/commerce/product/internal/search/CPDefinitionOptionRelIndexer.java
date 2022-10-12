@@ -216,7 +216,7 @@ public class CPDefinitionOptionRelIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), cpDefinitionOptionRel.getCompanyId(),
+			cpDefinitionOptionRel.getCompanyId(),
 			getDocument(cpDefinitionOptionRel), isCommitImmediately());
 	}
 
@@ -260,7 +260,6 @@ public class CPDefinitionOptionRelIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

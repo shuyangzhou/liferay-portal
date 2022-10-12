@@ -64,8 +64,6 @@ public class UserBulkReindexer implements BulkReindexer {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(
-			indexer.getSearchEngineId());
 
 		try {
 			indexableActionableDynamicQuery.performActions();

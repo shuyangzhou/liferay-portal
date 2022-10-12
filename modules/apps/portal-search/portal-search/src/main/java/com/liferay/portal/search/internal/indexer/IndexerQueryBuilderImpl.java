@@ -83,9 +83,6 @@ public class IndexerQueryBuilderImpl<T extends BaseModel<?>>
 
 	@Override
 	public BooleanQuery getQuery(SearchContext searchContext) {
-		searchContext.setSearchEngineId(
-			_modelSearchSettings.getSearchEngineId());
-
 		_resetFullQuery(searchContext);
 
 		String[] fullQueryEntryClassNames =
@@ -106,8 +103,7 @@ public class IndexerQueryBuilderImpl<T extends BaseModel<?>>
 		_contributeSearchContext(searchContext);
 
 		Map<String, Indexer<?>> entryClassNameIndexerMap =
-			_getEntryClassNameIndexerMap(
-				entryClassNames, searchContext.getSearchEngineId());
+			_getEntryClassNameIndexerMap(entryClassNames);
 
 		BooleanFilter booleanFilter = new BooleanFilter();
 
@@ -298,7 +294,7 @@ public class IndexerQueryBuilderImpl<T extends BaseModel<?>>
 	}
 
 	private Map<String, Indexer<?>> _getEntryClassNameIndexerMap(
-		String[] entryClassNames, String searchEngineId) {
+		String[] entryClassNames) {
 
 		Map<String, Indexer<?>> entryClassNameIndexerMap =
 			new LinkedHashMap<>();
@@ -306,9 +302,7 @@ public class IndexerQueryBuilderImpl<T extends BaseModel<?>>
 		for (String entryClassName : entryClassNames) {
 			Indexer<?> indexer = _indexerRegistry.getIndexer(entryClassName);
 
-			if ((indexer == null) ||
-				!searchEngineId.equals(indexer.getSearchEngineId())) {
-
+			if (indexer == null) {
 				continue;
 			}
 

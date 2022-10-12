@@ -204,8 +204,8 @@ public class CPDisplayLayoutIndexer extends BaseIndexer<CPDisplayLayout> {
 	@Override
 	protected void doReindex(CPDisplayLayout cpDisplayLayout) throws Exception {
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), cpDisplayLayout.getCompanyId(),
-			getDocument(cpDisplayLayout), isCommitImmediately());
+			cpDisplayLayout.getCompanyId(), getDocument(cpDisplayLayout),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -240,7 +240,6 @@ public class CPDisplayLayoutIndexer extends BaseIndexer<CPDisplayLayout> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

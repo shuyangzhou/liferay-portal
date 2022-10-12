@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.proxy.BaseMultiDestinationProxyBean;
-import com.liferay.portal.kernel.messaging.proxy.ProxyRequest;
 import com.liferay.portal.kernel.search.suggest.Suggester;
 import com.liferay.portal.kernel.search.suggest.SuggesterResults;
 
@@ -31,22 +31,8 @@ public class IndexSearcherProxyBean
 	extends BaseMultiDestinationProxyBean implements IndexSearcher {
 
 	@Override
-	public String getDestinationName(ProxyRequest proxyRequest) {
-		Object[] arguments = proxyRequest.getArguments();
-
-		String searchEngineId = null;
-
-		if (arguments[0] instanceof SearchContext) {
-			SearchContext searchContext = (SearchContext)arguments[0];
-
-			searchEngineId = searchContext.getSearchEngineId();
-		}
-		else {
-			searchEngineId = (String)arguments[0];
-		}
-
-		return SearchEngineHelperUtil.getSearchReaderDestinationName(
-			searchEngineId);
+	public String getDestinationName() {
+		return DestinationNames.SEARCH_READER;
 	}
 
 	@Override

@@ -150,7 +150,7 @@ public class CommerceShippingFixedOptionIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commerceShippingFixedOption.getCompanyId(),
+			commerceShippingFixedOption.getCompanyId(),
 			getDocument(commerceShippingFixedOption), isCommitImmediately());
 	}
 
@@ -210,7 +210,6 @@ public class CommerceShippingFixedOptionIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

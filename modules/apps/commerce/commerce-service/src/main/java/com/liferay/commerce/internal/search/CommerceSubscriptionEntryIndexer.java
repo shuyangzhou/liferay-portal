@@ -180,7 +180,7 @@ public class CommerceSubscriptionEntryIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commerceSubscriptionEntry.getCompanyId(),
+			commerceSubscriptionEntry.getCompanyId(),
 			getDocument(commerceSubscriptionEntry), isCommitImmediately());
 	}
 
@@ -225,7 +225,6 @@ public class CommerceSubscriptionEntryIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

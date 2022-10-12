@@ -462,8 +462,8 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commerceDiscount.getCompanyId(),
-			getDocument(commerceDiscount), isCommitImmediately());
+			commerceDiscount.getCompanyId(), getDocument(commerceDiscount),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -534,7 +534,6 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

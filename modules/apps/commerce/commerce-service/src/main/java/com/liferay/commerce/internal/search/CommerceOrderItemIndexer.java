@@ -196,8 +196,8 @@ public class CommerceOrderItemIndexer extends BaseIndexer<CommerceOrderItem> {
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commerceOrderItem.getCompanyId(),
-			getDocument(commerceOrderItem), isCommitImmediately());
+			commerceOrderItem.getCompanyId(), getDocument(commerceOrderItem),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -238,7 +238,6 @@ public class CommerceOrderItemIndexer extends BaseIndexer<CommerceOrderItem> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

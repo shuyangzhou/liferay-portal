@@ -118,7 +118,7 @@ public class CommercePricingClassIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commercePricingClass.getCompanyId(),
+			commercePricingClass.getCompanyId(),
 			getDocument(commercePricingClass), isCommitImmediately());
 	}
 
@@ -161,7 +161,6 @@ public class CommercePricingClassIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

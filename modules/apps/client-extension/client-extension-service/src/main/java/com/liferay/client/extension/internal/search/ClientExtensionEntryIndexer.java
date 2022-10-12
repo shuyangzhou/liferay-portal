@@ -130,7 +130,7 @@ public class ClientExtensionEntryIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), clientExtensionEntry.getCompanyId(),
+			clientExtensionEntry.getCompanyId(),
 			getDocument(clientExtensionEntry), isCommitImmediately());
 	}
 
@@ -173,7 +173,6 @@ public class ClientExtensionEntryIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

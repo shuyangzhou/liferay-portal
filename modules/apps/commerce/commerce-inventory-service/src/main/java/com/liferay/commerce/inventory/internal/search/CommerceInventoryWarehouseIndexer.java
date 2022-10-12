@@ -188,7 +188,7 @@ public class CommerceInventoryWarehouseIndexer
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commerceInventoryWarehouse.getCompanyId(),
+			commerceInventoryWarehouse.getCompanyId(),
 			getDocument(commerceInventoryWarehouse), isCommitImmediately());
 	}
 
@@ -263,7 +263,6 @@ public class CommerceInventoryWarehouseIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

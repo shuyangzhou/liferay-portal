@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.proxy.BaseMultiDestinationProxyBean;
-import com.liferay.portal.kernel.messaging.proxy.ProxyRequest;
 
 import java.util.Collection;
 
@@ -77,13 +77,8 @@ public class IndexWriterProxyBean
 	}
 
 	@Override
-	public String getDestinationName(ProxyRequest proxyRequest) {
-		Object[] arguments = proxyRequest.getArguments();
-
-		SearchContext searchContext = (SearchContext)arguments[0];
-
-		return SearchEngineHelperUtil.getSearchWriterDestinationName(
-			searchContext.getSearchEngineId());
+	public String getDestinationName() {
+		return DestinationNames.SEARCH_WRITER;
 	}
 
 	@Override

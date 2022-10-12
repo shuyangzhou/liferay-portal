@@ -585,8 +585,6 @@ public class DLAppHelperLocalServiceImpl
 					(DLFileEntry dlFileEntry) ->
 						indexableActionableDynamicQuery.addDocuments(
 							indexer.getDocument(dlFileEntry)));
-				indexableActionableDynamicQuery.setSearchEngineId(
-					indexer.getSearchEngineId());
 
 				indexableActionableDynamicQuery.performActions();
 

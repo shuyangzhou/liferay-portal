@@ -347,7 +347,7 @@ public class WikiPageIndexer
 		}
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), wikiPage.getCompanyId(), getDocument(wikiPage),
+			wikiPage.getCompanyId(), getDocument(wikiPage),
 			isCommitImmediately());
 
 		_reindexAttachments(wikiPage);
@@ -359,8 +359,8 @@ public class WikiPageIndexer
 	private void _deleteDocument(WikiPage wikiPage) {
 		try {
 			_indexWriterHelper.deleteDocument(
-				getSearchEngineId(), wikiPage.getCompanyId(),
-				uidFactory.getUID(wikiPage), isCommitImmediately());
+				wikiPage.getCompanyId(), uidFactory.getUID(wikiPage),
+				isCommitImmediately());
 		}
 		catch (SearchException searchException) {
 			throw new RuntimeException(searchException);
@@ -446,7 +446,6 @@ public class WikiPageIndexer
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

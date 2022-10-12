@@ -101,10 +101,6 @@ public class IndexerRequest {
 		}
 	}
 
-	public String getSearchEngineId() {
-		return _indexer.getSearchEngineId();
-	}
-
 	@Override
 	public int hashCode() {
 		int hashCode = HashUtil.hash(0, _method.getName());

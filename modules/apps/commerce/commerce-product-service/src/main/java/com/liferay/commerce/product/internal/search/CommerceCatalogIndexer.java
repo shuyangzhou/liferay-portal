@@ -143,8 +143,8 @@ public class CommerceCatalogIndexer extends BaseIndexer<CommerceCatalog> {
 	@Override
 	protected void doReindex(CommerceCatalog commerceCatalog) throws Exception {
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commerceCatalog.getCompanyId(),
-			getDocument(commerceCatalog), isCommitImmediately());
+			commerceCatalog.getCompanyId(), getDocument(commerceCatalog),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -179,7 +179,6 @@ public class CommerceCatalogIndexer extends BaseIndexer<CommerceCatalog> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

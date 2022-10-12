@@ -1137,7 +1137,6 @@ public class CTCollectionLocalServiceImpl
 					}
 
 					_indexWriterHelper.deleteDocuments(
-						indexer.getSearchEngineId(),
 						ctCollection.getCompanyId(), uids,
 						indexer.isCommitImmediately());
 

@@ -133,8 +133,7 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 		}
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), wikiNode.getCompanyId(), document,
-			isCommitImmediately());
+			wikiNode.getCompanyId(), document, isCommitImmediately());
 	}
 
 	@Reference
@@ -142,8 +141,8 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 
 	private void _deleteDocument(WikiNode wikiNode) throws Exception {
 		_indexWriterHelper.deleteDocument(
-			getSearchEngineId(), wikiNode.getCompanyId(),
-			uidFactory.getUID(wikiNode), isCommitImmediately());
+			wikiNode.getCompanyId(), uidFactory.getUID(wikiNode),
+			isCommitImmediately());
 	}
 
 	private void _reindexEntries(long companyId) throws Exception {
@@ -172,7 +171,6 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

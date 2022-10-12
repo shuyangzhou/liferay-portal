@@ -160,7 +160,7 @@ public class CPOptionIndexer extends BaseIndexer<CPOption> {
 	@Override
 	protected void doReindex(CPOption cpOption) throws Exception {
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), cpOption.getCompanyId(), getDocument(cpOption),
+			cpOption.getCompanyId(), getDocument(cpOption),
 			isCommitImmediately());
 	}
 
@@ -196,7 +196,6 @@ public class CPOptionIndexer extends BaseIndexer<CPOption> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}

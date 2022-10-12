@@ -20,13 +20,11 @@ import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.search.BaseSearchEngine;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -69,6 +67,7 @@ import org.elasticsearch.common.Strings;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -78,13 +77,9 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Michael C. Han
  */
 @Component(
-	immediate = true,
-	property = {
-		"search.engine.id=SYSTEM_ENGINE", "search.engine.impl=Elasticsearch"
-	},
-	service = {ElasticsearchSearchEngine.class, SearchEngine.class}
+	property = "search.engine.impl=Elasticsearch", service = SearchEngine.class
 )
-public class ElasticsearchSearchEngine extends BaseSearchEngine {
+public class ElasticsearchSearchEngine implements SearchEngine {
 
 	@Override
 	public synchronized String backup(long companyId, String backupName)
@@ -118,9 +113,22 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	}
 
 	@Override
-	public void initialize(long companyId) {
-		super.initialize(companyId);
+	public IndexSearcher getIndexSearcher() {
+		return _indexSearcher;
+	}
 
+	@Override
+	public IndexWriter getIndexWriter() {
+		return _indexWriter;
+	}
+
+	@Override
+	public String getVendor() {
+		return "Elasticsearch";
+	}
+
+	@Override
+	public void initialize(long companyId) {
 		_waitForYellowStatus();
 
 		RestHighLevelClient restHighLevelClient =
@@ -155,8 +163,6 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 
 	@Override
 	public void removeCompany(long companyId) {
-		super.removeCompany(companyId);
-
 		CrossClusterReplicationHelper crossClusterReplicationHelper =
 			_crossClusterReplicationHelper;
 
@@ -212,18 +218,6 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 		_waitForYellowStatus();
 	}
 
-	@Override
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
-	public void setIndexSearcher(IndexSearcher indexSearcher) {
-		super.setIndexSearcher(indexSearcher);
-	}
-
-	@Override
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
-	public void setIndexWriter(IndexWriter indexWriter) {
-		super.setIndexWriter(indexWriter);
-	}
-
 	public void unsetElasticsearchConnectionManager(
 		ElasticsearchConnectionManager elasticsearchConnectionManager) {
 
@@ -238,13 +232,13 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	protected void activate(Map<String, Object> properties) {
 		_checkNodeVersions();
 
-		setVendor(MapUtil.getString(properties, "search.engine.impl"));
-
 		if (StartupHelperUtil.isDBNew()) {
 			for (long companyId : _getIndexedCompanyIds()) {
 				removeCompany(companyId);
 			}
 		}
+
+		_elasticsearchEngineConfigurator.configure(this);
 	}
 
 	protected void createBackupRepository() {
@@ -257,6 +251,11 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 				_BACKUP_REPOSITORY_NAME, "es_backup");
 
 		_searchEngineAdapter.execute(createSnapshotRepositoryRequest);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_elasticsearchEngineConfigurator.unconfigure();
 	}
 
 	protected boolean meetsMinimumVersionRequirement(
@@ -468,8 +467,19 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	private volatile ElasticsearchConfigurationWrapper
 		_elasticsearchConfigurationWrapper;
 	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
+
+	@Reference
+	private ElasticsearchEngineConfigurator _elasticsearchEngineConfigurator;
+
 	private IndexFactory _indexFactory;
 	private IndexNameBuilder _indexNameBuilder;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
+	private IndexSearcher _indexSearcher;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
+	private IndexWriter _indexWriter;
+
 	private SearchEngineAdapter _searchEngineAdapter;
 	private SearchEngineInformation _searchEngineInformation;
 

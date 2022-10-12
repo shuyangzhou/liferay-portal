@@ -387,7 +387,6 @@ public class JournalArticleIndexer extends BaseIndexer<JournalArticle> {
 		}
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}
@@ -430,8 +429,7 @@ public class JournalArticleIndexer extends BaseIndexer<JournalArticle> {
 			}
 
 			_indexWriterHelper.updateDocuments(
-				getSearchEngineId(), article.getCompanyId(), documents,
-				isCommitImmediately());
+				article.getCompanyId(), documents, isCommitImmediately());
 		}
 		else {
 			JournalArticle latestIndexableArticle =
@@ -440,8 +438,8 @@ public class JournalArticleIndexer extends BaseIndexer<JournalArticle> {
 			for (JournalArticle journalArticle : journalArticles) {
 				if (journalArticle.getId() == latestIndexableArticle.getId()) {
 					_indexWriterHelper.updateDocument(
-						getSearchEngineId(), article.getCompanyId(),
-						getDocument(journalArticle), isCommitImmediately());
+						article.getCompanyId(), getDocument(journalArticle),
+						isCommitImmediately());
 				}
 				else {
 					_deleteDocument(journalArticle);

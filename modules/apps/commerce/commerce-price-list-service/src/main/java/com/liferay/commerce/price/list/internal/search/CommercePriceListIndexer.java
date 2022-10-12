@@ -333,8 +333,8 @@ public class CommercePriceListIndexer extends BaseIndexer<CommercePriceList> {
 		throws Exception {
 
 		_indexWriterHelper.updateDocument(
-			getSearchEngineId(), commercePriceList.getCompanyId(),
-			getDocument(commercePriceList), isCommitImmediately());
+			commercePriceList.getCompanyId(), getDocument(commercePriceList),
+			isCommitImmediately());
 
 		_commercePriceListLocalService.cleanPriceListCache();
 	}
@@ -387,7 +387,6 @@ public class CommercePriceListIndexer extends BaseIndexer<CommercePriceList> {
 					}
 				}
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		indexableActionableDynamicQuery.performActions();
 	}
