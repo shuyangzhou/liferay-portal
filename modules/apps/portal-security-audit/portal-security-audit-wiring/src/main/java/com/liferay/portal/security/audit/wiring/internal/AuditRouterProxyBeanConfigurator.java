@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.proxy.MessagingProxyInvocationHandler;
 import com.liferay.portal.kernel.messaging.proxy.ProxyMessageListener;
-import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.spring.aop.InvocationHandlerFactory;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -49,8 +48,6 @@ public class AuditRouterProxyBeanConfigurator {
 		auditRouterProxyBean.setDestinationName(DestinationNames.AUDIT);
 		auditRouterProxyBean.setSynchronousDestinationName(
 			DestinationNames.AUDIT);
-		auditRouterProxyBean.setSynchronousMessageSenderMode(
-			SynchronousMessageSender.Mode.DIRECT);
 
 		InvocationHandlerFactory invocationHandlerFactory =
 			MessagingProxyInvocationHandler.getInvocationHandlerFactory();
