@@ -25,13 +25,4 @@ public interface SynchronousMessageSender {
 	public Object send(String destinationName, Message message)
 		throws MessageBusException;
 
-	public Object send(String destinationName, Message message, long timeout)
-		throws MessageBusException;
-
-	public enum Mode {
-
-		DEFAULT, DIRECT
-
-	}
-
 }

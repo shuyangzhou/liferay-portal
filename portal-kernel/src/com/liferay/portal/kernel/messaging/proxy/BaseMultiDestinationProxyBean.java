@@ -35,22 +35,13 @@ public abstract class BaseMultiDestinationProxyBean {
 			getDestinationName(), buildMessage(proxyRequest));
 	}
 
-	public void setSynchronousMessageSenderMode(
-		SynchronousMessageSender.Mode mode) {
-
-		_mode = mode;
-	}
-
 	public Object synchronousSend(ProxyRequest proxyRequest) throws Exception {
 		Message message = new Message();
 
 		message.setPayload(proxyRequest);
 
-		SynchronousMessageSender synchronousMessageSender =
-			_getSynchronousMessageSender();
-
 		ProxyResponse proxyResponse =
-			(ProxyResponse)synchronousMessageSender.send(
+			(ProxyResponse)_synchronousMessageSender.send(
 				getDestinationName(), message);
 
 		if (proxyResponse == null) {
@@ -74,27 +65,9 @@ public abstract class BaseMultiDestinationProxyBean {
 		return message;
 	}
 
-	private SynchronousMessageSender _getSynchronousMessageSender() {
-		if (_mode == SynchronousMessageSender.Mode.DEFAULT) {
-			return _defaultSynchronousMessageSender;
-		}
-
-		return _directSynchronousMessageSender;
-	}
-
-	private static volatile SynchronousMessageSender
-		_defaultSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class,
-				BaseMultiDestinationProxyBean.class,
-				"_defaultSynchronousMessageSender", "(mode=DEFAULT)", true);
-	private static volatile SynchronousMessageSender
-		_directSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class,
-				BaseMultiDestinationProxyBean.class,
-				"_directSynchronousMessageSender", "(mode=DIRECT)", true);
-
-	private SynchronousMessageSender.Mode _mode;
+	private static volatile SynchronousMessageSender _synchronousMessageSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SynchronousMessageSender.class, BaseMultiDestinationProxyBean.class,
+			"_synchronousMessageSender", true);
 
 }
