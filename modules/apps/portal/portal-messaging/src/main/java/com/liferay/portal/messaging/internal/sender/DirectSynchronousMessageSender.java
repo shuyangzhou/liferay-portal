@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Shuyang Zhou
  */
-@Component(property = "mode=DIRECT", service = SynchronousMessageSender.class)
+@Component(service = SynchronousMessageSender.class)
 public class DirectSynchronousMessageSender
 	implements SynchronousMessageSender {
 
@@ -70,19 +70,6 @@ public class DirectSynchronousMessageSender
 		}
 
 		return message.getResponse();
-	}
-
-	@Override
-	public Object send(String destinationName, Message message, long timeout)
-		throws MessageBusException {
-
-		if (_log.isWarnEnabled()) {
-			_log.warn(
-				DirectSynchronousMessageSender.class.getName() +
-					" does not support timeout");
-		}
-
-		return send(destinationName, message);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

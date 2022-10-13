@@ -77,20 +77,7 @@ public class MessageBusUtil {
 			String destinationName, Message message)
 		throws MessageBusException {
 
-		SynchronousMessageSender synchronousMessageSender =
-			_getSynchronousMessageSender();
-
-		return synchronousMessageSender.send(destinationName, message);
-	}
-
-	public static Object sendSynchronousMessage(
-			String destinationName, Message message, long timeout)
-		throws MessageBusException {
-
-		SynchronousMessageSender synchronousMessageSender =
-			_getSynchronousMessageSender();
-
-		return synchronousMessageSender.send(destinationName, message, timeout);
+		return _synchronousMessageSender.send(destinationName, message);
 	}
 
 	public static Object sendSynchronousMessage(
@@ -148,35 +135,12 @@ public class MessageBusUtil {
 			destinationName, messageListener);
 	}
 
-	public void setSynchronousMessageSenderMode(
-		SynchronousMessageSender.Mode synchronousMessageSenderMode) {
-
-		_synchronousMessageSenderMode = synchronousMessageSenderMode;
-	}
-
-	private static SynchronousMessageSender _getSynchronousMessageSender() {
-		if (_synchronousMessageSenderMode ==
-				SynchronousMessageSender.Mode.DEFAULT) {
-
-			return _defaultSynchronousMessageSender;
-		}
-
-		return _directSynchronousMessageSender;
-	}
-
-	private static volatile SynchronousMessageSender
-		_defaultSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class, MessageBusUtil.class,
-				"_defaultSynchronousMessageSender", "(mode=DEFAULT)", true);
-	private static volatile SynchronousMessageSender
-		_directSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class, MessageBusUtil.class,
-				"_directSynchronousMessageSender", "(mode=DIRECT)", true);
 	private static volatile MessageBus _messageBus =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			MessageBus.class, MessageBusUtil.class, "_messageBus", true);
-	private static SynchronousMessageSender.Mode _synchronousMessageSenderMode;
+	private static volatile SynchronousMessageSender _synchronousMessageSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SynchronousMessageSender.class, MessageBusUtil.class,
+			"_synchronousMessageSender", true);
 
 }

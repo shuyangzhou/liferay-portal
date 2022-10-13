@@ -42,22 +42,13 @@ public abstract class BaseProxyBean {
 		_synchronousDestinationName = synchronousDestinationName;
 	}
 
-	public void setSynchronousMessageSenderMode(
-		SynchronousMessageSender.Mode synchronousMessageSenderMode) {
-
-		_synchronousMessageSenderMode = synchronousMessageSenderMode;
-	}
-
 	public Object synchronousSend(ProxyRequest proxyRequest) throws Exception {
 		if (!MessageBusUtil.hasMessageListener(_destinationName)) {
 			return proxyRequest.execute(this);
 		}
 
-		SynchronousMessageSender synchronousMessageSender =
-			_getSynchronousMessageSender();
-
 		ProxyResponse proxyResponse =
-			(ProxyResponse)synchronousMessageSender.send(
+			(ProxyResponse)_synchronousMessageSender.send(
 				_synchronousDestinationName, buildMessage(proxyRequest));
 
 		if (proxyResponse == null) {
@@ -85,32 +76,15 @@ public abstract class BaseProxyBean {
 		return message;
 	}
 
-	private SynchronousMessageSender _getSynchronousMessageSender() {
-		if (_synchronousMessageSenderMode ==
-				SynchronousMessageSender.Mode.DEFAULT) {
-
-			return _defaultSynchronousMessageSender;
-		}
-
-		return _directSynchronousMessageSender;
-	}
-
-	private static volatile SynchronousMessageSender
-		_defaultSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class, BaseProxyBean.class,
-				"_defaultSynchronousMessageSender", "(mode=DEFAULT)", true);
-	private static volatile SynchronousMessageSender
-		_directSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class, BaseProxyBean.class,
-				"_directSynchronousMessageSender", "(mode=DIRECT)", true);
 	private static volatile MessageBus _messageBus =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			MessageBus.class, BaseProxyBean.class, "_messageBus", true);
+	private static volatile SynchronousMessageSender _synchronousMessageSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SynchronousMessageSender.class, BaseProxyBean.class,
+			"_synchronousMessageSender", true);
 
 	private String _destinationName;
 	private String _synchronousDestinationName;
-	private SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 
 }

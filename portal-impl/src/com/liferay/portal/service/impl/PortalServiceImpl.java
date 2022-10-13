@@ -245,7 +245,7 @@ public class PortalServiceImpl extends PortalServiceBaseImpl {
 			message.put("rollback", rollback);
 			message.put("text", transactionPortletBarText);
 
-			_directSynchronousMessageSender.send(
+			_synchronousMessageSender.send(
 				DestinationNames.TEST_TRANSACTION, message);
 		}
 		catch (Exception exception) {
@@ -256,11 +256,10 @@ public class PortalServiceImpl extends PortalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalServiceImpl.class);
 
-	private static volatile SynchronousMessageSender
-		_directSynchronousMessageSender =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				SynchronousMessageSender.class, PortalServiceImpl.class,
-				"_directSynchronousMessageSender", "(mode=DIRECT)", true);
+	private static volatile SynchronousMessageSender _synchronousMessageSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SynchronousMessageSender.class, PortalServiceImpl.class,
+			"_synchronousMessageSender", true);
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRES_NEW, new Class<?>[0]);
