@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.messaging;
 
-import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
@@ -73,53 +72,6 @@ public class MessageBusUtil {
 		_messageBus.sendMessage(destinationName, message);
 	}
 
-	public static Object sendSynchronousMessage(
-			String destinationName, Message message)
-		throws MessageBusException {
-
-		return _synchronousMessageSender.send(destinationName, message);
-	}
-
-	public static Object sendSynchronousMessage(
-			String destinationName, Object payload)
-		throws MessageBusException {
-
-		return sendSynchronousMessage(destinationName, payload, null);
-	}
-
-	public static Object sendSynchronousMessage(
-			String destinationName, Object payload, long timeout)
-		throws MessageBusException {
-
-		return sendSynchronousMessage(destinationName, payload, null, timeout);
-	}
-
-	public static Object sendSynchronousMessage(
-			String destinationName, Object payload,
-			String responseDestinationName)
-		throws MessageBusException {
-
-		Message message = new Message();
-
-		message.setResponseDestinationName(responseDestinationName);
-		message.setPayload(payload);
-
-		return sendSynchronousMessage(destinationName, message);
-	}
-
-	public static Object sendSynchronousMessage(
-			String destinationName, Object payload,
-			String responseDestinationName, long timeout)
-		throws MessageBusException {
-
-		Message message = new Message();
-
-		message.setResponseDestinationName(responseDestinationName);
-		message.setPayload(payload);
-
-		return sendSynchronousMessage(destinationName, message, timeout);
-	}
-
 	public static void shutdown() {
 		_messageBus.shutdown();
 	}
@@ -138,9 +90,5 @@ public class MessageBusUtil {
 	private static volatile MessageBus _messageBus =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			MessageBus.class, MessageBusUtil.class, "_messageBus", true);
-	private static volatile SynchronousMessageSender _synchronousMessageSender =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			SynchronousMessageSender.class, MessageBusUtil.class,
-			"_synchronousMessageSender", true);
 
 }
