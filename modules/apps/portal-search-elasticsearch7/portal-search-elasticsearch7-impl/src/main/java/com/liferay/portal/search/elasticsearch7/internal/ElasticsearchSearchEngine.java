@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.proxy.MessagingProxyInvocationHandler;
+import com.liferay.portal.kernel.messaging.proxy.ProxyMessageListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.IndexSearcher;
@@ -33,8 +34,6 @@ import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.IndexWriterProxyBean;
 import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.kernel.search.messaging.BaseSearchEngineMessageListener;
-import com.liferay.portal.kernel.search.messaging.SearchWriterMessageListener;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.spring.aop.InvocationHandlerFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -280,9 +279,16 @@ public class ElasticsearchSearchEngine implements SearchEngine {
 			IndexWriter.class.getClassLoader(),
 			new Class<?>[] {IndexWriter.class}, invocationHandler);
 
-		_registerSearchEngineMessageListener(
-			this, _getSearchWriterDestination(),
-			new SearchWriterMessageListener(), _indexWriter);
+		ProxyMessageListener proxyMessageListener = new ProxyMessageListener();
+
+		proxyMessageListener.setManager(_indexWriter);
+		proxyMessageListener.setMessageBus(_messageBus);
+
+		Destination searchWriterDestination = _getSearchWriterDestination();
+
+		searchWriterDestination.register(
+			proxyMessageListener,
+			ElasticsearchSearchEngine.class.getClassLoader());
 
 		for (Company company : _companyLocalService.getCompanies()) {
 			initialize(company.getCompanyId());
@@ -506,20 +512,6 @@ public class ElasticsearchSearchEngine implements SearchEngine {
 		}
 
 		return true;
-	}
-
-	private void _registerSearchEngineMessageListener(
-		SearchEngine searchEngine, Destination destination,
-		BaseSearchEngineMessageListener baseSearchEngineMessageListener,
-		Object manager) {
-
-		baseSearchEngineMessageListener.setManager(manager);
-		baseSearchEngineMessageListener.setMessageBus(_messageBus);
-		baseSearchEngineMessageListener.setSearchEngine(searchEngine);
-
-		destination.register(
-			baseSearchEngineMessageListener,
-			ElasticsearchSearchEngine.class.getClassLoader());
 	}
 
 	private void _validateBackupName(String backupName) throws SearchException {
