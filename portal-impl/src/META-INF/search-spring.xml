@@ -25,9 +25,6 @@
 
 	<!-- Proxy -->
 
-	<bean class="com.liferay.portal.kernel.search.IndexSearcherProxyBean" id="com.liferay.portal.kernel.search.IndexSearcherProxyBean">
-		<property name="destinationName" value="liferay/search_reader" />
-	</bean>
 	<bean class="com.liferay.portal.kernel.search.IndexWriterProxyBean" id="com.liferay.portal.kernel.search.IndexWriterProxyBean">
 		<property name="destinationName" value="liferay/search_writer" />
 	</bean>

@@ -24,12 +24,10 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.search.SearchEngineProxyWrapper;
 import com.liferay.portal.kernel.search.messaging.BaseSearchEngineMessageListener;
-import com.liferay.portal.kernel.search.messaging.SearchReaderMessageListener;
 import com.liferay.portal.kernel.search.messaging.SearchWriterMessageListener;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -38,8 +36,6 @@ import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -57,16 +53,12 @@ public class ElasticsearchEngineConfigurator {
 
 	public void configure(SearchEngine searchEngine) {
 		_registerSearchEngineMessageListener(
-			searchEngine, _getSearchReaderDestination(),
-			new SearchReaderMessageListener(), searchEngine.getIndexSearcher());
-
-		_registerSearchEngineMessageListener(
 			searchEngine, _getSearchWriterDestination(),
 			new SearchWriterMessageListener(), searchEngine.getIndexWriter());
 
 		SearchEngineProxyWrapper searchEngineProxyWrapper =
 			new SearchEngineProxyWrapper(
-				searchEngine, _indexSearcher, _indexWriter);
+				searchEngine, searchEngine.getIndexSearcher(), _indexWriter);
 
 		for (Company company : _companyLocalService.getCompanies()) {
 			searchEngineProxyWrapper.initialize(company.getCompanyId());
@@ -76,28 +68,14 @@ public class ElasticsearchEngineConfigurator {
 	}
 
 	public void unconfigure() {
-		for (ServiceRegistration<?> serviceRegistration :
-				_destinationServiceRegistrations) {
-
-			serviceRegistration.unregister();
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
 		}
-
-		_destinationServiceRegistrations.clear();
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
-	}
-
-	private Destination _createSearchReaderDestination(
-		String searchReaderDestinationName) {
-
-		DestinationConfiguration destinationConfiguration =
-			DestinationConfiguration.createSynchronousDestinationConfiguration(
-				searchReaderDestinationName);
-
-		return _destinationFactory.createDestination(destinationConfiguration);
 	}
 
 	private Destination _createSearchWriterDestination(
@@ -149,25 +127,6 @@ public class ElasticsearchEngineConfigurator {
 		return _destinationFactory.createDestination(destinationConfiguration);
 	}
 
-	private Destination _getSearchReaderDestination() {
-		Destination searchReaderDestination = _messageBus.getDestination(
-			DestinationNames.SEARCH_READER);
-
-		if (searchReaderDestination == null) {
-			searchReaderDestination = _createSearchReaderDestination(
-				DestinationNames.SEARCH_READER);
-
-			_destinationServiceRegistrations.add(
-				_bundleContext.registerService(
-					Destination.class, searchReaderDestination,
-					MapUtil.singletonDictionary(
-						"destination.name",
-						searchReaderDestination.getName())));
-		}
-
-		return searchReaderDestination;
-	}
-
 	private Destination _getSearchWriterDestination() {
 		Destination searchWriterDestination = _messageBus.getDestination(
 			DestinationNames.SEARCH_WRITER);
@@ -176,12 +135,10 @@ public class ElasticsearchEngineConfigurator {
 			searchWriterDestination = _createSearchWriterDestination(
 				DestinationNames.SEARCH_WRITER);
 
-			_destinationServiceRegistrations.add(
-				_bundleContext.registerService(
-					Destination.class, searchWriterDestination,
-					MapUtil.singletonDictionary(
-						"destination.name",
-						searchWriterDestination.getName())));
+			_serviceRegistration = _bundleContext.registerService(
+				Destination.class, searchWriterDestination,
+				MapUtil.singletonDictionary(
+					"destination.name", searchWriterDestination.getName()));
 		}
 
 		return searchWriterDestination;
@@ -216,16 +173,12 @@ public class ElasticsearchEngineConfigurator {
 	@Reference
 	private DestinationFactory _destinationFactory;
 
-	private final List<ServiceRegistration<?>>
-		_destinationServiceRegistrations = new ArrayList<>();
-
-	@Reference(target = "(!(search.engine.impl=*))")
-	private IndexSearcher _indexSearcher;
-
 	@Reference(target = "(!(search.engine.impl=*))")
 	private IndexWriter _indexWriter;
 
 	@Reference
 	private MessageBus _messageBus;
+
+	private ServiceRegistration<?> _serviceRegistration;
 
 }

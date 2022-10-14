@@ -126,8 +126,6 @@ public interface DestinationNames {
 
 	public static final String SCRIPTING = "liferay/scripting";
 
-	public static final String SEARCH_READER = "liferay/search_reader";
-
 	public static final String SEARCH_WRITER = "liferay/search_writer";
 
 	public static final String SUBSCRIPTION_CLEAN_UP =
