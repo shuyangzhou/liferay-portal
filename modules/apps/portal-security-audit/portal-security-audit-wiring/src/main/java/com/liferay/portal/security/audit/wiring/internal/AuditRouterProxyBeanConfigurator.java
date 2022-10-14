@@ -46,8 +46,6 @@ public class AuditRouterProxyBeanConfigurator {
 		AuditRouterProxyBean auditRouterProxyBean = new AuditRouterProxyBean();
 
 		auditRouterProxyBean.setDestinationName(DestinationNames.AUDIT);
-		auditRouterProxyBean.setSynchronousDestinationName(
-			DestinationNames.AUDIT);
 
 		InvocationHandlerFactory invocationHandlerFactory =
 			MessagingProxyInvocationHandler.getInvocationHandlerFactory();

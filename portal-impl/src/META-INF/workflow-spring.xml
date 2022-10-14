@@ -29,41 +29,34 @@
 		<constructor-arg>
 			<bean class="com.liferay.portal.workflow.WorkflowDefinitionManagerProxyBean">
 				<property name="destinationName" value="liferay/workflow_definition" />
-				<property name="synchronousDestinationName" value="liferay/workflow_definition" />
 			</bean>
 		</constructor-arg>
 	</bean>
 	<bean class="com.liferay.portal.workflow.WorkflowEngineManagerProxyBean" id="com.liferay.portal.workflow.WorkflowEngineManagerProxyBean">
 		<property name="destinationName" value="liferay/workflow_engine" />
-		<property name="synchronousDestinationName" value="liferay/workflow_engine" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.messaging.proxy.MessagingProxyInvocationHandler" factory-method="createProxy" id="com.liferay.portal.workflow.WorkflowInstanceManagerProxyBean">
 		<constructor-arg>
 			<bean class="com.liferay.portal.workflow.WorkflowInstanceManagerProxyBean">
 				<property name="destinationName" value="liferay/workflow_instance" />
-				<property name="synchronousDestinationName" value="liferay/workflow_instance" />
 			</bean>
 		</constructor-arg>
 	</bean>
 	<bean class="com.liferay.portal.workflow.WorkflowLogManagerProxyBean" id="com.liferay.portal.workflow.WorkflowLogManagerProxyBean">
 		<property name="destinationName" value="liferay/workflow_log" />
-		<property name="synchronousDestinationName" value="liferay/workflow_log" />
 	</bean>
 	<bean class="com.liferay.portal.workflow.WorkflowStatusManagerProxyBean" id="com.liferay.portal.workflow.WorkflowStatusManagerProxyBean">
 		<property name="destinationName" value="liferay/workflow_status" />
-		<property name="synchronousDestinationName" value="liferay/workflow_status" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.messaging.proxy.MessagingProxyInvocationHandler" factory-method="createProxy" id="com.liferay.portal.workflow.WorkflowTaskManagerProxyBean">
 		<constructor-arg>
 			<bean class="com.liferay.portal.workflow.WorkflowTaskManagerProxyBean">
 				<property name="destinationName" value="liferay/workflow_task" />
-				<property name="synchronousDestinationName" value="liferay/workflow_task" />
 			</bean>
 		</constructor-arg>
 	</bean>
 	<bean class="com.liferay.portal.workflow.comparator.WorkflowComparatorFactoryProxyBean" id="com.liferay.portal.workflow.comparator.WorkflowComparatorFactoryProxyBean">
 		<property name="destinationName" value="liferay/workflow_comparator" />
-		<property name="synchronousDestinationName" value="liferay/workflow_comparator" />
 	</bean>
 
 	<!-- Util -->

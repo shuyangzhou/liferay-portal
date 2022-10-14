@@ -42,8 +42,6 @@ public class SchedulerEngineProxyBeanConfigurator {
 
 		schedulerEngineProxyBean.setDestinationName(
 			DestinationNames.SCHEDULER_ENGINE);
-		schedulerEngineProxyBean.setSynchronousDestinationName(
-			DestinationNames.SCHEDULER_ENGINE);
 
 		InvocationHandlerFactory invocationHandlerFactory =
 			MessagingProxyInvocationHandler.getInvocationHandlerFactory();

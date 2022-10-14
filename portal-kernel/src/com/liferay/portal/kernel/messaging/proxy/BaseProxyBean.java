@@ -36,12 +36,6 @@ public abstract class BaseProxyBean {
 		_destinationName = destinationName;
 	}
 
-	public void setSynchronousDestinationName(
-		String synchronousDestinationName) {
-
-		_synchronousDestinationName = synchronousDestinationName;
-	}
-
 	public Object synchronousSend(ProxyRequest proxyRequest) throws Exception {
 		if (!MessageBusUtil.hasMessageListener(_destinationName)) {
 			return proxyRequest.execute(this);
@@ -49,7 +43,7 @@ public abstract class BaseProxyBean {
 
 		ProxyResponse proxyResponse =
 			(ProxyResponse)_synchronousMessageSender.send(
-				_synchronousDestinationName, buildMessage(proxyRequest));
+				_destinationName, buildMessage(proxyRequest));
 
 		if (proxyResponse == null) {
 			return proxyRequest.execute(this);
@@ -85,6 +79,5 @@ public abstract class BaseProxyBean {
 			"_synchronousMessageSender", true);
 
 	private String _destinationName;
-	private String _synchronousDestinationName;
 
 }
