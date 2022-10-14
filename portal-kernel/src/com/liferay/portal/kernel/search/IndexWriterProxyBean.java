@@ -14,8 +14,7 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.messaging.proxy.BaseMultiDestinationProxyBean;
+import com.liferay.portal.kernel.messaging.proxy.BaseProxyBean;
 
 import java.util.Collection;
 
@@ -23,8 +22,7 @@ import java.util.Collection;
  * @author Bruno Farache
  * @author Tina Tian
  */
-public class IndexWriterProxyBean
-	extends BaseMultiDestinationProxyBean implements IndexWriter {
+public class IndexWriterProxyBean extends BaseProxyBean implements IndexWriter {
 
 	@Override
 	public void addDocument(SearchContext searchContext, Document document) {
@@ -74,11 +72,6 @@ public class IndexWriterProxyBean
 		SearchContext searchContext, String className) {
 
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public String getDestinationName() {
-		return DestinationNames.SEARCH_WRITER;
 	}
 
 	@Override
