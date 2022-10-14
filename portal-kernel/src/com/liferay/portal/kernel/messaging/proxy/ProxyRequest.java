@@ -43,38 +43,32 @@ public class ProxyRequest implements Externalizable {
 	 * this for any other purpose.
 	 */
 	public ProxyRequest() {
-		_local = false;
 	}
 
 	public ProxyRequest(Method method, Object[] arguments) throws Exception {
 		_method = method;
 		_arguments = arguments;
 
-		boolean[] localAndSynchronous = _localAndSynchronousMap.get(method);
+		Boolean synchronous = _synchronousMap.get(method);
 
-		if (localAndSynchronous == null) {
-			localAndSynchronous = new boolean[2];
+		if (synchronous == null) {
+			synchronous = false;
 
 			MessagingProxy messagingProxy = AnnotationLocator.locate(
 				method, method.getDeclaringClass(), MessagingProxy.class);
 
 			if (messagingProxy != null) {
-				if (messagingProxy.local()) {
-					localAndSynchronous[0] = true;
-				}
-
 				ProxyMode proxyMode = messagingProxy.mode();
 
 				if (proxyMode.equals(ProxyMode.SYNC)) {
-					localAndSynchronous[1] = true;
+					synchronous = true;
 				}
 			}
 
-			_localAndSynchronousMap.put(method, localAndSynchronous);
+			_synchronousMap.put(method, synchronous);
 		}
 
-		_local = localAndSynchronous[0];
-		_synchronous = localAndSynchronous[1];
+		_synchronous = synchronous;
 	}
 
 	public Object execute(Object object) throws Exception {
@@ -104,10 +98,6 @@ public class ProxyRequest implements Externalizable {
 		return true;
 	}
 
-	public boolean isLocal() {
-		return _local;
-	}
-
 	public boolean isSynchronous() {
 		return _synchronous;
 	}
@@ -117,8 +107,6 @@ public class ProxyRequest implements Externalizable {
 		throws ClassNotFoundException, IOException {
 
 		_arguments = (Object[])objectInput.readObject();
-
-		_local = objectInput.readBoolean();
 
 		MethodKey methodKey = (MethodKey)objectInput.readObject();
 
@@ -135,23 +123,21 @@ public class ProxyRequest implements Externalizable {
 	@Override
 	public String toString() {
 		return StringBundler.concat(
-			"{arguments=", Arrays.toString(_arguments), ", local", _local,
-			", method=", _method, ", synchronous", _synchronous, "}");
+			"{arguments=", Arrays.toString(_arguments), ", method=", _method,
+			", synchronous", _synchronous, "}");
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeObject(_arguments);
-		objectOutput.writeBoolean(_local);
 		objectOutput.writeObject(new MethodKey(_method));
 		objectOutput.writeBoolean(_synchronous);
 	}
 
-	private static final Map<Method, boolean[]> _localAndSynchronousMap =
+	private static final Map<Method, Boolean> _synchronousMap =
 		new ConcurrentHashMap<>();
 
 	private Object[] _arguments;
-	private boolean _local;
 	private Method _method;
 	private boolean _synchronous;
 

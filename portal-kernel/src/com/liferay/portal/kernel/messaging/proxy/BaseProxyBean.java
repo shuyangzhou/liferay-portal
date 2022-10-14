@@ -63,10 +63,6 @@ public abstract class BaseProxyBean {
 
 		MessageValuesThreadLocal.populateMessageFromThreadLocals(message);
 
-		if (proxyRequest.isLocal()) {
-			message.put(MessagingProxy.LOCAL_MESSAGE, Boolean.TRUE);
-		}
-
 		return message;
 	}
 

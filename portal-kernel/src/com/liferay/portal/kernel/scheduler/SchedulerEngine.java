@@ -111,10 +111,10 @@ public interface SchedulerEngine {
 			Message message, StorageType storageType)
 		throws SchedulerException;
 
-	@MessagingProxy(local = true, mode = ProxyMode.SYNC)
+	@MessagingProxy(mode = ProxyMode.SYNC)
 	public void shutdown() throws SchedulerException;
 
-	@MessagingProxy(local = true, mode = ProxyMode.SYNC)
+	@MessagingProxy(mode = ProxyMode.SYNC)
 	public void start() throws SchedulerException;
 
 	public void suppressError(
