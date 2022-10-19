@@ -86,7 +86,7 @@ public class ClusterSchedulerEngineConfigurator {
 	@Reference
 	private Props _props;
 
-	@Reference(target = "(scheduler.engine.proxy.bean=true)")
+	@Reference(target = "(scheduler.engine.proxy=false)")
 	private SchedulerEngine _schedulerEngine;
 
 	private volatile ServiceRegistration<SchedulerEngine>
