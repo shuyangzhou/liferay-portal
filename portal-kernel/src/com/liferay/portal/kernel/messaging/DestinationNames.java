@@ -21,8 +21,6 @@ public interface DestinationNames {
 
 	public static final String ASYNC_SERVICE = "liferay/async_service";
 
-	public static final String AUDIT = "liferay/audit";
-
 	public static final String BACKGROUND_TASK = "liferay/background_task";
 
 	public static final String BACKGROUND_TASK_STATUS =
@@ -119,8 +117,6 @@ public interface DestinationNames {
 	public static final String SCHEDULER_DISPATCH =
 		"liferay/scheduler_dispatch";
 
-	public static final String SCHEDULER_ENGINE = "liferay/scheduler_engine";
-
 	public static final String SCHEDULER_SCRIPTING =
 		"liferay/scheduler_scripting";
 
@@ -133,21 +129,5 @@ public interface DestinationNames {
 		"liferay/subscription_sender";
 
 	public static final String TEST_TRANSACTION = "liferay/test_transaction";
-
-	public static final String WORKFLOW_COMPARATOR =
-		"liferay/workflow_comparator";
-
-	public static final String WORKFLOW_DEFINITION =
-		"liferay/workflow_definition";
-
-	public static final String WORKFLOW_ENGINE = "liferay/workflow_engine";
-
-	public static final String WORKFLOW_INSTANCE = "liferay/workflow_instance";
-
-	public static final String WORKFLOW_LOG = "liferay/workflow_log";
-
-	public static final String WORKFLOW_STATUS = "liferay/workflow_status";
-
-	public static final String WORKFLOW_TASK = "liferay/workflow_task";
 
 }

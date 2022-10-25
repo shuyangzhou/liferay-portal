@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.Document;
@@ -483,8 +482,7 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 	}
 
 	@Override
-	public void updateDocument(
-			long companyId, Document document, boolean commitImmediately)
+	public void updateDocument(long companyId, Document document)
 		throws SearchException {
 
 		_enforceStandardUID(document);
@@ -507,9 +505,7 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 
 		searchContext.setCompanyId(companyId);
 
-		_setCommitImmediately(
-			searchContext,
-			commitImmediately || ProxyModeThreadLocal.isForceSync());
+		_setCommitImmediately(searchContext, true);
 
 		indexWriter.updateDocument(searchContext, document);
 	}
