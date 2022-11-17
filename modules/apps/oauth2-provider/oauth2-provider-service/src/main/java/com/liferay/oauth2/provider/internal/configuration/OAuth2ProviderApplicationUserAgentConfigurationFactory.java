@@ -56,10 +56,10 @@ public class OAuth2ProviderApplicationUserAgentConfigurationFactory
 			_log.debug("Activate " + properties);
 		}
 
-		long companyId = ConfigurableUtil.getCompanyId(
+		long companyId = FactoryUtil.getCompanyId(
 			companyLocalService, properties);
-		String externalReferenceCode =
-			ConfigurableUtil.getExternalReferenceCode(properties);
+		String externalReferenceCode = FactoryUtil.getExternalReferenceCode(
+			properties);
 
 		OAuth2ProviderApplicationUserAgentConfiguration
 			oAuth2ProviderApplicationUserAgentConfiguration =
