@@ -14,6 +14,9 @@
 
 package com.liferay.taglib.util;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -27,6 +30,9 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -193,8 +199,18 @@ public class ParamAndPropertyAncestorTagImpl
 
 		_httpServletRequest = (HttpServletRequest)pageContext.getRequest();
 
-		_servletContext = (ServletContext)_httpServletRequest.getAttribute(
-			WebKeys.CTX);
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		if (bundle != null) {
+			_servletContext =
+				ServiceTrackerMapHolder._serviceTrackerMap.getService(
+					bundle.getSymbolicName());
+		}
+
+		if (_servletContext == null) {
+			_servletContext = (ServletContext)_httpServletRequest.getAttribute(
+				WebKeys.CTX);
+		}
 
 		if (_servletContext == null) {
 			_servletContext = pageContext.getServletContext();
@@ -216,5 +232,14 @@ public class ParamAndPropertyAncestorTagImpl
 	private Map<String, String[]> _properties;
 	private Set<String> _removedParameterNames;
 	private ServletContext _servletContext;
+
+	private static class ServiceTrackerMapHolder {
+
+		private static final ServiceTrackerMap<String, ServletContext>
+			_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+				SystemBundleUtil.getBundleContext(), ServletContext.class,
+				"osgi.web.symbolicname");
+
+	}
 
 }
