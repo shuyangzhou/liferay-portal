@@ -31,8 +31,6 @@ import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.info.item.renderer.InfoItemRendererRegistry;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -113,10 +111,6 @@ public class ServletContextUtil {
 
 	public static ProductHelper getProductHelper() {
 		return _servletContextUtil._getProductHelper();
-	}
-
-	public static ServletContext getServletContext() {
-		return _servletContextUtil._getServletContext();
 	}
 
 	@Reference(unbind = "-")
@@ -229,14 +223,6 @@ public class ServletContextUtil {
 		_productHelper = productHelper;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.frontend.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private CommerceChannelLocalService _getCommerceChannelLocalService() {
 		return _commerceChannelLocalService;
 	}
@@ -303,10 +289,6 @@ public class ServletContextUtil {
 		return _productHelper;
 	}
 
-	private ServletContext _getServletContext() {
-		return _servletContext;
-	}
-
 	private static ServletContextUtil _servletContextUtil;
 
 	private CommerceChannelLocalService _commerceChannelLocalService;
@@ -325,6 +307,5 @@ public class ServletContextUtil {
 	private InfoItemRendererRegistry _infoItemRendererRegistry;
 	private NPMResolver _npmResolver;
 	private ProductHelper _productHelper;
-	private ServletContext _servletContext;
 
 }

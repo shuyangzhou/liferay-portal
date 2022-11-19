@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -35,10 +34,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = {})
 public class ServletContextUtil {
-
-	public static String getContextPath() {
-		return _servletContext.getContextPath();
-	}
 
 	public static FDSFilterSerializer getFDSFilterSerializer() {
 		return _fdsFilterSerializer;
@@ -71,10 +66,6 @@ public class ServletContextUtil {
 		return _fdsViewSerializer;
 	}
 
-	public static ServletContext getServletContext() {
-		return _servletContext;
-	}
-
 	@Reference(unbind = "-")
 	protected void setFDSFilterSerializer(
 		FDSFilterSerializer fdsFilterSerializer) {
@@ -94,17 +85,8 @@ public class ServletContextUtil {
 		_portal = portal;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.frontend.data.set.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private static FDSFilterSerializer _fdsFilterSerializer;
 	private static FDSViewSerializer _fdsViewSerializer;
 	private static Portal _portal;
-	private static ServletContext _servletContext;
 
 }

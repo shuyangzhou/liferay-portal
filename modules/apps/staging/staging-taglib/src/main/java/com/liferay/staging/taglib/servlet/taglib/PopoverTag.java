@@ -15,10 +15,8 @@
 package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -44,13 +42,6 @@ public class PopoverTag extends BaseCssTag {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setText(String text) {

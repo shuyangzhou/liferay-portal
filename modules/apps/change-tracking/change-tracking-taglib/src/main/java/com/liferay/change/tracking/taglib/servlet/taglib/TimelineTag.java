@@ -14,11 +14,9 @@
 
 package com.liferay.change.tracking.taglib.servlet.taglib;
 
-import com.liferay.change.tracking.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Noor Najjar
@@ -39,13 +37,6 @@ public class TimelineTag extends IncludeTag {
 
 	public void setClassPK(long classPK) {
 		_classPK = classPK;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

@@ -15,11 +15,9 @@
 package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -32,13 +30,6 @@ public class ProcessInfoTag extends IncludeTag {
 
 	public void setBackgroundTask(BackgroundTask backgroundTask) {
 		_backgroundTask = backgroundTask;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

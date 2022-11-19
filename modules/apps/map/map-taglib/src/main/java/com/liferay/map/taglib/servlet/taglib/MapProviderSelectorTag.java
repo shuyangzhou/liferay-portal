@@ -18,7 +18,6 @@ import com.liferay.map.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Julio Camarero
@@ -47,13 +46,6 @@ public class MapProviderSelectorTag extends IncludeTag {
 
 	public void setName(String name) {
 		_name = name;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

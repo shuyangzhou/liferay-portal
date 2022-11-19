@@ -25,7 +25,6 @@ import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Víctor Galán
@@ -34,13 +33,6 @@ public class RenderLayoutUtilityPageEntryTag extends IncludeTag {
 
 	public int getType() {
 		return _type;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setType(int type) {

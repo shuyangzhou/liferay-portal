@@ -14,22 +14,12 @@
 
 package com.liferay.exportimport.changeset.taglib.servlet.taglib;
 
-import com.liferay.exportimport.changeset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
-
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Akos Thurzo
  */
 public class ImportEntityTag extends IncludeTag {
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
-	}
 
 	@Override
 	protected String getPage() {

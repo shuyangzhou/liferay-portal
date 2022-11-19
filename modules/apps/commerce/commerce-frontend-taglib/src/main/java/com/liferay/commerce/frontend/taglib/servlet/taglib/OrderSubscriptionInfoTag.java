@@ -215,7 +215,6 @@ public class OrderSubscriptionInfoTag extends IncludeTag {
 
 		cpSubscriptionTypeRegistry =
 			ServletContextUtil.getCPSubscriptionTypeRegistry();
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setShowDuration(boolean showDuration) {

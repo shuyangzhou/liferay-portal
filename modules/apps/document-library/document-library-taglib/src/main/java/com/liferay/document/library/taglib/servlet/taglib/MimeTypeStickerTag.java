@@ -15,13 +15,11 @@
 package com.liferay.document.library.taglib.servlet.taglib;
 
 import com.liferay.document.library.taglib.internal.display.context.DLViewFileVersionDisplayContextUtil;
-import com.liferay.document.library.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Alejandro Tardín
@@ -47,13 +45,6 @@ public class MimeTypeStickerTag extends IncludeTag {
 
 	public void setFileVersion(FileVersion fileVersion) {
 		_fileVersion = fileVersion;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

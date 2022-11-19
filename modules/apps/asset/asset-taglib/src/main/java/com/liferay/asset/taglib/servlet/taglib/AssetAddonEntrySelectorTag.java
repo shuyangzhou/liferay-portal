@@ -14,7 +14,6 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.taglib.ui.AssetAddonEntry;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author     Julio Camarero
@@ -62,13 +60,6 @@ public class AssetAddonEntrySelectorTag extends IncludeTag {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSelectedAssetAddonEntries(

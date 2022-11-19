@@ -23,9 +23,7 @@ import com.liferay.taglib.util.IncludeTag;
 
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Pavel Savinov
@@ -65,11 +63,6 @@ public class InfoListBasicListTag extends IncludeTag {
 		}
 	}
 
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-	}
-
 	public void setTemplateKey(String templateKey) {
 		_templateKey = templateKey;
 	}
@@ -87,11 +80,6 @@ public class InfoListBasicListTag extends IncludeTag {
 	@Override
 	protected String getPage() {
 		return _PAGE;
-	}
-
-	@Override
-	protected ServletContext getServletContext() {
-		return ServletContextUtil.getServletContext();
 	}
 
 	@Override

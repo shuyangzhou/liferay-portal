@@ -15,11 +15,9 @@
 package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.portal.kernel.model.StagedModel;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Levente Hudák
@@ -36,13 +34,6 @@ public class StatusTag extends IncludeTag {
 
 	public void setCssClass(String cssClass) {
 		_cssClass = cssClass;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setStagedModel(StagedModel stagedModel) {

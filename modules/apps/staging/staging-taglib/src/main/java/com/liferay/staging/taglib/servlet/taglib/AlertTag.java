@@ -14,12 +14,10 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTag;
 
 /**
@@ -52,13 +50,6 @@ public class AlertTag extends IncludeTag implements BodyTag {
 
 	public void setFluid(boolean fluid) {
 		_fluid = fluid;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setType(AlertType type) {

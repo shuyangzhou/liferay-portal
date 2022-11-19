@@ -162,8 +162,6 @@ public class MiniCartTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
-
 		_configurationProvider = ServletContextUtil.getConfigurationProvider();
 		_commerceOrderHttpHelper =
 			ServletContextUtil.getCommerceOrderHttpHelper();

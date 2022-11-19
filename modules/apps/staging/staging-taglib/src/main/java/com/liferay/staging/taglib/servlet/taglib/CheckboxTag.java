@@ -15,10 +15,8 @@
 package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -104,13 +102,6 @@ public class CheckboxTag extends BaseCssTag {
 
 	public void setName(String name) {
 		_name = name;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPopover(String popover) {

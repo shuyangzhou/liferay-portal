@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Chema Balsas
@@ -75,13 +74,6 @@ public class MapDisplayTag extends IncludeTag {
 
 	public void setName(String name) {
 		_name = name;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPoints(String points) {

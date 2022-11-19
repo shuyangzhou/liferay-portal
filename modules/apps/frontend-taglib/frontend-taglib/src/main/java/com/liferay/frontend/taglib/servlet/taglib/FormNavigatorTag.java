@@ -34,7 +34,6 @@ import java.util.List;
 import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Eudaldo Alonso
@@ -80,13 +79,6 @@ public class FormNavigatorTag extends IncludeTag {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setShowButtons(boolean showButtons) {

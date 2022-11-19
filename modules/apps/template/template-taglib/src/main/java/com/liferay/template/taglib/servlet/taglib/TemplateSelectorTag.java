@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 import com.liferay.template.constants.TemplatePortletKeys;
 import com.liferay.template.taglib.internal.security.permission.resource.DDMTemplatePermission;
-import com.liferay.template.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.template.taglib.internal.util.PortletDisplayTemplateUtil;
 
 import java.util.Collections;
@@ -39,7 +38,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Eudaldo Alonso
@@ -120,13 +118,6 @@ public class TemplateSelectorTag extends IncludeTag {
 
 	public void setDisplayStyles(List<String> displayStyles) {
 		_displayStyles = displayStyles;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setRefreshURL(String refreshURL) {

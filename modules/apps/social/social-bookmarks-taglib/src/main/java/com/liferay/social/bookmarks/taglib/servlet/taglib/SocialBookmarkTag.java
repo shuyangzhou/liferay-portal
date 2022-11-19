@@ -15,7 +15,6 @@
 package com.liferay.social.bookmarks.taglib.servlet.taglib;
 
 import com.liferay.social.bookmarks.SocialBookmark;
-import com.liferay.social.bookmarks.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.social.bookmarks.taglib.internal.util.SocialBookmarksRegistryUtil;
 import com.liferay.taglib.servlet.PipingServletResponseFactory;
 import com.liferay.taglib.util.AttributesTagSupport;
@@ -27,7 +26,6 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author David Truong
@@ -81,13 +79,6 @@ public class SocialBookmarkTag extends AttributesTagSupport {
 
 	public void setDisplayStyle(String displayStyle) {
 		_displayStyle = displayStyle;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setTarget(String target) {

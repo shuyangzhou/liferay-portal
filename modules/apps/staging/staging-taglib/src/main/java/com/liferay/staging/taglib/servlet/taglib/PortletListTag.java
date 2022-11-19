@@ -15,13 +15,11 @@
 package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Levente Hudák
@@ -56,13 +54,6 @@ public class PortletListTag extends IncludeTag {
 		long exportImportConfigurationId) {
 
 		_exportImportConfigurationId = exportImportConfigurationId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPortlets(List<Portlet> portlets) {

@@ -14,11 +14,9 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Pavel Savinov
@@ -75,13 +73,6 @@ public class SelectAssetDisplayPageTag extends IncludeTag {
 
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setParentClassPK(long parentClassPK) {

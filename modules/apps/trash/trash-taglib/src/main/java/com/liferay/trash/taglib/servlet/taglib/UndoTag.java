@@ -44,7 +44,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * Creates a message confirming items were moved to the Recycle Bin, and
@@ -69,13 +68,6 @@ public class UndoTag extends IncludeTag {
 
 	public String getRedirect() {
 		return _redirect;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPortletURL(PortletURL portletURL) {

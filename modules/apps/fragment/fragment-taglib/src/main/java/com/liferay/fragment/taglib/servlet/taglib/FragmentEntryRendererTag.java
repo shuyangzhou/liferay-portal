@@ -16,7 +16,6 @@ package com.liferay.fragment.taglib.servlet.taglib;
 
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentEntryServiceUtil;
-import com.liferay.fragment.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,7 +23,6 @@ import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Jürgen Kappler
@@ -54,13 +52,6 @@ public class FragmentEntryRendererTag extends IncludeTag {
 
 	public void setFragmentEntryId(long fragmentEntryId) {
 		_fragmentEntryId = fragmentEntryId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

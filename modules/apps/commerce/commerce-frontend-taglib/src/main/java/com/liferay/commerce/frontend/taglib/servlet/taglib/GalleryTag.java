@@ -80,8 +80,6 @@ public class GalleryTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
-
 		_infoItemRendererRegistry =
 			ServletContextUtil.getInfoItemRendererRegistry();
 	}

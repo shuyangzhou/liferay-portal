@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 
 import java.util.Collection;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -48,10 +46,6 @@ public class ServletContextUtil {
 		return _mapProviders.values();
 	}
 
-	public static ServletContext getServletContext() {
-		return _servletContext;
-	}
-
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_mapProviders = ServiceTrackerMapFactory.openSingleValueMap(
@@ -71,15 +65,7 @@ public class ServletContextUtil {
 		_groupLocalService = groupLocalService;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.map.taglib)", unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private static GroupLocalService _groupLocalService;
 	private static ServiceTrackerMap<String, MapProvider> _mapProviders;
-	private static ServletContext _servletContext;
 
 }

@@ -14,14 +14,12 @@
 
 package com.liferay.expando.taglib.servlet.taglib;
 
-import com.liferay.expando.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Brian Wing Shun Chan
@@ -74,13 +72,6 @@ public class CustomAttributeListTag extends IncludeTag {
 
 	public void setLabel(boolean label) {
 		_label = label;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

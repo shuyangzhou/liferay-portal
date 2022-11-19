@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.sharing.constants.SharingPortletKeys;
 import com.liferay.sharing.display.context.util.SharingJavaScriptFactory;
 import com.liferay.sharing.security.permission.SharingPermission;
-import com.liferay.sharing.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.sharing.taglib.internal.servlet.SharingJavaScriptFactoryUtil;
 import com.liferay.sharing.taglib.internal.servlet.SharingPermissionUtil;
 import com.liferay.sharing.taglib.internal.util.CollaboratorsUtil;
@@ -36,7 +35,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.ResourceURL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Alejandro Tardín
@@ -57,13 +55,6 @@ public class SharingCollaboratorsTag extends BaseSharingTag {
 
 	public void setClassPK(long classPK) {
 		_classPK = classPK;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

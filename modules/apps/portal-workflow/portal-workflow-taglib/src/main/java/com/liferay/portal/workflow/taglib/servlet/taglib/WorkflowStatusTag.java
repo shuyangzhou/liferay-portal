@@ -15,12 +15,10 @@
 package com.liferay.portal.workflow.taglib.servlet.taglib;
 
 import com.liferay.portal.workflow.taglib.internal.constants.WorkflowStatusConstants;
-import com.liferay.portal.workflow.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Feliphe Marinho
@@ -76,13 +74,6 @@ public class WorkflowStatusTag extends IncludeTag {
 
 	public void setModelClass(Class<?> modelClass) {
 		_modelClass = modelClass;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setShowInstanceTracker(boolean showInstanceTracker) {

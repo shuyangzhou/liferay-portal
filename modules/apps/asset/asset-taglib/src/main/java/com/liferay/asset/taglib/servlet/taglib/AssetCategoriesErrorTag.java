@@ -14,22 +14,12 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
-
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Juan Fernández
  */
 public class AssetCategoriesErrorTag extends IncludeTag {
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
-	}
 
 	@Override
 	protected String getPage() {

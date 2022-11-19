@@ -100,8 +100,6 @@ public class AddToWishListTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
-
 		_cpContentHelper = ServletContextUtil.getCPContentHelper();
 	}
 

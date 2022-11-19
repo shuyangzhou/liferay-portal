@@ -15,12 +15,10 @@
 package com.liferay.trash.taglib.servlet.taglib;
 
 import com.liferay.taglib.util.IncludeTag;
-import com.liferay.trash.taglib.internal.servlet.ServletContextUtil;
 
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * Creates a component for users to permanently delete items (articles, images,
@@ -65,13 +63,6 @@ public class EmptyTag extends IncludeTag {
 
 	public void setInfoMessage(String infoMessage) {
 		_infoMessage = infoMessage;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPortletURL(PortletURL portletURL) {

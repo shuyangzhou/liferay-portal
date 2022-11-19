@@ -73,8 +73,6 @@ public class ProductListRendererTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		setServletContext(ServletContextUtil.getServletContext());
-
 		cpContentHelper = ServletContextUtil.getCPContentHelper();
 		cpContentListRendererRegistry =
 			ServletContextUtil.getCPContentListRendererRegistry();

@@ -230,8 +230,6 @@ public class ClassicDisplayTag extends BaseDisplayTag {
 		_fdsViewSerializer = ServletContextUtil.getFDSViewSerializer();
 
 		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSelectedItemsKey(String selectedItemsKey) {

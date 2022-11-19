@@ -14,22 +14,12 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
-
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Zoltan Csaszi
  */
 public class InputSchedulerTag extends IncludeTag {
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
-	}
 
 	@Override
 	protected String getPage() {

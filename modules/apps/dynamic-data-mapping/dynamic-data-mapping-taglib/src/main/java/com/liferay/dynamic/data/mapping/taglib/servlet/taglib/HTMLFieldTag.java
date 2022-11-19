@@ -14,23 +14,14 @@
 
 package com.liferay.dynamic.data.mapping.taglib.servlet.taglib;
 
-import com.liferay.dynamic.data.mapping.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.dynamic.data.mapping.taglib.servlet.taglib.base.BaseHTMLFieldTag;
 
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Sergio González
  */
 public class HTMLFieldTag extends BaseHTMLFieldTag {
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
-	}
 
 	@Override
 	protected int processEndTag() throws Exception {

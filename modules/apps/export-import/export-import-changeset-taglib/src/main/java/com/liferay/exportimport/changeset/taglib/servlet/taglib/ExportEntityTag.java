@@ -14,12 +14,10 @@
 
 package com.liferay.exportimport.changeset.taglib.servlet.taglib;
 
-import com.liferay.exportimport.changeset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Akos Thurzo
@@ -52,13 +50,6 @@ public class ExportEntityTag extends IncludeTag {
 
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setUuid(String uuid) {

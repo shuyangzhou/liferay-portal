@@ -14,11 +14,9 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Alius
@@ -31,13 +29,6 @@ public class ProcessSummaryLinkTag extends IncludeTag {
 
 	public void setBackgroundTaskId(long backgroundTaskId) {
 		_backgroundTaskId = backgroundTaskId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

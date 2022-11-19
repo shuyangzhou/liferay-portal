@@ -16,14 +16,12 @@ package com.liferay.application.list.taglib.servlet.taglib;
 
 import com.liferay.application.list.GroupProvider;
 import com.liferay.application.list.constants.ApplicationListWebKeys;
-import com.liferay.application.list.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Adolfo Pérez
@@ -50,13 +48,6 @@ public class BasePanelTag extends IncludeTag {
 				WebKeys.THEME_DISPLAY);
 
 		return themeDisplay.getScopeGroup();
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 }

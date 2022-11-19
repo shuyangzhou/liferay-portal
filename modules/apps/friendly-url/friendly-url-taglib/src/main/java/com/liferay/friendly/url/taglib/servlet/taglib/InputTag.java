@@ -17,7 +17,6 @@ package com.liferay.friendly.url.taglib.servlet.taglib;
 import com.liferay.friendly.url.exception.NoSuchFriendlyURLEntryMappingException;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalServiceUtil;
-import com.liferay.friendly.url.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.friendly.url.taglib.util.InfoItemObjectProviderUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
@@ -41,7 +40,6 @@ import com.liferay.taglib.util.IncludeTag;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Adolfo Pérez
@@ -102,13 +100,6 @@ public class InputTag extends IncludeTag {
 
 	public void setName(String name) {
 		_name = name;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setShowHistory(boolean showHistory) {

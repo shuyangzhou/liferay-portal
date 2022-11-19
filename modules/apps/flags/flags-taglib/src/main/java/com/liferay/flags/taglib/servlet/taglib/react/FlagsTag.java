@@ -14,7 +14,6 @@
 
 package com.liferay.flags.taglib.servlet.taglib.react;
 
-import com.liferay.flags.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.flags.taglib.servlet.taglib.util.FlagsTagUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -42,7 +41,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Ambrín Chaudhary
@@ -116,13 +114,6 @@ public class FlagsTag extends IncludeTag {
 
 	public void setMessage(String message) {
 		_message = message;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setReportedUserId(long reportedUserId) {

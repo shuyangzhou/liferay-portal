@@ -17,7 +17,6 @@ package com.liferay.document.library.taglib.servlet.taglib;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppServiceUtil;
 import com.liferay.document.library.taglib.internal.display.context.RepositoryBrowserTagDisplayContext;
-import com.liferay.document.library.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -34,7 +33,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Adolfo Pérez
@@ -56,13 +54,6 @@ public class RepositoryBrowserTag extends IncludeTag {
 
 	public void setFolderId(long folderId) {
 		_folderId = folderId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setRepositoryId(long repositoryId) {

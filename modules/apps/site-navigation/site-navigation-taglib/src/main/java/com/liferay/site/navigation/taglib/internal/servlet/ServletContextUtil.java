@@ -18,8 +18,6 @@ import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemType;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemTypeRegistry;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -29,16 +27,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = {})
 public class ServletContextUtil {
 
-	public static String getContextPath() {
-		return _servletContext.getContextPath();
-	}
-
 	public static InfoItemServiceRegistry getInfoItemServiceRegistry() {
 		return _infoItemServiceRegistry;
-	}
-
-	public static ServletContext getServletContext() {
-		return _servletContext;
 	}
 
 	public static SiteNavigationMenuItemType getSiteNavigationMenuItemType(
@@ -55,14 +45,6 @@ public class ServletContextUtil {
 		_infoItemServiceRegistry = infoItemServiceRegistry;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	@Reference(unbind = "-")
 	protected void setSiteNavigationMenuItemTypeRegistry(
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry) {
@@ -72,7 +54,6 @@ public class ServletContextUtil {
 	}
 
 	private static InfoItemServiceRegistry _infoItemServiceRegistry;
-	private static ServletContext _servletContext;
 	private static SiteNavigationMenuItemTypeRegistry
 		_siteNavigationMenuItemTypeRegistry;
 

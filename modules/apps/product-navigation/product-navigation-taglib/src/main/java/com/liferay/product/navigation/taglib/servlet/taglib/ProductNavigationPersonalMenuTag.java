@@ -15,11 +15,9 @@
 package com.liferay.product.navigation.taglib.servlet.taglib;
 
 import com.liferay.portal.kernel.model.User;
-import com.liferay.product.navigation.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Pei-Jung Lan
@@ -56,13 +54,6 @@ public class ProductNavigationPersonalMenuTag extends IncludeTag {
 
 	public void setLabel(String label) {
 		_label = label;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSize(String size) {

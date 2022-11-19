@@ -16,11 +16,9 @@ package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.ResultRowSplitter;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -75,13 +73,6 @@ public class ProcessListTag extends IncludeTag {
 
 	public void setMvcRenderCommandName(String mvcRenderCommandName) {
 		_mvcRenderCommandName = mvcRenderCommandName;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setRelaunchMenu(boolean relaunchMenu) {

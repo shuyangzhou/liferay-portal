@@ -17,7 +17,6 @@ package com.liferay.exportimport.changeset.taglib.servlet.taglib;
 import com.liferay.exportimport.changeset.Changeset;
 import com.liferay.exportimport.changeset.ChangesetManager;
 import com.liferay.exportimport.changeset.ChangesetManagerUtil;
-import com.liferay.exportimport.changeset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportClassedModelUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.StagedModel;
@@ -25,7 +24,6 @@ import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Máté Thurzó
@@ -50,13 +48,6 @@ public class PublishModelMenuItemTag extends IncludeTag {
 
 	public StagedModel getStagedModel() {
 		return _stagedModel;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setStagedModel(StagedModel stagedModel) {

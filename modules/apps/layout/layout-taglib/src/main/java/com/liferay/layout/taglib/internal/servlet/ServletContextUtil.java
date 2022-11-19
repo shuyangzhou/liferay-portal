@@ -37,8 +37,6 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -133,10 +131,6 @@ public class ServletContextUtil {
 		getSegmentsExperienceLocalService() {
 
 		return _segmentsExperienceLocalService;
-	}
-
-	public static ServletContext getServletContext() {
-		return _servletContext;
 	}
 
 	@Reference(
@@ -286,14 +280,6 @@ public class ServletContextUtil {
 		_segmentsExperienceLocalService = segmentsExperienceLocalService;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.layout.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private static CollectionPaginationHelper _collectionPaginationHelper;
 	private static FragmentEntryConfigurationParser
 		_fragmentEntryConfigurationParser;
@@ -317,6 +303,5 @@ public class ServletContextUtil {
 	private static SegmentsEntryRetriever _segmentsEntryRetriever;
 	private static SegmentsExperienceLocalService
 		_segmentsExperienceLocalService;
-	private static ServletContext _servletContext;
 
 }

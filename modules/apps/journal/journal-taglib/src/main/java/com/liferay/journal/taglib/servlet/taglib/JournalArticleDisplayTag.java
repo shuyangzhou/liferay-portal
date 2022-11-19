@@ -15,13 +15,11 @@
 package com.liferay.journal.taglib.servlet.taglib;
 
 import com.liferay.journal.model.JournalArticleDisplay;
-import com.liferay.journal.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Alejandro Tardín
@@ -56,13 +54,6 @@ public class JournalArticleDisplayTag extends IncludeTag {
 		boolean dataAnalyticsTrackingEnabled) {
 
 		_dataAnalyticsTrackingEnabled = dataAnalyticsTrackingEnabled;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPaginationURL(PortletURL paginationURL) {

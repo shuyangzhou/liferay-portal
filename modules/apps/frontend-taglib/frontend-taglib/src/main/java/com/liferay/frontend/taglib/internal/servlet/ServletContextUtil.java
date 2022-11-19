@@ -18,8 +18,6 @@ import com.liferay.frontend.taglib.form.navigator.FormNavigatorCategoryProvider;
 import com.liferay.frontend.taglib.form.navigator.FormNavigatorEntryProvider;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationRegistry;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -43,10 +41,6 @@ public class ServletContextUtil {
 		return _screenNavigationRegistry;
 	}
 
-	public static ServletContext getServletContext() {
-		return _servletContext;
-	}
-
 	@Reference(unbind = "-")
 	protected void setFormNavigatorCategoryProvider(
 		FormNavigatorCategoryProvider formNavigatorCategoryProvider) {
@@ -68,17 +62,8 @@ public class ServletContextUtil {
 		_screenNavigationRegistry = screenNavigationRegistry;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.frontend.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private static FormNavigatorCategoryProvider _formNavigatorCategoryProvider;
 	private static FormNavigatorEntryProvider _formNavigatorEntryProvider;
 	private static ScreenNavigationRegistry _screenNavigationRegistry;
-	private static ServletContext _servletContext;
 
 }

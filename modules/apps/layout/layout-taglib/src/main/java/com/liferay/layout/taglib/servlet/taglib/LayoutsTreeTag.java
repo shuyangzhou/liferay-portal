@@ -14,7 +14,6 @@
 
 package com.liferay.layout.taglib.servlet.taglib;
 
-import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -40,7 +39,6 @@ import java.util.Map;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Eudaldo Alonso
@@ -158,13 +156,6 @@ public class LayoutsTreeTag extends IncludeTag {
 
 	public void setLinkTemplate(String linkTemplate) {
 		_linkTemplate = linkTemplate;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPortletURL(PortletURL portletURL) {

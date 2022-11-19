@@ -15,13 +15,11 @@
 package com.liferay.frontend.taglib.servlet.taglib;
 
 import com.liferay.diff.DiffResult;
-import com.liferay.frontend.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Bruno Farache
@@ -42,13 +40,6 @@ public class DiffTag extends IncludeTag {
 
 	public void setDiffResults(List<DiffResult>[] diffResults) {
 		_diffResults = diffResults;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSourceName(String sourceName) {

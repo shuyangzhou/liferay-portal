@@ -28,8 +28,6 @@ import com.liferay.commerce.util.CommerceWorkflowedModelHelper;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -97,10 +95,6 @@ public class ServletContextUtil {
 
 	public static PanelCategoryRegistry getPanelCategoryRegistry() {
 		return _servletContextUtil._getPanelCategoryRegistry();
-	}
-
-	public static ServletContext getServletContext() {
-		return _servletContextUtil._getServletContext();
 	}
 
 	@Activate
@@ -198,14 +192,6 @@ public class ServletContextUtil {
 		_panelCategoryRegistry = panelCategoryRegistry;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private CommerceWorkflowedModelHelper _getCommerceOrderHelper() {
 		return _commerceWorkflowedModelHelper;
 	}
@@ -258,10 +244,6 @@ public class ServletContextUtil {
 		return _panelCategoryRegistry;
 	}
 
-	private ServletContext _getServletContext() {
-		return _servletContext;
-	}
-
 	private static ServletContextUtil _servletContextUtil;
 
 	private ModelResourcePermission<CommerceOrder>
@@ -277,6 +259,5 @@ public class ServletContextUtil {
 	private CPInstanceHelper _cpInstanceHelper;
 	private PanelAppRegistry _panelAppRegistry;
 	private PanelCategoryRegistry _panelCategoryRegistry;
-	private ServletContext _servletContext;
 
 }

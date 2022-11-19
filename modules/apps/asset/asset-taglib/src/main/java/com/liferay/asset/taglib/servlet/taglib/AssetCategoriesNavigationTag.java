@@ -14,11 +14,9 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Alvaro del Castillo
@@ -37,13 +35,6 @@ public class AssetCategoriesNavigationTag extends IncludeTag {
 
 	public void setHidePortletWhenEmpty(boolean hidePortletWhenEmpty) {
 		_hidePortletWhenEmpty = hidePortletWhenEmpty;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setVocabularyIds(long[] vocabularyIds) {

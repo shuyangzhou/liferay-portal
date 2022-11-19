@@ -14,11 +14,9 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Levente Hudák
@@ -45,13 +43,6 @@ public class RemoteOptionsTag extends IncludeTag {
 		long exportImportConfigurationId) {
 
 		_exportImportConfigurationId = exportImportConfigurationId;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setPrivateLayout(boolean privateLayout) {

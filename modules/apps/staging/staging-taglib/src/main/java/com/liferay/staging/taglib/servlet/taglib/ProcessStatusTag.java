@@ -14,11 +14,9 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -39,13 +37,6 @@ public class ProcessStatusTag extends IncludeTag {
 
 	public void setBackgroundTaskStatusLabel(String backgroundTaskStatusLabel) {
 		_backgroundTaskStatusLabel = backgroundTaskStatusLabel;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

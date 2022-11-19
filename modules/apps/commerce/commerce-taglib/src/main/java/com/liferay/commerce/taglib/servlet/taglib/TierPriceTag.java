@@ -126,7 +126,6 @@ public class TierPriceTag extends IncludeTag {
 			ServletContextUtil.getCommercePriceListLocalService();
 
 		commercePriceFormatter = ServletContextUtil.getCommercePriceFormatter();
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setTaglibQuantityInputId(String taglibQuantityInputId) {

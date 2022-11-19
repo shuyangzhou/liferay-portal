@@ -64,8 +64,6 @@ public class AccountSelectorTag extends IncludeTag {
 
 		_commerceOrderTypeLocalService =
 			ServletContextUtil.getCommerceOrderTypeLocalService();
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSpritemap(String spritemap) {

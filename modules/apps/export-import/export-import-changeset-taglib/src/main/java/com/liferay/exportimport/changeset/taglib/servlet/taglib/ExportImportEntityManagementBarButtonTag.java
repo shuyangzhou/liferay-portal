@@ -14,14 +14,12 @@
 
 package com.liferay.exportimport.changeset.taglib.servlet.taglib;
 
-import com.liferay.exportimport.changeset.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Akos Thurzo
@@ -49,13 +47,6 @@ public class ExportImportEntityManagementBarButtonTag extends IncludeTag {
 
 	public void setCmd(String cmd) {
 		_cmd = cmd;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSearchContainerMappingId(String searchContainerMappingId) {

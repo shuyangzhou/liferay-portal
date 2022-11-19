@@ -15,11 +15,9 @@
 package com.liferay.staging.taglib.servlet.taglib;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -50,13 +48,6 @@ public class ProcessMessageTaskDetailsTag extends IncludeTag {
 
 	public void setLinkClass(String linkClass) {
 		_linkClass = linkClass;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

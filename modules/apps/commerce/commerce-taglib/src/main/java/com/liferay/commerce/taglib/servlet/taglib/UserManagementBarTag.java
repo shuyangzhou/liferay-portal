@@ -24,7 +24,6 @@ import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Alessio Antonio Rendina
@@ -58,13 +57,6 @@ public class UserManagementBarTag extends IncludeTag {
 
 	public void setHref(String href) {
 		_href = href;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setShowNotifications(boolean showNotifications) {

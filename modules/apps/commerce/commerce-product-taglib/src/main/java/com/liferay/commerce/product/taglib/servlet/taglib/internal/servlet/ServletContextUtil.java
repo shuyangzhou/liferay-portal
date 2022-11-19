@@ -18,8 +18,6 @@ import com.liferay.commerce.product.content.render.list.CPContentListRendererReg
 import com.liferay.commerce.product.content.render.list.entry.CPContentListEntryRendererRegistry;
 import com.liferay.commerce.product.content.util.CPContentHelper;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -45,10 +43,6 @@ public class ServletContextUtil {
 		getCPContentListRendererRegistry() {
 
 		return _servletContextUtil._getCPContentListRendererRegistry();
-	}
-
-	public static ServletContext getServletContext() {
-		return _servletContextUtil._getServletContext();
 	}
 
 	@Activate
@@ -81,14 +75,6 @@ public class ServletContextUtil {
 		_cpContentListRendererRegistry = cpContentListRendererRegistry;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private CPContentHelper _getCPContentHelper() {
 		return _cpContentHelper;
 	}
@@ -103,16 +89,11 @@ public class ServletContextUtil {
 		return _cpContentListRendererRegistry;
 	}
 
-	private ServletContext _getServletContext() {
-		return _servletContext;
-	}
-
 	private static ServletContextUtil _servletContextUtil;
 
 	private CPContentHelper _cpContentHelper;
 	private CPContentListEntryRendererRegistry
 		_cpContentListEntryRendererRegistry;
 	private CPContentListRendererRegistry _cpContentListRendererRegistry;
-	private ServletContext _servletContext;
 
 }

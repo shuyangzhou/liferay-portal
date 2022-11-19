@@ -14,7 +14,6 @@
 
 package com.liferay.commerce.taglib.servlet.taglib;
 
-import com.liferay.commerce.taglib.servlet.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
@@ -30,7 +29,6 @@ import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Alessio Antonio Rendina
@@ -58,13 +56,6 @@ public class SearchInputTag extends IncludeTag {
 
 	public void setFormName(String formName) {
 		_formName = formName;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	@Override

@@ -19,8 +19,6 @@ import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.product.navigation.control.menu.util.ProductNavigationControlMenuCategoryRegistry;
 import com.liferay.product.navigation.control.menu.util.ProductNavigationControlMenuEntryRegistry;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -29,10 +27,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = {})
 public class ServletContextUtil {
-
-	public static String getContextPath() {
-		return _servletContext.getContextPath();
-	}
 
 	public static PanelAppRegistry getPanelAppRegistry() {
 		return _panelAppRegistry;
@@ -52,10 +46,6 @@ public class ServletContextUtil {
 		getProductNavigationControlMenuEntryRegistry() {
 
 		return _productNavigationControlMenuEntryRegistry;
-	}
-
-	public static ServletContext getServletContext() {
-		return _servletContext;
 	}
 
 	@Reference(unbind = "-")
@@ -88,20 +78,11 @@ public class ServletContextUtil {
 			productNavigationControlMenuEntryRegistry;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.product.navigation.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private static PanelAppRegistry _panelAppRegistry;
 	private static PanelCategoryRegistry _panelCategoryRegistry;
 	private static ProductNavigationControlMenuCategoryRegistry
 		_productNavigationControlMenuCategoryRegistry;
 	private static ProductNavigationControlMenuEntryRegistry
 		_productNavigationControlMenuEntryRegistry;
-	private static ServletContext _servletContext;
 
 }

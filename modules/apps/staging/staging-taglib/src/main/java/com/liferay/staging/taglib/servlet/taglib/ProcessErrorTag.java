@@ -14,11 +14,9 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
-import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Péter Borkuti
@@ -75,13 +73,6 @@ public class ProcessErrorTag extends IncludeTag {
 
 	public void setNoSuchExceptions(boolean noSuchExceptions) {
 		_noSuchExceptions = noSuchExceptions;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setRemoteExportException(boolean remoteExportException) {

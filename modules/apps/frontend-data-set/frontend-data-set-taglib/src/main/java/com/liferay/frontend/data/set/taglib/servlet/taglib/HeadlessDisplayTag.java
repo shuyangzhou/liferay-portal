@@ -203,8 +203,6 @@ public class HeadlessDisplayTag extends BaseDisplayTag {
 		_fdsFilterSerializer = ServletContextUtil.getFDSFilterSerializer();
 
 		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setSelectedItemsKey(String selectedItemsKey) {

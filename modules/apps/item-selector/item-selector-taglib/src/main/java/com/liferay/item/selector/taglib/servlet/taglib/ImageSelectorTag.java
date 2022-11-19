@@ -16,7 +16,6 @@ package com.liferay.item.selector.taglib.servlet.taglib;
 
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.util.DLURLHelperUtil;
-import com.liferay.item.selector.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,7 +28,6 @@ import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Sergio González
@@ -141,13 +139,6 @@ public class ImageSelectorTag extends IncludeTag {
 
 	public void setMaxFileSize(long maxFileSize) {
 		_maxFileSize = maxFileSize;
-	}
-
-	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
-
-		setServletContext(ServletContextUtil.getServletContext());
 	}
 
 	public void setParamName(String paramName) {
