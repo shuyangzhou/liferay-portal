@@ -55,7 +55,7 @@ if (uploadURL != null) {
 <liferay-util:html-top
 	outputKey="item_selector_repository_entry_browser"
 >
-	<link href="<%= ServletContextUtil.getContextPath() %>/repository_entry_browser/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="<%= application.getContextPath() %>/repository_entry_browser/css/main.css" rel="stylesheet" type="text/css" />
 </liferay-util:html-top>
 
 <%
