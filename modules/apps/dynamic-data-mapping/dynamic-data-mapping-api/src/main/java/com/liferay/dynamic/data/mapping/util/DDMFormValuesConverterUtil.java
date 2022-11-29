@@ -24,11 +24,11 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
 
 /**
  * @author Mateus Santana
@@ -42,115 +42,115 @@ public class DDMFormValuesConverterUtil {
 		List<DDMFormFieldValue> newDDMFormFieldValues = new ArrayList<>();
 
 		for (DDMFormField ddmFormField : ddmFormFields) {
-			String ddmFormFieldName = ddmFormField.getName();
+			Queue<DDMFormField> queue = new LinkedList<>();
 
-			if (ddmFormFieldValues.containsKey(ddmFormFieldName)) {
-				newDDMFormFieldValues.addAll(
-					ddmFormFieldValues.get(ddmFormFieldName));
-			}
-			else {
-				newDDMFormFieldValues.add(
-					new DDMFormFieldValue() {
-						{
-							setInstanceId(StringUtil.randomString());
-							setName(ddmFormFieldName);
+			queue.add(ddmFormField);
 
-							if (ddmFormField.isLocalizable()) {
-								setValue(new LocalizedValue());
-							}
-							else {
-								setValue(new UnlocalizedValue((String)null));
-							}
-						}
-					});
-			}
+			DDMFormField currentDDMFormField = null;
 
-			if (!StringUtil.equals(
-					ddmFormField.getType(),
-					DDMFormFieldTypeConstants.FIELDSET)) {
+			Map<String, String> parentMap = new HashMap<>();
 
-				continue;
-			}
+			Map<String, DDMFormFieldValue> ddmFormFieldValueMap =
+				new HashMap<>();
 
-			for (DDMFormFieldValue newDDMFormFieldValue :
-					newDDMFormFieldValues) {
+			while ((currentDDMFormField = queue.poll()) != null) {
+				String currentDDMFormFieldName = currentDDMFormField.getName();
 
-				if (!StringUtil.equals(
-						newDDMFormFieldValue.getName(), ddmFormFieldName)) {
+				DDMFormFieldValue currentDDMFormFieldValue =
+					_extractDDMFormFieldValue(
+						ddmFormFieldValues, currentDDMFormField);
 
-					continue;
+				ddmFormFieldValueMap.put(
+					currentDDMFormFieldName, currentDDMFormFieldValue);
+
+				String parentDDMFormFieldName = parentMap.get(
+					currentDDMFormFieldName);
+
+				if (parentDDMFormFieldName == null) {
+					newDDMFormFieldValues.add(currentDDMFormFieldValue);
+				}
+				else {
+					DDMFormFieldValue parentDDMFormFieldValue =
+						ddmFormFieldValueMap.get(parentDDMFormFieldName);
+
+					parentDDMFormFieldValue.addNestedDDMFormFieldValue(
+						currentDDMFormFieldValue);
 				}
 
-				_addMissingNestedDDMFormFieldValues(
-					newDDMFormFieldValue,
-					addMissingDDMFormFieldValues(
-						ddmFormField.getNestedDDMFormFields(),
-						ddmFormFieldValues));
+				if (StringUtil.equals(
+						ddmFormField.getType(),
+						DDMFormFieldTypeConstants.FIELDSET)) {
 
-				_removeExtraNestedDDMFormFieldValues(
-					newDDMFormFieldValue,
-					ddmFormField.getNestedDDMFormFields());
+					for (DDMFormField nestedDDMFormField :
+							currentDDMFormField.getNestedDDMFormFields()) {
+
+						parentMap.put(
+							nestedDDMFormField.getName(),
+							currentDDMFormFieldName);
+
+						queue.add(nestedDDMFormField);
+					}
+				}
 			}
 		}
 
 		return newDDMFormFieldValues;
 	}
 
-	private static void _addMissingNestedDDMFormFieldValues(
-		DDMFormFieldValue ddmFormFieldValue,
-		List<DDMFormFieldValue> nestedDDMFormFieldValues) {
+	private static DDMFormFieldValue _createDefaultDDMFormFieldValue(
+		DDMFormField ddmFormField) {
 
-		Set<String> nestedDDMFormFieldNames = _getDDMFormFieldNames(
-			ddmFormFieldValue.getNestedDDMFormFieldValues());
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
 
-		for (DDMFormFieldValue nestedDDMFormFieldValue :
-				nestedDDMFormFieldValues) {
+		ddmFormFieldValue.setInstanceId(StringUtil.randomString());
+		ddmFormFieldValue.setName(ddmFormField.getName());
 
-			if (nestedDDMFormFieldNames.contains(
-					nestedDDMFormFieldValue.getName())) {
-
-				continue;
-			}
-
-			ddmFormFieldValue.addNestedDDMFormFieldValue(
-				nestedDDMFormFieldValue);
+		if (ddmFormField.isLocalizable()) {
+			ddmFormFieldValue.setValue(new LocalizedValue());
 		}
+		else {
+			ddmFormFieldValue.setValue(new UnlocalizedValue((String)null));
+		}
+
+		return ddmFormFieldValue;
 	}
 
-	private static Set<String> _getDDMFormFieldNames(
-		List<DDMFormFieldValue> ddmFormFieldValues) {
+	private static DDMFormFieldValue _extractDDMFormFieldValue(
+		Map<String, List<DDMFormFieldValue>> ddmFormFieldValues,
+		DDMFormField ddmFormField) {
 
-		if (ListUtil.isEmpty(ddmFormFieldValues)) {
-			return Collections.emptySet();
+		List<DDMFormFieldValue> ddmFormFieldValueList =
+			ddmFormFieldValues.remove(ddmFormField.getName());
+
+		if (ListUtil.isEmpty(ddmFormFieldValueList)) {
+			return _createDefaultDDMFormFieldValue(ddmFormField);
 		}
 
-		Set<String> names = new HashSet<>();
+		if (ddmFormFieldValueList.size() == 1) {
+			DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValueList.get(0);
 
-		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
-			names.add(ddmFormFieldValue.getName());
+			List<DDMFormFieldValue> nestedDDMFormFieldValues =
+				ddmFormFieldValue.getNestedDDMFormFieldValues();
+
+			nestedDDMFormFieldValues.clear();
+
+			return ddmFormFieldValue;
 		}
 
-		return names;
-	}
+		DDMFormFieldValue defaultDDMFormFieldValue =
+			_createDefaultDDMFormFieldValue(ddmFormField);
 
-	private static void _removeExtraNestedDDMFormFieldValues(
-		DDMFormFieldValue ddmFormFieldValue,
-		List<DDMFormField> nestedDDMFormFields) {
+		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValueList) {
+			List<DDMFormFieldValue> nestedDDMFormFieldValues =
+				ddmFormFieldValue.getNestedDDMFormFieldValues();
 
-		Map<String, List<DDMFormFieldValue>> nestedDDMFormFieldValuesMap =
-			ddmFormFieldValue.getNestedDDMFormFieldValuesMap();
+			nestedDDMFormFieldValues.clear();
 
-		ddmFormFieldValue.setNestedDDMFormFields(new ArrayList<>());
-
-		for (DDMFormField nestedDDMFormField : nestedDDMFormFields) {
-			for (DDMFormFieldValue nestedDDMFormFieldValue :
-					nestedDDMFormFieldValuesMap.get(
-						nestedDDMFormField.getName())) {
-
-				ddmFormFieldValue.addNestedDDMFormFieldValue(
-					nestedDDMFormFieldValue);
-			}
+			defaultDDMFormFieldValue.addNestedDDMFormFieldValue(
+				ddmFormFieldValue);
 		}
+
+		return defaultDDMFormFieldValue;
 	}
 
 }
