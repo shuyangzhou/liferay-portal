@@ -71,7 +71,7 @@ definition {
 	@description = "LPS-134038. This test ensures data on a field group persists after a new nested field group is added to the document type."
 	@priority = "3"
 	test CheckIfFieldGroupDataPersistsAfterEditDocumentType {
-		property portal.acceptance = "false";
+		property portal.acceptance = "custom";
 
 		DDLDataDefinition.save();
 

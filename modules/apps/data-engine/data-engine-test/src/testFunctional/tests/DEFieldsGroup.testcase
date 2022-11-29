@@ -960,6 +960,8 @@ definition {
 	@description = "This is a test for LRQA-71711. This test verifies that data inputted on a repeatable Fields Group duplicated persists on the Web Content"
 	@priority = "4"
 	test CanInputDataOnDuplicatedField {
+		property portal.acceptance = "custom";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
