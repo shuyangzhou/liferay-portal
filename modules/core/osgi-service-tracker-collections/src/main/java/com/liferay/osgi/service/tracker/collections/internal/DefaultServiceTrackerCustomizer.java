@@ -14,15 +14,16 @@
 
 package com.liferay.osgi.service.tracker.collections.internal;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Carlos Sierra Andrés
  */
 public class DefaultServiceTrackerCustomizer<S>
-	implements ServiceTrackerCustomizer<S, S> {
+	implements LazyServiceTrackerCustomizer<S, S> {
 
 	public DefaultServiceTrackerCustomizer(BundleContext bundleContext) {
 		_bundleContext = bundleContext;

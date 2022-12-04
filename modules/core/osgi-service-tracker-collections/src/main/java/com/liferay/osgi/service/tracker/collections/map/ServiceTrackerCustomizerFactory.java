@@ -14,6 +14,7 @@
 
 package com.liferay.osgi.service.tracker.collections.map;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.ServiceReferenceServiceTuple;
 
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class ServiceTrackerCustomizerFactory {
 		ServiceTrackerCustomizer<S, ServiceReferenceServiceTuple<S, S>>
 			serviceReferenceServiceTuple(final BundleContext bundleContext) {
 
-		return new ServiceTrackerCustomizer
+		return new LazyServiceTrackerCustomizer
 			<S, ServiceReferenceServiceTuple<S, S>>() {
 
 			@Override
@@ -111,7 +112,7 @@ public class ServiceTrackerCustomizerFactory {
 	public static <S> ServiceTrackerCustomizer<S, ServiceWrapper<S>>
 		serviceWrapper(BundleContext bundleContext) {
 
-		return new ServiceTrackerCustomizer<S, ServiceWrapper<S>>() {
+		return new LazyServiceTrackerCustomizer<S, ServiceWrapper<S>>() {
 
 			@Override
 			public ServiceWrapper<S> addingService(
