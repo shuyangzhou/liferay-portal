@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portlet.documentlibrary.store.StoreFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,9 +100,6 @@ public class AddSalesforceConnectorPortalInstanceLifecycleListener
 
 	@Reference
 	private DLFileVersionPreviewLocalService _dlFileVersionPreviewLocalService;
-
-	@Reference(target = "(dl.store.impl.enabled=true)")
-	private StoreFactory _storeFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;

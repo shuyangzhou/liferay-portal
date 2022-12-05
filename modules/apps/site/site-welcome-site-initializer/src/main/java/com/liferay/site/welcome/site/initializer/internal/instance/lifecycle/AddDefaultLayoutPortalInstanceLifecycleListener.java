@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.store.StoreFactory;
 import com.liferay.site.initializer.SiteInitializer;
 
 import java.util.List;
@@ -143,9 +142,6 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 		target = "(site.initializer.key=com.liferay.site.initializer.welcome)"
 	)
 	private SiteInitializer _siteInitializer;
-
-	@Reference(target = "(dl.store.impl.enabled=true)")
-	private StoreFactory _storeFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;
