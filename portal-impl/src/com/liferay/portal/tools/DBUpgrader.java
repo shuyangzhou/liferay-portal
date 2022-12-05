@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -139,13 +138,7 @@ public class DBUpgrader {
 
 			upgradeModules();
 
-			StoreFactory storeFactory = StoreFactory.getInstance();
-
-			if (storeFactory.getStore(PropsValues.DL_STORE_IMPL) == null) {
-				throw new UpgradeException(
-					"Store \"" + PropsValues.DL_STORE_IMPL +
-						"\" is not available");
-			}
+			StoreFactory.getStore();
 
 			System.out.println(
 				"\nCompleted Liferay core upgrade process in " +

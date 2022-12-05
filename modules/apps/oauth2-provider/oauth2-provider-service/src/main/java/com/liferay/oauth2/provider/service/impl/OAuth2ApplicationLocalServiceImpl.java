@@ -97,7 +97,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  */
 @Component(
-	enabled = false,
 	property = "model.class.name=com.liferay.oauth2.provider.model.OAuth2Application",
 	service = AopService.class
 )

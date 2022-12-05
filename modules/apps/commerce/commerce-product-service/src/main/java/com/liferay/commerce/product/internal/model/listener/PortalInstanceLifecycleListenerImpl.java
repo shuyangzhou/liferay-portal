@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.repository.portletrepository.PortletRepository;
-import com.liferay.portlet.documentlibrary.store.StoreFactory;
 
 import java.io.File;
 
@@ -158,8 +157,5 @@ public class PortalInstanceLifecycleListenerImpl
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;
-
-	@Reference(target = "(dl.store.impl.enabled=true)")
-	private StoreFactory _storeFactory;
 
 }
