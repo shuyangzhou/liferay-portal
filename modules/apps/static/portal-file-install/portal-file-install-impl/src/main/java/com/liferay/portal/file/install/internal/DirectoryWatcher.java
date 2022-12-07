@@ -14,6 +14,7 @@
 
 package com.liferay.portal.file.install.internal;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.concurrent.DefaultNoticeableFuture;
@@ -69,7 +70,6 @@ import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.FrameworkWiring;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Matthew Tambara
@@ -92,7 +92,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 		_fileInstallers = ServiceTrackerListFactory.open(
 			_bundleContext, FileInstaller.class, null,
-			new ServiceTrackerCustomizer<FileInstaller, FileInstaller>() {
+			new LazyServiceTrackerCustomizer<FileInstaller, FileInstaller>() {
 
 				@Override
 				public FileInstaller addingService(
@@ -111,8 +111,6 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				public void removedService(
 					ServiceReference<FileInstaller> serviceReference,
 					FileInstaller fileInstaller) {
-
-					_bundleContext.ungetService(serviceReference);
 
 					_bundleContext.ungetService(serviceReference);
 

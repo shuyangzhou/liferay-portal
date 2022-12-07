@@ -14,6 +14,7 @@
 
 package com.liferay.portal.struts.model;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
@@ -25,7 +26,6 @@ import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Shuyang Zhou
@@ -78,7 +78,7 @@ public class ModuleConfig {
 
 		_actionAdaptors = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, StrutsAction.class, "path",
-			new ServiceTrackerCustomizer<StrutsAction, ActionAdapter>() {
+			new LazyServiceTrackerCustomizer<StrutsAction, ActionAdapter>() {
 
 				@Override
 				public ActionAdapter addingService(

@@ -18,6 +18,7 @@ import com.liferay.fragment.collection.filter.FragmentCollectionFilter;
 import com.liferay.fragment.collection.filter.FragmentCollectionFilterRegistry;
 import com.liferay.fragment.exception.FragmentEntryConfigurationException;
 import com.liferay.fragment.validator.FragmentEntryValidator;
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -33,7 +34,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Pablo Molina
@@ -81,7 +81,7 @@ public class FragmentCollectionFilterRegistryImpl
 		_serviceTrackerMap;
 
 	private class FragmentCollectionFilterServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
+		implements LazyServiceTrackerCustomizer
 			<FragmentCollectionFilter, FragmentCollectionFilter> {
 
 		public FragmentCollectionFilterServiceTrackerCustomizer(

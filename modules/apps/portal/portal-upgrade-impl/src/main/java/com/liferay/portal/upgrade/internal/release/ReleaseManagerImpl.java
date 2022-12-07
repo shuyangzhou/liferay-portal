@@ -14,6 +14,7 @@
 
 package com.liferay.portal.upgrade.internal.release;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
@@ -53,7 +54,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Alberto Chaparro
@@ -266,7 +266,7 @@ public class ReleaseManagerImpl implements ReleaseManager {
 	private UpgradeExecutor _upgradeExecutor;
 
 	private static class UpgradeServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<UpgradeStep, UpgradeInfo> {
+		implements LazyServiceTrackerCustomizer<UpgradeStep, UpgradeInfo> {
 
 		public UpgradeServiceTrackerCustomizer(BundleContext bundleContext) {
 			_bundleContext = bundleContext;

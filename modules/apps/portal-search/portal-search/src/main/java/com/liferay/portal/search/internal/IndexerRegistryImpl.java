@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.internal;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -53,7 +54,6 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -284,7 +284,7 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 
 							_bundleContext.ungetService(serviceReference);
 						},
-						new ServiceTrackerCustomizer<Indexer, Indexer>() {
+						new LazyServiceTrackerCustomizer<Indexer, Indexer>() {
 
 							@Override
 							public Indexer addingService(

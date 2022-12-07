@@ -27,6 +27,7 @@ import com.liferay.oauth2.provider.scope.spi.scope.mapper.ScopeMapper;
 import com.liferay.oauth2.provider.scope.spi.scope.matcher.ScopeMatcher;
 import com.liferay.oauth2.provider.scope.spi.scope.matcher.ScopeMatcherFactory;
 import com.liferay.osgi.service.tracker.collections.ServiceReferenceServiceTuple;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -52,7 +53,6 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Carlos Sierra Andrés
@@ -352,7 +352,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, ScopeFinder.class,
 				OAuth2ProviderScopeConstants.OSGI_JAXRS_NAME,
-				new ScopeFinderServiceTupleServiceTrackerCustomizer(
+				ServiceTrackerCustomizerFactory.serviceReferenceServiceTuple(
 					bundleContext)));
 	}
 
@@ -398,8 +398,9 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	}
 
 	protected void setScopeFinderByNameServiceTrackerMap(
-		ServiceTrackerMap<String, ServiceReferenceServiceTuple<?, ScopeFinder>>
-			scopeFinderByNameServiceTrackerMap) {
+		ServiceTrackerMap
+			<String, ServiceReferenceServiceTuple<ScopeFinder, ScopeFinder>>
+				scopeFinderByNameServiceTrackerMap) {
 
 		_scopeFinderByNameServiceTrackerMap =
 			scopeFinderByNameServiceTrackerMap;
@@ -513,7 +514,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	private ScopedServiceTrackerMapFactory _scopedServiceTrackerMapFactory;
 
 	private ServiceTrackerMap
-		<String, ServiceReferenceServiceTuple<?, ScopeFinder>>
+		<String, ServiceReferenceServiceTuple<ScopeFinder, ScopeFinder>>
 			_scopeFinderByNameServiceTrackerMap;
 	private ScopedServiceTrackerMap<ScopeFinder>
 		_scopeFindersScopedServiceTrackerMap;
@@ -523,46 +524,5 @@ public class ScopeLocatorImpl implements ScopeLocator {
 		_scopeMappersScopedServiceTrackerMap;
 	private ServiceTrackerMap<String, ScopeMatcherFactory>
 		_scopeMatcherFactoriesServiceTrackerMap;
-
-	private static class ScopeFinderServiceTupleServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<ScopeFinder, ServiceReferenceServiceTuple<?, ScopeFinder>> {
-
-		public ScopeFinderServiceTupleServiceTrackerCustomizer(
-			BundleContext bundleContext) {
-
-			_bundleContext = bundleContext;
-		}
-
-		@Override
-		public ServiceReferenceServiceTuple<?, ScopeFinder> addingService(
-			ServiceReference<ScopeFinder> serviceReference) {
-
-			ScopeFinder scopeFinder = _bundleContext.getService(
-				serviceReference);
-
-			return new ServiceReferenceServiceTuple<>(
-				serviceReference, scopeFinder);
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<ScopeFinder> serviceReference,
-			ServiceReferenceServiceTuple<?, ScopeFinder>
-				serviceReferenceServiceTuple) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<ScopeFinder> serviceReference,
-			ServiceReferenceServiceTuple<?, ScopeFinder>
-				serviceReferenceServiceTuple) {
-
-			_bundleContext.ungetService(serviceReference);
-		}
-
-		private final BundleContext _bundleContext;
-
-	}
 
 }

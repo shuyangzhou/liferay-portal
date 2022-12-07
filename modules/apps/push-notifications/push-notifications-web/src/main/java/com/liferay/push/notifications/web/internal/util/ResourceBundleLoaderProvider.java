@@ -14,6 +14,7 @@
 
 package com.liferay.push.notifications.web.internal.util;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.resource.bundle.AggregateResourceBundleLoader;
@@ -27,7 +28,6 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Andrea Di Giorgi
@@ -52,7 +52,7 @@ public class ResourceBundleLoaderProvider {
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, PushNotificationsSender.class, "platform",
-			new ServiceTrackerCustomizer
+			new LazyServiceTrackerCustomizer
 				<PushNotificationsSender, ResourceBundleLoader>() {
 
 				@Override

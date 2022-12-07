@@ -20,6 +20,7 @@ import com.liferay.content.dashboard.item.ContentDashboardItemFactory;
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardConstants;
 import com.liferay.content.dashboard.web.internal.util.AssetVocabularyUtil;
 import com.liferay.info.search.InfoSearchClassMapperRegistry;
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -38,7 +39,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Cristina González
@@ -94,7 +94,7 @@ public class ContentDashboardItemFactoryRegistry {
 		_serviceTrackerMap;
 
 	private class ContentDashboardItemFactoryServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
+		implements LazyServiceTrackerCustomizer
 			<ContentDashboardItemFactory, ContentDashboardItemFactory> {
 
 		public ContentDashboardItemFactoryServiceTrackerCustomizer(

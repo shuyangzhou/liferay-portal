@@ -14,6 +14,7 @@
 
 package com.liferay.social.bookmarks.taglib.internal.util;
 
+import com.liferay.osgi.service.tracker.collections.LazyServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
@@ -38,7 +39,6 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Alejandro Tardín
@@ -155,7 +155,7 @@ public class SocialBookmarksRegistryImpl implements SocialBookmarksRegistry {
 	private ServiceTrackerMap<String, SocialBookmark> _serviceTrackerMap;
 
 	private static class SocialBookmarkTypeServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<SocialBookmark, String> {
+		implements LazyServiceTrackerCustomizer<SocialBookmark, String> {
 
 		@Override
 		public String addingService(
