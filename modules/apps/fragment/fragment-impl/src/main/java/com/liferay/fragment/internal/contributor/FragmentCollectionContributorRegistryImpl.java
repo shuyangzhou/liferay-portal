@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.internal.contributor;
 
+import com.liferay.fragment.configuration.FragmentServiceConfiguration;
 import com.liferay.fragment.constants.FragmentConstants;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 import com.liferay.fragment.contributor.FragmentCollectionContributorRegistry;
@@ -32,6 +33,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.resource.bundle.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -222,7 +224,7 @@ public class FragmentCollectionContributorRegistryImpl
 	protected FragmentEntryValidator fragmentEntryValidator;
 
 	private List<FragmentEntryLink> _getFragmentEntryLinks(
-		FragmentEntry fragmentEntry) {
+		FragmentEntry fragmentEntry, int start, int end) {
 
 		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
 			FragmentEntryLinkTable.INSTANCE
@@ -231,23 +233,53 @@ public class FragmentCollectionContributorRegistryImpl
 		).where(
 			FragmentEntryLinkTable.INSTANCE.rendererKey.eq(
 				fragmentEntry.getFragmentEntryKey())
+		).orderBy(
+			FragmentEntryLinkTable.INSTANCE.fragmentEntryLinkId.ascending()
+		).limit(
+			start, end
 		);
 
 		return _fragmentEntryLinkLocalService.dslQuery(dslQuery);
 	}
 
 	private void _updateFragmentEntryLinks(FragmentEntry fragmentEntry) {
-		List<FragmentEntryLink> fragmentEntryLinks = _getFragmentEntryLinks(
-			fragmentEntry);
+		int batchSize = 500;
 
-		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
-			try {
-				_fragmentEntryLinkLocalService.updateLatestChanges(
-					fragmentEntry, fragmentEntryLink);
+		try {
+			FragmentServiceConfiguration fragmentServiceConfiguration =
+				ConfigurationProviderUtil.getCompanyConfiguration(
+					FragmentServiceConfiguration.class,
+					fragmentEntry.getCompanyId());
+
+			batchSize =
+				fragmentServiceConfiguration.fragmentEntryLinkBatchSize();
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException);
 			}
-			catch (PortalException portalException) {
-				_log.error(portalException);
+		}
+
+		List<FragmentEntryLink> fragmentEntryLinks = _getFragmentEntryLinks(
+			fragmentEntry, 0, batchSize);
+
+		int offset = 0;
+
+		while (fragmentEntryLinks.size() >= batchSize) {
+			for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
+				try {
+					_fragmentEntryLinkLocalService.updateLatestChanges(
+						fragmentEntry, fragmentEntryLink);
+				}
+				catch (PortalException portalException) {
+					_log.error(portalException);
+				}
 			}
+
+			offset += batchSize;
+
+			fragmentEntryLinks = _getFragmentEntryLinks(
+				fragmentEntry, offset, offset + batchSize);
 		}
 	}
 
