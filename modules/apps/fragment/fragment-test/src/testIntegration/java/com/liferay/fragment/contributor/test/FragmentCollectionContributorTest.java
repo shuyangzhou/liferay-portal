@@ -239,6 +239,63 @@ public class FragmentCollectionContributorTest {
 		}
 	}
 
+	@Test
+	public void testRegisterFragmentCollectionContributorWithLargeDataSet()
+		throws Exception {
+
+		int fragmentEntryLinkSize = 100;
+		int fragmentEntryLinksCount = 100;
+
+		FragmentEntry fragmentEntry =
+			FragmentEntryLocalServiceUtil.createFragmentEntry(0L);
+
+		fragmentEntry.setFragmentEntryKey("test-component-fragment-entry");
+		fragmentEntry.setName(RandomTestUtil.randomString());
+		fragmentEntry.setCss(RandomTestUtil.randomString());
+		fragmentEntry.setHtml(RandomTestUtil.randomString());
+		fragmentEntry.setJs(RandomTestUtil.randomString());
+		fragmentEntry.setConfiguration(null);
+		fragmentEntry.setType(FragmentConstants.TYPE_COMPONENT);
+
+		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
+
+		long segmentsExperienceId =
+			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
+				layout.getPlid());
+
+		for (int i = 0; i < fragmentEntryLinksCount; i++) {
+			_fragmentEntryLinkLocalService.addFragmentEntryLink(
+				TestPropsValues.getUserId(), _group.getGroupId(), 0, 0,
+				segmentsExperienceId, layout.getPlid(), fragmentEntry.getCss(),
+				fragmentEntry.getHtml(), fragmentEntry.getJs(),
+				fragmentEntry.getConfiguration(),
+				StringBundler.concat(
+					"{\"instanceid\":\"",
+					RandomTestUtil.randomString(fragmentEntryLinkSize), "\"}"),
+				StringPool.BLANK, 0, fragmentEntry.getFragmentEntryKey(),
+				FragmentConstants.TYPE_COMPONENT, _serviceContext);
+		}
+
+		TestFragmentCollectionContributor testFragmentCollectionContributor =
+			new TestFragmentCollectionContributor(
+				RandomTestUtil.randomString(),
+				HashMapBuilder.put(
+					FragmentConstants.TYPE_COMPONENT, fragmentEntry
+				).build());
+
+		ServiceRegistration<?> serviceRegistration = null;
+
+		try {
+			serviceRegistration = _getServiceRegistration(
+				testFragmentCollectionContributor);
+		}
+		finally {
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+		}
+	}
+
 	private FragmentEntry _getFragmentEntry(String key, String html, int type) {
 		FragmentEntry fragmentEntry =
 			FragmentEntryLocalServiceUtil.createFragmentEntry(0L);
