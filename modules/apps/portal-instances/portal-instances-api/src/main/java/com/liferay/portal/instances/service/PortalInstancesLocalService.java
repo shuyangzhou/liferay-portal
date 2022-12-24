@@ -76,8 +76,7 @@ public interface PortalInstancesLocalService extends BaseLocalService {
 	public String[] getWebIds();
 
 	public void initializePortalInstance(
-			long companyId, String siteInitializerKey,
-			ServletContext servletContext)
+			long companyId, String siteInitializerKey)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -95,7 +94,7 @@ public interface PortalInstancesLocalService extends BaseLocalService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isVirtualHostsIgnorePath(String path);
 
-	public void reload(ServletContext servletContext);
+	public void reload();
 
 	public void removeCompany(long companyId);
 

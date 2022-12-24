@@ -71,12 +71,11 @@ public class PortalInstancesLocalServiceUtil {
 	}
 
 	public static void initializePortalInstance(
-			long companyId, String siteInitializerKey,
-			javax.servlet.ServletContext servletContext)
+			long companyId, String siteInitializerKey)
 		throws PortalException {
 
 		getService().initializePortalInstance(
-			companyId, siteInitializerKey, servletContext);
+			companyId, siteInitializerKey);
 	}
 
 	public static boolean isAutoLoginIgnoreHost(String host) {
@@ -99,8 +98,8 @@ public class PortalInstancesLocalServiceUtil {
 		return getService().isVirtualHostsIgnorePath(path);
 	}
 
-	public static void reload(javax.servlet.ServletContext servletContext) {
-		getService().reload(servletContext);
+	public static void reload() {
+		getService().reload();
 	}
 
 	public static void removeCompany(long companyId) {
