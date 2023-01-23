@@ -70,9 +70,11 @@ public class LanguageResources {
 
 		String value = null;
 
-		Map<String, String> languageMap = _serviceTrackerMap.getService(locale);
+		MapHolder mapHolder = _serviceTrackerMap.getService(locale);
 
-		if (languageMap != null) {
+		if (mapHolder != null) {
+			Map<String, String> languageMap = mapHolder.getMap();
+
 			value = languageMap.get(key);
 		}
 
@@ -201,65 +203,10 @@ public class LanguageResources {
 			LanguageOverrideProvider.class, LanguageResources.class,
 			"_languageOverrideProvider", false, true);
 	private static final Locale _nullLocale = new Locale(StringPool.BLANK);
-	private static final ServiceTrackerMap<Locale, Map<String, String>>
+	private static final ServiceTrackerMap<Locale, MapHolder>
 		_serviceTrackerMap;
 	private static final Map<Locale, Locale> _superLocales =
 		new ConcurrentHashMap<>();
-
-	static {
-		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
-
-		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, ResourceBundle.class,
-			"(&(!(javax.portlet.name=*))(language.id=*))",
-			(serviceReference, emitter) -> {
-				String languageId = GetterUtil.getString(
-					serviceReference.getProperty("language.id"));
-
-				emitter.emit(LocaleUtil.fromLanguageId(languageId, false));
-			},
-			new ServiceTrackerCustomizer
-				<ResourceBundle, Map<String, String>>() {
-
-				@Override
-				public Map<String, String> addingService(
-					ServiceReference<ResourceBundle> serviceReference) {
-
-					ResourceBundle resourceBundle = bundleContext.getService(
-						serviceReference);
-
-					Map<String, String> languageMap = new HashMap<>();
-
-					Enumeration<String> enumeration = resourceBundle.getKeys();
-
-					while (enumeration.hasMoreElements()) {
-						String key = enumeration.nextElement();
-
-						String value = ResourceBundleUtil.getString(
-							resourceBundle, key);
-
-						languageMap.put(key, value);
-					}
-
-					return languageMap;
-				}
-
-				@Override
-				public void modifiedService(
-					ServiceReference<ResourceBundle> serviceReference,
-					Map<String, String> map) {
-				}
-
-				@Override
-				public void removedService(
-					ServiceReference<ResourceBundle> serviceReference,
-					Map<String, String> map) {
-
-					bundleContext.ungetService(serviceReference);
-				}
-
-			});
-	}
 
 	private static class LanguageResourcesBundle extends ResourceBundle {
 
@@ -267,10 +214,11 @@ public class LanguageResources {
 		public Enumeration<String> getKeys() {
 			Set<String> keySet = Collections.emptySet();
 
-			Map<String, String> languageMap = _serviceTrackerMap.getService(
-				_locale);
+			MapHolder mapHolder = _serviceTrackerMap.getService(_locale);
 
-			if (languageMap != null) {
+			if (mapHolder != null) {
+				Map<String, String> languageMap = mapHolder.getMap();
+
 				keySet = languageMap.keySet();
 			}
 
@@ -296,12 +244,13 @@ public class LanguageResources {
 				return overrideValue;
 			}
 
-			Map<String, String> languageMap = _serviceTrackerMap.getService(
-				_locale);
+			MapHolder mapHolder = _serviceTrackerMap.getService(_locale);
 
-			if (languageMap == null) {
+			if (mapHolder == null) {
 				return null;
 			}
+
+			Map<String, String> languageMap = mapHolder.getMap();
 
 			return languageMap.get(key);
 		}
@@ -310,10 +259,11 @@ public class LanguageResources {
 		protected Set<String> handleKeySet() {
 			Set<String> keySet = Collections.emptySet();
 
-			Map<String, String> languageMap = _serviceTrackerMap.getService(
-				_locale);
+			MapHolder mapHolder = _serviceTrackerMap.getService(_locale);
 
-			if (languageMap != null) {
+			if (mapHolder != null) {
+				Map<String, String> languageMap = mapHolder.getMap();
+
 				keySet = languageMap.keySet();
 			}
 
@@ -332,6 +282,90 @@ public class LanguageResources {
 
 		private final Locale _locale;
 
+	}
+
+	private static class MapHolder {
+
+		public void close() {
+			if (_map != null) {
+				_bundleContext.ungetService(_serviceReference);
+			}
+		}
+
+		public Map<String, String> getMap() {
+			if (_map == null) {
+				ResourceBundle resourceBundle = _bundleContext.getService(
+					_serviceReference);
+
+				Map<String, String> languageMap = new HashMap<>();
+
+				Enumeration<String> enumeration = resourceBundle.getKeys();
+
+				while (enumeration.hasMoreElements()) {
+					String key = enumeration.nextElement();
+
+					String value = ResourceBundleUtil.getString(
+						resourceBundle, key);
+
+					languageMap.put(key, value);
+				}
+
+				_map = languageMap;
+			}
+
+			return _map;
+		}
+
+		private MapHolder(
+			BundleContext bundleContext,
+			ServiceReference<ResourceBundle> serviceReference) {
+
+			_bundleContext = bundleContext;
+			_serviceReference = serviceReference;
+		}
+
+		private final BundleContext _bundleContext;
+		private Map<String, String> _map;
+		private final ServiceReference<ResourceBundle> _serviceReference;
+
+	}
+
+	static {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ResourceBundle.class,
+			"(&(!(javax.portlet.name=*))(language.id=*))",
+			(serviceReference, emitter) -> {
+				String languageId = GetterUtil.getString(
+					serviceReference.getProperty("language.id"));
+
+				emitter.emit(LocaleUtil.fromLanguageId(languageId, false));
+			},
+			new ServiceTrackerCustomizer<ResourceBundle, MapHolder>() {
+
+				@Override
+				public MapHolder addingService(
+					ServiceReference<ResourceBundle> serviceReference) {
+
+					return new MapHolder(bundleContext, serviceReference);
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<ResourceBundle> serviceReference,
+					MapHolder mapHolder) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<ResourceBundle> serviceReference,
+					MapHolder mapHolder) {
+
+					mapHolder.close();
+				}
+
+			});
 	}
 
 }

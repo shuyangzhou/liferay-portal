@@ -36,6 +36,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceFactory;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleWiring;
@@ -156,13 +157,31 @@ public class LanguageResourcesExtender
 
 			Locale locale = LocaleUtil.fromLanguageId(languageId, false);
 
-			ResourceBundle resourceBundle = ResourceBundle.getBundle(
-				baseName, locale, bundleWiring.getClassLoader(),
-				UTF8Control.INSTANCE);
-
 			ServiceRegistration<?> serviceRegistration =
 				_bundleContext.registerService(
-					ResourceBundle.class, resourceBundle,
+					ResourceBundle.class,
+					new ServiceFactory<ResourceBundle>() {
+
+						@Override
+						public ResourceBundle getService(
+							Bundle bundle,
+							ServiceRegistration<ResourceBundle>
+								serviceRegistration) {
+
+							return ResourceBundle.getBundle(
+								baseName, locale, bundleWiring.getClassLoader(),
+								UTF8Control.INSTANCE);
+						}
+
+						@Override
+						public void ungetService(
+							Bundle bundle,
+							ServiceRegistration<ResourceBundle>
+								serviceRegistration,
+							ResourceBundle resourceBundle) {
+						}
+
+					},
 					HashMapDictionaryBuilder.<String, Object>put(
 						Constants.SERVICE_RANKING, serviceRanking
 					).put(
