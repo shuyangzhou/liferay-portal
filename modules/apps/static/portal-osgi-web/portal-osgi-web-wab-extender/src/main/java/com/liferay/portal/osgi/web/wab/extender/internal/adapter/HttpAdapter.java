@@ -129,12 +129,16 @@ public class HttpAdapter {
 		properties.put("bean.id", HttpServlet.class.getName());
 		properties.put("original.bean", Boolean.TRUE.toString());
 
+		long startTime = System.currentTimeMillis();
+
 		_serviceRegistration = bundleContext.registerService(
 			new String[] {
 				HttpServiceServlet.class.getName(), HttpServlet.class.getName()
 			},
 			_httpServiceServlet, properties);
 
+		System.out.println(
+			"#######" + (System.currentTimeMillis() - startTime) + "ms");
 		PortletSessionListenerManager.addHttpSessionListener(
 			_INVALIDATEHTTPSESSION_LISTENER);
 	}

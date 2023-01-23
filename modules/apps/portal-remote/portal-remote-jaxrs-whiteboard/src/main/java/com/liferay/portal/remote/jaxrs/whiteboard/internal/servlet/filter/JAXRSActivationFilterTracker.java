@@ -14,19 +14,27 @@
 
 package com.liferay.portal.remote.jaxrs.whiteboard.internal.servlet.filter;
 
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
 
+import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.http.runtime.HttpServiceRuntime;
 
 /**
  * @author Shuyang Zhou
@@ -64,6 +72,12 @@ public class JAXRSActivationFilterTracker {
 
 			_readyServiceRegistration = null;
 		}
+
+		if (_httpServiceRuntimeServiceRegistration != null) {
+			_httpServiceRuntimeServiceRegistration.unregister();
+
+			_httpServiceRuntimeServiceRegistration = null;
+		}
 	}
 
 	protected synchronized void setReady() throws ServletException {
@@ -75,6 +89,26 @@ public class JAXRSActivationFilterTracker {
 		}
 
 		if (_readyServiceRegistration == null) {
+			ServiceReference<HttpServiceRuntime> serviceReference =
+				_bundleContext.getServiceReference(HttpServiceRuntime.class);
+
+			Dictionary<String, Object> dictionary = new HashMapDictionary<>();
+
+			for (String propertyKey : serviceReference.getPropertyKeys()) {
+				if (_frameworkKeys.contains(propertyKey)) {
+					continue;
+				}
+
+				dictionary.put(
+					propertyKey, serviceReference.getProperty(propertyKey));
+			}
+
+			dictionary.put("liferay.jaxrs.whiteboard.ready", true);
+
+			_httpServiceRuntimeServiceRegistration =
+				_bundleContext.registerService(
+					HttpServiceRuntime.class,
+					_bundleContext.getService(serviceReference), dictionary);
 			_readyServiceRegistration = _bundleContext.registerService(
 				Object.class, new Object(),
 				MapUtil.singletonDictionary(
@@ -92,9 +126,15 @@ public class JAXRSActivationFilterTracker {
 		}
 	}
 
+	private static final Set<String> _frameworkKeys = new HashSet<>(
+		Arrays.asList(
+			Constants.OBJECTCLASS, Constants.SERVICE_BUNDLEID,
+			Constants.SERVICE_ID, Constants.SERVICE_SCOPE));
+
 	private BundleContext _bundleContext;
 	private CountDownLatch _countDownLatch;
 	private ServiceRegistration<Filter> _filterServiceRegistration;
+	private ServiceRegistration<?> _httpServiceRuntimeServiceRegistration;
 	private ServiceRegistration<?> _readyServiceRegistration;
 
 }
