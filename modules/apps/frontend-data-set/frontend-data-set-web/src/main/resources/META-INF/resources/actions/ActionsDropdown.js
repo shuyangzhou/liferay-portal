@@ -78,6 +78,7 @@ function ActionsDropdown({
 		inlineEditingSettings,
 		loadData,
 		openSidePanel,
+		uniformActionsDisplay,
 	} = frontendDataSetContext;
 
 	const inlineEditingAvailable =
@@ -140,7 +141,7 @@ function ActionsDropdown({
 
 	if (
 		!inlineEditingAlwaysOn &&
-		!context.uniformActionsDisplay &&
+		!uniformActionsDisplay &&
 		actions.length === 1
 	) {
 		const [action] = actions;
