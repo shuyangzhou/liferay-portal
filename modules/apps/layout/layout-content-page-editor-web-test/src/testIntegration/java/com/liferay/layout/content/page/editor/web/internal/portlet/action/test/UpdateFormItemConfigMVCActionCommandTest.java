@@ -99,6 +99,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.runtime.ServiceComponentRuntime;
 import org.osgi.service.component.runtime.dto.ComponentDescriptionDTO;
+import org.osgi.util.promise.Promise;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -790,8 +791,9 @@ public class UpdateFormItemConfigMVCActionCommandTest {
 	private class ComponentEnablerTemporarySwapper implements AutoCloseable {
 
 		public ComponentEnablerTemporarySwapper(
-			String bundleSymbolicName, String componentClassName,
-			boolean enabled) {
+				String bundleSymbolicName, String componentClassName,
+				boolean enabled)
+			throws Exception {
 
 			BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
@@ -817,12 +819,16 @@ public class UpdateFormItemConfigMVCActionCommandTest {
 				_componentDescriptionDTO);
 
 			if (enabled) {
-				_serviceComponentRuntime.enableComponent(
+				Promise<?> promise = _serviceComponentRuntime.enableComponent(
 					_componentDescriptionDTO);
+
+				promise.getValue();
 			}
 			else {
-				_serviceComponentRuntime.disableComponent(
+				Promise<?> promise = _serviceComponentRuntime.disableComponent(
 					_componentDescriptionDTO);
+
+				promise.getValue();
 			}
 		}
 
@@ -833,12 +839,16 @@ public class UpdateFormItemConfigMVCActionCommandTest {
 			}
 
 			if (_componentEnabled) {
-				_serviceComponentRuntime.enableComponent(
+				Promise<?> promise = _serviceComponentRuntime.enableComponent(
 					_componentDescriptionDTO);
+
+				promise.getValue();
 			}
 			else {
-				_serviceComponentRuntime.disableComponent(
+				Promise<?> promise = _serviceComponentRuntime.disableComponent(
 					_componentDescriptionDTO);
+
+				promise.getValue();
 			}
 		}
 
