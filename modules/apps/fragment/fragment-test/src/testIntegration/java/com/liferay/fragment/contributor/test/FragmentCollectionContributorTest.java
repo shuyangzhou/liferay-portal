@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -81,6 +82,43 @@ public class FragmentCollectionContributorTest {
 
 		_serviceContext = ServiceContextTestUtil.getServiceContext(
 			_group.getGroupId());
+	}
+
+	@Test
+	public void testContributedFragmentEntryLoad() throws Exception {
+		String fragmentCollectionContributorKey = RandomTestUtil.randomString();
+
+		String fragmentEntryKey = StringBundler.concat(
+			fragmentCollectionContributorKey, StringPool.DASH,
+			RandomTestUtil.randomString());
+
+		String html = StringBundler.concat(
+			"<div class=\"clearfix component-paragraph text-break\" ",
+			"data-lfr-editable-id=\"element-text\" ",
+			"data-lfr-editable-type=\"rich-text\">\n",
+			"\tA paragraph is a self-contained unit of a discourse in writing ",
+			"dealing with\n\ta particular point or idea. Paragraphs are ",
+			"usually an expected part of\n\tformal writing, used to organize ",
+			"longer prose.\n</div>");
+
+		_addFragmentEntryLinks(fragmentEntryKey, html, 100, 100);
+
+		ServiceRegistration<?> serviceRegistration = _getServiceRegistration(
+			new TestFragmentCollectionContributor(
+				fragmentCollectionContributorKey,
+				HashMapBuilder.put(
+					FragmentConstants.TYPE_COMPONENT,
+					_getFragmentEntry(
+						fragmentEntryKey, html,
+						FragmentConstants.TYPE_COMPONENT)
+				).build()));
+
+		try {
+			Assert.assertTrue(true);
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Test
@@ -239,6 +277,31 @@ public class FragmentCollectionContributorTest {
 		}
 	}
 
+	private void _addFragmentEntryLinks(
+			String fragmentEntryKey, String html, int layoutsCount,
+			int fragmentEntryLinksCount)
+		throws Exception {
+
+		String editableValues = _read("editableValues.json");
+
+		for (int i = 0; i < layoutsCount; i++) {
+			Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
+
+			long segmentsExperienceId =
+				_segmentsExperienceLocalService.
+					fetchDefaultSegmentsExperienceId(layout.getPlid());
+
+			for (int j = 0; j < fragmentEntryLinksCount; j++) {
+				_fragmentEntryLinkLocalService.addFragmentEntryLink(
+					TestPropsValues.getUserId(), _group.getGroupId(), 0, 0,
+					segmentsExperienceId, layout.getPlid(), null, html,
+					StringPool.BLANK, StringPool.BLANK, editableValues,
+					StringPool.BLANK, 0, fragmentEntryKey,
+					FragmentConstants.TYPE_COMPONENT, _serviceContext);
+			}
+		}
+	}
+
 	private FragmentEntry _getFragmentEntry(String key, String html, int type) {
 		FragmentEntry fragmentEntry =
 			FragmentEntryLocalServiceUtil.createFragmentEntry(0L);
@@ -268,6 +331,11 @@ public class FragmentCollectionContributorTest {
 			MapUtil.singletonDictionary(
 				"fragment.collection.key",
 				testFragmentCollectionContributor.getFragmentCollectionKey()));
+	}
+
+	private String _read(String fileName) throws Exception {
+		return new String(
+			FileUtil.getBytes(getClass(), "dependencies/" + fileName));
 	}
 
 	@Inject
