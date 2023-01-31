@@ -58,7 +58,7 @@ public class IndexOnStartupExecutor
 		Indexer<?> indexer = _bundleContext.getService(serviceReference);
 
 		boolean indexerIndexOnStartup = GetterUtil.getBoolean(
-			serviceReference.getProperty(PropsKeys.INDEX_ON_STARTUP));
+			serviceReference.getProperty(PropsKeys.INDEX_ON_STARTUP), true);
 
 		String className = indexer.getClassName();
 
