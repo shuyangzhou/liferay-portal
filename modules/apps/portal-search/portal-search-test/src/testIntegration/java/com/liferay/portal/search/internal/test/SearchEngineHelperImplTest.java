@@ -15,6 +15,7 @@
 package com.liferay.portal.search.internal.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Hits;
@@ -131,7 +132,16 @@ public class SearchEngineHelperImplTest {
 				componentConfigurationDTO.state);
 		}
 		finally {
-			serviceRegistration.unregister();
+			boolean isDBNew = StartupHelperUtil.isDBNew();
+
+			StartupHelperUtil.setDbNew(false);
+
+			try {
+				serviceRegistration.unregister();
+			}
+			finally {
+				StartupHelperUtil.setDbNew(isDBNew);
+			}
 		}
 
 		componentConfigurationDTO =
