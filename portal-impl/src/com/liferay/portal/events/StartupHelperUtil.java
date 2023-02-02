@@ -101,6 +101,8 @@ public class StartupHelperUtil {
 	}
 
 	public static void setDbNew(boolean dbNew) {
+		_log.info("Set DB to " + dbNew, new Exception());
+
 		_dbNew = dbNew;
 	}
 
