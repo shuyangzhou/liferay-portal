@@ -161,6 +161,7 @@ public class DBInitUtil {
 			DependencyManagerSync.class,
 			dependencyManagerSync -> dependencyManagerSync.registerSyncCallable(
 				() -> {
+					System.out.println("#####Set db to old");
 					StartupHelperUtil.setDbNew(false);
 
 					return null;
