@@ -76,6 +76,22 @@ public class DBInitUtil {
 		try (Connection connection = _dataSource.getConnection()) {
 			_init(DBManagerUtil.getDB(), connection);
 
+			ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
+
+			serviceLatch.waitFor(
+				DependencyManagerSync.class,
+				dependencyManagerSync ->
+					dependencyManagerSync.registerSyncCallable(
+						() -> {
+							StartupHelperUtil.setDbNew(false);
+
+							return null;
+						}));
+
+			serviceLatch.openOn(
+				() -> {
+				});
+
 			_dataSource = DBPartitionUtil.wrapDataSource(_dataSource);
 
 			DBPartitionUtil.setDefaultCompanyId(connection);
@@ -154,21 +170,6 @@ public class DBInitUtil {
 		_addReleaseInfo(connection);
 
 		StartupHelperUtil.setDbNew(true);
-
-		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
-
-		serviceLatch.waitFor(
-			DependencyManagerSync.class,
-			dependencyManagerSync -> dependencyManagerSync.registerSyncCallable(
-				() -> {
-					StartupHelperUtil.setDbNew(false);
-
-					return null;
-				}));
-
-		serviceLatch.openOn(
-			() -> {
-			});
 	}
 
 	private static boolean _hasDefaultReleaseWithTestString(
