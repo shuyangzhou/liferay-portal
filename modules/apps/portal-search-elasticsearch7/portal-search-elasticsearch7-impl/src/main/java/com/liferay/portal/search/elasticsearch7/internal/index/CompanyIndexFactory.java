@@ -111,6 +111,8 @@ public class CompanyIndexFactory
 				deleteIndexRequest, RequestOptions.DEFAULT);
 
 			SearchLogHelperUtil.logActionResponse(_log, actionResponse);
+
+			_log.info("Deleted company index : " + indexName, new Exception());
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -199,6 +201,8 @@ public class CompanyIndexFactory
 				createIndexRequest, RequestOptions.DEFAULT);
 
 			SearchLogHelperUtil.logActionResponse(_log, actionResponse);
+
+			_log.info("Created company index : " + indexName, new Exception());
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);

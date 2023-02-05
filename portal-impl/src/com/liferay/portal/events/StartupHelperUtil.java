@@ -101,6 +101,8 @@ public class StartupHelperUtil {
 	}
 
 	public static void setDbNew(boolean dbNew) {
+		_log.info("Set DB New to " + dbNew, new Exception());
+
 		_dbNew = dbNew;
 	}
 
@@ -190,7 +192,7 @@ public class StartupHelperUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		StartupHelperUtil.class);
 
-	private static boolean _dbNew;
+	private static volatile boolean _dbNew;
 	private static boolean _startupFinished;
 	private static boolean _upgraded;
 	private static boolean _upgrading;
