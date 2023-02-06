@@ -650,6 +650,15 @@ public class FragmentEntryLinkLocalServiceWrapper
 	}
 
 	@Override
+	public String getProcessedEditableValues(
+			FragmentEntryLink fragmentEntryLink)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fragmentEntryLinkLocalService.getProcessedEditableValues(
+			fragmentEntryLink);
+	}
+
+	@Override
 	public void updateClassedModel(long plid) {
 		_fragmentEntryLinkLocalService.updateClassedModel(plid);
 	}
@@ -722,6 +731,15 @@ public class FragmentEntryLinkLocalServiceWrapper
 
 		return _fragmentEntryLinkLocalService.updateFragmentEntryLink(
 			fragmentEntryLinkId, editableValues, updateClassedModel);
+	}
+
+	@Override
+	public void updateFragmentEntryLinksByRendererKey(
+		String rendererKey, String configuration, String css, String html,
+		String js, int type) {
+
+		_fragmentEntryLinkLocalService.updateFragmentEntryLinksByRendererKey(
+			rendererKey, configuration, css, html, js, type);
 	}
 
 	@Override

@@ -569,6 +569,13 @@ public class FragmentEntryLinkLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static String getProcessedEditableValues(
+			FragmentEntryLink fragmentEntryLink)
+		throws PortalException {
+
+		return getService().getProcessedEditableValues(fragmentEntryLink);
+	}
+
 	public static void updateClassedModel(long plid) {
 		getService().updateClassedModel(plid);
 	}
@@ -633,6 +640,14 @@ public class FragmentEntryLinkLocalServiceUtil {
 
 		return getService().updateFragmentEntryLink(
 			fragmentEntryLinkId, editableValues, updateClassedModel);
+	}
+
+	public static void updateFragmentEntryLinksByRendererKey(
+		String rendererKey, String configuration, String css, String html,
+		String js, int type) {
+
+		getService().updateFragmentEntryLinksByRendererKey(
+			rendererKey, configuration, css, html, js, type);
 	}
 
 	public static void updateLatestChanges(

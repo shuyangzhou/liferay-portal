@@ -442,6 +442,11 @@ public interface FragmentEntryLinkLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public String getProcessedEditableValues(
+			FragmentEntryLink fragmentEntryLink)
+		throws PortalException;
+
 	public void updateClassedModel(long plid);
 
 	public FragmentEntryLink updateDeleted(
@@ -482,6 +487,10 @@ public interface FragmentEntryLinkLocalService
 			long fragmentEntryLinkId, String editableValues,
 			boolean updateClassedModel)
 		throws PortalException;
+
+	public void updateFragmentEntryLinksByRendererKey(
+		String rendererKey, String configuration, String css, String html,
+		String js, int type);
 
 	public void updateLatestChanges(
 			FragmentEntry fragmentEntry, FragmentEntryLink fragmentEntryLink)
