@@ -37,7 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
@@ -51,6 +51,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  */
 @Component(
 	configurationPid = "com.liferay.portal.security.audit.configuration.AuditConfiguration",
+	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	service = AuditRouter.class
 )
 public class DefaultAuditRouter implements AuditRouter {
@@ -101,11 +102,6 @@ public class DefaultAuditRouter implements AuditRouter {
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
-		modified(properties);
-	}
-
-	@Modified
-	protected void modified(Map<String, Object> properties) {
 		AuditConfiguration auditConfiguration =
 			ConfigurableUtil.createConfigurable(
 				AuditConfiguration.class, properties);
