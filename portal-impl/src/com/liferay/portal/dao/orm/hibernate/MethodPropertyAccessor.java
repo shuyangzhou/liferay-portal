@@ -186,13 +186,15 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 
 		@Override
 		public Object get(Object target) {
-			try {
-				Method getterMethod = _methodHolder.getGetterMethod();
+			Method getterMethod = _methodHolder.getGetterMethod();
 
+			try {
 				return getterMethod.invoke(target);
 			}
 			catch (ReflectiveOperationException reflectiveOperationException) {
-				return ReflectionUtil.throwException(
+				throw new RuntimeException(
+					StringBundler.concat(
+						"Unable to call ", getterMethod, " on ", target),
 					reflectiveOperationException);
 			}
 		}
@@ -253,13 +255,16 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 				SessionFactoryImplementor sessionFactoryImplementor)
 			throws PropertyAccessException {
 
-			try {
-				Method setterMethod = _methodHolder.getSetterMethod();
+			Method setterMethod = _methodHolder.getSetterMethod();
 
+			try {
 				setterMethod.invoke(target, value);
 			}
 			catch (ReflectiveOperationException reflectiveOperationException) {
-				ReflectionUtil.throwException(reflectiveOperationException);
+				throw new RuntimeException(
+					StringBundler.concat(
+						"Unable to call ", setterMethod, " on ", target),
+					reflectiveOperationException);
 			}
 		}
 
