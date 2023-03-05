@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
@@ -56,7 +55,6 @@ import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -66,6 +64,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -78,7 +77,6 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.security.jaas.JAASHelper;
-import com.liferay.portal.service.impl.LayoutTemplateLocalServiceImpl;
 import com.liferay.portal.servlet.EncryptedServletRequest;
 import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.servlet.filters.absoluteredirects.AbsoluteRedirectsResponse;
@@ -104,6 +102,9 @@ import com.liferay.social.kernel.util.SocialConfigurationUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -771,33 +772,30 @@ public class MainServlet extends HttpServlet {
 	}
 
 	private void _initLayoutTemplates(PluginPackage pluginPackage) {
-		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
+		ServletContext servletContext = getServletContext();
 
-		for (String langType :
-				LayoutTemplateLocalServiceImpl.supportedLangTypes) {
+		servletContext.setAttribute(
+			WebKeys.PLUGIN_LAYOUT_TEMPLATES,
+			ProxyUtil.newProxyInstance(
+				ClassLoader.getSystemClassLoader(), new Class<?>[] {List.class},
+				new InvocationHandler() {
 
-			StringBundler sb = new StringBundler(5);
+					@Override
+					public Object invoke(
+							Object proxy, Method method, Object[] args)
+						throws Throwable {
 
-			sb.append("(&(language.type=");
-			sb.append(langType);
-			sb.append(")(objectClass=");
-			sb.append(TemplateManager.class.getName());
-			sb.append("))");
-
-			serviceLatch.waitFor(sb.toString());
-		}
-
-		serviceLatch.openOn(
-			() -> {
-				try {
-					if (_log.isDebugEnabled()) {
-						_log.debug("Initialize layout templates");
+						return method.invoke(_getLayoutTemplates(), args);
 					}
 
-					ServletContext servletContext = getServletContext();
+					private List<LayoutTemplate> _getLayoutTemplates()
+						throws IOException {
 
-					List<LayoutTemplate> layoutTemplates =
-						LayoutTemplateLocalServiceUtil.init(
+						if (_layoutTemplates != null) {
+							return _layoutTemplates;
+						}
+
+						_layoutTemplates = LayoutTemplateLocalServiceUtil.init(
 							servletContext,
 							new String[] {
 								StreamUtil.toString(
@@ -811,13 +809,12 @@ public class MainServlet extends HttpServlet {
 							},
 							pluginPackage);
 
-					servletContext.setAttribute(
-						WebKeys.PLUGIN_LAYOUT_TEMPLATES, layoutTemplates);
-				}
-				catch (Exception exception) {
-					_log.error(exception);
-				}
-			});
+						return _layoutTemplates;
+					}
+
+					private List<LayoutTemplate> _layoutTemplates;
+
+				}));
 	}
 
 	private ModuleConfig _initModuleConfig() throws Exception {
