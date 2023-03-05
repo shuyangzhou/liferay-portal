@@ -26,11 +26,8 @@ import com.liferay.marketplace.service.AppService;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.bundle.blacklist.BundleBlacklistManager;
-import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.model.Plugin;
 import com.liferay.portal.kernel.model.PluginSetting;
-import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -38,7 +35,6 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.PluginSettingLocalService;
 import com.liferay.portal.kernel.service.PluginSettingService;
 import com.liferay.portal.kernel.service.PortletService;
-import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -67,13 +63,13 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.Bundle;
@@ -103,7 +99,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.security-role-ref=administrator",
 		"javax.portlet.version=3.0"
 	},
-	service = javax.portlet.Portlet.class
+	service = Portlet.class
 )
 public class MarketplaceAppManagerPortlet extends MVCPortlet {
 
@@ -301,70 +297,6 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 			_pluginSettingService.updatePluginSetting(
 				themeDisplay.getCompanyId(), pluginId, pluginType,
 				StringUtil.merge(roles), active);
-		}
-	}
-
-	public void updatePluginSettings(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		String[] contextNames = StringUtil.split(
-			ParamUtil.getString(actionRequest, "contextNames"));
-
-		boolean active = ParamUtil.getBoolean(actionRequest, "active");
-
-		for (String contextName : contextNames) {
-			ServletContext servletContext = ServletContextPool.get(contextName);
-
-			List<LayoutTemplate> layoutTemplates =
-				(List<LayoutTemplate>)servletContext.getAttribute(
-					WebKeys.PLUGIN_LAYOUT_TEMPLATES);
-
-			if (layoutTemplates != null) {
-				for (LayoutTemplate layoutTemplate : layoutTemplates) {
-					PluginSetting pluginSetting =
-						_pluginSettingLocalService.getPluginSetting(
-							themeDisplay.getCompanyId(),
-							layoutTemplate.getLayoutTemplateId(),
-							Plugin.TYPE_LAYOUT_TEMPLATE);
-
-					_pluginSettingService.updatePluginSetting(
-						themeDisplay.getCompanyId(),
-						layoutTemplate.getLayoutTemplateId(),
-						Plugin.TYPE_LAYOUT_TEMPLATE, pluginSetting.getRoles(),
-						active);
-				}
-			}
-
-			List<Portlet> portlets = (List<Portlet>)servletContext.getAttribute(
-				WebKeys.PLUGIN_PORTLETS);
-
-			if (portlets != null) {
-				for (Portlet portlet : portlets) {
-					_portletService.updatePortlet(
-						themeDisplay.getCompanyId(), portlet.getPortletId(),
-						StringPool.BLANK, active);
-				}
-			}
-
-			List<Theme> themes = (List<Theme>)servletContext.getAttribute(
-				WebKeys.PLUGIN_THEMES);
-
-			if (themes != null) {
-				for (Theme theme : themes) {
-					PluginSetting pluginSetting =
-						_pluginSettingLocalService.getPluginSetting(
-							themeDisplay.getCompanyId(), theme.getThemeId(),
-							Plugin.TYPE_THEME);
-
-					_pluginSettingService.updatePluginSetting(
-						themeDisplay.getCompanyId(), theme.getThemeId(),
-						Plugin.TYPE_THEME, pluginSetting.getRoles(), active);
-				}
-			}
 		}
 	}
 
