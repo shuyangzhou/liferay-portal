@@ -34,14 +34,12 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
-import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
@@ -51,12 +49,10 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -78,7 +74,6 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.security.jaas.JAASHelper;
-import com.liferay.portal.service.impl.LayoutTemplateLocalServiceImpl;
 import com.liferay.portal.servlet.EncryptedServletRequest;
 import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.servlet.filters.absoluteredirects.AbsoluteRedirectsResponse;
@@ -306,13 +301,6 @@ public class MainServlet extends HttpServlet {
 			catch (Exception exception) {
 				_log.error(exception);
 			}
-		}
-
-		try {
-			_initLayoutTemplates(pluginPackage);
-		}
-		catch (Exception exception) {
-			_log.error(exception);
 		}
 
 		if (_log.isDebugEnabled()) {
@@ -768,56 +756,6 @@ public class MainServlet extends HttpServlet {
 
 			PortalInstances.initCompany(webId, skipCheck);
 		}
-	}
-
-	private void _initLayoutTemplates(PluginPackage pluginPackage) {
-		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
-
-		for (String langType :
-				LayoutTemplateLocalServiceImpl.supportedLangTypes) {
-
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("(&(language.type=");
-			sb.append(langType);
-			sb.append(")(objectClass=");
-			sb.append(TemplateManager.class.getName());
-			sb.append("))");
-
-			serviceLatch.waitFor(sb.toString());
-		}
-
-		serviceLatch.openOn(
-			() -> {
-				try {
-					if (_log.isDebugEnabled()) {
-						_log.debug("Initialize layout templates");
-					}
-
-					ServletContext servletContext = getServletContext();
-
-					List<LayoutTemplate> layoutTemplates =
-						LayoutTemplateLocalServiceUtil.init(
-							servletContext,
-							new String[] {
-								StreamUtil.toString(
-									servletContext.getResourceAsStream(
-										"/WEB-INF/liferay-layout-" +
-											"templates.xml")),
-								StreamUtil.toString(
-									servletContext.getResourceAsStream(
-										"/WEB-INF/liferay-layout-templates-" +
-											"ext.xml"))
-							},
-							pluginPackage);
-
-					servletContext.setAttribute(
-						WebKeys.PLUGIN_LAYOUT_TEMPLATES, layoutTemplates);
-				}
-				catch (Exception exception) {
-					_log.error(exception);
-				}
-			});
 	}
 
 	private ModuleConfig _initModuleConfig() throws Exception {
