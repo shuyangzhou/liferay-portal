@@ -20,6 +20,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.instance.lifecycle.EveryNodeEveryStartup;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
+import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.instance.lifecycle.PortalInstanceLifecycleManager;
 import com.liferay.portal.kernel.io.Deserializer;
 import com.liferay.portal.kernel.io.Serializer;
@@ -66,6 +67,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class PortalInstanceLifecycleListenerManagerImpl
 	implements AopService, PortalInstanceLifecycleManager {
 
+	@Clusterable
 	@Override
 	public void preregisterCompany(Company company) {
 		for (PortalInstanceLifecycleListener portalInstanceLifecycleListener :
@@ -75,6 +77,7 @@ public class PortalInstanceLifecycleListenerManagerImpl
 		}
 	}
 
+	@Clusterable
 	@Override
 	public void preunregisterCompany(Company company) {
 		for (PortalInstanceLifecycleListener portalInstanceLifecycleListener :
@@ -84,6 +87,7 @@ public class PortalInstanceLifecycleListenerManagerImpl
 		}
 	}
 
+	@Clusterable
 	@Override
 	public void registerCompany(Company company) {
 		_companies.add(company);
@@ -95,6 +99,7 @@ public class PortalInstanceLifecycleListenerManagerImpl
 		}
 	}
 
+	@Clusterable
 	@Override
 	public void unregisterCompany(Company company) {
 		_companies.remove(company);
