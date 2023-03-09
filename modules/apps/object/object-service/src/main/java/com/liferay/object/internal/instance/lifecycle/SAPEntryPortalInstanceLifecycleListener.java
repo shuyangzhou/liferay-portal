@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.asset.tags.internal.security.service.access.policy;
+package com.liferay.object.internal.instance.lifecycle;
 
-import com.liferay.asset.kernel.service.AssetTagService;
+import com.liferay.object.constants.ObjectSAPConstants;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -28,86 +28,54 @@ import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 
-import java.util.Locale;
-import java.util.Map;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Lourdes Fernández Besada
+ * @author Shuyang Zhou
  */
-@Component(service = {})
-public class AssetTagSAPEntryActivator {
+@Component(service = PortalInstanceLifecycleListener.class)
+public class SAPEntryPortalInstanceLifecycleListener
+	extends BasePortalInstanceLifecycleListener {
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_serviceRegistration = bundleContext.registerService(
-			PortalInstanceLifecycleListener.class,
-			new AssetTagPortalInstanceLifecycleListener(), null);
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		if (_serviceRegistration != null) {
-			_serviceRegistration.unregister();
+	@Override
+	public void portalInstanceRegistered(Company company) {
+		try {
+			_addSAPEntry(company.getCompanyId());
+		}
+		catch (PortalException portalException) {
+			_log.error(
+				"Unable to add service access policy entry for company " +
+					company.getCompanyId(),
+				portalException);
 		}
 	}
 
 	private void _addSAPEntry(long companyId) throws PortalException {
 		SAPEntry sapEntry = _sapEntryLocalService.fetchSAPEntry(
-			companyId, _SAP_ENTRY_NAME);
+			companyId, ObjectSAPConstants.SAP_ENTRY_NAME);
 
 		if (sapEntry != null) {
 			return;
 		}
 
-		String allowedServiceSignatures =
-			AssetTagService.class.getName() + "#search";
-
-		Map<Locale, String> titleMap = ResourceBundleUtil.getLocalizationMap(
-			LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER,
-			"service-access-policy-entry-default-asset-tag-title");
-
 		_sapEntryLocalService.addSAPEntry(
 			_userLocalService.getDefaultUserId(companyId),
-			allowedServiceSignatures, true, true, _SAP_ENTRY_NAME, titleMap,
+			ObjectSAPConstants.ALLOWED_SERVICE_SIGNATURES, true, true,
+			ObjectSAPConstants.SAP_ENTRY_NAME,
+			ResourceBundleUtil.getLocalizationMap(
+				LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER,
+				"service-access-policy-entry-default-object-title"),
 			new ServiceContext());
 	}
 
-	private static final String _SAP_ENTRY_NAME = "ASSET_TAG_DEFAULT";
-
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetTagSAPEntryActivator.class);
+		SAPEntryPortalInstanceLifecycleListener.class);
 
 	@Reference
 	private SAPEntryLocalService _sapEntryLocalService;
 
-	private ServiceRegistration<PortalInstanceLifecycleListener>
-		_serviceRegistration;
-
 	@Reference
 	private UserLocalService _userLocalService;
-
-	private class AssetTagPortalInstanceLifecycleListener
-		extends BasePortalInstanceLifecycleListener {
-
-		public void portalInstanceRegistered(Company company) throws Exception {
-			try {
-				_addSAPEntry(company.getCompanyId());
-			}
-			catch (PortalException portalException) {
-				_log.error(
-					"Unable to add service access policy entry for company " +
-						company.getCompanyId(),
-					portalException);
-			}
-		}
-
-	}
 
 }

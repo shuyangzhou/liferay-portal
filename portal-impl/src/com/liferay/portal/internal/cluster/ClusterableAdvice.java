@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -49,11 +50,22 @@ public class ClusterableAdvice extends ChainableMethodAdvice {
 			return;
 		}
 
-		Clusterable clusterable = aopMethodInvocation.getAdviceMethodContext();
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				Clusterable clusterable =
+					aopMethodInvocation.getAdviceMethodContext();
 
-		ClusterableInvokerUtil.invokeOnCluster(
-			clusterable.acceptor(), aopMethodInvocation.getThis(),
-			aopMethodInvocation.getMethod(), arguments);
+				try {
+					ClusterableInvokerUtil.invokeOnCluster(
+						clusterable.acceptor(), aopMethodInvocation.getThis(),
+						aopMethodInvocation.getMethod(), arguments);
+				}
+				catch (Throwable throwable) {
+					throw new Exception(throwable);
+				}
+
+				return null;
+			});
 	}
 
 	@Override
