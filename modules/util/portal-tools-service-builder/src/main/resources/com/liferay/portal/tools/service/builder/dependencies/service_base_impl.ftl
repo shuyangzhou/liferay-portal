@@ -1604,7 +1604,9 @@ import org.osgi.service.component.annotations.Reference;
 				}
 			</#if>
 
-			_set${sessionTypeName}ServiceUtilService(${entity.variableName}${sessionTypeName}Service);
+			<#if !serviceBuilder.isVersionGTE_7_4_0()>
+				_set${sessionTypeName}ServiceUtilService(${entity.variableName}${sessionTypeName}Service);
+			</#if>
 		}
 	</#if>
 
@@ -1632,10 +1634,12 @@ import org.osgi.service.component.annotations.Reference;
 			}
 		</#if>
 
-		@Deactivate
-		protected void deactivate() {
-			_set${sessionTypeName}ServiceUtilService(null);
-		}
+		<#if !serviceBuilder.isVersionGTE_7_4_0()>
+			@Deactivate
+			protected void deactivate() {
+				_set${sessionTypeName}ServiceUtilService(null);
+			}
+		</#if>
 
 		@Override
 		public Class<?>[] getAopInterfaces() {
@@ -1652,12 +1656,14 @@ import org.osgi.service.component.annotations.Reference;
 			};
 		}
 
-		@Override
-		public void setAopProxy(Object aopProxy) {
-			${entity.variableName}${sessionTypeName}Service = (${entity.name}${sessionTypeName}Service)aopProxy;
+		<#if !serviceBuilder.isVersionGTE_7_4_0()>
+			@Override
+			public void setAopProxy(Object aopProxy) {
+				${entity.variableName}${sessionTypeName}Service = (${entity.name}${sessionTypeName}Service)aopProxy;
 
-			_set${sessionTypeName}ServiceUtilService(${entity.variableName}${sessionTypeName}Service);
-		}
+				_set${sessionTypeName}ServiceUtilService(${entity.variableName}${sessionTypeName}Service);
+			}
+		</#if>
 	<#else>
 		public void destroy() {
 			<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasEntityColumns() && entity.hasPersistence()>
@@ -1668,7 +1674,9 @@ import org.osgi.service.component.annotations.Reference;
 				</#if>
 			</#if>
 
-			_set${sessionTypeName}ServiceUtilService(null);
+			<#if !serviceBuilder.isVersionGTE_7_4_0()>
+				_set${sessionTypeName}ServiceUtilService(null);
+			</#if>
 		}
 	</#if>
 
@@ -2043,18 +2051,20 @@ import org.osgi.service.component.annotations.Reference;
 		}
 	</#if>
 
-	private void _set${sessionTypeName}ServiceUtilService(${entity.name}${sessionTypeName}Service ${entity.variableName}${sessionTypeName}Service) {
-		try {
-			Field field = ${entity.name}${sessionTypeName}ServiceUtil.class.getDeclaredField("_service");
+	<#if !serviceBuilder.isVersionGTE_7_4_0()>
+		private void _set${sessionTypeName}ServiceUtilService(${entity.name}${sessionTypeName}Service ${entity.variableName}${sessionTypeName}Service) {
+			try {
+				Field field = ${entity.name}${sessionTypeName}ServiceUtil.class.getDeclaredField("_service");
 
-			field.setAccessible(true);
+				field.setAccessible(true);
 
-			field.set(null, ${entity.variableName}${sessionTypeName}Service);
+				field.set(null, ${entity.variableName}${sessionTypeName}Service);
+			}
+			catch (ReflectiveOperationException reflectiveOperationException) {
+				throw new RuntimeException(reflectiveOperationException);
+			}
 		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
-	}
+	</#if>
 
 	<#list referenceEntities as referenceEntity>
 		<#if referenceEntity.hasLocalService()>

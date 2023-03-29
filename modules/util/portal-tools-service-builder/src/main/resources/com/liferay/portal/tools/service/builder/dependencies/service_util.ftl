@@ -4,11 +4,13 @@ package ${apiPackagePath}.service;
 	import ${apiPackagePath}.model.${entity.name};
 </#if>
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
@@ -19,6 +21,11 @@ import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 <#if stringUtil.equals(sessionTypeName, "Local")>
 /**
@@ -125,9 +132,42 @@ public class ${entity.name}${sessionTypeName}ServiceUtil {
 	</#if>
 
 	public static ${entity.name}${sessionTypeName}Service getService() {
-		return _service;
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			return _serviceDCLSingleton.getSingleton(${entity.name}${sessionTypeName}ServiceUtil::_getService);
+		<#else>
+			return _service;
+		</#if>
 	}
 
-	private static volatile ${entity.name}${sessionTypeName}Service _service;
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		private static ${entity.name}${sessionTypeName}Service _getService() {
+			Bundle bundle = FrameworkUtil.getBundle(
+				${entity.name}${sessionTypeName}ServiceUtil.class);
+
+			BundleContext bundleContext;
+
+			if (bundle == null) {
+				bundleContext = SystemBundleUtil.getBundleContext();
+			}
+			else {
+				bundleContext = bundle.getBundleContext();
+			}
+
+			ServiceReference<${entity.name}${sessionTypeName}Service> 
+				serviceReference = bundleContext.getServiceReference(
+					${entity.name}${sessionTypeName}Service.class);
+
+			if (serviceReference == null) {
+				return null;
+			}
+
+			return bundleContext.getService(serviceReference);
+		}
+
+		private static final DCLSingleton<${entity.name}${sessionTypeName}Service>
+			_serviceDCLSingleton = new DCLSingleton<>();
+	<#else>
+		private static volatile ${entity.name}${sessionTypeName}Service _service;
+	</#if>
 
 }
