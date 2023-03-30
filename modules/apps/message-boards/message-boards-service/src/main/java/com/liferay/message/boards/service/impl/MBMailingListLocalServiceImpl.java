@@ -221,10 +221,7 @@ public class MBMailingListLocalServiceImpl
 	}
 
 	@Deactivate
-	@Override
 	protected void deactivate() {
-		super.deactivate();
-
 		try {
 			_unregister.close();
 		}

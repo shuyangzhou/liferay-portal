@@ -187,10 +187,7 @@ public class PushNotificationsDeviceLocalServiceImpl
 	}
 
 	@Deactivate
-	@Override
 	protected void deactivate() {
-		super.deactivate();
-
 		_serviceTrackerMap.close();
 	}
 

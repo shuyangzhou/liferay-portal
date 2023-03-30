@@ -458,10 +458,7 @@ public class CommerceCurrencyLocalServiceImpl
 	}
 
 	@Deactivate
-	@Override
 	protected void deactivate() {
-		super.deactivate();
-
 		if (_serviceRegistration != null) {
 			_serviceRegistration.unregister();
 		}

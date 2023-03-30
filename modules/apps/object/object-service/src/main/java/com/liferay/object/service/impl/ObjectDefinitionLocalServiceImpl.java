@@ -818,10 +818,7 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	@Deactivate
-	@Override
 	protected void deactivate() {
-		super.deactivate();
-
 		if (_objectDefinitionDeployerServiceTracker != null) {
 			_objectDefinitionDeployerServiceTracker.close();
 		}

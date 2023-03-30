@@ -6294,10 +6294,7 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	@Deactivate
-	@Override
 	protected void deactivate() {
-		super.deactivate();
-
 		JournalArticleImpl.setDDMFormValuesToFieldsConverter(null);
 		JournalArticleImpl.setJournalConverter(null);
 

@@ -318,10 +318,7 @@ public class AMImageEntryLocalServiceImpl
 	}
 
 	@Deactivate
-	@Override
 	protected void deactivate() {
-		super.deactivate();
-
 		_serviceTrackerMap.close();
 	}
 
